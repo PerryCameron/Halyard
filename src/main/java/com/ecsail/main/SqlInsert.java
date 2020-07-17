@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import com.ecsail.structures.Object_Membership;
+import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Money;
 import com.ecsail.structures.Object_Person;
 
@@ -102,6 +103,19 @@ public class SqlInsert {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public static boolean addMembershipIsSucessful(Object_MembershipList nm) {
+		boolean updateIsSucessful = false;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			stmt.execute(Main.console.setRegexColor("INSERT INTO membership () VALUES (" + nm.getMsid() + ",'" + nm.getPid() + "','" + nm.getMembershipId() + "','" + nm.getJoinDate() + "','FM',1,'','','IN','');")); 
+			updateIsSucessful = true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return updateIsSucessful;
 	}
 
 }

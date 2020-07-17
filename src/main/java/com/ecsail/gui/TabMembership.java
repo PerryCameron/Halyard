@@ -1,6 +1,6 @@
 package com.ecsail.gui;
 
-import com.ecsail.main.Membership;
+import com.ecsail.main.CreateMembership;
 import com.ecsail.main.Note;
 import com.ecsail.main.SqlSelect;
 import com.ecsail.structures.Object_MemLabels;
@@ -30,6 +30,7 @@ public class TabMembership extends Tab {
 	public TabMembership(Object_MembershipList me) { 
 		super();
 		this.membership = me;
+		System.out.println(me.toString());
 		this.setText(setTabLabel());
         this.memos = SqlSelect.getMemos(membership.getMsid());
         this.labels = new Object_MemLabels();
@@ -156,7 +157,7 @@ public class TabMembership extends Tab {
 	private BoxPerson getPrimaryMember() {
 		BoxPerson primaryMember;
 		if (isNewMembership()) 
-			primaryMember = new BoxPerson(Membership.createUser(membership.getMsid()), membership);// create new primary
+			primaryMember = new BoxPerson(CreateMembership.createUser(membership.getMsid()), membership);// create new primary
 		else
 			primaryMember = new BoxPerson(people.get(getPerson(PRIMARY)), membership); // load the primary member
 		return primaryMember;

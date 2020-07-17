@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.ecsail.gui.BoxWelcome;
 import com.ecsail.structures.Object_Login;
 
 import javafx.application.Platform;
@@ -182,7 +183,6 @@ public class ConnectDatabase {
         		Main.activememberships = SqlSelect.getActiveMembershipList();
         		logonStage.close();
         		primaryStage.setTitle("ECSC Membership Database (connected) " + ip);
-        		System.out.println(Main.activememberships.size());
         		} else {
         			primaryStage.setTitle("ECSC Membership Database (not connected)");
         			System.out.println(exception);
@@ -226,7 +226,7 @@ public class ConnectDatabase {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			connection = DriverManager.getConnection(server, user, password);
-			vboxGrey.getChildren().add(new Label("Database Connection to " + server + " Success"));
+			vboxGrey.getChildren().add(new BoxWelcome());
 			showStatus();
 			sucessful = true;
 			// Creating a Statement object

@@ -610,6 +610,23 @@ public class SqlSelect {
 		return result;
 	}
 	
+	public static int getCount(String type) { // gives the last memo_id number
+		int result = 0;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs;
+			rs = stmt.executeQuery("select * from money ORDER BY " + type + " DESC LIMIT 1;");
+			boolean hasResult = rs.next();
+			if (hasResult)
+				result = rs.getInt(type);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	
 	public static Object_Slip getSlip(int ms_id) {
 		Object_Slip thisSlip = null;
 		try {
@@ -679,22 +696,6 @@ public class SqlSelect {
 		return result;
 	}
 	
-	public static int getCount(String type) { // gives the last memo_id number
-		int result = 0;
-		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
-			ResultSet rs;
-			rs = stmt.executeQuery("select * from money ORDER BY " + type + " DESC LIMIT 1;");
-			boolean hasResult = rs.next();
-			if (hasResult)
-				result = rs.getInt(type);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return result;
-	}
-	
 	public static Object_Officer getOfficer(int p_id, int i) {
 		Object_Officer thisOfficer = null;
 		try {
@@ -733,4 +734,70 @@ public class SqlSelect {
 		// System.out.println(thisMembership.toString());
 		return workCredits;
 	}
+	
+	public static int getActiveMembershipCount() {  // gives the last memo_id number
+		int number = 0;
+		ResultSet rs;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			rs = stmt.executeQuery("select count(*) from membership where active_membership = true");
+			rs.next();
+			number = rs.getInt("count(*)");
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return number;
+	}
+	
+	public static int getMSIDCount() {  // gives the last memo_id number
+		int number = 0;
+		ResultSet rs;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			rs = stmt.executeQuery("select ms_id from membership ORDER BY ms_id DESC LIMIT 1");
+			rs.next();
+			number = rs.getInt("ms_id");
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return number;
+	}
+	
+	public static int getMembershipIDCount() {  // gives the last memo_id number
+		int number = 0;
+		ResultSet rs;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			rs = stmt.executeQuery("SELECT MAX(membership_id) FROM membership;");
+			rs.next();
+			number = rs.getInt("MAX(membership_id)");
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return number;
+	}
+	
+
+	
+	public static int getCount()  {  // gives the last memo_id number
+		int number = 0;
+		Statement stmt;
+		try {
+			stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select * from person ORDER BY p_id DESC LIMIT 1"));
+			rs.next();
+			number = rs.getInt("P_ID");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return number;
+	}
+	
 }

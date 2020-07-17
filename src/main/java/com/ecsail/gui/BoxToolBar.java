@@ -2,7 +2,7 @@ package com.ecsail.gui;
 
 import java.io.IOException;
 import com.ecsail.main.Main;
-import com.ecsail.main.Membership;
+import com.ecsail.main.CreateMembership;
 import com.ecsail.main.SqlScriptMaker;
 import com.ecsail.main.TabLauncher;
 import com.ecsail.pdf.Pdf_Boat;
@@ -103,7 +103,7 @@ public class BoxToolBar extends VBox {
         
         m3_1.setOnAction(new EventHandler<ActionEvent>() {  // add new membership
             @Override public void handle(ActionEvent e) {
-            	Membership.Create();
+            	CreateMembership.Create();
             }
         });
         
