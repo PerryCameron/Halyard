@@ -1,0 +1,150 @@
+
+
+.button {
+    -fx-text-fill: white;
+    -fx-font-family: "Arial Narrow";
+    -fx-font-weight: bold;
+    -fx-background-color: linear-gradient(#9fc0c7, #a8bbbf);
+    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.6) , 2, 0.0 , 0 , 1 );
+    -fx-background-radius: 12px;
+}
+
+.button:hover {
+    -fx-background-color: linear-gradient(#2A5058, #61a2b1);
+}
+
+.table-view{
+   -fx-background-color: transparent;
+}
+
+.table-view:focused{
+    -fx-background-color: transparent;
+}
+
+.table-view .column-header-background{
+    -fx-background-color: linear-gradient(#cccbca 0%, #dedcdc 100%);
+}
+
+.table-view .column-header-background .label{
+    -fx-background-color: transparent;
+    -fx-text-fill: black;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+}
+
+.table-view .table-cell{
+    -fx-text-fill: black;  /* The color of the text in the cells */
+}
+
+.table-row-cell{
+    -fx-background-color: -fx-table-cell-border-color, #c5c7c1; /* the color of the darker row */
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0.0em; 
+}
+
+.table-row-cell:odd{
+    -fx-background-color: -fx-table-cell-border-color, #e2e3de;  /* the color of the lighter row */
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0.0em;
+}
+
+.table-row-cell:selected {  /* Where you have a row selected */
+    -fx-background-color: #a1c7d1;
+    -fx-background-insets: 0;
+    -fx-background-radius: 1;
+}
+
+.tab-pane:top *.tab-header-area {
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0.416667em 0.166667em 0.0em 0.0em; /* overridden as 5 2 0 0 */
+}
+
+.tab-header-background {  /* When not selected */
+-fx-background-color: transparent;
+}
+
+.tab-pane{
+-fx-tab-min-width:90px;
+}
+
+.tab-pane .tab {
+    -fx-background-insets: 0 0 0 0,0,0;
+    -fx-background-color: #d9d2d2;
+    
+}
+
+.tab-pane .tab:selected {
+ 	-fx-background-color: #9fc0c7;
+  /*  -fx-background-image: url("background.jpg");*/
+}
+
+.tab .tab-label { 
+    -fx-alignment: CENTER;
+    -fx-text-fill: #828282;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.officers {
+	-fx-font-size: 12px;
+}
+
+.labels {
+    -fx-font-weight: bold;
+    
+}
+
+.title {
+	-fx-alignment: CENTER;
+	-fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #9fc0c7;
+    -fx-font-family: "Helvetica";
+}
+
+.boardgeneral {
+	-fx-font-size: 14px;
+	-fx-alignment: CENTER;
+	
+}
+
+.text {
+	-fx-font-family:  "Helvetica";
+}
+
+.tab:selected .tab-label {  /* white lettering in a selected tab */
+    -fx-alignment: CENTER;
+    -fx-text-fill: white;
+}
+
+#box-blue {
+	-fx-background-color: #9fc0c7;  /* blue selected tab background in person */
+}
+
+#box-grey {
+	-fx-background-color: #c6c6c6;
+}
+
+#box-pink {
+	-fx-background-color: #dbd5d5; /* #dfdada*/ 
+}
+
+#bold-label {
+  -fx-font-weight: bold;
+}
+
+#toolbar-box {
+	-fx-background-color: #d8e3e6;  /* blue selected tab background in person */
+}
+
+#slip-box {
+  -fx-background-image: url("file:///C:/Users/pcame/eclipse-workspace/ECSC/src/main/resources/slips/Slips.png");
+  -fx-background-position: center center;
+}
+
+#slip-fonts {
+	-fx-font-size: 11px;
+	 -fx-font-family: "Arial";
+}

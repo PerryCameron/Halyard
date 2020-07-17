@@ -1,0 +1,20 @@
+// sail school laser loft needs to be added to fiscal
+// need to add link on subleased to number <complete>
+// need to remove pringln in box boat. <complete>
+// in object_workcredit, why is memo_id in there?
+// need to make image change when slip reassigned <complete>
+// need to fix bug in slip where botton disapperas <complete>
+// need to make tabslips refresh <complete>
+// need to fix rotational text problem in tabslip
+// need to add change join date feature <complete>
+// need to finish active/inactive feature <complete>
+// need to implement change membership type feature
+// need ability to change membership ID <complete>
+// need to build board of directors tab. <complete>
+// [strange bug] sometimes double clicking on fiscal doesn't open a tab
+// need to make variables in Object_Widget local inside of BoxSlip and then delete Object_Widget.
+// must add work credit under defined fee
+// make it so a membership tab can 
+// make linking a memebership that is subleased go to the subleasee instead of the owner <complete>
+// make a box attachments, so that PDF's and other files can be added to memberships.
+// add ability to make stagged reports as money comes in.
