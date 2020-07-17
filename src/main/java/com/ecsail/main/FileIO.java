@@ -29,6 +29,18 @@ public static List<Object_Login> logins = new ArrayList<Object_Login>();
 		}
 	}
 	
+	public static Object_Login getSelectedHost(String hostname) {
+		int count = 0;
+		int iterate = 0;
+		for(Object_Login login: logins) {
+			if(login.getHost().equals(hostname)) {
+				count = iterate;
+			}
+			iterate++;
+		}
+		return logins.get(count);
+	}
+	
 	public static void openLoginObjects() {
 		System.out.println();
 		File g = new File(HOSTS);

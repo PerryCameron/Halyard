@@ -20,7 +20,7 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 
-//import mysql.mysql_connector_java.connectToDB;
+
 
 public class Main extends Application {
 static ConnectDatabase connect;

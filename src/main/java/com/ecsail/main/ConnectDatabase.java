@@ -136,6 +136,13 @@ public class ConnectDatabase {
 		
 		Platform.runLater(() -> username.requestFocus());
 		
+		hostName.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
+			currentLogon = FileIO.getSelectedHost(options.getValue());
+			//System.out.println(currentLogon.toString());
+			username.setText(currentLogon.getUser());
+			password.setText(currentLogon.getPasswd());
+        });
+		
 		newConnectText.setOnMouseClicked(e -> {
 			if (e.getClickCount() == 1) {
 					infoBox4.getChildren().addAll(new Label("Port:"), portText);
