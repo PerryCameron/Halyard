@@ -12,6 +12,7 @@ public enum Officer {
 	   MEMBERS("MS", "Membership"),
 	   AMEMBER("AM", "Assistant Membership"),
 	   PUBLICI("PU", "Publicity"),
+	   APUBLIC("AP", "Assistant Publicity"),
 	   RACINGC("RA", "Racing"),
 	   ARACING("AR", "Assistant Racing"),
 	   SAFETYA("SM", "Safety and Education"),

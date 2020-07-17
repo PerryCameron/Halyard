@@ -517,9 +517,8 @@ public class SqlSelect {
 	// "Boolean wantAll" decides whether we want all or just active people
 	// inactive people exist and are still part of an account, but they are inactive for that account
 	
-	public static ObservableList<Object_Person> getPeople(int ms_id) {  // overload method
-		String query = "SELECT * FROM person";
-		if(ms_id != 0) query += " WHERE ms_id= '" + ms_id + "'"; // if we want to select by specific membership
+	public static ObservableList<Object_Person> getPeople(int ms_id) {  
+		String query = "SELECT * FROM person WHERE ms_id= '" + ms_id + "'";
 		ObservableList<Object_Person> thesepeople = FXCollections.observableArrayList();
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
@@ -538,6 +537,33 @@ public class SqlSelect {
 					rs.getString("BUISNESS"),
 					rs.getBoolean("IS_ACTIVE")));
 			}
+		}
+		stmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return thesepeople;
+	}
+	
+	public static ObservableList<Object_Person> getPeople() {  
+		String query = "SELECT * FROM person";
+		ObservableList<Object_Person> thesepeople = FXCollections.observableArrayList();
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+		    ResultSet rs;
+			rs = stmt.executeQuery(Main.console.setRegexColor(query + ";"));
+		while (rs.next()) {
+			thesepeople.add(new Object_Person(
+					rs.getInt("P_ID"),
+					rs.getInt("MS_ID"),
+					rs.getInt("MEMBER_TYPE"), 		
+					rs.getString("F_NAME"),
+					rs.getString("L_NAME"),
+					rs.getString("BIRTHDAY"),
+					rs.getString("OCCUPATION"),
+					rs.getString("BUISNESS"),
+					rs.getBoolean("IS_ACTIVE")));
 		}
 		stmt.close();
 		} catch (SQLException e) {
@@ -707,5 +733,4 @@ public class SqlSelect {
 		// System.out.println(thisMembership.toString());
 		return workCredits;
 	}
-	
 }

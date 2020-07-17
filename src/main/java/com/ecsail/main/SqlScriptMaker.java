@@ -47,7 +47,7 @@ public class SqlScriptMaker {
 		String stringDate = formatter.format(date);
 		stringDate.replaceAll("\\s+", "");
 		memberships = SqlSelect.getMemberships();
-		people = SqlSelect.getPeople(ALL); 
+		people = SqlSelect.getPeople(); 
 		phones = SqlSelect.getPhone(ALL);
 		boats = SqlSelect.getBoats();
 		boatowners = SqlSelect.getBoatOwners();

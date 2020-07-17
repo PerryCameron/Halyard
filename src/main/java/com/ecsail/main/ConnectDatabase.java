@@ -182,6 +182,7 @@ public class ConnectDatabase {
         		Main.activememberships = SqlSelect.getActiveMembershipList();
         		logonStage.close();
         		primaryStage.setTitle("ECSC Membership Database (connected) " + ip);
+        		System.out.println(Main.activememberships.size());
         		} else {
         			primaryStage.setTitle("ECSC Membership Database (not connected)");
         			System.out.println(exception);

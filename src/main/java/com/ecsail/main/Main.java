@@ -21,7 +21,6 @@ import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 
 
-
 public class Main extends Application {
 static ConnectDatabase connect;
 public static ObservableList<Object_MembershipList> activememberships;
@@ -29,7 +28,6 @@ static BorderPane mainPane;
 static TabLauncher mainViewPane;
 public static BoxConsole console;
 static String ipaddress;
-//private static ScrollPane consoleScrollPane;
 
 public static void main(String[] args) throws SQLException {
         System.out.println("Starting application...");
