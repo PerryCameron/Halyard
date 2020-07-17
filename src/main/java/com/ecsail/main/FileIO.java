@@ -13,6 +13,7 @@ import com.ecsail.structures.Object_Login;
 
 public class FileIO {
 public static final String HOSTS = System.getProperty("user.home") + "/.ecsc/hosts.ecs";
+public static final String SCRIPTS = System.getProperty("user.home") + "/.ecsc/scripts";
 public static List<Object_Login> logins = new ArrayList<Object_Login>();
 	
 	public static void saveLoginObjects() {  // saves user file to disk

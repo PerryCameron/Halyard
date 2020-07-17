@@ -58,8 +58,8 @@ public class SqlScriptMaker {
 		officers = SqlSelect.getOfficers();
 		definedfees = SqlSelect.getDefinedFees();
 		workcredits = SqlSelect.getWorkCredits();
-		readFromFile("C:/Users/pcame/Documents/College/C451/Project/SQL Scripts/ecsc_create.sql");
-		writeToFile("C:/Users/pcame/Documents/College/C451/Project/SQL Scripts/ecsc_sql_" + stringDate + ".sql");
+		readFromFile(FileIO.SCRIPTS + "/ecsc_create.sql");
+		writeToFile(FileIO.SCRIPTS + "/ecsc_sql_" + stringDate + ".sql");
 	}
 	
 	public static void writeToFile(String filename) {

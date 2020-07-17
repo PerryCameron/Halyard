@@ -89,10 +89,9 @@ public static void main(String[] args) throws SQLException {
 	}
 	
 	public static void setUpForFirstTime() {
-		File recordsDir = new File(System.getProperty("user.home"), "/.ecsc");
+		File recordsDir = new File(System.getProperty("user.home"), "/.ecsc/scripts");
 		if (!recordsDir.exists()) {
-			System.out.println("Creating dir: " + System.getProperty("user.home") + "/.ecsc"); // USERFILETEMPLATE
-			//System.out.println("Creating dir: " + System.getProperty("user.home") + "/.document/img");
+			System.out.println("Creating dir: " + System.getProperty("user.home") + "/.ecsc/scripts"); // USERFILETEMPLATE
 		    recordsDir.mkdirs();
 		}
 	}
