@@ -40,11 +40,11 @@ public class TabPeopleList extends Tab {
 	TableColumn<Object_Person, String> Col8;
 	static TableView<Object_Person> personTableView;
 	static int pick = 1;
-	private static final int ALL = 0;
+
 	@SuppressWarnings("unchecked")
 	public TabPeopleList(String text) {
 		super(text);
-		TabPeopleList.people = SqlSelect.getPeople(ALL);
+		TabPeopleList.people = SqlSelect.getPeople();
 		
 		VBox vbox1 = new VBox(); // main vbox
 		VBox vbox2 = new VBox(); // sepearates box search and box people

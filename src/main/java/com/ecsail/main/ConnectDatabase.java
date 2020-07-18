@@ -109,7 +109,7 @@ public class ConnectDatabase {
 		vboxLeft.setPadding(new Insets(0,0,0,15));
 		setMouseListener(newConnectText);
 		logonStage.setAlwaysOnTop(true);
-		Image ecscLogo = new Image(getClass().getResourceAsStream("/ECSClogo4.png"));
+		Image ecscLogo = new Image(getClass().getResourceAsStream(FileIO.LOGO));
 		ImageView logo = new ImageView(ecscLogo);
 		addBox.setPadding(new Insets(0,0,0,30));
 		buttonBox.setPadding(new Insets(0,0,0,35));

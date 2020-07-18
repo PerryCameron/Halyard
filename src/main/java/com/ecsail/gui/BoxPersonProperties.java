@@ -54,7 +54,7 @@ public class BoxPersonProperties extends HBox {
         });
 
 		/////////////////  ATTRIBUTES  /////////////////////
-
+        activeCheckBox.setSelected(person.isActive());
 		hboxGrey.setPrefWidth(480);
 		hboxGrey.setSpacing(10);  // spacing in between table and buttons
 		hbox1.setSpacing(5);
