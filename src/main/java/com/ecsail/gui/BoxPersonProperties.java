@@ -36,13 +36,13 @@ public class BoxPersonProperties extends HBox {
       //      @Override public void handle(ActionEvent e) {
       //      	try {
 	  //			removePerson("IS_ACTIVE",person.getP_id(), false);
-	//			} catch (SQLException e1) {
-	//				// TODO Auto-generated catch block
-	//				e1.printStackTrace();
-	//			}
-     //       }
-    //    });
-    //    
+	  //			} catch (SQLException e1) {
+	  //				// TODO Auto-generated catch block
+	  //				e1.printStackTrace();
+	  //			}
+      //       }
+      //    });
+      //    
         activeCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
