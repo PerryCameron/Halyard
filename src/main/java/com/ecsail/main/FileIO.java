@@ -66,6 +66,14 @@ public static List<Object_Login> logins = new ArrayList<Object_Login>();
 		}
 	}
 	
+	public static boolean hostFileExists() {
+		boolean doesExist = false;
+		File g = new File(HOSTS);
+		if(g.exists())
+			doesExist = true;
+		return doesExist;
+	}
+	
 	public static int getDefaultLogon() {
 		int count = 0;
 		int iterate = 0;

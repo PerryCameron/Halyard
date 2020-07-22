@@ -43,17 +43,19 @@ public class ConnectDatabase {
 	protected String exception = "";
 	private VBox vboxGrey = new VBox(); // allows us to add content to the welcome tab.
 	boolean toggle = true;
-	public ConnectDatabase(Stage primaryStage) {
-		FileIO.openLoginObjects();
-		this.currentLogon = FileIO.logins.get(0);
-		this.port = currentLogon.getPort();
-		for(Object_Login l: FileIO.logins) {
-		this.choices.add(l.getHost());
-		}
 
+	public ConnectDatabase(Stage primaryStage) {
+		if (FileIO.hostFileExists()) {
+			FileIO.openLoginObjects();
+			this.currentLogon = FileIO.logins.get(0);
+			this.port = currentLogon.getPort();
+			for (Object_Login l : FileIO.logins) {
+				this.choices.add(l.getHost());
+			}
+		}
 		TabLauncher.openWelcomeTab(vboxGrey);
 		
-		System.out.println(FileIO.logins.get(0).toString());
+		//System.out.println(FileIO.logins.get(0).toString());
 		displayLogOn(primaryStage);
 	}
 	
@@ -118,9 +120,11 @@ public class ConnectDatabase {
 		infoBox5.setPadding(new Insets(10,0,0,0));
 		buttonBox.setSpacing(10);
 		newConnectText.setFill(Color.CORNFLOWERBLUE);
+		if(currentLogon != null) {
 		username.setText(currentLogon.getUser());
 		password.setText(currentLogon.getPasswd());
 		hostName.setValue(currentLogon.getHost());
+		}
 		secondScene.getStylesheets().add("stylesheet.css");
 		mainHBox.setId("box-pink");
 		vboxBlue.setId("box-blue");
