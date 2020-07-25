@@ -49,9 +49,10 @@ public class ConnectDatabase {
 			FileIO.openLoginObjects();
 			this.currentLogon = FileIO.logins.get(0);
 			this.port = currentLogon.getPort();
-			for (Object_Login l : FileIO.logins) {
-				this.choices.add(l.getHost());
-			}
+			//for (Object_Login l : FileIO.logins) {
+			//	this.choices.add(l.getHost());
+			//}
+			loadHosts();
 		}
 		TabLauncher.openWelcomeTab(vboxGrey);
 		
@@ -93,8 +94,11 @@ public class ConnectDatabase {
 		Button loginButton = new Button("Login");
 		Button cancelButton1 = new Button("Cancel");
 		Button cancelButton2 = new Button("Cancel");
-		Button saveButton = new Button("Save");
-		Text newConnectText = new Text("New Connection");
+		Button saveButton1 = new Button("Save");
+		Button saveButton2 = new Button("Save");
+		Button deleteButton = new Button("Delete");
+		Text newConnectText = new Text("New");
+		Text editConnectText = new Text("Edit");
 		//Pane secondaryLayout = new Pane();
 		Image mainIcon = new Image(getClass().getResourceAsStream("/ECSC64.png"));
 		logonStage.getIcons().add(mainIcon);
@@ -110,17 +114,20 @@ public class ConnectDatabase {
 		vboxLeft.setSpacing(10);
 		vboxLeft.setPadding(new Insets(0,0,0,15));
 		setMouseListener(newConnectText);
+		setMouseListener(editConnectText);
 		logonStage.setAlwaysOnTop(true);
 		Image ecscLogo = new Image(getClass().getResourceAsStream(FileIO.LOGO));
 		ImageView logo = new ImageView(ecscLogo);
-		addBox.setPadding(new Insets(0,0,0,30));
+		addBox.setPadding(new Insets(0,0,0,20));
+		addBox.setSpacing(15);
 		buttonBox.setPadding(new Insets(0,0,0,35));
-		buttonBox2.setPadding(new Insets(0,0,0,170));
+		buttonBox2.setPadding(new Insets(0,0,0,110));
 		vboxRight.setPadding(new Insets(20,20,0,20));
 		infoBox5.setPadding(new Insets(10,0,0,0));
 		buttonBox.setSpacing(10);
 		newConnectText.setFill(Color.CORNFLOWERBLUE);
-		if(currentLogon != null) {
+		editConnectText.setFill(Color.CORNFLOWERBLUE);
+		if(currentLogon != null) {  // only true if starting for first time
 		username.setText(currentLogon.getUser());
 		password.setText(currentLogon.getPasswd());
 		hostName.setValue(currentLogon.getHost());
@@ -142,7 +149,7 @@ public class ConnectDatabase {
 		Platform.runLater(() -> username.requestFocus());
 		
 		hostName.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
-			currentLogon = FileIO.getSelectedHost(options.getValue());
+			currentLogon = FileIO.logins.get(FileIO.getSelectedHost(options.getValue()));
 			//System.out.println(currentLogon.toString());
 			username.setText(currentLogon.getUser());
 			password.setText(currentLogon.getPasswd());
@@ -157,11 +164,27 @@ public class ConnectDatabase {
 					username.setText("");
 					password.setText("");
 					buttonBox2.getChildren().clear();
-					buttonBox2.getChildren().addAll(saveButton,cancelButton2);
+					buttonBox2.getChildren().addAll(saveButton1,cancelButton2);
 					infoBox5.getChildren().clear();
 					infoBox5.getChildren().add(buttonBox2);
 					infoBox3.getChildren().clear();
 					infoBox3.getChildren().addAll(new Label("Hostname: "), hostnameField);
+			}
+		});
+		
+		editConnectText.setOnMouseClicked(e -> {
+			if (e.getClickCount() == 1) {
+					infoBox4.getChildren().addAll(new Label("Port:"), portText);
+					logonStage.setHeight(height + 69);
+					vboxBlue.setPrefHeight(height + 30);
+					vboxLeft.setPrefHeight(height + 30);
+					buttonBox2.getChildren().clear();
+					buttonBox2.getChildren().addAll(saveButton2,deleteButton,cancelButton2);
+					infoBox5.getChildren().clear();
+					infoBox5.getChildren().add(buttonBox2);
+					infoBox3.getChildren().clear();
+					infoBox3.getChildren().addAll(new Label("Hostname: "), hostnameField);
+					hostnameField.setText(currentLogon.getHost());
 			}
 		});
 		
@@ -194,10 +217,41 @@ public class ConnectDatabase {
             }
         });
         
-        saveButton.setOnAction(new EventHandler<ActionEvent>() {
+        saveButton1.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
             	FileIO.logins.add(new Object_Login(portText.getText(), hostnameField.getText(), username.getText(), password.getText(), false));
             	FileIO.saveLoginObjects();
+            	loadHosts();
+            }
+        });
+        
+		deleteButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				int element = FileIO.getSelectedHost(hostnameField.getText());
+				if (element >= 0) {
+					FileIO.logins.remove(element);
+					FileIO.saveLoginObjects();
+					loadHosts();
+				} else {
+					System.out.println("need to build error for removing element");
+				}
+			}
+		});
+        
+        saveButton2.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+            	int element = FileIO.getSelectedHost(hostnameField.getText());
+            	if(element >= 0) {
+            		FileIO.logins.get(element).setHost(hostnameField.getText());
+            		FileIO.logins.get(element).setUser(username.getText());
+            		FileIO.logins.get(element).setPasswd(password.getText());
+            		FileIO.logins.get(element).setPort(portText.getText());
+            		FileIO.saveLoginObjects();
+            		loadHosts();
+            	} else {
+            		System.out.println("need to build error for non matching host here");
+            	}
             }
         });
         
@@ -212,7 +266,7 @@ public class ConnectDatabase {
 		infoBox3.getChildren().addAll(new Label("Hostname: "), hostName);
         vboxRight.getChildren().addAll(logo);
         buttonBox.getChildren().addAll(loginButton,cancelButton1);
-        addBox.getChildren().add(newConnectText);
+        addBox.getChildren().addAll(newConnectText, editConnectText);
         infoBox5.getChildren().addAll(addBox,buttonBox);
         vboxLeft.getChildren().addAll(errorHBox,infoBox1, infoBox2, infoBox3, infoBox4, infoBox5);
 		logonStage.setX(primaryStage.getX() + 260);
@@ -222,6 +276,13 @@ public class ConnectDatabase {
 		loginPane.getChildren().add(vboxBlue);
 		logonStage.setScene(secondScene);
 		logonStage.show();
+	}
+	
+	private void loadHosts() {
+		this.choices.clear();
+		for (Object_Login l : FileIO.logins) {
+			this.choices.add(l.getHost());
+		}
 	}
 
 	protected Boolean createConnection(String user, String password, String ip, String port) {

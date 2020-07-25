@@ -30,7 +30,7 @@ public static List<Object_Login> logins = new ArrayList<Object_Login>();
 			System.exit(0);
 		}
 	}
-	
+/*	
 	public static Object_Login getSelectedHost(String hostname) {
 		int count = 0;
 		int iterate = 0;
@@ -41,6 +41,22 @@ public static List<Object_Login> logins = new ArrayList<Object_Login>();
 			iterate++;
 		}
 		return logins.get(count);
+	}
+	*/
+	
+	public static int getSelectedHost(String hostname) {
+		boolean error = true;
+		int count = 0;
+		int iterate = 0;
+		for(Object_Login login: logins) {
+			if(login.getHost().equals(hostname)) {
+				count = iterate;
+				error = false;  // make sure at least one matches
+			}
+			iterate++;
+		}
+		if(error) count = -1;
+		return count;
 	}
 	
 	public static void openLoginObjects() {
