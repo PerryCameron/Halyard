@@ -17,8 +17,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -49,10 +51,7 @@ public class ConnectDatabase {
 			FileIO.openLoginObjects();
 			this.currentLogon = FileIO.logins.get(0);
 			this.port = currentLogon.getPort();
-			//for (Object_Login l : FileIO.logins) {
-			//	this.choices.add(l.getHost());
-			//}
-			loadHosts();
+			loadHostsInComboBox();
 		}
 		TabLauncher.openWelcomeTab(vboxGrey);
 		
@@ -89,6 +88,7 @@ public class ConnectDatabase {
 		PasswordField password = new PasswordField();
 		password.setPromptText("Password");
 		ComboBox<String> hostName = new ComboBox<String>(choices);
+		CheckBox defaultCheck = new CheckBox("Default");
 		TextField portText = new TextField();
 		TextField hostnameField = new TextField();
 		Button loginButton = new Button("Login");
@@ -104,6 +104,8 @@ public class ConnectDatabase {
 		logonStage.getIcons().add(mainIcon);
 		///////////////////// ATTRIBUTES //////////////////////////
 		
+
+		infoBox4.setAlignment(Pos.CENTER_LEFT);
 		portText.setText("3306");
 		infoBox1.setSpacing(17);
 		infoBox2.setSpacing(19);
@@ -148,13 +150,15 @@ public class ConnectDatabase {
 		
 		Platform.runLater(() -> username.requestFocus());
 		
+		// when host name combo box changes
 		hostName.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
 			currentLogon = FileIO.logins.get(FileIO.getSelectedHost(options.getValue()));
-			//System.out.println(currentLogon.toString());
+			System.out.println(currentLogon.toString());
 			username.setText(currentLogon.getUser());
 			password.setText(currentLogon.getPasswd());
         });
 		
+		// creates screen to add new host
 		newConnectText.setOnMouseClicked(e -> {
 			if (e.getClickCount() == 1) {
 					infoBox4.getChildren().addAll(new Label("Port:"), portText);
@@ -172,9 +176,10 @@ public class ConnectDatabase {
 			}
 		});
 		
+		// edits currently selected host
 		editConnectText.setOnMouseClicked(e -> {
 			if (e.getClickCount() == 1) {
-					infoBox4.getChildren().addAll(new Label("Port:"), portText);
+					infoBox4.getChildren().addAll(new Label("Port:"), portText, defaultCheck);
 					logonStage.setHeight(height + 69);
 					vboxBlue.setPrefHeight(height + 30);
 					vboxLeft.setPrefHeight(height + 30);
@@ -188,6 +193,7 @@ public class ConnectDatabase {
 			}
 		});
 		
+		// takes you back to original screen
 		cancelButton2.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
 				infoBox4.getChildren().clear();
@@ -217,44 +223,56 @@ public class ConnectDatabase {
             }
         });
         
-        saveButton1.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-            	FileIO.logins.add(new Object_Login(portText.getText(), hostnameField.getText(), username.getText(), password.getText(), false));
-            	FileIO.saveLoginObjects();
-            	loadHosts();
-            }
-        });
-        
+        // deletes log on from list
 		deleteButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-				int element = FileIO.getSelectedHost(hostnameField.getText());
+				int element = FileIO.getSelectedHost(currentLogon.getHost());
 				if (element >= 0) {
 					FileIO.logins.remove(element);
 					FileIO.saveLoginObjects();
-					loadHosts();
+					removeHostFromComboBox(hostnameField.getText());
+					// should probably set combo box to default here
+	            	cancelButton2.fire(); // refresh login back to original
 				} else {
 					System.out.println("need to build error for removing element");
 				}
 			}
 		});
+		
+		// saves new login object
+        saveButton1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+            	FileIO.logins.add(new Object_Login(portText.getText(), hostnameField.getText(), username.getText(), password.getText(), false));
+            	FileIO.saveLoginObjects();
+            	choices.add(hostnameField.getText());  // add new host name into combo box
+            	hostName.setValue(hostnameField.getText());  // set combo box default to new host name
+            	cancelButton2.fire(); // refresh login back to original
+            }
+        });
         
+		// saves changes to existing login object
         saveButton2.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-            	int element = FileIO.getSelectedHost(hostnameField.getText());
-            	if(element >= 0) {
+            	int element = FileIO.getSelectedHost(currentLogon.getHost());  // get element number
+            	String oldHost = currentLogon.getHost(); // save hostname for later
+            	if(element >= 0) {  // the element exists, why wouldn't it exist
+            		// change the specific login in the login list
             		FileIO.logins.get(element).setHost(hostnameField.getText());
             		FileIO.logins.get(element).setUser(username.getText());
             		FileIO.logins.get(element).setPasswd(password.getText());
             		FileIO.logins.get(element).setPort(portText.getText());
             		FileIO.saveLoginObjects();
-            		loadHosts();
+            		updateHostInComboBox(oldHost, hostnameField.getText());
+            		hostName.setValue(hostnameField.getText());
+            		cancelButton2.fire(); // refresh login back to original
             	} else {
             		System.out.println("need to build error for non matching host here");
             	}
             }
         });
         
+        // exits program 
         cancelButton1.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
             	System.exit(0);
@@ -278,10 +296,34 @@ public class ConnectDatabase {
 		logonStage.show();
 	}
 	
-	private void loadHosts() {
-		this.choices.clear();
+	private void updateHostInComboBox(String host, String newHost) {
+		int count = 0;
+		int choiceWanted = 0;
+		for(String ho: choices) {
+			if(host.equals(ho)) {
+				choiceWanted = count;
+			}
+			count++;
+		}
+		choices.set(choiceWanted, newHost);
+	}
+	
+	private void removeHostFromComboBox(String host) {
+		int count = 0;
+		int choiceWanted = 0;
+		for(String ho: choices) {
+			if(host.equals(ho)) {
+				choiceWanted = count;
+			}
+			count++;
+		}
+		choices.remove(choiceWanted);
+	}
+	
+	private void loadHostsInComboBox() {
 		for (Object_Login l : FileIO.logins) {
 			this.choices.add(l.getHost());
+			System.out.println("added: " + l);
 		}
 	}
 
