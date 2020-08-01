@@ -11,13 +11,6 @@ import com.ecsail.structures.Object_Person;
 import javafx.collections.ObservableList;
 
 public class SqlUpdate {
-
-	private String checkValue(String value) {
-		String result = null;
-		if(!value.equals(""))
-			result = value;
-		return result;
-	}
 	
 	public static final void updateBoat(String field, int phone_id, String attribute) {
 		try {			
