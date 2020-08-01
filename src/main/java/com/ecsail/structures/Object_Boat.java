@@ -21,10 +21,11 @@ public class Object_Boat {
 	private StringProperty length;
 	private StringProperty weight;
 	private StringProperty keel;
+	private StringProperty phrf;
 	
 	public Object_Boat(Integer boat_id, Integer ms_id, String manufacturer, String manufacture_year,
 			String registration_num, String model, String boat_name, String sail_number,
-			Boolean hasTrailer, String length, String weight, String keel) {
+			Boolean hasTrailer, String length, String weight, String keel, String phrf) {
 
 		this.boat_id = new SimpleIntegerProperty(boat_id);
 		this.ms_id = new SimpleIntegerProperty(ms_id);
@@ -38,7 +39,10 @@ public class Object_Boat {
 		this.length = new SimpleStringProperty(length);
 		this.weight = new SimpleStringProperty(weight);
 		this.keel = new SimpleStringProperty(keel);
+		this.phrf = new SimpleStringProperty(phrf);
 	}
+	
+	
 
 	public final IntegerProperty boat_idProperty() {
 		return this.boat_id;
@@ -219,11 +223,31 @@ public class Object_Boat {
 		this.keelProperty().set(keel);
 	}
 
-	@Override
+	public final StringProperty phrfProperty() {
+		return this.phrf;
+	}
+	
+
+
+
+	public final String getPhrf() {
+		return this.phrfProperty().get();
+	}
+	
+
+
+
+	public final void setPhrf(final String phrf) {
+		this.phrfProperty().set(phrf);
+	}
+	
+		@Override
 	public String toString() {
 		return "Object_Boat [boat_id=" + boat_id + ", ms_id=" + ms_id + ", manufacturer=" + manufacturer
 				+ ", manufacture_year=" + manufacture_year + ", registration_num=" + registration_num + ", model="
 				+ model + ", boat_name=" + boat_name + ", sail_number=" + sail_number + ", hasTrailer=" + hasTrailer
-				+ ", length=" + length + ", weight=" + weight + ", keel=" + keel + "]";
+				+ ", length=" + length + ", weight=" + weight + ", keel=" + keel + ", phrf=" + phrf + "]";
 	}
+	
+	
 }

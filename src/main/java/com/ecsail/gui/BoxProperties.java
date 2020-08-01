@@ -32,17 +32,18 @@ public class BoxProperties extends HBox {
 		super();
 		this.membership = m;
 		this.labels = l;
-		//this.currentYear = new SimpleDateFormat("yyyy").format(new Date());
 		//////////// OBJECTS ///////////////
 		HBox hboxGrey = new HBox();  // this is the vbox for organizing all the widgets
-		//VBox vboxPink = new VBox(); // this creates a pink border around the table
-		VBox mainVBox = new VBox(); // contains viewable children
+		VBox leftVBox = new VBox(); // contains viewable children
+		VBox rightVBox = new VBox();
         HBox hbox1 = new HBox();  // holds membershipID, Type and Active
         HBox hbox2 = new HBox();  // holds PersonVBoxes (2 instances require a genereic HBox
         HBox hbox3 = new HBox();  // holds address, city, state, zip
-        HBox hbox4 = new HBox();
+        HBox hbox4 = new HBox();  // holds membership type
+        HBox hbox5 = new HBox();  // holds delete membership
 
 		Button changeIDButton = new Button("Update");
+		Button removeMembershipButton = new Button("Delete");
 		TextField changeMembershipIDTextField = new TextField();
 		CheckBox activeCheckBox = new CheckBox("Membership Active");
 		ComboBox<MembershipType> combo_box = new ComboBox<MembershipType>();
@@ -51,20 +52,22 @@ public class BoxProperties extends HBox {
 		/////////////  ATTRIBUTES /////////////
 		changeMembershipIDTextField.setPrefWidth(50);
 		changeMembershipIDTextField.setText(membership.getMembershipId() + "");
+		activeCheckBox.setSelected(membership.isActiveMembership());
         hbox1.setSpacing(5);  // membership HBox
         hbox1.setAlignment(Pos.CENTER_LEFT);
-        activeCheckBox.setSelected(membership.isActiveMembership());
         hbox2.setSpacing(5);  // membership HBox
         hbox2.setAlignment(Pos.CENTER_LEFT);
         hbox4.setSpacing(5);  // membership HBox
         hbox4.setAlignment(Pos.CENTER_LEFT);
+        hbox5.setSpacing(5);  // membership HBox
+        hbox5.setAlignment(Pos.CENTER_LEFT);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate date = LocalDate.parse(membership.getJoinDate(), formatter);
         joinDatePicker.setValue(date);
         combo_box.setValue(MembershipType.getByCode(membership.getMemType()));
 		hboxGrey.setPadding(new Insets(5, 5, 5, 10));
 		hboxGrey.setPrefWidth(942);
-		mainVBox.setSpacing(10);
+		leftVBox.setSpacing(10);
 		setPadding(new Insets(5, 5, 5, 5));  // creates space for blue frame
 		setId("box-blue");
 		hboxGrey.setId("box-grey");
@@ -100,6 +103,13 @@ public class BoxProperties extends HBox {
             }
         });
 		
+		removeMembershipButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+            	System.out.println("Remove membership");
+            	deleteMembership(membership.getMsid());
+            }
+        });
+		
         combo_box.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
         	SqlUpdate.updateMembership("MEM_TYPE", membership.getMsid(), newValue.getCode());
             membership.setMemType(newValue.getCode());
@@ -111,9 +121,29 @@ public class BoxProperties extends HBox {
 		hbox2.getChildren().addAll(new Label("Change join date:"),joinDatePicker);
 		hbox3.getChildren().addAll(activeCheckBox);
 		hbox4.getChildren().addAll(new Label("Membership Type"),combo_box);
-		mainVBox.getChildren().addAll(hbox1,hbox2,hbox3,hbox4);
-		hboxGrey.getChildren().addAll(mainVBox);
+		hbox5.getChildren().addAll(new Label("Remove Membership"),removeMembershipButton);
+		leftVBox.getChildren().addAll(hbox1,hbox2,hbox3,hbox4);
+		rightVBox.getChildren().addAll(hbox5);
+		hboxGrey.getChildren().addAll(leftVBox,rightVBox);
 		getChildren().add(hboxGrey);
+	}
+	
+	private void deleteMembership(int msid) {
+		
+		//delete boat owner fields
+		//delete boats if not owned by another
+		//delete memos
+		//delete work credits
+		//delete money
+		
+		//////delete person////
+		// for each person
+		// delete phone
+		// delete email
+		// delete officer
+		// delete person
+		
+		// delete membership
 	}
 	
 	private String getStatus() {

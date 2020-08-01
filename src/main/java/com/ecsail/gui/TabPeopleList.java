@@ -133,6 +133,7 @@ public class TabPeopleList extends Tab {
 	private static void createPersonBox(Object_Person person)  {
 		Object_MembershipList membership = SqlSelect.getMembershipFromList(person.getMs_id());
 		personHBox.getChildren().clear();  // remove if exists
+		System.out.println("cleared the personHBox");
 		personHBox.getChildren().add(new BoxPerson(person, membership));
 	}
 

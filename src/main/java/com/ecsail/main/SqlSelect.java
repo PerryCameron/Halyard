@@ -281,7 +281,8 @@ public class SqlSelect {
 						rs.getBoolean("HAS_TRAILER"),
 						rs.getString("LENGTH"), 
 						rs.getString("WEIGHT"), 
-						rs.getString("KEEL")));
+						rs.getString("KEEL"),
+						rs.getString("PHRF")));
 			}
 			stmt.close();
 		} catch (SQLException e) {
@@ -297,7 +298,7 @@ public class SqlSelect {
 		Statement stmt = ConnectDatabase.connection.createStatement();
 		ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select b.BOAT_ID, bo.MS_ID, b.MANUFACTURER"
 				+ ", b.MANUFACTURE_YEAR, b.REGISTRATION_NUM, b.MODEL, b.BOAT_NAME, b.SAIL_NUMBER"
-				+ ", b.HAS_TRAILER, b.LENGTH, b.WEIGHT, b.KEEL from boat b inner join boat_owner bo using (boat_id) where ms_id='" + ms_id + "';"));
+				+ ", b.HAS_TRAILER, b.LENGTH, b.WEIGHT, b.KEEL, b.PHRF from boat b inner join boat_owner bo using (boat_id) where ms_id='" + ms_id + "';"));
 		while (rs.next()) {
 			thisBoat.add(new Object_Boat(
 					rs.getInt("BOAT_ID"),
@@ -311,8 +312,8 @@ public class SqlSelect {
 					rs.getBoolean("HAS_TRAILER"),
 					rs.getString("LENGTH"),
 					rs.getString("WEIGHT"),
-					rs.getString("KEEL")
-					));
+					rs.getString("KEEL"),
+					rs.getString("PHRF")));
 		}
 		stmt.close();
 		} catch (SQLException e) {
@@ -329,13 +330,14 @@ public class SqlSelect {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select b.BOAT_ID, bo.MS_ID, b.MANUFACTURER"
 					+ ", b.MANUFACTURE_YEAR, b.REGISTRATION_NUM, b.MODEL, b.BOAT_NAME, b.SAIL_NUMBER"
-					+ ", b.HAS_TRAILER, b.LENGTH, b.WEIGHT, b.KEEL from boat b inner join boat_owner bo using (boat_id);"));
+					+ ", b.HAS_TRAILER, b.LENGTH, b.WEIGHT, b.KEEL, b.PHRF from boat b inner join boat_owner bo using (boat_id);"));
 			while (rs.next()) {
 
 				thisBoat.add(new Object_Boat(rs.getInt("BOAT_ID"), rs.getInt("MS_ID"), rs.getString("MANUFACTURER"),
 						rs.getString("MANUFACTURE_YEAR"), rs.getString("REGISTRATION_NUM"), rs.getString("MODEL"),
 						rs.getString("BOAT_NAME"), rs.getString("SAIL_NUMBER"), rs.getBoolean("HAS_TRAILER"),
-						rs.getString("LENGTH"), rs.getString("WEIGHT"), rs.getString("KEEL")));
+						rs.getString("LENGTH"), rs.getString("WEIGHT"), rs.getString("KEEL"),
+						rs.getString("PHRF")));
 			}
 			stmt.close();
 		} catch (SQLException e) {

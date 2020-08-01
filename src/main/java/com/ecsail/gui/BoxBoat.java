@@ -84,7 +84,7 @@ private TableView<Object_Boat> boatTableView;
 	boatTableView.setEditable(true);
 
 	final TableColumn<Object_Boat, String> Col1 = createColumn("Boat Name", Object_Boat::boat_nameProperty);
-	Col1.setPrefWidth(150);
+	Col1.setPrefWidth(120);
     Col1.setOnEditCommit(
             new EventHandler<CellEditEvent<Object_Boat, String>>() {
                 @Override
@@ -170,6 +170,21 @@ private TableView<Object_Boat> boatTableView;
             }
         );
 	
+	final TableColumn<Object_Boat, String> Col6b = createColumn("PHRF", Object_Boat::phrfProperty);
+	Col6b.setPrefWidth(50);
+	Col6b.setOnEditCommit(
+            new EventHandler<CellEditEvent<Object_Boat, String>>() {
+                @Override
+                public void handle(CellEditEvent<Object_Boat, String> t) {
+                    ((Object_Boat) t.getTableView().getItems().get(
+                            t.getTablePosition().getRow())
+                            ).setPhrf(t.getNewValue());
+                    int boat_id = ((Object_Boat) t.getTableView().getItems().get(t.getTablePosition().getRow())).getBoat_id();
+                    SqlUpdate.updateBoat("phrf",boat_id, t.getNewValue());
+                }
+            }
+        );
+	
 	final TableColumn<Object_Boat, String> Col7 = createColumn("Length", Object_Boat::lengthProperty);
 	Col7.setOnEditCommit(
             new EventHandler<CellEditEvent<Object_Boat, String>>() {
@@ -235,7 +250,7 @@ private TableView<Object_Boat> boatTableView;
 	//example for this column found at https://o7planning.org/en/11079/javafx-tableview-tutorial
     ObservableList<KeelType> keelList = FXCollections.observableArrayList(KeelType.values());
 	final TableColumn<Object_Boat, KeelType> Col10 = new TableColumn<Object_Boat, KeelType>("Keel");
-	Col10.setPrefWidth(120);
+	Col10.setPrefWidth(100);
 	Col10.setCellValueFactory(new Callback<CellDataFeatures<Object_Boat, KeelType>, ObservableValue<KeelType>>() {
 		 
         @Override
@@ -263,7 +278,7 @@ private TableView<Object_Boat> boatTableView;
     boatAdd.setOnAction(new EventHandler<ActionEvent>() {
         @Override public void handle(ActionEvent e) {
         	int boat_id = SqlSelect.getCount("boat", "boat_id") + 1; // gets last memo_id number and add one
-        	boats.add(new Object_Boat(boat_id,membership.getMsid(),"","","","","","",true,"","","")); // lets add it to our list
+        	boats.add(new Object_Boat(boat_id,membership.getMsid(),"","","","","","",true,"","","","")); // lets add it to our list
 			SqlInsert.addRecord(boat_id,membership.getMsid()); // lets add it to our database
         }
     });
@@ -279,7 +294,7 @@ private TableView<Object_Boat> boatTableView;
     
     /////////////////// SET CONTENT ///////////////////
 
-	boatTableView.getColumns().addAll(Col1,Col2,Col3,Col4,Col5,Col6,Col7,Col8,Col9,Col10);
+	boatTableView.getColumns().addAll(Col1,Col2,Col3,Col4,Col5,Col6,Col6b,Col7,Col8,Col9,Col10);
 	buttonVBox.getChildren().addAll(boatAdd,boatDelete);
 	vboxPink.getChildren().add(boatTableView);
 	hboxGrey.getChildren().addAll(vboxPink,buttonVBox);
@@ -287,6 +302,8 @@ private TableView<Object_Boat> boatTableView;
 	}
 	
 	///////////////// CLASS METHODS /////////////////
+	
+
 	
     private <T> TableColumn<T, String> createColumn(String title, Function<T, StringProperty> property) {
         TableColumn<T, String> col = new TableColumn<>(title);

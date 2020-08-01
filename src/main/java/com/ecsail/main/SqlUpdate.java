@@ -12,12 +12,22 @@ import javafx.collections.ObservableList;
 
 public class SqlUpdate {
 
+	private String checkValue(String value) {
+		String result = null;
+		if(!value.equals(""))
+			result = value;
+		return result;
+	}
+	
 	public static final void updateBoat(String field, int phone_id, String attribute) {
-		Statement stmt;
-		try {
-			stmt = ConnectDatabase.connection.createStatement();
+		try {			
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			if(!attribute.equals(""))
 			stmt.execute(Main.console.setRegexColor(
 					"UPDATE boat SET " + field + "=\"" + attribute + "\" WHERE boat_id='" + phone_id + "';"));
+			else
+				stmt.execute(Main.console.setRegexColor(
+					"UPDATE boat SET " + field + "=null WHERE boat_id='" + phone_id + "';"));	
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
