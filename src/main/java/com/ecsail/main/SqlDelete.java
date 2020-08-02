@@ -67,4 +67,18 @@ public class SqlDelete {
 			}
 			return noError;	
 	}
+	
+	public static boolean deleteBoatOwner(int ms_id) {
+		boolean noError = false;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			stmt.execute(Main.console.setRegexColor("delete from boat_owner where ms_id='" + ms_id
+					 + "';"));
+			noError = true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return noError;	
+	}
 }

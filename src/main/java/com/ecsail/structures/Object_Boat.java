@@ -226,17 +226,11 @@ public class Object_Boat {
 	public final StringProperty phrfProperty() {
 		return this.phrf;
 	}
-	
-
-
 
 	public final String getPhrf() {
 		return this.phrfProperty().get();
 	}
 	
-
-
-
 	public final void setPhrf(final String phrf) {
 		this.phrfProperty().set(phrf);
 	}

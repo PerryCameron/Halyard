@@ -30,7 +30,6 @@ public class TabMembership extends Tab {
 	public TabMembership(Object_MembershipList me) { 
 		super();
 		this.membership = me;
-		System.out.println(me.toString());
 		this.setText(setTabLabel());
         this.memos = SqlSelect.getMemos(membership.getMsid());
         this.labels = new Object_MemLabels();
@@ -46,8 +45,7 @@ public class TabMembership extends Tab {
         VBox mainVBox = new VBox();
         HBox hbox1 = new BoxMembership(membership, labels);  // holds membershipID, Type and Active
         HBox hbox2 = new HBox();  // holds PersonVBoxes (2 instances require a genereic HBox
-        HBox hbox3 = new BoxAddress(membership);  // holds address, city, state, zip
-        HBox hbox4 = new HBox();
+        HBox hbox3 = new HBox();
         TabPane peopleTabPane = new TabPane();
         TabPane fiscalTabPane = new TabPane();
         TabPane informationTabPane = new TabPane();
@@ -74,14 +72,10 @@ public class TabMembership extends Tab {
         hbox2.setPadding(new Insets(5,15,15,15));
         hbox2.setAlignment(Pos.TOP_CENTER);
         
-        hbox3.setSpacing(30);   // hold address HBox
-        hbox3.setId("box-pink");
-        hbox3.setPadding(new Insets(15,15,15,15));
+        hbox3.setId("box-pink");  // holds boats and notes
+        hbox3.setPadding(new Insets(0,15,10,15));
         hbox3.setAlignment(Pos.TOP_CENTER);
         
-        hbox4.setId("box-pink");  // holds boats and notes
-        hbox4.setPadding(new Insets(0,15,10,15));
-        hbox4.setAlignment(Pos.TOP_CENTER);
         mainVBox.setPrefWidth(1024);
         mainVBox.setPadding(new Insets(10,10,10,10));
         peopleTabPane.setPrefWidth(472);
@@ -105,9 +99,10 @@ public class TabMembership extends Tab {
 		informationTabPane.getTabs().add(new Tab("Notes", new BoxNotes(note)));
 		informationTabPane.getTabs().add(new Tab("Properties", new BoxProperties(membership, labels, this)));
 		informationTabPane.getTabs().add(new Tab("Attachments", new BoxAttachment(membership)));
+		informationTabPane.getTabs().add(new Tab("Address", new BoxAddress(membership)));
 		hbox2.getChildren().addAll(peopleTabPane, fiscalTabPane);  // new BoxInformation(membership)
-		hbox4.getChildren().addAll(informationTabPane);
-		containerVBox.getChildren().addAll(hbox1,hbox2,hbox3,hbox4);
+		hbox3.getChildren().addAll(informationTabPane);
+		containerVBox.getChildren().addAll(hbox1,hbox2,hbox3);
 		mainScrollPane.setContent(containerVBox);
 		anchorPane.getChildren().add(mainScrollPane);
         mainVBox.getChildren().addAll(anchorPane);  // box blue

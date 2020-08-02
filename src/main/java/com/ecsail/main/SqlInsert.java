@@ -52,7 +52,7 @@ public class SqlInsert {
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			stmt.execute(Main.console.setRegexColor(
-					"INSERT into boat () VALUES (" + boat_id + ",null,null,null,null,null,null,true,null,null,null);"));
+					"INSERT into boat () VALUES (" + boat_id + ",null,null,null,null,null,null,true,null,null,null,null);"));
 			stmt.execute(
 					Main.console.setRegexColor("INSERT into boat_owner () VALUES (" + msid + "," + boat_id + ");"));
 		} catch (SQLException e) {

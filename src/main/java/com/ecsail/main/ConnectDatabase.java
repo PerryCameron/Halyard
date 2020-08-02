@@ -153,7 +153,7 @@ public class ConnectDatabase {
 		// when host name combo box changes
 		hostName.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
 			currentLogon = FileIO.logins.get(FileIO.getSelectedHost(options.getValue()));
-			System.out.println(currentLogon.toString());
+			//System.out.println(currentLogon.toString());
 			username.setText(currentLogon.getUser());
 			password.setText(currentLogon.getPasswd());
         });
@@ -323,7 +323,7 @@ public class ConnectDatabase {
 	private void loadHostsInComboBox() {
 		for (Object_Login l : FileIO.logins) {
 			this.choices.add(l.getHost());
-			System.out.println("added: " + l);
+			//System.out.println("added: " + l);
 		}
 	}
 

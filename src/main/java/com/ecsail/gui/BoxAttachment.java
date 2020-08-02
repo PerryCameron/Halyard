@@ -19,17 +19,13 @@ public class BoxAttachment extends HBox {
 		//VBox vboxPink = new VBox(); // this creates a pink border around the table
 		VBox mainVBox = new VBox(); // contains viewable children
 
-
 		/////////////  ATTRIBUTES /////////////
 
-        
 		hboxGrey.setPadding(new Insets(5, 5, 5, 5));
 		hboxGrey.setPrefWidth(942);
 		mainVBox.setSpacing(5);
 		
 		//vboxPink.setPadding(new Insets(2,2,2,2)); // spacing to make pink fram around table
-		
-		
 		//yearSpinner.setPrefWidth(80);
 
 		hboxGrey.setId("box-grey");

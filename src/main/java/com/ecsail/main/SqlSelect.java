@@ -23,7 +23,6 @@ import com.ecsail.structures.Object_WorkCredit;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 public class SqlSelect {
 
 	
@@ -290,6 +289,22 @@ public class SqlSelect {
 			e.printStackTrace();
 		}
 		return thisBoat;
+	}
+	
+	public static ArrayList<Integer> getBoatIds(int ms_id) {
+		ArrayList<Integer> boats = new ArrayList<Integer>();	
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs;
+			rs = stmt.executeQuery(Main.console.setRegexColor("select bo.BOAT_ID from boat_owner bo inner join boat b on bo.BOAT_ID=b.BOAT_ID where ms_id='" + ms_id + "';"));
+
+			while (rs.next()) {
+			boats.add(rs.getInt("BOAT_ID"));
+			}
+		} catch (SQLException e) {
+			
+		}
+		return boats;
 	}
 	
 	public static List<Object_Boat> getBoats(int ms_id) { // overload but must be separate

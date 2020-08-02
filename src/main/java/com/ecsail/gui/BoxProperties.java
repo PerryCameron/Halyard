@@ -2,8 +2,10 @@ package com.ecsail.gui;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import com.ecsail.enums.MembershipType;
+import com.ecsail.main.SqlSelect;
 import com.ecsail.main.SqlUpdate;
 import com.ecsail.structures.Object_MemLabels;
 import com.ecsail.structures.Object_Membership;
@@ -70,6 +72,7 @@ public class BoxProperties extends HBox {
 		leftVBox.setSpacing(10);
 		setPadding(new Insets(5, 5, 5, 5));  // creates space for blue frame
 		setId("box-blue");
+		setSpacing(10);
 		hboxGrey.setId("box-grey");
 		combo_box.getItems().setAll(MembershipType.values());
 		
@@ -105,7 +108,7 @@ public class BoxProperties extends HBox {
 		
 		removeMembershipButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-            	System.out.println("Remove membership");
+            	System.out.println("Removing membership");
             	deleteMembership(membership.getMsid());
             }
         });
@@ -128,9 +131,14 @@ public class BoxProperties extends HBox {
 		getChildren().add(hboxGrey);
 	}
 	
-	private void deleteMembership(int msid) {
-		
+	private void deleteMembership(int ms_id) {
+		// array list of boat ids
+		List<Integer> boats = SqlSelect.getBoatIds(ms_id);
+		for(Integer bn: boats) {
+			System.out.println(bn);
+		}
 		//delete boat owner fields
+		////////SqlDelete.deleteBoatOwner(ms_id);
 		//delete boats if not owned by another
 		//delete memos
 		//delete work credits
