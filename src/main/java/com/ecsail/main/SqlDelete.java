@@ -95,4 +95,15 @@ public class SqlDelete {
 			e.printStackTrace();
 		}	
 	}
+	
+	public static void deleteMemos(int ms_id) {
+		Statement stmt;
+		try {
+			stmt = ConnectDatabase.connection.createStatement();
+			stmt.execute(Main.console.setRegexColor("delete from memo where ms_id='" + ms_id + "';"));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+	}
 }

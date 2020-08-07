@@ -2,12 +2,16 @@ package com.ecsail.gui;
 
 import com.ecsail.structures.Object_Person;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -38,6 +42,18 @@ public class BoxSearch extends HBox {
 	        	   //System.out.println("Text is" + searchBox.getText());
 	            }
 	        });
+		
+		searchBox.setOnKeyPressed(new EventHandler<KeyEvent>()
+	    {
+	        @Override
+	        public void handle(KeyEvent ke)
+	        {
+	            if (ke.getCode().equals(KeyCode.ENTER))
+	            {
+	            	TabPeopleList.searchLastName(searchBox.getText());
+	            }
+	        }
+	    });
 	    
 	    hboxGrey.getChildren().addAll(searchBox,searchRecords);
 		getChildren().addAll(hboxGrey);
