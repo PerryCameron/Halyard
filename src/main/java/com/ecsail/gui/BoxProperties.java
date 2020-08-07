@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import com.ecsail.enums.MembershipType;
+import com.ecsail.main.SqlDelete;
 import com.ecsail.main.SqlSelect;
 import com.ecsail.main.SqlUpdate;
 import com.ecsail.structures.Object_MemLabels;
@@ -133,12 +134,13 @@ public class BoxProperties extends HBox {
 	
 	private void deleteMembership(int ms_id) {
 		// array list of boat ids
-		List<Integer> boats = SqlSelect.getBoatIds(ms_id);
-		for(Integer bn: boats) {
-			System.out.println(bn);
-		}
+		// so we are not going to delete old boats
+		//List<Integer> boats = SqlSelect.getBoatIds(ms_id);
+		//for(Integer bn: boats) {
+		//	System.out.println(bn);
+		//}
 		//delete boat owner fields
-		////////SqlDelete.deleteBoatOwner(ms_id);
+		SqlDelete.deleteBoatOwner(ms_id);
 		//delete boats if not owned by another
 		//delete memos
 		//delete work credits

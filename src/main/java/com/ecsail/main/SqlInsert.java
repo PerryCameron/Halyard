@@ -117,5 +117,14 @@ public class SqlInsert {
 		}
 		return updateIsSucessful;
 	}
-
+	
+	public static void addMemo(int memo_id,int msid, String date, String memo) {
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			stmt.execute(Main.console.setRegexColor("INSERT INTO memo () VALUES (" + memo_id + "," + msid + ",'" + date + "',\"" + memo + "\");"));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

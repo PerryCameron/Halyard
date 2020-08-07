@@ -47,34 +47,15 @@ public class Note {
 	}
 	
 	public void addMemo(int memo_id,int msid, String date, String memo) {
-		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
-			stmt.execute(Main.console.setRegexColor("INSERT INTO memo () VALUES (" + memo_id + "," + msid + ",'" + date + "',\"" + memo + "\");"));
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        SqlInsert.addMemo(memo_id,msid,date,memo);
 	}
 	
 	public void updateMemo(int memo_id, String field, String attribute)  {
-		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
-			stmt.execute(Main.console.setRegexColor("UPDATE memo SET " + field + "=\"" + attribute + "\" WHERE memo_id='" + memo_id + "';"));
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		SqlUpdate.updateMemo(memo_id, field, attribute);
 	}
 	
 	public void removeMemo(int index) {
-		Statement stmt;
-		try {
-			stmt = ConnectDatabase.connection.createStatement();
-			stmt.execute(Main.console.setRegexColor("delete from memo where memo_id='" + memos.get(index).getMemo_id() + "';"));
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}	
+		SqlDelete.deleteMemo(memos.get(index));
 	}
 
 	public ObservableList<Object_Memo> getMemos() {

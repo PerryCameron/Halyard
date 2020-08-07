@@ -338,6 +338,14 @@ public class SqlUpdate {
 		}
 	}
 	
-	
+	public static void updateMemo(int memo_id, String field, String attribute)  {
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			stmt.execute(Main.console.setRegexColor("UPDATE memo SET " + field + "=\"" + attribute + "\" WHERE memo_id='" + memo_id + "';"));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 }

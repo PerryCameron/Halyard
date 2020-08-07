@@ -13,6 +13,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 public class BoxAddress extends HBox {
 	Object_MembershipList membership;
@@ -29,6 +30,7 @@ public class BoxAddress extends HBox {
 		////////////////// OBJECTS ///////////////////////////
         final Label memAddress = new Label("Street");
         final Label memCity = new Label("City");
+        final Label primaryLabel = new Label("Primary Address");
         final ComboBox<String> stateComboBox = new ComboBox<String>(states);
         final Label memZipcode = new Label("Zipcode");
         TextField memAddressTextField = new TextField();
@@ -39,8 +41,22 @@ public class BoxAddress extends HBox {
         HBox hbox3 = new HBox();
         HBox hbox4 = new HBox();
         
+        final Label smemAddress = new Label("Street");
+        final Label smemCity = new Label("City");
+        final Label secondaryLabel = new Label("Secondary Address");
+        final ComboBox<String> sstateComboBox = new ComboBox<String>(states);
+        final Label smemZipcode = new Label("Zipcode");
+        TextField smemAddressTextField = new TextField();
+        TextField smemCityTextField = new TextField();
+        TextField smemZipcodeTextField = new TextField();
+        HBox shbox1 = new HBox();
+        HBox shbox2 = new HBox();
+        HBox shbox3 = new HBox();
+        HBox shbox4 = new HBox();
         HBox hboxGrey = new HBox();  // this is the vbox for organizing all the widgets
-		HBox mainHBox = new HBox(); // contains viewable children
+		HBox primaryHBox = new HBox();  // contains viewable children
+		HBox secondaryHBox = new HBox();
+		VBox mainVBox = new VBox();
 		
 
         ///////////////// ATTRIBUTES //////////////////////////
@@ -49,26 +65,40 @@ public class BoxAddress extends HBox {
         hbox2.setSpacing(5);
         hbox3.setSpacing(5);
         hbox4.setSpacing(5);
+        shbox1.setSpacing(5);
+        shbox2.setSpacing(5);
+        shbox3.setSpacing(5);
+        shbox4.setSpacing(5);
         hbox1.setAlignment(Pos.CENTER_LEFT);
         hbox2.setAlignment(Pos.CENTER_LEFT);
         hbox3.setAlignment(Pos.CENTER_LEFT);
         hbox4.setAlignment(Pos.CENTER_LEFT);
+        shbox1.setAlignment(Pos.CENTER_LEFT);
+        shbox2.setAlignment(Pos.CENTER_LEFT);
+        shbox3.setAlignment(Pos.CENTER_LEFT);
+        shbox4.setAlignment(Pos.CENTER_LEFT);
+        mainVBox.setAlignment(Pos.CENTER);
+        mainVBox.setSpacing(10);
         memZipcodeTextField.setPrefWidth(80);
+        smemZipcodeTextField.setPrefWidth(80);
         memAddressTextField.setText(membership.getAddress());
         memAddressTextField.setPrefWidth(300);
+        smemAddressTextField.setPrefWidth(300);
         memCityTextField.setText(membership.getCity());
         memCityTextField.setPrefWidth(180);
+        smemCityTextField.setPrefWidth(180);
         memZipcodeTextField.setText(membership.getZip());
         hboxGrey.setPadding(new Insets(5, 5, 5, 5));
+        primaryHBox.setPadding(new Insets(0,0,0,20));
+        secondaryHBox.setPadding(new Insets(0,0,0,20));
 		hboxGrey.setPrefWidth(942);
-		mainHBox.setSpacing(5);
+		secondaryHBox.setSpacing(30);
+		primaryHBox.setSpacing(30);
+		//primaryHBox.setId("box-pink");
         hboxGrey.setId("box-grey");
         setPadding(new Insets(5, 5, 5, 5));  // creates space for blue frame
 		setId("box-blue");
-        mainHBox.setSpacing(30);   // hold address HBox
-       // hbox3.setId("box-pink");
-        //hbox3.setPadding(new Insets(15,15,15,15));
-        //hbox3.setAlignment(Pos.TOP_CENTER);
+           // hold address HBox
 		
         /////////////////// LISTENERS /////////////////////////
         memAddressTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
@@ -113,8 +143,14 @@ public class BoxAddress extends HBox {
         hbox2.getChildren().addAll(memCity,memCityTextField);
         hbox3.getChildren().addAll(stateComboBox);
         hbox4.getChildren().addAll(memZipcode,memZipcodeTextField);
-		mainHBox.getChildren().addAll(hbox1,hbox2,hbox3,hbox4);
-		hboxGrey.getChildren().addAll(mainHBox);
+        shbox1.getChildren().addAll(smemAddress,smemAddressTextField);
+        shbox2.getChildren().addAll(smemCity,smemCityTextField);
+        shbox3.getChildren().addAll(sstateComboBox);
+        shbox4.getChildren().addAll(smemZipcode,smemZipcodeTextField);
+		primaryHBox.getChildren().addAll(hbox1,hbox2,hbox3,hbox4);
+		secondaryHBox.getChildren().addAll(shbox1,shbox2,shbox3,shbox4);
+		mainVBox.getChildren().addAll(primaryLabel, primaryHBox, secondaryLabel,secondaryHBox);
+		hboxGrey.getChildren().addAll(mainVBox);
 		getChildren().add(hboxGrey);
 	}
 	
