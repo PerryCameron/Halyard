@@ -10,8 +10,6 @@ import com.ecsail.structures.Object_Memo;
 import com.ecsail.structures.Object_Officer;
 import com.ecsail.structures.Object_Phone;
 
-import javafx.collections.ObservableList;
-
 public class SqlDelete {
 
 	public static boolean deletePhone(Object_Phone phone) {
