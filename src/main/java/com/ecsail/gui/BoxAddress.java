@@ -12,6 +12,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -30,7 +31,7 @@ public class BoxAddress extends HBox {
 		////////////////// OBJECTS ///////////////////////////
         final Label memAddress = new Label("Street");
         final Label memCity = new Label("City");
-        final Label primaryLabel = new Label("Primary Address");
+        //final Label primaryLabel = new Label("Primary Address");
         final ComboBox<String> stateComboBox = new ComboBox<String>(states);
         final Label memZipcode = new Label("Zipcode");
         TextField memAddressTextField = new TextField();
@@ -40,10 +41,9 @@ public class BoxAddress extends HBox {
         HBox hbox2 = new HBox();
         HBox hbox3 = new HBox();
         HBox hbox4 = new HBox();
-        
         final Label smemAddress = new Label("Street");
         final Label smemCity = new Label("City");
-        final Label secondaryLabel = new Label("Secondary Address");
+        //final Label secondaryLabel = new Label("Secondary Address");
         final ComboBox<String> sstateComboBox = new ComboBox<String>(states);
         final Label smemZipcode = new Label("Zipcode");
         TextField smemAddressTextField = new TextField();
@@ -57,7 +57,8 @@ public class BoxAddress extends HBox {
 		HBox primaryHBox = new HBox();  // contains viewable children
 		HBox secondaryHBox = new HBox();
 		VBox mainVBox = new VBox();
-		
+		TitledPane titledPane1 = new TitledPane();
+		TitledPane titledPane2 = new TitledPane();
 
         ///////////////// ATTRIBUTES //////////////////////////
         stateComboBox.setValue(membership.getState());
@@ -88,14 +89,24 @@ public class BoxAddress extends HBox {
         memCityTextField.setPrefWidth(180);
         smemCityTextField.setPrefWidth(180);
         memZipcodeTextField.setText(membership.getZip());
-        hboxGrey.setPadding(new Insets(5, 5, 5, 5));
-        primaryHBox.setPadding(new Insets(0,0,0,20));
-        secondaryHBox.setPadding(new Insets(0,0,0,20));
+        primaryHBox.setPadding(new Insets(5,0,5,20));
+        secondaryHBox.setPadding(new Insets(5,0,5,20));
 		hboxGrey.setPrefWidth(942);
 		secondaryHBox.setSpacing(30);
+		secondaryHBox.setId("box-pink");
 		primaryHBox.setSpacing(30);
-		//primaryHBox.setId("box-pink");
+		primaryHBox.setId("box-pink");
+		titledPane1.setText("Primary Address");
+		titledPane2.setText("Secondary Address");
+		titledPane1.setPrefWidth(940);
+		titledPane2.setPrefWidth(940);
+		titledPane1.setCollapsible(false);
+		titledPane2.setCollapsible(false);
+		titledPane1.setId("titled");
+		titledPane2.setId("titled");
+		hboxGrey.setPadding(new Insets(5, 5, 5, 5));
         hboxGrey.setId("box-grey");
+        
         setPadding(new Insets(5, 5, 5, 5));  // creates space for blue frame
 		setId("box-blue");
            // hold address HBox
@@ -149,7 +160,9 @@ public class BoxAddress extends HBox {
         shbox4.getChildren().addAll(smemZipcode,smemZipcodeTextField);
 		primaryHBox.getChildren().addAll(hbox1,hbox2,hbox3,hbox4);
 		secondaryHBox.getChildren().addAll(shbox1,shbox2,shbox3,shbox4);
-		mainVBox.getChildren().addAll(primaryLabel, primaryHBox, secondaryLabel,secondaryHBox);
+		titledPane1.setContent(primaryHBox);
+		titledPane2.setContent(secondaryHBox);
+		mainVBox.getChildren().addAll(titledPane1, titledPane2);
 		hboxGrey.getChildren().addAll(mainVBox);
 		getChildren().add(hboxGrey);
 	}

@@ -108,7 +108,7 @@ public class TabSlips extends Tab {
 		vboxGrey.setId("slip-box");
 		vboxGrey.setPrefHeight(688);
 		addAllChildren(screenPane);
-		//screenPane.getChildren().addAll(d4,d3,a-1,a-2,b57,b58,c121,c120);
+		//// What is this?  //screenPane.getChildren().addAll(d4,d3,a-1,a-2,b57,b58,c121,c120);
 		vboxGrey.getChildren().add(screenPane);
 		vboxBlue.getChildren().add(vboxPink);
 		vboxPink.getChildren().add(vboxGrey);
@@ -355,7 +355,7 @@ public class TabSlips extends Tab {
 					c146 = getLastName(col8, row6, "C146", mem.getLname(), mem.getSubleaser());
 					setMouseListener(c146, mem.getMsid(), mem.getSubleaser());
 					break;
-				case "D28":
+				case "D28":  // problem starts here?
 					d28 = getLastName(col1, row7, "D28", mem.getLname(), mem.getSubleaser());
 					setMouseListener(d28, mem.getMsid(), mem.getSubleaser());
 					break;

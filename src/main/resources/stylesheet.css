@@ -140,13 +140,15 @@
 }
 
 #slip-box {
-  -fx-background-image: url("file:///C:/Users/pcame/eclipse-workspace/ECSC/src/main/resources/slips/Slips.png");
+  -fx-background-image: url("file:///C:/Users/pcame/git/ECSC/src/main/resources/slips/Slips.png");
   -fx-background-position: center center;
 }
 
+/*C:\Users\pcame\git\ECSC\src\main\resources\slips\Slips.png*/
+
 #slip-fonts {
 	-fx-font-size: 11px;
-	 -fx-font-family: "Arial";
+	-fx-font-family: "Arial";
 }
 
 #fancytext {
@@ -158,6 +160,10 @@
 
 #bigbuttontext {
 	-fx-font-size: 22px;
+}
+
+#titled > .title {
+	-fx-font-size: 12px;
 }
 
 

@@ -203,7 +203,7 @@ public class SqlScriptMaker {
 				+ sli.getSlip_id() + ","
 				+ sli.getMs_id() + ",\""
 				+ sli.getSlipNumber() + "\","
-				+ sli.getSubleased_to() + ");\n";
+				+ getCorrectString(sli.getSubleased_to()) + ");\n";
 	}
 	
 	public static String getBoatOwnerString(Object_BoatOwner bos) {
@@ -227,7 +227,8 @@ public class SqlScriptMaker {
 				+ boa.isHasTrailer() + ","
 				+ getCorrectString(boa.getLength()) + ","
 				+ getCorrectString(boa.getWeight()) + ","
-				+ getCorrectString(boa.getKeel())	
+				+ getCorrectString(boa.getKeel()) + ","
+				+ getCorrectString(boa.getPhrf())
 				+ ");\n";
 	}
 	

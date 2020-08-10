@@ -279,7 +279,7 @@ public class SqlUpdate {
 	public static void releaseSlip(Object_MembershipList membership) {  // this releases the slip using the slip owners ms_id
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
-			stmt.execute(Main.console.setRegexColor("update slip set subleased_to='0' where ms_id='" + membership.getMsid() + "';"));
+			stmt.execute(Main.console.setRegexColor("update slip set subleased_to=null where ms_id='" + membership.getMsid() + "';"));
 			BoxConsole.setInfoLine("Released sublease for slip owner " + membership.getMsid(), "orange");
 			membership.setSubleaser(0);
 		} catch (SQLException e) {
@@ -291,7 +291,7 @@ public class SqlUpdate {
 	public static void subleaserReleaseSlip(int subleasee) {  // this releases the slip using the subleasee ms_id
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
-			stmt.execute(Main.console.setRegexColor("update slip set subleased_to='0' where subleased_to='" + subleasee + "';"));
+			stmt.execute(Main.console.setRegexColor("update slip set subleased_to=null where subleased_to='" + subleasee + "';"));
 			BoxConsole.setInfoLine("Released sublease for subleaser " + subleasee, "orange");
 			Object_MembershipList ownerMembership = TabLauncher.getSubleaser(subleasee);
 			ownerMembership.setSubleaser(0);

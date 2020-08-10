@@ -2,7 +2,7 @@ package com.ecsail.gui;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
+import java.util.Optional;
 
 import com.ecsail.enums.MembershipType;
 import com.ecsail.main.SqlDelete;
@@ -10,14 +10,19 @@ import com.ecsail.main.SqlSelect;
 import com.ecsail.main.SqlUpdate;
 import com.ecsail.structures.Object_MemLabels;
 import com.ecsail.structures.Object_Membership;
+import com.ecsail.structures.Object_Person;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -51,8 +56,11 @@ public class BoxProperties extends HBox {
 		CheckBox activeCheckBox = new CheckBox("Membership Active");
 		ComboBox<MembershipType> combo_box = new ComboBox<MembershipType>();
 		DatePicker joinDatePicker = new DatePicker();
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+
 		
 		/////////////  ATTRIBUTES /////////////
+
 		changeMembershipIDTextField.setPrefWidth(50);
 		changeMembershipIDTextField.setText(membership.getMembershipId() + "");
 		activeCheckBox.setSelected(membership.isActiveMembership());
@@ -109,8 +117,13 @@ public class BoxProperties extends HBox {
 		
 		removeMembershipButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-            	System.out.println("Removing membership");
-            	deleteMembership(membership.getMsid());
+        		alert.setTitle("Remove Membership");
+        		alert.setHeaderText("Membership " + membership.getMsid());
+        		alert.setContentText("Are sure you want to delete this membership?");
+        		Optional<ButtonType> result = alert.showAndWait();
+        		if (result.get() == ButtonType.OK){
+        		   deleteMembership(membership.getMsid());
+        		} 
             }
         });
 		
@@ -133,27 +146,18 @@ public class BoxProperties extends HBox {
 	}
 	
 	private void deleteMembership(int ms_id) {
-		// array list of boat ids
-		// so we are not going to delete old boats
-		//List<Integer> boats = SqlSelect.getBoatIds(ms_id);
-		//for(Integer bn: boats) {
-		//	System.out.println(bn);
-		//}
-		//delete boat owner fields
 		SqlDelete.deleteBoatOwner(ms_id);
-		//delete boats if not owned by another
-		//delete memos
-		//delete work credits
-		//delete money
-		
-		//////delete person////
-		// for each person
-		// delete phone
-		// delete email
-		// delete officer
-		// delete person
-		
-		// delete membership
+		SqlDelete.deleteMemos(ms_id);
+		SqlDelete.deleteWorkCredits(ms_id);
+		SqlDelete.deleteMonies(ms_id);
+		ObservableList<Object_Person> people = SqlSelect.getPeople(ms_id);
+		for(Object_Person p: people) {
+			SqlDelete.deletePhones(p.getP_id());
+			SqlDelete.deleteEmail(p.getP_id());
+			SqlDelete.deleteOfficer(p.getP_id());
+			SqlDelete.deletePerson(p.getP_id());
+		}
+		SqlDelete.deleteMembership(ms_id);
 	}
 	
 	private String getStatus() {
