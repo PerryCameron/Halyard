@@ -41,25 +41,6 @@ public class EditCell<S, T> extends TableCell<S, T> {
                 commitEdit(this.converter.fromString(textField.getText()));
             }
         });
-       // textField.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-      //      if (event.getCode() == KeyCode.ESCAPE) {
-      //          textField.setText(converter.toString(getItem()));
-      //          cancelEdit();
-      //          event.consume();
-      //      } else if (event.getCode() == KeyCode.RIGHT) {
-       //         getTableView().getSelectionModel().selectRightCell();
-      //          event.consume();
-      //      } else if (event.getCode() == KeyCode.LEFT) {
-      //          getTableView().getSelectionModel().selectLeftCell();
-       //         event.consume();
-      //      } else if (event.getCode() == KeyCode.UP) {
-      //          getTableView().getSelectionModel().selectAboveCell();
-       //         event.consume();
-      //      } else if (event.getCode() == KeyCode.DOWN) {
-     //           getTableView().getSelectionModel().selectBelowCell();
-      //          event.consume();
-      //      }
-     //   });
     }
     
     /**

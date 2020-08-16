@@ -9,8 +9,13 @@ import com.ecsail.structures.Object_Money;
 import com.ecsail.structures.Object_Person;
 
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 public class SqlUpdate {
+	
+	static Alert alert = new Alert(AlertType.ERROR);
+
 	
 	public static final void updateBoat(String field, int phone_id, String attribute) {
 		try {			
@@ -196,7 +201,11 @@ public class SqlUpdate {
 			stmt.execute(Main.console.setRegexColor("UPDATE officer SET " + field + "=\"" + attribute + "\" WHERE o_id='" + officer_id + "';"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
+			alert.setTitle("Error Dialog");
+			alert.setHeaderText("Duplicate");
+			alert.setContentText("Duplicate entry!");
+			alert.showAndWait();
 		}
 	}
 	

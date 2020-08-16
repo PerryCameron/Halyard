@@ -7,8 +7,8 @@ import javafx.scene.control.Label;
 
 public class TabStub extends Tab {
 
-	public TabStub() {
-		super();
+	public TabStub(String text) {
+		super(text);
 		
 		VBox vboxGrey = new VBox();  // this is the vbox for organizing all the widgets
 		VBox vboxBlue = new VBox();

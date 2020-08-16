@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import com.ecsail.enums.MembershipType;
 import com.ecsail.main.SqlDelete;
+import com.ecsail.main.SqlExists;
 import com.ecsail.main.SqlSelect;
 import com.ecsail.main.SqlUpdate;
 import com.ecsail.structures.Object_MemLabels;
@@ -97,13 +98,24 @@ public class BoxProperties extends HBox {
 		joinDatePicker.setOnAction(event);
 		
 		activeCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-            	SqlUpdate.updateMembership(newValue, membership.getMsid());
-            	membership.setActiveMembership(newValue);  // update the status in the main object
-            	labels.getStatus().setText(getStatus());  // update the Membership status label at top of membership view
-            }
-        });
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				if (!newValue) { // we are setting the membership to inactive
+					if (SqlExists.slipExists((membership.getMsid()))) { // checking to see if they have a slip
+						System.out.println("I'm sorry this member has a slip, you must change it first, need to add a dialogue here");
+						activeCheckBox.setSelected(true);
+					} else {
+						SqlUpdate.updateMembership(newValue, membership.getMsid());
+						membership.setActiveMembership(newValue); // update the status in the main object
+						labels.getStatus().setText(getStatus()); // update the Membership status label at top of membership view
+					}
+				} else { // we are making the membership active
+					SqlUpdate.updateMembership(newValue, membership.getMsid());
+					membership.setActiveMembership(newValue); // update the status in the main object
+					labels.getStatus().setText(getStatus()); // update the Membership status label at top of											// membership view
+				}
+			}
+		});
 		
 		changeIDButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {

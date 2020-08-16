@@ -87,11 +87,11 @@ static TabPane tabPane;
 	}
 	
 	public static void openTabStub() {
-		tabPane.getTabs().add(new TabStub());
+		tabPane.getTabs().add(new TabStub("Stub Tab"));
 	}
 	
 	public static void openTabBatchedPaidDues() {
-		tabPane.getTabs().add(new TabBatchedPaidDues());
+		tabPane.getTabs().add(new TabBatchedPaidDues("Batched Fiscal"));
 	}
 	
 	// creates a membership tab from the slip chart

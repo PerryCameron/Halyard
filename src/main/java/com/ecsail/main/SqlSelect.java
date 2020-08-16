@@ -16,6 +16,7 @@ import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Memo;
 import com.ecsail.structures.Object_Money;
 import com.ecsail.structures.Object_Officer;
+import com.ecsail.structures.Object_PaidDues;
 import com.ecsail.structures.Object_Person;
 import com.ecsail.structures.Object_Phone;
 import com.ecsail.structures.Object_Slip;
@@ -168,6 +169,30 @@ public class SqlSelect {
 						rs.getInt("SAIL_LOFT"), rs.getInt("SAIL_SCHOOL_LASER_LOFT"), rs.getInt("WINTER_STORAGE"),
 						rs.getInt("YSC_DONATION"),rs.getInt("PAID"),rs.getInt("TOTAL"),rs.getInt("CREDIT"),
 						rs.getInt("BALANCE"), rs.getInt("DUES"),rs.getBoolean("COMMITED"),rs.getBoolean("CLOSED")));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return theseFiscals;
+	}
+	
+	public static ObservableList<Object_PaidDues> getPaidDues() { // overload
+		String query = "SELECT m.*, me.MEMBERSHIP_ID, p.l_name, p.f_name FROM money m INNER JOIN membership me on m.MS_ID=me.MS_ID INNER JOIN person p ON me.P_ID=p.P_ID WHERE m.FISCAL_YEAR=2020 AND m.COMMITED=true";
+		ObservableList<Object_PaidDues> theseFiscals = FXCollections.observableArrayList();
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(query + ";"));
+			while (rs.next()) {
+				theseFiscals.add(new Object_PaidDues(rs.getInt("MONEY_ID"), rs.getInt("MS_ID"),
+						rs.getInt("FISCAL_YEAR"), rs.getInt("BATCH"), rs.getInt("OFFICER_CREDIT"), rs.getInt("EXTRA_KEY"),
+						rs.getInt("KAYAK_SHED_KEY"), rs.getInt("SAIL_LOFT_KEY"), 
+						rs.getInt("SAIL_SCHOOL_LOFT_KEY"), rs.getInt("BEACH"), 
+						rs.getInt("WET_SLIP"), rs.getInt("KAYAK_RACK"), rs.getInt("KAYAK_SHED"), 
+						rs.getInt("SAIL_LOFT"), rs.getInt("SAIL_SCHOOL_LASER_LOFT"), rs.getInt("WINTER_STORAGE"),
+						rs.getInt("YSC_DONATION"),rs.getInt("PAID"),rs.getInt("TOTAL"),rs.getInt("CREDIT"),
+						rs.getInt("BALANCE"), rs.getInt("DUES"),rs.getBoolean("COMMITED"),rs.getBoolean("CLOSED"),
+						rs.getString("F_NAME"), rs.getString("L_NAME"), rs.getInt("MEMBERSHIP_ID")));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

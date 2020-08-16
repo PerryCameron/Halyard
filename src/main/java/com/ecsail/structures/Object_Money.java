@@ -380,18 +380,18 @@ public class Object_Money {
 	}
 	
 
-	public final BooleanProperty closedProperty() {
+	public final BooleanProperty isClosedProperty() {
 		return this.closed;
 	}
 	
 
 	public final boolean isClosed() {
-		return this.closedProperty().get();
+		return this.isClosedProperty().get();
 	}
 	
 
 	public final void setClosed(final boolean closed) {
-		this.closedProperty().set(closed);
+		this.isClosedProperty().set(closed);
 	}
 	
 	

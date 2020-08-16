@@ -79,7 +79,7 @@ public class BoxToolBar extends VBox {
 		
 		m4_1_3.setOnAction(new EventHandler<ActionEvent>() {  // add new membership
             @Override public void handle(ActionEvent e) {
-            	TabLauncher.openTabStub();
+            	TabLauncher.openTabBatchedPaidDues();
             }
         });
 		
