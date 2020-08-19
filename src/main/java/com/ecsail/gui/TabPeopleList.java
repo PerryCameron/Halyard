@@ -94,9 +94,6 @@ public class TabPeopleList extends Tab {
 		Col6 = new TableColumn<Object_Person, String>("Occupation");
 		Col6.setCellValueFactory(new PropertyValueFactory<Object_Person, String>("occupation"));
 		
-		//TableColumn<Object_Person, String> Col7 = new TableColumn<Object_Person, String>("Buisness");
-		//Col7.setCellValueFactory(new PropertyValueFactory<Object_Person, String>("buisness"));
-		
 		Col8 = new TableColumn<Object_Person, String>("Active");
 		Col8.setCellValueFactory(new PropertyValueFactory<Object_Person, String>("active"));
 		

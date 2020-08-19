@@ -827,6 +827,22 @@ public class SqlSelect {
 		return number;
 	}
 	
+	public static int getBatchNumber() {
+		int number = 0;
+		ResultSet rs;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			rs = stmt.executeQuery("SELECT MAX(batch) FROM money WHERE commited=true");
+			rs.next();
+			number = rs.getInt("MAX(batch)");
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return number + 1;
+	}
+	
 	public static int getMembershipIDCount() {  // gives the last memo_id number
 		int number = 0;
 		ResultSet rs;

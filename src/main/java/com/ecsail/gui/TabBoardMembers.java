@@ -27,9 +27,9 @@ public class TabBoardMembers extends Tab {
 	VBox boardMembersVBox1 = new VBox();
 	VBox boardMembersVBox2 = new VBox();
 	VBox boardMembersVBox3 = new VBox();
-	VBox committeeVBox1 = new VBox();
+	VBox committeeVBox1 = new VBox();  // titles
 	VBox committeeVBox2 = new VBox();
-	VBox officerVBox1 = new VBox();
+	VBox officerVBox1 = new VBox();  // titles
 	VBox officerVBox2 = new VBox();
 	private ObservableList<Object_Board> board;
 	String selectedYear;
@@ -46,15 +46,10 @@ public class TabBoardMembers extends Tab {
 	VBox vboxGrey = new VBox();  // this is the vbox for organizing all the widgets
 	VBox vboxBlue = new VBox();
 	VBox vboxPink = new VBox(); // this creates a pink border around the table
-	
 	HBox offciersTitleHBox = new HBox();
 	HBox officersHBox = new HBox();
-
-	
 	HBox committeeTitleHBox = new HBox();
 	HBox committeeHBox = new HBox();
-
-	
 	HBox boardMembersTitleBox = new HBox();
 	HBox boardMembersHBox = new HBox();
 	
@@ -65,6 +60,7 @@ public class TabBoardMembers extends Tab {
 	final Spinner<Integer> yearSpinner = new Spinner<Integer>();
 	SpinnerValueFactory<Integer> wetSlipValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1970, Integer.parseInt(selectedYear), Integer.parseInt(selectedYear));
 	yearSpinner.setValueFactory(wetSlipValueFactory);
+	yearSpinner.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_HORIZONTAL);
 	yearSpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
 		  if (!newValue) {
 			  selectedYear = yearSpinner.getEditor().getText();
@@ -104,8 +100,13 @@ public class TabBoardMembers extends Tab {
 	committeeHBox.setSpacing(30);
 	boardMembersHBox.setSpacing(40);
 	vboxPink.setSpacing(10);
-	yearSpinner.setPrefWidth(120);
-	offciersTitleHBox.setSpacing(200);
+	yearSpinner.setPrefWidth(145);
+	offciersTitleHBox.setSpacing(190);
+	vboxBlue.setPadding(new Insets(10,10,10,10));
+	vboxPink.setPadding(new Insets(3,3,3,3)); // spacing to make pink fram around table
+	vboxPink.setPrefHeight(695);
+	vboxPink.setId("box-pink");
+	vboxGrey.setId("slip-box");
 	
 	addOfficers(officerVBox1, officerVBox2);
 	addChairmen(committeeVBox1, committeeVBox2);
@@ -124,11 +125,7 @@ public class TabBoardMembers extends Tab {
 	Pane screenPane = new Pane();
 	vboxBlue.setId("box-blue");
 	screenPane.setId("slip-fonts");
-	vboxBlue.setPadding(new Insets(10,10,10,10));
-	vboxPink.setPadding(new Insets(3,3,3,3)); // spacing to make pink fram around table
-	vboxPink.setPrefHeight(695);
-	vboxPink.setId("box-pink");
-	vboxGrey.setId("slip-box");
+
 	vboxGrey.getChildren().add(screenPane);
 	vboxBlue.getChildren().add(vboxPink);
 	vboxPink.getChildren().add(vboxGrey);
