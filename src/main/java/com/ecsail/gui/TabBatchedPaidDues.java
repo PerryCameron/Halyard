@@ -5,13 +5,21 @@ import java.util.Arrays;
 import java.util.Date;
 
 import com.ecsail.main.SqlSelect;
+import com.ecsail.main.SqlUpdate;
+import com.ecsail.main.TabLauncher;
+import com.ecsail.structures.Object_DefinedFee;
+import com.ecsail.structures.Object_Money;
 import com.ecsail.structures.Object_PaidDues;
+import com.ecsail.structures.Object_paidDuesText;
+
 import javafx.beans.Observable;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -21,16 +29,23 @@ import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.util.Callback;
 
 public class TabBatchedPaidDues extends Tab {
-	private ObservableList<Object_PaidDues> paidDues; 
+	private ObservableList<Object_PaidDues> paidDues;
+	private Object_Money currentMoneyTotal = new Object_Money();
+	private Object_DefinedFee currentDefinedFee;
+	private Object_paidDuesText tText = new Object_paidDuesText();  // object of text objects
 	String selectedYear;
 	int batch;
 	
@@ -46,6 +61,10 @@ public class TabBatchedPaidDues extends Tab {
 		this.paidDues.addAll(SqlSelect.getPaidDues());
 		this.selectedYear = new SimpleDateFormat("yyyy").format(new Date());  // lets start at the current year
 		this.batch = SqlSelect.getBatchNumber();
+		this.currentDefinedFee = SqlSelect.getDefinedFee(selectedYear);
+		
+		////////////////////// OBJECT INSTANCE //////////////////////////	
+		
 		VBox vboxGrey = new VBox();  // this is the vbox for organizing all the widgets
 		VBox vboxBlue = new VBox();
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
@@ -53,10 +72,14 @@ public class TabBatchedPaidDues extends Tab {
 		VBox controlsVBox = new VBox(); // inner grey box
 		HBox controlsHBox = new HBox(); // outer blue box
 		HBox batchNumberHBox = new HBox();
-		TableView<Object_PaidDues> paidDuesTableView;
-		// Button batchButton = new Button("Submit Batch");
+		HBox buttonHBox = new HBox();
 
-		
+		GridPane gridPane = new GridPane();
+		TableView<Object_PaidDues> paidDuesTableView;
+		Button refreshButton = new Button("Refresh");
+		Button printPdfButton = new Button("Print PDF");
+
+		//////////////////// OBJECT ATTRIBUTES ///////////////////////////
 		
 		vboxBlue.setId("box-blue");
 		controlsHBox.setId("box-blue");
@@ -70,9 +93,13 @@ public class TabBatchedPaidDues extends Tab {
 		vboxPink.setPadding(new Insets(3,3,3,3)); // spacing to make pink fram around table
 		vboxPink.setId("box-pink");
 		batchNumberHBox.setSpacing(5);
-		batchNumberHBox.setAlignment(Pos.CENTER_LEFT);
+		batchNumberHBox.setAlignment(Pos.CENTER);
+		buttonHBox.setSpacing(10);
+		buttonHBox.setAlignment(Pos.CENTER);
 		vboxGrey.setPrefHeight(688);
-		
+		gridPane.setVgap(5); 
+	    gridPane.setHgap(50);
+	    gridPane.setPadding(new Insets(10, 10, 10, 30));
 		paidDuesTableView = new TableView<Object_PaidDues>();
 		paidDuesTableView.setItems(paidDues);
 		paidDuesTableView.setPrefWidth(645);
@@ -87,7 +114,7 @@ public class TabBatchedPaidDues extends Tab {
 		yearSpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
 			  if (!newValue) {
 				  selectedYear = yearSpinner.getEditor().getText();
-				  // do stuff here
+
 			  }
 			});
 		
@@ -100,6 +127,11 @@ public class TabBatchedPaidDues extends Tab {
 				  batchSpinner.increment(0); // won't change value, but will commit editor
 				  batch = Integer.parseInt(batchSpinner.getEditor().getText());
 				  System.out.println("Batch is now " + batchSpinner.getEditor().getText());
+				  // public static Object_DefinedFee getDefinedFee(String year, Object_DefinedFee thisDefinedFee)
+				  // clear and update paidDues
+				  // refresh the grid
+				  updateCurrentMoneyTotals(); // need error check if batch doesn't exist
+				  updateMoneyTotals(gridPane);
 			  }
 			});
 		
@@ -116,17 +148,16 @@ public class TabBatchedPaidDues extends Tab {
                     @Override
                     public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue,
                             Boolean newValue) {
-                    	thisPaidDues.setClosed(newValue);
-                    	System.out.println("Closed set to=" + newValue);
-                    	if(newValue) {
-                    	System.out.println("Batch number will be " + SqlSelect.getBatchNumber());
+                    	thisPaidDues.setClosed(newValue);  // sets checkbox value in table
+                    	if(newValue) { // if checked
+                    	SqlUpdate.updateMoney(thisPaidDues.getMoney_id(), batch);
+                    	SqlUpdate.updateMoney(thisPaidDues.getMoney_id(), true);
                     	thisPaidDues.setBatch(batch);
-                    	} else {
-                    	System.out.println("Batch number will be 0");
+                    	} else { // if unchecked
+                    	SqlUpdate.updateMoney(thisPaidDues.getMoney_id(), 0);
+                    	SqlUpdate.updateMoney(thisPaidDues.getMoney_id(), false);
                     	thisPaidDues.setBatch(0);
                     	}
-                       // email.setIsPrimaryUse(newValue);
-                       // SqlUpdate.updateEmail("primary_use",email.getEmail_id(), newValue);
                     }
                 });
                 return booleanProp;
@@ -173,15 +204,107 @@ public class TabBatchedPaidDues extends Tab {
 		Col8.setCellValueFactory(new PropertyValueFactory<Object_PaidDues, Integer>("balance"));
 		Col8.setPrefWidth(50);
 		
+		//////////////////  LISTENERS  //////////////////////
+		
+		paidDuesTableView.setRowFactory(tv -> {
+	        TableRow<Object_PaidDues> row = new TableRow<>();
+	        row.setOnMouseClicked(event -> {
+	            if (! row.isEmpty() && event.getButton()==MouseButton.PRIMARY 
+	                 && event.getClickCount() == 2) {
+	            	Object_PaidDues clickedRow = row.getItem();
+					TabLauncher.createTab(clickedRow.getMs_id());
+	            }
+	        });
+	        return row ;
+	    });
+		
+		refreshButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				System.out.println("refresh");
+				paidDues.clear();
+				paidDues.addAll(SqlSelect.getPaidDues());
+				}
+			});
+		
+		printPdfButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				System.out.println("Print PDF");
+				// launch sub menu here
+				}
+			});
+		
+		///////////////////  SET CONTENT  ///////////////////////
+		
+		gridPane.add(new Text("Dues:"), 0, 0);
+		gridPane.add(tText.getDuesMoneyText(), 2, 0);
+		gridPane.add(new Text("Keys:"), 0, 1);
+		gridPane.add(tText.getKeyText(), 1, 1);
+		gridPane.add(tText.getKeyMoneyText(), 2, 1);
+		gridPane.add(new Text("Wetslips:"), 0, 2);
+		gridPane.add(tText.getWetSlipText(), 1, 2);
+		gridPane.add(tText.getWetSlipMoneyText(), 2, 2);
+		gridPane.add(new Text("Kayac Rack:"), 0, 3);
+		gridPane.add(tText.getKayacRackText(), 1, 3);
+		gridPane.add(tText.getKayacRackMoneyText(), 2, 3);
+		gridPane.add(new Text("Kayac Shed:"), 0, 4);
+		gridPane.add(tText.getKayacShedText(), 1, 4);
+		gridPane.add(tText.getKayacShedMoneyText(), 2, 4);
+		gridPane.add(new Text("Sail Loft:"), 0, 5);
+		gridPane.add(tText.getSailLoftText(), 1, 5);
+		gridPane.add(tText.getSailLoftMoneyText(), 2, 5);
+		gridPane.add(new Text("Winter Storage:"), 0, 6);
+		gridPane.add(tText.getWinterStorageText(), 1, 6);
+		gridPane.add(tText.getWinterStorageMoneyText(), 2, 6);
+		gridPane.add(new Text("Credits:"), 0, 7);
+		gridPane.add(tText.getCreditsMoneyText(), 2, 7);
+		gridPane.add(new Text("Total:"), 0, 8);
+		gridPane.add(tText.getTotalMoneyText(), 2, 8);
+		
+		buttonHBox.getChildren().addAll(refreshButton,printPdfButton);
 		batchNumberHBox.getChildren().addAll(new Label("Batch Number"),batchSpinner);
 		controlsHBox.getChildren().add(controlsVBox);
-		controlsVBox.getChildren().addAll(yearSpinner,batchNumberHBox);
+		controlsVBox.getChildren().addAll(yearSpinner,batchNumberHBox,gridPane,buttonHBox);
 		paidDuesTableView.getColumns().addAll(Arrays.asList(Col1,Col2,Col9,Col3,Col4,Col5,Col6,Col7,Col8));
 		mainHBox.getChildren().addAll(paidDuesTableView,controlsHBox);
 		vboxGrey.getChildren().add(mainHBox);
 		vboxBlue.getChildren().add(vboxPink);
 		vboxPink.getChildren().add(vboxGrey);
 		setContent(vboxBlue);
+	}
+	
+	////////////////////////CLASS METHODS //////////////////////////
+	
+	private void updateCurrentMoneyTotals() {
+
+		currentMoneyTotal.setDues(SqlSelect.getMoneyCount("DUES", batch));
+		currentMoneyTotal.setExtra_key(SqlSelect.getMoneyCount("KAYAK_SHED_KEY+SAIL_LOFT_KEY+SAIL_SCHOOL_LOFT_KEY+EXTRA_KEY", batch));
+		currentMoneyTotal.setWet_slip(SqlSelect.getMoneyCount("WET_SLIP", batch));
+		currentMoneyTotal.setKayac_rack(SqlSelect.getMoneyCount("KAYAK_RACK", batch));
+		currentMoneyTotal.setKayac_shed(SqlSelect.getMoneyCount("KAYAK_SHED", batch));
+		currentMoneyTotal.setSail_loft(SqlSelect.getMoneyCount("SAIL_LOFT+SAIL_SCHOOL_LASER_LOFT", batch));
+		currentMoneyTotal.setWinter_storage(SqlSelect.getMoneyCount("WINTER_STORAGE", batch));
+		currentMoneyTotal.setCredit(SqlSelect.getMoneyCount("CREDIT", batch));
+		currentMoneyTotal.setTotal(SqlSelect.getMoneyCount("TOTAL", batch));
+	}
+	
+	private void updateMoneyTotals(GridPane gridPane) {  // need to add defined fees object
+		tText.changeDuesMoneyText(currentMoneyTotal.getDues() + "");
+		tText.changeKeyText(currentMoneyTotal.getExtra_key() + "");
+		tText.changeKeyMoneyText((currentMoneyTotal.getExtra_key() * currentDefinedFee.getMain_gate_key()) + "");
+		tText.changeWetSlipText(currentMoneyTotal.getWet_slip() + "");
+		tText.changeWetSlipMoneyText((currentMoneyTotal.getWet_slip() * currentDefinedFee.getWet_slip()) + "");
+		tText.changeKayacRackText(currentMoneyTotal.getKayac_rack() + "");
+		tText.changeKayacRackMoneyText((currentMoneyTotal.getKayac_rack() * currentDefinedFee.getKayak_rack()) + "");
+		tText.changeKayacShedText(currentMoneyTotal.getKayac_shed() + "");
+		tText.changeKayacShedMoneyText((currentMoneyTotal.getKayac_shed() * currentDefinedFee.getKayak_shed()) + "");
+		tText.changeSailLoftText(currentMoneyTotal.getSail_loft() + "");
+		tText.changeSailLoftMoneyText((currentMoneyTotal.getSail_loft() * currentDefinedFee.getSail_loft()) +"");
+		tText.changeWinterStorageText(currentMoneyTotal.getWinter_storage() + "");
+		tText.changeWinterStorageMoneyText((currentMoneyTotal.getWinter_storage() * currentDefinedFee.getWinter_storage()) + "");
+		tText.changeCreditsMoneyText(currentMoneyTotal.getCredit() + "");
+		tText.changeTotalText(currentMoneyTotal.getTotal() + "");
 	}
 	
 	

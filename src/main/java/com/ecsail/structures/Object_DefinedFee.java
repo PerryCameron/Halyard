@@ -48,6 +48,10 @@ public class Object_DefinedFee {
 		this.kayak_shed = new SimpleIntegerProperty(kayak_shed);
 		this.kayak_shed_key = new SimpleIntegerProperty(kayak_shed_key);
 	}
+	
+	public Object_DefinedFee() {
+		// default constructor
+	}
 
 	public final IntegerProperty fiscal_yearProperty() {
 		return this.fiscal_year;
@@ -303,6 +307,32 @@ public class Object_DefinedFee {
 		this.kayak_shed_keyProperty().set(kayak_shed_key);
 	}
 	
-	
+	public final void set(int fiscal_year,int dues_regular,int dues_family,
+			int dues_lake_associate,int dues_social,int initiation,int wet_slip,int beach,
+			int winter_storage,int main_gate_key,int sail_loft,int sail_loft_key,int sail_school_laser_loft,
+			int sail_school_loft_key,int kayak_rack,int kayak_shed,int kayak_shed_key) {
+		
+		setFiscal_year(fiscal_year);
+		setDues_regular(dues_regular);
+		setDues_family(dues_family);
+		setDues_lake_associate(dues_lake_associate);
+		setDues_social(dues_social);
+		setInitiation(initiation);
+		setWet_slip(wet_slip);
+		setBeach(beach);
+		setWinter_storage(winter_storage);
+		setMain_gate_key(main_gate_key);
+		setSail_loft(sail_loft);
+		setSail_loft_key(sail_loft_key);
+		setSail_school_laser_loft(sail_school_laser_loft);
+		setSail_school_loft_key(sail_school_loft_key);
+		setKayak_rack(kayak_rack);
+		setKayak_shed(kayak_shed);
+		setKayak_shed_key(kayak_shed_key);
+	}
+
+
+
+
 	
 }

@@ -66,6 +66,33 @@ public class Object_Money {
 		this.closed = new SimpleBooleanProperty(closed);
 	}
 
+	public Object_Money() {
+		this.money_id = new SimpleIntegerProperty(0);
+		this.ms_id = new SimpleIntegerProperty(0);
+		this.fiscal_year = new SimpleIntegerProperty(0);
+		this.batch = new SimpleIntegerProperty(0);
+		this.officer_credit = new SimpleIntegerProperty(0);
+		this.extra_key = new SimpleIntegerProperty(0);
+		this.kayac_shed_key = new SimpleIntegerProperty(0);
+		this.sail_loft_key = new SimpleIntegerProperty(0);
+		this.sail_school_loft_key = new SimpleIntegerProperty(0);
+		this.beach = new SimpleIntegerProperty(0);
+		this.wet_slip = new SimpleIntegerProperty(0);
+		this.kayac_rack = new SimpleIntegerProperty(0);
+		this.kayac_shed = new SimpleIntegerProperty(0);
+		this.sail_loft = new SimpleIntegerProperty(0);
+		this.sail_school_laser_loft = new SimpleIntegerProperty(0);
+		this.winter_storage = new SimpleIntegerProperty(0);
+		this.ysc_donation = new SimpleIntegerProperty(0);
+		this.paid = new SimpleIntegerProperty(0);
+		this.total = new SimpleIntegerProperty(0);
+		this.credit = new SimpleIntegerProperty(0);
+		this.balance = new SimpleIntegerProperty(0);
+		this.dues = new SimpleIntegerProperty(0);
+		this.committed = new SimpleBooleanProperty(false);
+		this.closed = new SimpleBooleanProperty(false);
+	}
+
 	public final IntegerProperty money_idProperty() {
 		return this.money_id;
 	}

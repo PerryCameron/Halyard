@@ -8,6 +8,7 @@ public enum KeelType {
 	   DAGG("DA", "Daggerboard"),
 	   FULL("FU", "Full"),
 	   BULB("BU", "Bulb"),
+	   RETR("RE", "Retractable"),
 	   OTHER("OT", "Other");
 	 
 	   private String code;

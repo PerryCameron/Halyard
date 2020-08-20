@@ -84,6 +84,61 @@ public class SqlSelect {
 		return thisDefinedFee;
 	}
 	
+	// to create a single defined fee object and fille it with a selected year
+	public static Object_DefinedFee getDefinedFee(String year) {
+		Object_DefinedFee newDefinedFee = null;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs;
+			rs = stmt.executeQuery(Main.console.setRegexColor("SELECT * FROM defined_fee WHERE fiscal_year='" + year + "';"));
+			while (rs.next()) {
+				newDefinedFee = new Object_DefinedFee(
+						rs.getInt("FISCAL_YEAR"), 
+						rs.getInt("DUES_REGULAR"),
+						rs.getInt("DUES_FAMILY"),
+						rs.getInt("DUES_LAKE_ASSOCIATE"),
+						rs.getInt("DUES_SOCIAL"),
+						rs.getInt("INITIATION"),
+						rs.getInt("WET_SLIP"),
+						rs.getInt("BEACH"),
+						rs.getInt("WINTER_STORAGE"),
+						rs.getInt("MAIN_GATE_KEY"),
+						rs.getInt("SAIL_LOFT"),
+						rs.getInt("SAIL_LOFT_KEY"),
+						rs.getInt("SAIL_SCHOOL_LASER_LOFT"),
+						rs.getInt("SAIL_SCHOOL_LOFT_KEY"),
+						rs.getInt("KAYAK_RACK"),
+						rs.getInt("KAYAK_SHED"),
+						rs.getInt("KAYAK_SHED_KEY")
+						);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return newDefinedFee;
+	}
+	
+	// experimental in order to get a defined fee and update already existing object
+	public static Object_DefinedFee getDefinedFee(String year, Object_DefinedFee thisDefinedFee) {
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs;
+			rs = stmt.executeQuery(Main.console.setRegexColor("SELECT * FROM defined_fee WHERE fiscal_year='" + year + "';"));
+			while (rs.next()) {
+				thisDefinedFee.set(rs.getInt("FISCAL_YEAR"), rs.getInt("DUES_REGULAR"), rs.getInt("DUES_FAMILY"), 
+						rs.getInt("DUES_LAKE_ASSOCIATE"), rs.getInt("DUES_SOCIAL"), rs.getInt("INITIATION"), 
+						rs.getInt("WET_SLIP"), rs.getInt("BEACH"), rs.getInt("WINTER_STORAGE"), rs.getInt("MAIN_GATE_KEY"),
+						rs.getInt("SAIL_LOFT"), rs.getInt("SAIL_LOFT_KEY"), rs.getInt("SAIL_SCHOOL_LASER_LOFT"), 
+						rs.getInt("SAIL_SCHOOL_LOFT_KEY"), rs.getInt("KAYAK_RACK"), rs.getInt("KAYAK_SHED"), rs.getInt("KAYAK_SHED_KEY"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return thisDefinedFee;
+	}
+	
 	public static ObservableList<Object_Officer> getOfficers() {
 		ObservableList<Object_Officer> thisOfficer = FXCollections.observableArrayList();
 		try {
@@ -851,6 +906,22 @@ public class SqlSelect {
 			rs = stmt.executeQuery("SELECT MAX(membership_id) FROM membership;");
 			rs.next();
 			number = rs.getInt("MAX(membership_id)");
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return number;
+	}
+	
+	public static int getMoneyCount(String column, int batch) {
+		int number = 0;
+		ResultSet rs;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			rs = stmt.executeQuery("Select SUM(" + column + ") from money where commited=true AND batch=" + batch + ";");
+			rs.next();
+			number = rs.getInt("SUM(" + column + ")");
 		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

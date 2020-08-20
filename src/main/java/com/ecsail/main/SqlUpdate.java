@@ -347,6 +347,28 @@ public class SqlUpdate {
 		}
 	}
 	
+	public static final void updateMoney(int money_id, int batchNumber) {
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			stmt.execute(Main.console.setRegexColor("UPDATE money SET batch=\"" + batchNumber
+					+ "\" WHERE money_id='" + money_id + "';"));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static final void updateMoney(int money_id, Boolean closed) {
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			stmt.execute(Main.console.setRegexColor("UPDATE money SET closed=" + closed
+					+ " WHERE money_id='" + money_id + "';"));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public static void updateMemo(int memo_id, String field, String attribute)  {
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
