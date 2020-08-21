@@ -3,7 +3,6 @@ package com.ecsail.gui;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.ecsail.main.BoxFiscal;
 import com.ecsail.main.Note;
 import com.ecsail.main.SqlExists;
 import com.ecsail.main.SqlInsert;
@@ -27,6 +26,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
@@ -39,13 +39,15 @@ public class BoxFiscalList extends HBox {
 	private static Object_Membership membership;
 	private static ObservableList<Object_Person> people;
 	private static Note note;
+	private static TextField duesText;
 	
 	String currentYear;
 	@SuppressWarnings("unchecked")
-	public BoxFiscalList(Object_Membership membership, TabPane t, ObservableList<Object_Person> p, Note n) {
+	public BoxFiscalList(Object_Membership membership, TabPane t, ObservableList<Object_Person> p, Note n, TextField dt) {
 		super();
 		BoxFiscalList.membership = membership;
 		this.currentYear = new SimpleDateFormat("yyyy").format(new Date());
+		BoxFiscalList.duesText = dt;
 		BoxFiscalList.note = n;
 		BoxFiscalList.parentTabPane = t;
 		BoxFiscalList.people = p;
@@ -183,6 +185,6 @@ public class BoxFiscalList extends HBox {
 	}
 	
 	private static void createTab(int rowIndex) {
-		parentTabPane.getTabs().add(new Tab(fiscals.get(rowIndex).getFiscal_year() + "", new BoxFiscal(membership, people, fiscals, rowIndex,note))); // current year tab
+		parentTabPane.getTabs().add(new Tab(fiscals.get(rowIndex).getFiscal_year() + "", new BoxFiscal(membership, people, fiscals, rowIndex,note, duesText))); // current year tab
 	}
 }

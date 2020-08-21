@@ -13,6 +13,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -41,7 +42,7 @@ public class TabMembership extends Tab {
 		VBox containerVBox = new VBox();
 		ScrollPane mainScrollPane = new ScrollPane();
 		AnchorPane anchorPane = new AnchorPane();
-		
+		TextField duesText = new TextField();
         VBox mainVBox = new VBox();
         HBox hbox1 = new BoxMembership(membership, labels);  // holds membershipID, Type and Active
         HBox hbox2 = new HBox();  // holds PersonVBoxes (2 instances require a genereic HBox
@@ -94,10 +95,10 @@ public class TabMembership extends Tab {
 			addDependentTabs(peopleTabPane);	
 		peopleTabPane.getTabs().add(new Tab("Add", new BoxAddPerson(peopleTabPane, note, membership)));
 		fiscalTabPane.getTabs().add(new Tab("Slip", new BoxSlip(membership, this)));
-		fiscalTabPane.getTabs().add(new Tab("Fiscal", new BoxFiscalList(membership, fiscalTabPane, people, note)));
+		fiscalTabPane.getTabs().add(new Tab("Fiscal", new BoxFiscalList(membership, fiscalTabPane, people, note, duesText)));
 		informationTabPane.getTabs().add(new Tab("Boats", new BoxBoat(membership)));
 		informationTabPane.getTabs().add(new Tab("Notes", new BoxNotes(note)));
-		informationTabPane.getTabs().add(new Tab("Properties", new BoxProperties(membership, labels, this)));
+		informationTabPane.getTabs().add(new Tab("Properties", new BoxProperties(membership, labels, this, duesText)));
 		informationTabPane.getTabs().add(new Tab("Attachments", new BoxAttachment(membership)));
 		informationTabPane.getTabs().add(new Tab("Address", new BoxAddress(membership)));
 		hbox2.getChildren().addAll(peopleTabPane, fiscalTabPane);  // new BoxInformation(membership)

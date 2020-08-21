@@ -1,5 +1,9 @@
-package com.ecsail.main;
+package com.ecsail.gui;
 
+import com.ecsail.main.Note;
+import com.ecsail.main.SqlExists;
+import com.ecsail.main.SqlSelect;
+import com.ecsail.main.SqlUpdate;
 import com.ecsail.structures.Object_DefinedFee;
 import com.ecsail.structures.Object_Membership;
 import com.ecsail.structures.Object_Money;
@@ -35,7 +39,7 @@ public class BoxFiscal extends HBox {
 	private final TextField yscText = new TextField();
 	private final TextField paidText = new TextField();
 	private final TextField totalWCText = new TextField();
-	private final TextField duesText = new TextField();
+	private TextField duesText;
 	private final TextField totalFeesText = new TextField();
 	private final TextField creditText = new TextField();
 	private final TextField balanceText = new TextField();
@@ -56,12 +60,13 @@ public class BoxFiscal extends HBox {
 	private final Spinner<Integer> otherSpinner = new Spinner<Integer>();
 	private final String disabledColor = "-fx-background-color: #d5dade";
 	
-	public BoxFiscal(Object_Membership m, ObservableList<Object_Person> p, ObservableList<Object_Money> o, int r, Note n) {
+	public BoxFiscal(Object_Membership m, ObservableList<Object_Person> p, ObservableList<Object_Money> o, int r, Note n, TextField dt) {
 		this.membership = m;
 		this.people = p;
 		this.rowIndex = r;
 		this.fiscals = o;
 		this.note = n;
+		this.duesText = dt;
 		this.selectedWorkCreditYear = SqlSelect.getWorkCredit(fiscals.get(rowIndex).getMoney_id());
 		this.definedFees = SqlSelect.selectDefinedFees(fiscals.get(rowIndex).getFiscal_year());
 		this.hasOfficer = membershipHasOfficer();
@@ -80,7 +85,6 @@ public class BoxFiscal extends HBox {
 		HBox hboxHarbor = new HBox();
 		HBox hboxSocial = new HBox();
 		HBox hboxOther = new HBox();
-		//HBox hboxYear = new HBox();
 		HBox hboxKey = new HBox();
 		HBox hboxWinterStorage = new HBox();
 		HBox hboxKayac = new HBox();
@@ -191,6 +195,15 @@ public class BoxFiscal extends HBox {
 			if(newValue.equals("0"))
 				balanceText.setStyle("-fx-background-color: #30e65a");
 		    //System.out.println("textfield changed from " + oldValue + " to " + newValue);
+		});
+		
+		// this is only called if you changer membership type
+		duesText.textProperty().addListener((observable, oldValue, newValue) -> {	
+			int newDues = Integer.parseInt(newValue);
+		    System.out.println("textfield changed from " + oldValue + " to " + newValue);
+		    SqlUpdate.updateField(newDues,"money","dues",fiscals,rowIndex);
+		    fiscals.get(rowIndex).setDues(newDues);
+		    updateBalance();
 		});
 		
 		commitCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
