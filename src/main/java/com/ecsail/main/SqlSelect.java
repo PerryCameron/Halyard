@@ -866,6 +866,24 @@ public class SqlSelect {
 		return number;
 	}
 	
+	public static int getNonMembershipRenewalCount(String year) {  // gives the last memo_id number
+		int number = 0;
+		ResultSet rs;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			rs = stmt.executeQuery("SELECT (Select Count(MS_ID) from membership where "
+					+ "ACTIVE_MEMBERSHIP=true) - (Select Count(MONEY_ID) from money where "
+					+ "commited=true and fiscal_year='" + year + "') AS INCREASE;");
+			rs.next();
+			number = rs.getInt("INCREASE");
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return number;
+	}
+	
 	public static int getMSIDCount() {  // gives the last memo_id number
 		int number = 0;
 		ResultSet rs;
@@ -929,8 +947,6 @@ public class SqlSelect {
 		}
 		return number;
 	}
-	
-
 	
 	public static int getCount()  {  // gives the last memo_id number
 		int number = 0;

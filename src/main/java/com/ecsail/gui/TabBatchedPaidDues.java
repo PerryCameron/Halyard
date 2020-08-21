@@ -71,8 +71,12 @@ public class TabBatchedPaidDues extends Tab {
 		HBox mainHBox = new HBox(); // this separates table content from controls
 		VBox controlsVBox = new VBox(); // inner grey box
 		HBox controlsHBox = new HBox(); // outer blue box
-		HBox batchNumberHBox = new HBox();
-		HBox buttonHBox = new HBox();
+		HBox batchNumberHBox = new HBox(); //holds spinner and label
+		HBox buttonHBox = new HBox();  // holds buttons
+		HBox yearBatchHBox = new HBox(); // holds spinner and batchNumberHBox
+		HBox gridHBox = new HBox(); // holds gridPane
+		HBox remaindingRenewalHBox = new HBox();
+		Text nonRenewed = new Text("0");
 
 		GridPane gridPane = new GridPane();
 		TableView<Object_PaidDues> paidDuesTableView;
@@ -86,35 +90,39 @@ public class TabBatchedPaidDues extends Tab {
 		controlsHBox.setPadding(new Insets(5,5,5,5));
 		controlsVBox.setPrefWidth(342);
 		controlsVBox.setSpacing(10);
-		controlsVBox.setPadding(new Insets(5,5,5,5));
+		controlsVBox.setPadding(new Insets(15,5,5,5));
 		controlsVBox.setId("box-grey");
 		mainHBox.setSpacing(5);
 		vboxBlue.setPadding(new Insets(10,10,10,10));
 		vboxPink.setPadding(new Insets(3,3,3,3)); // spacing to make pink fram around table
 		vboxPink.setId("box-pink");
 		batchNumberHBox.setSpacing(5);
+		yearBatchHBox.setAlignment(Pos.CENTER);
 		batchNumberHBox.setAlignment(Pos.CENTER);
+		gridHBox.setAlignment(Pos.CENTER);
 		buttonHBox.setSpacing(10);
 		buttonHBox.setAlignment(Pos.CENTER);
+		remaindingRenewalHBox.setAlignment(Pos.CENTER);
 		vboxGrey.setPrefHeight(688);
 		gridPane.setVgap(5); 
 	    gridPane.setHgap(50);
-	    gridPane.setPadding(new Insets(10, 10, 10, 30));
+	    //gridPane.setPadding(new Insets(10, 10, 10, 30));
 		paidDuesTableView = new TableView<Object_PaidDues>();
 		paidDuesTableView.setItems(paidDues);
 		paidDuesTableView.setPrefWidth(645);
 		paidDuesTableView.setPrefHeight(688);
 		paidDuesTableView.setFixedCellSize(30);
 		paidDuesTableView.setEditable(true);
+		yearBatchHBox.setSpacing(15);
 		
 		final Spinner<Integer> yearSpinner = new Spinner<Integer>();
 		SpinnerValueFactory<Integer> wetSlipValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1970, Integer.parseInt(selectedYear), Integer.parseInt(selectedYear));
 		yearSpinner.setValueFactory(wetSlipValueFactory);
+		yearSpinner.setPrefWidth(90);
 		yearSpinner.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_HORIZONTAL);
 		yearSpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
 			  if (!newValue) {
 				  selectedYear = yearSpinner.getEditor().getText();
-
 			  }
 			});
 		
@@ -132,6 +140,7 @@ public class TabBatchedPaidDues extends Tab {
 				  // refresh the grid
 				  updateCurrentMoneyTotals(); // need error check if batch doesn't exist
 				  updateMoneyTotals(gridPane);
+				  updateNonRenewed(nonRenewed);
 			  }
 			});
 		
@@ -158,6 +167,9 @@ public class TabBatchedPaidDues extends Tab {
                     	SqlUpdate.updateMoney(thisPaidDues.getMoney_id(), false);
                     	thisPaidDues.setBatch(0);
                     	}
+      				  updateCurrentMoneyTotals(); // need error check if batch doesn't exist
+    				  updateMoneyTotals(gridPane);
+    				  updateNonRenewed(nonRenewed);
                     }
                 });
                 return booleanProp;
@@ -224,6 +236,7 @@ public class TabBatchedPaidDues extends Tab {
 				System.out.println("refresh");
 				paidDues.clear();
 				paidDues.addAll(SqlSelect.getPaidDues());
+				updateNonRenewed(nonRenewed);
 				}
 			});
 		
@@ -262,10 +275,13 @@ public class TabBatchedPaidDues extends Tab {
 		gridPane.add(new Text("Total:"), 0, 8);
 		gridPane.add(tText.getTotalMoneyText(), 2, 8);
 		
-		buttonHBox.getChildren().addAll(refreshButton,printPdfButton);
+		remaindingRenewalHBox.getChildren().addAll(new Text("Memberships not yet renewed: " ),nonRenewed);
 		batchNumberHBox.getChildren().addAll(new Label("Batch Number"),batchSpinner);
+		yearBatchHBox.getChildren().addAll(yearSpinner,batchNumberHBox);
+		buttonHBox.getChildren().addAll(refreshButton,printPdfButton);
+		gridHBox.getChildren().add(gridPane);
 		controlsHBox.getChildren().add(controlsVBox);
-		controlsVBox.getChildren().addAll(yearSpinner,batchNumberHBox,gridPane,buttonHBox);
+		controlsVBox.getChildren().addAll(yearBatchHBox,gridHBox,buttonHBox,remaindingRenewalHBox);
 		paidDuesTableView.getColumns().addAll(Arrays.asList(Col1,Col2,Col9,Col3,Col4,Col5,Col6,Col7,Col8));
 		mainHBox.getChildren().addAll(paidDuesTableView,controlsHBox);
 		vboxGrey.getChildren().add(mainHBox);
@@ -276,8 +292,11 @@ public class TabBatchedPaidDues extends Tab {
 	
 	////////////////////////CLASS METHODS //////////////////////////
 	
+	private void updateNonRenewed(Text nonRenewed) {
+		nonRenewed.setText(SqlSelect.getNonMembershipRenewalCount(selectedYear) + "");
+	}
+	
 	private void updateCurrentMoneyTotals() {
-
 		currentMoneyTotal.setDues(SqlSelect.getMoneyCount("DUES", batch));
 		currentMoneyTotal.setExtra_key(SqlSelect.getMoneyCount("KAYAK_SHED_KEY+SAIL_LOFT_KEY+SAIL_SCHOOL_LOFT_KEY+EXTRA_KEY", batch));
 		currentMoneyTotal.setWet_slip(SqlSelect.getMoneyCount("WET_SLIP", batch));
