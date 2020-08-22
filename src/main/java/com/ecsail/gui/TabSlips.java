@@ -11,6 +11,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.scene.transform.Rotate;
 
 public class TabSlips extends Tab {
 
@@ -40,8 +41,8 @@ public class TabSlips extends Tab {
 	private Text d2 = null ,d1 = null ,a3= null  ,b55= null ,b56= null ,c119= null ,c118 = null;
 	private Text a2= null  ,b53 = null ,b54= null ,c117= null ,c116 = null;
 	private Text a1= null  ,b51 = null ,b52= null ,c115= null ,c114 = null;
-	private Text f6= null  ,f5 = null ,f4= null ,f3= null ,f2 = null;
-	private Text b50= null, b48= null, h481= null, h482= null, h483= null, h484= null, h485 = null;
+	private Text f6= null  ,f5 = null ,f4= null ,f3= null ,f2 = null,f1 = null;
+	private Text b50= null, b48= null, h482= null, h483= null, h484= null, h485 = null;
 	
 	private int col1 = 20;
 	private int col2 = 125;
@@ -77,12 +78,23 @@ public class TabSlips extends Tab {
 	private int row23 = row21 + 42; // b50
 	private int row24 = row22 + 42; // b48
 	
+	Rotate rotatef1 = new Rotate();
+	Rotate rotatef2 = new Rotate();
+	Rotate rotatef3 = new Rotate();
+	Rotate rotatef4 = new Rotate();
+	Rotate rotatef5 = new Rotate();
+	Rotate rotatef6 = new Rotate();
+	
 	public TabSlips(String text, ObservableList<Object_MembershipList> a) {
 		super(text);
 		this.activememberships = a;
 		fillSlips(); // must be filled the first time.
 		getStaticSlips();  // slips that don't change such as 48 hour docks
 		Pane screenPane = new Pane();
+
+		VBox vboxGrey = new VBox();  // this is the vbox for organizing all the widgets
+		VBox vboxBlue = new VBox();
+		VBox vboxPink = new VBox(); // this creates a pink border around the table
 		
 		///// LISTENERS //////
 		/// this listens for a focus on the slips tab and refreshes data everytime.
@@ -96,9 +108,7 @@ public class TabSlips extends Tab {
 		    }
 		});
 				
-		VBox vboxGrey = new VBox();  // this is the vbox for organizing all the widgets
-		VBox vboxBlue = new VBox();
-		VBox vboxPink = new VBox(); // this creates a pink border around the table
+		///////////////// ATTRIBUTES /////////////////
 		
 		vboxBlue.setId("box-blue");
 		screenPane.setId("slip-fonts");
@@ -107,6 +117,14 @@ public class TabSlips extends Tab {
 		vboxPink.setId("box-pink");
 		vboxGrey.setId("slip-box");
 		vboxGrey.setPrefHeight(688);
+		rotatef1.setAngle(314);
+		rotatef2.setAngle(314);
+		rotatef3.setAngle(314);
+		rotatef4.setAngle(314);
+		rotatef5.setAngle(314);
+		rotatef6.setAngle(314);
+		
+		//////////////////  SET CONTENT ///////////////
 		addAllChildren(screenPane);
 		//// What is this?  //screenPane.getChildren().addAll(d4,d3,a-1,a-2,b57,b58,c121,c120);
 		vboxGrey.getChildren().add(screenPane);
@@ -140,15 +158,14 @@ public class TabSlips extends Tab {
 		screenPane.getChildren().addAll(a2,b53,b54,c117,c116);
 		screenPane.getChildren().addAll(a1,b51,b52,c115,c114);
 		screenPane.getChildren().addAll(b48,b50);
-		screenPane.getChildren().addAll(f2,f3,f4,f5,f6);
-		screenPane.getChildren().addAll(h481,h482,h483,h484,h485);
+		screenPane.getChildren().addAll(f1,f2,f3,f4,f5,f6);
+		screenPane.getChildren().addAll(h482,h483,h484,h485);
 	}
 
 	private void getStaticSlips() {
 		b50 = new Text(col6,row23, "B50 Racing");
 		b48 = new Text(col6,row24, "B48 Racing");
-		h481 = new Text(241,566, "48 Hour dock");
-		h481.setRotate(-45);
+
 		h482 = new Text(252,576, "48 Hour dock");
 		h482.setRotate(-45);
 		h483 = new Text(271,596, "48 Hour dock");
@@ -816,30 +833,47 @@ public class TabSlips extends Tab {
 					setMouseListener(c114, mem.getMsid(), mem.getSubleaser());
 					break;	
 				case "F06":
-					f6 = getLastName(163,488, "F06", mem.getLname(), mem.getSubleaser());
-					f6.setRotate(-45);
+					rotatef6.setPivotX(176); 
+				    rotatef6.setPivotY(511);
+					f6 = getLastName(176,511, "F06", mem.getLname(), mem.getSubleaser());
+					f6.getTransforms().addAll(rotatef6);
 					setMouseListener(f6, mem.getMsid(), mem.getSubleaser());
 					break;
 				case "F05":
-					f5 = getLastName(180,505, "F05", mem.getLname(), mem.getSubleaser());
-					f5.setRotate(-45);
+					rotatef5.setPivotX(194); 
+				    rotatef5.setPivotY(530);
+					f5 = getLastName(194,530, "F05", mem.getLname(), mem.getSubleaser());
+					f5.getTransforms().addAll(rotatef5);
 					setMouseListener(f5, mem.getMsid(), mem.getSubleaser());
 					break;
 				case "F04":
-					f4 = getLastName(193,519, "F04", mem.getLname(), mem.getSubleaser());
-					f4.setRotate(-45);
+					rotatef4.setPivotX(205); 
+				    rotatef4.setPivotY(541);
+					f4 = getLastName(205,541, "F04", mem.getLname(), mem.getSubleaser());
+					f4.getTransforms().addAll(rotatef4);
 					setMouseListener(f4, mem.getMsid(), mem.getSubleaser());
 					break;
 				case "F03":
-					f3 = getLastName(214,541, "F03", mem.getLname(), mem.getSubleaser());
-					f3.setRotate(-45);
+					rotatef3.setPivotX(223); 
+				    rotatef3.setPivotY(559);
+					f3 = getLastName(223,559, "F03", mem.getLname(), mem.getSubleaser());
+					f3.getTransforms().addAll(rotatef3);
 					setMouseListener(f3, mem.getMsid(), mem.getSubleaser());
 					break;
 				case "F02":
-					f2 = getLastName(222,546, "F02", mem.getLname(), mem.getSubleaser());
-					f2.setRotate(-45);
+					rotatef2.setPivotX(234); 
+				    rotatef2.setPivotY(570);
+					f2 = getLastName(234,570, "F02", mem.getLname(), mem.getSubleaser());
+					f2.getTransforms().addAll(rotatef2);
 					setMouseListener(f2, mem.getMsid(), mem.getSubleaser());
-					break;		
+					break;
+				case "F01":
+					rotatef1.setPivotX(252); 
+				    rotatef1.setPivotY(588);
+					f1 = getLastName(252,588, "F01", mem.getLname(), mem.getSubleaser());
+					f1.getTransforms().addAll(rotatef1);
+					setMouseListener(f1, mem.getMsid(), mem.getSubleaser());
+					break;
 				default:  
 					break;
 				}
@@ -847,6 +881,7 @@ public class TabSlips extends Tab {
 		}
 	}
 	
+
 	private Text getLastName(int col, int row, String slip, String lName, int subleaser) {
 		Text returnText = null;
 		if(subleaser != 0) {  /// this slip is subleased
