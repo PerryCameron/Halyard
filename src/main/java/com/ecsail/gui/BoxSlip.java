@@ -296,7 +296,7 @@ public class BoxSlip extends HBox {
 				});
 
 		text.setOnMouseClicked(e -> {
-			if (e.getClickCount() == 2)  {
+			if (e.getClickCount() == 1)  {
 					TabLauncher.createTab(msid);
 			}
 		});
@@ -348,7 +348,7 @@ public class BoxSlip extends HBox {
 		slipNumber.setStyle("-fx-font-weight: bold;");
 		Text subLease = new Text("" + SqlSelect.getMembershipIDfromMsid(slip.getMs_id())); // Converts to membership ID
 		subLease.setStyle("-fx-font-weight: bold;");
-		setMouseListener(subLease, membership.getMsid());
+		setMouseListener(subLease, slip.getMs_id()); // need to get msid from
 		hbox1.getChildren().addAll(new Text("Slip Number:"), slipNumber);
 		hbox2.getChildren().addAll(new Text("Subleased from:"), subLease);
 		setRadioButtonVisibility(false, false, false);
