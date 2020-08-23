@@ -42,7 +42,7 @@ public class SqlScriptMaker {
 	
 	public static void createSql() {
 		System.out.println("Creating SQL script....");
-		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH-mm-ss");  
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");  
 		Date date = new Date();  
 		String stringDate = formatter.format(date);
 		stringDate.replaceAll("\\s+", "");
