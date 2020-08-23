@@ -47,6 +47,7 @@ public class BoxToolBar extends VBox {
 		MenuItem m4_1_2 = new MenuItem("Boat Report");
 		MenuItem m4_1_3 = new MenuItem("Batched Paid Dues");
 		MenuItem m4_1_4 = new MenuItem("Tab Stub");
+		MenuItem m4_1_5 = new MenuItem("Window Stub");
 
         m3_2_6.setOnAction(new EventHandler<ActionEvent>() {  // open active membership list
             @Override public void handle(ActionEvent e) {
@@ -86,6 +87,12 @@ public class BoxToolBar extends VBox {
 		m4_1_4.setOnAction(new EventHandler<ActionEvent>() {  // add new membership
             @Override public void handle(ActionEvent e) {
             	TabLauncher.openTabStub();
+            }
+        });
+		
+		m4_1_5.setOnAction(new EventHandler<ActionEvent>() {  // add new membership
+            @Override public void handle(ActionEvent e) {
+            	Window_Stub newWindow = new Window_Stub();
             }
         });
 		
@@ -130,7 +137,7 @@ public class BoxToolBar extends VBox {
             }
         });
         m1_1.getItems().addAll(m1_1_1);
-        m4_1.getItems().addAll(m4_1_1,m4_1_2,m4_1_3,m4_1_4);
+        m4_1.getItems().addAll(m4_1_1,m4_1_2,m4_1_3,m4_1_4,m4_1_5);
         m3_2.getItems().addAll(m3_2_1,m3_2_2,m3_2_3,m3_2_4,m3_2_5,m3_2_6);  // add list items
         menu1.getItems().addAll(m1_1,m1_2);
         menu3.getItems().addAll(m3_1,m3_2);
