@@ -20,7 +20,7 @@ public class SqlUpdate {
 	public static final void updateBoat(String field, int phone_id, String attribute) {
 		try {			
 			Statement stmt = ConnectDatabase.connection.createStatement();
-			if(!attribute.equals(""))
+			if(attribute != null)
 			stmt.execute(Main.console.setRegexColor(
 					"UPDATE boat SET " + field + "=\"" + attribute + "\" WHERE boat_id='" + phone_id + "';"));
 			else
