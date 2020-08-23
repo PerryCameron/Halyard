@@ -1,4 +1,4 @@
-package com.ecsail.gui;
+package com.ecsail.gui.tabs;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Tab;

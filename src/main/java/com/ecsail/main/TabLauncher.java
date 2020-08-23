@@ -1,13 +1,13 @@
 package com.ecsail.main;
 
-import com.ecsail.gui.TabActiveMembershipList;
-import com.ecsail.gui.TabBatchedPaidDues;
-import com.ecsail.gui.TabBoardMembers;
-import com.ecsail.gui.TabMembership;
-import com.ecsail.gui.TabPeopleList;
-import com.ecsail.gui.TabSlips;
-import com.ecsail.gui.TabStub;
-import com.ecsail.gui.TabWelcome;
+import com.ecsail.gui.tabs.TabActiveMembershipList;
+import com.ecsail.gui.tabs.TabBatchedPaidDues;
+import com.ecsail.gui.tabs.TabBoardMembers;
+import com.ecsail.gui.tabs.TabMembership;
+import com.ecsail.gui.tabs.TabPeopleList;
+import com.ecsail.gui.tabs.TabSlips;
+import com.ecsail.gui.tabs.TabStub;
+import com.ecsail.gui.tabs.TabWelcome;
 import com.ecsail.structures.Object_MembershipList;
 
 import javafx.scene.control.Tab;

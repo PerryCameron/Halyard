@@ -1,9 +1,11 @@
-package com.ecsail.gui;
+package com.ecsail.gui.tabs;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.ecsail.enums.MemberType;
+import com.ecsail.gui.boxes.BoxPerson;
+import com.ecsail.gui.boxes.BoxSearch;
 import com.ecsail.main.SqlSelect;
 import com.ecsail.main.TabLauncher;
 import com.ecsail.structures.Object_MembershipList;

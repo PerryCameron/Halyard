@@ -1,7 +1,8 @@
-package com.ecsail.gui;
+package com.ecsail.gui.boxes;
 
 import java.io.IOException;
 import com.ecsail.main.Main;
+import com.ecsail.gui.dialogues.Dialogue_Stub;
 import com.ecsail.main.CreateMembership;
 import com.ecsail.main.SqlScriptMaker;
 import com.ecsail.main.TabLauncher;
@@ -92,7 +93,7 @@ public class BoxToolBar extends VBox {
 		
 		m4_1_5.setOnAction(new EventHandler<ActionEvent>() {  // add new membership
             @Override public void handle(ActionEvent e) {
-            	Window_Stub newWindow = new Window_Stub();
+				new Dialogue_Stub();
             }
         });
 		

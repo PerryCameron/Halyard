@@ -1,8 +1,9 @@
-package com.ecsail.gui;
+package com.ecsail.gui.boxes;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import com.ecsail.gui.tabs.TabPeopleList;
 import com.ecsail.main.SqlUpdate;
 import com.ecsail.main.TabLauncher;
 import com.ecsail.structures.Object_MembershipList;

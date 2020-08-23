@@ -1,4 +1,4 @@
-package com.ecsail.gui;
+package com.ecsail.gui.tabs;
 
 import com.ecsail.main.TabLauncher;
 import com.ecsail.structures.Object_MembershipList;

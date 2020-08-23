@@ -1,4 +1,4 @@
-package com.ecsail.gui;
+package com.ecsail.gui.boxes;
 
 import com.ecsail.main.Note;
 import com.ecsail.main.SqlExists;

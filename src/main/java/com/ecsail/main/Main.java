@@ -3,7 +3,7 @@ package com.ecsail.main;
 import java.io.File;
 import java.sql.SQLException;
 
-import com.ecsail.gui.BoxToolBar;
+import com.ecsail.gui.boxes.BoxToolBar;
 import com.ecsail.structures.Object_MembershipList;
 import javafx.application.Application;
 import javafx.application.Platform;

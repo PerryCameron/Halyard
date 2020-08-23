@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.ecsail.gui.BoxWelcome;
+import com.ecsail.gui.boxes.BoxWelcome;
 import com.ecsail.structures.Object_Login;
 
 import javafx.application.Platform;

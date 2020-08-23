@@ -1,4 +1,4 @@
-package com.ecsail.gui;
+package com.ecsail.gui.dialogues;
 
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -7,9 +7,9 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class Window_Stub extends Stage {
+public class Dialogue_Stub extends Stage {
 
-	public Window_Stub() {
+	public Dialogue_Stub() {
 
 		VBox vboxGrey = new VBox(); // this is the vbox for organizing all the widgets
 		VBox vboxBlue = new VBox();

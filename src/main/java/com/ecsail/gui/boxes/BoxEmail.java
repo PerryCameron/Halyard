@@ -1,4 +1,4 @@
-package com.ecsail.gui;
+package com.ecsail.gui.boxes;
 
 import java.util.function.Function;
 

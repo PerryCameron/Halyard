@@ -1,5 +1,15 @@
-package com.ecsail.gui;
+package com.ecsail.gui.tabs;
 
+import com.ecsail.gui.boxes.BoxAddPerson;
+import com.ecsail.gui.boxes.BoxAddress;
+import com.ecsail.gui.boxes.BoxAttachment;
+import com.ecsail.gui.boxes.BoxBoat;
+import com.ecsail.gui.boxes.BoxFiscalList;
+import com.ecsail.gui.boxes.BoxMembership;
+import com.ecsail.gui.boxes.BoxNotes;
+import com.ecsail.gui.boxes.BoxPerson;
+import com.ecsail.gui.boxes.BoxProperties;
+import com.ecsail.gui.boxes.BoxSlip;
 import com.ecsail.main.CreateMembership;
 import com.ecsail.main.Note;
 import com.ecsail.main.SqlSelect;

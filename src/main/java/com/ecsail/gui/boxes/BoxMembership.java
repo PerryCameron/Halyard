@@ -1,4 +1,4 @@
-package com.ecsail.gui;
+package com.ecsail.gui.boxes;
 
 import com.ecsail.enums.MembershipType;
 import com.ecsail.structures.Object_MemLabels;
