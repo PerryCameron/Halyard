@@ -417,11 +417,6 @@ public class BoxFiscal extends HBox {
 		balanceText.setText(getBalance() + "");
 		if(fiscals.get(rowIndex).isCommitted()) setEditable(false);
 		hboxDues.getChildren().addAll(new Label("Dues:"), duesText);
-		//hboxRacing.getChildren().addAll(new Label("Racing"),racingSpinner);
-		//hboxHarbor.getChildren().addAll(new Label("Harbor"),harborSpinner);
-		//hboxSocial.getChildren().addAll(new Label("Social"),socialSpinner);
-		//hboxOther.getChildren().addAll(new Label("Other"),otherSpinner);
-		//hboxYear.getChildren().addAll(new Label("Year"),yearText);
 		hboxKey.getChildren().addAll(new Label("Extra Key"),extraKeySpinner);
 		hboxWinterStorage.getChildren().addAll(new Label("Winter Storage"), winterStorageSpinner);
 		hboxKayac.getChildren().addAll(new Label("Kayac Rack"),kayakRackSpinner);
@@ -560,7 +555,6 @@ public class BoxFiscal extends HBox {
 	private int countWorkCredits() {
 		int total = selectedWorkCreditYear.getRacing() + selectedWorkCreditYear.getSocial()
 				+ selectedWorkCreditYear.getOther()+ selectedWorkCreditYear.getHarbor();
-		if(total >= 15) total = 15;  // we allow no more than 15 wc per year and no carry over.
 		return total;
 	}
 	
