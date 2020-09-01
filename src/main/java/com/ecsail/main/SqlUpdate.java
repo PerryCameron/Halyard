@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Money;
 import com.ecsail.structures.Object_Person;
+import com.ecsail.structures.Object_WorkCredit;
 
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
@@ -341,6 +342,18 @@ public class SqlUpdate {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE " + table + " SET " + field + "=\"" + newValue
 					+ "\" WHERE money_id='" + fiscals.get(rowIndex).getMoney_id() + "';"));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static final void updateWorkCredit(Object_WorkCredit swcy)  {
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			stmt.execute(Main.console.setRegexColor("UPDATE work_credit SET racing=" + swcy.getRacing()
+					+ ",harbor=" + swcy.getHarbor() + ",social=" + swcy.getSocial() + ",other=" + swcy.getOther() 
+					+ " WHERE money_id=" + swcy.getMoney_id() + ";"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

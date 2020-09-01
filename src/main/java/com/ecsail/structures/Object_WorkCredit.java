@@ -5,17 +5,17 @@ import javafx.beans.property.SimpleIntegerProperty;
 
 public class Object_WorkCredit {
 
-	private IntegerProperty memo_id;
+	private IntegerProperty money_id;
 	private IntegerProperty msid;
 	private IntegerProperty racing;
 	private IntegerProperty harbor;
 	private IntegerProperty social;
 	private IntegerProperty other;
 	
-	public Object_WorkCredit(Integer memo_id, Integer msid, Integer racing,
+	public Object_WorkCredit(Integer money_id, Integer msid, Integer racing,
 			Integer harbor, Integer social, Integer other) {
 
-		this.memo_id = new SimpleIntegerProperty(memo_id);
+		this.money_id = new SimpleIntegerProperty(money_id);
 		this.msid = new SimpleIntegerProperty(msid);
 		this.racing = new SimpleIntegerProperty(racing);
 		this.harbor = new SimpleIntegerProperty(harbor);
@@ -23,20 +23,18 @@ public class Object_WorkCredit {
 		this.other = new SimpleIntegerProperty(other);
 	}
 
-	public final IntegerProperty memo_idProperty() {
-		return this.memo_id;
-	}
-	
 
-	public final int getMemo_id() {
-		return this.memo_idProperty().get();
+	public final IntegerProperty money_idProperty() {
+		return this.money_id;
 	}
-	
 
-	public final void setMemo_id(final int memo_id) {
-		this.memo_idProperty().set(memo_id);
+	public final int getMoney_id() {
+		return this.money_idProperty().get();
 	}
 	
+	public final void setMoney_id(final int money_id) {
+		this.money_idProperty().set(money_id);
+	}
 
 	public final IntegerProperty msidProperty() {
 		return this.msid;
@@ -114,7 +112,8 @@ public class Object_WorkCredit {
 
 	@Override
 	public String toString() {
-		return "Object_WorkCredit [memo_id=" + memo_id + ", msid=" + msid + ", racing=" + racing + ", harbor=" + harbor
+		return "Object_WorkCredit [money_id=" + money_id + ", msid=" + msid + ", racing=" + racing + ", harbor=" + harbor
 				+ ", social=" + social + ", other=" + other + "]";
-	}	
+	}
+		
 }

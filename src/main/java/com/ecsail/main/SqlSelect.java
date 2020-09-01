@@ -899,7 +899,22 @@ public class SqlSelect {
 		}
 		return number;
 	}
-	
+/*
+	public static boolean isCommitted(int money_id) {
+		boolean committed = false;
+		ResultSet rs;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			rs = stmt.executeQuery("select commited from money where money_id=" + money_id + ";");
+			rs.next();
+			committed = rs.getBoolean("commited");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+		return committed;
+	}
+	*/
 	public static int getBatchNumber() {
 		int number = 0;
 		ResultSet rs;

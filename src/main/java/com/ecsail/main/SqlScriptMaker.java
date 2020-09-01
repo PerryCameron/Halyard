@@ -104,7 +104,7 @@ public class SqlScriptMaker {
 	public static String getWorkCreditString(Object_WorkCredit woc) {
 		return 
 				"INSERT INTO work_credit () VALUES ("
-				+ woc.getMemo_id() + ","
+				+ woc.getMoney_id() + ","
 				+ woc.getMsid() + ","
 				+ woc.getRacing() + ","
 				+ woc.getHarbor() + ","
