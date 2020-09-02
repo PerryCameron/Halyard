@@ -39,7 +39,6 @@ public class BoxFiscal extends HBox {
 	boolean hasOfficer;
 	private int rowIndex;
 	private Note note;
-	//private final TextField yearText = new TextField();
 	private final TextField yscText = new TextField();
 	private final TextField paidText = new TextField();
 	private final TextField totalWorkCreditTextField = new TextField();
@@ -49,10 +48,6 @@ public class BoxFiscal extends HBox {
 	private final TextField creditText = new TextField();
 	private final TextField balanceText = new TextField();
 	private final Spinner<Integer> wetSlipSpinner = new Spinner<Integer>();
-	//private final Spinner<Integer> extraKeySpinner = new Spinner<Integer>();
-	//private final Spinner<Integer> sailLKeySpinner = new Spinner<Integer>();
-	//private final Spinner<Integer> kayakSKeySpinner = new Spinner<Integer>();
-	//private final Spinner<Integer> sailSSLKeySpinner = new Spinner<Integer>();
 	private final Spinner<Integer> beachSpinner = new Spinner<Integer>();
 	private final Spinner<Integer> kayakRackSpinner = new Spinner<Integer>();
 	private final Spinner<Integer> kayakShedSpinner = new Spinner<Integer>();
@@ -182,114 +177,80 @@ public class BoxFiscal extends HBox {
 		balanceText.textProperty().addListener((observable, oldValue, newValue) -> {
 			if(newValue.equals("0"))
 				balanceText.setStyle("-fx-background-color: #30e65a");
-		    //System.out.println("textfield changed from " + oldValue + " to " + newValue);
 		});
 		
 		// this is only called if you changer membership type
 		duesText.textProperty().addListener((observable, oldValue, newValue) -> {	
 			int newDues = Integer.parseInt(newValue);
 		    System.out.println("textfield changed from " + oldValue + " to " + newValue);
-		    SqlUpdate.updateField(newDues,"money","dues",fiscals,rowIndex);
+		    //SqlUpdate.updateField(newDues,"money","dues",fiscals,rowIndex);
 		    fiscals.get(rowIndex).setDues(newDues);
 		    updateBalance();
 		});
 		
 		commitCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> commit, Boolean oldValue, Boolean newValue) {
-            	if(!balanceText.getText().equals("0")) balanceText.setStyle("-fx-background-color: #f23a50");
-                SqlUpdate.updateMoney(fiscals.get(rowIndex));
-            	SqlUpdate.commitFiscalRecord(fiscals.get(rowIndex).getMoney_id(), commit.getValue());
-            	fiscals.get(rowIndex).setCommitted(commit.getValue());
-            	setEditable(!commit.getValue());
-            	note.add("Paid $" + paidText.getText() + " leaving a balance of " + balanceText.getText() + " for " + fiscals.get(rowIndex).getFiscal_year());
-            	//} else {
-            	//	commitCheckBox.setSelected(false);
-            	//	balanceText.setStyle("-fx-background-color: #f23a50");
-            	//}
-            }
-        });
+			@Override
+			public void changed(ObservableValue<? extends Boolean> commit, Boolean oldValue, Boolean newValue) {
+				if (newValue) {  // we are commiting, not uncommiting
+					if (!balanceText.getText().equals("0"))
+						balanceText.setStyle("-fx-background-color: #f23a50");
+					SqlUpdate.updateMoney(fiscals.get(rowIndex));
+					SqlUpdate.commitFiscalRecord(fiscals.get(rowIndex).getMoney_id(), commit.getValue());
+					fiscals.get(rowIndex).setCommitted(commit.getValue());
+					note.add("Paid $" + paidText.getText() + " leaving a balance of $" + balanceText.getText() + " for "
+							+ fiscals.get(rowIndex).getFiscal_year());
+				}
+				setEditable(!commit.getValue());  // uses several methods to make editable or not
+			}
+		});
 		
 		SpinnerValueFactory<Integer> wetSlipValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1, fiscals.get(rowIndex).getWet_slip());
 		wetSlipSpinner.setValueFactory(wetSlipValueFactory);
-		wetSlipSpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
-			  if (!newValue) {
-				  wetSlipSpinner.increment(0); // won't change value, but will commit editor
-				  int fieldValue = Integer.parseInt(wetSlipSpinner.getEditor().getText());
-				  SqlUpdate.updateField(fieldValue,"money","wet_slip",fiscals,rowIndex);
-				  fiscals.get(rowIndex).setWet_slip(fieldValue);
+		wetSlipSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
+				  fiscals.get(rowIndex).setWet_slip(newValue);
 				  updateBalance();
-			  }
 			});
 	
 		SpinnerValueFactory<Integer> beachValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 5, fiscals.get(rowIndex).getBeach());
 		beachSpinner.setValueFactory(beachValueFactory);
 		beachSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
-
-				  //int fieldValue = Integer.parseInt(beachSpinner.getEditor().getText());
-				  //SqlUpdate.updateField(fieldValue,"money","beach",fiscals,rowIndex);
 				  fiscals.get(rowIndex).setBeach(newValue);
 				  updateBalance();
 			});
 		
 		SpinnerValueFactory<Integer> kayacRackValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 5, fiscals.get(rowIndex).getKayac_rack());
 		kayakRackSpinner.setValueFactory(kayacRackValueFactory);
-		kayakRackSpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
-			  if (!newValue) {
-				  kayakRackSpinner.increment(0); // won't change value, but will commit editor
-				  int fieldValue = Integer.parseInt(kayakRackSpinner.getEditor().getText());
-				  SqlUpdate.updateField(fieldValue,"money","kayak_rack",fiscals,rowIndex);
-				  fiscals.get(rowIndex).setKayac_rack(fieldValue);
+		kayakRackSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
+				  fiscals.get(rowIndex).setKayac_rack(newValue);
 				  updateBalance();
-			  }
 			});
 		
 		SpinnerValueFactory<Integer> kayakShedValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 5, fiscals.get(rowIndex).getKayac_shed());
 		kayakShedSpinner.setValueFactory(kayakShedValueFactory);
-		kayakShedSpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
-			  if (!newValue) {
-				  kayakShedSpinner.increment(0); // won't change value, but will commit editor
-				  int fieldValue = Integer.parseInt(kayakShedSpinner.getEditor().getText());
-				  SqlUpdate.updateField(fieldValue,"money","kayak_shed",fiscals,rowIndex);
-				  fiscals.get(rowIndex).setKayac_shed(fieldValue);
+		kayakShedSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
+				  fiscals.get(rowIndex).setKayac_shed(newValue);
 				  updateBalance();
-			  }
 			});
 		
 		SpinnerValueFactory<Integer> sailLoftValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1, fiscals.get(rowIndex).getSail_loft());
 		sailLoftSpinner.setValueFactory(sailLoftValueFactory);
-		sailLoftSpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
-			  if (!newValue) {
-				  sailLoftSpinner.increment(0); // won't change value, but will commit editor
-				  int fieldValue = Integer.parseInt(sailLoftSpinner.getEditor().getText());
-				  SqlUpdate.updateField(fieldValue,"money","sail_loft",fiscals,rowIndex);
-				  fiscals.get(rowIndex).setSail_loft(fieldValue);
+		sailLoftSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
+				  fiscals.get(rowIndex).setSail_loft(newValue);
 				  updateBalance();
-			  }
 			});
 		
 		SpinnerValueFactory<Integer> sailSchoolLoftValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1, fiscals.get(rowIndex).getSail_school_laser_loft());
 		sailSchoolLoftSpinner.setValueFactory(sailSchoolLoftValueFactory);
-		sailSchoolLoftSpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
-			  if (!newValue) {
-				  sailSchoolLoftSpinner.increment(0); // won't change value, but will commit editor
-				  int fieldValue = Integer.parseInt(sailSchoolLoftSpinner.getEditor().getText());
-				  SqlUpdate.updateField(fieldValue,"money","sail_school_laser_loft",fiscals,rowIndex);
-				  fiscals.get(rowIndex).setSail_school_laser_loft(fieldValue);
+		sailSchoolLoftSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
+				  fiscals.get(rowIndex).setSail_school_laser_loft(newValue);
 				  updateBalance();
-			  }
 			});
 		
 		SpinnerValueFactory<Integer> winterStorageValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 5, fiscals.get(rowIndex).getWinter_storage());
 		winterStorageSpinner.setValueFactory(winterStorageValueFactory);
-		winterStorageSpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
-			  if (!newValue) {
-				  winterStorageSpinner.increment(0); // won't change value, but will commit editor
-				  int fieldValue = Integer.parseInt(winterStorageSpinner.getEditor().getText());
-				  SqlUpdate.updateField(fieldValue,"money","winter_storage",fiscals,rowIndex);
-				  fiscals.get(rowIndex).setWinter_storage(fieldValue);
+		winterStorageSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
+				  fiscals.get(rowIndex).setWinter_storage(newValue);
 				  updateBalance();
-			  }
 			});
 
 		paidText.focusedProperty().addListener(new ChangeListener<Boolean>() {
@@ -315,9 +276,12 @@ public class BoxFiscal extends HBox {
 			int credit = Integer.parseInt(newText);
 			fiscals.get(rowIndex).setCredit(countCredit(credit));
 			creditText.setText(countCredit(credit) + "");  /// total credit
-		    //SqlUpdate.updateField(Integer.parseInt(newText), "money", "credit",fiscals,rowIndex);
 			balanceText.setText(getBalance() + "");  // sets balance textfield
 			fiscals.get(rowIndex).setBalance(getBalance());  // sets focused object
+		});
+		
+		totalKeyTextField.textProperty().addListener((obs, oldText, newText) -> {
+			updateBalance();
 		});
 		
 		yscText.focusedProperty().addListener(new ChangeListener<Boolean>() {
@@ -330,12 +294,12 @@ public class BoxFiscal extends HBox {
 	            	}
 	            	int newTotalValue = Integer.parseInt(yscText.getText());
 	            	fiscals.get(rowIndex).setYsc_donation(newTotalValue);
-	            	SqlUpdate.updateField(newTotalValue, "money", "ysc_donation",fiscals,rowIndex);
+	            	//SqlUpdate.updateField(newTotalValue, "money", "ysc_donation",fiscals,rowIndex);
 					fiscals.get(rowIndex).setTotal(updateTotalFeeFields());
 					totalFeesText.setText(fiscals.get(rowIndex).getTotal() + "");
-					SqlUpdate.updateField(fiscals.get(rowIndex).getTotal(), "money", "total",fiscals,rowIndex);
+					//SqlUpdate.updateField(fiscals.get(rowIndex).getTotal(), "money", "total",fiscals,rowIndex);
 	            	balanceText.setText(getBalance() + "");
-	            	SqlUpdate.updateField(getBalance(), "money", "balance",fiscals,rowIndex);
+	            	//SqlUpdate.updateField(getBalance(), "money", "balance",fiscals,rowIndex);
 	            }
 	        }
 	    });
@@ -348,7 +312,6 @@ public class BoxFiscal extends HBox {
         
         addKeys.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-            	System.out.println(fiscals.get(rowIndex).toString());
             	new Dialogue_Keys(fiscals.get(rowIndex), totalKeyTextField);
             }
         });
@@ -392,10 +355,8 @@ public class BoxFiscal extends HBox {
 		hboxTotalFees.getChildren().addAll(new Label("Total Fees"),totalFeesText);
 		hboxCredit.getChildren().addAll(new Label("Credit"),creditText);
 		hboxBalence.getChildren().addAll(new Label("Balance"),balanceText);
-		
 		vbox1.getChildren().addAll(comboHBox, keysLabel,hboxtotalKey, workCreditsLabel,hboxtotalWC, BalanceLabel,hboxTotalFees,hboxCredit,hboxPaid,hboxBalence,commitCheckBox);
 		vbox2.getChildren().addAll(feesLabel,hboxDues,hboxBeach,hboxKayac,hboxKayakShed,hboxSailLoft,hboxSailSchoolLoft,hboxWetSlip,hboxWinterStorage,hboxYSC);
-		
 		mainHbox.getChildren().addAll(vbox2,vbox1);
 		mainVbox.getChildren().addAll(mainHbox);  // add error hbox in first
 		vboxGrey.getChildren().addAll(mainVbox);
@@ -526,8 +487,6 @@ public class BoxFiscal extends HBox {
 			return false;
 		}
 	}
-	
-
 	
 	public static boolean isNumeric(String strNum) {
 	    if (strNum == null) return false;

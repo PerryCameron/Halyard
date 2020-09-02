@@ -2,7 +2,6 @@ package com.ecsail.gui.dialogues;
 
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
@@ -19,7 +18,7 @@ public class Dialogue_FiscalPDF extends Stage {
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
 		Scene scene = new Scene(vboxBlue, 600, 300);
 		final Spinner<Integer> batchSpinner = new Spinner<Integer>();
-		Button createPDF = new Button();
+		//Button createPDF = new Button();
 		
 		SpinnerValueFactory<Integer> batchSlipValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 50, 0);
 		batchSpinner.setValueFactory(batchSlipValueFactory);

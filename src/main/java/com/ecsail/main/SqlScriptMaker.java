@@ -67,7 +67,7 @@ public class SqlScriptMaker {
 			File file = new File(filename);
 			FileWriter writer = new FileWriter(file, true);
 			// writer.write("use ECSC_SQL;" + System.lineSeparator());
-			System.out.println("number of lines is " + tableCreation.size());
+			System.out.println("Table creation script is " + tableCreation.size() + "lines.");
 			for (String tabe : tableCreation)
 				writer.write(tabe + System.lineSeparator());
 			for (Object_Membership mem : memberships)
