@@ -348,6 +348,34 @@ public class SqlUpdate {
 		}
 	}
 	
+	public static final void updateMoney(Object_Money money) {
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			stmt.execute(Main.console.setRegexColor("UPDATE money SET extra_key=" 
+					+ money.getExtra_key() 
+					+ ",kayak_shed_key=" + money.getKayac_shed_key() 
+					+ ",sail_loft_key=" + money.getSail_loft_key()
+					+ ",sail_school_loft_key=" + money.getSail_school_loft_key()
+					+ ",beach=" + money.getBeach()
+					+ ",wet_slip=" + money.getWet_slip()
+					+ ",kayak_rack=" + money.getKayac_rack()
+					+ ",kayak_shed=" + money.getKayac_shed()
+					+ ",sail_loft=" + money.getSail_loft()
+					+ ",sail_school_laser_loft=" + money.getSail_school_laser_loft()
+					+ ",winter_storage=" + money.getWinter_storage()
+					+ ",ysc_donation=" + money.getYsc_donation() 
+					+ ",paid=" + money.getPaid()
+					+ ",total=" + money.getTotal()
+					+ ",credit=" + money.getCredit()
+					+ ",balance=" + money.getBalance()
+					+ ",dues=" + money.getDues()
+					+ " WHERE money_id=" + money.getMoney_id() + ";"));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public static final void updateWorkCredit(Object_WorkCredit swcy)  {
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();

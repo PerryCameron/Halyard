@@ -1,5 +1,6 @@
 package com.ecsail.gui.boxes;
 
+import com.ecsail.gui.dialogues.Dialogue_Keys;
 import com.ecsail.gui.dialogues.Dialogue_WorkCredits;
 import com.ecsail.main.Note;
 import com.ecsail.main.SqlExists;
@@ -12,8 +13,6 @@ import com.ecsail.structures.Object_Officer;
 import com.ecsail.structures.Object_Person;
 import com.ecsail.structures.Object_WorkCredit;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -43,16 +42,17 @@ public class BoxFiscal extends HBox {
 	//private final TextField yearText = new TextField();
 	private final TextField yscText = new TextField();
 	private final TextField paidText = new TextField();
-	private final TextField totalWCText = new TextField();
+	private final TextField totalWorkCreditTextField = new TextField();
+	private final TextField totalKeyTextField = new TextField();
 	private TextField duesText;
 	private final TextField totalFeesText = new TextField();
 	private final TextField creditText = new TextField();
 	private final TextField balanceText = new TextField();
 	private final Spinner<Integer> wetSlipSpinner = new Spinner<Integer>();
-	private final Spinner<Integer> extraKeySpinner = new Spinner<Integer>();
-	private final Spinner<Integer> sailLKeySpinner = new Spinner<Integer>();
-	private final Spinner<Integer> kayakSKeySpinner = new Spinner<Integer>();
-	private final Spinner<Integer> sailSSLKeySpinner = new Spinner<Integer>();
+	//private final Spinner<Integer> extraKeySpinner = new Spinner<Integer>();
+	//private final Spinner<Integer> sailLKeySpinner = new Spinner<Integer>();
+	//private final Spinner<Integer> kayakSKeySpinner = new Spinner<Integer>();
+	//private final Spinner<Integer> sailSSLKeySpinner = new Spinner<Integer>();
 	private final Spinner<Integer> beachSpinner = new Spinner<Integer>();
 	private final Spinner<Integer> kayakRackSpinner = new Spinner<Integer>();
 	private final Spinner<Integer> kayakShedSpinner = new Spinner<Integer>();
@@ -77,12 +77,13 @@ public class BoxFiscal extends HBox {
 		Label workCreditsLabel = new Label("Work Credits");
 		Label feesLabel = new Label("Fees");
 		Label BalanceLabel = new Label("Balance");
+		Label keysLabel = new Label("Keys");
 
 		VBox vboxGrey = new VBox();  // this is the vbox for organizing all the widgets
 		VBox mainVbox = new VBox();
 		HBox mainHbox = new HBox();
 		HBox comboHBox = new HBox();
-		HBox hboxKey = new HBox();
+		
 		HBox hboxWinterStorage = new HBox();
 		HBox hboxKayac = new HBox();
 		HBox hboxWetSlip = new HBox();
@@ -90,9 +91,7 @@ public class BoxFiscal extends HBox {
 		HBox hboxPaid = new HBox();
 		HBox hboxDues = new HBox();
 		HBox hboxtotalWC = new HBox();
-		HBox hboxSLKey = new HBox();
-		HBox hboxKSKey = new HBox();
-		HBox hboxSSLKey = new HBox();
+		HBox hboxtotalKey = new HBox();
 		HBox hboxBeach = new HBox();
 		HBox hboxKayakShed = new HBox();
 		HBox hboxSailLoft = new HBox();
@@ -102,8 +101,11 @@ public class BoxFiscal extends HBox {
 		HBox hboxBalence = new HBox();
 		VBox vbox1 = new VBox();
 		VBox vbox2 = new VBox();
+		HBox hboxSubKey = new HBox(); // container for textfield and button
+		HBox hboxSubWK = new HBox(); // container for textfield and button
 		CheckBox commitCheckBox = new CheckBox("Commit");
-		Button addWorkCredits = new Button("add");
+		Button addWorkCredits = new Button("Add");
+		Button addKeys = new Button("Add");
 		
 
 
@@ -111,18 +113,16 @@ public class BoxFiscal extends HBox {
 		workCreditsLabel.setId("bold-label");
 		feesLabel.setId("bold-label");
 		BalanceLabel.setId("bold-label");
-		
+		keysLabel.setId("bold-label");
 		hboxDues.setSpacing(78);
-		hboxKey.setSpacing(58.5);
+		
 		hboxWinterStorage.setSpacing(28);
 		hboxKayac.setSpacing(48.5);  // kayak rack
 		hboxWetSlip.setSpacing(68.5);
 		hboxYSC.setSpacing(35);
 		hboxPaid.setSpacing(43);
 		hboxtotalWC.setSpacing(36.5);
-		hboxSLKey.setSpacing(42.5);
-		hboxKSKey.setSpacing(24);
-		hboxSSLKey.setSpacing(4);
+		hboxtotalKey.setSpacing(36.5);
 		hboxBeach.setSpacing(48);
 		hboxKayakShed.setSpacing(47); // kayak shed
 		hboxSailLoft.setSpacing(65);  // sail loft
@@ -130,43 +130,43 @@ public class BoxFiscal extends HBox {
 		hboxTotalFees.setSpacing(12);
 		hboxCredit.setSpacing(34);
 		hboxBalence.setSpacing(25);
-		
+		hboxSubWK.setSpacing(5);
+		hboxSubKey.setSpacing(5);
 		winterStorageSpinner.setPrefWidth(60);
 		kayakRackSpinner.setPrefWidth(60);
 		wetSlipSpinner.setPrefWidth(60);
 		yscText.setPrefWidth(60);
 		paidText.setPrefWidth(60);
-		totalWCText.setPrefWidth(60);
+		totalWorkCreditTextField.setPrefWidth(60);
 		duesText.setPrefWidth(60);
-		sailLKeySpinner.setPrefWidth(60);
-		kayakSKeySpinner.setPrefWidth(60);
-		sailSSLKeySpinner.setPrefWidth(60);
 		beachSpinner.setPrefWidth(60);
 		kayakShedSpinner.setPrefWidth(60);
 		sailLoftSpinner.setPrefWidth(60);
 		sailSchoolLoftSpinner.setPrefWidth(60);
-		totalFeesText.setPrefWidth(60);
 		creditText.setPrefWidth(60);
 		balanceText.setPrefWidth(60);
-		extraKeySpinner.setPrefWidth(60);
-		
+		totalFeesText.setPrefWidth(60);
+		totalFeesText.setEditable(false);
 		totalFeesText.setStyle(disabledColor);
+		totalKeyTextField.setPrefWidth(60);
+		totalKeyTextField.setEditable(false);
+		totalKeyTextField.setStyle(disabledColor);
 		duesText.setStyle(disabledColor);
 		creditText.setStyle(disabledColor);
-		totalWCText.setStyle(disabledColor);
+		totalWorkCreditTextField.setStyle(disabledColor);
 		balanceText.setStyle("-fx-background-color: #9fc0c7");
 		vbox1.setAlignment(Pos.CENTER);
 		vbox2.setAlignment(Pos.CENTER);
 		vbox1.setSpacing(5);
 		vbox2.setSpacing(5);
-		//vbox2.setPadding(new Insets(2, 0, 0, 0));
-		totalWCText.setEditable(false);
+		totalWorkCreditTextField.setEditable(false);
 		duesText.setEditable(false);
-		totalFeesText.setEditable(false);
+		
 		creditText.setEditable(false);
 		balanceText.setEditable(false);
 		comboHBox.setPadding(new Insets(0, 0, 10, 0));  // sets height of work credits label
 		BalanceLabel.setPadding(new Insets(20, 0, 0, 0));
+		workCreditsLabel.setPadding(new Insets(20, 0, 0, 0));
 		comboHBox.setAlignment(Pos.TOP_RIGHT);
 		commitCheckBox.setSelected(fiscals.get(rowIndex).isCommitted());
 		setPadding(new Insets(5, 5, 5, 5));  // creates space for blue frame
@@ -197,15 +197,16 @@ public class BoxFiscal extends HBox {
 		commitCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> commit, Boolean oldValue, Boolean newValue) {
-            	if(balanceText.getText().equals("0")) {
+            	if(!balanceText.getText().equals("0")) balanceText.setStyle("-fx-background-color: #f23a50");
+                SqlUpdate.updateMoney(fiscals.get(rowIndex));
             	SqlUpdate.commitFiscalRecord(fiscals.get(rowIndex).getMoney_id(), commit.getValue());
             	fiscals.get(rowIndex).setCommitted(commit.getValue());
             	setEditable(!commit.getValue());
             	note.add("Paid $" + paidText.getText() + " leaving a balance of " + balanceText.getText() + " for " + fiscals.get(rowIndex).getFiscal_year());
-            	} else {
-            		commitCheckBox.setSelected(false);
-            		balanceText.setStyle("-fx-background-color: #f23a50");
-            	}
+            	//} else {
+            	//	commitCheckBox.setSelected(false);
+            	//	balanceText.setStyle("-fx-background-color: #f23a50");
+            	//}
             }
         });
 		
@@ -220,65 +221,15 @@ public class BoxFiscal extends HBox {
 				  updateBalance();
 			  }
 			});
-		
-		SpinnerValueFactory<Integer> extraKeyValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 5, fiscals.get(rowIndex).getExtra_key());
-		extraKeySpinner.setValueFactory(extraKeyValueFactory);
-		extraKeySpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
-			  if (!newValue) {
-				  extraKeySpinner.increment(0); // won't change value, but will commit editor
-				  int fieldValue = Integer.parseInt(extraKeySpinner.getEditor().getText());
-				  SqlUpdate.updateField(fieldValue,"money","extra_key",fiscals,rowIndex);
-				  fiscals.get(rowIndex).setExtra_key(fieldValue);
-				  updateBalance();
-			  }
-			});
-
-		SpinnerValueFactory<Integer> sailLKeyValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 5, fiscals.get(rowIndex).getSail_loft_key());
-		sailLKeySpinner.setValueFactory(sailLKeyValueFactory);
-		sailLKeySpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
-			  if (!newValue) {
-				  sailLKeySpinner.increment(0); // won't change value, but will commit editor
-				  int fieldValue = Integer.parseInt(sailLKeySpinner.getEditor().getText());
-				  SqlUpdate.updateField(fieldValue,"money","sail_loft_key",fiscals,rowIndex);
-				  fiscals.get(rowIndex).setSail_loft_key(fieldValue);
-				  updateBalance();
-			  }
-			});
-		
-		SpinnerValueFactory<Integer> kayakSKeyValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 5, fiscals.get(rowIndex).getKayac_shed_key());
-		kayakSKeySpinner.setValueFactory(kayakSKeyValueFactory);
-		kayakSKeySpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
-			  if (!newValue) {
-				  kayakSKeySpinner.increment(0); // won't change value, but will commit editor
-				  int fieldValue = Integer.parseInt(kayakSKeySpinner.getEditor().getText());
-				  SqlUpdate.updateField(fieldValue,"money","kayak_shed_key",fiscals,rowIndex);
-				  fiscals.get(rowIndex).setKayac_shed_key(fieldValue);
-				  updateBalance();
-			  }
-			});
-		
-		SpinnerValueFactory<Integer> sailSSLKeyValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 5, fiscals.get(rowIndex).getSail_school_loft_key());
-		sailSSLKeySpinner.setValueFactory(sailSSLKeyValueFactory);
-		sailSSLKeySpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
-			  if (!newValue) {
-				  sailSSLKeySpinner.increment(0); // won't change value, but will commit editor
-				  int fieldValue = Integer.parseInt(sailSSLKeySpinner.getEditor().getText());
-				  SqlUpdate.updateField(fieldValue,"money","sail_school_loft_key",fiscals,rowIndex);
-				  fiscals.get(rowIndex).setSail_school_loft_key(fieldValue);
-				  updateBalance();
-			  }
-			});
-		
+	
 		SpinnerValueFactory<Integer> beachValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 5, fiscals.get(rowIndex).getBeach());
 		beachSpinner.setValueFactory(beachValueFactory);
-		beachSpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
-			  if (!newValue) {
-				  beachSpinner.increment(0); // won't change value, but will commit editor
-				  int fieldValue = Integer.parseInt(beachSpinner.getEditor().getText());
-				  SqlUpdate.updateField(fieldValue,"money","beach",fiscals,rowIndex);
-				  fiscals.get(rowIndex).setBeach(fieldValue);
+		beachSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
+
+				  //int fieldValue = Integer.parseInt(beachSpinner.getEditor().getText());
+				  //SqlUpdate.updateField(fieldValue,"money","beach",fiscals,rowIndex);
+				  fiscals.get(rowIndex).setBeach(newValue);
 				  updateBalance();
-			  }
 			});
 		
 		SpinnerValueFactory<Integer> kayacRackValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 5, fiscals.get(rowIndex).getKayac_rack());
@@ -360,7 +311,7 @@ public class BoxFiscal extends HBox {
 	        }
 	    });
 		
-		totalWCText.textProperty().addListener((obs, oldText, newText) -> {
+		totalWorkCreditTextField.textProperty().addListener((obs, oldText, newText) -> {
 			int credit = Integer.parseInt(newText);
 			fiscals.get(rowIndex).setCredit(countCredit(credit));
 			creditText.setText(countCredit(credit) + "");  /// total credit
@@ -391,7 +342,14 @@ public class BoxFiscal extends HBox {
 		
         addWorkCredits.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-            	new Dialogue_WorkCredits(selectedWorkCreditYear, totalWCText);
+            	new Dialogue_WorkCredits(selectedWorkCreditYear, totalWorkCreditTextField);
+            }
+        });
+        
+        addKeys.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+            	System.out.println(fiscals.get(rowIndex).toString());
+            	new Dialogue_Keys(fiscals.get(rowIndex), totalKeyTextField);
             }
         });
         
@@ -407,7 +365,8 @@ public class BoxFiscal extends HBox {
 		yscText.setText(fiscals.get(rowIndex).getYsc_donation() + "");
 		//wetSlipSpinner.setText(fiscals.get(rowIndex).getWet_slip() + "");
 		
-		totalWCText.setText(countWorkCredits() + "");
+		totalWorkCreditTextField.setText(countWorkCredits() + "");
+		totalKeyTextField.setText(countKeys() + "");
 		if(hasOfficer) {
 			creditText.setText(duesText.getText()); // gets the dues and gives that amount of credit for being an officer
 			SqlUpdate.updateField(Integer.parseInt(duesText.getText()), "money", "credit",fiscals,rowIndex); // updates
@@ -417,16 +376,15 @@ public class BoxFiscal extends HBox {
 		balanceText.setText(getBalance() + "");
 		if(fiscals.get(rowIndex).isCommitted()) setEditable(false);
 		hboxDues.getChildren().addAll(new Label("Dues:"), duesText);
-		hboxKey.getChildren().addAll(new Label("Extra Key"),extraKeySpinner);
+		hboxSubKey.getChildren().addAll(totalKeyTextField,addKeys);
+		hboxSubWK.getChildren().addAll(totalWorkCreditTextField,addWorkCredits);
 		hboxWinterStorage.getChildren().addAll(new Label("Winter Storage"), winterStorageSpinner);
 		hboxKayac.getChildren().addAll(new Label("Kayac Rack"),kayakRackSpinner);
 		hboxWetSlip.getChildren().addAll(new Label("wetSlip"),wetSlipSpinner);
 		hboxYSC.getChildren().addAll(new Label("YSC Donation"),yscText);
 		hboxPaid.getChildren().addAll(new Label("Paid"),paidText);
-		hboxtotalWC.getChildren().addAll(new Label("Total:"),totalWCText,addWorkCredits);
-		hboxSLKey.getChildren().addAll(new Label("Sail Loft Key"),sailLKeySpinner);
-		hboxKSKey.getChildren().addAll(new Label("Kayak Shed Key"),kayakSKeySpinner);
-		hboxSSLKey.getChildren().addAll(new Label("Sail School Loft Key"),sailSSLKeySpinner);
+		hboxtotalWC.getChildren().addAll(new Label("Total:"),hboxSubWK);
+		hboxtotalKey.getChildren().addAll(new Label("Total:"),hboxSubKey);
 		hboxBeach.getChildren().addAll(new Label("Beach Spot"),beachSpinner);
 		hboxKayakShed.getChildren().addAll(new Label("Kayak Shed"),kayakShedSpinner);
 		hboxSailLoft.getChildren().addAll(new Label("Sail Loft"),sailLoftSpinner);
@@ -435,9 +393,8 @@ public class BoxFiscal extends HBox {
 		hboxCredit.getChildren().addAll(new Label("Credit"),creditText);
 		hboxBalence.getChildren().addAll(new Label("Balance"),balanceText);
 		
-		vbox1.getChildren().addAll(comboHBox, workCreditsLabel,hboxtotalWC, BalanceLabel,hboxTotalFees,hboxCredit,hboxPaid,hboxBalence,commitCheckBox);
-		//vbox1.getChildren().addAll(comboHBox, workCreditsLabel, hboxRacing, hboxHarbor,hboxSocial,hboxOther,hboxtotalWC,BalanceLabel,hboxTotalFees,hboxCredit,hboxPaid,hboxBalence,commitCheckBox);
-		vbox2.getChildren().addAll(hboxDues,hboxKey,hboxSLKey,hboxKSKey,hboxSSLKey,hboxBeach,hboxKayac,hboxKayakShed,hboxSailLoft,hboxSailSchoolLoft,hboxWetSlip,hboxWinterStorage,hboxYSC);
+		vbox1.getChildren().addAll(comboHBox, keysLabel,hboxtotalKey, workCreditsLabel,hboxtotalWC, BalanceLabel,hboxTotalFees,hboxCredit,hboxPaid,hboxBalence,commitCheckBox);
+		vbox2.getChildren().addAll(feesLabel,hboxDues,hboxBeach,hboxKayac,hboxKayakShed,hboxSailLoft,hboxSailSchoolLoft,hboxWetSlip,hboxWinterStorage,hboxYSC);
 		
 		mainHbox.getChildren().addAll(vbox2,vbox1);
 		mainVbox.getChildren().addAll(mainHbox);  // add error hbox in first
@@ -450,16 +407,13 @@ public class BoxFiscal extends HBox {
 	private void setEditable(boolean isEditable) {
 		changeState(yscText,isEditable,true);
 		changeState(paidText,isEditable,true);
-		changeState(totalWCText,isEditable,false);
+		changeState(totalWorkCreditTextField,isEditable,false);
+		changeState(totalKeyTextField,isEditable,false);
 		changeState(duesText,isEditable,false);
 		changeState(totalFeesText,isEditable,false);
 		changeState(creditText,isEditable,false);
 		//changeState(balanceText,isEditable,1);
 		changeState(wetSlipSpinner,isEditable);
-		changeState(extraKeySpinner,isEditable);
-		changeState(sailLKeySpinner,isEditable);
-		changeState(kayakSKeySpinner,isEditable);
-		changeState(sailSSLKeySpinner,isEditable);
 		changeState(beachSpinner,isEditable);
 		changeState(kayakRackSpinner,isEditable);
 		changeState(kayakShedSpinner,isEditable);
@@ -494,9 +448,9 @@ public class BoxFiscal extends HBox {
 	private void updateBalance() {
 		  fiscals.get(rowIndex).setTotal(updateTotalFeeFields());
 		  totalFeesText.setText(fiscals.get(rowIndex).getTotal() + "");
-		  SqlUpdate.updateField(fiscals.get(rowIndex).getTotal(), "money", "total",fiscals,rowIndex);
+		  //SqlUpdate.updateField(fiscals.get(rowIndex).getTotal(), "money", "total",fiscals,rowIndex);
 		  balanceText.setText(getBalance() + "");
-		  SqlUpdate.updateField(getBalance(), "money", "balance",fiscals,rowIndex);
+		  //SqlUpdate.updateField(getBalance(), "money", "balance",fiscals,rowIndex);
 		  fiscals.get(rowIndex).setBalance(getBalance());
 	}
 	
@@ -555,6 +509,12 @@ public class BoxFiscal extends HBox {
 	private int countWorkCredits() {
 		int total = selectedWorkCreditYear.getRacing() + selectedWorkCreditYear.getSocial()
 				+ selectedWorkCreditYear.getOther()+ selectedWorkCreditYear.getHarbor();
+		return total;
+	}
+	
+	private int countKeys() {
+		int total = fiscals.get(rowIndex).getExtra_key() + fiscals.get(rowIndex).getKayac_shed_key()
+				+ fiscals.get(rowIndex).getSail_loft_key() + fiscals.get(rowIndex).getSail_school_loft_key();
 		return total;
 	}
 	

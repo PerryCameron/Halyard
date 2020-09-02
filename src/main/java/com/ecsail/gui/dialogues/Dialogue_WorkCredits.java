@@ -3,7 +3,6 @@ package com.ecsail.gui.dialogues;
 import com.ecsail.main.SqlUpdate;
 import com.ecsail.structures.Object_WorkCredit;
 
-import javafx.beans.property.IntegerProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
