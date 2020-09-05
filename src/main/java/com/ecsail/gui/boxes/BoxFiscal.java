@@ -179,13 +179,17 @@ public class BoxFiscal extends HBox {
 				balanceText.setStyle("-fx-background-color: #30e65a");
 		});
 		
-		// this is only called if you changer membership type
-		duesText.textProperty().addListener((observable, oldValue, newValue) -> {	
-			int newDues = Integer.parseInt(newValue);
-		    System.out.println("textfield changed from " + oldValue + " to " + newValue);
-		    //SqlUpdate.updateField(newDues,"money","dues",fiscals,rowIndex);
-		    fiscals.get(rowIndex).setDues(newDues);
-		    updateBalance();
+		// this is only called if you changer membership type or open a record
+		duesText.textProperty().addListener((observable, oldValue, newValue) -> {
+			if(!SqlSelect.isCommitted(fiscals.get(rowIndex).getMoney_id())) {
+				int newDues = Integer.parseInt(newValue);
+				System.out.println("textfield changed from " + oldValue + " to " + newValue);
+				//SqlUpdate.updateField(newDues,"money","dues",fiscals,rowIndex);
+				fiscals.get(rowIndex).setDues(newDues);
+				updateBalance();
+			} else {
+				System.out.println("Record is commited, no changes made");
+			}
 		});
 		
 		commitCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {

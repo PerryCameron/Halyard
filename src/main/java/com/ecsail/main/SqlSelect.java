@@ -899,7 +899,7 @@ public class SqlSelect {
 		}
 		return number;
 	}
-/*
+
 	public static boolean isCommitted(int money_id) {
 		boolean committed = false;
 		ResultSet rs;
@@ -914,7 +914,7 @@ public class SqlSelect {
 		}	
 		return committed;
 	}
-	*/
+	
 	public static int getBatchNumber() {
 		int number = 0;
 		ResultSet rs;
