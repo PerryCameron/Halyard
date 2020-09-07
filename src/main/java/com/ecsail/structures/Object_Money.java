@@ -31,14 +31,15 @@ public class Object_Money {
 	private IntegerProperty dues;
 	private BooleanProperty committed;
 	private BooleanProperty closed;
+	private IntegerProperty other;
 	
 	public Object_Money(Integer money_id, Integer ms_id, Integer fiscal_year, Integer batch,
 			Integer officer_credit, Integer extra_key, Integer kayac_shed_key,
 			Integer sail_loft_key, Integer sail_school_loft_key, Integer beach,
 			Integer wet_slip, Integer kayac_rack, Integer kayac_shed, Integer sail_loft,
 			Integer sail_school_laser_loft, Integer winter_storage, Integer ysc_donation,
-			Integer paid, Integer total, Integer credit, Integer balance, Integer dues,
-			Boolean committed, Boolean closed) {
+			Integer paid, Integer total, Integer credit, Integer balance, Integer dues, 
+			Boolean committed, Boolean closed, Integer other) {
 
 		this.money_id = new SimpleIntegerProperty(money_id);
 		this.ms_id = new SimpleIntegerProperty(ms_id);
@@ -64,6 +65,7 @@ public class Object_Money {
 		this.dues = new SimpleIntegerProperty(dues);
 		this.committed = new SimpleBooleanProperty(committed);
 		this.closed = new SimpleBooleanProperty(closed);
+		this.other = new SimpleIntegerProperty(other);
 	}
 
 	public Object_Money() {
@@ -91,6 +93,7 @@ public class Object_Money {
 		this.dues = new SimpleIntegerProperty(0);
 		this.committed = new SimpleBooleanProperty(false);
 		this.closed = new SimpleBooleanProperty(false);
+		this.other = new SimpleIntegerProperty(0);
 	}
 
 	public final IntegerProperty money_idProperty() {
@@ -451,6 +454,20 @@ public class Object_Money {
 	public final void setBatch(final int batch) {
 		this.batchProperty().set(batch);
 	}
+	
+	public final IntegerProperty otherProperty() {
+		return this.other;
+	}
+	
+
+	public final int getOther() {
+		return this.otherProperty().get();
+	}
+	
+
+	public final void setOther(final int other) {
+		this.otherProperty().set(other);
+	}
 
 	@Override
 	public String toString() {
@@ -460,8 +477,7 @@ public class Object_Money {
 				+ ", beach=" + beach + ", wet_slip=" + wet_slip + ", kayac_rack=" + kayac_rack + ", kayac_shed="
 				+ kayac_shed + ", sail_loft=" + sail_loft + ", sail_school_laser_loft=" + sail_school_laser_loft
 				+ ", winter_storage=" + winter_storage + ", ysc_donation=" + ysc_donation + ", paid=" + paid
-				+ ", total=" + total + ", credit=" + credit + ", balance=" + balance + ", dues=" + dues + ", committed="
-				+ committed + ", closed=" + closed + "]";
+				+ ", total=" + total + ", credit=" + credit + ", balance=" + balance + ", dues=" + dues + ", other="
+				+ other + ", committed=" + committed + ", closed=" + closed + "]";
 	}
-
 }

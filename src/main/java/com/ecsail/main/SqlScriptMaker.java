@@ -173,7 +173,8 @@ public class SqlScriptMaker {
 				+ mon.getBalance() + ","
 				+ mon.getDues() + ","
 				+ mon.isCommitted() + ","
-				+ mon.isClosed()
+				+ mon.isClosed() + ","
+				+ mon.getOther() 
 				+ ");\n";
 	}
 	

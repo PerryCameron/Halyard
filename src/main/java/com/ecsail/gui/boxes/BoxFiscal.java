@@ -43,10 +43,11 @@ public class BoxFiscal extends HBox {
 	private final TextField paidText = new TextField();
 	private final TextField totalWorkCreditTextField = new TextField();
 	private final TextField totalKeyTextField = new TextField();
-	private TextField duesText;
+	private final TextField duesText;
 	private final TextField totalFeesText = new TextField();
 	private final TextField creditText = new TextField();
 	private final TextField balanceText = new TextField();
+	private final TextField otherText = new TextField();
 	private final Spinner<Integer> wetSlipSpinner = new Spinner<Integer>();
 	private final Spinner<Integer> beachSpinner = new Spinner<Integer>();
 	private final Spinner<Integer> kayakRackSpinner = new Spinner<Integer>();
@@ -98,6 +99,8 @@ public class BoxFiscal extends HBox {
 		VBox vbox2 = new VBox();
 		HBox hboxSubKey = new HBox(); // container for textfield and button
 		HBox hboxSubWK = new HBox(); // container for textfield and button
+		HBox hboxCheckBox = new HBox();
+		HBox hboxOther = new HBox();
 		CheckBox commitCheckBox = new CheckBox("Commit");
 		Button addWorkCredits = new Button("Add");
 		Button addKeys = new Button("Add");
@@ -115,6 +118,7 @@ public class BoxFiscal extends HBox {
 		hboxKayac.setSpacing(48.5);  // kayak rack
 		hboxWetSlip.setSpacing(68.5);
 		hboxYSC.setSpacing(35);
+		hboxOther.setSpacing(75);
 		hboxPaid.setSpacing(43);
 		hboxtotalWC.setSpacing(36.5);
 		hboxtotalKey.setSpacing(36.5);
@@ -131,6 +135,7 @@ public class BoxFiscal extends HBox {
 		kayakRackSpinner.setPrefWidth(60);
 		wetSlipSpinner.setPrefWidth(60);
 		yscText.setPrefWidth(60);
+		otherText.setPrefWidth(60);
 		paidText.setPrefWidth(60);
 		totalWorkCreditTextField.setPrefWidth(60);
 		duesText.setPrefWidth(60);
@@ -170,6 +175,7 @@ public class BoxFiscal extends HBox {
 		vboxGrey.setId("box-grey");
 		mainHbox.setSpacing(50);
 		vboxGrey.setPadding(new Insets(8, 10, 0, 30));
+		hboxCheckBox.setPadding(new Insets(10, 0, 0, 0));
 		vboxGrey.setPrefWidth(460);
 		
 		//////////////// LISTENER //////////////////
@@ -184,7 +190,6 @@ public class BoxFiscal extends HBox {
 			if(!SqlSelect.isCommitted(fiscals.get(rowIndex).getMoney_id())) {
 				int newDues = Integer.parseInt(newValue);
 				System.out.println(" dues textfield set to " + newValue);
-				//SqlUpdate.updateField(newDues,"money","dues",fiscals,rowIndex);
 				fiscals.get(rowIndex).setDues(newDues);
 				updateBalance();
 			} else {
@@ -199,10 +204,11 @@ public class BoxFiscal extends HBox {
 					if (!balanceText.getText().equals("0"))
 						balanceText.setStyle("-fx-background-color: #f23a50");
 					SqlUpdate.updateMoney(fiscals.get(rowIndex)); 
-					SqlUpdate.commitFiscalRecord(fiscals.get(rowIndex).getMoney_id(), commit.getValue());// this could be placed in line below above
+					SqlUpdate.commitFiscalRecord(fiscals.get(rowIndex).getMoney_id(), commit.getValue());// this could be placed in line above
 					fiscals.get(rowIndex).setCommitted(commit.getValue());
 					note.add("Paid $" + paidText.getText() + " leaving a balance of $" + balanceText.getText() + " for "
 							+ fiscals.get(rowIndex).getFiscal_year());
+					if(fiscals.get(rowIndex).getOther() != 0) note.add("Other expense: ");
 				}
 				setEditable(!commit.getValue());  // uses several methods to make editable or not
 			}
@@ -298,12 +304,26 @@ public class BoxFiscal extends HBox {
 	            	}
 	            	int newTotalValue = Integer.parseInt(yscText.getText());
 	            	fiscals.get(rowIndex).setYsc_donation(newTotalValue);
-	            	//SqlUpdate.updateField(newTotalValue, "money", "ysc_donation",fiscals,rowIndex);
 					fiscals.get(rowIndex).setTotal(updateTotalFeeFields());
 					totalFeesText.setText(fiscals.get(rowIndex).getTotal() + "");
-					//SqlUpdate.updateField(fiscals.get(rowIndex).getTotal(), "money", "total",fiscals,rowIndex);
 	            	balanceText.setText(getBalance() + "");
-	            	//SqlUpdate.updateField(getBalance(), "money", "balance",fiscals,rowIndex);
+	            }
+	        }
+	    });
+		
+		otherText.focusedProperty().addListener(new ChangeListener<Boolean>() {
+	        @Override
+	        public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+	            //focus out
+	            if (oldValue) {  // we have focused and unfocused
+	            	if(!isNumeric(paidText.getText())) {
+	            		otherText.setText("0");
+	            	}
+	            	int newTotalValue = Integer.parseInt(otherText.getText());
+	            	fiscals.get(rowIndex).setOther(newTotalValue);
+					fiscals.get(rowIndex).setTotal(updateTotalFeeFields());
+					totalFeesText.setText(fiscals.get(rowIndex).getTotal() + "");
+	            	balanceText.setText(getBalance() + "");
 	            }
 	        }
 	    });
@@ -330,6 +350,7 @@ public class BoxFiscal extends HBox {
 		paidText.setText(fiscals.get(rowIndex).getPaid() + "");
 		duesText.setText(fiscals.get(rowIndex).getDues() + "");
 		yscText.setText(fiscals.get(rowIndex).getYsc_donation() + "");
+		otherText.setText(fiscals.get(rowIndex).getOther() + "");
 		//wetSlipSpinner.setText(fiscals.get(rowIndex).getWet_slip() + "");
 		
 		totalWorkCreditTextField.setText(countWorkCredits() + "");
@@ -352,6 +373,7 @@ public class BoxFiscal extends HBox {
 		hboxKayac.getChildren().addAll(new Label("Kayac Rack"),kayakRackSpinner);
 		hboxWetSlip.getChildren().addAll(new Label("wetSlip"),wetSlipSpinner);
 		hboxYSC.getChildren().addAll(new Label("YSC Donation"),yscText);
+		hboxOther.getChildren().addAll(new Label("Other:"), otherText);
 		hboxPaid.getChildren().addAll(new Label("Paid"),paidText);
 		hboxtotalWC.getChildren().addAll(new Label("Total:"),hboxSubWK);
 		hboxtotalKey.getChildren().addAll(new Label("Total:"),hboxSubKey);
@@ -362,8 +384,9 @@ public class BoxFiscal extends HBox {
 		hboxTotalFees.getChildren().addAll(new Label("Total Fees"),totalFeesText);
 		hboxCredit.getChildren().addAll(new Label("Credit"),creditText);
 		hboxBalence.getChildren().addAll(new Label("Balance"),balanceText);
-		vbox1.getChildren().addAll(comboHBox, keysLabel,hboxtotalKey, workCreditsLabel,hboxtotalWC, BalanceLabel,hboxTotalFees,hboxCredit,hboxPaid,hboxBalence,commitCheckBox);
-		vbox2.getChildren().addAll(feesLabel,hboxDues,hboxBeach,hboxKayac,hboxKayakShed,hboxSailLoft,hboxSailSchoolLoft,hboxWetSlip,hboxWinterStorage,hboxYSC);
+		hboxCheckBox.getChildren().add(commitCheckBox);
+		vbox1.getChildren().addAll(comboHBox, keysLabel,hboxtotalKey, workCreditsLabel,hboxtotalWC, BalanceLabel,hboxTotalFees,hboxCredit,hboxPaid,hboxBalence,hboxCheckBox);
+		vbox2.getChildren().addAll(feesLabel,hboxDues,hboxBeach,hboxKayac,hboxKayakShed,hboxSailLoft,hboxSailSchoolLoft,hboxWetSlip,hboxWinterStorage,hboxYSC,hboxOther);
 		mainHbox.getChildren().addAll(vbox2,vbox1);
 		mainVbox.getChildren().addAll(mainHbox);  // add error hbox in first
 		vboxGrey.getChildren().addAll(mainVbox);
@@ -374,6 +397,7 @@ public class BoxFiscal extends HBox {
 	
 	private void setEditable(boolean isEditable) {
 		changeState(yscText,isEditable,true);
+		changeState(otherText,isEditable,true);
 		changeState(paidText,isEditable,true);
 		changeState(totalWorkCreditTextField,isEditable,false);
 		changeState(totalKeyTextField,isEditable,false);
@@ -416,9 +440,7 @@ public class BoxFiscal extends HBox {
 	private void updateBalance() {
 		  fiscals.get(rowIndex).setTotal(updateTotalFeeFields());
 		  totalFeesText.setText(fiscals.get(rowIndex).getTotal() + "");
-		  //SqlUpdate.updateField(fiscals.get(rowIndex).getTotal(), "money", "total",fiscals,rowIndex);
 		  balanceText.setText(getBalance() + "");
-		  //SqlUpdate.updateField(getBalance(), "money", "balance",fiscals,rowIndex);
 		  fiscals.get(rowIndex).setBalance(getBalance());
 	}
 	
@@ -436,9 +458,11 @@ public class BoxFiscal extends HBox {
 		int wetSlip = fiscals.get(rowIndex).getWet_slip() * definedFees.getWet_slip();
 		int winterStorage = fiscals.get(rowIndex).getWinter_storage() * definedFees.getWinter_storage();
 		int yscDonation = fiscals.get(rowIndex).getYsc_donation();
+		int other = fiscals.get(rowIndex).getOther();
+		System.out.println("Other =" + other);
 		
 		return extraKey + sailLoftKey + kayakShedKey + sailSchoolLoftKey + beachSpot + kayakRack
-				+kayakShed + sailLoft + sailSchoolLoft + wetSlip + winterStorage + yscDonation + dues;
+				+kayakShed + sailLoft + sailSchoolLoft + wetSlip + winterStorage + yscDonation + dues + other;
 	}
 	
 	private int getBalance() {

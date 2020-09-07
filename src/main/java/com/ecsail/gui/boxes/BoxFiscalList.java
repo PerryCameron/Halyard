@@ -112,7 +112,7 @@ public class BoxFiscalList extends HBox {
         addFiscalRecord.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
             	int moneyId = SqlSelect.getCount("money_id") + 1;
-            	Object_Money newMoney = new Object_Money(moneyId,membership.getMsid(),Integer.parseInt(yearSpinner.getEditor().getText()),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,getDues(definedFees),false,false);
+            	Object_Money newMoney = new Object_Money(moneyId,membership.getMsid(),Integer.parseInt(yearSpinner.getEditor().getText()),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,getDues(definedFees),false,false,0);
             	if(!SqlExists.recordExists(yearSpinner.getEditor().getText(),membership)) {
 					SqlInsert.addRecord(newMoney);
 					SqlInsert.addRecord(moneyId,membership);
@@ -173,11 +173,12 @@ public class BoxFiscalList extends HBox {
 	}
 	
 	private void createCurrentFiscalRecord(Object_DefinedFee definedFees) {  // creates a current fiscal record if none exists
+		System.out.println("Creating fiscal Record because it doesn't exist");
 		int addSlip = 0;
 		if(SqlExists.ownsSlip(membership.getMsid()) || SqlExists.subleasesSlip(membership.getMsid())) addSlip = 1;  // member has a slip for current year
 		int moneyId = SqlSelect.getCount("money_id") + 1;
 		if(!SqlExists.recordExists(currentYear,membership)) {  // record doesn't exist
-			Object_Money newMoney = new Object_Money(moneyId,membership.getMsid(),Integer.parseInt(currentYear),0,getDues(definedFees),0,0,0,0,0,addSlip,0,0,0,0,0,0,0,0,0,0,getDues(definedFees),false,false);
+			Object_Money newMoney = new Object_Money(moneyId,membership.getMsid(),Integer.parseInt(currentYear),0,getDues(definedFees),0,0,0,0,0,addSlip,0,0,0,0,0,0,0,0,0,0,getDues(definedFees),false,false,0);
 			SqlInsert.addRecord(newMoney);
 			SqlInsert.addRecord(moneyId,membership);
 			fiscals.add(newMoney);
@@ -185,6 +186,6 @@ public class BoxFiscalList extends HBox {
 	}
 	
 	private static void createTab(int rowIndex) {
-		parentTabPane.getTabs().add(new Tab(fiscals.get(rowIndex).getFiscal_year() + "", new BoxFiscal(membership, people, fiscals, rowIndex,note, duesText))); // current year tab
+		parentTabPane.getTabs().add(new Tab(fiscals.get(rowIndex).getFiscal_year() + "", new BoxFiscal(membership, people, fiscals, rowIndex, note, duesText))); // current year tab
 	}
 }
