@@ -369,6 +369,7 @@ public class SqlUpdate {
 					+ ",credit=" + money.getCredit()
 					+ ",balance=" + money.getBalance()
 					+ ",dues=" + money.getDues()
+					+ ",other=" + money.getOther()
 					+ " WHERE money_id=" + money.getMoney_id() + ";"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

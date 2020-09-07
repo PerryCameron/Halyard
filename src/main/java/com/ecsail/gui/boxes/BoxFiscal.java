@@ -459,7 +459,6 @@ public class BoxFiscal extends HBox {
 		int winterStorage = fiscals.get(rowIndex).getWinter_storage() * definedFees.getWinter_storage();
 		int yscDonation = fiscals.get(rowIndex).getYsc_donation();
 		int other = fiscals.get(rowIndex).getOther();
-		System.out.println("Other =" + other);
 		
 		return extraKey + sailLoftKey + kayakShedKey + sailSchoolLoftKey + beachSpot + kayakRack
 				+kayakShed + sailLoft + sailSchoolLoft + wetSlip + winterStorage + yscDonation + dues + other;
