@@ -66,11 +66,9 @@ static TabPane tabPane;
 	// creates a membership tab from the membership list
 	public static void createTab(int membershipID, int ms_id)  {
 		String tabLabel= "Membership " + membershipID;
-		if(tabOpen(tabLabel)) // is the tab already open??
-			tabPane.getSelectionModel().select(getTabIndex(tabLabel));
-		else {
+		if(!tabOpen(tabLabel)) // is the tab already open??
 			tabPane.getTabs().add(new TabMembership(getMembership(ms_id)));
-		}
+		tabPane.getSelectionModel().select(getTabIndex(tabLabel)); // focus on tab we are wanting
 	}
 	
 	public static void createTab(int ms_id) {  // overload
@@ -79,6 +77,7 @@ static TabPane tabPane;
 	}
 	
 	public static void createTab(Object_MembershipList membership) {
+		
 		tabPane.getTabs().add(new TabMembership(membership));
 	}
 	
