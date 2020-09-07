@@ -183,7 +183,7 @@ public class BoxFiscal extends HBox {
 		duesText.textProperty().addListener((observable, oldValue, newValue) -> {
 			if(!SqlSelect.isCommitted(fiscals.get(rowIndex).getMoney_id())) {
 				int newDues = Integer.parseInt(newValue);
-				System.out.println("textfield changed from " + oldValue + " to " + newValue);
+				System.out.println(" dues textfield set to " + newValue);
 				//SqlUpdate.updateField(newDues,"money","dues",fiscals,rowIndex);
 				fiscals.get(rowIndex).setDues(newDues);
 				updateBalance();
@@ -198,8 +198,8 @@ public class BoxFiscal extends HBox {
 				if (newValue) {  // we are commiting, not uncommiting
 					if (!balanceText.getText().equals("0"))
 						balanceText.setStyle("-fx-background-color: #f23a50");
-					SqlUpdate.updateMoney(fiscals.get(rowIndex));
-					SqlUpdate.commitFiscalRecord(fiscals.get(rowIndex).getMoney_id(), commit.getValue());
+					SqlUpdate.updateMoney(fiscals.get(rowIndex)); 
+					SqlUpdate.commitFiscalRecord(fiscals.get(rowIndex).getMoney_id(), commit.getValue());// this could be placed in line below above
 					fiscals.get(rowIndex).setCommitted(commit.getValue());
 					note.add("Paid $" + paidText.getText() + " leaving a balance of $" + balanceText.getText() + " for "
 							+ fiscals.get(rowIndex).getFiscal_year());
@@ -334,10 +334,13 @@ public class BoxFiscal extends HBox {
 		
 		totalWorkCreditTextField.setText(countWorkCredits() + "");
 		totalKeyTextField.setText(countKeys() + "");
-		if(hasOfficer) {
+		if(hasOfficer && !SqlSelect.isCommitted(fiscals.get(rowIndex).getMoney_id())) { // has officer and not committed
 			creditText.setText(duesText.getText()); // gets the dues and gives that amount of credit for being an officer
 			SqlUpdate.updateField(Integer.parseInt(duesText.getText()), "money", "credit",fiscals,rowIndex); // updates
 			fiscals.get(rowIndex).setCredit(Integer.parseInt(duesText.getText()));
+			System.out.println("Has officer giving credit");
+		} else {
+			System.out.println("Has no officer or is committed");
 		}
 		updateBalance();
 		balanceText.setText(getBalance() + "");
