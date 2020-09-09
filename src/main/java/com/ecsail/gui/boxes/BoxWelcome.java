@@ -24,6 +24,7 @@ public class BoxWelcome extends HBox {
 		Button slipListButton = new Button("Slips");
 		Button bodButton = new Button("Board of Directors");
 		Button newButton = new Button("New Membership");
+		Button batchesButton = new Button("Batches");
 		
 		int activeMembership = SqlSelect.getActiveMembershipCount();
 		int activePeople = SqlSelect.getActivePeopleCount();
@@ -37,6 +38,7 @@ public class BoxWelcome extends HBox {
 		activeMemListButton.setId("bigbuttontext");
 		peopleListButton.setId("bigbuttontext");
 		slipListButton.setId("bigbuttontext");
+		batchesButton.setId("bigbuttontext");
 		activeText.setId("");
 		vboxRight.setSpacing(10);
 		vboxRight.setPadding(new Insets(30,0,0,250));
@@ -45,6 +47,7 @@ public class BoxWelcome extends HBox {
 		slipListButton.setPrefSize(width, height);
 		bodButton.setPrefSize(width, height);
 		newButton.setPrefSize(width, height);
+		batchesButton.setPrefSize(width, height);
 		
 		///////////////// LISTENERS  /////////////////////////
 		
@@ -83,9 +86,15 @@ public class BoxWelcome extends HBox {
 			}
 		});
 		
+		batchesButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				TabLauncher.openTabBatchedPaidDues();
+			}
+		});
 		////////////////  SET CONTENT ////////////////////////
 		vboxLeft.getChildren().addAll(activeText,activepeopleText);
-		vboxRight.getChildren().addAll(activeMemListButton,peopleListButton,slipListButton,bodButton,newButton);
+		vboxRight.getChildren().addAll(activeMemListButton,peopleListButton,slipListButton,bodButton,newButton,batchesButton);
 		getChildren().addAll(vboxLeft,vboxRight);
 		
 	}

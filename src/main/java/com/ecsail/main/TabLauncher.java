@@ -46,17 +46,18 @@ static TabPane tabPane;
 	
 	public static void openPeopleTab() {
 		tabPane.getTabs().add(new TabPeopleList("People List"));
+		tabPane.getSelectionModel().select(getTabIndex("People List"));
 	}
 	
 	public static void openSlipsTab() {
 		tabPane.getTabs().add(new TabSlips("Slips",Main.activememberships));
+		tabPane.getSelectionModel().select(getTabIndex("Slips"));
 	}
 	
 	public static void openMembershipListTab() {
-		if(tabOpen("Membership List (Active)")) // is the tab already open??
-		tabPane.getSelectionModel().select(getTabIndex("Membership List (Active)"));	
-		else 
+		if(!tabOpen("Membership List (Active)")) // is the tab already open??
 		tabPane.getTabs().add(new TabActiveMembershipList(Main.activememberships));
+		tabPane.getSelectionModel().select(getTabIndex("Membership List (Active)"));
 	}
 	
 	public static void openWelcomeTab(VBox vboxGrey) {
@@ -77,12 +78,12 @@ static TabPane tabPane;
 	}
 	
 	public static void createTab(Object_MembershipList membership) {
-		
 		tabPane.getTabs().add(new TabMembership(membership));
 	}
 	
 	public static void openBoardTab() {
 		tabPane.getTabs().add(new TabBoardMembers("Board"));
+		tabPane.getSelectionModel().select(getTabIndex("Board"));
 	}
 	
 	public static void openTabStub() {
@@ -91,6 +92,7 @@ static TabPane tabPane;
 	
 	public static void openTabBatchedPaidDues() {
 		tabPane.getTabs().add(new TabBatchedPaidDues("Batched Fiscal"));
+		tabPane.getSelectionModel().select(getTabIndex("Batched Fiscal"));
 	}
 	
 	// creates a membership tab from the slip chart

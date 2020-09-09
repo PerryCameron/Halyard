@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 
+import com.ecsail.gui.dialogues.Dialogue_FiscalPDF;
 import com.ecsail.main.SqlSelect;
 import com.ecsail.main.SqlUpdate;
 import com.ecsail.main.TabLauncher;
@@ -243,7 +244,7 @@ public class TabBatchedPaidDues extends Tab {
 		printPdfButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-				System.out.println("Print PDF");
+				new Dialogue_FiscalPDF();
 				// launch sub menu here
 				}
 			});
