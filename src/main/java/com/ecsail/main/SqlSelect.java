@@ -223,7 +223,7 @@ public class SqlSelect {
 						rs.getInt("WET_SLIP"), rs.getInt("KAYAK_RACK"), rs.getInt("KAYAK_SHED"), 
 						rs.getInt("SAIL_LOFT"), rs.getInt("SAIL_SCHOOL_LASER_LOFT"), rs.getInt("WINTER_STORAGE"),
 						rs.getInt("YSC_DONATION"),rs.getInt("PAID"),rs.getInt("TOTAL"),rs.getInt("CREDIT"),
-						rs.getInt("BALANCE"), rs.getInt("DUES"),rs.getBoolean("COMMITED"),rs.getBoolean("CLOSED"),rs.getInt("OTHER")));
+						rs.getInt("BALANCE"), rs.getInt("DUES"),rs.getBoolean("COMMITED"),rs.getBoolean("CLOSED"),rs.getInt("OTHER"),rs.getInt("INITIATION")));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -232,8 +232,8 @@ public class SqlSelect {
 		return theseFiscals;
 	}
 	
-	public static ObservableList<Object_PaidDues> getPaidDues() { // overload
-		String query = "SELECT m.*, me.MEMBERSHIP_ID, p.l_name, p.f_name FROM money m INNER JOIN membership me on m.MS_ID=me.MS_ID INNER JOIN person p ON me.P_ID=p.P_ID WHERE m.FISCAL_YEAR=2020 AND m.COMMITED=true";
+	public static ObservableList<Object_PaidDues> getPaidDues(String selectedYear) { // overload
+		String query = "SELECT m.*, me.MEMBERSHIP_ID, p.l_name, p.f_name FROM money m INNER JOIN membership me on m.MS_ID=me.MS_ID INNER JOIN person p ON me.P_ID=p.P_ID WHERE m.FISCAL_YEAR=" + selectedYear + " AND m.COMMITED=true";
 		ObservableList<Object_PaidDues> theseFiscals = FXCollections.observableArrayList();
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
@@ -247,7 +247,7 @@ public class SqlSelect {
 						rs.getInt("SAIL_LOFT"), rs.getInt("SAIL_SCHOOL_LASER_LOFT"), rs.getInt("WINTER_STORAGE"),
 						rs.getInt("YSC_DONATION"),rs.getInt("PAID"),rs.getInt("TOTAL"),rs.getInt("CREDIT"),
 						rs.getInt("BALANCE"), rs.getInt("DUES"), rs.getBoolean("COMMITED"),rs.getBoolean("CLOSED"),
-						rs.getInt("OTHER"), rs.getString("F_NAME"), rs.getString("L_NAME"), rs.getInt("MEMBERSHIP_ID")));
+						rs.getInt("OTHER"),rs.getInt("INITIATION"), rs.getString("F_NAME"), rs.getString("L_NAME"), rs.getInt("MEMBERSHIP_ID")));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

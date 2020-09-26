@@ -59,8 +59,8 @@ public class TabBatchedPaidDues extends Tab {
 				
 			}
 		});
-		this.paidDues.addAll(SqlSelect.getPaidDues());
 		this.selectedYear = new SimpleDateFormat("yyyy").format(new Date());  // lets start at the current year
+		this.paidDues.addAll(SqlSelect.getPaidDues(selectedYear));
 		this.batch = SqlSelect.getBatchNumber();
 		this.currentDefinedFee = SqlSelect.getDefinedFee(selectedYear);
 		
@@ -236,7 +236,7 @@ public class TabBatchedPaidDues extends Tab {
 			public void handle(ActionEvent e) {
 				System.out.println("refresh");
 				paidDues.clear();
-				paidDues.addAll(SqlSelect.getPaidDues());
+				paidDues.addAll(SqlSelect.getPaidDues(selectedYear));
 				updateNonRenewed(nonRenewed);
 				}
 			});
@@ -244,8 +244,7 @@ public class TabBatchedPaidDues extends Tab {
 		printPdfButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-				new Dialogue_FiscalPDF();
-				// launch sub menu here
+				new Dialogue_FiscalPDF(selectedYear);
 				}
 			});
 		

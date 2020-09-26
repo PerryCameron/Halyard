@@ -99,7 +99,7 @@ public class SqlInsert {
 			+ "," + m.getSail_loft() + "," + m.getSail_school_laser_loft() + "," + m.getWinter_storage() 
 			+ "," + m.getYsc_donation() + "," + m.getPaid() + "," + m.getTotal() 
 			+ "," + m.getCredit() + "," + m.getBalance() + "," + m.getDues() 
-			+  "," + m.isCommitted() + "," + m.isClosed() + "," + m.getOther() +");"));
+			+  "," + m.isCommitted() + "," + m.isClosed() + "," + m.getOther() + "," + m.getInitiation() + ");"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -174,7 +174,8 @@ public class SqlScriptMaker {
 				+ mon.getDues() + ","
 				+ mon.isCommitted() + ","
 				+ mon.isClosed() + ","
-				+ mon.getOther() 
+				+ mon.getOther() + ","
+				+ mon.getInitiation()
 				+ ");\n";
 	}
 	

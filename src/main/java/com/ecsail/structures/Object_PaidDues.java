@@ -21,12 +21,12 @@ public class Object_PaidDues extends Object_Money {
 			Integer extra_key, Integer kayac_shed_key, Integer sail_loft_key, Integer sail_school_loft_key,
 			Integer beach, Integer wet_slip, Integer kayac_rack, Integer kayac_shed, Integer sail_loft,
 			Integer sail_school_laser_loft, Integer winter_storage, Integer ysc_donation, Integer paid, Integer total,
-			Integer credit, Integer balance, Integer dues, Boolean committed, Boolean closed, Integer other, String f_name,
+			Integer credit, Integer balance, Integer dues, Boolean committed, Boolean closed, Integer other, Integer initiation, String f_name,
 			String l_name, Integer membershipId) {
 		
 		super(money_id, ms_id, fiscal_year, batch, officer_credit, extra_key, kayac_shed_key, sail_loft_key,
 				sail_school_loft_key, beach, wet_slip, kayac_rack, kayac_shed, sail_loft, sail_school_laser_loft,
-				winter_storage, ysc_donation, paid, total, credit, balance, dues, committed, closed, other);
+				winter_storage, ysc_donation, paid, total, credit, balance, dues, committed, closed, other, initiation);
 		
 		this.membershipId = new SimpleIntegerProperty(membershipId);
 		this.f_name = new SimpleStringProperty(f_name);
@@ -42,7 +42,6 @@ public class Object_PaidDues extends Object_Money {
 	public final int getMembershipId() {
 		return this.membershipIdProperty().get();
 	}
-	
 
 	public final void setMembershipId(final int membershipId) {
 		this.membershipIdProperty().set(membershipId);

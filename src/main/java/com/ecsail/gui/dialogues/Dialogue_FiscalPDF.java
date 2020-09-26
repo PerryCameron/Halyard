@@ -1,9 +1,14 @@
 package com.ecsail.gui.dialogues;
 
+import java.io.IOException;
+
+import com.ecsail.pdf.Pdf_FiscalReport;
+
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
@@ -15,8 +20,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class Dialogue_FiscalPDF extends Stage {
-
-	public Dialogue_FiscalPDF() {
+	String selectedYear;
+	public Dialogue_FiscalPDF(String sy) {
+		this.selectedYear =  sy;
 		
 		Button createPDFbutton = new Button("Create PDF");
 		ToggleGroup tg1 = new ToggleGroup(); 
@@ -68,8 +74,18 @@ public class Dialogue_FiscalPDF extends Stage {
 		scene.getStylesheets().add("stylesheet.css");
 		setTitle("Print to PDF");
 		
-
-		
+		createPDFbutton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				try {
+					new Pdf_FiscalReport(selectedYear);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				// launch sub menu here
+				}
+			});
 		
 		
 		//////////////// ADD CONTENT ///////////////////

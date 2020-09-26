@@ -32,6 +32,7 @@ public class Object_Money {
 	private BooleanProperty committed;
 	private BooleanProperty closed;
 	private IntegerProperty other;
+	private IntegerProperty initiation;
 	
 	public Object_Money(Integer money_id, Integer ms_id, Integer fiscal_year, Integer batch,
 			Integer officer_credit, Integer extra_key, Integer kayac_shed_key,
@@ -39,7 +40,7 @@ public class Object_Money {
 			Integer wet_slip, Integer kayac_rack, Integer kayac_shed, Integer sail_loft,
 			Integer sail_school_laser_loft, Integer winter_storage, Integer ysc_donation,
 			Integer paid, Integer total, Integer credit, Integer balance, Integer dues, 
-			Boolean committed, Boolean closed, Integer other) {
+			Boolean committed, Boolean closed, Integer other, Integer initiation) {
 
 		this.money_id = new SimpleIntegerProperty(money_id);
 		this.ms_id = new SimpleIntegerProperty(ms_id);
@@ -66,6 +67,7 @@ public class Object_Money {
 		this.committed = new SimpleBooleanProperty(committed);
 		this.closed = new SimpleBooleanProperty(closed);
 		this.other = new SimpleIntegerProperty(other);
+		this.initiation = new SimpleIntegerProperty(initiation);
 	}
 
 	public Object_Money() {
@@ -94,6 +96,7 @@ public class Object_Money {
 		this.committed = new SimpleBooleanProperty(false);
 		this.closed = new SimpleBooleanProperty(false);
 		this.other = new SimpleIntegerProperty(0);
+		this.initiation = new SimpleIntegerProperty(0);
 	}
 
 	public final IntegerProperty money_idProperty() {
@@ -423,10 +426,6 @@ public class Object_Money {
 	public final void setClosed(final boolean closed) {
 		this.isClosedProperty().set(closed);
 	}
-	
-	
-
-
 
 	public final IntegerProperty officer_creditProperty() {
 		return this.officer_credit;
@@ -469,6 +468,20 @@ public class Object_Money {
 		this.otherProperty().set(other);
 	}
 
+	public final IntegerProperty initiationProperty() {
+		return this.initiation;
+	}
+	
+
+	public final int getInitiation() {
+		return this.initiationProperty().get();
+	}
+	
+
+	public final void setInitiation(final int initiation) {
+		this.initiationProperty().set(initiation);
+	}
+
 	@Override
 	public String toString() {
 		return "Object_Money [money_id=" + money_id + ", ms_id=" + ms_id + ", fiscal_year=" + fiscal_year + ", batch="
@@ -477,7 +490,8 @@ public class Object_Money {
 				+ ", beach=" + beach + ", wet_slip=" + wet_slip + ", kayac_rack=" + kayac_rack + ", kayac_shed="
 				+ kayac_shed + ", sail_loft=" + sail_loft + ", sail_school_laser_loft=" + sail_school_laser_loft
 				+ ", winter_storage=" + winter_storage + ", ysc_donation=" + ysc_donation + ", paid=" + paid
-				+ ", total=" + total + ", credit=" + credit + ", balance=" + balance + ", dues=" + dues + ", other="
-				+ other + ", committed=" + committed + ", closed=" + closed + "]";
+				+ ", total=" + total + ", credit=" + credit + ", balance=" + balance + ", dues=" + dues + ", committed="
+				+ committed + ", closed=" + closed + ", other=" + other + ", initiation=" + initiation + "]";
 	}
+	
 }

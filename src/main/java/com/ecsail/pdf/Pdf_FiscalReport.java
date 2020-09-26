@@ -1,7 +1,7 @@
 package com.ecsail.pdf;
 
 import com.ecsail.main.SqlSelect;
-import com.ecsail.structures.Object_Boat;
+import com.ecsail.structures.Object_PaidDues;
 import com.itextpdf.kernel.colors.DeviceCmyk;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
@@ -10,54 +10,63 @@ import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
+
+import javafx.collections.ObservableList;
+
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
+import java.util.Collections;
+import java.util.Comparator;
 	
 public class Pdf_FiscalReport {
 
-		private static List<Object_Boat> boats;
+		private static ObservableList<Object_PaidDues> paidDues;
 		static String[] boatHeaders = {
-				"Boat Id",
-				"Manufacturer",
-				"Year",
-				"Registration",
-				"Model",
-				"Boat Name",
-				"Sail Number",
-				"Trailer",
-				"Length",
-				"Width",
-				"Keel Type",
+				"MemberShip ID",
+				"Last",
+				"First",
+				"Dues",
+				"Credit",
+				"YSC Donation",
+				"Paid",
+				"Total",
+				"Balance",
+				"Batch",
 			};
-		static String dest = System.getProperty("user.home") + "/boats.pdf";
+		static String dest = System.getProperty("user.home") + "/Fiscal_Report.pdf";
 	    public static int counter = 1;
-	    int columns = 11;
 	    
-	    public static void createPdf() throws IOException {
-	    	boats = SqlSelect.getBoatsForPdf();
-	        //Initialize PDF writer
-	        PdfWriter writer = new PdfWriter(dest);
-	 
-	        //Initialize PDF document
-	        PdfDocument pdf = new PdfDocument(writer);
-	 
-	        // Initialize document
-	        Document document = new Document(pdf);
-	        //PageSize ps = PageSize.A5;
+		public Pdf_FiscalReport(String selectedYear) throws IOException {
+			paidDues = SqlSelect.getPaidDues(selectedYear);
+			
+			
+			sortByMembershipId();
+			
+			
+			// Initialize PDF writer
+			PdfWriter writer = null;
 
-	        document.add(mainPdfTable());
-	        document.setTopMargin(0);
-	        //Close document
-	        document.close();
-	        File file = new File(dest);
-	        Desktop desktop = Desktop.getDesktop(); // Gui_Main.class.getProtectionDomain().getCodeSource().getLocation().getPath()
-	        desktop.open(file);
-	    }
+			writer = new PdfWriter(dest);
+
+			// Initialize PDF document
+			PdfDocument pdf = new PdfDocument(writer);
+
+			// Initialize document
+			Document document = new Document(pdf);
+			// PageSize ps = PageSize.A5;
+
+			document.add(mainPdfTable());
+			document.setTopMargin(0);
+			// Close document
+			document.close();
+			File file = new File(dest);
+			Desktop desktop = Desktop.getDesktop(); // Gui_Main.class.getProtectionDomain().getCodeSource().getLocation().getPath()
+			desktop.open(file);
+		}
 
 	    public static Table mainPdfTable() throws IOException {
-	    	Table mainTable = new Table(11);
+	    	Table mainTable = new Table(boatHeaders.length);
 	    	mainTable.setBorder(Border.NO_BORDER);
 	    	
 			for(String str : boatHeaders ) {
@@ -66,19 +75,17 @@ public class Pdf_FiscalReport {
 						//.setWidth(12)
 						.add(new Paragraph(str).setFontSize(10)));
 			}
-			for(Object_Boat itm: boats) {
-				mainTable.addCell(new Cell().add(new Paragraph(itm.getBoat_id() + "").setFontSize(7)));
-				mainTable.addCell(new Cell().add(new Paragraph(itm.getManufacturer() + "").setFontSize(7)));
-				mainTable.addCell(new Cell().add(new Paragraph(itm.getManufacture_year() + "").setFontSize(7)));
-				mainTable.addCell(new Cell().add(new Paragraph(itm.getRegistration_num() + "").setFontSize(7)));
-				mainTable.addCell(new Cell().add(new Paragraph(itm.getModel() + "").setFontSize(7)));
-				mainTable.addCell(new Cell().add(new Paragraph(itm.getBoat_name() + "").setFontSize(7)));
-				mainTable.addCell(new Cell().add(new Paragraph(itm.getSail_number() + "").setFontSize(7)));
-				mainTable.addCell(new Cell().add(new Paragraph(itm.isHasTrailer() + "").setFontSize(7)));
-				mainTable.addCell(new Cell().add(new Paragraph(itm.getLength() + "").setFontSize(7)));
-				mainTable.addCell(new Cell().add(new Paragraph(itm.getWeight() + "").setFontSize(7)));
-				mainTable.addCell(new Cell().add(new Paragraph(itm.getKeel() + "").setFontSize(7)));
-				//mainTable.addCell(new Cell().add(new Paragraph(itm.getBoat_id() + "")));
+			for(Object_PaidDues due: paidDues) {
+				mainTable.addCell(new Cell().add(new Paragraph(due.getMembershipId() + "").setFontSize(7)));
+				mainTable.addCell(new Cell().add(new Paragraph(due.getL_name() + "").setFontSize(7)));
+				mainTable.addCell(new Cell().add(new Paragraph(due.getF_name() + "").setFontSize(7)));
+				mainTable.addCell(new Cell().add(new Paragraph("$" + due.getDues() + "").setFontSize(7)));
+				mainTable.addCell(new Cell().add(new Paragraph("$" + due.getCredit() + "").setFontSize(7)));
+				mainTable.addCell(new Cell().add(new Paragraph("$" + due.getYsc_donation() + "").setFontSize(7)));
+				mainTable.addCell(new Cell().add(new Paragraph("$" + due.getPaid() + "").setFontSize(7)));
+				mainTable.addCell(new Cell().add(new Paragraph("$" + due.getTotal() + "").setFontSize(7)));
+				mainTable.addCell(new Cell().add(new Paragraph("$" + due.getBalance() + "").setFontSize(7)));
+				mainTable.addCell(new Cell().add(new Paragraph(due.getBatch() + "").setFontSize(7)));
 			}
 	    	
 
@@ -86,6 +93,17 @@ public class Pdf_FiscalReport {
 			return mainTable;
 	    }
 	    
+	    public static void sortByMembershipId() {
+			  Collections.sort(paidDues, new Comparator<Object_PaidDues>() {
+			        @Override public int compare(Object_PaidDues p1, Object_PaidDues p2) {
+			            return p1.getMembershipId() - p2.getMembershipId(); // Ascending
+			        }
 
+			    });
+	    }
+// https://howtodoinjava.com/java/collections/arraylist/arraylist-sort-objects-by-field/
+      
 	}
+
+
 
