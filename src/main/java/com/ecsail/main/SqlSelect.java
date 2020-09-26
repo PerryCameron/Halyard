@@ -884,6 +884,22 @@ public class SqlSelect {
 		return number;
 	}
 	
+	public static int getNumberOfNewMemberships(String year) {
+		int number = 0;
+		ResultSet rs;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			rs = stmt.executeQuery("SELECT COUNT(*) from membership WHERE JOIN_DATE >= '" + year + "-01-01' and MEMBERSHIP_ID is not NULL;");
+			rs.next();
+			number = rs.getInt("COUNT(*)");
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return number;
+	}
+	
 	public static int getMSIDCount() {  // gives the last memo_id number
 		int number = 0;
 		ResultSet rs;

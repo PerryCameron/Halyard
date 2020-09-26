@@ -270,10 +270,15 @@ public class TabBatchedPaidDues extends Tab {
 		gridPane.add(new Text("Winter Storage:"), 0, 6);
 		gridPane.add(tText.getWinterStorageText(), 1, 6);
 		gridPane.add(tText.getWinterStorageMoneyText(), 2, 6);
-		gridPane.add(new Text("Credits:"), 0, 7);
-		gridPane.add(tText.getCreditsMoneyText(), 2, 7);
-		gridPane.add(new Text("Total:"), 0, 8);
-		gridPane.add(tText.getTotalMoneyText(), 2, 8);
+		
+		gridPane.add(new Text("Initiation fee:"), 0, 7);
+		gridPane.add(tText.getInitiationText(), 1, 7);
+		gridPane.add(tText.getInitiationMoneyText(), 2, 7);
+		
+		gridPane.add(new Text("Credits:"), 0, 8);
+		gridPane.add(tText.getCreditsMoneyText(), 2, 8);
+		gridPane.add(new Text("Total:"), 0, 9);
+		gridPane.add(tText.getTotalMoneyText(), 2, 9);
 		
 		remaindingRenewalHBox.getChildren().addAll(new Text("Memberships not yet renewed: " ),nonRenewed);
 		batchNumberHBox.getChildren().addAll(new Label("Batch Number"),batchSpinner);
@@ -304,6 +309,7 @@ public class TabBatchedPaidDues extends Tab {
 		currentMoneyTotal.setKayac_shed(SqlSelect.getMoneyCount("KAYAK_SHED", batch));
 		currentMoneyTotal.setSail_loft(SqlSelect.getMoneyCount("SAIL_LOFT+SAIL_SCHOOL_LASER_LOFT", batch));
 		currentMoneyTotal.setWinter_storage(SqlSelect.getMoneyCount("WINTER_STORAGE", batch));
+		currentMoneyTotal.setInitiation(SqlSelect.getMoneyCount("INITIATION", batch));
 		currentMoneyTotal.setCredit(SqlSelect.getMoneyCount("CREDIT", batch));
 		currentMoneyTotal.setTotal(SqlSelect.getMoneyCount("TOTAL", batch));
 	}
@@ -313,6 +319,7 @@ public class TabBatchedPaidDues extends Tab {
 		tText.changeKeyText(currentMoneyTotal.getExtra_key() + "");
 		tText.changeKeyMoneyText((currentMoneyTotal.getExtra_key() * currentDefinedFee.getMain_gate_key()) + "");
 		tText.changeWetSlipText(currentMoneyTotal.getWet_slip() + "");
+		tText.changeInitiationText(SqlSelect.getNumberOfNewMemberships(selectedYear) + "");
 		tText.changeWetSlipMoneyText((currentMoneyTotal.getWet_slip() * currentDefinedFee.getWet_slip()) + "");
 		tText.changeKayacRackText(currentMoneyTotal.getKayac_rack() + "");
 		tText.changeKayacRackMoneyText((currentMoneyTotal.getKayac_rack() * currentDefinedFee.getKayak_rack()) + "");
@@ -322,6 +329,7 @@ public class TabBatchedPaidDues extends Tab {
 		tText.changeSailLoftMoneyText((currentMoneyTotal.getSail_loft() * currentDefinedFee.getSail_loft()) +"");
 		tText.changeWinterStorageText(currentMoneyTotal.getWinter_storage() + "");
 		tText.changeWinterStorageMoneyText((currentMoneyTotal.getWinter_storage() * currentDefinedFee.getWinter_storage()) + "");
+		tText.changeInitiationMoneyText(currentMoneyTotal.getInitiation() + "");
 		tText.changeCreditsMoneyText(currentMoneyTotal.getCredit() + "");
 		tText.changeTotalText(currentMoneyTotal.getTotal() + "");
 	}

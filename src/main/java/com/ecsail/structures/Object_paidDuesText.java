@@ -18,8 +18,8 @@ public class Object_paidDuesText {
 	Text sailLoftMoneyText = new Text();
 	Text winterStorageMoneyText = new Text();
 	Text creditsMoneyText = new Text();
-
-	
+	Text initiationText = new Text();
+	Text initiationMoneyText = new Text();
 	Text totalMoneyText = new Text();
 	
 	public Object_paidDuesText() {
@@ -48,6 +48,10 @@ public class Object_paidDuesText {
 
 	public void changeWinterStorageText(String winterStorage) {
 		winterStorageText.setText(winterStorage);
+	}
+	
+	public void changeInitiationText(String initiation) {
+		initiationText.setText(initiation);
 	}
 
 	public void changeTotalText(String totalMoney) {
@@ -82,17 +86,13 @@ public class Object_paidDuesText {
 		creditsMoneyText.setText("-$" + creditsMoney);
 	}
 
-	//public void changeFeesMoneyText(String feesMoneyText) {
-	//	FeesMoneyText.setText(" $" + feesMoneyText);
-	//}
-
 	public void changeDuesMoneyText(String duesMoney) {
 		duesMoneyText.setText(" $" + duesMoney);
 	}
-
-	//public void changeMoneyText(String moneyText) {
-	//	MoneyText.setText("$" + moneyText);
-	//}
+	
+	public void changeInitiationMoneyText(String initiationMoney) {
+		initiationMoneyText.setText(" $" + initiationMoney);
+	}
 
 	public void setZeroText() {
 	changeDuesMoneyText("0");
@@ -110,6 +110,8 @@ public class Object_paidDuesText {
 	changeWinterStorageMoneyText("0");
 	changeCreditsMoneyText("0");
 	changeTotalText("0");
+	changeInitiationText("0");
+	changeInitiationMoneyText("0");
 	}
 
 	public Text getKeyText() {
@@ -170,5 +172,13 @@ public class Object_paidDuesText {
 
 	public Text getTotalMoneyText() {
 		return totalMoneyText;
+	}
+	
+	public Text getInitiationText() {
+		return initiationText;
+	}
+	
+	public Text getInitiationMoneyText() {
+		return initiationMoneyText;
 	}
 }
