@@ -71,7 +71,7 @@ public class Pdf_FiscalReport {
 	    	
 			for(String str : boatHeaders ) {
 				mainTable.addCell(new Cell()
-						.setBackgroundColor(new DeviceCmyk(0, 0, 0.76f, 0.01f))
+						.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f))
 						//.setWidth(12)
 						.add(new Paragraph(str).setFontSize(10)));
 			}
