@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.ecsail.main.Note;
+import com.ecsail.main.SqlDelete;
 import com.ecsail.main.SqlExists;
 import com.ecsail.main.SqlInsert;
 import com.ecsail.main.SqlSelect;
@@ -134,7 +135,10 @@ public class BoxFiscalList extends HBox {
 			public void handle(ActionEvent e) {
 				int selectedIndex = fiscalTableView.getSelectionModel().getSelectedIndex();
 				System.out.println("deleting fiscal record " + selectedIndex);
-				System.out.println(fiscals.get(3).getFiscal_year());
+				System.out.println(fiscals.get(selectedIndex).getFiscal_year());
+				SqlDelete.deleteWorkCreditsByMoneyID(fiscals.get(selectedIndex).getMoney_id());
+				SqlDelete.deleteMoneyByMoneyID(fiscals.get(selectedIndex).getMoney_id());
+				fiscals.remove(selectedIndex);
 			}
 		});
 		

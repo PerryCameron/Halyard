@@ -116,11 +116,33 @@ public class SqlDelete {
 		}	
 	}
 	
+	public static void deleteWorkCreditsByMoneyID(int money_id) {
+		Statement stmt;
+		try {
+			stmt = ConnectDatabase.connection.createStatement();
+			stmt.execute(Main.console.setRegexColor("delete from work_credit where money_id='" + money_id + "';"));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+	}
+	
 	public static void deleteMonies(int ms_id) {
 		Statement stmt;
 		try {
 			stmt = ConnectDatabase.connection.createStatement();
 			stmt.execute(Main.console.setRegexColor("delete from money where ms_id='" + ms_id + "';"));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+	}
+	
+	public static void deleteMoneyByMoneyID(int money_id) {
+		Statement stmt;
+		try {
+			stmt = ConnectDatabase.connection.createStatement();
+			stmt.execute(Main.console.setRegexColor("delete from money where money_id='" + money_id + "';"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
