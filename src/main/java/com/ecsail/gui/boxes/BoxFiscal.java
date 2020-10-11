@@ -192,10 +192,16 @@ public class BoxFiscal extends HBox {
 		// this is only called if you changer membership type or open a record
 		duesText.textProperty().addListener((observable, oldValue, newValue) -> {
 			if(!SqlSelect.isCommitted(fiscals.get(rowIndex).getMoney_id())) {
-				int newDues = Integer.parseInt(newValue);
-				System.out.println(" dues textfield set to " + newValue);
-				fiscals.get(rowIndex).setDues(newDues);
-				updateBalance();
+				if(!fiscals.get(rowIndex).isSupplemental()) {  // we don't need to update this for a supplemental record
+					System.out.println("This is a not a supplemental record updating dues text");
+					int newDues = Integer.parseInt(newValue);
+					System.out.println(" dues textfield set to " + newValue);
+					fiscals.get(rowIndex).setDues(newDues);
+					updateBalance();
+				} else {
+					fiscals.get(rowIndex).setDues(0);
+					System.out.println("This is a supplemental record, no dues added");
+				}
 			} else {
 				System.out.println("Record is commited, no changes made");
 			}
@@ -388,16 +394,20 @@ public class BoxFiscal extends HBox {
 		updateBalance();
 		balanceText.setText(getBalance() + "");
 		if(fiscals.get(rowIndex).isCommitted()) setEditable(false);
+		if(!fiscals.get(rowIndex).isSupplemental())  // do not show for supplemental record
 		hboxDues.getChildren().addAll(new Label("Dues:"), duesText);
 		hboxSubKey.getChildren().addAll(totalKeyTextField,addKeys);
+		if(!fiscals.get(rowIndex).isSupplemental())  // do not show for supplemental record
 		hboxSubWK.getChildren().addAll(totalWorkCreditTextField,addWorkCredits);
 		hboxWinterStorage.getChildren().addAll(new Label("Winter Storage"), winterStorageSpinner);
 		hboxKayac.getChildren().addAll(new Label("Kayac Rack"),kayakRackSpinner);
 		hboxWetSlip.getChildren().addAll(new Label("wetSlip"),wetSlipSpinner);
 		hboxYSC.getChildren().addAll(new Label("YSC Donation"),yscText);
 		hboxOther.getChildren().addAll(new Label("Other:"), otherText);
+		if(!fiscals.get(rowIndex).isSupplemental())  // do not show for supplemental record
 		hboxInitiation.getChildren().addAll(new Label("Initiation"), initiationText);
 		hboxPaid.getChildren().addAll(new Label("Paid"),paidText);
+		if(!fiscals.get(rowIndex).isSupplemental())  // do not show for supplemental record
 		hboxtotalWC.getChildren().addAll(new Label("Total:"),hboxSubWK);
 		hboxtotalKey.getChildren().addAll(new Label("Total:"),hboxSubKey);
 		hboxBeach.getChildren().addAll(new Label("Beach Spot"),beachSpinner);
@@ -405,10 +415,15 @@ public class BoxFiscal extends HBox {
 		hboxSailLoft.getChildren().addAll(new Label("Sail Loft"),sailLoftSpinner);
 		hboxSailSchoolLoft.getChildren().addAll(new Label("Sail School Loft"),sailSchoolLoftSpinner);
 		hboxTotalFees.getChildren().addAll(new Label("Total Fees"),totalFeesText);
+		if(!fiscals.get(rowIndex).isSupplemental())  // do not show for supplemental record
 		hboxCredit.getChildren().addAll(new Label("Credit"),creditText);
 		hboxBalence.getChildren().addAll(new Label("Balance"),balanceText);
 		hboxCheckBox.getChildren().add(commitCheckBox);
+		if(!fiscals.get(rowIndex).isSupplemental()) { // not a supplemental record
 		vbox1.getChildren().addAll(comboHBox, keysLabel,hboxtotalKey, workCreditsLabel,hboxtotalWC, BalanceLabel,hboxTotalFees,hboxCredit,hboxPaid,hboxBalence,hboxCheckBox);
+		} else { // is a supplemental record
+		vbox1.getChildren().addAll(comboHBox, keysLabel,hboxtotalKey,hboxtotalWC, BalanceLabel,hboxTotalFees,hboxCredit,hboxPaid,hboxBalence,hboxCheckBox);
+		}
 		vbox2.getChildren().addAll(feesLabel,hboxDues,hboxBeach,hboxKayac,hboxKayakShed,hboxSailLoft,hboxSailSchoolLoft,hboxWetSlip,hboxWinterStorage,hboxYSC,hboxInitiation, hboxOther);
 		mainHbox.getChildren().addAll(vbox2,vbox1);
 		mainVbox.getChildren().addAll(mainHbox);  // add error hbox in first

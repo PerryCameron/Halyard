@@ -33,6 +33,7 @@ public class Object_Money {
 	private BooleanProperty closed;
 	private IntegerProperty other;
 	private IntegerProperty initiation;
+	private BooleanProperty supplemental;
 	
 	public Object_Money(Integer money_id, Integer ms_id, Integer fiscal_year, Integer batch,
 			Integer officer_credit, Integer extra_key, Integer kayac_shed_key,
@@ -40,7 +41,7 @@ public class Object_Money {
 			Integer wet_slip, Integer kayac_rack, Integer kayac_shed, Integer sail_loft,
 			Integer sail_school_laser_loft, Integer winter_storage, Integer ysc_donation,
 			Integer paid, Integer total, Integer credit, Integer balance, Integer dues, 
-			Boolean committed, Boolean closed, Integer other, Integer initiation) {
+			Boolean committed, Boolean closed, Integer other, Integer initiation, Boolean supplemental) {
 
 		this.money_id = new SimpleIntegerProperty(money_id);
 		this.ms_id = new SimpleIntegerProperty(ms_id);
@@ -68,6 +69,7 @@ public class Object_Money {
 		this.closed = new SimpleBooleanProperty(closed);
 		this.other = new SimpleIntegerProperty(other);
 		this.initiation = new SimpleIntegerProperty(initiation);
+		this.supplemental = new SimpleBooleanProperty(supplemental);
 	}
 
 	public Object_Money() {
@@ -97,6 +99,7 @@ public class Object_Money {
 		this.closed = new SimpleBooleanProperty(false);
 		this.other = new SimpleIntegerProperty(0);
 		this.initiation = new SimpleIntegerProperty(0);
+		this.supplemental = new SimpleBooleanProperty(false);
 	}
 
 	public final IntegerProperty money_idProperty() {
@@ -481,6 +484,21 @@ public class Object_Money {
 	public final void setInitiation(final int initiation) {
 		this.initiationProperty().set(initiation);
 	}
+	
+
+	public final BooleanProperty supplementalProperty() {
+		return this.supplemental;
+	}
+	
+
+	public final boolean isSupplemental() {
+		return this.supplementalProperty().get();
+	}
+	
+
+	public final void setSupplemental(final boolean supplemental) {
+		this.supplementalProperty().set(supplemental);
+	}
 
 	@Override
 	public String toString() {
@@ -491,7 +509,7 @@ public class Object_Money {
 				+ kayac_shed + ", sail_loft=" + sail_loft + ", sail_school_laser_loft=" + sail_school_laser_loft
 				+ ", winter_storage=" + winter_storage + ", ysc_donation=" + ysc_donation + ", paid=" + paid
 				+ ", total=" + total + ", credit=" + credit + ", balance=" + balance + ", dues=" + dues + ", committed="
-				+ committed + ", closed=" + closed + ", other=" + other + ", initiation=" + initiation + "]";
+				+ committed + ", closed=" + closed + ", other=" + other + ", initiation=" + initiation
+				+ ", supplemental=" + supplemental + "]";
 	}
-	
 }

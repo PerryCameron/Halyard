@@ -53,7 +53,9 @@ public class BoxFiscalList extends HBox {
 		BoxFiscalList.people = p;
 		VBox vboxGrey = new VBox();  // this is the vbox for organizing all the widgets
         HBox hbox1 = new HBox();  // holds membershipID, Type and Active
+        HBox deleteButtonHBox = new HBox();
 		Button addFiscalRecord = new Button("Add");
+		Button deleteFiscalRecord = new Button("Delete");
 		final Spinner<Integer> yearSpinner = new Spinner<Integer>();
 		SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 2100, Integer.parseInt(currentYear));
 		BoxFiscalList.fiscals = SqlSelect.getMonies(membership.getMsid());
@@ -63,7 +65,7 @@ public class BoxFiscalList extends HBox {
 		if(!currentFiscalRecordExists) {
 			createCurrentFiscalRecord(definedFees);  // if no money records exist, create one
 		} 
-
+		
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
 		TableView<Object_Money> fiscalTableView = new TableView<Object_Money>();
 		fiscalTableView.setEditable(false);
@@ -102,6 +104,7 @@ public class BoxFiscalList extends HBox {
 		setId("box-blue");
 		vboxGrey.setId("box-grey");
 		vboxGrey.setPadding(new Insets(10, 10, 10, 10));
+		deleteButtonHBox.setPadding(new Insets(0,0,0,40));
 		vboxGrey.setPrefWidth(460);
         hbox1.setSpacing(5);  // membership HBox
         vboxGrey.setSpacing(10);
@@ -109,20 +112,32 @@ public class BoxFiscalList extends HBox {
         yearSpinner.setPrefWidth(80);
         
         ////////////////  LISTENERS ///////////////////
-        addFiscalRecord.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-            	int moneyId = SqlSelect.getCount("money_id") + 1;
-            	Object_Money newMoney = new Object_Money(moneyId,membership.getMsid(),Integer.parseInt(yearSpinner.getEditor().getText()),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,getDues(definedFees),false,false,0,0);
-            	if(!SqlExists.recordExists(yearSpinner.getEditor().getText(),membership)) {
-					SqlInsert.addRecord(newMoney);
-					SqlInsert.addRecord(moneyId,membership);
-					fiscals.add(newMoney);
-            	} else {
-            		System.out.println("There is alread a record for " + yearSpinner.getEditor().getText());
-            	}
-            }
-        });
+		addFiscalRecord.setOnAction(new EventHandler<ActionEvent>() {  // need to check for existing record
+			@Override
+			public void handle(ActionEvent e) {
+				int moneyId = SqlSelect.getCount("money_id") + 1;
+				Object_Money newMoney = new Object_Money(moneyId, membership.getMsid(),
+						Integer.parseInt(yearSpinner.getEditor().getText()), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+						0, 0, 0, 0, 0, getDues(definedFees), false, false, 0, 0, false);
+				if (SqlExists.recordExists(yearSpinner.getEditor().getText(), membership)) {
+					newMoney.setSupplemental(true);
+					newMoney.setDues(0);
+				}
+				SqlInsert.addRecord(newMoney);
+				SqlInsert.addRecord(moneyId, membership);
+				fiscals.add(newMoney);
+			}
+		});
         
+		deleteFiscalRecord.setOnAction(new EventHandler<ActionEvent>() {  // need to check for existing record
+			@Override
+			public void handle(ActionEvent e) {
+				int selectedIndex = fiscalTableView.getSelectionModel().getSelectedIndex();
+				System.out.println("deleting fiscal record " + selectedIndex);
+				System.out.println(fiscals.get(3).getFiscal_year());
+			}
+		});
+		
 		fiscalTableView.setRowFactory(tv -> {
 			TableRow<Object_Money> row = new TableRow<>();
 			row.setOnMouseClicked(event -> {
@@ -136,8 +151,9 @@ public class BoxFiscalList extends HBox {
         
 		///////////// SET CONTENT ////////////////////
         fiscalTableView.setItems(fiscals);
+        deleteButtonHBox.getChildren().add(deleteFiscalRecord);
         vboxPink.getChildren().add(fiscalTableView);
-		hbox1.getChildren().addAll(new Label("Create new Fiscal Year Record:"),yearSpinner,addFiscalRecord);
+		hbox1.getChildren().addAll(new Label("Create new Fiscal Year Record:"),yearSpinner,addFiscalRecord,deleteButtonHBox);
 		vboxGrey.getChildren().addAll(hbox1,vboxPink);
 		getChildren().addAll(vboxGrey);	
 	}
@@ -178,7 +194,7 @@ public class BoxFiscalList extends HBox {
 		if(SqlExists.ownsSlip(membership.getMsid()) || SqlExists.subleasesSlip(membership.getMsid())) addSlip = 1;  // member has a slip for current year
 		int moneyId = SqlSelect.getCount("money_id") + 1;
 		if(!SqlExists.recordExists(currentYear,membership)) {  // record doesn't exist
-			Object_Money newMoney = new Object_Money(moneyId,membership.getMsid(),Integer.parseInt(currentYear),0,getDues(definedFees),0,0,0,0,0,addSlip,0,0,0,0,0,0,0,0,0,0,getDues(definedFees),false,false,0,0);
+			Object_Money newMoney = new Object_Money(moneyId,membership.getMsid(),Integer.parseInt(currentYear),0,getDues(definedFees),0,0,0,0,0,addSlip,0,0,0,0,0,0,0,0,0,0,getDues(definedFees),false,false,0,0,false);
 			SqlInsert.addRecord(newMoney);
 			SqlInsert.addRecord(moneyId,membership);
 			fiscals.add(newMoney);
