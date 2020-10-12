@@ -8,15 +8,17 @@ public class Object_Payment {
 	private IntegerProperty money_id;
 	private IntegerProperty checkNumber;
 	private IntegerProperty cash;
+	private IntegerProperty credit;
 	private IntegerProperty other;
 	private IntegerProperty amount;
 	
-	public Object_Payment(Integer pay_id, Integer money_id, Integer checkNumber, Integer cash, Integer other,
+	public Object_Payment(Integer pay_id, Integer money_id, Integer checkNumber, Integer cash, Integer credit, Integer other,
 			Integer amount) {
 		this.pay_id = new SimpleIntegerProperty(pay_id);
 		this.money_id = new SimpleIntegerProperty(money_id);
 		this.checkNumber = new SimpleIntegerProperty(checkNumber);
 		this.cash = new SimpleIntegerProperty(cash);
+		this.credit = new SimpleIntegerProperty(credit);
 		this.other = new SimpleIntegerProperty(other);
 		this.amount = new SimpleIntegerProperty(amount);
 	}
@@ -110,10 +112,24 @@ public class Object_Payment {
 		this.amountProperty().set(amount);
 	}
 
+
+	public final IntegerProperty creditProperty() {
+		return this.credit;
+	}
+	
+
+	public final int getCredit() {
+		return this.creditProperty().get();
+	}
+	
+
+	public final void setCredit(final int credit) {
+		this.creditProperty().set(credit);
+	}
+	
 	@Override
 	public String toString() {
 		return "Object_Payment [pay_id=" + pay_id + ", money_id=" + money_id + ", checkNumber=" + checkNumber
 				+ ", cash=" + cash + ", other=" + other + ", amount=" + amount + "]";
 	}
-
 }

@@ -17,6 +17,7 @@ import com.ecsail.structures.Object_Membership;
 import com.ecsail.structures.Object_Memo;
 import com.ecsail.structures.Object_Money;
 import com.ecsail.structures.Object_Officer;
+import com.ecsail.structures.Object_Payment;
 import com.ecsail.structures.Object_Person;
 import com.ecsail.structures.Object_Phone;
 import com.ecsail.structures.Object_Slip;
@@ -38,6 +39,7 @@ public class SqlScriptMaker {
 	static ObservableList<Object_Officer> officers;
 	static ObservableList<Object_DefinedFee> definedfees;
 	static ObservableList<Object_WorkCredit> workcredits;
+	static ObservableList<Object_Payment> payments;
 	private static final int ALL = 0;
 	
 	public static void createSql() {
@@ -58,6 +60,7 @@ public class SqlScriptMaker {
 		officers = SqlSelect.getOfficers();
 		definedfees = SqlSelect.getDefinedFees();
 		workcredits = SqlSelect.getWorkCredits();
+		payments = SqlSelect.getPayments();
 		readFromFile(FileIO.SCRIPTS + "/ecsc_create.sql");
 		writeToFile(FileIO.SCRIPTS + "/ecsc_sql_" + stringDate + ".sql");
 	}
@@ -94,11 +97,26 @@ public class SqlScriptMaker {
 				writer.write(getDefinedFeeString(def));
 			for (Object_WorkCredit woc : workcredits)
 				writer.write(getWorkCreditString(woc));
+			for (Object_Payment obp : payments)
+				writer.write(getPaymentString(obp));
 			writer.close();
 			System.out.println("SQL script file sucessfully made");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static String getPaymentString(Object_Payment pay) {
+		return
+				"INSERT INTO payment () VALUES ("
+				+ pay.getPay_id() + ","
+				+ pay.getMoney_id() + ","
+				+ pay.getCheckNumber() + ","
+				+ pay.getCash() + ","
+				+ pay.getCredit() + ","
+				+ pay.getOther() + ","
+				+ pay.getAmount()
+				+ ");\n";
 	}
 	
 	public static String getWorkCreditString(Object_WorkCredit woc) {

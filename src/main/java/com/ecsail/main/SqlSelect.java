@@ -17,6 +17,7 @@ import com.ecsail.structures.Object_Memo;
 import com.ecsail.structures.Object_Money;
 import com.ecsail.structures.Object_Officer;
 import com.ecsail.structures.Object_PaidDues;
+import com.ecsail.structures.Object_Payment;
 import com.ecsail.structures.Object_Person;
 import com.ecsail.structures.Object_Phone;
 import com.ecsail.structures.Object_Slip;
@@ -41,6 +42,30 @@ public class SqlSelect {
 						rs.getInt("HARBOR"),
 						rs.getInt("SOCIAL"),
 						rs.getInt("OTHER")
+						));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return thisWorkCredit;
+	}
+	
+	public static ObservableList<Object_Payment> getPayments() {
+		ObservableList<Object_Payment> thisWorkCredit = FXCollections.observableArrayList();
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs;
+			rs = stmt.executeQuery(Main.console.setRegexColor("select * from work_credit;"));
+			while (rs.next()) {
+				thisWorkCredit.add(new Object_Payment(
+						rs.getInt("PAY_ID"), 
+						rs.getInt("MONEY_ID"), 
+						rs.getInt("CHECKNUMBER"),
+						rs.getInt("CASH"),
+						rs.getInt("CREDIT"),
+						rs.getInt("OTHER"),
+						rs.getInt("AMOUNT")
 						));
 			}
 		} catch (SQLException e) {
