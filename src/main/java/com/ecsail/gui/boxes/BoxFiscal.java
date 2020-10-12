@@ -100,13 +100,14 @@ public class BoxFiscal extends HBox {
 		VBox vbox2 = new VBox();
 		HBox hboxSubKey = new HBox(); // container for textfield and button
 		HBox hboxSubWK = new HBox(); // container for textfield and button
+		HBox hboxSubPay = new HBox(); // container for textfield and button
 		HBox hboxCheckBox = new HBox();
 		HBox hboxOther = new HBox();
 		HBox hboxInitiation = new HBox();
 		CheckBox commitCheckBox = new CheckBox("Commit");
 		Button addWorkCredits = new Button("Add");
 		Button addKeys = new Button("Add");
-		
+		Button addPayment = new Button("Add");
 
 
 		//////////////// ATTRIBUTES ///////////////////
@@ -134,6 +135,7 @@ public class BoxFiscal extends HBox {
 		hboxBalence.setSpacing(25);
 		hboxSubWK.setSpacing(5);
 		hboxSubKey.setSpacing(5);
+		hboxSubPay.setSpacing(5);
 		winterStorageSpinner.setPrefWidth(60);
 		kayakRackSpinner.setPrefWidth(60);
 		wetSlipSpinner.setPrefWidth(60);
@@ -398,6 +400,7 @@ public class BoxFiscal extends HBox {
 		hboxSubKey.getChildren().addAll(totalKeyTextField,addKeys);
 		if(!fiscals.get(rowIndex).isSupplemental())  // do not show for supplemental record
 		hboxSubWK.getChildren().addAll(totalWorkCreditTextField,addWorkCredits);
+		hboxSubPay.getChildren().addAll(paidText,addPayment);
 		hboxWinterStorage.getChildren().addAll(new Label("Winter Storage"), winterStorageSpinner);
 		hboxKayac.getChildren().addAll(new Label("Kayac Rack"),kayakRackSpinner);
 		hboxWetSlip.getChildren().addAll(new Label("wetSlip"),wetSlipSpinner);
@@ -405,7 +408,7 @@ public class BoxFiscal extends HBox {
 		hboxOther.getChildren().addAll(new Label("Other:"), otherText);
 		if(!fiscals.get(rowIndex).isSupplemental())  // do not show for supplemental record
 		hboxInitiation.getChildren().addAll(new Label("Initiation"), initiationText);
-		hboxPaid.getChildren().addAll(new Label("Paid"),paidText);
+		hboxPaid.getChildren().addAll(new Label("Paid"),hboxSubPay);
 		if(!fiscals.get(rowIndex).isSupplemental())  // do not show for supplemental record
 		hboxtotalWC.getChildren().addAll(new Label("Total:"),hboxSubWK);
 		hboxtotalKey.getChildren().addAll(new Label("Total:"),hboxSubKey);
