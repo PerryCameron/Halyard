@@ -164,8 +164,7 @@ public class BoxFiscal extends HBox {
 		vbox1.setSpacing(5);
 		vbox2.setSpacing(5);
 		totalWorkCreditTextField.setEditable(false);
-		duesText.setEditable(false);
-		
+		duesText.setEditable(true);
 		creditText.setEditable(false);
 		balanceText.setEditable(false);
 		comboHBox.setPadding(new Insets(0, 0, 10, 0));  // sets height of work credits label

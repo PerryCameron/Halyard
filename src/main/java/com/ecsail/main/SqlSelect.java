@@ -876,7 +876,7 @@ public class SqlSelect {
 			rs = stmt.executeQuery("SELECT (SELECT Count(MS_ID) from membership "
 					+ "where ACTIVE_MEMBERSHIP=true) - (SELECT Count(m.MS_ID) from membership "
 					+ "m right join money mo on mo.MS_ID=m.MS_ID where mo.commited=true and "
-					+ "mo.fiscal_year='2020' and m.ACTIVE_MEMBERSHIP=true) AS INCREASE;");
+					+ "mo.fiscal_year='2020' and m.ACTIVE_MEMBERSHIP=true and mo.SUPPLEMENTAL=false) AS INCREASE;");
 			rs.next();
 			number = rs.getInt("INCREASE");
 		

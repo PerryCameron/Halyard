@@ -9,7 +9,7 @@ public class Object_paidDuesText {
 	Text KayacShedText = new Text();
 	Text sailLoftText = new Text();
 	Text winterStorageText = new Text();
-	
+	Text beachSpotText = new Text();
 	Text duesMoneyText = new Text();
 	Text keyMoneyText = new Text();
 	Text wetSlipMoneyText = new Text();
@@ -17,10 +17,13 @@ public class Object_paidDuesText {
 	Text kayacShedMoneyText = new Text();
 	Text sailLoftMoneyText = new Text();
 	Text winterStorageMoneyText = new Text();
+	Text beachSpotMoneyText = new Text();
 	Text creditsMoneyText = new Text();
 	Text initiationText = new Text();
 	Text initiationMoneyText = new Text();
 	Text totalMoneyText = new Text();
+	Text yspDonationText = new Text();
+	Text yspDonationMoneyText = new Text();
 	
 	public Object_paidDuesText() {
 		setZeroText();
@@ -50,8 +53,16 @@ public class Object_paidDuesText {
 		winterStorageText.setText(winterStorage);
 	}
 	
+	public void changeBeachSpotText(String beachSpot) {
+		beachSpotText.setText(beachSpot);
+	}
+	
 	public void changeInitiationText(String initiation) {
 		initiationText.setText(initiation);
+	}
+	
+	public void changeYspDonationText(String yspDonation) {
+		yspDonationText.setText(yspDonation);
 	}
 
 	public void changeTotalText(String totalMoney) {
@@ -81,6 +92,10 @@ public class Object_paidDuesText {
 	public void changeWinterStorageMoneyText(String winterStorageMoney) {
 		winterStorageMoneyText.setText(" $" + winterStorageMoney);
 	}
+	
+	public void changeBeachSpotMoneyText(String beachSpotMoney) {
+		beachSpotMoneyText.setText(" $" + beachSpotMoney);
+	}
 
 	public void changeCreditsMoneyText(String creditsMoney) {
 		creditsMoneyText.setText("-$" + creditsMoney);
@@ -92,6 +107,10 @@ public class Object_paidDuesText {
 	
 	public void changeInitiationMoneyText(String initiationMoney) {
 		initiationMoneyText.setText(" $" + initiationMoney);
+	}
+	
+	public void changeYspDonationMoneyText(String yspDonationMoney) {
+		yspDonationMoneyText.setText(" $" + yspDonationMoney);
 	}
 
 	public void setZeroText() {
@@ -112,6 +131,10 @@ public class Object_paidDuesText {
 	changeTotalText("0");
 	changeInitiationText("0");
 	changeInitiationMoneyText("0");
+	changeBeachSpotMoneyText("0");
+	changeYspDonationText("0");
+	changeYspDonationMoneyText("0");
+	
 	}
 
 	public Text getKeyText() {
@@ -136,6 +159,10 @@ public class Object_paidDuesText {
 
 	public Text getWinterStorageText() {
 		return winterStorageText;
+	}
+	
+	public Text getBeachSpotText() {
+		return beachSpotText;
 	}
 
 	public Text getDuesMoneyText() {
@@ -165,6 +192,10 @@ public class Object_paidDuesText {
 	public Text getWinterStorageMoneyText() {
 		return winterStorageMoneyText;
 	}
+	
+	public Text getBeachSpotMoneyText() {
+		return beachSpotMoneyText;
+	}
 
 	public Text getCreditsMoneyText() {
 		return creditsMoneyText;
@@ -180,5 +211,13 @@ public class Object_paidDuesText {
 	
 	public Text getInitiationMoneyText() {
 		return initiationMoneyText;
+	}
+	
+	public Text getYspDonationText() {
+		return yspDonationText;
+	}
+	
+	public Text getYspDonationMoneyText() {
+		return yspDonationMoneyText;
 	}
 }

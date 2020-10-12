@@ -252,33 +252,48 @@ public class TabBatchedPaidDues extends Tab {
 		
 		gridPane.add(new Text("Dues:"), 0, 0);
 		gridPane.add(tText.getDuesMoneyText(), 2, 0);
+		
 		gridPane.add(new Text("Keys:"), 0, 1);
 		gridPane.add(tText.getKeyText(), 1, 1);
 		gridPane.add(tText.getKeyMoneyText(), 2, 1);
+		
 		gridPane.add(new Text("Wetslips:"), 0, 2);
 		gridPane.add(tText.getWetSlipText(), 1, 2);
 		gridPane.add(tText.getWetSlipMoneyText(), 2, 2);
+		
 		gridPane.add(new Text("Kayac Rack:"), 0, 3);
 		gridPane.add(tText.getKayacRackText(), 1, 3);
 		gridPane.add(tText.getKayacRackMoneyText(), 2, 3);
+		
 		gridPane.add(new Text("Kayac Shed:"), 0, 4);
 		gridPane.add(tText.getKayacShedText(), 1, 4);
 		gridPane.add(tText.getKayacShedMoneyText(), 2, 4);
-		gridPane.add(new Text("Sail Loft:"), 0, 5);
-		gridPane.add(tText.getSailLoftText(), 1, 5);
-		gridPane.add(tText.getSailLoftMoneyText(), 2, 5);
-		gridPane.add(new Text("Winter Storage:"), 0, 6);
-		gridPane.add(tText.getWinterStorageText(), 1, 6);
-		gridPane.add(tText.getWinterStorageMoneyText(), 2, 6);
 		
-		gridPane.add(new Text("Initiation fee:"), 0, 7);
-		gridPane.add(tText.getInitiationText(), 1, 7);
-		gridPane.add(tText.getInitiationMoneyText(), 2, 7);
+		gridPane.add(new Text("Beach Spot:"), 0, 5);
+		gridPane.add(tText.getBeachSpotText(), 1, 5);
+		gridPane.add(tText.getBeachSpotMoneyText(), 2, 5);
 		
-		gridPane.add(new Text("Credits:"), 0, 8);
-		gridPane.add(tText.getCreditsMoneyText(), 2, 8);
-		gridPane.add(new Text("Total:"), 0, 9);
-		gridPane.add(tText.getTotalMoneyText(), 2, 9);
+		gridPane.add(new Text("Sail Loft:"), 0, 6);
+		gridPane.add(tText.getSailLoftText(), 1, 6);
+		gridPane.add(tText.getSailLoftMoneyText(), 2, 6);
+		
+		gridPane.add(new Text("Winter Storage:"), 0, 7);
+		gridPane.add(tText.getWinterStorageText(), 1, 7);
+		gridPane.add(tText.getWinterStorageMoneyText(), 2, 7);
+		
+		gridPane.add(new Text("Initiation fee:"), 0, 8);
+		gridPane.add(tText.getInitiationText(), 1, 8);
+		gridPane.add(tText.getInitiationMoneyText(), 2, 8);
+		
+		gridPane.add(new Text("YSC Donation:"), 0, 9);
+		gridPane.add(tText.getYspDonationText(), 1, 9);
+		gridPane.add(tText.getYspDonationMoneyText(), 2, 9);
+		
+		gridPane.add(new Text("Credits:"), 0, 10);
+		gridPane.add(tText.getCreditsMoneyText(), 2, 10);
+		
+		gridPane.add(new Text("Total:"), 0, 11);
+		gridPane.add(tText.getTotalMoneyText(), 2, 11);
 		
 		remaindingRenewalHBox.getChildren().addAll(new Text("Memberships not yet renewed: " ),nonRenewed);
 		batchNumberHBox.getChildren().addAll(new Label("Batch Number"),batchSpinner);
@@ -311,7 +326,9 @@ public class TabBatchedPaidDues extends Tab {
 		currentMoneyTotal.setWinter_storage(SqlSelect.getMoneyCount("WINTER_STORAGE", batch));
 		currentMoneyTotal.setInitiation(SqlSelect.getMoneyCount("INITIATION", batch));
 		currentMoneyTotal.setCredit(SqlSelect.getMoneyCount("CREDIT", batch));
-		currentMoneyTotal.setTotal(SqlSelect.getMoneyCount("TOTAL", batch));
+		currentMoneyTotal.setTotal(SqlSelect.getMoneyCount("PAID", batch));
+		currentMoneyTotal.setBeach(SqlSelect.getMoneyCount("BEACH", batch));
+		currentMoneyTotal.setYsc_donation(SqlSelect.getMoneyCount("YSC_DONATION", batch));
 	}
 	
 	private void updateMoneyTotals(GridPane gridPane) {  // need to add defined fees object
@@ -332,6 +349,10 @@ public class TabBatchedPaidDues extends Tab {
 		tText.changeInitiationMoneyText(currentMoneyTotal.getInitiation() + "");
 		tText.changeCreditsMoneyText(currentMoneyTotal.getCredit() + "");
 		tText.changeTotalText(currentMoneyTotal.getTotal() + "");
+		tText.changeBeachSpotText(currentMoneyTotal.getBeach() + "");
+		tText.changeBeachSpotMoneyText(currentMoneyTotal.getBeach() * currentDefinedFee.getBeach() + "");
+		tText.changeYspDonationMoneyText(currentMoneyTotal.getYsc_donation() + "");
+		
 	}
 	
 	
