@@ -46,7 +46,7 @@ public class BoxToolBar extends VBox {
 		Menu m4_1 = new Menu("Create");	
 		MenuItem m4_1_1 = new MenuItem("Treasurer's Report");
 		MenuItem m4_1_2 = new MenuItem("Boat Report");
-		MenuItem m4_1_3 = new MenuItem("Batched Paid Dues");
+		MenuItem m4_1_3 = new MenuItem("Deposits");
 		MenuItem m4_1_4 = new MenuItem("Tab Stub");
 		MenuItem m4_1_5 = new MenuItem("Window Stub");
 

@@ -119,7 +119,7 @@ public class Dialogue_Keys extends Stage {
         totalKeyLocalTextField.setText(countKeys() + "");
 		scene.getStylesheets().add("stylesheet.css");
 		hboxButton.getChildren().addAll(saveButton, cancelButton);
-		hboxKey.getChildren().addAll(new Label("Extra Key"),extraKeySpinner);
+		hboxKey.getChildren().addAll(new Label("Gate Key"),extraKeySpinner);
 		hboxSLKey.getChildren().addAll(new Label("Sail Loft Key"),sailLKeySpinner);
 		hboxKSKey.getChildren().addAll(new Label("Kayak Shed Key"),kayakSKeySpinner);
 		hboxSSLKey.getChildren().addAll(new Label("Sail School Loft Key"),sailSSLKeySpinner);
