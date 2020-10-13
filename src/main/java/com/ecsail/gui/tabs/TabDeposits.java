@@ -42,7 +42,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 
-public class TabBatchedPaidDues extends Tab {
+public class TabDeposits extends Tab {
 	private ObservableList<Object_PaidDues> paidDues;
 	private Object_Money currentMoneyTotal = new Object_Money();
 	private Object_DefinedFee currentDefinedFee;
@@ -50,7 +50,7 @@ public class TabBatchedPaidDues extends Tab {
 	String selectedYear;
 	int batch;
 	
-	public TabBatchedPaidDues(String text) { 
+	public TabDeposits(String text) { 
 		super(text);
 		this.paidDues =  FXCollections.observableArrayList(new Callback<Object_PaidDues, Observable[]>() {
 			@Override
@@ -135,7 +135,7 @@ public class TabBatchedPaidDues extends Tab {
 			  if (!newValue) {
 				  batchSpinner.increment(0); // won't change value, but will commit editor
 				  batch = Integer.parseInt(batchSpinner.getEditor().getText());
-				  System.out.println("Batch is now " + batchSpinner.getEditor().getText());
+				  System.out.println("Deposit is now " + batchSpinner.getEditor().getText());
 				  // public static Object_DefinedFee getDefinedFee(String year, Object_DefinedFee thisDefinedFee)
 				  // clear and update paidDues
 				  // refresh the grid
@@ -296,7 +296,7 @@ public class TabBatchedPaidDues extends Tab {
 		gridPane.add(tText.getTotalMoneyText(), 2, 11);
 		
 		remaindingRenewalHBox.getChildren().addAll(new Text("Memberships not yet renewed: " ),nonRenewed);
-		batchNumberHBox.getChildren().addAll(new Label("Batch Number"),batchSpinner);
+		batchNumberHBox.getChildren().addAll(new Label("Deposit Number"),batchSpinner);
 		yearBatchHBox.getChildren().addAll(yearSpinner,batchNumberHBox);
 		buttonHBox.getChildren().addAll(refreshButton,printPdfButton);
 		gridHBox.getChildren().add(gridPane);

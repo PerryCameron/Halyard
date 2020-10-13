@@ -109,7 +109,6 @@ public class BoxFiscal extends HBox {
 		Button addKeys = new Button("Add");
 		Button addPayment = new Button("Add");
 
-
 		//////////////// ATTRIBUTES ///////////////////
 		workCreditsLabel.setId("bold-label");
 		feesLabel.setId("bold-label");
@@ -365,6 +364,12 @@ public class BoxFiscal extends HBox {
         addKeys.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
             	new Dialogue_Keys(fiscals.get(rowIndex), totalKeyTextField);
+            }
+        });
+        
+        addPayment.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+            	System.out.println("We are going to add a new dialogue here");
             }
         });
         

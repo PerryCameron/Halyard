@@ -1,7 +1,7 @@
 package com.ecsail.main;
 
 import com.ecsail.gui.tabs.TabActiveMembershipList;
-import com.ecsail.gui.tabs.TabBatchedPaidDues;
+import com.ecsail.gui.tabs.TabDeposits;
 import com.ecsail.gui.tabs.TabBoardMembers;
 import com.ecsail.gui.tabs.TabMembership;
 import com.ecsail.gui.tabs.TabPeopleList;
@@ -91,8 +91,8 @@ static TabPane tabPane;
 	}
 	
 	public static void openTabBatchedPaidDues() {
-		tabPane.getTabs().add(new TabBatchedPaidDues("Batched Fiscal"));
-		tabPane.getSelectionModel().select(getTabIndex("Batched Fiscal"));
+		tabPane.getTabs().add(new TabDeposits("Deposits"));
+		tabPane.getSelectionModel().select(getTabIndex("Deposits"));
 	}
 	
 	// creates a membership tab from the slip chart

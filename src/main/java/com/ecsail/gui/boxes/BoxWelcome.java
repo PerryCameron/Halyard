@@ -24,7 +24,7 @@ public class BoxWelcome extends HBox {
 		Button slipListButton = new Button("Slips");
 		Button bodButton = new Button("Board of Directors");
 		Button newButton = new Button("New Membership");
-		Button batchesButton = new Button("Batches");
+		Button batchesButton = new Button("Deposits");
 		
 		int activeMembership = SqlSelect.getActiveMembershipCount();
 		int activePeople = SqlSelect.getActivePeopleCount();
