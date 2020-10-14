@@ -2,25 +2,25 @@ package com.ecsail.structures;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 public class Object_Payment {
 	private IntegerProperty pay_id;
 	private IntegerProperty money_id;
 	private IntegerProperty checkNumber;
-	private IntegerProperty cash;
-	private IntegerProperty credit;
-	private IntegerProperty other;
-	private IntegerProperty amount;
+	private StringProperty 	paymentType;
+	private StringProperty  paymentDate;
+	private IntegerProperty PaymentAmount;
 	
-	public Object_Payment(Integer pay_id, Integer money_id, Integer checkNumber, Integer cash, Integer credit, Integer other,
-			Integer amount) {
+	public Object_Payment(Integer pay_id, Integer money_id, Integer checkNumber, String paymentType, String paymentDate,
+			Integer paymentAmount) {
 		this.pay_id = new SimpleIntegerProperty(pay_id);
 		this.money_id = new SimpleIntegerProperty(money_id);
 		this.checkNumber = new SimpleIntegerProperty(checkNumber);
-		this.cash = new SimpleIntegerProperty(cash);
-		this.credit = new SimpleIntegerProperty(credit);
-		this.other = new SimpleIntegerProperty(other);
-		this.amount = new SimpleIntegerProperty(amount);
+		this.paymentType = new SimpleStringProperty(paymentType);
+		this.paymentDate = new SimpleStringProperty(paymentDate);
+		this.PaymentAmount = new SimpleIntegerProperty(paymentAmount);
 	}
 
 	public final IntegerProperty pay_idProperty() {
@@ -68,68 +68,55 @@ public class Object_Payment {
 	}
 	
 
-	public final IntegerProperty cashProperty() {
-		return this.cash;
+	public final StringProperty paymentTypeProperty() {
+		return this.paymentType;
 	}
 	
 
-	public final int getCash() {
-		return this.cashProperty().get();
+	public final String getPaymentType() {
+		return this.paymentTypeProperty().get();
 	}
 	
 
-	public final void setCash(final int cash) {
-		this.cashProperty().set(cash);
+	public final void setPaymentType(final String paymentType) {
+		this.paymentTypeProperty().set(paymentType);
 	}
 	
 
-	public final IntegerProperty otherProperty() {
-		return this.other;
+	public final StringProperty paymentDateProperty() {
+		return this.paymentDate;
 	}
 	
 
-	public final int getOther() {
-		return this.otherProperty().get();
+	public final String getPaymentDate() {
+		return this.paymentDateProperty().get();
 	}
 	
 
-	public final void setOther(final int other) {
-		this.otherProperty().set(other);
+	public final void setPaymentDate(final String paymentDate) {
+		this.paymentDateProperty().set(paymentDate);
 	}
 	
 
-	public final IntegerProperty amountProperty() {
-		return this.amount;
+	public final IntegerProperty PaymentAmountProperty() {
+		return this.PaymentAmount;
 	}
 	
 
-	public final int getAmount() {
-		return this.amountProperty().get();
+	public final int getPaymentAmount() {
+		return this.PaymentAmountProperty().get();
 	}
 	
 
-	public final void setAmount(final int amount) {
-		this.amountProperty().set(amount);
+	public final void setPaymentAmount(final int PaymentAmount) {
+		this.PaymentAmountProperty().set(PaymentAmount);
 	}
 
-
-	public final IntegerProperty creditProperty() {
-		return this.credit;
-	}
-	
-
-	public final int getCredit() {
-		return this.creditProperty().get();
-	}
-	
-
-	public final void setCredit(final int credit) {
-		this.creditProperty().set(credit);
-	}
-	
 	@Override
 	public String toString() {
 		return "Object_Payment [pay_id=" + pay_id + ", money_id=" + money_id + ", checkNumber=" + checkNumber
-				+ ", cash=" + cash + ", other=" + other + ", amount=" + amount + "]";
+				+ ", paymentType=" + paymentType + ", paymentDate=" + paymentDate + ", PaymentAmount=" + PaymentAmount
+				+ "]";
 	}
+	
 }

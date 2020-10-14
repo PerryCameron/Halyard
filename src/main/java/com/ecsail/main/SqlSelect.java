@@ -62,9 +62,8 @@ public class SqlSelect {
 						rs.getInt("PAY_ID"), 
 						rs.getInt("MONEY_ID"), 
 						rs.getInt("CHECKNUMBER"),
-						rs.getInt("CASH"),
-						rs.getInt("CREDIT"),
-						rs.getInt("OTHER"),
+						rs.getString("PAYMENT_TYPE"),
+						rs.getString("PAYMENT_DATE"),
 						rs.getInt("AMOUNT")
 						));
 			}
@@ -920,6 +919,22 @@ public class SqlSelect {
 			rs = stmt.executeQuery("SELECT COUNT(*) from membership WHERE JOIN_DATE >= '" + year + "-01-01' and MEMBERSHIP_ID is not NULL;");
 			rs.next();
 			number = rs.getInt("COUNT(*)");
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return number;
+	}
+	
+	public static int getNumberOfPayments() {
+		int number = 0;
+		ResultSet rs;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			rs = stmt.executeQuery("SELECT COUNT(PAY_ID) from payment;");
+			rs.next();
+			number = rs.getInt("COUNT(PAY_ID)");
 		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

@@ -26,6 +26,20 @@ public class SqlExists {
 		return answer;
 	}
 	
+	public static Boolean paymentExists(int money_id) {
+		Boolean answer = false;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT EXISTS(SELECT * FROM payment WHERE MONEY_ID=" + money_id + ");"));
+			rs.next();
+		    answer = rs.getBoolean("EXISTS(SELECT * FROM payment WHERE MONEY_ID=" + money_id + ")");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return answer;
+	}
+	
 	public static boolean memberShipExists(int ms_id) {
 		Boolean result = false;
 		try {

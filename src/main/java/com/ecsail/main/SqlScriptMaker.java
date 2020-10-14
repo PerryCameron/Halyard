@@ -91,14 +91,15 @@ public class SqlScriptMaker {
 				writer.write(getEmailString(eml));
 			for (Object_Money mon : monies)
 				writer.write(getMoneyString(mon));
+			for (Object_Payment obp : payments)
+				writer.write(getPaymentString(obp));
 			for (Object_Officer off : officers)
 				writer.write(getOfficerString(off));
 			for (Object_DefinedFee def : definedfees)
 				writer.write(getDefinedFeeString(def));
 			for (Object_WorkCredit woc : workcredits)
 				writer.write(getWorkCreditString(woc));
-			for (Object_Payment obp : payments)
-				writer.write(getPaymentString(obp));
+
 			writer.close();
 			System.out.println("SQL script file sucessfully made");
 		} catch (IOException e) {
@@ -112,10 +113,9 @@ public class SqlScriptMaker {
 				+ pay.getPay_id() + ","
 				+ pay.getMoney_id() + ","
 				+ pay.getCheckNumber() + ","
-				+ pay.getCash() + ","
-				+ pay.getCredit() + ","
-				+ pay.getOther() + ","
-				+ pay.getAmount()
+				+ pay.getPaymentType() + ","
+				+ pay.getPaymentDate() + ","
+				+ pay.getPaymentAmount()
 				+ ");\n";
 	}
 	

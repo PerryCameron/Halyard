@@ -131,6 +131,18 @@
 	-fx-background-color: #dbd5d5; /* #dfdada*/ 
 }
 
+#box-test {
+	-fx-background-color: #c3e6d5; /* #dfdada*/
+}
+
+#box-test2 {
+	-fx-background-color: #a636d5; /* #dfdada*/
+}
+
+#box-lightgrey {
+	-fx-background-color: #c5c7c1;
+}
+
 #bold-label {
   -fx-font-weight: bold;
 }
