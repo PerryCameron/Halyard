@@ -48,12 +48,12 @@ public class TabPayment extends Tab {
 		VBox vboxGrey = new VBox();  // this is the vbox for organizing all the widgets
 		VBox vboxBlue = new VBox();
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
-		
+		 
 		vboxBlue.setId("box-blue");
 		vboxBlue.setPadding(new Insets(5,5,5,5));
 		vboxPink.setPadding(new Insets(3,3,3,3)); // spacing to make pink from around table
 		vboxPink.setId("box-pink");
-		//vboxGrey.setId("slip-box");
+		//vboxGrey.setId("slip-box");/
 		//vboxGrey.setPrefHeight(688);
 		paymentTableView = new TableView<Object_Payment>();
 		paymentTableView.setItems(payments);
