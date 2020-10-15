@@ -8,19 +8,19 @@ import javafx.beans.property.StringProperty;
 public class Object_Payment {
 	private IntegerProperty pay_id;
 	private IntegerProperty money_id;
-	private IntegerProperty checkNumber;
-	private StringProperty 	paymentType;
-	private StringProperty  paymentDate;
-	private IntegerProperty PaymentAmount;
+	private StringProperty checkNumber;
+	private StringProperty paymentType;
+	private StringProperty paymentDate;
+	private StringProperty PaymentAmount;
 	
-	public Object_Payment(Integer pay_id, Integer money_id, Integer checkNumber, String paymentType, String paymentDate,
-			Integer paymentAmount) {
+	public Object_Payment(Integer pay_id, Integer money_id, String checkNumber, String paymentType, String paymentDate,
+			String paymentAmount) {
 		this.pay_id = new SimpleIntegerProperty(pay_id);
 		this.money_id = new SimpleIntegerProperty(money_id);
-		this.checkNumber = new SimpleIntegerProperty(checkNumber);
+		this.checkNumber = new SimpleStringProperty(checkNumber);
 		this.paymentType = new SimpleStringProperty(paymentType);
 		this.paymentDate = new SimpleStringProperty(paymentDate);
-		this.PaymentAmount = new SimpleIntegerProperty(paymentAmount);
+		this.PaymentAmount = new SimpleStringProperty(paymentAmount);
 	}
 
 	public final IntegerProperty pay_idProperty() {
@@ -53,17 +53,17 @@ public class Object_Payment {
 	}
 	
 
-	public final IntegerProperty checkNumberProperty() {
+	public final StringProperty checkNumberProperty() {
 		return this.checkNumber;
 	}
 	
 
-	public final int getCheckNumber() {
+	public final String getCheckNumber() {
 		return this.checkNumberProperty().get();
 	}
 	
 
-	public final void setCheckNumber(final int checkNumber) {
+	public final void setCheckNumber(final String checkNumber) {
 		this.checkNumberProperty().set(checkNumber);
 	}
 	
@@ -98,17 +98,17 @@ public class Object_Payment {
 	}
 	
 
-	public final IntegerProperty PaymentAmountProperty() {
+	public final StringProperty PaymentAmountProperty() {
 		return this.PaymentAmount;
 	}
 	
 
-	public final int getPaymentAmount() {
+	public final String getPaymentAmount() {
 		return this.PaymentAmountProperty().get();
 	}
 	
 
-	public final void setPaymentAmount(final int PaymentAmount) {
+	public final void setPaymentAmount(final String PaymentAmount) {
 		this.PaymentAmountProperty().set(PaymentAmount);
 	}
 

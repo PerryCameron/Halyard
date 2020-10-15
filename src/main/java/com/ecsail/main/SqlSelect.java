@@ -61,10 +61,10 @@ public class SqlSelect {
 				thisWorkCredit.add(new Object_Payment(
 						rs.getInt("PAY_ID"), 
 						rs.getInt("MONEY_ID"), 
-						rs.getInt("CHECKNUMBER"),
+						rs.getString("CHECKNUMBER"),
 						rs.getString("PAYMENT_TYPE"),
 						rs.getString("PAYMENT_DATE"),
-						rs.getInt("AMOUNT")
+						rs.getString("AMOUNT")
 						));
 			}
 		} catch (SQLException e) {

@@ -178,5 +178,7 @@
 	-fx-font-size: 12px;
 	}
 
-
+#column-align-right {
+  -fx-alignment: center-right;
+}
 
