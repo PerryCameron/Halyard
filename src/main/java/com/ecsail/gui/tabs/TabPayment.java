@@ -10,6 +10,7 @@ import com.ecsail.main.SqlExists;
 import com.ecsail.main.SqlSelect;
 import com.ecsail.structures.Object_Payment;
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TablePosition;
@@ -17,6 +18,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.cell.ComboBoxTableCell;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import javafx.beans.property.SimpleObjectProperty;
@@ -24,6 +26,7 @@ import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
 public class TabPayment extends Tab {
@@ -48,17 +51,24 @@ public class TabPayment extends Tab {
 		VBox vboxGrey = new VBox();  // this is the vbox for organizing all the widgets
 		VBox vboxBlue = new VBox();
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
+		HBox hboxButton = new HBox();
+		Button paymentAdd = new Button("Add");
+		Button paymentDelete = new Button("Delete");
+		paymentTableView = new TableView<Object_Payment>();
+		
+		////////////////////// ATTRIBUTES ////////////////////////////
 		 
 		vboxBlue.setId("box-blue");
 		vboxBlue.setPadding(new Insets(5,5,5,5));
-		vboxPink.setPadding(new Insets(3,3,3,3)); // spacing to make pink from around table
+		vboxPink.setPadding(new Insets(3,3,7,3)); // spacing to make pink from around table
+		hboxButton.setPadding(new Insets(0,0,0,130));
 		vboxPink.setId("box-pink");
-		//vboxGrey.setId("slip-box");/
-		//vboxGrey.setPrefHeight(688);
-		paymentTableView = new TableView<Object_Payment>();
+		hboxButton.setSpacing(5);
+		vboxGrey.setSpacing(5);
+		
 		paymentTableView.setItems(payments);
-		paymentTableView.setPrefWidth(235);
-		paymentTableView.setPrefHeight(140);
+		paymentTableView.setPrefWidth(225);
+		paymentTableView.setPrefHeight(115);
 		paymentTableView.setFixedCellSize(30);
 		paymentTableView.setEditable(true);
 		
@@ -139,10 +149,32 @@ public class TabPayment extends Tab {
                     }
                 }
             );
-         
+		/////////////////// LISTENERS //////////////////////////////
 		
+		paymentAdd.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				int pay_id = SqlSelect.getNumberOfPayments() + 1; // get last pay_id number
+				//if (SqlInsert.addRecord(phone_id, person.getP_id(), true, "new phone", "")) // if added with no errors
+				payments.add(new Object_Payment(pay_id,money_id,"","CH",date, "0")); // lets add it to our GUI
+				System.out.println("Added new record with pay_id=" + pay_id + " money_id=" + money_id);
+				}
+			});
+        
+        paymentDelete.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+            	int selectedIndex = paymentTableView.getSelectionModel().getSelectedIndex();
+            		if(selectedIndex >= 0)
+            	//		if(SqlDelete.deletePhone(phone.get(selectedIndex)))  // if it is properly deleted in our database
+            	paymentTableView.getItems().remove(selectedIndex); // remove it from our GUI
+            }
+        }); 
+        
+        /////////////////// SET CONTENT //////////////////////////////
+        
+		hboxButton.getChildren().addAll(paymentAdd,paymentDelete);
         paymentTableView.getColumns().addAll(Col1,Col2,Col3,Col4);
-		vboxGrey.getChildren().add(paymentTableView);
+		vboxGrey.getChildren().addAll(paymentTableView,hboxButton);
 		vboxBlue.getChildren().add(vboxPink);
 		vboxPink.getChildren().add(vboxGrey);
 		setContent(vboxBlue);

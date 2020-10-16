@@ -39,10 +39,11 @@ public class TabBalance extends Tab {
 		vboxTextField.setSpacing(5);
 		vboxTextFieldFrame.setId("box-pink");
 		vboxTextField.setId("box-lightgrey");
+		vboxTextField.setPrefHeight(139);
 		vboxCommitButton.setPrefWidth(95);
 		vboxTextFieldFrame.setPadding(new Insets(3,3,3,3));
-		vboxTextField.setPadding(new Insets(8,0,7,10));
-		vboxCommitButton.setPadding(new Insets(105,0,0,20));
+		vboxTextField.setPadding(new Insets(12,0,7,10));
+		vboxCommitButton.setPadding(new Insets(115,0,0,20));
 		//vboxCommitButton.setId("box-test");
 		
 		textFields.getCreditText().setPrefWidth(60);

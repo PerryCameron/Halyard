@@ -42,7 +42,6 @@ public class BoxPhone extends HBox {
 	private TableView<Object_Phone> phoneTableView;
 	private ObservableList<Object_Phone> phone;
 	
-	@SuppressWarnings("unchecked")
 	public BoxPhone(Object_Person p) {
 		this.person = p;  // the below callback is to allow commit when focus removed, overrides FX default behavior
 		this.phone = FXCollections.observableArrayList(new Callback<Object_Phone, Observable[]>() {
