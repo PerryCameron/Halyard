@@ -56,7 +56,30 @@ public class SqlSelect {
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			ResultSet rs;
-			rs = stmt.executeQuery(Main.console.setRegexColor("select * from work_credit;"));
+			rs = stmt.executeQuery(Main.console.setRegexColor("select * from payment;"));
+			while (rs.next()) {
+				thisWorkCredit.add(new Object_Payment(
+						rs.getInt("PAY_ID"), 
+						rs.getInt("MONEY_ID"), 
+						rs.getString("CHECKNUMBER"),
+						rs.getString("PAYMENT_TYPE"),
+						rs.getString("PAYMENT_DATE"),
+						rs.getString("AMOUNT")
+						));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return thisWorkCredit;
+	}
+	
+	public static ObservableList<Object_Payment> getPayments(int money_id) {
+		ObservableList<Object_Payment> thisWorkCredit = FXCollections.observableArrayList();
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs;
+			rs = stmt.executeQuery(Main.console.setRegexColor("select * from payment;"));
 			while (rs.next()) {
 				thisWorkCredit.add(new Object_Payment(
 						rs.getInt("PAY_ID"), 

@@ -112,11 +112,11 @@ public class SqlScriptMaker {
 				"INSERT INTO payment () VALUES ("
 				+ pay.getPay_id() + ","
 				+ pay.getMoney_id() + ","
-				+ pay.getCheckNumber() + ","
-				+ pay.getPaymentType() + ","
-				+ pay.getPaymentDate() + ","
+				+ pay.getCheckNumber() + ",'"
+				+ pay.getPaymentType() + "','"
+				+ pay.getPaymentDate() + "','"
 				+ pay.getPaymentAmount()
-				+ ");\n";
+				+ "');\n";
 	}
 	
 	public static String getWorkCreditString(Object_WorkCredit woc) {

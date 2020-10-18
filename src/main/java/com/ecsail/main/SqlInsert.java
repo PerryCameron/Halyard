@@ -6,6 +6,7 @@ import java.sql.Statement;
 import com.ecsail.structures.Object_Membership;
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Money;
+import com.ecsail.structures.Object_Payment;
 import com.ecsail.structures.Object_Person;
 
 public class SqlInsert {
@@ -42,6 +43,22 @@ public class SqlInsert {
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			stmt.execute(Main.console.setRegexColor("INSERT into officer () VALUES (" + officer_id + "," + pid + "," + board_year + ",\"" + officer + "\"," + year + ");"));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static void addRecord(Object_Payment op) {
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			stmt.execute(Main.console.setRegexColor("INSERT into payment () VALUES (" 
+			+ op.getPay_id() + "," 
+			+ op.getMoney_id() + "," 
+			+ op.getCheckNumber() + ",'" 
+			+ op.getPaymentType() + "','" 
+			+ op.getPaymentDate() + "','" 
+			+ op.getPaymentAmount() + "');"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

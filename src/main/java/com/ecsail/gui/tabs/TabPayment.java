@@ -7,7 +7,9 @@ import java.util.function.Function;
 import com.ecsail.enums.PaymentType;
 import com.ecsail.main.EditCell;
 import com.ecsail.main.SqlExists;
+import com.ecsail.main.SqlInsert;
 import com.ecsail.main.SqlSelect;
+import com.ecsail.main.SqlUpdate;
 import com.ecsail.structures.Object_Payment;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -36,16 +38,17 @@ public class TabPayment extends Tab {
 
 	public TabPayment(String text, int money_id) {
 		super(text);
-		this.payments = FXCollections.observableArrayList();
+		
 		if(SqlExists.paymentExists(money_id)) {
+			this.payments = SqlSelect.getPayments(money_id);
 			System.out.println("loading up existing payments");
 			// pull up payments from database
 		} else {
+			this.payments = FXCollections.observableArrayList();
 			System.out.println("Creating a new entry");
 			int pay_id = SqlSelect.getNumberOfPayments() + 1;
-			payments.add(new Object_Payment(pay_id,money_id,"","CH",date, "0"));
-			//payments.add(new Object_Payment(0,0,0,"CH",date, 0));
-			// create an entry for our observable list
+			payments.add(new Object_Payment(pay_id,money_id,"0","CH",date, "0"));
+			SqlInsert.addRecord(payments.get(payments.size() - 1));
 			System.out.println(payments.get(0).toString());
 		}
 		VBox vboxGrey = new VBox();  // this is the vbox for organizing all the widgets
@@ -83,7 +86,8 @@ public class TabPayment extends Tab {
                         ((Object_Payment) t.getTableView().getItems().get(
                                 t.getTablePosition().getRow())
                                 ).setPaymentAmount(t.getNewValue());
-                        //int pay_id = ((Object_Payment) t.getTableView().getItems().get(t.getTablePosition().getRow())).getPay_id();
+                        int pay_id = ((Object_Payment) t.getTableView().getItems().get(t.getTablePosition().getRow())).getPay_id();
+                        SqlUpdate.updatePayment(pay_id, "amount", t.getNewValue());
                         //	SqlUpdate.updatePhone("phone", phone_id, t.getNewValue());
                     }
                 }
@@ -114,6 +118,7 @@ public class TabPayment extends Tab {
             PaymentType newPaymentType = event.getNewValue();
             int row = pos.getRow();
             Object_Payment thisPayment = event.getTableView().getItems().get(row);
+            SqlUpdate.updatePayment(thisPayment.getPay_id(), "payment_type", newPaymentType.getCode());
             //SqlUpdate.updatePhone("phone_type", thisPhone.getPhone_ID(), newPhoneType.getCode());
             thisPayment.setPaymentType(newPaymentType.getCode());
         });
@@ -128,7 +133,8 @@ public class TabPayment extends Tab {
                         ((Object_Payment) t.getTableView().getItems().get(
                                 t.getTablePosition().getRow())
                                 ).setCheckNumber(t.getNewValue());
-                        //int pay_id = ((Object_Payment) t.getTableView().getItems().get(t.getTablePosition().getRow())).getPay_id();
+                        int pay_id = ((Object_Payment) t.getTableView().getItems().get(t.getTablePosition().getRow())).getPay_id();
+                        SqlUpdate.updatePayment(pay_id, "CHECKNUMBER", t.getNewValue());
                         //	SqlUpdate.updatePhone("phone", phone_id, t.getNewValue());
                     }
                 }
@@ -144,7 +150,8 @@ public class TabPayment extends Tab {
                         ((Object_Payment) t.getTableView().getItems().get(
                                 t.getTablePosition().getRow())
                                 ).setPaymentDate(t.getNewValue());
-                        //int pay_id = ((Object_Payment) t.getTableView().getItems().get(t.getTablePosition().getRow())).getPay_id();
+                        int pay_id = ((Object_Payment) t.getTableView().getItems().get(t.getTablePosition().getRow())).getPay_id();
+                        SqlUpdate.updatePayment(pay_id, "payment_date", t.getNewValue());
                         //	SqlUpdate.updatePhone("phone", phone_id, t.getNewValue());
                     }
                 }
@@ -171,6 +178,10 @@ public class TabPayment extends Tab {
         }); 
         
         /////////////////// SET CONTENT //////////////////////////////
+        for(Object_Payment pa: payments) {
+        	System.out.println("money_id=" + pa.getMoney_id() + " pay_id=" + pa.getPay_id() + " amount=" + pa.getPaymentAmount());
+        }
+        
         
 		hboxButton.getChildren().addAll(paymentAdd,paymentDelete);
         paymentTableView.getColumns().addAll(Col1,Col2,Col3,Col4);

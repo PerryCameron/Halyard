@@ -6,6 +6,7 @@ import java.time.LocalDate;
 
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Money;
+import com.ecsail.structures.Object_Payment;
 import com.ecsail.structures.Object_Person;
 import com.ecsail.structures.Object_WorkCredit;
 
@@ -420,6 +421,17 @@ public class SqlUpdate {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public static void updatePayment(int pay_id, String field, String attribute) {
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			stmt.execute(Main.console.setRegexColor("UPDATE payment SET " + field + "=\"" + attribute + "\" WHERE pay_id='" + pay_id + "';"));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	
 }
