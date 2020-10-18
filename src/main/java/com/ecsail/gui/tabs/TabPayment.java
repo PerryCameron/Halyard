@@ -11,6 +11,8 @@ import com.ecsail.main.SqlExists;
 import com.ecsail.main.SqlInsert;
 import com.ecsail.main.SqlSelect;
 import com.ecsail.main.SqlUpdate;
+import com.ecsail.structures.Object_BalanceText;
+import com.ecsail.structures.Object_Money;
 import com.ecsail.structures.Object_Payment;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -35,20 +37,24 @@ import javafx.event.EventHandler;
 public class TabPayment extends Tab {
 	private TableView<Object_Payment> paymentTableView;
 	private ObservableList<Object_Payment> payments;
+	private Object_Money fiscalRecord;
+	private Object_BalanceText balanceTextField;
 	String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date(System.currentTimeMillis()));
 
-	public TabPayment(String text, int money_id) {
+	public TabPayment(String text, Object_Money m, Object_BalanceText o) {
 		super(text);
-		System.out.println("Started Payment tab with money_id=" + money_id);
-		if(SqlExists.paymentExists(money_id)) {
-			this.payments = SqlSelect.getPayments(money_id);
-			System.out.println("A record for money_id=" + money_id + " exists. Opening Payment");
+		this.fiscalRecord = m;
+		this.balanceTextField = o;
+		System.out.println("Started Payment tab with money_id=" + fiscalRecord.getMoney_id());
+		if(SqlExists.paymentExists(fiscalRecord.getMoney_id())) {
+			this.payments = SqlSelect.getPayments(fiscalRecord.getMoney_id());
+			System.out.println("A record for money_id=" + fiscalRecord.getMoney_id() + " exists. Opening Payment");
 			// pull up payments from database
 		} else {
 			this.payments = FXCollections.observableArrayList();
 			System.out.println("Creating a new entry");
 			int pay_id = SqlSelect.getNumberOfPayments() + 1;
-			payments.add(new Object_Payment(pay_id,money_id,"0","CH",date, "0"));
+			payments.add(new Object_Payment(pay_id,fiscalRecord.getMoney_id(),"0","CH",date, "0"));
 			SqlInsert.addRecord(payments.get(payments.size() - 1));
 			System.out.println(payments.get(0).toString());
 		}
@@ -74,8 +80,12 @@ public class TabPayment extends Tab {
 		paymentTableView.setPrefWidth(225);
 		paymentTableView.setPrefHeight(115);
 		paymentTableView.setFixedCellSize(30);
-		paymentTableView.setEditable(true);
 		
+		if(fiscalRecord.isCommitted()) {
+		paymentTableView.setEditable(false);
+		} else {
+		paymentTableView.setEditable(true);
+		}
 	
 		TableColumn<Object_Payment, String> Col1 = createColumn("Amount", Object_Payment::PaymentAmountProperty);
 		Col1.setPrefWidth(60);
@@ -89,6 +99,10 @@ public class TabPayment extends Tab {
                                 ).setPaymentAmount(t.getNewValue());
                         int pay_id = ((Object_Payment) t.getTableView().getItems().get(t.getTablePosition().getRow())).getPay_id();
                         SqlUpdate.updatePayment(pay_id, "amount", t.getNewValue());
+                        int totalAmount = SqlSelect.getTotalAmount((Object_Payment) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                        System.out.println("Total Amount=" + totalAmount);
+                        // used balanceTextfields.getPaid() to write to.
+                        // create SQL to SUM all amounts for all payments with money_id=xxx
                         //	SqlUpdate.updatePhone("phone", phone_id, t.getNewValue());
                     }
                 }
@@ -120,6 +134,7 @@ public class TabPayment extends Tab {
             int row = pos.getRow();
             Object_Payment thisPayment = event.getTableView().getItems().get(row);
             SqlUpdate.updatePayment(thisPayment.getPay_id(), "payment_type", newPaymentType.getCode());
+            // need to update paid from here
             //SqlUpdate.updatePhone("phone_type", thisPhone.getPhone_ID(), newPhoneType.getCode());
             thisPayment.setPaymentType(newPaymentType.getCode());
         });
@@ -164,9 +179,9 @@ public class TabPayment extends Tab {
 			public void handle(ActionEvent e) {
 				int pay_id = SqlSelect.getNumberOfPayments() + 1; // get last pay_id number
 				//if (SqlInsert.addRecord(phone_id, person.getP_id(), true, "new phone", "")) // if added with no errors
-				payments.add(new Object_Payment(pay_id,money_id,null,"CH",date, "0")); // lets add it to our GUI
+				payments.add(new Object_Payment(pay_id,fiscalRecord.getMoney_id(),null,"CH",date, "0")); // lets add it to our GUI
 				SqlInsert.addRecord(payments.get(payments.size() -1));
-				System.out.println("Added new record with pay_id=" + pay_id + " money_id=" + money_id);
+				System.out.println("Added new record with pay_id=" + pay_id + " money_id=" + fiscalRecord.getMoney_id());
 				}
 			});
         
@@ -179,6 +194,12 @@ public class TabPayment extends Tab {
             	paymentTableView.getItems().remove(selectedIndex); // remove it from our GUI
             }
         }); 
+        
+        fiscalRecord.committedProperty().addListener((obs, notCommited, isCommited) -> {
+        	if(isCommited) paymentTableView.setEditable(false);
+        	if(notCommited) paymentTableView.setEditable(true);
+        	//System.out.println("obs=" + obs + " notCommited=" + notCommited + " isCommited=" + isCommited);
+        } );
         
         /////////////////// SET CONTENT //////////////////////////////
         for(Object_Payment pa: payments) {

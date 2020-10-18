@@ -76,7 +76,7 @@ public class BoxFiscal extends HBox {
 		TabPane MoneyTabPane = new TabPane();
 		//System.out.println("Getting balanceText() :" + textFields.getBalanceText());
 		TabBalance moneyTab = new TabBalance("Balance", textFields);
-		TabPayment paymentTab = new TabPayment("Payment",fiscals.get(rowIndex).getMoney_id());
+		TabPayment paymentTab = new TabPayment("Payment",fiscals.get(rowIndex),textFields);
 		
 		
 		Label workCreditsLabel = new Label("Work Credits");
