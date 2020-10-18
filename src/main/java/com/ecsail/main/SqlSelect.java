@@ -1060,12 +1060,12 @@ public class SqlSelect {
 		return number;
 	}
 	
-	public static int getTotalAmount(Object_Payment p) {
+	public static int getTotalAmount(int money_id) {
 		int number = 0;
 		Statement stmt;
 		try {
 			stmt = ConnectDatabase.connection.createStatement();
-			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select SUM(amount) from payment where money_id=" + p.getMoney_id()));
+			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select SUM(amount) from payment where money_id=" + money_id));
 			rs.next();
 			number = rs.getInt("SUM(amount)");
 		} catch (SQLException e) {

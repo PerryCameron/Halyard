@@ -55,7 +55,9 @@ public class TabBalance extends Tab {
 		textFields.getBalanceText().setEditable(false);
 		textFields.getTotalFeesText().setPrefWidth(60);
 		textFields.getTotalFeesText().setEditable(false);
+		textFields.getPaidText().setEditable(false);
 		textFields.getTotalFeesText().setStyle(disabledColor);
+		textFields.getPaidText().setStyle(disabledColor);
 		
 		////////////////SETTING CONTENT //////////////
 		

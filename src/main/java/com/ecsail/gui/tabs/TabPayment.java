@@ -83,8 +83,12 @@ public class TabPayment extends Tab {
 		
 		if(fiscalRecord.isCommitted()) {
 		paymentTableView.setEditable(false);
+		paymentAdd.setDisable(true);
+		paymentDelete.setDisable(true);
 		} else {
 		paymentTableView.setEditable(true);
+		paymentAdd.setDisable(false);
+		paymentDelete.setDisable(false);
 		}
 	
 		TableColumn<Object_Payment, String> Col1 = createColumn("Amount", Object_Payment::PaymentAmountProperty);
@@ -99,10 +103,10 @@ public class TabPayment extends Tab {
                                 ).setPaymentAmount(t.getNewValue());
                         int pay_id = ((Object_Payment) t.getTableView().getItems().get(t.getTablePosition().getRow())).getPay_id();
                         SqlUpdate.updatePayment(pay_id, "amount", t.getNewValue());
-                        int totalAmount = SqlSelect.getTotalAmount((Object_Payment) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                        int totalAmount = SqlSelect.getTotalAmount(fiscalRecord.getMoney_id());
                         System.out.println("Total Amount=" + totalAmount);
                         // used balanceTextfields.getPaid() to write to.
-                        // create SQL to SUM all amounts for all payments with money_id=xxx
+                        balanceTextField.getPaidText().setText(totalAmount + "");
                         //	SqlUpdate.updatePhone("phone", phone_id, t.getNewValue());
                     }
                 }
@@ -181,7 +185,7 @@ public class TabPayment extends Tab {
 				//if (SqlInsert.addRecord(phone_id, person.getP_id(), true, "new phone", "")) // if added with no errors
 				payments.add(new Object_Payment(pay_id,fiscalRecord.getMoney_id(),null,"CH",date, "0")); // lets add it to our GUI
 				SqlInsert.addRecord(payments.get(payments.size() -1));
-				System.out.println("Added new record with pay_id=" + pay_id + " money_id=" + fiscalRecord.getMoney_id());
+				//System.out.println("Added new record with pay_id=" + pay_id + " money_id=" + fiscalRecord.getMoney_id());
 				}
 			});
         
@@ -189,22 +193,29 @@ public class TabPayment extends Tab {
             @Override public void handle(ActionEvent e) {
             	int selectedIndex = paymentTableView.getSelectionModel().getSelectedIndex();
             		if(selectedIndex >= 0)
-            	//		if(SqlDelete.deletePhone(phone.get(selectedIndex)))  // if it is properly deleted in our database
+            	//		if(SqlDelete.deletePhone(phone.get(selectedIndex)))  // if it is properly deleted in our database		
             	SqlDelete.deletePayment(payments.get(selectedIndex));		
             	paymentTableView.getItems().remove(selectedIndex); // remove it from our GUI
+                int totalAmount = SqlSelect.getTotalAmount(fiscalRecord.getMoney_id());
+                balanceTextField.getPaidText().setText(totalAmount + "");
             }
         }); 
         
         fiscalRecord.committedProperty().addListener((obs, notCommited, isCommited) -> {
-        	if(isCommited) paymentTableView.setEditable(false);
-        	if(notCommited) paymentTableView.setEditable(true);
+        	if(isCommited) {
+        		paymentTableView.setEditable(false);
+        		paymentAdd.setDisable(true);
+        		paymentDelete.setDisable(true);
+        	}
+        	if(notCommited) {
+        		paymentTableView.setEditable(true);
+        		paymentAdd.setDisable(false);
+        		paymentDelete.setDisable(false);
+        	}
         	//System.out.println("obs=" + obs + " notCommited=" + notCommited + " isCommited=" + isCommited);
         } );
         
         /////////////////// SET CONTENT //////////////////////////////
-        for(Object_Payment pa: payments) {
-        	System.out.println("money_id=" + pa.getMoney_id() + " pay_id=" + pa.getPay_id() + " amount=" + pa.getPaymentAmount());
-        }
         
         
 		hboxButton.getChildren().addAll(paymentAdd,paymentDelete);
@@ -217,6 +228,8 @@ public class TabPayment extends Tab {
 	}
 	
 	////////////////////////  CLASS METHODS //////////////////////////
+	
+	
     private <T> TableColumn<T, String> createColumn(String title, Function<T, StringProperty> property) {
         TableColumn<T, String> col = new TableColumn<>(title);
         col.setCellValueFactory(cellData -> property.apply(cellData.getValue()));
