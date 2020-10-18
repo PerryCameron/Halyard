@@ -79,7 +79,7 @@ public class SqlSelect {
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			ResultSet rs;
-			rs = stmt.executeQuery(Main.console.setRegexColor("select * from payment;"));
+			rs = stmt.executeQuery(Main.console.setRegexColor("select * from payment where money_id=" + money_id));
 			while (rs.next()) {
 				thisWorkCredit.add(new Object_Payment(
 						rs.getInt("PAY_ID"), 

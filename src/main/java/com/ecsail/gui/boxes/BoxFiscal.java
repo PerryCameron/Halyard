@@ -74,9 +74,10 @@ public class BoxFiscal extends HBox {
 		this.isCommited = fiscals.get(rowIndex).isCommitted();
 		////////////// OBJECTS /////////////////////
 		TabPane MoneyTabPane = new TabPane();
-		System.out.println(textFields.getBalanceText());
+		//System.out.println("Getting balanceText() :" + textFields.getBalanceText());
 		TabBalance moneyTab = new TabBalance("Balance", textFields);
 		TabPayment paymentTab = new TabPayment("Payment",fiscals.get(rowIndex).getMoney_id());
+		
 		
 		Label workCreditsLabel = new Label("Work Credits");
 		Label feesLabel = new Label("Fees");

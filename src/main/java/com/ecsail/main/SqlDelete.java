@@ -8,6 +8,7 @@ import com.ecsail.structures.Object_Email;
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Memo;
 import com.ecsail.structures.Object_Officer;
+import com.ecsail.structures.Object_Payment;
 import com.ecsail.structures.Object_Phone;
 
 public class SqlDelete {
@@ -198,6 +199,17 @@ public class SqlDelete {
 		try {
 			stmt = ConnectDatabase.connection.createStatement();
 			stmt.execute(Main.console.setRegexColor("delete from membership where ms_id='" + ms_id + "';"));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+	}
+	
+	public static void deletePayment(Object_Payment p) {
+		Statement stmt;
+		try {
+			stmt = ConnectDatabase.connection.createStatement();
+			stmt.execute(Main.console.setRegexColor("delete from payment where pay_id='" + p.getPay_id() + "';"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

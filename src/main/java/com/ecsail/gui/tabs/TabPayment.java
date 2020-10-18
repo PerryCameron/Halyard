@@ -6,6 +6,7 @@ import java.util.function.Function;
 
 import com.ecsail.enums.PaymentType;
 import com.ecsail.main.EditCell;
+import com.ecsail.main.SqlDelete;
 import com.ecsail.main.SqlExists;
 import com.ecsail.main.SqlInsert;
 import com.ecsail.main.SqlSelect;
@@ -38,10 +39,10 @@ public class TabPayment extends Tab {
 
 	public TabPayment(String text, int money_id) {
 		super(text);
-		
+		System.out.println("Started Payment tab with money_id=" + money_id);
 		if(SqlExists.paymentExists(money_id)) {
 			this.payments = SqlSelect.getPayments(money_id);
-			System.out.println("loading up existing payments");
+			System.out.println("A record for money_id=" + money_id + " exists. Opening Payment");
 			// pull up payments from database
 		} else {
 			this.payments = FXCollections.observableArrayList();
@@ -163,7 +164,8 @@ public class TabPayment extends Tab {
 			public void handle(ActionEvent e) {
 				int pay_id = SqlSelect.getNumberOfPayments() + 1; // get last pay_id number
 				//if (SqlInsert.addRecord(phone_id, person.getP_id(), true, "new phone", "")) // if added with no errors
-				payments.add(new Object_Payment(pay_id,money_id,"","CH",date, "0")); // lets add it to our GUI
+				payments.add(new Object_Payment(pay_id,money_id,null,"CH",date, "0")); // lets add it to our GUI
+				SqlInsert.addRecord(payments.get(payments.size() -1));
 				System.out.println("Added new record with pay_id=" + pay_id + " money_id=" + money_id);
 				}
 			});
@@ -173,6 +175,7 @@ public class TabPayment extends Tab {
             	int selectedIndex = paymentTableView.getSelectionModel().getSelectedIndex();
             		if(selectedIndex >= 0)
             	//		if(SqlDelete.deletePhone(phone.get(selectedIndex)))  // if it is properly deleted in our database
+            	SqlDelete.deletePayment(payments.get(selectedIndex));		
             	paymentTableView.getItems().remove(selectedIndex); // remove it from our GUI
             }
         }); 
