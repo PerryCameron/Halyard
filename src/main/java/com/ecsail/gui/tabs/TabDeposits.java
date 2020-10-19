@@ -135,7 +135,7 @@ public class TabDeposits extends Tab {
 			  if (!newValue) {
 				  batchSpinner.increment(0); // won't change value, but will commit editor
 				  batch = Integer.parseInt(batchSpinner.getEditor().getText());
-				  System.out.println("Deposit is now " + batchSpinner.getEditor().getText());
+				  //System.out.println("Deposit is now " + batchSpinner.getEditor().getText());
 				  // public static Object_DefinedFee getDefinedFee(String year, Object_DefinedFee thisDefinedFee)
 				  // clear and update paidDues
 				  // refresh the grid
@@ -241,6 +241,8 @@ public class TabDeposits extends Tab {
 				System.out.println("refresh");
 				paidDues.clear();
 				paidDues.addAll(SqlSelect.getPaidDues(selectedYear));
+				updateCurrentMoneyTotals(); // need error check if batch doesn't exist
+				updateMoneyTotals(gridPane);
 				updateNonRenewed(nonRenewed);
 				}
 			});
