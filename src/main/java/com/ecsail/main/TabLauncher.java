@@ -73,7 +73,12 @@ static TabPane tabPane;
 	}
 	
 	public static void createTab(int ms_id) {  // overload
-		Object_MembershipList membership = getMembership(ms_id);
+		Object_MembershipList membership;
+		if(SqlSelect.isActive(ms_id)) { // membership is active and in our object tree
+		membership = getMembership(ms_id);
+		} else { // membership is not active and needs to be pulled from the SQL Database
+		membership = SqlSelect.getMembershipFromList(ms_id);
+		}	
 		tabPane.getTabs().add(new TabMembership(membership));
 	}
 	

@@ -1076,4 +1076,19 @@ public class SqlSelect {
 		
 	}
 	
+	public static boolean isActive(int ms_id)
+	{
+		boolean active = false;
+		Statement stmt;
+		try {
+			stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select active_membership from membership where ms_id=" + ms_id));
+			rs.next();
+			active = rs.getBoolean("active_membership");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return active;	
+	}
 }
