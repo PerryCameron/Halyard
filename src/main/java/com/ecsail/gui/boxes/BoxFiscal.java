@@ -158,7 +158,7 @@ public class BoxFiscal extends HBox {
 		vbox1.setSpacing(5);
 		vbox2.setSpacing(5);
 		totalWorkCreditTextField.setEditable(false);
-		duesText.setEditable(true);
+		duesText.setEditable(false);
 		textFields.getPaidText().setEditable(false);
 		textFields.getCreditText().setEditable(false);
 		textFields.getTotalFeesText().setEditable(false);
@@ -213,11 +213,11 @@ public class BoxFiscal extends HBox {
             		fiscals.get(rowIndex).setCommitted(true);
             		addPaidNote();
             		if(fiscals.get(rowIndex).getOther() != 0) note.add("Other expense: ");
-            		System.out.println(true);
             		setEditable(false);
             	} else {
 				setEditable(true);
 				fiscals.get(rowIndex).setCommitted(false);
+				SqlUpdate.commitFiscalRecord(fiscals.get(rowIndex).getMoney_id(), false);
             	}
             }
         });
@@ -433,7 +433,7 @@ public class BoxFiscal extends HBox {
 		//changeState(textFields.getPaidText(),isEditable,true);
 		changeState(totalWorkCreditTextField,isEditable,false);
 		changeState(totalKeyTextField,isEditable,false);
-		changeState(duesText,isEditable,false);
+		//changeState(duesText,isEditable,false);
 		//changeState(textFields.getTotalFeesText(),isEditable,false);
 		//changeState(textFields.getCreditText(),isEditable,false);
 		//changeState(balanceText,isEditable,1);

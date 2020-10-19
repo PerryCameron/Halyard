@@ -6,7 +6,8 @@ public enum MembershipType {
 	   SOCIALM("SO", "Social"),
 	   LAKEASS("LA", "Lake Associate"),
 	   LIFEMEM("LM", "Life Member"),
-	   STUDENT("SM", "Student")
+	   STUDENT("SM", "Student"),
+	   NONRENE("NR", "Non-Renew")
 	   ;
 	 
 	   private String code;

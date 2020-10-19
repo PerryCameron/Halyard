@@ -211,6 +211,9 @@ public class BoxProperties extends HBox {
 	            case "SM": 
 	            	dues = 0;  // purdue sailing club dues
 	                break; 
+	            case "NR":
+	            	dues = 0;
+	            	break;
 	            default: 
 	            	dues = 0; 
 	        } 
