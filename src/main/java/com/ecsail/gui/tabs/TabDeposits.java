@@ -195,11 +195,11 @@ public class TabDeposits extends Tab {
 		
 		TableColumn<Object_PaidDues, String> Col3 = new TableColumn<Object_PaidDues, String>("Last Name");
 		Col3.setCellValueFactory(new PropertyValueFactory<Object_PaidDues, String>("l_name"));
-		Col3.setPrefWidth(120);
+		Col3.setPrefWidth(80);
 		
 		TableColumn<Object_PaidDues, String> Col4 = new TableColumn<Object_PaidDues, String>("First Name");
 		Col4.setCellValueFactory(new PropertyValueFactory<Object_PaidDues, String>("f_name"));
-		Col4.setPrefWidth(120);
+		Col4.setPrefWidth(80);
 		
 		TableColumn<Object_PaidDues, String> Col10 = new TableColumn<Object_PaidDues, String>("Slip");
 		Col10.setCellValueFactory(new PropertyValueFactory<Object_PaidDues, String>("wet_slip"));
@@ -220,6 +220,10 @@ public class TabDeposits extends Tab {
 		TableColumn<Object_PaidDues, Integer> Col8 = new TableColumn<Object_PaidDues, Integer>("Balance");
 		Col8.setCellValueFactory(new PropertyValueFactory<Object_PaidDues, Integer>("balance"));
 		Col8.setPrefWidth(50);
+		
+		TableColumn<Object_PaidDues, Integer> Col11 = new TableColumn<Object_PaidDues, Integer>("Cmit");
+		Col11.setCellValueFactory(new PropertyValueFactory<Object_PaidDues, Integer>("committed"));
+		Col11.setPrefWidth(50);
 		
 		//////////////////  LISTENERS  //////////////////////
 		
@@ -308,7 +312,7 @@ public class TabDeposits extends Tab {
 		gridHBox.getChildren().add(gridPane);
 		controlsHBox.getChildren().add(controlsVBox);
 		controlsVBox.getChildren().addAll(yearBatchHBox,gridHBox,buttonHBox,remaindingRenewalHBox);
-		paidDuesTableView.getColumns().addAll(Arrays.asList(Col1,Col2,Col9,Col3,Col4,Col10,Col5,Col6,Col7,Col8));
+		paidDuesTableView.getColumns().addAll(Arrays.asList(Col1,Col2,Col9,Col3,Col4,Col10,Col5,Col6,Col7,Col8,Col11));
 		mainHBox.getChildren().addAll(paidDuesTableView,controlsHBox);
 		vboxGrey.getChildren().add(mainHBox);
 		vboxBlue.getChildren().add(vboxPink);
