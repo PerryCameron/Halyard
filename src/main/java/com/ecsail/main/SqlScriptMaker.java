@@ -12,6 +12,7 @@ import java.util.Date;
 import com.ecsail.structures.Object_Boat;
 import com.ecsail.structures.Object_BoatOwner;
 import com.ecsail.structures.Object_DefinedFee;
+import com.ecsail.structures.Object_Deposit;
 import com.ecsail.structures.Object_Email;
 import com.ecsail.structures.Object_Membership;
 import com.ecsail.structures.Object_Memo;
@@ -40,6 +41,7 @@ public class SqlScriptMaker {
 	static ObservableList<Object_DefinedFee> definedfees;
 	static ObservableList<Object_WorkCredit> workcredits;
 	static ObservableList<Object_Payment> payments;
+	static ObservableList<Object_Deposit> deposits;
 	private static final int ALL = 0;
 	
 	public static void createSql() {
@@ -61,6 +63,7 @@ public class SqlScriptMaker {
 		definedfees = SqlSelect.getDefinedFees();
 		workcredits = SqlSelect.getWorkCredits();
 		payments = SqlSelect.getPayments();
+		deposits = SqlSelect.getDeposits();
 		readFromFile(FileIO.SCRIPTS + "/ecsc_create.sql");
 		writeToFile(FileIO.SCRIPTS + "/ecsc_sql_" + stringDate + ".sql");
 	}
@@ -91,6 +94,8 @@ public class SqlScriptMaker {
 				writer.write(getEmailString(eml));
 			for (Object_Money mon : monies)
 				writer.write(getMoneyString(mon));
+			for (Object_Deposit dep : deposits)
+				writer.write(getDepositString(dep));
 			for (Object_Payment obp : payments)
 				writer.write(getPaymentString(obp));
 			for (Object_Officer off : officers)
@@ -107,6 +112,16 @@ public class SqlScriptMaker {
 		}
 	}
 	
+	public static String getDepositString(Object_Deposit d) {
+		return
+				"INSERT INTO deposit () VALUES ("
+				+ d.getDeposit_id() + ",'"
+				+ d.getDepositDate() + "',"
+				+ d.getFiscalYear() + ","
+				+ d.getBatch()
+				+ ");\n";
+	}
+	
 	public static String getPaymentString(Object_Payment pay) {
 		return
 				"INSERT INTO payment () VALUES ("
@@ -115,8 +130,9 @@ public class SqlScriptMaker {
 				+ pay.getCheckNumber() + ",'"
 				+ pay.getPaymentType() + "','"
 				+ pay.getPaymentDate() + "','"
-				+ pay.getPaymentAmount()
-				+ "');\n";
+				+ pay.getPaymentAmount() + "',"
+				+ pay.getDeposit_id()
+				+ ");\n";
 	}
 	
 	public static String getWorkCreditString(Object_WorkCredit woc) {

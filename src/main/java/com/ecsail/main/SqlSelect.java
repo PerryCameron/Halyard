@@ -10,6 +10,7 @@ import com.ecsail.structures.Object_Board;
 import com.ecsail.structures.Object_Boat;
 import com.ecsail.structures.Object_BoatOwner;
 import com.ecsail.structures.Object_DefinedFee;
+import com.ecsail.structures.Object_Deposit;
 import com.ecsail.structures.Object_Email;
 import com.ecsail.structures.Object_Membership;
 import com.ecsail.structures.Object_MembershipList;
@@ -124,6 +125,27 @@ public class SqlSelect {
 						rs.getInt("KAYAK_RACK"),
 						rs.getInt("KAYAK_SHED"),
 						rs.getInt("KAYAK_SHED_KEY")
+						));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return thisDefinedFee;
+	}
+	
+	public static ObservableList<Object_Deposit> getDeposits() {
+		ObservableList<Object_Deposit> thisDefinedFee = FXCollections.observableArrayList();
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs;
+			rs = stmt.executeQuery(Main.console.setRegexColor("select * from deposit;"));
+			while (rs.next()) {
+				thisDefinedFee.add(new Object_Deposit(
+						rs.getInt("DEPOSIT_ID"), 
+						rs.getString("DEPOSIT_DATE"),
+						rs.getString("FISCAL_YEAR"),
+						rs.getInt("BATCH")
 						));
 			}
 		} catch (SQLException e) {
