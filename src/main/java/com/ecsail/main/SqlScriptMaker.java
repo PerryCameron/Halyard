@@ -73,7 +73,7 @@ public class SqlScriptMaker {
 			File file = new File(filename);
 			FileWriter writer = new FileWriter(file, true);
 			// writer.write("use ECSC_SQL;" + System.lineSeparator());
-			System.out.println("Table creation script is " + tableCreation.size() + " lines.");
+			printResults();
 			for (String tabe : tableCreation)
 				writer.write(tabe + System.lineSeparator());
 			for (Object_Membership mem : memberships)
@@ -104,12 +104,48 @@ public class SqlScriptMaker {
 				writer.write(getDefinedFeeString(def));
 			for (Object_WorkCredit woc : workcredits)
 				writer.write(getWorkCreditString(woc));
-
+			clearMemory();
 			writer.close();
 			System.out.println("SQL script file sucessfully made");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static void clearMemory() {
+		tableCreation.clear();
+		memberships.clear();
+		people.clear();
+		phones.clear();
+		boats.clear();
+		boatowners.clear();
+		slips.clear();
+		memos.clear();
+		email.clear();
+		monies.clear();
+		deposits.clear();
+		payments.clear();
+		officers.clear();
+		definedfees.clear();
+		workcredits.clear();
+	}
+	
+	public static void printResults() {
+		System.out.println("Table creation script is " + tableCreation.size() + " lines.");
+		System.out.println(memberships.size() +" memberships written");
+		System.out.println(people.size() + " people written");
+		System.out.println(phones.size() + " phone numbers written");
+		System.out.println(boats.size() + " boats written");
+		System.out.println(boatowners.size() + " boatowners written");
+		System.out.println(slips.size() + " slips written");
+		System.out.println(memos.size() + " memos written");
+		System.out.println(email.size() + " email written");
+		System.out.println(monies.size() + " monies written");
+		System.out.println(deposits.size() + " deposits written");
+		System.out.println(payments.size() + " payments written");
+		System.out.println(officers.size() + " officers written");
+		System.out.println(definedfees.size() + " definedfees written");
+		System.out.println(workcredits.size() + " workcredits written");
 	}
 	
 	public static String getDepositString(Object_Deposit d) {
