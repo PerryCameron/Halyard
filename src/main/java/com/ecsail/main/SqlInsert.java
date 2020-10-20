@@ -58,7 +58,8 @@ public class SqlInsert {
 			+ op.getCheckNumber() + ",'" 
 			+ op.getPaymentType() + "','" 
 			+ op.getPaymentDate() + "','" 
-			+ op.getPaymentAmount() + "');"));
+			+ op.getPaymentAmount() + "','" 
+			+ op.getDeposit_id() + "');"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

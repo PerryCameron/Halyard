@@ -64,7 +64,8 @@ public class SqlSelect {
 						rs.getString("CHECKNUMBER"),
 						rs.getString("PAYMENT_TYPE"),
 						rs.getString("PAYMENT_DATE"),
-						rs.getString("AMOUNT")
+						rs.getString("AMOUNT"),
+						rs.getInt("DEPOSIT_ID")
 						));
 			}
 		} catch (SQLException e) {
@@ -87,7 +88,8 @@ public class SqlSelect {
 						rs.getString("CHECKNUMBER"),
 						rs.getString("PAYMENT_TYPE"),
 						rs.getString("PAYMENT_DATE"),
-						rs.getString("AMOUNT")
+						rs.getString("AMOUNT"),
+						rs.getInt("DEPOSIT_ID")
 						));
 			}
 		} catch (SQLException e) {
@@ -282,6 +284,31 @@ public class SqlSelect {
 	
 	public static ObservableList<Object_PaidDues> getPaidDues(String selectedYear) { // overload
 		String query = "SELECT m.*, me.MEMBERSHIP_ID, p.l_name, p.f_name FROM money m INNER JOIN membership me on m.MS_ID=me.MS_ID INNER JOIN person p ON me.P_ID=p.P_ID WHERE m.FISCAL_YEAR=" + selectedYear + " AND m.COMMITED=true";
+		ObservableList<Object_PaidDues> theseFiscals = FXCollections.observableArrayList();
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(query + ";"));
+			while (rs.next()) {
+				theseFiscals.add(new Object_PaidDues(rs.getInt("MONEY_ID"), rs.getInt("MS_ID"),
+						rs.getInt("FISCAL_YEAR"), rs.getInt("BATCH"), rs.getInt("OFFICER_CREDIT"), rs.getInt("EXTRA_KEY"),
+						rs.getInt("KAYAK_SHED_KEY"), rs.getInt("SAIL_LOFT_KEY"), 
+						rs.getInt("SAIL_SCHOOL_LOFT_KEY"), rs.getInt("BEACH"), 
+						rs.getInt("WET_SLIP"), rs.getInt("KAYAK_RACK"), rs.getInt("KAYAK_SHED"), 
+						rs.getInt("SAIL_LOFT"), rs.getInt("SAIL_SCHOOL_LASER_LOFT"), rs.getInt("WINTER_STORAGE"),
+						rs.getInt("YSC_DONATION"),rs.getInt("PAID"),rs.getInt("TOTAL"),rs.getInt("CREDIT"),
+						rs.getInt("BALANCE"), rs.getInt("DUES"), rs.getBoolean("COMMITED"),rs.getBoolean("CLOSED"),
+						rs.getInt("OTHER"),rs.getInt("INITIATION"),rs.getBoolean("SUPPLEMENTAL"), rs.getString("F_NAME"),
+						rs.getString("L_NAME"), rs.getInt("MEMBERSHIP_ID")));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return theseFiscals;
+	}
+	
+	public static ObservableList<Object_PaidDues> getPaidDues(String selectedYear, int batch) { // overload
+		String query = "SELECT m.*, me.MEMBERSHIP_ID, p.l_name, p.f_name FROM money m INNER JOIN membership me on m.MS_ID=me.MS_ID INNER JOIN person p ON me.P_ID=p.P_ID WHERE m.FISCAL_YEAR=" + selectedYear + " AND m.BATCH=" + batch;
 		ObservableList<Object_PaidDues> theseFiscals = FXCollections.observableArrayList();
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
@@ -1035,6 +1062,22 @@ public class SqlSelect {
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			rs = stmt.executeQuery("Select SUM(" + column + ") from money where commited=true AND batch=" + batch + ";");
+			rs.next();
+			number = rs.getInt("SUM(" + column + ")");
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return number;
+	}
+	
+	public static int getMoneyCount(String column) {
+		int number = 0;
+		ResultSet rs;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			rs = stmt.executeQuery("Select SUM(" + column + ") from money where commited=true;");
 			rs.next();
 			number = rs.getInt("SUM(" + column + ")");
 		

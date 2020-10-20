@@ -6,7 +6,6 @@ import java.time.LocalDate;
 
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Money;
-import com.ecsail.structures.Object_Payment;
 import com.ecsail.structures.Object_Person;
 import com.ecsail.structures.Object_WorkCredit;
 

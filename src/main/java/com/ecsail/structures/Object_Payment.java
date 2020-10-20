@@ -12,15 +12,17 @@ public class Object_Payment {
 	private StringProperty paymentType;
 	private StringProperty paymentDate;
 	private StringProperty PaymentAmount;
+	private IntegerProperty deposit_id;
 	
 	public Object_Payment(Integer pay_id, Integer money_id, String checkNumber, String paymentType, String paymentDate,
-			String paymentAmount) {
+			String paymentAmount, Integer deposit_id) {
 		this.pay_id = new SimpleIntegerProperty(pay_id);
 		this.money_id = new SimpleIntegerProperty(money_id);
 		this.checkNumber = new SimpleStringProperty(checkNumber);
 		this.paymentType = new SimpleStringProperty(paymentType);
 		this.paymentDate = new SimpleStringProperty(paymentDate);
 		this.PaymentAmount = new SimpleStringProperty(paymentAmount);
+		this.deposit_id = new SimpleIntegerProperty(deposit_id);
 	}
 
 	public final IntegerProperty pay_idProperty() {
@@ -112,11 +114,25 @@ public class Object_Payment {
 		this.PaymentAmountProperty().set(PaymentAmount);
 	}
 
+
+	public final IntegerProperty deposit_idProperty() {
+		return this.deposit_id;
+	}
+	
+
+	public final int getDeposit_id() {
+		return this.deposit_idProperty().get();
+	}
+	
+
+	public final void setDeposit_id(final int deposit_id) {
+		this.deposit_idProperty().set(deposit_id);
+	}
+
 	@Override
 	public String toString() {
 		return "Object_Payment [pay_id=" + pay_id + ", money_id=" + money_id + ", checkNumber=" + checkNumber
 				+ ", paymentType=" + paymentType + ", paymentDate=" + paymentDate + ", PaymentAmount=" + PaymentAmount
-				+ "]";
+				+ ", deposit_id=" + deposit_id + "]";
 	}
-	
 }

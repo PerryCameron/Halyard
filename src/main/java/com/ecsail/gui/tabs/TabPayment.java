@@ -54,7 +54,7 @@ public class TabPayment extends Tab {
 			this.payments = FXCollections.observableArrayList();
 			System.out.println("Creating a new entry");
 			int pay_id = SqlSelect.getNumberOfPayments() + 1;
-			payments.add(new Object_Payment(pay_id,fiscalRecord.getMoney_id(),"0","CH",date, "0"));
+			payments.add(new Object_Payment(pay_id,fiscalRecord.getMoney_id(),"0","CH",date, "0",1));
 			SqlInsert.addRecord(payments.get(payments.size() - 1));
 			System.out.println(payments.get(0).toString());
 		}
@@ -183,7 +183,7 @@ public class TabPayment extends Tab {
 			public void handle(ActionEvent e) {
 				int pay_id = SqlSelect.getNumberOfPayments() + 1; // get last pay_id number
 				//if (SqlInsert.addRecord(phone_id, person.getP_id(), true, "new phone", "")) // if added with no errors
-				payments.add(new Object_Payment(pay_id,fiscalRecord.getMoney_id(),null,"CH",date, "0")); // lets add it to our GUI
+				payments.add(new Object_Payment(pay_id,fiscalRecord.getMoney_id(),null,"CH",date, "0",1)); // lets add it to our GUI
 				SqlInsert.addRecord(payments.get(payments.size() -1));
 				//System.out.println("Added new record with pay_id=" + pay_id + " money_id=" + fiscalRecord.getMoney_id());
 				}

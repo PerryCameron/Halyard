@@ -24,6 +24,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
@@ -66,6 +67,12 @@ public class TabDeposits extends Tab {
 		
 		////////////////////// OBJECT INSTANCE //////////////////////////	
 		
+		ObservableList<String> options = 
+			    FXCollections.observableArrayList(
+			        "Show All",
+			        "Show Selected"
+			    );
+		
 		VBox vboxGrey = new VBox();  // this is the vbox for organizing all the widgets
 		VBox vboxBlue = new VBox();
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
@@ -77,8 +84,9 @@ public class TabDeposits extends Tab {
 		HBox yearBatchHBox = new HBox(); // holds spinner and batchNumberHBox
 		HBox gridHBox = new HBox(); // holds gridPane
 		HBox remaindingRenewalHBox = new HBox();
+		HBox selectionHBox = new HBox();
 		Text nonRenewed = new Text("0");
-
+		final ComboBox<String> comboBox = new ComboBox<String>(options);
 		GridPane gridPane = new GridPane();
 		TableView<Object_PaidDues> paidDuesTableView;
 		Button refreshButton = new Button("Refresh");
@@ -99,6 +107,7 @@ public class TabDeposits extends Tab {
 		vboxPink.setId("box-pink");
 		batchNumberHBox.setSpacing(5);
 		yearBatchHBox.setAlignment(Pos.CENTER);
+		selectionHBox.setPadding(new Insets(0,0,0,37));
 		batchNumberHBox.setAlignment(Pos.CENTER);
 		gridHBox.setAlignment(Pos.CENTER);
 		buttonHBox.setSpacing(10);
@@ -115,6 +124,7 @@ public class TabDeposits extends Tab {
 		paidDuesTableView.setFixedCellSize(30);
 		paidDuesTableView.setEditable(true);
 		yearBatchHBox.setSpacing(15);
+		comboBox.setValue("Show All");
 		
 		final Spinner<Integer> yearSpinner = new Spinner<Integer>();
 		SpinnerValueFactory<Integer> wetSlipValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1970, Integer.parseInt(selectedYear), Integer.parseInt(selectedYear));
@@ -128,20 +138,14 @@ public class TabDeposits extends Tab {
 			});
 		
 		final Spinner<Integer> batchSpinner = new Spinner<Integer>();
-		SpinnerValueFactory<Integer> batchValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, batch); // 0 to batch, display batch
+		SpinnerValueFactory<Integer> batchValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, batch); // 0 to batch, display batch
 		batchSpinner.setValueFactory(batchValueFactory);
 		batchSpinner.setPrefWidth(60);
 		batchSpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
 			  if (!newValue) {
 				  batchSpinner.increment(0); // won't change value, but will commit editor
 				  batch = Integer.parseInt(batchSpinner.getEditor().getText());
-				  //System.out.println("Deposit is now " + batchSpinner.getEditor().getText());
-				  // public static Object_DefinedFee getDefinedFee(String year, Object_DefinedFee thisDefinedFee)
-				  // clear and update paidDues
-				  // refresh the grid
-				  updateCurrentMoneyTotals(); // need error check if batch doesn't exist
-				  updateMoneyTotals(gridPane);
-				  updateNonRenewed(nonRenewed);
+				  refreshButton.fire();
 			  }
 			});
 		
@@ -242,13 +246,17 @@ public class TabDeposits extends Tab {
 		refreshButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-				System.out.println("refresh");
 				paidDues.clear();
+				if(comboBox.getValue().equals("Show All")) {
 				paidDues.addAll(SqlSelect.getPaidDues(selectedYear));
 				updateCurrentMoneyTotals(); // need error check if batch doesn't exist
+				} else {
+				paidDues.addAll(SqlSelect.getPaidDues(selectedYear,batch));
+				updateCurrentMoneyBatch();
+				}
 				updateMoneyTotals(gridPane);
 				updateNonRenewed(nonRenewed);
-				}
+			}
 			});
 		
 		printPdfButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -257,6 +265,15 @@ public class TabDeposits extends Tab {
 				new Dialogue_FiscalPDF(selectedYear);
 				}
 			});
+		
+	    comboBox.valueProperty().addListener(new ChangeListener<String>() {
+	        @Override public void changed(ObservableValue ov, String t, String t1) {
+	      //    System.out.println(ov);
+	      //      System.out.println(t);
+	      //      System.out.println(t1);
+	        	refreshButton.fire();
+	        }    
+	    });
 		
 		///////////////////  SET CONTENT  ///////////////////////
 		
@@ -305,13 +322,14 @@ public class TabDeposits extends Tab {
 		gridPane.add(new Text("Total:"), 0, 11);
 		gridPane.add(tText.getTotalMoneyText(), 2, 11);
 		
+		selectionHBox.getChildren().add(comboBox);
 		remaindingRenewalHBox.getChildren().addAll(new Text("Memberships not yet renewed: " ),nonRenewed);
 		batchNumberHBox.getChildren().addAll(new Label("Deposit Number"),batchSpinner);
 		yearBatchHBox.getChildren().addAll(yearSpinner,batchNumberHBox);
 		buttonHBox.getChildren().addAll(refreshButton,printPdfButton);
 		gridHBox.getChildren().add(gridPane);
 		controlsHBox.getChildren().add(controlsVBox);
-		controlsVBox.getChildren().addAll(yearBatchHBox,gridHBox,buttonHBox,remaindingRenewalHBox);
+		controlsVBox.getChildren().addAll(yearBatchHBox,selectionHBox,gridHBox,buttonHBox,remaindingRenewalHBox);
 		paidDuesTableView.getColumns().addAll(Arrays.asList(Col1,Col2,Col9,Col3,Col4,Col10,Col5,Col6,Col7,Col8,Col11));
 		mainHBox.getChildren().addAll(paidDuesTableView,controlsHBox);
 		vboxGrey.getChildren().add(mainHBox);
@@ -326,7 +344,7 @@ public class TabDeposits extends Tab {
 		nonRenewed.setText(SqlSelect.getNonMembershipRenewalCount(selectedYear) + "");
 	}
 	
-	private void updateCurrentMoneyTotals() {
+	private void updateCurrentMoneyBatch() {
 		currentMoneyTotal.setDues(SqlSelect.getMoneyCount("DUES", batch));
 		currentMoneyTotal.setExtra_key(SqlSelect.getMoneyCount("KAYAK_SHED_KEY+SAIL_LOFT_KEY+SAIL_SCHOOL_LOFT_KEY+EXTRA_KEY", batch));
 		currentMoneyTotal.setWet_slip(SqlSelect.getMoneyCount("WET_SLIP", batch));
@@ -339,6 +357,21 @@ public class TabDeposits extends Tab {
 		currentMoneyTotal.setTotal(SqlSelect.getMoneyCount("PAID", batch));
 		currentMoneyTotal.setBeach(SqlSelect.getMoneyCount("BEACH", batch));
 		currentMoneyTotal.setYsc_donation(SqlSelect.getMoneyCount("YSC_DONATION", batch));
+	}
+	
+	private void updateCurrentMoneyTotals() {
+		currentMoneyTotal.setDues(SqlSelect.getMoneyCount("DUES"));
+		currentMoneyTotal.setExtra_key(SqlSelect.getMoneyCount("KAYAK_SHED_KEY+SAIL_LOFT_KEY+SAIL_SCHOOL_LOFT_KEY+EXTRA_KEY"));
+		currentMoneyTotal.setWet_slip(SqlSelect.getMoneyCount("WET_SLIP"));
+		currentMoneyTotal.setKayac_rack(SqlSelect.getMoneyCount("KAYAK_RACK"));
+		currentMoneyTotal.setKayac_shed(SqlSelect.getMoneyCount("KAYAK_SHED"));
+		currentMoneyTotal.setSail_loft(SqlSelect.getMoneyCount("SAIL_LOFT+SAIL_SCHOOL_LASER_LOFT"));
+		currentMoneyTotal.setWinter_storage(SqlSelect.getMoneyCount("WINTER_STORAGE"));
+		currentMoneyTotal.setInitiation(SqlSelect.getMoneyCount("INITIATION"));
+		currentMoneyTotal.setCredit(SqlSelect.getMoneyCount("CREDIT"));
+		currentMoneyTotal.setTotal(SqlSelect.getMoneyCount("PAID"));
+		currentMoneyTotal.setBeach(SqlSelect.getMoneyCount("BEACH"));
+		currentMoneyTotal.setYsc_donation(SqlSelect.getMoneyCount("YSC_DONATION"));
 	}
 	
 	private void updateMoneyTotals(GridPane gridPane) {  // need to add defined fees object
