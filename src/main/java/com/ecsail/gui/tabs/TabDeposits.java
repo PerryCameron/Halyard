@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Date;
 
 import com.ecsail.gui.dialogues.Dialogue_FiscalPDF;
+import com.ecsail.main.SqlExists;
 import com.ecsail.main.SqlSelect;
 import com.ecsail.main.SqlUpdate;
 import com.ecsail.main.TabLauncher;
@@ -164,8 +165,15 @@ public class TabDeposits extends Tab {
                             Boolean newValue) {
                     	thisPaidDues.setClosed(newValue);  // sets checkbox value in table
                     	if(newValue) { // if checked
-                    	SqlUpdate.updateMoney(thisPaidDues.getMoney_id(), batch);
-                    	SqlUpdate.updateMoney(thisPaidDues.getMoney_id(), true);
+                    	SqlUpdate.updateMoney(thisPaidDues.getMoney_id(), batch);  // update batch number in money_id
+                    	SqlUpdate.updateMoney(thisPaidDues.getMoney_id(), true);  // 
+                    		if(SqlExists.ifDepositRecordExists(thisPaidDues.getFiscal_year() + "", batch)) {  // does a deposit exist for this year and batch?
+                    		  int pay_id = SqlSelect.getPayment(thisPaidDues.getMoney_id()).getPay_id();  // gets relevant object_payment
+                    		  int deposit_id = SqlSelect.getDeposit(thisPaidDues.getFiscal_year() + "", batch).getDeposit_id();
+                    		  SqlUpdate.updatePayment(pay_id, "deposit_id", deposit_id + ""); // add deposit_id to payment tuple
+                    		} else {
+                    		  // create record
+                    		}
                     	thisPaidDues.setBatch(batch);
                     	} else { // if unchecked
                     	SqlUpdate.updateMoney(thisPaidDues.getMoney_id(), 0);

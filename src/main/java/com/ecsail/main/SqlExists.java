@@ -134,6 +134,22 @@ public class SqlExists {
 		return result;
 	}
 	
+	public static Boolean ifDepositRecordExists(String year, int batch) {
+		Boolean result = false;		
+		  // we must convert here (this is getting crazy!)
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT EXISTS(SELECT * FROM deposit WHERE FISCAL_YEAR=" + year + " and BATCH=" + batch +");"));
+			while(rs.next()) {
+			result = rs.getBoolean("EXISTS(SELECT * FROM deposit WHERE FISCAL_YEAR=" + year + " and BATCH="+ batch +")");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
 	public static Boolean isOfficer(Object_Person per,int year) {
 		boolean result = false;
 		try {  

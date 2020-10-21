@@ -53,13 +53,13 @@ public class SqlSelect {
 	}
 	
 	public static ObservableList<Object_Payment> getPayments() {
-		ObservableList<Object_Payment> thisWorkCredit = FXCollections.observableArrayList();
+		ObservableList<Object_Payment> thisPayments = FXCollections.observableArrayList();
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor("select * from payment;"));
 			while (rs.next()) {
-				thisWorkCredit.add(new Object_Payment(
+				thisPayments.add(new Object_Payment(
 						rs.getInt("PAY_ID"), 
 						rs.getInt("MONEY_ID"), 
 						rs.getString("CHECKNUMBER"),
@@ -73,17 +73,17 @@ public class SqlSelect {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return thisWorkCredit;
+		return thisPayments;
 	}
 	
 	public static ObservableList<Object_Payment> getPayments(int money_id) {
-		ObservableList<Object_Payment> thisWorkCredit = FXCollections.observableArrayList();
+		ObservableList<Object_Payment> thisPayments = FXCollections.observableArrayList();
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor("select * from payment where money_id=" + money_id));
 			while (rs.next()) {
-				thisWorkCredit.add(new Object_Payment(
+				thisPayments.add(new Object_Payment(
 						rs.getInt("PAY_ID"), 
 						rs.getInt("MONEY_ID"), 
 						rs.getString("CHECKNUMBER"),
@@ -97,7 +97,31 @@ public class SqlSelect {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return thisWorkCredit;
+		return thisPayments;
+	}
+	
+	public static Object_Payment getPayment(int money_id) {
+		Object_Payment thisPayment = null;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs;
+			rs = stmt.executeQuery(Main.console.setRegexColor("select * from payment where money_id=" + money_id));
+			while (rs.next()) {
+				thisPayment = new Object_Payment(
+						rs.getInt("PAY_ID"), 
+						rs.getInt("MONEY_ID"), 
+						rs.getString("CHECKNUMBER"),
+						rs.getString("PAYMENT_TYPE"),
+						rs.getString("PAYMENT_DATE"),
+						rs.getString("AMOUNT"),
+						rs.getInt("DEPOSIT_ID")
+						);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return thisPayment;
 	}
 	
 	public static ObservableList<Object_DefinedFee> getDefinedFees() {
@@ -135,13 +159,13 @@ public class SqlSelect {
 	}
 	
 	public static ObservableList<Object_Deposit> getDeposits() {
-		ObservableList<Object_Deposit> thisDefinedFee = FXCollections.observableArrayList();
+		ObservableList<Object_Deposit> thisDeposits = FXCollections.observableArrayList();
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor("select * from deposit;"));
 			while (rs.next()) {
-				thisDefinedFee.add(new Object_Deposit(
+				thisDeposits.add(new Object_Deposit(
 						rs.getInt("DEPOSIT_ID"), 
 						rs.getString("DEPOSIT_DATE"),
 						rs.getString("FISCAL_YEAR"),
@@ -152,7 +176,28 @@ public class SqlSelect {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return thisDefinedFee;
+		return thisDeposits;
+	}
+	
+	public static Object_Deposit getDeposit(String year, int batch) {
+		Object_Deposit thisDeposit = null;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs;
+			rs = stmt.executeQuery(Main.console.setRegexColor("select * from deposit where fiscal_year=" + year + " and batch=" + batch));
+			while (rs.next()) {
+				thisDeposit = new Object_Deposit(
+						rs.getInt("DEPOSIT_ID"), 
+						rs.getString("DEPOSIT_DATE"),
+						rs.getString("FISCAL_YEAR"),
+						rs.getInt("BATCH")
+						);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return thisDeposit;
 	}
 	
 	// to create a single defined fee object and fille it with a selected year
