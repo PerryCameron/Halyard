@@ -1,17 +1,22 @@
 package com.ecsail.gui.tabs;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Date;
 
 import com.ecsail.gui.dialogues.Dialogue_FiscalPDF;
 import com.ecsail.main.SqlExists;
+import com.ecsail.main.SqlInsert;
 import com.ecsail.main.SqlSelect;
 import com.ecsail.main.SqlUpdate;
 import com.ecsail.main.TabLauncher;
 import com.ecsail.structures.Object_DefinedFee;
+import com.ecsail.structures.Object_Deposit;
 import com.ecsail.structures.Object_Money;
 import com.ecsail.structures.Object_PaidDues;
+import com.ecsail.structures.Object_Payment;
 import com.ecsail.structures.Object_paidDuesText;
 
 import javafx.beans.Observable;
@@ -26,6 +31,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
@@ -48,7 +54,10 @@ public class TabDeposits extends Tab {
 	private ObservableList<Object_PaidDues> paidDues;
 	private Object_Money currentMoneyTotal = new Object_Money();
 	private Object_DefinedFee currentDefinedFee;
+	private Object_Deposit currentDeposit;
 	private Object_paidDuesText tText = new Object_paidDuesText();  // object of text objects
+	Text numberOfRecords = new Text("0");
+	String currentDate;
 	String selectedYear;
 	int batch;
 	
@@ -65,7 +74,7 @@ public class TabDeposits extends Tab {
 		this.paidDues.addAll(SqlSelect.getPaidDues(selectedYear));
 		this.batch = SqlSelect.getBatchNumber();
 		this.currentDefinedFee = SqlSelect.getDefinedFee(selectedYear);
-		
+		this.currentDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date(System.currentTimeMillis()));
 		////////////////////// OBJECT INSTANCE //////////////////////////	
 		
 		ObservableList<String> options = 
@@ -86,15 +95,20 @@ public class TabDeposits extends Tab {
 		HBox gridHBox = new HBox(); // holds gridPane
 		HBox remaindingRenewalHBox = new HBox();
 		HBox selectionHBox = new HBox();
+		HBox numberOfRecordsHBox = new HBox();
+		HBox comboBoxHBox = new HBox();
 		Text nonRenewed = new Text("0");
+		
 		final ComboBox<String> comboBox = new ComboBox<String>(options);
 		GridPane gridPane = new GridPane();
 		TableView<Object_PaidDues> paidDuesTableView;
 		Button refreshButton = new Button("Refresh");
 		Button printPdfButton = new Button("Print PDF");
-
-		//////////////////// OBJECT ATTRIBUTES ///////////////////////////
+		DatePicker depositDatePicker = new DatePicker();
 		
+		//////////////////// OBJECT ATTRIBUTES ///////////////////////////
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		numberOfRecords.setStyle("-fx-font-weight: bold;");
 		vboxBlue.setId("box-blue");
 		controlsHBox.setId("box-blue");
 		controlsHBox.setPadding(new Insets(5,5,5,5));
@@ -107,11 +121,15 @@ public class TabDeposits extends Tab {
 		vboxPink.setPadding(new Insets(3,3,3,3)); // spacing to make pink fram around table
 		vboxPink.setId("box-pink");
 		batchNumberHBox.setSpacing(5);
+		selectionHBox.setSpacing(30);
+		depositDatePicker.setPrefWidth(123);
 		yearBatchHBox.setAlignment(Pos.CENTER);
 		selectionHBox.setPadding(new Insets(0,0,0,37));
+		comboBoxHBox.setPadding(new Insets(0,0,0,37));
 		batchNumberHBox.setAlignment(Pos.CENTER);
 		gridHBox.setAlignment(Pos.CENTER);
 		buttonHBox.setSpacing(10);
+		numberOfRecordsHBox.setSpacing(5);
 		buttonHBox.setAlignment(Pos.CENTER);
 		remaindingRenewalHBox.setAlignment(Pos.CENTER);
 		vboxGrey.setPrefHeight(688);
@@ -165,20 +183,11 @@ public class TabDeposits extends Tab {
                             Boolean newValue) {
                     	thisPaidDues.setClosed(newValue);  // sets checkbox value in table
                     	if(newValue) { // if checked
-                    	SqlUpdate.updateMoney(thisPaidDues.getMoney_id(), batch);  // update batch number in money_id
-                    	SqlUpdate.updateMoney(thisPaidDues.getMoney_id(), true);  // 
-                    		if(SqlExists.ifDepositRecordExists(thisPaidDues.getFiscal_year() + "", batch)) {  // does a deposit exist for this year and batch?
-                    		  int pay_id = SqlSelect.getPayment(thisPaidDues.getMoney_id()).getPay_id();  // gets relevant object_payment
-                    		  int deposit_id = SqlSelect.getDeposit(thisPaidDues.getFiscal_year() + "", batch).getDeposit_id();
-                    		  SqlUpdate.updatePayment(pay_id, "deposit_id", deposit_id + ""); // add deposit_id to payment tuple
-                    		} else {
-                    		  // create record
-                    		}
-                    	thisPaidDues.setBatch(batch);
+                    	setBatchAndClose(thisPaidDues, batch, true);
+                    	System.out.println(thisPaidDues.toString());
+                    	addDepositIdToPayment(thisPaidDues);  // does lots of stuff
                     	} else { // if unchecked
-                    	SqlUpdate.updateMoney(thisPaidDues.getMoney_id(), 0);
-                    	SqlUpdate.updateMoney(thisPaidDues.getMoney_id(), false);
-                    	thisPaidDues.setBatch(0);
+                    	setBatchAndClose(thisPaidDues, 0, false);
                     	}
       				  updateCurrentMoneyTotals(); // need error check if batch doesn't exist
     				  updateMoneyTotals(gridPane);
@@ -264,6 +273,15 @@ public class TabDeposits extends Tab {
 				}
 				updateMoneyTotals(gridPane);
 				updateNonRenewed(nonRenewed);
+				numberOfRecords.setText(paidDues.size() + "");
+				
+				if(SqlExists.ifDepositRecordExists(selectedYear + "", batch)) {
+				currentDeposit = SqlSelect.getDeposit(selectedYear + "", batch);
+				LocalDate date = LocalDate.parse(currentDeposit.getDepositDate(), formatter);
+				depositDatePicker.setValue(date);
+				}
+				//check if deposit exists here
+
 			}
 			});
 		
@@ -275,13 +293,25 @@ public class TabDeposits extends Tab {
 			});
 		
 	    comboBox.valueProperty().addListener(new ChangeListener<String>() {
-	        @Override public void changed(ObservableValue ov, String t, String t1) {
-	      //    System.out.println(ov);
-	      //      System.out.println(t);
-	      //      System.out.println(t1);
+	        @Override public void changed(ObservableValue ov, String oldv, String newv) {
+	        	//if(newv.equals("Show All")) {
+	        	//	System.out.println(currentDate);
+	        	//LocalDate date = LocalDate.parse(currentDate, formatter);
+	        	//depositDatePicker.getEditor().clear();
+	        	//depositDatePicker.setValue(null);
+				//depositDatePicker.setValue(date);  worked but is fucking up dates by updating SQL
+	        	//}
 	        	refreshButton.fire();
 	        }    
 	    });
+	    
+		EventHandler<ActionEvent> pickerEvent = new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent e) {
+				LocalDate date = depositDatePicker.getValue();
+				SqlUpdate.updateDeposit("DEPOSIT_DATE", currentDeposit.getDeposit_id(), date);
+			}
+		};
+		depositDatePicker.setOnAction(pickerEvent);
 		
 		///////////////////  SET CONTENT  ///////////////////////
 		
@@ -330,14 +360,16 @@ public class TabDeposits extends Tab {
 		gridPane.add(new Text("Total:"), 0, 11);
 		gridPane.add(tText.getTotalMoneyText(), 2, 11);
 		
-		selectionHBox.getChildren().add(comboBox);
+		comboBoxHBox.getChildren().add(comboBox);
+		numberOfRecordsHBox.getChildren().addAll(new Text("Records:"), numberOfRecords);
+		selectionHBox.getChildren().addAll(depositDatePicker, numberOfRecordsHBox);
 		remaindingRenewalHBox.getChildren().addAll(new Text("Memberships not yet renewed: " ),nonRenewed);
 		batchNumberHBox.getChildren().addAll(new Label("Deposit Number"),batchSpinner);
 		yearBatchHBox.getChildren().addAll(yearSpinner,batchNumberHBox);
 		buttonHBox.getChildren().addAll(refreshButton,printPdfButton);
 		gridHBox.getChildren().add(gridPane);
 		controlsHBox.getChildren().add(controlsVBox);
-		controlsVBox.getChildren().addAll(yearBatchHBox,selectionHBox,gridHBox,buttonHBox,remaindingRenewalHBox);
+		controlsVBox.getChildren().addAll(yearBatchHBox,selectionHBox,comboBoxHBox,gridHBox,buttonHBox,remaindingRenewalHBox);
 		paidDuesTableView.getColumns().addAll(Arrays.asList(Col1,Col2,Col9,Col3,Col4,Col10,Col5,Col6,Col7,Col8,Col11));
 		mainHBox.getChildren().addAll(paidDuesTableView,controlsHBox);
 		vboxGrey.getChildren().add(mainHBox);
@@ -347,6 +379,55 @@ public class TabDeposits extends Tab {
 	}
 	
 	////////////////////////CLASS METHODS //////////////////////////
+	
+	private void addDepositIdToPayment(Object_PaidDues thisPaidDues) {
+		int pay_id = getPayId(thisPaidDues); // gets relevant object_payment
+		int deposit_id = getDepositId(thisPaidDues);
+		SqlUpdate.updatePayment(pay_id, "deposit_id", deposit_id + ""); // add deposit_id to payment tuple
+	}
+	
+	private int getDepositId(Object_PaidDues thisPaidDues) {
+		int deposit_id = 0;
+		if (SqlExists.ifDepositRecordExists(thisPaidDues.getFiscal_year() + "", batch)) { // does a deposit exist for selected year and batch?
+			//System.out.println("deposit exists");
+			deposit_id = SqlSelect.getDeposit(selectedYear + "", batch).getDeposit_id();
+		} else { // record does not exist
+			//System.out.println("deposit does not exist, creating record");
+			deposit_id = createDepositRecord();
+		}
+		return deposit_id;
+	}
+	
+	private int getPayId(Object_PaidDues thisPaidDues) {
+		int pay_id = 0;
+		if(!SqlExists.paymentExists(thisPaidDues.getMoney_id())) {  // No payment has been recorded, we need to create a blank payment record
+			pay_id = createPaymentRecord(thisPaidDues);
+		} else {
+			pay_id = SqlSelect.getPayment(thisPaidDues.getMoney_id()).getPay_id(); // payment record exists, lets get it's ID
+		}
+		return pay_id;
+	}
+	
+	private int createPaymentRecord(Object_PaidDues thisPaidDues) {
+		int pay_id = SqlSelect.getNumberOfPayments() + 1;
+		Object_Payment newPayment = new Object_Payment(pay_id,thisPaidDues.getMoney_id(),"0","CH",currentDate, "0",1);
+		//System.out.println("No payment recorded: Creating payment record");
+		SqlInsert.addRecord(newPayment);
+		return pay_id;
+	}
+	
+	private int createDepositRecord() {
+		int deposit_id = SqlSelect.getNumberOfDeposits() + 1;
+		Object_Deposit newDeposit = new Object_Deposit(deposit_id, currentDate, selectedYear, batch);
+		SqlInsert.addDeposit(newDeposit);
+		return deposit_id;
+	}
+	
+	private void setBatchAndClose(Object_PaidDues thisPaidDues, int thisBatch, Boolean closed) {
+		SqlUpdate.updateMoneyBatch(thisPaidDues.getMoney_id(), thisBatch);
+		SqlUpdate.updateMoneyClosed(thisPaidDues.getMoney_id(), closed);
+		thisPaidDues.setBatch(thisBatch);
+	}
 	
 	private void updateNonRenewed(Text nonRenewed) {
 		nonRenewed.setText(SqlSelect.getNonMembershipRenewalCount(selectedYear) + "");
@@ -403,7 +484,6 @@ public class TabDeposits extends Tab {
 		tText.changeBeachSpotText(currentMoneyTotal.getBeach() + "");
 		tText.changeBeachSpotMoneyText(currentMoneyTotal.getBeach() * currentDefinedFee.getBeach() + "");
 		tText.changeYspDonationMoneyText(currentMoneyTotal.getYsc_donation() + "");
-		
 	}
 	
 	

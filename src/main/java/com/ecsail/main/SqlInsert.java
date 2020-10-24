@@ -3,6 +3,7 @@ package com.ecsail.main;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.ecsail.structures.Object_Deposit;
 import com.ecsail.structures.Object_Membership;
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Money;
@@ -141,6 +142,16 @@ public class SqlInsert {
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			stmt.execute(Main.console.setRegexColor("INSERT INTO memo () VALUES (" + memo_id + "," + msid + ",'" + date + "',\"" + memo + "\");"));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static void addDeposit(Object_Deposit d) {
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			stmt.execute(Main.console.setRegexColor("INSERT INTO deposit () VALUES (" + d.getDeposit_id() + ",'" + d.getDepositDate() + "','" + d.getFiscalYear() + "'," + d.getBatch() + ");"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

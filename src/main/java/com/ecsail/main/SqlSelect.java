@@ -1201,4 +1201,20 @@ public class SqlSelect {
 		}
 		return active;	
 	}
+	
+	public static int getNumberOfDeposits() {
+		int number = 0;
+		ResultSet rs;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			rs = stmt.executeQuery("select count(deposit_id) from deposit;");
+			rs.next();
+			number = rs.getInt("count(deposit_id)");
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return number;
+	}
 }

@@ -139,6 +139,20 @@ public class SqlUpdate {
 		return noError;
 	}
 	
+	public static Boolean updateDeposit(String field, int deposit_id, LocalDate date) {
+		Boolean noError = true;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			stmt.execute(Main.console.setRegexColor(
+					"UPDATE deposit SET " + field + "=\"" + date + "\" WHERE deposit_id='" + deposit_id + "';"));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			noError = false;
+			e.printStackTrace();
+		}
+		return noError;
+	}
+	
 	public static void updateMembership(Boolean boolean_value, int msid) {
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
@@ -390,7 +404,7 @@ public class SqlUpdate {
 		}
 	}
 	
-	public static final void updateMoney(int money_id, int batchNumber) {
+	public static final void updateMoneyBatch(int money_id, int batchNumber) {
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE money SET batch=\"" + batchNumber
@@ -401,7 +415,7 @@ public class SqlUpdate {
 		}
 	}
 	
-	public static final void updateMoney(int money_id, Boolean closed) {
+	public static final void updateMoneyClosed(int money_id, Boolean closed) {
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE money SET closed=" + closed

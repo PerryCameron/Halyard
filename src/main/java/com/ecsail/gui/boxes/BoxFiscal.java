@@ -359,9 +359,7 @@ public class BoxFiscal extends HBox {
             	new Dialogue_Keys(fiscals.get(rowIndex), totalKeyTextField);
             }
         });
-        
 
-        
         //totalWorkCredits
 		
 		//////////////// SETTING CONTENT //////////////
