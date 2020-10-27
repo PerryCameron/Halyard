@@ -135,7 +135,8 @@ public class BoxFiscalList extends HBox {
 			public void handle(ActionEvent e) {
 				int selectedIndex = fiscalTableView.getSelectionModel().getSelectedIndex();
 				System.out.println("deleting fiscal record " + selectedIndex);
-				System.out.println(fiscals.get(selectedIndex).getFiscal_year());
+
+				SqlDelete.deletePaymentByMoneyID(fiscals.get(selectedIndex).getMoney_id());
 				SqlDelete.deleteWorkCreditsByMoneyID(fiscals.get(selectedIndex).getMoney_id());
 				SqlDelete.deleteMoneyByMoneyID(fiscals.get(selectedIndex).getMoney_id());
 				fiscals.remove(selectedIndex);

@@ -1,5 +1,6 @@
 package com.ecsail.gui.boxes;
 
+import java.util.Arrays;
 import java.util.function.Function;
 
 import com.ecsail.enums.PhoneType;
@@ -177,7 +178,7 @@ public class BoxPhone extends HBox {
 		
 		///////////////////  SET CONTENT  ///////////////////////
 		
-		phoneTableView.getColumns().addAll(Col1,Col2,Col3);
+		phoneTableView.getColumns().addAll(Arrays.asList(Col1,Col2,Col3));
 		vboxPink.getChildren().add(phoneTableView);  // adds pink border around table
 		vbox1.getChildren().addAll(phoneAdd, phoneDelete); // lines buttons up vertically
 		hboxGrey.getChildren().addAll(vboxPink,vbox1);

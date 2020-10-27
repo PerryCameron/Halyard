@@ -150,6 +150,7 @@ public class SqlExists {
 		return result;
 	}
 	
+	
 	public static Boolean isOfficer(Object_Person per,int year) {
 		boolean result = false;
 		try {  

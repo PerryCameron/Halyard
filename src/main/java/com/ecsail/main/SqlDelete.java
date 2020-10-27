@@ -150,6 +150,17 @@ public class SqlDelete {
 		}	
 	}
 	
+	public static void deletePaymentByMoneyID(int money_id) {
+		Statement stmt;
+		try {
+			stmt = ConnectDatabase.connection.createStatement();
+			stmt.execute(Main.console.setRegexColor("delete from payment where money_id='" + money_id + "';"));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+	}
+	
 	public static void deletePhones(int p_id) {
 		Statement stmt;
 		try {

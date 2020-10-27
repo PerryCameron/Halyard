@@ -1,6 +1,7 @@
 package com.ecsail.gui.tabs;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.function.Function;
 
@@ -219,7 +220,7 @@ public class TabPayment extends Tab {
         
         
 		hboxButton.getChildren().addAll(paymentAdd,paymentDelete);
-        paymentTableView.getColumns().addAll(Col1,Col2,Col3,Col4);
+        paymentTableView.getColumns().addAll(Arrays.asList(Col1,Col2,Col3,Col4));
 		vboxGrey.getChildren().addAll(paymentTableView,hboxButton);
 		vboxBlue.getChildren().add(vboxPink);
 		vboxPink.getChildren().add(vboxGrey);
