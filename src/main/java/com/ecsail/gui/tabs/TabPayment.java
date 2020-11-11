@@ -103,6 +103,9 @@ public class TabPayment extends Tab {
                                 t.getTablePosition().getRow())
                                 ).setPaymentAmount(t.getNewValue());
                         int pay_id = ((Object_Payment) t.getTableView().getItems().get(t.getTablePosition().getRow())).getPay_id();
+                        System.out.println("pay_id=" + pay_id);
+                        System.out.println("money_id=" + fiscalRecord.getMoney_id());
+                        System.out.println("payment amount=" + t.getNewValue());
                         SqlUpdate.updatePayment(pay_id, "amount", t.getNewValue());
                         int totalAmount = SqlSelect.getTotalAmount(fiscalRecord.getMoney_id());
                         System.out.println("Total Amount=" + totalAmount);

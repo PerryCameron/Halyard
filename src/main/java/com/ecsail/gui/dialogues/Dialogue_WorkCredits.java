@@ -96,7 +96,7 @@ public class Dialogue_WorkCredits extends Stage {
 				  totalWCText.setText(countWorkCredits() + "");
 			});
 		
-		SpinnerValueFactory<Integer> otherValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 15, selectedWorkCreditYear.getOther());
+		SpinnerValueFactory<Integer> otherValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 455, selectedWorkCreditYear.getOther());
 		otherSpinner.setValueFactory(otherValueFactory);
 		otherSpinner.valueProperty().addListener((obs, oldValue, newValue) ->  {
 			//	  SqlUpdate.updateWorkCredit(fieldValue,"other",selectedWorkCreditYear);
