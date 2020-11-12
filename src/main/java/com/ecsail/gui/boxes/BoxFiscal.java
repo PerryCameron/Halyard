@@ -158,7 +158,7 @@ public class BoxFiscal extends HBox {
 		vbox1.setSpacing(5);
 		vbox2.setSpacing(5);
 		totalWorkCreditTextField.setEditable(false);
-		duesText.setEditable(false);
+		//duesText.setEditable(false);
 		textFields.getPaidText().setEditable(false);
 		textFields.getCreditText().setEditable(false);
 		textFields.getTotalFeesText().setEditable(false);
@@ -185,7 +185,7 @@ public class BoxFiscal extends HBox {
 				textFields.getBalanceText().setStyle("-fx-background-color: #30e65a");
 		});
 		
-		// this is only called if you changer membership type or open a record
+		// this is only called if you changer membership type or open a record or manually type in
 		duesText.textProperty().addListener((observable, oldValue, newValue) -> {
 			if (!SqlSelect.isCommitted(fiscals.get(rowIndex).getMoney_id())) {
 				int newDues = Integer.parseInt(newValue);
@@ -197,6 +197,21 @@ public class BoxFiscal extends HBox {
 				System.out.println("Record is commited, no changes made");
 			}
 		});
+		
+		duesText.focusedProperty().addListener(new ChangeListener<Boolean>() {  // only for manual entry
+	        @Override
+	        public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+	            //focus out
+	            if (oldValue) {  // we have focused and unfocused
+	            	if(!isNumeric(duesText.getText())) {
+	            		duesText.setText("0");
+	            	}
+	            	//updateBalance();
+	            	updateItem(Integer.parseInt(duesText.getText()),"dues");
+	            	updateBalance();
+	            }
+	        }
+	    });
 
         textFields.getCommitButton().setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
@@ -303,7 +318,7 @@ public class BoxFiscal extends HBox {
 	            	if(!isNumeric(yscText.getText())) {
 	            		yscText.setText("0");
 	            	}
-	            	updateItem(Integer.parseInt(yscText.getText()));
+	            	updateItem(Integer.parseInt(yscText.getText()), "ysc");
 	            }
 	        }
 	    });
@@ -316,7 +331,7 @@ public class BoxFiscal extends HBox {
 	            	if(!isNumeric(otherText.getText())) {
 	            		otherText.setText("0");
 	            	}
-	            	updateItem(Integer.parseInt(otherText.getText()));
+	            	updateItem(Integer.parseInt(otherText.getText()),"other");
 	            }
 	        }
 	    });
@@ -329,7 +344,7 @@ public class BoxFiscal extends HBox {
 	            	if(!isNumeric(initiationText.getText())) {
 	            		otherText.setText("0");
 	            	}
-	            	updateItem(Integer.parseInt(initiationText.getText()));
+	            	updateItem(Integer.parseInt(initiationText.getText()), "initiation");
 	            }
 	        }
 	    });
@@ -416,8 +431,21 @@ public class BoxFiscal extends HBox {
 	}
 	
 	//////////////////////  CLASS METHODS ///////////////////////////
-	private void updateItem(int newTotalValue) {
-    	fiscals.get(rowIndex).setInitiation(newTotalValue);
+	private void updateItem(int newTotalValue, String type) {
+		switch(type) {
+		case "initiation":
+			fiscals.get(rowIndex).setInitiation(newTotalValue);
+			break;
+		case "other":
+			fiscals.get(rowIndex).setOther(newTotalValue);
+			break;
+		case "ysc":
+			fiscals.get(rowIndex).setYsc_donation(newTotalValue);
+			break;
+		case "dues":
+			fiscals.get(rowIndex).setDues(newTotalValue);
+			break;
+		}
 		fiscals.get(rowIndex).setTotal(updateTotalFeeFields());
 		textFields.getTotalFeesText().setText(fiscals.get(rowIndex).getTotal() + "");
     	textFields.getBalanceText().setText(getBalance() + "");
