@@ -6,6 +6,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Date;
 
+import javax.swing.GroupLayout.Alignment;
+
 import com.ecsail.gui.dialogues.Dialogue_FiscalPDF;
 import com.ecsail.main.SqlExists;
 import com.ecsail.main.SqlInsert;
@@ -14,10 +16,10 @@ import com.ecsail.main.SqlUpdate;
 import com.ecsail.main.TabLauncher;
 import com.ecsail.structures.Object_DefinedFee;
 import com.ecsail.structures.Object_Deposit;
-import com.ecsail.structures.Object_Money;
+import com.ecsail.structures.Object_DepositSummary;
 import com.ecsail.structures.Object_PaidDues;
 import com.ecsail.structures.Object_Payment;
-import com.ecsail.structures.Object_paidDuesText;
+import com.ecsail.structures.Object_DepositSummaryText;
 
 import javafx.beans.Observable;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -27,6 +29,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -51,16 +54,15 @@ import javafx.scene.text.Text;
 import javafx.util.Callback;
 
 public class TabDeposits extends Tab {
-	private ObservableList<Object_PaidDues> paidDues;
-	private Object_Money currentMoneyTotal = new Object_Money();
-	private Object_DefinedFee currentDefinedFee;
-	private Object_Deposit currentDeposit;
-	private Object_paidDuesText tText = new Object_paidDuesText();  // object of text objects
+	private ObservableList<Object_PaidDues> paidDues;  // starts with all paid dues for a given year, then can change to dues for a selected deposit
+	private Object_DefinedFee currentDefinedFee;  // containes all the defined fees for a given year
+	private Object_Deposit currentDeposit;  // contains deposit number, date, year for a selected deposit
+	private Object_DepositSummaryText summaryText = new Object_DepositSummaryText();  // object of text objects for display
+	private Object_DepositSummary summaryTotals = new Object_DepositSummary();  // will hold the totals of all at first and then for a selected deposit
 	Text numberOfRecords = new Text("0");
 	String currentDate;
 	String selectedYear;
-	int batch;
-	
+
 	public TabDeposits(String text) { 
 		super(text);
 		this.paidDues =  FXCollections.observableArrayList(new Callback<Object_PaidDues, Observable[]>() {
@@ -72,7 +74,8 @@ public class TabDeposits extends Tab {
 		});
 		this.selectedYear = new SimpleDateFormat("yyyy").format(new Date());  // lets start at the current year
 		this.paidDues.addAll(SqlSelect.getPaidDues(selectedYear));
-		this.batch = SqlSelect.getBatchNumber();
+		summaryTotals.setDepositNumber(SqlSelect.getBatchNumber());
+
 		this.currentDefinedFee = SqlSelect.getDefinedFee(selectedYear);
 		this.currentDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date(System.currentTimeMillis()));
 		////////////////////// OBJECT INSTANCE //////////////////////////	
@@ -157,13 +160,13 @@ public class TabDeposits extends Tab {
 			});
 		
 		final Spinner<Integer> batchSpinner = new Spinner<Integer>();
-		SpinnerValueFactory<Integer> batchValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, batch); // 0 to batch, display batch
+		SpinnerValueFactory<Integer> batchValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, summaryTotals.getDepositNumber()); // 0 to batch, display batch
 		batchSpinner.setValueFactory(batchValueFactory);
 		batchSpinner.setPrefWidth(60);
 		batchSpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
 			  if (!newValue) {
 				  batchSpinner.increment(0); // won't change value, but will commit editor
-				  batch = Integer.parseInt(batchSpinner.getEditor().getText());
+				  summaryTotals.setDepositNumber(Integer.parseInt(batchSpinner.getEditor().getText()));
 				  refreshButton.fire();
 			  }
 			});
@@ -183,13 +186,15 @@ public class TabDeposits extends Tab {
                             Boolean newValue) {
                     	thisPaidDues.setClosed(newValue);  // sets checkbox value in table
                     	if(newValue) { // if checked
-                    	setBatchAndClose(thisPaidDues, batch, true);
+                    	setBatchAndClose(thisPaidDues, summaryTotals.getDepositNumber(), true);
                     	System.out.println(thisPaidDues.toString());
                     	addDepositIdToPayment(thisPaidDues);  // does lots of stuff
                     	} else { // if unchecked
                     	setBatchAndClose(thisPaidDues, 0, false);
                     	}
-      				  updateCurrentMoneyTotals(); // need error check if batch doesn't exist
+                    	summaryTotals.clear();
+        				updateSummaryTotals();
+      				  //updateCurrentMoneyTotals(); // need error check if batch doesn't exist
     				  updateMoneyTotals(gridPane);
     				  updateNonRenewed(nonRenewed);
                     }
@@ -264,19 +269,19 @@ public class TabDeposits extends Tab {
 			@Override
 			public void handle(ActionEvent e) {
 				paidDues.clear();
-				if(comboBox.getValue().equals("Show All")) {
-				paidDues.addAll(SqlSelect.getPaidDues(selectedYear));
-				updateCurrentMoneyTotals(); // need error check if batch doesn't exist
-				} else {
-				paidDues.addAll(SqlSelect.getPaidDues(selectedYear,batch));
-				updateCurrentMoneyBatch();
-				}
+					if(comboBox.getValue().equals("Show All")) {
+					paidDues.addAll(SqlSelect.getPaidDues(selectedYear));
+					} else {
+					paidDues.addAll(SqlSelect.getPaidDues(selectedYear,summaryTotals.getDepositNumber()));
+					}
+				summaryTotals.clear();
+				updateSummaryTotals();	
 				updateMoneyTotals(gridPane);
 				updateNonRenewed(nonRenewed);
 				numberOfRecords.setText(paidDues.size() + "");
 				
-				if(SqlExists.ifDepositRecordExists(selectedYear + "", batch)) {
-				currentDeposit = SqlSelect.getDeposit(selectedYear + "", batch);
+				if(SqlExists.ifDepositRecordExists(selectedYear + "", summaryTotals.getDepositNumber())) {
+				currentDeposit = SqlSelect.getDeposit(selectedYear + "", summaryTotals.getDepositNumber());
 				LocalDate date = LocalDate.parse(currentDeposit.getDepositDate(), formatter);
 				depositDatePicker.setValue(date);
 				}
@@ -288,19 +293,12 @@ public class TabDeposits extends Tab {
 		printPdfButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-				new Dialogue_FiscalPDF(selectedYear);
+				new Dialogue_FiscalPDF(currentDeposit, currentDefinedFee);
 				}
 			});
 		
 	    comboBox.valueProperty().addListener(new ChangeListener<String>() {
 	        @Override public void changed(ObservableValue ov, String oldv, String newv) {
-	        	//if(newv.equals("Show All")) {
-	        	//	System.out.println(currentDate);
-	        	//LocalDate date = LocalDate.parse(currentDate, formatter);
-	        	//depositDatePicker.getEditor().clear();
-	        	//depositDatePicker.setValue(null);
-				//depositDatePicker.setValue(date);  worked but is fucking up dates by updating SQL
-	        	//}
 	        	refreshButton.fire();
 	        }    
 	    });
@@ -315,50 +313,86 @@ public class TabDeposits extends Tab {
 		
 		///////////////////  SET CONTENT  ///////////////////////
 		
-		gridPane.add(new Text("Dues:"), 0, 0);
-		gridPane.add(tText.getDuesMoneyText(), 2, 0);
-		
-		gridPane.add(new Text("Keys:"), 0, 1);
-		gridPane.add(tText.getKeyText(), 1, 1);
-		gridPane.add(tText.getKeyMoneyText(), 2, 1);
-		
-		gridPane.add(new Text("Wetslips:"), 0, 2);
-		gridPane.add(tText.getWetSlipText(), 1, 2);
-		gridPane.add(tText.getWetSlipMoneyText(), 2, 2);
-		
-		gridPane.add(new Text("Kayac Rack:"), 0, 3);
-		gridPane.add(tText.getKayacRackText(), 1, 3);
-		gridPane.add(tText.getKayacRackMoneyText(), 2, 3);
-		
-		gridPane.add(new Text("Kayac Shed:"), 0, 4);
-		gridPane.add(tText.getKayacShedText(), 1, 4);
-		gridPane.add(tText.getKayacShedMoneyText(), 2, 4);
-		
-		gridPane.add(new Text("Beach Spot:"), 0, 5);
-		gridPane.add(tText.getBeachSpotText(), 1, 5);
-		gridPane.add(tText.getBeachSpotMoneyText(), 2, 5);
-		
-		gridPane.add(new Text("Sail Loft:"), 0, 6);
-		gridPane.add(tText.getSailLoftText(), 1, 6);
-		gridPane.add(tText.getSailLoftMoneyText(), 2, 6);
-		
-		gridPane.add(new Text("Winter Storage:"), 0, 7);
-		gridPane.add(tText.getWinterStorageText(), 1, 7);
-		gridPane.add(tText.getWinterStorageMoneyText(), 2, 7);
-		
-		gridPane.add(new Text("Initiation fee:"), 0, 8);
-		gridPane.add(tText.getInitiationText(), 1, 8);
-		gridPane.add(tText.getInitiationMoneyText(), 2, 8);
-		
-		gridPane.add(new Text("YSC Donation:"), 0, 9);
-		gridPane.add(tText.getYspDonationText(), 1, 9);
-		gridPane.add(tText.getYspDonationMoneyText(), 2, 9);
-		
-		gridPane.add(new Text("Credits:"), 0, 10);
-		gridPane.add(tText.getCreditsMoneyText(), 2, 10);
-		
-		gridPane.add(new Text("Total:"), 0, 11);
-		gridPane.add(tText.getTotalMoneyText(), 2, 11);
+		gridPane.add(new Text("Annual Dues:"), 0, 0);
+		gridPane.add(summaryText.getDuesNumberText(), 1,0);
+		GridPane.setHalignment(summaryText.getDuesNumberText(), HPos.CENTER);
+		gridPane.add(summaryText.getDuesMoneyText(), 2, 0);
+		GridPane.setHalignment(summaryText.getDuesMoneyText(), HPos.RIGHT);
+		gridPane.add(new Text("Winter Storage:"), 0, 1);
+		gridPane.add(summaryText.getWinterStorageNumberText(), 1, 1);
+		GridPane.setHalignment(summaryText.getWinterStorageNumberText(), HPos.CENTER);
+		gridPane.add(summaryText.getWinterStorageMoneyText(), 2, 1);
+		GridPane.setHalignment(summaryText.getWinterStorageMoneyText(), HPos.RIGHT);
+		gridPane.add(new Text("Wet Slip:"), 0, 2);
+		gridPane.add(summaryText.getWetSlipNumberText(), 1, 2);
+		GridPane.setHalignment(summaryText.getWetSlipNumberText(), HPos.CENTER);
+		gridPane.add(summaryText.getWetSlipMoneyText(), 2, 2);
+		GridPane.setHalignment(summaryText.getWetSlipMoneyText(), HPos.RIGHT);
+		gridPane.add(new Text("Beach Spot:"), 0, 3);
+		gridPane.add(summaryText.getBeachSpotNumberText(), 1, 3);
+		GridPane.setHalignment(summaryText.getBeachSpotNumberText(), HPos.CENTER);
+		gridPane.add(summaryText.getBeachSpotMoneyText(), 2, 3);
+		GridPane.setHalignment(summaryText.getBeachSpotMoneyText(), HPos.RIGHT);
+		gridPane.add(new Text("Outside Kayac Storage:"), 0, 4);
+		gridPane.add(summaryText.getKayacRackNumberText(), 1, 4);
+		GridPane.setHalignment(summaryText.getKayacRackNumberText(), HPos.CENTER);
+		gridPane.add(summaryText.getKayacRackMoneyText(), 2, 4);
+		GridPane.setHalignment(summaryText.getKayacRackMoneyText(), HPos.RIGHT);
+		gridPane.add(new Text("Inside Kayac Storage:"), 0, 5);
+		gridPane.add(summaryText.getKayacShedNumberText(), 1, 5);
+		GridPane.setHalignment(summaryText.getKayacShedNumberText(), HPos.CENTER);
+		gridPane.add(summaryText.getKayacShedMoneyText(), 2, 5);
+		GridPane.setHalignment(summaryText.getKayacShedMoneyText(), HPos.RIGHT);
+		gridPane.add(new Text("Sail Loft Access:"), 0, 6);
+		gridPane.add(summaryText.getSailLoftNumberText(), 1, 6);
+		GridPane.setHalignment(summaryText.getSailLoftNumberText(), HPos.CENTER);
+		gridPane.add(summaryText.getSailLoftMoneyText(), 2, 6);
+		GridPane.setHalignment(summaryText.getSailLoftMoneyText(), HPos.RIGHT);
+		gridPane.add(new Text("Sail School Loft Access:"), 0, 7);
+		gridPane.add(summaryText.getSailSchoolLoftNumberText(), 1, 7);
+		GridPane.setHalignment(summaryText.getSailSchoolLoftNumberText(), HPos.CENTER);
+		gridPane.add(summaryText.getSailSchoolLoftMoneyText(), 2, 7);
+		GridPane.setHalignment(summaryText.getSailSchoolLoftMoneyText(), HPos.RIGHT);
+		gridPane.add(new Text("Extra Gate Key:"), 0, 8);
+		gridPane.add(summaryText.getGateKeyNumberText(), 1, 8);
+		GridPane.setHalignment(summaryText.getGateKeyNumberText(), HPos.CENTER);
+		gridPane.add(summaryText.getGateKeyMoneyText(), 2, 8);
+		GridPane.setHalignment(summaryText.getGateKeyMoneyText(), HPos.RIGHT);
+		gridPane.add(new Text("Extra Kayak Shed Key:"), 0, 9);
+		gridPane.add(summaryText.getKayakShedKeyNumberText(), 1, 9);
+		GridPane.setHalignment(summaryText.getKayakShedKeyNumberText(), HPos.CENTER);
+		gridPane.add(summaryText.getKayakShedKeyMoneyText(), 2, 9);
+		GridPane.setHalignment(summaryText.getKayakShedKeyMoneyText(), HPos.RIGHT);
+		gridPane.add(new Text("Extra Sail Loft Key:"), 0, 10);
+		gridPane.add(summaryText.getSailLoftKeyNumberText(), 1, 10);
+		GridPane.setHalignment(summaryText.getSailLoftKeyNumberText(), HPos.CENTER);
+		gridPane.add(summaryText.getSailLoftKeyMoneyText(), 2, 10);
+		GridPane.setHalignment(summaryText.getSailLoftKeyMoneyText(), HPos.RIGHT);
+		gridPane.add(new Text("Extra Sail School Loft Key:"), 0, 11);
+		gridPane.add(summaryText.getSailSchoolLoftKeyNumberText(), 1, 11);
+		GridPane.setHalignment(summaryText.getSailSchoolLoftKeyNumberText(), HPos.CENTER);
+		gridPane.add(summaryText.getSailSchoolLoftKeyMoneyText(), 2, 11);
+		GridPane.setHalignment(summaryText.getSailSchoolLoftKeyMoneyText(), HPos.RIGHT);
+		gridPane.add(new Text("Initiation fee:"), 0, 12);
+		gridPane.add(summaryText.getInitiationNumberText(), 1, 12);
+		GridPane.setHalignment(summaryText.getInitiationNumberText(), HPos.CENTER);
+		gridPane.add(summaryText.getInitiationMoneyText(), 2, 12);
+		GridPane.setHalignment(summaryText.getInitiationMoneyText(), HPos.RIGHT);
+		gridPane.add(new Text("YSC Donation:"), 0, 13);
+		gridPane.add(summaryText.getYspDonationNumberText(), 1, 13);
+		GridPane.setHalignment(summaryText.getYspDonationNumberText(), HPos.CENTER);
+		gridPane.add(summaryText.getYspDonationMoneyText(), 2, 13);
+		GridPane.setHalignment(summaryText.getYspDonationMoneyText(), HPos.RIGHT);
+		gridPane.add(new Text("Credits:"), 0, 14);
+		gridPane.add(summaryText.getCreditsNumberText(), 1, 14);
+		GridPane.setHalignment(summaryText.getCreditsNumberText(), HPos.CENTER);
+		gridPane.add(summaryText.getCreditsMoneyText(), 2, 14);
+		GridPane.setHalignment(summaryText.getCreditsMoneyText(), HPos.RIGHT);
+		gridPane.add(new Text("Total:"), 0, 15);
+		gridPane.add(summaryText.getTotalNumberText(), 1, 15);
+		GridPane.setHalignment(summaryText.getTotalNumberText(), HPos.CENTER);
+		gridPane.add(summaryText.getTotalMoneyText(), 2, 15);
+		GridPane.setHalignment(summaryText.getTotalMoneyText(), HPos.RIGHT);
 		
 		comboBoxHBox.getChildren().add(comboBox);
 		numberOfRecordsHBox.getChildren().addAll(new Text("Records:"), numberOfRecords);
@@ -388,9 +422,9 @@ public class TabDeposits extends Tab {
 	
 	private int getDepositId(Object_PaidDues thisPaidDues) {
 		int deposit_id = 0;
-		if (SqlExists.ifDepositRecordExists(thisPaidDues.getFiscal_year() + "", batch)) { // does a deposit exist for selected year and batch?
+		if (SqlExists.ifDepositRecordExists(thisPaidDues.getFiscal_year() + "", summaryTotals.getDepositNumber())) { // does a deposit exist for selected year and batch?
 			//System.out.println("deposit exists");
-			deposit_id = SqlSelect.getDeposit(selectedYear + "", batch).getDeposit_id();
+			deposit_id = SqlSelect.getDeposit(selectedYear + "", summaryTotals.getDepositNumber()).getDeposit_id();
 		} else { // record does not exist
 			//System.out.println("deposit does not exist, creating record");
 			deposit_id = createDepositRecord();
@@ -411,14 +445,13 @@ public class TabDeposits extends Tab {
 	private int createPaymentRecord(Object_PaidDues thisPaidDues) {
 		int pay_id = SqlSelect.getNumberOfPayments() + 1;
 		Object_Payment newPayment = new Object_Payment(pay_id,thisPaidDues.getMoney_id(),"0","CH",currentDate, "0",1);
-		//System.out.println("No payment recorded: Creating payment record");
 		SqlInsert.addRecord(newPayment);
 		return pay_id;
 	}
 	
 	private int createDepositRecord() {
 		int deposit_id = SqlSelect.getNumberOfDeposits() + 1;
-		Object_Deposit newDeposit = new Object_Deposit(deposit_id, currentDate, selectedYear, batch);
+		Object_Deposit newDeposit = new Object_Deposit(deposit_id, currentDate, selectedYear, summaryTotals.getDepositNumber());
 		SqlInsert.addDeposit(newDeposit);
 		return deposit_id;
 	}
@@ -432,59 +465,153 @@ public class TabDeposits extends Tab {
 	private void updateNonRenewed(Text nonRenewed) {
 		nonRenewed.setText(SqlSelect.getNonMembershipRenewalCount(selectedYear) + "");
 	}
-	
-	private void updateCurrentMoneyBatch() {
-		currentMoneyTotal.setDues(SqlSelect.getMoneyCount("DUES", batch));
-		currentMoneyTotal.setExtra_key(SqlSelect.getMoneyCount("KAYAK_SHED_KEY+SAIL_LOFT_KEY+SAIL_SCHOOL_LOFT_KEY+EXTRA_KEY", batch));
-		currentMoneyTotal.setWet_slip(SqlSelect.getMoneyCount("WET_SLIP", batch));
-		currentMoneyTotal.setKayac_rack(SqlSelect.getMoneyCount("KAYAK_RACK", batch));
-		currentMoneyTotal.setKayac_shed(SqlSelect.getMoneyCount("KAYAK_SHED", batch));
-		currentMoneyTotal.setSail_loft(SqlSelect.getMoneyCount("SAIL_LOFT+SAIL_SCHOOL_LASER_LOFT", batch));
-		currentMoneyTotal.setWinter_storage(SqlSelect.getMoneyCount("WINTER_STORAGE", batch));
-		currentMoneyTotal.setInitiation(SqlSelect.getMoneyCount("INITIATION", batch));
-		currentMoneyTotal.setCredit(SqlSelect.getMoneyCount("CREDIT", batch));
-		currentMoneyTotal.setTotal(SqlSelect.getMoneyCount("PAID", batch));
-		currentMoneyTotal.setBeach(SqlSelect.getMoneyCount("BEACH", batch));
-		currentMoneyTotal.setYsc_donation(SqlSelect.getMoneyCount("YSC_DONATION", batch));
-	}
-	
-	private void updateCurrentMoneyTotals() {
-		currentMoneyTotal.setDues(SqlSelect.getMoneyCount("DUES"));
-		currentMoneyTotal.setExtra_key(SqlSelect.getMoneyCount("KAYAK_SHED_KEY+SAIL_LOFT_KEY+SAIL_SCHOOL_LOFT_KEY+EXTRA_KEY"));
-		currentMoneyTotal.setWet_slip(SqlSelect.getMoneyCount("WET_SLIP"));
-		currentMoneyTotal.setKayac_rack(SqlSelect.getMoneyCount("KAYAK_RACK"));
-		currentMoneyTotal.setKayac_shed(SqlSelect.getMoneyCount("KAYAK_SHED"));
-		currentMoneyTotal.setSail_loft(SqlSelect.getMoneyCount("SAIL_LOFT+SAIL_SCHOOL_LASER_LOFT"));
-		currentMoneyTotal.setWinter_storage(SqlSelect.getMoneyCount("WINTER_STORAGE"));
-		currentMoneyTotal.setInitiation(SqlSelect.getMoneyCount("INITIATION"));
-		currentMoneyTotal.setCredit(SqlSelect.getMoneyCount("CREDIT"));
-		currentMoneyTotal.setTotal(SqlSelect.getMoneyCount("PAID"));
-		currentMoneyTotal.setBeach(SqlSelect.getMoneyCount("BEACH"));
-		currentMoneyTotal.setYsc_donation(SqlSelect.getMoneyCount("YSC_DONATION"));
-	}
-	
+
 	private void updateMoneyTotals(GridPane gridPane) {  // need to add defined fees object
-		tText.changeDuesMoneyText(currentMoneyTotal.getDues() + "");
-		tText.changeKeyText(currentMoneyTotal.getExtra_key() + "");
-		tText.changeKeyMoneyText((currentMoneyTotal.getExtra_key() * currentDefinedFee.getMain_gate_key()) + "");
-		tText.changeWetSlipText(currentMoneyTotal.getWet_slip() + "");
-		tText.changeInitiationText(SqlSelect.getNumberOfNewMemberships(selectedYear) + "");
-		tText.changeWetSlipMoneyText((currentMoneyTotal.getWet_slip() * currentDefinedFee.getWet_slip()) + "");
-		tText.changeKayacRackText(currentMoneyTotal.getKayac_rack() + "");
-		tText.changeKayacRackMoneyText((currentMoneyTotal.getKayac_rack() * currentDefinedFee.getKayak_rack()) + "");
-		tText.changeKayacShedText(currentMoneyTotal.getKayac_shed() + "");
-		tText.changeKayacShedMoneyText((currentMoneyTotal.getKayac_shed() * currentDefinedFee.getKayak_shed()) + "");
-		tText.changeSailLoftText(currentMoneyTotal.getSail_loft() + "");
-		tText.changeSailLoftMoneyText((currentMoneyTotal.getSail_loft() * currentDefinedFee.getSail_loft()) +"");
-		tText.changeWinterStorageText(currentMoneyTotal.getWinter_storage() + "");
-		tText.changeWinterStorageMoneyText((currentMoneyTotal.getWinter_storage() * currentDefinedFee.getWinter_storage()) + "");
-		tText.changeInitiationMoneyText(currentMoneyTotal.getInitiation() + "");
-		tText.changeCreditsMoneyText(currentMoneyTotal.getCredit() + "");
-		tText.changeTotalText(currentMoneyTotal.getTotal() + "");
-		tText.changeBeachSpotText(currentMoneyTotal.getBeach() + "");
-		tText.changeBeachSpotMoneyText(currentMoneyTotal.getBeach() * currentDefinedFee.getBeach() + "");
-		tText.changeYspDonationMoneyText(currentMoneyTotal.getYsc_donation() + "");
+		summaryText.getDuesNumberText().setText(summaryTotals.getDuesNumber() + "");
+		summaryText.getDuesMoneyText().setText("$" + summaryTotals.getDues());
+		
+		summaryText.getWinterStorageNumberText().setText(summaryTotals.getWinter_storageNumber() + "");
+		summaryText.getWinterStorageMoneyText().setText("$" + summaryTotals.getWinter_storage());
+		
+		summaryText.getWetSlipNumberText().setText(summaryTotals.getWet_slipNumber() + "");
+		summaryText.getWetSlipMoneyText().setText("$" + summaryTotals.getWet_slip());
+		
+		summaryText.getBeachSpotNumberText().setText(summaryTotals.getBeachNumber() + "");
+		summaryText.getBeachSpotMoneyText().setText("$" + summaryTotals.getBeach());
+
+		summaryText.getKayacRackNumberText().setText(summaryTotals.getKayac_rackNumber() + "");
+		summaryText.getKayacRackMoneyText().setText("$" + summaryTotals.getKayac_rack());
+		
+		summaryText.getKayacShedNumberText().setText(summaryTotals.getKayac_shedNumber() + "");
+		summaryText.getKayacShedMoneyText().setText("$" + summaryTotals.getKayac_shed());
+		
+		summaryText.getSailLoftNumberText().setText(summaryTotals.getSail_loftNumber() + "");
+		summaryText.getSailLoftMoneyText().setText("$" + summaryTotals.getSail_loft());
+		
+		summaryText.getSailSchoolLoftNumberText().setText(summaryTotals.getSail_school_laser_loftNumber() + "");
+		summaryText.getSailSchoolLoftMoneyText().setText("$" + summaryTotals.getSail_school_laser_loft());
+		
+		summaryText.getGateKeyNumberText().setText(summaryTotals.getGate_key() + "");
+		summaryText.getGateKeyMoneyText().setText("$" + summaryTotals.getGate_keyNumber());
+		
+		summaryText.getKayakShedKeyNumberText().setText(summaryTotals.getKayac_shed_keyNumber() + "");
+		summaryText.getKayakShedKeyMoneyText().setText("$" + summaryTotals.getKayac_shed_key());
+		
+		summaryText.getSailLoftKeyNumberText().setText(summaryTotals.getSail_loft_keyNumber() + "");
+		summaryText.getSailLoftKeyMoneyText().setText("$" + summaryTotals.getSail_loft_key());
+		
+		summaryText.getSailSchoolLoftKeyNumberText().setText(summaryTotals.getSail_school_loft_keyNumber() + "");
+		summaryText.getSailSchoolLoftKeyMoneyText().setText("$" + summaryTotals.getSail_school_loft_key());
+
+		summaryText.getInitiationNumberText().setText(summaryTotals.getInitiationNumber() + "");
+		summaryText.getInitiationMoneyText().setText("$" + summaryTotals.getInitiation());
+		
+		summaryText.getYspDonationNumberText().setText(summaryTotals.getYsc_donationNumber() + "");
+		summaryText.getYspDonationMoneyText().setText("$" + summaryTotals.getYsc_donation());
+		
+		summaryText.getCreditsNumberText().setText(summaryTotals.getCreditNumber() + "");
+		summaryText.getCreditsMoneyText().setText("$" + summaryTotals.getCredit());
+		
+		summaryText.getTotalNumberText().setText(summaryTotals.getNumberOfRecords() + "");
+		summaryText.getTotalMoneyText().setText("$" + summaryTotals.getTotal());
 	}
 	
-	
+	private void updateSummaryTotals() {
+		int numberOfRecordsCounted = 0; // number of records counted
+		for (Object_PaidDues d : paidDues) {
+			if (d.getBeach() != 0) { ///////// BEACH
+				summaryTotals.setBeachNumber(d.getBeach() + summaryTotals.getBeachNumber());
+				int totalBeachDollars = currentDefinedFee.getBeach() * d.getBeach();
+				summaryTotals.setBeach(totalBeachDollars + summaryTotals.getBeach());
+			}
+			if (d.getCredit() != 0) {  ////////  CREDIT
+				summaryTotals.setCreditNumber(1 + summaryTotals.getCreditNumber());
+				summaryTotals.setCredit(d.getCredit() + summaryTotals.getCredit());
+			}
+			if (d.getDues() != 0) {  ////////  DUES
+				summaryTotals.setDuesNumber(1 + summaryTotals.getDuesNumber());
+				summaryTotals.setDues(d.getDues() + summaryTotals.getDues());
+			}
+			if (d.getExtra_key() != 0) { /////  EXTRA GATE KEY
+				summaryTotals.setGate_keyNumber(d.getExtra_key() + summaryTotals.getGate_keyNumber());
+				int totalGateKeyDollars = currentDefinedFee.getMain_gate_key() * d.getExtra_key();
+				summaryTotals.setGate_key(summaryTotals.getGate_key() + totalGateKeyDollars);
+			}
+			if (d.getInitiation() != 0) {  /////// INITIATION
+				summaryTotals.setInitiationNumber(1 + summaryTotals.getInitiationNumber());
+				summaryTotals.setInitiation(d.getInitiation() + summaryTotals.getInitiation());
+			}
+			if (d.getKayac_rack() != 0) {  ///// KAYACK RACK FEE
+				summaryTotals.setKayac_rackNumber(d.getKayac_rack() + summaryTotals.getKayac_rackNumber());
+				int totalKayakRackDollars = currentDefinedFee.getKayak_rack() * d.getKayac_rack();
+				summaryTotals.setKayac_rack(totalKayakRackDollars + summaryTotals.getKayac_rack());
+			}
+			if (d.getKayac_shed() != 0) {   //////// KAYAK SHED ACCESS
+				summaryTotals.setKayac_shedNumber(d.getKayac_shed() + summaryTotals.getKayac_shed_keyNumber());
+				int totalKayakShedDollars = currentDefinedFee.getKayak_shed() * d.getKayac_shed();
+				summaryTotals.setKayac_shed(totalKayakShedDollars + summaryTotals.getKayac_shed());
+			}
+			if (d.getKayac_shed_key() != 0) {   ///// KAYAK SHED KEY
+				summaryTotals.setKayac_shed_keyNumber(d.getKayac_shed_key() + summaryTotals.getKayac_shed_keyNumber());
+				int totalKayakShedKeyDollars = currentDefinedFee.getKayak_shed_key() * d.getKayac_shed_key();
+				summaryTotals.setKayac_shed_key(totalKayakShedKeyDollars + summaryTotals.getKayac_shed_key());
+			}
+			if (d.getOther() != 0) {  /////////  OTHER FEE ///////// IN DOLLARS
+				summaryTotals.setOtherNumber(1 + summaryTotals.getOtherNumber());
+				summaryTotals.setOther(d.getOther() + summaryTotals.getOther());
+			}
+			if (d.getSail_loft() != 0) {   ////////// SAIL LOFT ACCESS ///////// IN NUMBER OF
+				summaryTotals.setSail_loftNumber(1 + summaryTotals.getSail_loftNumber());
+				summaryTotals.setSail_loft(currentDefinedFee.getSail_loft() + summaryTotals.getSail_loft());
+			}
+			if (d.getSail_loft_key() != 0) {  ///////// SAIL LOFT KEY ///////// IN NUMBER OF
+				summaryTotals.setSail_loft_keyNumber(d.getSail_loft_key() + summaryTotals.getSail_loft_keyNumber());
+				int totalSailLoftKeyDollars = currentDefinedFee.getSail_loft_key() * d.getSail_loft_key();
+				summaryTotals.setSail_loft_key(totalSailLoftKeyDollars + summaryTotals.getSail_loft_key());
+			}
+			if (d.getSail_school_laser_loft() != 0) {  ///////// SAIL SCHOOL LOFT ACCESS ///////// IN NUMBER OF
+				summaryTotals.setSail_school_laser_loftNumber(d.getSail_school_laser_loft() + summaryTotals.getSail_school_laser_loftNumber());
+				int totalSailSchoolLoftDollars = currentDefinedFee.getSail_school_laser_loft() * d.getSail_school_laser_loft();
+				summaryTotals.setSail_school_laser_loft(totalSailSchoolLoftDollars + summaryTotals.getSail_school_laser_loft());
+			}
+			if (d.getSail_school_loft_key() != 0) {  ////////// SAIL SCHOOL LOFT KEY ///////// IN NUMBER OF
+				summaryTotals.setSail_school_loft_keyNumber(d.getSail_school_loft_key() + summaryTotals.getSail_school_loft_keyNumber());
+				int totalSailSchoolLoftKeyDollars = currentDefinedFee.getSail_school_loft_key() * d.getSail_school_loft_key();
+				summaryTotals.setSail_school_loft_key(totalSailSchoolLoftKeyDollars + summaryTotals.getSail_school_loft_key());
+			}
+			if (d.getWet_slip() != 0) {  ////////// WET SLIP FEE ///////// IN DOLLARS 
+				summaryTotals.setWet_slipNumber(1 + summaryTotals.getWet_slipNumber());
+				summaryTotals.setWet_slip(currentDefinedFee.getWet_slip() + summaryTotals.getWet_slip());
+			}
+			if (d.getWinter_storage() != 0) {  ////////  WINTER STORAGE FEE ///////// IN NUMBER OF
+				summaryTotals.setWinter_storageNumber(d.getWinter_storage() + summaryTotals.getWinter_storageNumber());
+				int totalWinterStorageDollars = currentDefinedFee.getWinter_storage() * d.getWinter_storage();
+				summaryTotals.setWinter_storage(totalWinterStorageDollars + summaryTotals.getWinter_storage());
+			}
+			if (d.getYsc_donation() != 0) {  //////// YSC DONATION ///////// IN DOLLARS
+				summaryTotals.setYsc_donationNumber(1 + summaryTotals.getYsc_donationNumber());
+				summaryTotals.setYsc_donation(d.getYsc_donation() + summaryTotals.getYsc_donation());
+			}
+			numberOfRecordsCounted++;
+		}
+		int total = 0;
+		total += summaryTotals.getBeach();
+		total -= summaryTotals.getCredit();
+		total += summaryTotals.getDues();
+		total += summaryTotals.getGate_key();
+		total += summaryTotals.getInitiation();
+		total += summaryTotals.getKayac_rack();
+		total += summaryTotals.getKayac_shed();
+		total += summaryTotals.getKayac_shed_key();
+		total += summaryTotals.getOther();
+		total += summaryTotals.getSail_loft();
+		total += summaryTotals.getSail_loft_key();
+		total += summaryTotals.getSail_school_laser_loft();
+		total += summaryTotals.getSail_school_loft_key();
+		total += summaryTotals.getWet_slip();
+		total += summaryTotals.getWinter_storage();
+		total += summaryTotals.getYsc_donation();
+		summaryTotals.setTotal(total);
+		summaryTotals.setNumberOfRecords(numberOfRecordsCounted);
+	}
 }

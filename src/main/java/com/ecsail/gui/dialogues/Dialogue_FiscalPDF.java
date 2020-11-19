@@ -2,8 +2,9 @@ package com.ecsail.gui.dialogues;
 
 import java.io.IOException;
 
-import com.ecsail.pdf.Pdf_FiscalReport;
-
+import com.ecsail.pdf.Pdf_TreasurerReport;
+import com.ecsail.structures.Object_DefinedFee;
+import com.ecsail.structures.Object_Deposit;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -20,15 +21,17 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class Dialogue_FiscalPDF extends Stage {
-	String selectedYear;
-	public Dialogue_FiscalPDF(String sy) {
-		this.selectedYear =  sy;
+	private Object_Deposit currentDeposit;
+	private Object_DefinedFee currentDefinedFee;
+	public Dialogue_FiscalPDF(Object_Deposit cd, Object_DefinedFee cdf) {
+		this.currentDeposit = cd;
+		this.currentDefinedFee = cdf;
 		
 		Button createPDFbutton = new Button("Create PDF");
 		ToggleGroup tg1 = new ToggleGroup(); 
 		ToggleGroup tg2 = new ToggleGroup(); 
-		RadioButton r1 = new RadioButton("Print Full Report"); 
-        RadioButton r2 = new RadioButton("Print Batch Report"); 
+		RadioButton r1 = new RadioButton("Treasurer Report"); 
+        RadioButton r2 = new RadioButton("Deposit Report"); 
         RadioButton r3 = new RadioButton("Detailed");
         RadioButton r4 = new RadioButton("Summary"); 
 		HBox hboxGrey = new HBox(); // this is the vbox for organizing all the widgets
@@ -78,7 +81,7 @@ public class Dialogue_FiscalPDF extends Stage {
 			@Override
 			public void handle(ActionEvent e) {
 				try {
-					new Pdf_FiscalReport(selectedYear);
+					new Pdf_TreasurerReport(currentDeposit, currentDefinedFee);
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
