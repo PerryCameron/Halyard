@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
 	
-public class Pdf_TreasurerReport {
+public class Pdf_SummaryDepositReport {
 		private static Object_Deposit currentDeposit;
 		private static Object_DefinedFee currentDefinedFee;
 		private static Object_DepositSummary totals;
@@ -54,11 +54,11 @@ public class Pdf_TreasurerReport {
 			};
 
 	    public static int counter = 1;
-		public Pdf_TreasurerReport(Object_Deposit cd, Object_DefinedFee cdf) throws IOException {
-			Pdf_TreasurerReport.currentDeposit = cd;
-			Pdf_TreasurerReport.paidDues = SqlSelect.getPaidDues(currentDeposit);
-			Pdf_TreasurerReport.currentDefinedFee = cdf;
-			Pdf_TreasurerReport.totals = updateTotals();
+		public Pdf_SummaryDepositReport(Object_Deposit cd, Object_DefinedFee cdf) throws IOException {
+			Pdf_SummaryDepositReport.currentDeposit = cd;
+			Pdf_SummaryDepositReport.paidDues = SqlSelect.getPaidDues(currentDeposit);
+			Pdf_SummaryDepositReport.currentDefinedFee = cdf;
+			Pdf_SummaryDepositReport.totals = updateTotals();
 			
 			String dest = System.getProperty("user.home") + "/Deposit_Report_" + currentDeposit.getBatch() + "_" + currentDeposit.getFiscalYear() + ".pdf";
 			

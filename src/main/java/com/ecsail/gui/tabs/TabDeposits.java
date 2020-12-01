@@ -8,7 +8,7 @@ import java.util.Date;
 
 import javax.swing.GroupLayout.Alignment;
 
-import com.ecsail.gui.dialogues.Dialogue_FiscalPDF;
+import com.ecsail.gui.dialogues.Dialogue_DepositPDF;
 import com.ecsail.main.SqlExists;
 import com.ecsail.main.SqlInsert;
 import com.ecsail.main.SqlSelect;
@@ -293,7 +293,7 @@ public class TabDeposits extends Tab {
 		printPdfButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-				new Dialogue_FiscalPDF(currentDeposit, currentDefinedFee);
+				new Dialogue_DepositPDF(currentDeposit, currentDefinedFee);
 				}
 			});
 		

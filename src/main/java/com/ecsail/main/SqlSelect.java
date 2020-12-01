@@ -1079,9 +1079,9 @@ public class SqlSelect {
 		ResultSet rs;
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
-			rs = stmt.executeQuery("SELECT COUNT(PAY_ID) from payment;");
+			rs = stmt.executeQuery("select PAY_ID from payment ORDER BY pay_id DESC LIMIT 1");
 			rs.next();
-			number = rs.getInt("COUNT(PAY_ID)");
+			number = rs.getInt("PAY_ID");
 		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -1089,6 +1089,8 @@ public class SqlSelect {
 		}
 		return number;
 	}
+	
+	
 	
 	public static int getMSIDCount() {  // gives the last memo_id number
 		int number = 0;

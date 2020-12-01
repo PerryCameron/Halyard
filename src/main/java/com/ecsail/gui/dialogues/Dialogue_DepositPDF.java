@@ -2,7 +2,8 @@ package com.ecsail.gui.dialogues;
 
 import java.io.IOException;
 
-import com.ecsail.pdf.Pdf_TreasurerReport;
+import com.ecsail.pdf.Pdf_SummaryDepositReport;
+import com.ecsail.pdf.Pdf_SummaryDepositReportAll;
 import com.ecsail.structures.Object_DefinedFee;
 import com.ecsail.structures.Object_Deposit;
 import javafx.event.ActionEvent;
@@ -20,18 +21,18 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class Dialogue_FiscalPDF extends Stage {
+public class Dialogue_DepositPDF extends Stage {
 	private Object_Deposit currentDeposit;
 	private Object_DefinedFee currentDefinedFee;
-	public Dialogue_FiscalPDF(Object_Deposit cd, Object_DefinedFee cdf) {
+	public Dialogue_DepositPDF(Object_Deposit cd, Object_DefinedFee cdf) {
 		this.currentDeposit = cd;
 		this.currentDefinedFee = cdf;
 		
 		Button createPDFbutton = new Button("Create PDF");
 		ToggleGroup tg1 = new ToggleGroup(); 
 		ToggleGroup tg2 = new ToggleGroup(); 
-		RadioButton r1 = new RadioButton("Treasurer Report"); 
-        RadioButton r2 = new RadioButton("Deposit Report"); 
+		RadioButton r1 = new RadioButton("Print All"); 
+        RadioButton r2 = new RadioButton("Print Deposit"); 
         RadioButton r3 = new RadioButton("Detailed");
         RadioButton r4 = new RadioButton("Summary"); 
 		HBox hboxGrey = new HBox(); // this is the vbox for organizing all the widgets
@@ -52,7 +53,8 @@ public class Dialogue_FiscalPDF extends Stage {
 			  if (!newValue) {
 				  batchSpinner.increment(0); // won't change value, but will commit editor
 				  int fieldValue = Integer.parseInt(batchSpinner.getEditor().getText());
-				  System.out.println(fieldValue);
+				  currentDeposit.setBatch(fieldValue);
+				  //System.out.println(fieldValue);
 			  }
 			});
 		
@@ -61,7 +63,7 @@ public class Dialogue_FiscalPDF extends Stage {
         r2.setToggleGroup(tg1); 
         r3.setToggleGroup(tg2);
         r4.setToggleGroup(tg2);
-        r1.setSelected(true);
+        r2.setSelected(true);
         r3.setSelected(true);
         //batchSpinner.setPadding(new Insets(0,0,0,10));
         hboxGrey.setPadding(new Insets(5,0,0,5));
@@ -76,19 +78,30 @@ public class Dialogue_FiscalPDF extends Stage {
 		hboxGrey.setPrefHeight(688);
 		scene.getStylesheets().add("stylesheet.css");
 		setTitle("Print to PDF");
+		batchSpinner.getValueFactory().setValue(currentDeposit.getBatch());
 		
 		createPDFbutton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-				try {
-					new Pdf_TreasurerReport(currentDeposit, currentDefinedFee);
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+				if (r1.isSelected()) {
+					try {
+						new Pdf_SummaryDepositReportAll(currentDeposit, currentDefinedFee);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					System.out.println("All is selected");
+				} else {
+					try {
+						new Pdf_SummaryDepositReport(currentDeposit, currentDefinedFee);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					// launch sub menu here
 				}
-				// launch sub menu here
-				}
-			});
+			}
+		});
 		
 		
 		//////////////// ADD CONTENT ///////////////////
