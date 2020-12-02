@@ -77,11 +77,20 @@ public class Object_Deposit {
 	public final void setBatch(final int batch) {
 		this.batchProperty().set(batch);
 	}
+	
+	public final void clear() {
+		deposit_id = null;
+		depositDate = null;
+		fiscalYear = null;
+		batch = null;
+	}
 
 	@Override
 	public String toString() {
 		return "Object_Deposit [deposit_id=" + deposit_id + ", depositDate=" + depositDate + ", fiscalYear="
 				+ fiscalYear + ", batch=" + batch + "]";
 	}
+	
+	
 	
 }

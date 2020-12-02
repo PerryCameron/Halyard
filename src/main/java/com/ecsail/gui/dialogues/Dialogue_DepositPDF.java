@@ -1,16 +1,16 @@
 package com.ecsail.gui.dialogues;
 
-import java.io.IOException;
-
-import com.ecsail.pdf.Pdf_SummaryDepositReport;
-import com.ecsail.pdf.Pdf_SummaryDepositReportAll;
+import com.ecsail.pdf.PDF_DepositReport;
 import com.ecsail.structures.Object_DefinedFee;
 import com.ecsail.structures.Object_Deposit;
+import com.ecsail.structures.Object_DepositPDF;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
@@ -24,17 +24,19 @@ import javafx.stage.Stage;
 public class Dialogue_DepositPDF extends Stage {
 	private Object_Deposit currentDeposit;
 	private Object_DefinedFee currentDefinedFee;
+	private Object_DepositPDF pdfOptions;
+	
 	public Dialogue_DepositPDF(Object_Deposit cd, Object_DefinedFee cdf) {
 		this.currentDeposit = cd;
 		this.currentDefinedFee = cdf;
+		this.pdfOptions = new Object_DepositPDF();
 		
 		Button createPDFbutton = new Button("Create PDF");
-		ToggleGroup tg1 = new ToggleGroup(); 
-		ToggleGroup tg2 = new ToggleGroup(); 
-		RadioButton r1 = new RadioButton("Print All"); 
-        RadioButton r2 = new RadioButton("Print Deposit"); 
-        RadioButton r3 = new RadioButton("Detailed");
-        RadioButton r4 = new RadioButton("Summary"); 
+		ToggleGroup tg1 = new ToggleGroup();  
+		RadioButton r1 = new RadioButton("Print All Deposits"); 
+        RadioButton r2 = new RadioButton("Print Only Deposit Number"); 
+        CheckBox c1 = new CheckBox("Detailed");
+        CheckBox c2 = new CheckBox("Summary"); 
 		HBox hboxGrey = new HBox(); // this is the vbox for organizing all the widgets
 		VBox vboxBlue = new VBox();
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
@@ -61,10 +63,9 @@ public class Dialogue_DepositPDF extends Stage {
 		/////////////////// ATTRIBUTES ///////////////////
 		r1.setToggleGroup(tg1); 
         r2.setToggleGroup(tg1); 
-        r3.setToggleGroup(tg2);
-        r4.setToggleGroup(tg2);
         r2.setSelected(true);
-        r3.setSelected(true);
+        c1.setSelected(true);
+        c2.setSelected(true);
         //batchSpinner.setPadding(new Insets(0,0,0,10));
         hboxGrey.setPadding(new Insets(5,0,0,5));
         batchSpinner.setPrefWidth(60);
@@ -83,29 +84,19 @@ public class Dialogue_DepositPDF extends Stage {
 		createPDFbutton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-				if (r1.isSelected()) {
-					try {
-						new Pdf_SummaryDepositReportAll(currentDeposit, currentDefinedFee);
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					System.out.println("All is selected");
-				} else {
-					try {
-						new Pdf_SummaryDepositReport(currentDeposit, currentDefinedFee);
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					// launch sub menu here
-				}
-			}
+				if(c1.isSelected()) pdfOptions.setIncludesDetailedReport(true);
+				if(!c1.isSelected()) pdfOptions.setIncludesDetailedReport(false);
+				if(c2.isSelected()) pdfOptions.setIncludesSummaryReport(true);
+				if(!c2.isSelected()) pdfOptions.setIncludesSummaryReport(false);
+				if(r2.isSelected()) pdfOptions.setSingleDeposit(true);
+				if(!r2.isSelected()) pdfOptions.setSingleDeposit(false);
+				pdfOptions.setDepositNumber(currentDeposit.getBatch());
+				new PDF_DepositReport(currentDeposit, currentDefinedFee, pdfOptions);  // makes the PDF
+ 			}
 		});
 		
-		
 		//////////////// ADD CONTENT ///////////////////
-		vboxColumn1.getChildren().addAll(r1,r2,batchSpinner,r3,r4);
+		vboxColumn1.getChildren().addAll(r1,r2,batchSpinner,c1,c2);
 		vboxColumn2.getChildren().addAll(pdfImage,createPDFbutton);
 		hboxGrey.getChildren().addAll(vboxColumn1,vboxColumn2);
 		vboxBlue.getChildren().add(vboxPink);

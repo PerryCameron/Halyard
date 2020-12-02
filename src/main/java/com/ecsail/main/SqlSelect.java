@@ -1249,4 +1249,21 @@ public class SqlSelect {
 		}
 		return number;
 	}
+	
+	public static int getNumberOfDepositBatches(String year) {
+		int number = 0;
+		ResultSet rs;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			rs = stmt.executeQuery("select max(batch) from deposit where FISCAL_YEAR=" + year);
+			rs.next();
+			number = rs.getInt("max(batch)");
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return number;
+		
+	}
 }
