@@ -6,8 +6,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Date;
 
-import javax.swing.GroupLayout.Alignment;
-
 import com.ecsail.gui.dialogues.Dialogue_DepositPDF;
 import com.ecsail.main.SqlExists;
 import com.ecsail.main.SqlInsert;
