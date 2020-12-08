@@ -7,8 +7,9 @@
 	<version>0.0.72-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+	
 	<dependencies>
+		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
@@ -21,13 +22,24 @@
 			<version>7.1.13</version>
 			<type>pom</type>
 		</dependency>
-	<!-- https://mvnrepository.com/artifact/com.itextpdf/layout -->
-	<dependency>
-    	<groupId>com.itextpdf</groupId>
-    	<artifactId>layout</artifactId>
-    	<version>7.1.13</version>
-	</dependency>
-
+		<!-- https://mvnrepository.com/artifact/com.itextpdf/layout -->
+		<dependency>
+    		<groupId>com.itextpdf</groupId>
+    		<artifactId>layout</artifactId>
+    		<version>7.1.13</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>4.1.2</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>4.1.2</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
