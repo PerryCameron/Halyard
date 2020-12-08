@@ -293,7 +293,7 @@ public class TabDeposits extends Tab {
 		printPdfButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-				new Dialogue_DepositPDF(currentDeposit, currentDefinedFee);
+				new Dialogue_DepositPDF(currentDeposit, currentDefinedFee, selectedYear);
 				}
 			});
 		

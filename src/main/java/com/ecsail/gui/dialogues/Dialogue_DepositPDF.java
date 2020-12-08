@@ -1,5 +1,7 @@
 package com.ecsail.gui.dialogues;
 
+import com.ecsail.main.SqlExists;
+import com.ecsail.main.SqlSelect;
 import com.ecsail.pdf.PDF_DepositReport;
 import com.ecsail.structures.Object_DefinedFee;
 import com.ecsail.structures.Object_Deposit;
@@ -25,17 +27,19 @@ public class Dialogue_DepositPDF extends Stage {
 	private Object_Deposit currentDeposit;
 	private Object_DefinedFee currentDefinedFee;
 	private Object_DepositPDF pdfOptions;
+	String selectedYear;
 	
-	public Dialogue_DepositPDF(Object_Deposit cd, Object_DefinedFee cdf) {
+	public Dialogue_DepositPDF(Object_Deposit cd, Object_DefinedFee cdf, String y) {
 		this.currentDeposit = cd;
 		this.currentDefinedFee = cdf;
 		this.pdfOptions = new Object_DepositPDF();
+		this.selectedYear = y;
 		
 		Button createPDFbutton = new Button("Create PDF");
 		ToggleGroup tg1 = new ToggleGroup();  
 		RadioButton r1 = new RadioButton("Print All Deposits"); 
         RadioButton r2 = new RadioButton("Print Only Deposit Number"); 
-        CheckBox c1 = new CheckBox("Detailed");
+        CheckBox c1 = new CheckBox("Detailed Report");
         CheckBox c2 = new CheckBox("Summary"); 
 		HBox hboxGrey = new HBox(); // this is the vbox for organizing all the widgets
 		VBox vboxBlue = new VBox();
@@ -55,8 +59,10 @@ public class Dialogue_DepositPDF extends Stage {
 			  if (!newValue) {
 				  batchSpinner.increment(0); // won't change value, but will commit editor
 				  int fieldValue = Integer.parseInt(batchSpinner.getEditor().getText());
-				  currentDeposit.setBatch(fieldValue);
-				  //System.out.println(fieldValue);
+				  		if(SqlExists.ifDepositRecordExists(currentDeposit.getFiscalYear(), fieldValue))  // deposit exists
+				  		currentDeposit.setBatch(fieldValue);
+				  		else
+				  		currentDeposit.setBatch(1);	
 			  }
 			});
 		
@@ -79,7 +85,14 @@ public class Dialogue_DepositPDF extends Stage {
 		hboxGrey.setPrefHeight(688);
 		scene.getStylesheets().add("stylesheet.css");
 		setTitle("Print to PDF");
-		batchSpinner.getValueFactory().setValue(currentDeposit.getBatch());
+		////////////  Check to see if batch exists first////////////
+		
+  		if(currentDeposit == null) { // deposit does not exist
+  		currentDeposit = SqlSelect.getDeposit(selectedYear, 1);
+		batchSpinner.getValueFactory().setValue(1);
+  		} else {
+  		batchSpinner.getValueFactory().setValue(currentDeposit.getBatch());	
+  		}
 		
 		createPDFbutton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override

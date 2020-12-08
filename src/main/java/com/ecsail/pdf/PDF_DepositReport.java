@@ -1,9 +1,11 @@
 package com.ecsail.pdf;
 
 import java.awt.Desktop;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -13,6 +15,7 @@ import com.ecsail.structures.Object_Deposit;
 import com.ecsail.structures.Object_DepositPDF;
 import com.ecsail.structures.Object_DepositSummary;
 import com.ecsail.structures.Object_PaidDues;
+import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.colors.DeviceCmyk;
 import com.itextpdf.kernel.pdf.PdfDocument;
@@ -24,10 +27,12 @@ import com.itextpdf.layout.borders.SolidBorder;
 import com.itextpdf.layout.element.AreaBreak;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.IElement;
+import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.AreaBreakType;
 import com.itextpdf.layout.property.TextAlignment;
+
 
 import javafx.collections.ObservableList;
 
@@ -65,8 +70,11 @@ public class PDF_DepositReport {
 		this.currentDefinedFee = cdf;
 		this.totals = updateTotals();
 		this.fiscalYear = currentDeposit.getFiscalYear();
-		String dest = System.getProperty("user.home") + "/Deposit_Report_" + currentDeposit.getBatch() + "_" + currentDeposit.getFiscalYear() + ".pdf";
+		String dest = "";
 
+		//Image ecscLogo = new Image(ImageDataFactory.create(toByteArray(getClass().getResourceAsStream("/EagleCreekLogoForPDF.png"))));
+		//public static final String SAFETY_IMG = "/img/Safety.png";
+		
 		////////////// CHOOSE SORT //////////////
 		sortByMembershipId();  ///////  will add more sorts later
 		
@@ -75,6 +83,12 @@ public class PDF_DepositReport {
 
 		// Initialize PDF writer
 		PdfWriter writer = null;
+
+		if (pdfOptions.isSingleDeposit()) { // are we only creating a report of a single deposit
+			dest = System.getProperty("user.home") + "/Deposit_Report_" + currentDeposit.getBatch() + "_" + currentDeposit.getFiscalYear() + ".pdf";
+		} else { // we are creating a report for the entire year
+			dest = System.getProperty("user.home") + "/Deposit_Report_Fiscal_Year_" + currentDeposit.getFiscalYear() + ".pdf";
+		}
 
 		try {
 			writer = new PdfWriter(dest);
@@ -89,39 +103,22 @@ public class PDF_DepositReport {
 		// Initialize document
 		Document document = new Document(pdf);
 		
-		if(pdfOptions.isSingleDeposit()) {  // are we only creating a report of a single deposit
-			if(pdfOptions.isDetailedReportIncluded()) {
-				document.add(headerPdfTable("Detailed Report of Deposits"));
-			}
-			
-			
-			if(pdfOptions.isSummaryReportIncluded()) {  // is the summary of the deposit report included
-				document.add(headerPdfTable("Summary Report of Deposits"));
-				document.add(mainPdfTable());
-				
-			}
-			
-			
+//		document.add(addLogoTable(document, ecscLogo));
+		
+		if (pdfOptions.isSingleDeposit()) { // are we only creating a report of a single deposit
+			createDepositTable(currentDeposit.getBatch(), document);
 		} else { // we are creating a report for the entire year
-			if(pdfOptions.isDetailedReportIncluded()) {
-				document.add(headerPdfTable("Detailed Report of Deposits"));
-			}
-			
-			
-			if(pdfOptions.isSummaryReportIncluded()) {  // is the summary of the deposit report included
-				
-				//document.add(mainPdfTable());
-				int numberOfBatches = SqlSelect.getNumberOfDepositBatches(currentDeposit.getFiscalYear()) + 1;
-				for(int i = 1; i < numberOfBatches; i++) {
-					createSummaryTable(i, document);
-				}
-				
+			int numberOfBatches = SqlSelect.getNumberOfDepositBatches(currentDeposit.getFiscalYear()) + 1;
+			for (int i = 1; i < numberOfBatches; i++) {
+				createDepositTable(i, document);
+				document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
 			}
 		}
 
 		document.setTopMargin(0);
 		// Close document
 		document.close();
+		System.out.println("destination=" + dest);
 		File file = new File(dest);
 		Desktop desktop = Desktop.getDesktop(); // Gui_Main.class.getProtectionDomain().getCodeSource().getLocation().getPath()
 		
@@ -138,20 +135,266 @@ public class PDF_DepositReport {
 	
 	/////////////////////////////   CLASS METHODS  /////////////////////////////////////////
 	
-	private void createSummaryTable(int batch, Document document) {
+	
+	private void createDepositTable(int batch, Document document) {
 		currentDeposit.clear();
 		paidDuesForDeposit.clear();
-		currentDeposit = SqlSelect.getDeposit(fiscalYear, batch);
-		//System.out.println(currentDeposit.toString());
+		SqlSelect.updateDeposit(fiscalYear, batch, currentDeposit);
 		paidDuesForDeposit = SqlSelect.getPaidDues(currentDeposit);
+		/////////// add the details pages ////////////
+		document.add(titlePdfTable("Deposit Report"));
+		document.add(detailPdfTable());
+		/////////// add the summary page ////////////
 		totals.clear();
 		totals = updateTotals();
-		//document.add(addBlankTable());
-		document.add(headerPdfTable("Deposit Summary"));
-		document.add(mainPdfTable());
-		document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+		document.add(headerPdfTable("Summary"));
+		document.add(summaryPdfTable());
 	}
 	
+	public Table titlePdfTable(String title) {
+		Image ecscLogo = new Image(ImageDataFactory.create(toByteArray(getClass().getResourceAsStream("/EagleCreekLogoForPDF.png"))));
+		Table mainTable = new Table(3);
+		Cell cell;
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setWidth(200);
+		cell.add(new Paragraph(title + " #" + currentDeposit.getBatch())).setFontSize(20);
+		mainTable.addCell(cell);
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setWidth(200);
+		mainTable.addCell(cell);
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setWidth(90);
+		ecscLogo.setMarginLeft(30);
+		ecscLogo.scale(0.4f, 0.4f);
+		cell.add(ecscLogo);
+		mainTable.addCell(cell);
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.add(new Paragraph(currentDeposit.getDepositDate() + "")).setFontSize(10);
+		mainTable.addCell(cell);
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		mainTable.addCell(cell);
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		mainTable.addCell(cell);
+		return mainTable;
+	}
+	
+	private Table detailPdfTable() {
+		Table detailTable = new Table(5);
+		// mainTable.setKeepTogether(true);
+		Cell cell;
+		
+		for(Object_PaidDues dues: paidDuesForDeposit)  // each membership in Deposit
+		{
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f));
+		cell.setBorderTop(new SolidBorder(ColorConstants.BLACK, 1));
+		cell.setWidth(50);
+		cell.add(new Paragraph(dues.getMembershipId() + "")).setFontSize(10);
+		detailTable.addCell(cell);
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f));
+		cell.setBorderTop(new SolidBorder(ColorConstants.BLACK, 1));
+		cell.setWidth(100);
+		cell.add(new Paragraph(dues.getL_name() + "")).setFontSize(10);
+		detailTable.addCell(cell);
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f));
+		cell.setBorderTop(new SolidBorder(ColorConstants.BLACK, 1));
+		cell.setWidth(200);
+		//cell.add(new Paragraph(dues.getL_name() + "")).setFontSize(10);
+		detailTable.addCell(cell);
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f));
+		cell.setBorderTop(new SolidBorder(ColorConstants.BLACK, 1));
+		cell.setWidth(40);
+		//cell.add(new Paragraph(dues.getL_name() + "")).setFontSize(10);
+		detailTable.addCell(cell);
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f));
+		cell.setBorderTop(new SolidBorder(ColorConstants.BLACK, 1));
+		cell.setWidth(100);
+		//cell.add(new Paragraph(dues.getL_name() + "")).setFontSize(10);
+		detailTable.addCell(cell);
+		
+		if(dues.getDues() != 0) addItemRow(detailTable, "Annual Dues", dues.getDues(),0);
+		if(dues.getWinter_storage() != 0) addItemRow(detailTable, "Winter Storage Fee", dues.getWinter_storage() * currentDefinedFee.getWinter_storage(), dues.getWinter_storage());
+		if(dues.getWet_slip() != 0) addItemRow(detailTable, "Wet Slip Fee", dues.getWet_slip() * currentDefinedFee.getWet_slip() ,dues.getWet_slip());
+		if(dues.getBeach() != 0) addItemRow(detailTable, "Beach Spot Fee", dues.getBeach() * currentDefinedFee.getBeach(), dues.getBeach());
+		if(dues.getKayac_rack() != 0) addItemRow(detailTable, "Kayak Rack Fee", dues.getKayac_rack() * currentDefinedFee.getKayak_rack(), dues.getKayac_rack());
+		if(dues.getKayac_shed() != 0) addItemRow(detailTable, "Kayak Inside Storage Fee", dues.getKayac_shed() * currentDefinedFee.getKayak_shed(), dues.getKayac_shed());
+		if(dues.getSail_loft() != 0) addItemRow(detailTable, "Sail Loft Access Fee", dues.getSail_loft()* currentDefinedFee.getSail_loft(), dues.getSail_loft());
+		if(dues.getInitiation() != 0) addItemRow(detailTable, "Initiation Fee", dues.getInitiation(), 0);
+		if(dues.getExtra_key() != 0) addItemRow(detailTable, "Extra Gate Key Fee", dues.getExtra_key() * currentDefinedFee.getMain_gate_key(), dues.getExtra_key());
+		if(dues.getSail_loft_key() != 0) addItemRow(detailTable, "Extra Sail Loft Key Fee", dues.getSail_loft_key()* currentDefinedFee.getSail_loft_key(), dues.getSail_loft_key());
+		if(dues.getSail_school_laser_loft() != 0) addItemRow(detailTable, "Extra Sail School Loft Key Fee", dues.getSail_school_laser_loft() * currentDefinedFee.getSail_school_laser_loft(), dues.getSail_school_laser_loft());
+		if(dues.getKayac_shed() != 0) addItemRow(detailTable, "Extra Kayak Inside Storage Key Fee", dues.getKayac_shed() * currentDefinedFee.getKayak_shed(), dues.getKayac_shed());
+		if(dues.getYsc_donation() != 0) addItemRow(detailTable, "Youth Sailing Club Donation", dues.getYsc_donation(), 0);
+		if(dues.getCredit() != 0) addItemRow(detailTable, "Credit", dues.getCredit(),0);
+		addItemTotalRow(detailTable, dues.getTotal());
+		}
+		return detailTable;
+	}
+	
+	private void addItemTotalRow(Table detailTable, int money) {
+		Cell cell;
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		detailTable.addCell(cell);
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		detailTable.addCell(cell);
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderTop(new SolidBorder(ColorConstants.BLACK, 1));
+		cell.add(new Paragraph("Total")).setFontSize(10);
+		detailTable.addCell(cell);
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderTop(new SolidBorder(ColorConstants.BLACK, 1));
+		detailTable.addCell(cell);
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderTop(new SolidBorder(ColorConstants.BLACK, 1));
+		cell.setTextAlignment(TextAlignment.RIGHT);
+		cell.add(new Paragraph("$" + String.format("%,d", money))).setFontSize(10);
+		detailTable.addCell(cell);
+	}
+	
+	private void addItemRow(Table detailTable, String label, int money, int numberOf) {
+		detailTable.addCell(new Cell().setBorder(Border.NO_BORDER));
+		detailTable.addCell(new Cell().setBorder(Border.NO_BORDER));
+		detailTable.addCell(new Cell().setBorder(Border.NO_BORDER).add(new Paragraph(label)).setFontSize(10));
+		if(numberOf == 0) {
+		detailTable.addCell(new Cell().setBorder(Border.NO_BORDER));	
+		} else {
+			detailTable.addCell(new Cell().setTextAlignment(TextAlignment.CENTER).setBorder(Border.NO_BORDER).add(new Paragraph("" + numberOf)).setFontSize(10));	
+		}
+		detailTable.addCell(new Cell().setTextAlignment(TextAlignment.RIGHT).setBorder(Border.NO_BORDER).add(new Paragraph("$" + String.format("%,d", money))).setFontSize(10));
+	}
+	
+	public Table summaryPdfTable()  {
+		Table mainTable = new Table(TDRHeaders.length);
+		// mainTable.setKeepTogether(true);
+		Cell cell;
+
+		
+		for (String str : TDRHeaders) {
+			mainTable.addCell(new Cell().setBackgroundColor(new DeviceCmyk(.5f, .24f, 0, 0.02f))
+					// .setWidth(12)
+					.add(new Paragraph(str).setFontSize(10)));
+		}
+		
+		mainTable.addCell(new Cell().setWidth(80).add(new Paragraph(currentDeposit.getDepositDate()).setFontSize(10)));
+		mainTable.addCell(new Cell().setWidth(100).add(new Paragraph("" + currentDeposit.getBatch()).setFontSize(10)));
+		mainTable.addCell(new Cell().setWidth(200));
+		mainTable.addCell(new Cell().setWidth(70));
+		mainTable.addCell(new Cell().setWidth(40));
+		if (totals.getDuesNumber() != 0) {
+			addSummaryRow(mainTable, "Annual Dues" , totals.getDuesNumber(), totals.getDues());
+		}
+		if (totals.getWinter_storageNumber() != 0) {
+			addSummaryRow(mainTable, "Winter Storage Fee" , totals.getWinter_storageNumber(), totals.getWinter_storage());
+		}
+		if (totals.getWet_slip() != 0) {
+			addSummaryRow(mainTable, "Wet slip Fee" , totals.getWet_slipNumber(), totals.getWet_slip());
+		}
+		if (totals.getBeach() != 0) {
+			addSummaryRow(mainTable, "Beach Spot Fee" , totals.getBeachNumber(), totals.getBeach());
+		}
+		if (totals.getKayac_rack() != 0) {
+			addSummaryRow(mainTable, "Outside Kayak Rack Fee" , totals.getKayac_rackNumber(), totals.getKayac_rack());
+		}
+		if (totals.getKayac_shed() != 0) {
+			addSummaryRow(mainTable, "Inside Kayak Storage Fee" , totals.getKayac_shedNumber(), totals.getKayac_shed());
+		}
+		if (totals.getSail_loft() != 0) {
+			addSummaryRow(mainTable, "Sail Loft Access Fee" , totals.getSail_loftNumber(), totals.getSail_loft());
+		}
+		if (totals.getInitiation() != 0) {
+			addSummaryRow(mainTable, "Initiation Fee" , totals.getInitiationNumber(), totals.getInitiation());
+		}
+		///////////////////  KEYS //////////////////////////////
+		if (totals.getGate_key() != 0) {
+			addSummaryRow(mainTable, "Extra Gate Key Fee" , totals.getGate_keyNumber(), totals.getGate_key());
+		}
+		if (totals.getSail_loft_key() != 0) {
+			addSummaryRow(mainTable, "Sail Loft Key Fee" , totals.getSail_loft_keyNumber(), totals.getSail_loft_key());
+		}
+		if (totals.getSail_school_loft_key() != 0) {
+			addSummaryRow(mainTable, "Sail School Loft Key Fee" , totals.getSail_school_loft_keyNumber(), totals.getSail_school_loft_key());
+		}
+		if (totals.getKayac_shed_key() != 0) {
+			addSummaryRow(mainTable, "Kayak Shed Key Fee" , totals.getKayac_shed_keyNumber(), totals.getKayac_shed_key());
+		}
+		if (totals.getYsc_donation() != 0) {
+			addSummaryRow(mainTable, "Youth Sailing Club Donation" , totals.getYsc_donationNumber(), totals.getYsc_donation());
+		}
+		if (totals.getCredit() != 0) {
+			addSummaryRow(mainTable, "Credits" , totals.getCreditNumber(), totals.getCredit());
+		}
+		
+		
+		RemoveBorder(mainTable);
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderTop(new SolidBorder(ColorConstants.BLACK, 1));
+		cell.setBorderBottom(new DoubleBorder(ColorConstants.BLACK, 2));
+		if(totals.getNumberOfRecords() == 1) {
+			cell.add(new Paragraph("1 Record").setFontSize(10));
+		} else {
+			cell.add(new Paragraph(totals.getNumberOfRecords() + " Records").setFontSize(10));
+		}
+		mainTable.addCell(cell);
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderTop(new SolidBorder(ColorConstants.BLACK, 1));
+		cell.setBorderBottom(new DoubleBorder(ColorConstants.BLACK, 2));
+		mainTable.addCell(cell);
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderTop(new SolidBorder(ColorConstants.BLACK, 1));
+		cell.setBorderBottom(new DoubleBorder(ColorConstants.BLACK, 2));
+		cell.add(new Paragraph("Total")).setFontSize(10);
+		mainTable.addCell(cell);
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderTop(new SolidBorder(ColorConstants.BLACK, 1));
+		cell.setBorderBottom(new DoubleBorder(ColorConstants.BLACK, 2));
+		mainTable.addCell(cell);
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderTop(new SolidBorder(ColorConstants.BLACK, 1));
+		cell.setBorderBottom(new DoubleBorder(ColorConstants.BLACK, 2));
+		cell.setTextAlignment(TextAlignment.RIGHT);
+		cell.add(new Paragraph("$" + String.format("%,d", totals.getTotal()))).setFontSize(10);
+		mainTable.addCell(cell);
+		
+		return mainTable;
+	}
 	
 	private Object_DepositSummary updateTotals() {
 		int numberOfRecordsCounted = 0; // number of records counted
@@ -276,116 +519,12 @@ public class PDF_DepositReport {
 		return mainTable;
 	}
 	
-	public Table mainPdfTable()  {
-		Table mainTable = new Table(TDRHeaders.length);
-		// mainTable.setKeepTogether(true);
-		Cell cell;
-		
-		for (String str : TDRHeaders) {
-			mainTable.addCell(new Cell().setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f))
-					// .setWidth(12)
-					.add(new Paragraph(str).setFontSize(10)));
-		}
-		
-		mainTable.addCell(new Cell().setWidth(80).add(new Paragraph(currentDeposit.getDepositDate()).setFontSize(10)));
-		mainTable.addCell(new Cell().setWidth(100).add(new Paragraph("" + currentDeposit.getBatch()).setFontSize(10)));
-		mainTable.addCell(new Cell().setWidth(200));
-		mainTable.addCell(new Cell().setWidth(70));
-		mainTable.addCell(new Cell());
-		if (totals.getDuesNumber() != 0) {
-			addRow(mainTable, "Annual Dues" , totals.getDuesNumber(), totals.getDues());
-		}
-		if (totals.getWinter_storageNumber() != 0) {
-			addRow(mainTable, "Winter Storage Fee" , totals.getWinter_storageNumber(), totals.getWinter_storage());
-		}
-		if (totals.getWet_slip() != 0) {
-			addRow(mainTable, "Wet slip Fee" , totals.getWet_slipNumber(), totals.getWet_slip());
-		}
-		if (totals.getBeach() != 0) {
-			addRow(mainTable, "Beach Spot Fee" , totals.getBeachNumber(), totals.getBeach());
-		}
-		if (totals.getKayac_rack() != 0) {
-			addRow(mainTable, "Outside Kayak Rack Fee" , totals.getKayac_rackNumber(), totals.getKayac_rack());
-		}
-		if (totals.getKayac_shed() != 0) {
-			addRow(mainTable, "Inside Kayak Storage Fee" , totals.getKayac_shedNumber(), totals.getKayac_shed());
-		}
-		if (totals.getSail_loft() != 0) {
-			addRow(mainTable, "Sail Loft Access Fee" , totals.getSail_loftNumber(), totals.getSail_loft());
-		}
-		if (totals.getInitiation() != 0) {
-			addRow(mainTable, "Initiation Fee" , totals.getInitiationNumber(), totals.getInitiation());
-		}
-		///////////////////  KEYS //////////////////////////////
-		if (totals.getGate_key() != 0) {
-			addRow(mainTable, "Extra Gate Key Fee" , totals.getGate_keyNumber(), totals.getGate_key());
-		}
-		if (totals.getSail_loft_key() != 0) {
-			addRow(mainTable, "Sail Loft Key Fee" , totals.getSail_loft_keyNumber(), totals.getSail_loft_key());
-		}
-		if (totals.getSail_school_loft_key() != 0) {
-			addRow(mainTable, "Sail School Loft Key Fee" , totals.getSail_school_loft_keyNumber(), totals.getSail_school_loft_key());
-		}
-		if (totals.getKayac_shed_key() != 0) {
-			addRow(mainTable, "Kayak Shed Key Fee" , totals.getKayac_shed_keyNumber(), totals.getKayac_shed_key());
-		}
-		if (totals.getYsc_donation() != 0) {
-			addRow(mainTable, "Youth Sailing Club Donation" , totals.getYsc_donationNumber(), totals.getYsc_donation());
-		}
-		if (totals.getCredit() != 0) {
-			addRow(mainTable, "Credits" , totals.getCreditNumber(), totals.getCredit());
-		}
-		
-		
-		RemoveBorder(mainTable);
-		cell = new Cell();
-		cell.setBorder(Border.NO_BORDER);
-		cell.setBorderTop(new SolidBorder(ColorConstants.BLACK, 1));
-		cell.setBorderBottom(new DoubleBorder(ColorConstants.BLACK, 2));
-		if(totals.getNumberOfRecords() == 1) {
-			cell.add(new Paragraph("1 Record").setFontSize(10));
-		} else {
-			cell.add(new Paragraph(totals.getNumberOfRecords() + " Records").setFontSize(10));
-		}
-		mainTable.addCell(cell);
-		cell = new Cell();
-		cell.setBorder(Border.NO_BORDER);
-		cell.setBorderTop(new SolidBorder(ColorConstants.BLACK, 1));
-		cell.setBorderBottom(new DoubleBorder(ColorConstants.BLACK, 2));
-		mainTable.addCell(cell);
-		cell = new Cell();
-		cell.setBorder(Border.NO_BORDER);
-		cell.setBorderTop(new SolidBorder(ColorConstants.BLACK, 1));
-		cell.setBorderBottom(new DoubleBorder(ColorConstants.BLACK, 2));
-		cell.add(new Paragraph("Total")).setFontSize(10);
-		mainTable.addCell(cell);
-		cell = new Cell();
-		cell.setBorder(Border.NO_BORDER);
-		cell.setBorderTop(new SolidBorder(ColorConstants.BLACK, 1));
-		cell.setBorderBottom(new DoubleBorder(ColorConstants.BLACK, 2));
-		mainTable.addCell(cell);
-		cell = new Cell();
-		cell.setBorder(Border.NO_BORDER);
-		cell.setBorderTop(new SolidBorder(ColorConstants.BLACK, 1));
-		cell.setBorderBottom(new DoubleBorder(ColorConstants.BLACK, 2));
-		cell.setTextAlignment(TextAlignment.RIGHT);
-		cell.add(new Paragraph("$" + totals.getTotal())).setFontSize(10);
-		mainTable.addCell(cell);
-		
-		return mainTable;
-	}
-	
-	private void addRow(Table mainTable, String label, int total, int money) {
+	private void addSummaryRow(Table mainTable, String label, int numberOf, int money) {
 		mainTable.addCell(new Cell());
 		mainTable.addCell(new Cell());
 		mainTable.addCell(new Cell().add(new Paragraph(label)).setFontSize(10));
-		mainTable.addCell(new Cell().add(new Paragraph(total + "")).setFontSize(10));
-		mainTable.addCell(new Cell().add(new Paragraph("$" + money).setFontSize(10)).setTextAlignment(TextAlignment.RIGHT));
-	}
-	
-	private Table addBlankTable() {
-		Table blankTable = new Table(1);
-		return blankTable.addCell(new Cell().setBorder(Border.NO_BORDER).setWidth(500).setHeight(30).add(new Paragraph("")));
+		mainTable.addCell(new Cell().add(new Paragraph(numberOf + "")).setFontSize(10));
+		mainTable.addCell(new Cell().add(new Paragraph("$" + String.format("%,d", money)).setFontSize(10)).setTextAlignment(TextAlignment.RIGHT));
 	}
 	
 	private static void RemoveBorder(Table table)
@@ -393,6 +532,25 @@ public class PDF_DepositReport {
 	    for (IElement iElement : table.getChildren()) {
 	        ((Cell)iElement).setBorder(Border.NO_BORDER);
 	    }
+	}
+	
+	public static byte[] toByteArray(InputStream in)  { // for taking inputStream and returning byte
+																			// array
+		// InputStream is = new BufferedInputStream(System.in);
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		byte[] buffer = new byte[1024];
+		int len;
+		// read bytes from the input stream and store them in buffer
+		try {
+			while ((len = in.read(buffer)) != -1) {
+				// write bytes from the buffer into output stream
+				os.write(buffer, 0, len);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return os.toByteArray();
 	}
 	
 }

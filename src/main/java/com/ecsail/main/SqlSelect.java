@@ -200,6 +200,24 @@ public class SqlSelect {
 		return thisDeposit;
 	}
 	
+	// can do this with a regular object but not properties for some reason
+	public static void  updateDeposit(String year, int batch, Object_Deposit thisDeposit) {
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs;
+			rs = stmt.executeQuery(Main.console.setRegexColor("select * from deposit where fiscal_year=" + year + " and batch=" + batch));
+			while (rs.next()) {
+			thisDeposit.setDeposit_id(rs.getInt("DEPOSIT_ID"));
+			thisDeposit.setDepositDate(rs.getString("DEPOSIT_DATE"));
+			thisDeposit.setFiscalYear(rs.getString("FISCAL_YEAR"));
+			thisDeposit.setBatch(rs.getInt("BATCH"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	// to create a single defined fee object and fille it with a selected year
 	public static Object_DefinedFee getDefinedFee(String year) {
 		Object_DefinedFee newDefinedFee = null;
@@ -233,26 +251,6 @@ public class SqlSelect {
 			e.printStackTrace();
 		}
 		return newDefinedFee;
-	}
-	
-	// experimental in order to get a defined fee and update already existing object
-	public static Object_DefinedFee getDefinedFee(String year, Object_DefinedFee thisDefinedFee) {
-		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
-			ResultSet rs;
-			rs = stmt.executeQuery(Main.console.setRegexColor("SELECT * FROM defined_fee WHERE fiscal_year='" + year + "';"));
-			while (rs.next()) {
-				thisDefinedFee.set(rs.getInt("FISCAL_YEAR"), rs.getInt("DUES_REGULAR"), rs.getInt("DUES_FAMILY"), 
-						rs.getInt("DUES_LAKE_ASSOCIATE"), rs.getInt("DUES_SOCIAL"), rs.getInt("INITIATION"), 
-						rs.getInt("WET_SLIP"), rs.getInt("BEACH"), rs.getInt("WINTER_STORAGE"), rs.getInt("MAIN_GATE_KEY"),
-						rs.getInt("SAIL_LOFT"), rs.getInt("SAIL_LOFT_KEY"), rs.getInt("SAIL_SCHOOL_LASER_LOFT"), 
-						rs.getInt("SAIL_SCHOOL_LOFT_KEY"), rs.getInt("KAYAK_RACK"), rs.getInt("KAYAK_SHED"), rs.getInt("KAYAK_SHED_KEY"));
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return thisDefinedFee;
 	}
 	
 	public static ObservableList<Object_Officer> getOfficers() {
