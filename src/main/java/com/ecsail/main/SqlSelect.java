@@ -12,6 +12,7 @@ import com.ecsail.structures.Object_BoatOwner;
 import com.ecsail.structures.Object_DefinedFee;
 import com.ecsail.structures.Object_Deposit;
 import com.ecsail.structures.Object_Email;
+import com.ecsail.structures.Object_Email_Information;
 import com.ecsail.structures.Object_Membership;
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Memo;
@@ -293,6 +294,26 @@ public class SqlSelect {
 			e.printStackTrace();
 		}
 		return thisOfficer;
+	}
+	
+	public static ObservableList<Object_Email_Information> getEmailInfo() {
+		ObservableList<Object_Email_Information> thisEmailInfo = FXCollections.observableArrayList();
+
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
+					"select m.MEMBERSHIP_ID,m.JOIN_DATE,p.L_NAME,p.F_NAME,EMAIL,PRIMARY_USE from email e inner join person p ON p.P_ID=e.P_ID inner join membership m ON m.ms_id=p.ms_id where m.ACTIVE_MEMBERSHIP=true order by m.MEMBERSHIP_ID"));
+
+			while (rs.next()) {
+				thisEmailInfo.add(new Object_Email_Information(rs.getInt("MEMBERSHIP_ID"), rs.getString("JOIN_DATE"),
+						rs.getString("L_NAME"), rs.getString("F_NAME"), rs.getString("EMAIL"),
+						rs.getBoolean("PRIMARY_USE")));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return thisEmailInfo;
 	}
 	
 	// select p.P_ID, p.MS_ID, o.O_ID, p.F_NAME, p.L_NAME, o.OFF_YEAR, o.BOARD_YEAR, o.OFF_TYPE  from person p inner join officer o on p.p_id = o.p_id where o.off_year='2020';

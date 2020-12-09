@@ -2,6 +2,7 @@ package com.ecsail.gui.boxes;
 
 import java.io.IOException;
 import com.ecsail.main.Main;
+import com.ecsail.excel.Xls_email_list;
 import com.ecsail.gui.dialogues.Dialogue_Stub;
 import com.ecsail.main.CreateMembership;
 import com.ecsail.main.SqlScriptMaker;
@@ -47,8 +48,9 @@ public class BoxToolBar extends VBox {
 		MenuItem m4_1_1 = new MenuItem("Treasurer's Report");
 		MenuItem m4_1_2 = new MenuItem("Boat Report");
 		MenuItem m4_1_3 = new MenuItem("Deposits");
-		MenuItem m4_1_4 = new MenuItem("Tab Stub");
+		MenuItem m4_1_4 = new MenuItem("Email List");
 		MenuItem m4_1_5 = new MenuItem("Window Stub");
+		MenuItem m4_1_6 = new MenuItem("Tab Stub");
 
         m3_2_6.setOnAction(new EventHandler<ActionEvent>() {  // open active membership list
             @Override public void handle(ActionEvent e) {
@@ -87,13 +89,19 @@ public class BoxToolBar extends VBox {
 		
 		m4_1_4.setOnAction(new EventHandler<ActionEvent>() {  // add new membership
             @Override public void handle(ActionEvent e) {
-            	TabLauncher.openTabStub();
+            	Xls_email_list.createSpreadSheet();
             }
         });
 		
 		m4_1_5.setOnAction(new EventHandler<ActionEvent>() {  // add new membership
             @Override public void handle(ActionEvent e) {
 				new Dialogue_Stub();
+            }
+        });
+		
+		m4_1_6.setOnAction(new EventHandler<ActionEvent>() {  // add new membership
+            @Override public void handle(ActionEvent e) {
+            	TabLauncher.openTabStub();
             }
         });
 		
