@@ -28,10 +28,24 @@ public class BoxWelcome extends HBox {
 		
 		int activeMembership = SqlSelect.getActiveMembershipCount();
 		int activePeople = SqlSelect.getActivePeopleCount();
+		//int familyMembership = SqlSelect.getMembershipTypeCount("FM");
 		Text activeText = new Text("There are currently " + activeMembership + " active memberships");
+		Text familyMembershipText = new Text("	-" + SqlSelect.getMembershipTypeCount("FM") + " family memberships");
+		Text regularMembershipText = new Text("	-" + SqlSelect.getMembershipTypeCount("RM") + " regular memberships");
+		Text socialMembershipText = new Text("	-" + SqlSelect.getMembershipTypeCount("SO") + " social memberships");
+		Text lakeAssociateMembershipText = new Text("	-" + SqlSelect.getMembershipTypeCount("LA") + " lake associates");
+		Text lifeMembershipText = new Text("	-" + SqlSelect.getMembershipTypeCount("LM") + " life memberships");
 		Text activepeopleText = new Text("There are currently " + activePeople + " people attached to active memberships");
 	
 		////////////////  ATTRIBUTES //////////////////////////////
+		
+		activeText.setStyle("-fx-font: 14 Helvetica;");
+		familyMembershipText.setStyle("-fx-font: 12 Helvetica;");
+		regularMembershipText.setStyle("-fx-font: 12 Helvetica;");
+		socialMembershipText.setStyle("-fx-font: 12 Helvetica;");
+		lakeAssociateMembershipText.setStyle("-fx-font: 12 Helvetica;");
+		lifeMembershipText.setStyle("-fx-font: 12 Helvetica;");
+		activepeopleText.setStyle("-fx-font: 14 Helvetica;");
 		
 		newButton.setId("bigbuttontext");
 		bodButton.setId("bigbuttontext");
@@ -41,7 +55,7 @@ public class BoxWelcome extends HBox {
 		batchesButton.setId("bigbuttontext");
 		activeText.setId("");
 		vboxRight.setSpacing(10);
-		vboxRight.setPadding(new Insets(30,0,0,250));
+		vboxRight.setPadding(new Insets(30,0,0,200));
 		activeMemListButton.setPrefSize(width, height);
 		peopleListButton.setPrefSize(width, height);
 		slipListButton.setPrefSize(width, height);
@@ -93,7 +107,7 @@ public class BoxWelcome extends HBox {
 			}
 		});
 		////////////////  SET CONTENT ////////////////////////
-		vboxLeft.getChildren().addAll(activeText,activepeopleText);
+		vboxLeft.getChildren().addAll(activeText,familyMembershipText,regularMembershipText,socialMembershipText,lakeAssociateMembershipText,lifeMembershipText,activepeopleText);
 		vboxRight.getChildren().addAll(activeMemListButton,peopleListButton,slipListButton,bodButton,newButton,batchesButton);
 		getChildren().addAll(vboxLeft,vboxRight);
 		

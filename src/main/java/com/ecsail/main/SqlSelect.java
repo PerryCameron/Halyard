@@ -1040,6 +1040,22 @@ public class SqlSelect {
 		return number;
 	}
 	
+	public static int getMembershipTypeCount(String type) {  // gives the last memo_id number
+		int number = 0;
+		ResultSet rs;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			rs = stmt.executeQuery("select count(*) from membership where active_membership = true and mem_type='" + type + "'");
+			rs.next();
+			number = rs.getInt("count(*)");
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return number;
+	}
+	
 	//
 	
 	public static int getActivePeopleCount() {  // gives the last memo_id number
