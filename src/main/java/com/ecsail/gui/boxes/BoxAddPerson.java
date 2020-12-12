@@ -1,6 +1,8 @@
 package com.ecsail.gui.boxes;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Date;
 
 import com.ecsail.enums.MemberType;
 import com.ecsail.main.Note;
@@ -140,7 +142,8 @@ public class BoxAddPerson extends VBox {
 
 					// if adding member succeeds, clear the form
 					if(!setNewMember(person)) {
-						note.add("New person: " + fnameTextField.getText() + " " + lnameTextField.getText() + " - (PID " + pid + ") added as " + memberType.getValue().toString() + ".");
+						String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date(System.currentTimeMillis()));
+						note.add("New person: " + fnameTextField.getText() + " " + lnameTextField.getText() + " - (PID " + pid + ") added as " + memberType.getValue().toString() + ".",date);
 						fnameTextField.setText("");
 						lnameTextField.setText("");
 						businessTextField.setText("");

@@ -1,6 +1,8 @@
 package com.ecsail.gui.boxes;
 
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.function.Function;
 
 import com.ecsail.main.EditCell;
@@ -87,7 +89,8 @@ public class BoxNotes extends HBox {
         
         add.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-             	note.add("new memo");
+            	String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date(System.currentTimeMillis()));
+             	note.add("new memo", date);
             }
         });
         

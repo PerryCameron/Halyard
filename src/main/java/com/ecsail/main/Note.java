@@ -24,8 +24,8 @@ public class Note {
 		super();
 	}
 
-	public void add(String note) {
-		String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date(System.currentTimeMillis()));
+	public void add(String note, String date) {
+		//String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date(System.currentTimeMillis()));
 		int memo_id = getCount() + 1;
 		memos.add(new Object_Memo(memo_id,msid,date,note));
 		addMemo(memo_id,msid, date, note);

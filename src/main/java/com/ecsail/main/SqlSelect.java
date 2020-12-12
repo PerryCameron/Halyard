@@ -1190,6 +1190,23 @@ public class SqlSelect {
 		return number;
 	}
 	
+	public static String getPaymentDate(int moneyid) {
+		String date = "";
+		ResultSet rs;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			rs = stmt.executeQuery("select payment_date from payment where money_id=" + moneyid);
+			rs.next();
+			date = rs.getString("payment_date");
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return date;
+	}
+	
 	public static int getMoneyCount(String column, int batch) {
 		int number = 0;
 		ResultSet rs;

@@ -222,9 +222,10 @@ public class BoxFiscal extends HBox {
 					textFields.getBalanceText().setStyle("-fx-background-color: #f23a50");
             		SqlUpdate.updateMoney(fiscals.get(rowIndex)); 
             		SqlUpdate.commitFiscalRecord(fiscals.get(rowIndex).getMoney_id(), true);// this could be placed in line above
+            		String date = SqlSelect.getPaymentDate(fiscals.get(rowIndex).getMoney_id()); // dates note to check
             		fiscals.get(rowIndex).setCommitted(true);
-            		addPaidNote();
-            		if(fiscals.get(rowIndex).getOther() != 0) note.add("Other expense: ");
+            		addPaidNote(date);
+            		if(fiscals.get(rowIndex).getOther() != 0) note.add("Other expense: ",date);
             		setEditable(false);
             	} else {
 				setEditable(true);
@@ -233,7 +234,7 @@ public class BoxFiscal extends HBox {
             	}
             }
         });
-		
+		// String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date(System.currentTimeMillis()));
 		
 /*		SpinnerValueFactory<Integer> wetSlipValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1, fiscals.get(rowIndex).getWet_slip());
 		wetSlipSpinner.setValueFactory(wetSlipValueFactory);
@@ -472,9 +473,9 @@ public class BoxFiscal extends HBox {
 	}
 	
 	
-	private void addPaidNote() {
+	private void addPaidNote(String date) {
 		note.add("Paid $" + textFields.getPaidText().getText() + " leaving a balance of $" + textFields.getBalanceText().getText() + " for "
-				+ fiscals.get(rowIndex).getFiscal_year());
+				+ fiscals.get(rowIndex).getFiscal_year(), date);
 	}
 	
 	private void setEditable(boolean isEditable) {
