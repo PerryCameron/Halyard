@@ -16,6 +16,7 @@ public enum Officer {
 	   RACINGC("RA", "Racing"),
 	   ARACING("AR", "Assistant Racing"),
 	   SAFETYA("SM", "Safety and Education"),
+	   JUNIORP("JP", "Junior Program"),
 	   ASAFETY("AS", "Assistant S and E"),
 	   SOCIALC("SO", "Social"),
 	   ASOCIAL("SA", "Assistant Social"),

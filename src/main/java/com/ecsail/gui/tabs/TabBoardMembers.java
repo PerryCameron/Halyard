@@ -58,7 +58,7 @@ public class TabBoardMembers extends Tab {
 	Label board = new Label("Board of Directors");
 	
 	final Spinner<Integer> yearSpinner = new Spinner<Integer>();
-	SpinnerValueFactory<Integer> wetSlipValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1970, Integer.parseInt(selectedYear), Integer.parseInt(selectedYear));
+	SpinnerValueFactory<Integer> wetSlipValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1970, Integer.parseInt(selectedYear) + 1, Integer.parseInt(selectedYear));
 	yearSpinner.setValueFactory(wetSlipValueFactory);
 	yearSpinner.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_HORIZONTAL);
 	yearSpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
