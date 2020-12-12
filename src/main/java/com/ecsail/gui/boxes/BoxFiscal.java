@@ -49,9 +49,10 @@ public class BoxFiscal extends HBox {
 	private final TextField totalWorkCreditTextField = new TextField();
 	private final TextField totalKeyTextField = new TextField();
 	private final TextField duesText;
+	private final TextField slipText = new TextField();
 	private final TextField otherText = new TextField();
 	private final TextField initiationText = new TextField();
-	private final Spinner<Integer> wetSlipSpinner = new Spinner<Integer>();
+//	private final Spinner<Integer> wetSlipSpinner = new Spinner<Integer>();
 	private final Spinner<Integer> beachSpinner = new Spinner<Integer>();
 	private final Spinner<Integer> kayakRackSpinner = new Spinner<Integer>();
 	private final Spinner<Integer> kayakShedSpinner = new Spinner<Integer>();
@@ -137,7 +138,8 @@ public class BoxFiscal extends HBox {
 		hboxSubKey.setSpacing(5);
 		winterStorageSpinner.setPrefWidth(60);
 		kayakRackSpinner.setPrefWidth(60);
-		wetSlipSpinner.setPrefWidth(60);
+		//wetSlipSpinner.setPrefWidth(60);
+		slipText.setPrefWidth(60);
 		yscText.setPrefWidth(60);
 		otherText.setPrefWidth(60);
 		initiationText.setPrefWidth(60);
@@ -233,13 +235,13 @@ public class BoxFiscal extends HBox {
         });
 		
 		
-		SpinnerValueFactory<Integer> wetSlipValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1, fiscals.get(rowIndex).getWet_slip());
+/*		SpinnerValueFactory<Integer> wetSlipValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1, fiscals.get(rowIndex).getWet_slip());
 		wetSlipSpinner.setValueFactory(wetSlipValueFactory);
 		wetSlipSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
 				  fiscals.get(rowIndex).setWet_slip(newValue);
 				  updateBalance();
 			});
-	
+*/	
 		SpinnerValueFactory<Integer> beachValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 5, fiscals.get(rowIndex).getBeach());
 		beachSpinner.setValueFactory(beachValueFactory);
 		beachSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
@@ -323,6 +325,19 @@ public class BoxFiscal extends HBox {
 	        }
 	    });
 		
+		slipText.focusedProperty().addListener(new ChangeListener<Boolean>() {
+	        @Override
+	        public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+	            //focus out
+	            if (oldValue) {  // we have focused and unfocused
+	            	if(!isNumeric(otherText.getText())) {
+	            		otherText.setText("0");
+	            	}
+	            	updateItem(Integer.parseInt(slipText.getText()),"wetslip");
+	            }
+	        }
+	    });
+		
 		otherText.focusedProperty().addListener(new ChangeListener<Boolean>() {
 	        @Override
 	        public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
@@ -369,6 +384,7 @@ public class BoxFiscal extends HBox {
 		textFields.getCreditText().setText(fiscals.get(rowIndex).getCredit() + "");
 		textFields.getTotalFeesText().setText(fiscals.get(rowIndex).getTotal() + "");
 		textFields.getPaidText().setText(fiscals.get(rowIndex).getPaid() + "");
+		slipText.setText(fiscals.get(rowIndex).getWet_slip() +"");
 		duesText.setText(fiscals.get(rowIndex).getDues() + "");
 		yscText.setText(fiscals.get(rowIndex).getYsc_donation() + "");
 		otherText.setText(fiscals.get(rowIndex).getOther() + "");
@@ -410,7 +426,8 @@ public class BoxFiscal extends HBox {
 		hboxSubWK.getChildren().addAll(totalWorkCreditTextField,addWorkCredits);
 		hboxWinterStorage.getChildren().addAll(new Label("Winter Storage"), winterStorageSpinner);
 		hboxKayac.getChildren().addAll(new Label("Kayac Rack"),kayakRackSpinner);
-		hboxWetSlip.getChildren().addAll(new Label("wetSlip"),wetSlipSpinner);
+		//hboxWetSlip.getChildren().addAll(new Label("wetSlip"),wetSlipSpinner);
+		hboxWetSlip.getChildren().addAll(new Label("wetSlip"),slipText);
 		hboxYSC.getChildren().addAll(new Label("YSC Donation"),yscText);
 		hboxOther.getChildren().addAll(new Label("Other:"), otherText);
 		//if(!fiscals.get(rowIndex).isSupplemental())  // do not show for supplemental record
@@ -445,6 +462,9 @@ public class BoxFiscal extends HBox {
 		case "dues":
 			fiscals.get(rowIndex).setDues(newTotalValue);
 			break;
+		case "wetslip":
+			fiscals.get(rowIndex).setWet_slip(newTotalValue);
+			break;
 		}
 		fiscals.get(rowIndex).setTotal(updateTotalFeeFields());
 		textFields.getTotalFeesText().setText(fiscals.get(rowIndex).getTotal() + "");
@@ -463,7 +483,8 @@ public class BoxFiscal extends HBox {
 		changeState(initiationText,isEditable,true);
 		changeState(totalWorkCreditTextField,isEditable,false);
 		changeState(totalKeyTextField,isEditable,false);
-		changeState(wetSlipSpinner,isEditable);
+		changeState(slipText,isEditable,true);
+//		changeState(wetSlipSpinner,isEditable);
 		changeState(beachSpinner,isEditable);
 		changeState(kayakRackSpinner,isEditable);
 		changeState(kayakShedSpinner,isEditable);
@@ -514,7 +535,8 @@ public class BoxFiscal extends HBox {
 		int kayakShed = fiscals.get(rowIndex).getKayac_shed() * definedFees.getKayak_shed();
 		int sailLoft = fiscals.get(rowIndex).getSail_loft() * definedFees.getSail_loft();
 		int sailSchoolLoft = fiscals.get(rowIndex).getSail_school_laser_loft() * definedFees.getSail_school_laser_loft();
-		int wetSlip = fiscals.get(rowIndex).getWet_slip() * definedFees.getWet_slip();
+		int wetSlip = fiscals.get(rowIndex).getWet_slip();
+		//int wetSlip = fiscals.get(rowIndex).getWet_slip() * definedFees.getWet_slip();
 		int winterStorage = fiscals.get(rowIndex).getWinter_storage() * definedFees.getWinter_storage();
 		int yscDonation = fiscals.get(rowIndex).getYsc_donation();
 		int other = fiscals.get(rowIndex).getOther();

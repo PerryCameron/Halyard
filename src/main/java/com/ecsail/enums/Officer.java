@@ -9,6 +9,8 @@ public enum Officer {
 	   SECRETA("SE", "Secretary"),
 	   HARBORM("HM", "Harbormaster"),
 	   AHARBOR("AH", "Assistant Harbormaster"),
+	   GROUNDS("GC", "Grounds Committee"),
+	   AGROUND("AG", "Assistant Grounds Committee"),
 	   MEMBERS("MS", "Membership"),
 	   AMEMBER("AM", "Assistant Membership"),
 	   PUBLICI("PU", "Publicity"),
