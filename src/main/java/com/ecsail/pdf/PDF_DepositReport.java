@@ -238,7 +238,7 @@ public class PDF_DepositReport {
 		
 		if(dues.getDues() != 0) addItemRow(detailTable, "Annual Dues", dues.getDues(),0);
 		if(dues.getWinter_storage() != 0) addItemRow(detailTable, "Winter Storage Fee", dues.getWinter_storage() * currentDefinedFee.getWinter_storage(), dues.getWinter_storage());
-		if(dues.getWet_slip() != 0) addItemRow(detailTable, "Wet Slip Fee", dues.getWet_slip() * currentDefinedFee.getWet_slip() ,dues.getWet_slip());
+		if(dues.getWet_slip() != 0) addItemRow(detailTable, "Wet Slip Fee", dues.getWet_slip(),retrunWetSlipNumber(dues.getWet_slip()));
 		if(dues.getBeach() != 0) addItemRow(detailTable, "Beach Spot Fee", dues.getBeach() * currentDefinedFee.getBeach(), dues.getBeach());
 		if(dues.getKayac_rack() != 0) addItemRow(detailTable, "Kayak Rack Fee", dues.getKayac_rack() * currentDefinedFee.getKayak_rack(), dues.getKayac_rack());
 		if(dues.getKayac_shed() != 0) addItemRow(detailTable, "Kayak Inside Storage Fee", dues.getKayac_shed() * currentDefinedFee.getKayak_shed(), dues.getKayac_shed());
@@ -253,6 +253,12 @@ public class PDF_DepositReport {
 		addItemTotalRow(detailTable, dues.getTotal());
 		}
 		return detailTable;
+	}
+	
+	int retrunWetSlipNumber(int numberOf) {
+		int result = 0;
+		if(numberOf != 0) result = 1;
+		return result;
 	}
 	
 	private void addItemTotalRow(Table detailTable, int money) {
@@ -462,7 +468,7 @@ public class PDF_DepositReport {
 			}
 			if (d.getWet_slip() != 0) {  ////////// WET SLIP FEE ///////// IN DOLLARS 
 				t.setWet_slipNumber(1 + t.getWet_slipNumber());
-				t.setWet_slip(currentDefinedFee.getWet_slip() + t.getWet_slip());
+				t.setWet_slip(d.getWet_slip() + t.getWet_slip());
 			}
 			if (d.getWinter_storage() != 0) {  ////////  WINTER STORAGE FEE ///////// IN NUMBER OF
 				t.setWinter_storageNumber(d.getWinter_storage() + t.getWinter_storageNumber());

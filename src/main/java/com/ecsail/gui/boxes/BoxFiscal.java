@@ -63,6 +63,7 @@ public class BoxFiscal extends HBox {
 	private final Spinner<Integer> winterStorageSpinner = new Spinner<Integer>();
 	private final String disabledColor = "-fx-background-color: #d5dade";
 	boolean isCommited;
+	Button addWetSlip = new Button();
 	
 	public BoxFiscal(Object_Membership m, ObservableList<Object_Person> p, ObservableList<Object_Money> o, int r, Note n, TextField dt) {
 		this.membership = m;
@@ -388,6 +389,14 @@ public class BoxFiscal extends HBox {
             	new Dialogue_Keys(fiscals.get(rowIndex), totalKeyTextField);
             }
         });
+        
+        addWetSlip.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+            	slipText.setText(definedFees.getWet_slip() + "");
+            	updateItem(Integer.parseInt(slipText.getText()),"wetslip");
+            	updateBalance();
+            }
+        });
 
         //totalWorkCredits
 		
@@ -498,13 +507,24 @@ public class BoxFiscal extends HBox {
 		changeState(totalWorkCreditTextField,isEditable,false);
 		changeState(totalKeyTextField,isEditable,false);
 		changeState(slipText,isEditable,true);
-//		changeState(wetSlipSpinner,isEditable);
+		changeState(addWetSlip,isEditable);
 		changeState(beachSpinner,isEditable);
 		changeState(kayakRackSpinner,isEditable);
 		changeState(kayakShedSpinner,isEditable);
 		changeState(sailLoftSpinner,isEditable);
 		changeState(sailSchoolLoftSpinner,isEditable);
 		changeState(winterStorageSpinner,isEditable);
+	}
+	
+	private void changeState(Button button, boolean isEditable) {
+		button.setDisable(!isEditable);
+		if(isEditable) {
+			button.setStyle(null);
+			button.setOpacity(1);
+		} else {
+			button.setStyle(disabledColor);
+			button.setOpacity(0.5);
+		}
 	}
 	
 	

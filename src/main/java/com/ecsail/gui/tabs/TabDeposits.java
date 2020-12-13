@@ -579,7 +579,7 @@ public class TabDeposits extends Tab {
 			}
 			if (d.getWet_slip() != 0) {  ////////// WET SLIP FEE ///////// IN DOLLARS 
 				summaryTotals.setWet_slipNumber(1 + summaryTotals.getWet_slipNumber());
-				summaryTotals.setWet_slip(currentDefinedFee.getWet_slip() + summaryTotals.getWet_slip());
+				summaryTotals.setWet_slip(d.getWet_slip() + summaryTotals.getWet_slip());
 			}
 			if (d.getWinter_storage() != 0) {  ////////  WINTER STORAGE FEE ///////// IN NUMBER OF
 				summaryTotals.setWinter_storageNumber(d.getWinter_storage() + summaryTotals.getWinter_storageNumber());
