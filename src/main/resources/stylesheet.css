@@ -147,6 +147,15 @@
   -fx-font-weight: bold;
 }
 
+#default-button {
+    -fx-text-fill: black;
+    -fx-font-family: "Arial Narrow";
+    -fx-font-weight: bold;
+    -fx-background-color: linear-gradient(#eeeeee, #dadada);
+
+    -fx-background-radius: 2px;
+}
+
 #toolbar-box {
 	-fx-background-color: #d8e3e6;  /* blue selected tab background in person */
 }

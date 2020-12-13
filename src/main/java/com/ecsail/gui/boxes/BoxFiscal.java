@@ -29,6 +29,8 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -79,7 +81,7 @@ public class BoxFiscal extends HBox {
 		TabBalance moneyTab = new TabBalance("Balance", textFields);
 		TabPayment paymentTab = new TabPayment("Payment",fiscals.get(rowIndex),textFields);
 		
-		
+		Image image = new Image(getClass().getResourceAsStream("/Arrow.png"));
 		Label workCreditsLabel = new Label("Work Credits");
 		Label feesLabel = new Label("Fees");
 		Label BalanceLabel = new Label("Balance");
@@ -109,8 +111,10 @@ public class BoxFiscal extends HBox {
 		HBox hboxButtonCommit = new HBox();
 		HBox hboxOther = new HBox();
 		HBox hboxInitiation = new HBox();
+		HBox hboxSlip = new HBox();
 		Button addWorkCredits = new Button("Add");
 		Button addKeys = new Button("Add");
+		Button addWetSlip = new Button();
 		//Button commitButton = new Button("Commit");
 
 		//////////////// ATTRIBUTES ///////////////////
@@ -120,6 +124,9 @@ public class BoxFiscal extends HBox {
 		BalanceLabel.setId("bold-label");
 		keysLabel.setId("bold-label");
 		hboxDues.setSpacing(78);
+		addWetSlip.setId("default-button");
+		//addWetSlip.getStyleClass().clear();
+		addWetSlip.setGraphic(new ImageView(image));
 		
 		hboxWinterStorage.setSpacing(28);
 		hboxKayac.setSpacing(48.5);  // kayak rack
@@ -139,7 +146,8 @@ public class BoxFiscal extends HBox {
 		winterStorageSpinner.setPrefWidth(60);
 		kayakRackSpinner.setPrefWidth(60);
 		//wetSlipSpinner.setPrefWidth(60);
-		slipText.setPrefWidth(60);
+		slipText.setPrefWidth(35);
+		addWetSlip.setPrefWidth(25);
 		yscText.setPrefWidth(60);
 		otherText.setPrefWidth(60);
 		initiationText.setPrefWidth(60);
@@ -300,13 +308,13 @@ public class BoxFiscal extends HBox {
 		
 		totalWorkCreditTextField.textProperty().addListener((obs, oldText, newText) -> {
 			int credit = Integer.parseInt(newText);
-			System.out.println("int credit=" + credit);
-			System.out.println("countCredit() function ouputs " + countCredit(credit));
+			//System.out.println("int credit=" + credit);
+			//System.out.println("countCredit() function ouputs " + countCredit(credit));
 			fiscals.get(rowIndex).setCredit(countCredit(credit));  // sets credit field in fiscal list tableview
 			textFields.getCreditText().setText(countCredit(credit) + "");  /// sets credit textfield in balance tab
 			textFields.getBalanceText().setText(getBalance() + "");  // sets balance textfield in balance tab
 			fiscals.get(rowIndex).setBalance(getBalance());  // sets focused object
-			System.out.println("Credit box is " + newText);
+			//System.out.println("Credit box is " + newText);
 		});
 		
 		totalKeyTextField.textProperty().addListener((obs, oldText, newText) -> {
@@ -322,6 +330,7 @@ public class BoxFiscal extends HBox {
 	            		yscText.setText("0");
 	            	}
 	            	updateItem(Integer.parseInt(yscText.getText()), "ysc");
+	            	updateBalance();
 	            }
 	        }
 	    });
@@ -335,6 +344,7 @@ public class BoxFiscal extends HBox {
 	            		otherText.setText("0");
 	            	}
 	            	updateItem(Integer.parseInt(slipText.getText()),"wetslip");
+	            	updateBalance();
 	            }
 	        }
 	    });
@@ -348,6 +358,7 @@ public class BoxFiscal extends HBox {
 	            		otherText.setText("0");
 	            	}
 	            	updateItem(Integer.parseInt(otherText.getText()),"other");
+	            	updateBalance();
 	            }
 	        }
 	    });
@@ -361,6 +372,7 @@ public class BoxFiscal extends HBox {
 	            		otherText.setText("0");
 	            	}
 	            	updateItem(Integer.parseInt(initiationText.getText()), "initiation");
+	            	updateBalance();
 	            }
 	        }
 	    });
@@ -420,7 +432,7 @@ public class BoxFiscal extends HBox {
 
 		
 		MoneyTabPane.getTabs().addAll(moneyTab,paymentTab);
-
+		hboxSlip.getChildren().addAll(slipText,addWetSlip);
 		hboxDues.getChildren().addAll(new Label("Dues:"), duesText);
 		hboxSubKey.getChildren().addAll(totalKeyTextField,addKeys);
 		//if(!fiscals.get(rowIndex).isSupplemental())  // do not show for supplemental record
@@ -428,7 +440,7 @@ public class BoxFiscal extends HBox {
 		hboxWinterStorage.getChildren().addAll(new Label("Winter Storage"), winterStorageSpinner);
 		hboxKayac.getChildren().addAll(new Label("Kayac Rack"),kayakRackSpinner);
 		//hboxWetSlip.getChildren().addAll(new Label("wetSlip"),wetSlipSpinner);
-		hboxWetSlip.getChildren().addAll(new Label("wetSlip"),slipText);
+		hboxWetSlip.getChildren().addAll(new Label("wetSlip"),hboxSlip);
 		hboxYSC.getChildren().addAll(new Label("YSC Donation"),yscText);
 		hboxOther.getChildren().addAll(new Label("Other:"), otherText);
 		//if(!fiscals.get(rowIndex).isSupplemental())  // do not show for supplemental record
