@@ -233,8 +233,8 @@ public class BoxFiscal extends HBox {
             		SqlUpdate.commitFiscalRecord(fiscals.get(rowIndex).getMoney_id(), true);// this could be placed in line above
             		String date = SqlSelect.getPaymentDate(fiscals.get(rowIndex).getMoney_id()); // dates note to check
             		fiscals.get(rowIndex).setCommitted(true);
-            		//addPaidNote(date);
-            		//if(fiscals.get(rowIndex).getOther() != 0) note.add("Other expense: ",date);
+            		addPaidNote(date);
+            		if(fiscals.get(rowIndex).getOther() != 0) note.add("Other expense: ",date);
             		setEditable(false);
             	} else {
 				setEditable(true);
