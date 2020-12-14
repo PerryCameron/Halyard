@@ -5,6 +5,7 @@ import java.sql.Statement;
 
 import com.ecsail.structures.Object_Deposit;
 import com.ecsail.structures.Object_Membership;
+import com.ecsail.structures.Object_MembershipId;
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Money;
 import com.ecsail.structures.Object_Payment;
@@ -157,4 +158,16 @@ public class SqlInsert {
 			e.printStackTrace();
 		}
 	}
+	
+	public static void addMembershipId(Object_MembershipId id) {
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			stmt.execute(Main.console.setRegexColor("INSERT INTO deposit () VALUES (" + id.getMid() + ",'" + id.getFiscal_Year() + "','" + id.getMs_id() + "'," + id.getMembership_id() + ");"));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
 }

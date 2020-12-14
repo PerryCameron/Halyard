@@ -149,6 +149,7 @@ public class BoxFiscal extends HBox {
 		//wetSlipSpinner.setPrefWidth(60);
 		slipText.setPrefWidth(35);
 		addWetSlip.setPrefWidth(25);
+		addWetSlip.setPrefHeight(25);
 		yscText.setPrefWidth(60);
 		otherText.setPrefWidth(60);
 		initiationText.setPrefWidth(60);
