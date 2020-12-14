@@ -8,6 +8,7 @@ import com.ecsail.gui.tabs.TabPeopleList;
 import com.ecsail.gui.tabs.TabSlips;
 import com.ecsail.gui.tabs.TabStub;
 import com.ecsail.gui.tabs.TabWelcome;
+import com.ecsail.structures.Object_MembershipId;
 import com.ecsail.structures.Object_MembershipList;
 
 import javafx.scene.control.Tab;
@@ -98,6 +99,14 @@ static TabPane tabPane;
 	public static void openTabBatchedPaidDues() {
 		tabPane.getTabs().add(new TabDeposits("Deposits"));
 		tabPane.getSelectionModel().select(getTabIndex("Deposits"));
+	}
+	
+	public static void openTabNewYearGenerator() {
+		//for(Object_MembershipList oml: Main.activememberships) {
+		//	int count = 0;
+		//	SqlInsert.addMembershipId(new Object_MembershipId(count, 2020, oml.getMsid(), oml.getMembershipId()));
+		//	count++;
+		//}
 	}
 	
 	// creates a membership tab from the slip chart
