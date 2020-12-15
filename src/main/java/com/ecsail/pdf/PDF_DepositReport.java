@@ -61,7 +61,8 @@ public class PDF_DepositReport {
 			"Winter Storage",
 			"Work Credits",
 			"YSP Donation",
-			"Initiation Fee"
+			"Initiation Fee",
+			"Other"
 		};
 	
 	public PDF_DepositReport(Object_Deposit cd,Object_DefinedFee cdf, Object_DepositPDF pdfOptions) {
@@ -249,6 +250,7 @@ public class PDF_DepositReport {
 		if(dues.getSail_school_laser_loft() != 0) addItemRow(detailTable, "Extra Sail School Loft Key Fee", dues.getSail_school_laser_loft() * currentDefinedFee.getSail_school_laser_loft(), dues.getSail_school_laser_loft());
 		if(dues.getKayac_shed() != 0) addItemRow(detailTable, "Extra Kayak Inside Storage Key Fee", dues.getKayac_shed() * currentDefinedFee.getKayak_shed(), dues.getKayac_shed());
 		if(dues.getYsc_donation() != 0) addItemRow(detailTable, "Youth Sailing Club Donation", dues.getYsc_donation(), 0);
+		if(dues.getOther() != 0) addItemRow(detailTable, "Other", dues.getOther(),0);
 		if(dues.getCredit() != 0) addItemRow(detailTable, "Credit", dues.getCredit(),0);
 		addItemTotalRow(detailTable, dues.getTotal());
 		}
@@ -358,6 +360,9 @@ public class PDF_DepositReport {
 		}
 		if (totals.getYsc_donation() != 0) {
 			addSummaryRow(mainTable, "Youth Sailing Club Donation" , totals.getYsc_donationNumber(), totals.getYsc_donation());
+		}
+		if (totals.getOther() != 0) {
+			addSummaryRow(mainTable, "Other" , totals.getOtherNumber(), totals.getOther());
 		}
 		if (totals.getCredit() != 0) {
 			addSummaryRow(mainTable, "Credits" , totals.getCreditNumber(), totals.getCredit());
