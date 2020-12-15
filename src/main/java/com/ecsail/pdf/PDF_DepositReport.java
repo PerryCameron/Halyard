@@ -85,7 +85,7 @@ public class PDF_DepositReport {
 
 		// Initialize PDF writer
 		PdfWriter writer = null;
-
+		setUpForFirstTime();
 		if (pdfOptions.isSingleDeposit()) { // are we only creating a report of a single deposit
 			dest = Paths.DEPOSITREPORTPATH + "/" + currentDeposit.getFiscalYear() + "/Deposit_Report_" + currentDeposit.getBatch() + "_" + currentDeposit.getFiscalYear() + ".pdf";
 		} else { // we are creating a report for the entire year
@@ -507,6 +507,15 @@ public class PDF_DepositReport {
 		t.setTotal(total);
 		t.setNumberOfRecords(numberOfRecordsCounted);
 		return t;
+	}
+	
+	private void setUpForFirstTime() {
+		File recordsDir = new File(Paths.DEPOSITREPORTPATH + "/" + currentDeposit.getFiscalYear());
+
+		if (!recordsDir.exists()) {
+			System.out.println("Creating dir: " + Paths.DEPOSITREPORTPATH + "/" + currentDeposit.getFiscalYear()); // USERFILETEMPLATE
+		    recordsDir.mkdirs();
+		}
 	}
 	
     public static void sortByMembershipId() {
