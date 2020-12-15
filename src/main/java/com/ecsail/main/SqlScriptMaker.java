@@ -67,9 +67,9 @@ public class SqlScriptMaker {
 		workcredits = SqlSelect.getWorkCredits();
 		payments = SqlSelect.getPayments();
 		deposits = SqlSelect.getDeposits();
-		Paths.checkPath(Paths.SQLBACKUP);
+		Paths.checkPath(Paths.SQLBACKUP + "/" + Paths.getYear());
 		readFromFile(Paths.SCRIPTS + "/ecsc_create.sql");
-		writeToFile(Paths.SQLBACKUP + "/ecsc_sql_" + stringDate + ".sql");
+		writeToFile(Paths.SQLBACKUP + "/" + Paths.getYear() + "/ecsc_sql_" + stringDate + ".sql");
 	}
 	
 	public static void writeToFile(String filename) {

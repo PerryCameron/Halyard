@@ -1,6 +1,8 @@
 package com.ecsail.main;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Paths {
 	public static final String DEPOSITREPORTPATH = System.getProperty("user.home") + "/Documents/ECSC/Depost_Reports";
@@ -17,6 +19,10 @@ public class Paths {
 			System.out.println("Creating dir: " + path); // USERFILETEMPLATE
 		    recordsDir.mkdirs();
 		}
+	}
+	
+	public static String getYear() {
+		return new SimpleDateFormat("yyyy").format(new Date());
 	}
 	
 }
