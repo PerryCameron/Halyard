@@ -12,14 +12,12 @@ import com.ecsail.structures.Object_Login;
 
 
 public class FileIO {
-public static final String LOGO = "/ECSClogo4.png";
-public static final String HOSTS = System.getProperty("user.home") + "/.ecsc/hosts.ecs";
-public static final String SCRIPTS = System.getProperty("user.home") + "/.ecsc/scripts";
+
 public static List<Object_Login> logins = new ArrayList<Object_Login>();
 	
 	public static void saveLoginObjects() {  // saves user file to disk
-		File g = new File(HOSTS);
-		System.out.println("saving " + HOSTS);
+		File g = new File(Paths.HOSTS);
+		System.out.println("saving " + Paths.HOSTS);
 		try	{
 			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(g));
 			out.writeObject(logins); 
@@ -30,19 +28,6 @@ public static List<Object_Login> logins = new ArrayList<Object_Login>();
 			System.exit(0);
 		}
 	}
-/*	
-	public static Object_Login getSelectedHost(String hostname) {
-		int count = 0;
-		int iterate = 0;
-		for(Object_Login login: logins) {
-			if(login.getHost().equals(hostname)) {
-				count = iterate;
-			}
-			iterate++;
-		}
-		return logins.get(count);
-	}
-	*/
 	
 	public static int getSelectedHost(String hostname) {
 		boolean error = true;
@@ -61,7 +46,7 @@ public static List<Object_Login> logins = new ArrayList<Object_Login>();
 	
 	public static void openLoginObjects() {
 		System.out.println();
-		File g = new File(HOSTS);
+		File g = new File(Paths.HOSTS);
 		if (g.exists()) {
 			try {
 				ObjectInputStream in = new ObjectInputStream(new FileInputStream(g));
@@ -78,13 +63,13 @@ public static List<Object_Login> logins = new ArrayList<Object_Login>();
 				e.printStackTrace();
 			}			  
 		} else {
-			System.out.println("There is no file " + HOSTS);
+			System.out.println("There is no file " + Paths.HOSTS);
 		}
 	}
 	
 	public static boolean hostFileExists() {
 		boolean doesExist = false;
-		File g = new File(HOSTS);
+		File g = new File(Paths.HOSTS);
 		if(g.exists())
 			doesExist = true;
 		return doesExist;

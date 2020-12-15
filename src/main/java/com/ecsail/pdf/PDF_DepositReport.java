@@ -85,7 +85,8 @@ public class PDF_DepositReport {
 
 		// Initialize PDF writer
 		PdfWriter writer = null;
-		setUpForFirstTime();
+		// Check to make sure directory exists and if not create it
+		Paths.checkPath(Paths.DEPOSITREPORTPATH + "/" + currentDeposit.getFiscalYear());
 		if (pdfOptions.isSingleDeposit()) { // are we only creating a report of a single deposit
 			dest = Paths.DEPOSITREPORTPATH + "/" + currentDeposit.getFiscalYear() + "/Deposit_Report_" + currentDeposit.getBatch() + "_" + currentDeposit.getFiscalYear() + ".pdf";
 		} else { // we are creating a report for the entire year

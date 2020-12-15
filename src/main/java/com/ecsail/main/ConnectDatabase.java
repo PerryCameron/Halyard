@@ -118,7 +118,7 @@ public class ConnectDatabase {
 		setMouseListener(newConnectText);
 		setMouseListener(editConnectText);
 		logonStage.setAlwaysOnTop(true);
-		Image ecscLogo = new Image(getClass().getResourceAsStream(FileIO.LOGO));
+		Image ecscLogo = new Image(getClass().getResourceAsStream(Paths.LOGO));
 		ImageView logo = new ImageView(ecscLogo);
 		addBox.setPadding(new Insets(0,0,0,20));
 		addBox.setSpacing(15);

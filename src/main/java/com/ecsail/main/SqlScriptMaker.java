@@ -67,8 +67,9 @@ public class SqlScriptMaker {
 		workcredits = SqlSelect.getWorkCredits();
 		payments = SqlSelect.getPayments();
 		deposits = SqlSelect.getDeposits();
-		readFromFile(FileIO.SCRIPTS + "/ecsc_create.sql");
-		writeToFile(FileIO.SCRIPTS + "/ecsc_sql_" + stringDate + ".sql");
+		Paths.checkPath(Paths.SQLBACKUP);
+		readFromFile(Paths.SCRIPTS + "/ecsc_create.sql");
+		writeToFile(Paths.SQLBACKUP + "/ecsc_sql_" + stringDate + ".sql");
 	}
 	
 	public static void writeToFile(String filename) {
@@ -300,7 +301,6 @@ public class SqlScriptMaker {
 				"INSERT INTO boat_owner () VALUES ("
 				+ bos.getMsid() + ","
 				+ bos.getBoat_id() +");\n";
-
 	}
 	
 	public static String getBoatString(Object_Boat boa) {
