@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.util.Collections;
 import java.util.Comparator;
 
+import com.ecsail.main.Paths;
 import com.ecsail.main.SqlSelect;
 import com.ecsail.structures.Object_DefinedFee;
 import com.ecsail.structures.Object_Deposit;
@@ -86,9 +87,9 @@ public class PDF_DepositReport {
 		PdfWriter writer = null;
 
 		if (pdfOptions.isSingleDeposit()) { // are we only creating a report of a single deposit
-			dest = System.getProperty("user.home") + "/Deposit_Report_" + currentDeposit.getBatch() + "_" + currentDeposit.getFiscalYear() + ".pdf";
+			dest = Paths.DEPOSITREPORTPATH + "/" + currentDeposit.getFiscalYear() + "/Deposit_Report_" + currentDeposit.getBatch() + "_" + currentDeposit.getFiscalYear() + ".pdf";
 		} else { // we are creating a report for the entire year
-			dest = System.getProperty("user.home") + "/Deposit_Report_Fiscal_Year_" + currentDeposit.getFiscalYear() + ".pdf";
+			dest = Paths.DEPOSITREPORTPATH + "/" + currentDeposit.getFiscalYear() + "/Deposit_Report_Fiscal_Year_" + currentDeposit.getFiscalYear() + ".pdf";
 		}
 
 		try {
