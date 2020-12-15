@@ -15,6 +15,7 @@ import com.ecsail.structures.Object_DefinedFee;
 import com.ecsail.structures.Object_Deposit;
 import com.ecsail.structures.Object_Email;
 import com.ecsail.structures.Object_Membership;
+import com.ecsail.structures.Object_MembershipId;
 import com.ecsail.structures.Object_Memo;
 import com.ecsail.structures.Object_Money;
 import com.ecsail.structures.Object_Officer;
@@ -29,6 +30,7 @@ import javafx.collections.ObservableList;
 public class SqlScriptMaker {
 	static ArrayList<String> tableCreation = new ArrayList<String>();
 	static ObservableList<Object_Membership> memberships;
+	static ObservableList<Object_MembershipId> ids;
 	static ObservableList<Object_Person> people;
 	static ObservableList<Object_Phone> phones;
 	static ObservableList<Object_Boat> boats;
@@ -51,6 +53,7 @@ public class SqlScriptMaker {
 		String stringDate = formatter.format(date);
 		stringDate.replaceAll("\\s+", "");
 		memberships = SqlSelect.getMemberships();
+		ids = SqlSelect.getIds();
 		people = SqlSelect.getPeople(); 
 		phones = SqlSelect.getPhone(ALL);
 		boats = SqlSelect.getBoats();
@@ -78,6 +81,8 @@ public class SqlScriptMaker {
 				writer.write(tabe + System.lineSeparator());
 			for (Object_Membership mem : memberships)
 				writer.write(getMembershipString(mem));
+			for(Object_MembershipId mid : ids)
+				writer.write(getMembershipIdString(mid));
 			for (Object_Person peo : people)
 				writer.write(getPeopleString(peo));
 			for (Object_Phone pho : phones)
@@ -115,6 +120,7 @@ public class SqlScriptMaker {
 	public static void clearMemory() {
 		tableCreation.clear();
 		memberships.clear();
+		ids.clear();
 		people.clear();
 		phones.clear();
 		boats.clear();
@@ -133,6 +139,7 @@ public class SqlScriptMaker {
 	public static void printResults() {
 		System.out.println("Table creation script is " + tableCreation.size() + " lines.");
 		System.out.println(memberships.size() +" memberships written");
+		System.out.println(ids.size() + " ids written");
 		System.out.println(people.size() + " people written");
 		System.out.println(phones.size() + " phone numbers written");
 		System.out.println(boats.size() + " boats written");
@@ -146,6 +153,15 @@ public class SqlScriptMaker {
 		System.out.println(officers.size() + " officers written");
 		System.out.println(definedfees.size() + " definedfees written");
 		System.out.println(workcredits.size() + " workcredits written");
+	}
+	
+	public static String getMembershipIdString(Object_MembershipId mid) {
+		return
+		"INSERT INTO membership_id () VALUES ("
+		+ mid.getMid() + ","
+		+ mid.getFiscal_Year() + "," // stored as integer in database
+		+ mid.getMs_id() + ","
+		+ mid.getMembership_id() + ");\n"; //stored as integer in database
 	}
 	
 	public static String getDepositString(Object_Deposit d) {

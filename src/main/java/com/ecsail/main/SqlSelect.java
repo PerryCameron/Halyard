@@ -14,6 +14,7 @@ import com.ecsail.structures.Object_Deposit;
 import com.ecsail.structures.Object_Email;
 import com.ecsail.structures.Object_Email_Information;
 import com.ecsail.structures.Object_Membership;
+import com.ecsail.structures.Object_MembershipId;
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Memo;
 import com.ecsail.structures.Object_Money;
@@ -512,6 +513,44 @@ public class SqlSelect {
 			e.printStackTrace();
 		}
 		return slips;
+	}
+	
+	public static ObservableList<Object_MembershipId> getIds() {
+		ObservableList<Object_MembershipId> ids = FXCollections.observableArrayList();
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs = stmt.executeQuery("select * from membership_id;");
+			while (rs.next()) {
+				ids.add(new Object_MembershipId(
+						rs.getInt("MID")
+						, rs.getString("FISCAL_YEAR")
+						, rs.getInt("MS_ID")
+						, rs.getString("MEMBERSHIP_ID")));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return ids;
+	}
+	
+	public static ObservableList<Object_MembershipId> getIds(int ms_id) {
+		ObservableList<Object_MembershipId> ids = FXCollections.observableArrayList();
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs = stmt.executeQuery("select * from membership_id where ms_id=" +ms_id + ";");
+			while (rs.next()) {
+				ids.add(new Object_MembershipId(
+						rs.getInt("MID")
+						, rs.getString("FISCAL_YEAR")
+						, rs.getInt("MS_ID")
+						, rs.getString("MEMBERSHIP_ID")));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return ids;
 	}
 	
 	// was a list

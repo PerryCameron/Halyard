@@ -8,7 +8,6 @@ import com.ecsail.gui.tabs.TabPeopleList;
 import com.ecsail.gui.tabs.TabSlips;
 import com.ecsail.gui.tabs.TabStub;
 import com.ecsail.gui.tabs.TabWelcome;
-import com.ecsail.structures.Object_MembershipId;
 import com.ecsail.structures.Object_MembershipList;
 
 import javafx.scene.control.Tab;
