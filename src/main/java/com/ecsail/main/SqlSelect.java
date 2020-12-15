@@ -1194,23 +1194,7 @@ public class SqlSelect {
 		}
 		return number + 1;
 	}
-	/*
-	public static int getMembershipIDCount() {  // gives the last memo_id number
-		int number = 0;
-		ResultSet rs;
-		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
-			rs = stmt.executeQuery("SELECT MAX(membership_id) FROM membership;");
-			rs.next();
-			number = rs.getInt("MAX(membership_id)");
-		
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return number;
-	}
-	*/
+
 	public static String getPaymentDate(int moneyid) {
 		String date = "";
 		ResultSet rs;
