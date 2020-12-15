@@ -1163,24 +1163,6 @@ public class SqlSelect {
 		}
 		return number;
 	}
-	
-	
-	
-	public static int getMSIDCount() {  // gives the last memo_id number
-		int number = 0;
-		ResultSet rs;
-		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
-			rs = stmt.executeQuery("select ms_id from membership ORDER BY ms_id DESC LIMIT 1");
-			rs.next();
-			number = rs.getInt("ms_id");
-		
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return number;
-	}
 
 	public static boolean isCommitted(int money_id) {
 		boolean committed = false;
@@ -1212,7 +1194,7 @@ public class SqlSelect {
 		}
 		return number + 1;
 	}
-	
+	/*
 	public static int getMembershipIDCount() {  // gives the last memo_id number
 		int number = 0;
 		ResultSet rs;
@@ -1228,7 +1210,7 @@ public class SqlSelect {
 		}
 		return number;
 	}
-	
+	*/
 	public static String getPaymentDate(int moneyid) {
 		String date = "";
 		ResultSet rs;
