@@ -55,6 +55,21 @@ public class SqlExists {
 		return result;
 	}
 	
+	public static boolean memberShipIdExists(int ms_id) {
+		Boolean result = false;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT EXISTS(select * from membership_id WHERE ms_id='" + ms_id + "')"));
+			while(rs.next()) {
+			result = rs.getBoolean("EXISTS(select * from membership_id WHERE ms_id='" + ms_id + "')");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
 	public static Boolean slipExists(int ms_id) {
 		Boolean result = false;
 		  // we must convert here (this is getting crazy!)

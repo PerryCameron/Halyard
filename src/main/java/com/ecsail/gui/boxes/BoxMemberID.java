@@ -4,7 +4,9 @@ import java.util.Arrays;
 import java.util.function.Function;
 
 import com.ecsail.main.EditCell;
+import com.ecsail.main.Paths;
 import com.ecsail.main.SqlDelete;
+import com.ecsail.main.SqlExists;
 import com.ecsail.main.SqlInsert;
 import com.ecsail.main.SqlSelect;
 import com.ecsail.main.SqlUpdate;
@@ -95,18 +97,24 @@ public class BoxMemberID extends HBox {
 		
 		/////////////////// LISTENERS //////////////////////////////
 		
-		idAdd.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				int mid = SqlSelect.getCount("membership_id", "mid") + 1; // get last mid number add 1
-				Object_MembershipId thisId = SqlSelect.getCount(m.getMsid()); // retrieves oldest year record for member
-				System.out.println("mem id is" + thisId.getMembership_id());
-				int fiscalYear = Integer.parseInt(thisId.getFiscal_Year()) - 1;  // gets year and subtracts
-				Object_MembershipId newIdTuple = new Object_MembershipId(mid, fiscalYear + "", m.getMsid(), thisId.getMembership_id());
-				SqlInsert.addMembershipId(newIdTuple);
-				id.add(newIdTuple);
-				}
-			});
+				idAdd.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent e) {
+						int mid = SqlSelect.getCount("membership_id", "mid") + 1; // get last mid number add 1
+						Object_MembershipId newIdTuple = null;
+						if (SqlExists.memberShipIdExists(m.getMsid())) {
+							Object_MembershipId thisId = SqlSelect.getCount(m.getMsid()); // retrieves oldest year																// record for member
+							System.out.println("mem id is" + thisId.getMembership_id());
+							int fiscalYear = Integer.parseInt(thisId.getFiscal_Year()) - 1; // gets year and subtracts
+							newIdTuple = new Object_MembershipId(mid, fiscalYear + "", m.getMsid(),
+									thisId.getMembership_id());
+						} else {
+							newIdTuple = new Object_MembershipId(mid, Paths.getYear(), m.getMsid(),m.getMembershipId() + "");
+						}
+						SqlInsert.addMembershipId(newIdTuple);
+						id.add(newIdTuple);
+					}
+				});
         
         idDelete.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
