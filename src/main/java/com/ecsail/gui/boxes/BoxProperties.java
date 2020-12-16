@@ -13,7 +13,7 @@ import com.ecsail.main.SqlSelect;
 import com.ecsail.main.SqlUpdate;
 import com.ecsail.structures.Object_DefinedFee;
 import com.ecsail.structures.Object_MemLabels;
-import com.ecsail.structures.Object_Membership;
+import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Person;
 
 import javafx.beans.value.ChangeListener;
@@ -37,10 +37,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class BoxProperties extends HBox {
-	private Object_Membership membership;
+	private Object_MembershipList membership;
 	private Object_MemLabels labels;
 	private TextField duesText;
-	public BoxProperties(Object_Membership m, Object_MemLabels l, Tab membershipTab, TextField dt) {
+	public BoxProperties(Object_MembershipList m, Object_MemLabels l, Tab membershipTab, TextField dt) {
 		super();
 		this.membership = m;
 		this.labels = l;
@@ -48,6 +48,7 @@ public class BoxProperties extends HBox {
 		//////////// OBJECTS ///////////////
 		HBox hboxGrey = new HBox();  // this is the vbox for organizing all the widgets
 		VBox leftVBox = new VBox(); // contains viewable children
+		VBox centerVBox = new VBox();
 		VBox rightVBox = new VBox();
         HBox hbox1 = new HBox();  // holds membershipID, Type and Active
         HBox hbox2 = new HBox();  // holds PersonVBoxes (2 instances require a genereic HBox
@@ -160,8 +161,9 @@ public class BoxProperties extends HBox {
 		hbox4.getChildren().addAll(new Label("Membership Type"),combo_box);
 		hbox5.getChildren().addAll(new Label("Remove Membership"),removeMembershipButton);
 		leftVBox.getChildren().addAll(hbox1,hbox2,hbox3,hbox4);
-		rightVBox.getChildren().addAll(hbox5);
-		hboxGrey.getChildren().addAll(leftVBox,rightVBox);
+		centerVBox.getChildren().addAll(hbox5);
+		rightVBox.getChildren().addAll(new BoxMemberID(membership));
+		hboxGrey.getChildren().addAll(leftVBox,centerVBox,rightVBox);
 		getChildren().add(hboxGrey);
 	}
 	

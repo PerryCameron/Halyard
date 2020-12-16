@@ -16,6 +16,10 @@ public class Object_MembershipId {
 		this.ms_id = new SimpleIntegerProperty(ms_id);
 		this.membership_id = new SimpleStringProperty(membership_id);
 	}
+	
+	public Object_MembershipId() {
+		
+	}
 
 	public final IntegerProperty midProperty() {
 		return this.mid;

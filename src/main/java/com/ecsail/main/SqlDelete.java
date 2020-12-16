@@ -5,6 +5,7 @@ import java.sql.Statement;
 
 import com.ecsail.structures.Object_Boat;
 import com.ecsail.structures.Object_Email;
+import com.ecsail.structures.Object_MembershipId;
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Memo;
 import com.ecsail.structures.Object_Officer;
@@ -32,6 +33,19 @@ public class SqlDelete {
 			try {
 				Statement stmt = ConnectDatabase.connection.createStatement();
 				stmt.execute(Main.console.setRegexColor("delete from email where email_id='" + email.getEmail_id() + "';"));
+				noError = true;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	    return noError;
+	}
+	
+	public static boolean deleteMembershipId(Object_MembershipId mid) {
+		boolean noError = false;
+			try {
+				Statement stmt = ConnectDatabase.connection.createStatement();
+				stmt.execute(Main.console.setRegexColor("delete from membership_id where mid='" + mid.getMid() + "';"));
 				noError = true;
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block

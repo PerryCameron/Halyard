@@ -4,7 +4,10 @@ import java.util.Arrays;
 import java.util.function.Function;
 
 import com.ecsail.main.EditCell;
+import com.ecsail.main.SqlDelete;
+import com.ecsail.main.SqlInsert;
 import com.ecsail.main.SqlSelect;
+import com.ecsail.main.SqlUpdate;
 import com.ecsail.structures.Object_MembershipId;
 import com.ecsail.structures.Object_MembershipList;
 import javafx.beans.property.StringProperty;
@@ -30,14 +33,14 @@ public class BoxMemberID extends HBox {
 		
 		/////// OBJECT INSTANCE //////	
 		VBox vbox1 = new VBox(); // holds phone buttons
-		Button phoneAdd = new Button("Add");
-		Button phoneDelete = new Button("Delete");
+		Button idAdd = new Button("Add");
+		Button idDelete = new Button("Delete");
 		HBox hboxGrey = new HBox(); // this is here for the grey background to make nice apperence
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
 
 		//// OBJECT ATTRIBUTES /////
-		phoneAdd.setPrefWidth(60);
-		phoneDelete.setPrefWidth(60);
+		idAdd.setPrefWidth(60);
+		idDelete.setPrefWidth(60);
 		vbox1.setSpacing(5); // spacing between buttons
 		hboxGrey.setPrefWidth(480);
 		hboxGrey.setSpacing(10);  // spacing in between table and buttons
@@ -49,7 +52,7 @@ public class BoxMemberID extends HBox {
 		///// TABLEVIE INSTANCE CREATION AND ATTRIBUTES /////
 		idTableView = new TableView<Object_MembershipId>();
 		idTableView.setItems(id);
-		idTableView.setPrefWidth(320);
+		idTableView.setPrefWidth(172);
 		idTableView.setPrefHeight(140);
 		idTableView.setFixedCellSize(30);
 		idTableView.setEditable(true);
@@ -64,14 +67,15 @@ public class BoxMemberID extends HBox {
                         ((Object_MembershipId) t.getTableView().getItems().get(
                                 t.getTablePosition().getRow())
                                 ).setFiscal_Year(t.getNewValue());
-                       // int phone_id = ((Object_MembershipId) t.getTableView().getItems().get(t.getTablePosition().getRow())).getPhone_ID();
+                        int mid = ((Object_MembershipId) t.getTableView().getItems().get(t.getTablePosition().getRow())).getMid();
                        // 	SqlUpdate.updatePhone("phone", phone_id, t.getNewValue());
+                        SqlUpdate.updateMembershipId(mid, "fiscal_year", t.getNewValue());
                     }
                 }
             );
         
 		TableColumn<Object_MembershipId, String> Col2 = createColumn("Membership ID", Object_MembershipId::membership_idProperty);
-		Col2.setPrefWidth(70);
+		Col2.setPrefWidth(100);
         Col2.setOnEditCommit(
                 new EventHandler<CellEditEvent<Object_MembershipId, String>>() {
                     @Override
@@ -79,8 +83,10 @@ public class BoxMemberID extends HBox {
                         ((Object_MembershipId) t.getTableView().getItems().get(
                                 t.getTablePosition().getRow())
                                 ).setMembership_id(t.getNewValue());
+                        int mid = ((Object_MembershipId) t.getTableView().getItems().get(t.getTablePosition().getRow())).getMid();
                        // int phone_id = ((Object_MembershipId) t.getTableView().getItems().get(t.getTablePosition().getRow())).getPhone_ID();
                        // 	SqlUpdate.updatePhone("phone", phone_id, t.getNewValue());
+                        SqlUpdate.updateMembershipId(mid, "membership_id", t.getNewValue());
                     }
                 }
             );
@@ -89,22 +95,25 @@ public class BoxMemberID extends HBox {
 		
 		/////////////////// LISTENERS //////////////////////////////
 		
-		phoneAdd.setOnAction(new EventHandler<ActionEvent>() {
+		idAdd.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-			//	int phone_id = SqlSelect.getCount("phone", "phone_id"); // get last phone_id number
-			//	phone_id++; // increase to first available number
-			//	if (SqlInsert.addRecord(phone_id, person.getP_id(), true, "new phone", "")) // if added with no errors
-			//		phone.add(new Object_MembershipId(phone_id, person.getP_id(), true, "new phone", "")); // lets add it to our GUI
+				int mid = SqlSelect.getCount("membership_id", "mid") + 1; // get last mid number add 1
+				Object_MembershipId thisId = SqlSelect.getCount(m.getMsid()); // retrieves oldest year record for member
+				System.out.println("mem id is" + thisId.getMembership_id());
+				int fiscalYear = Integer.parseInt(thisId.getFiscal_Year()) - 1;  // gets year and subtracts
+				Object_MembershipId newIdTuple = new Object_MembershipId(mid, fiscalYear + "", m.getMsid(), thisId.getMembership_id());
+				SqlInsert.addMembershipId(newIdTuple);
+				id.add(newIdTuple);
 				}
 			});
         
-        phoneDelete.setOnAction(new EventHandler<ActionEvent>() {
+        idDelete.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
-            //	int selectedIndex = idTableView.getSelectionModel().getSelectedIndex();
-            //		if(selectedIndex >= 0)
-            //			if(SqlDelete.deletePhone(phone.get(selectedIndex)))  // if it is properly deleted in our database
-            //				idTableView.getItems().remove(selectedIndex); // remove it from our GUI
+            	int selectedIndex = idTableView.getSelectionModel().getSelectedIndex();
+            		if(selectedIndex >= 0)
+            			if(SqlDelete.deleteMembershipId(id.get(selectedIndex)))  // if it is properly deleted in our database
+            				idTableView.getItems().remove(selectedIndex); // remove it from our GUI
             }
         });
 		
@@ -112,7 +121,7 @@ public class BoxMemberID extends HBox {
 		
 		idTableView.getColumns().addAll(Arrays.asList(Col1,Col2));
 		vboxPink.getChildren().add(idTableView);  // adds pink border around table
-		vbox1.getChildren().addAll(phoneAdd, phoneDelete); // lines buttons up vertically
+		vbox1.getChildren().addAll(idAdd, idDelete); // lines buttons up vertically
 		hboxGrey.getChildren().addAll(vboxPink,vbox1);
 		getChildren().add(hboxGrey);
 		

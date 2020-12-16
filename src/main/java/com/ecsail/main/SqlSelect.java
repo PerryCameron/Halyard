@@ -938,6 +938,26 @@ public class SqlSelect {
 		return result;
 	}
 	
+	public static Object_MembershipId getCount(int ms_id) {  // example-> "email","email_id"
+		Object_MembershipId thisId = null; // new Object_MembershipId();
+		Statement stmt;
+		try {
+			stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs = stmt.executeQuery("select MID, MIN(FISCAL_YEAR), MS_ID, MAX(MEMBERSHIP_ID) from membership_id where MS_ID=" + ms_id);
+			while (rs.next()) {
+				thisId = new Object_MembershipId(
+			rs.getInt("MID")
+			, rs.getString("MIN(FISCAL_YEAR)")
+			, rs.getInt("MS_ID")
+			, rs.getString("MAX(MEMBERSHIP_ID)"));
+			};
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return thisId;
+	}
+	
 	public static int getCount(String type) { // gives the last memo_id number
 		int result = 0;
 		try {
