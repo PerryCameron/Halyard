@@ -7,6 +7,7 @@ import java.sql.Statement;
 
 import com.ecsail.structures.Object_Membership;
 import com.ecsail.structures.Object_Person;
+import com.ecsail.structures.Object_Temp;
 
 public class SqlExists {
 	
@@ -177,6 +178,23 @@ public class SqlExists {
 				result = rs.getBoolean(
 						"EXISTS(select * from officer WHERE p_id='"
 							+ per.getP_id() + "' AND off_year='" + year + "' and OFF_TYPE != 'BM')");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	public static Boolean isThere(Object_Temp t,int year) {
+		boolean result = false;
+		try {  
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs = stmt
+					.executeQuery(Main.console.setRegexColor("select Exists(select * from membership_id mi join membership m on m.MS_ID=mi.MS_ID join person p on p.P_ID=m.P_ID where mi.fiscal_year="+year+" and p.L_NAME='"+t.getLname()+"' and p.F_NAME='"+t.getFname()+"');"));
+			while (rs.next()) {
+				result = rs.getBoolean(
+						"Exists(select * from membership_id mi join membership m on m.MS_ID=mi.MS_ID join person p on p.P_ID=m.P_ID where mi.fiscal_year="+year+" and p.L_NAME='"+t.getLname()+"' and p.F_NAME='"+t.getFname()+"')");
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

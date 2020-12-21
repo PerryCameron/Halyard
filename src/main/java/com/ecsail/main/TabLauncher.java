@@ -1,9 +1,13 @@
 package com.ecsail.main;
 
+import java.io.IOException;
+
+import com.ecsail.gui.dialogues.Dialogue_RenewalForm;
 import com.ecsail.gui.tabs.TabActiveMembershipList;
 import com.ecsail.gui.tabs.TabDeposits;
 import com.ecsail.gui.tabs.TabBoardMembers;
 import com.ecsail.gui.tabs.TabMembership;
+import com.ecsail.gui.tabs.TabNewYearGenerator;
 import com.ecsail.gui.tabs.TabPeopleList;
 import com.ecsail.gui.tabs.TabSlips;
 import com.ecsail.gui.tabs.TabStub;
@@ -64,6 +68,10 @@ static TabPane tabPane;
 		tabPane.getTabs().add(new TabWelcome(vboxGrey));
 	}
 	
+	public static void createRenewalForms() {
+		new Dialogue_RenewalForm();
+	}
+	
 	// creates a membership tab from the membership list
 	public static void createTab(int membershipID, int ms_id)  {
 		String tabLabel= "Membership " + membershipID;
@@ -101,11 +109,12 @@ static TabPane tabPane;
 	}
 	
 	public static void openTabNewYearGenerator() {
-		//for(Object_MembershipList oml: Main.activememberships) {
-		//	int count = 0;
-		//	SqlInsert.addMembershipId(new Object_MembershipId(count, 2020, oml.getMsid(), oml.getMembershipId()));
-		//	count++;
-		//}
+		try {
+			TabNewYearGenerator.makeItSo();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	// creates a membership tab from the slip chart

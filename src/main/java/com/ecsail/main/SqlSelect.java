@@ -24,6 +24,7 @@ import com.ecsail.structures.Object_Payment;
 import com.ecsail.structures.Object_Person;
 import com.ecsail.structures.Object_Phone;
 import com.ecsail.structures.Object_Slip;
+import com.ecsail.structures.Object_Temp;
 import com.ecsail.structures.Object_WorkCredit;
 
 import javafx.collections.FXCollections;
@@ -1343,4 +1344,25 @@ public class SqlSelect {
 		return number;
 		
 	}
+	
+	public static int getMSID(Object_Temp t,int year, ArrayList<String> errortuples) {
+		int number = 0;
+		ResultSet rs;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			rs = stmt.executeQuery("select ms_id from person where L_NAME='"+t.getLname()+"' and F_NAME='"+t.getFname()+"';");
+			rs.next();
+			number = rs.getInt("ms_id");
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			//System.out.println("The person is " + t.toString() );
+			errortuples.add("Failed to find " + t.toString());
+			//e.printStackTrace();
+		}
+		return number;
+		
+	}
+	
+
 }

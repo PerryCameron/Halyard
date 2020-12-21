@@ -38,6 +38,12 @@ public class Object_Membership {
 	
 	
 
+	public Object_Membership() {
+		// TODO Auto-generated constructor stub
+	}
+
+
+
 	public final IntegerProperty msidProperty() {
 		return this.msid;
 	}

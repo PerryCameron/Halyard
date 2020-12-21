@@ -510,15 +510,6 @@ public class PDF_DepositReport {
 		return t;
 	}
 	
-	private void setUpForFirstTime() {
-		File recordsDir = new File(Paths.DEPOSITREPORTPATH + "/" + currentDeposit.getFiscalYear());
-
-		if (!recordsDir.exists()) {
-			System.out.println("Creating dir: " + Paths.DEPOSITREPORTPATH + "/" + currentDeposit.getFiscalYear()); // USERFILETEMPLATE
-		    recordsDir.mkdirs();
-		}
-	}
-	
     public static void sortByMembershipId() {
 		  Collections.sort(paidDuesForDeposit, new Comparator<Object_PaidDues>() {
 		        @Override public int compare(Object_PaidDues p1, Object_PaidDues p2) {

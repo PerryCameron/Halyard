@@ -1,0 +1,112 @@
+package com.ecsail.gui.dialogues;
+
+import java.io.IOException;
+
+import com.ecsail.main.Paths;
+import com.ecsail.main.SqlExists;
+import com.ecsail.main.SqlSelect;
+import com.ecsail.pdf.PDF_DepositReport;
+import com.ecsail.pdf.PDF_Renewal_Form;
+import com.ecsail.structures.Object_DefinedFee;
+import com.ecsail.structures.Object_Deposit;
+import com.ecsail.structures.Object_DepositPDF;
+
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
+public class Dialogue_RenewalForm extends Stage {
+
+	private String selectedYear;
+	
+	public Dialogue_RenewalForm() {
+		this.selectedYear=Paths.getYear();
+		
+		Button createPDFbutton = new Button("Create PDF");
+		ToggleGroup tg1 = new ToggleGroup();  
+		RadioButton r1 = new RadioButton("Print All Memberships"); 
+        RadioButton r2 = new RadioButton("Print Only Membership Number"); 
+        CheckBox c1 = new CheckBox("Detailed Report");
+        CheckBox c2 = new CheckBox("Summary"); 
+		HBox hboxGrey = new HBox(); // this is the vbox for organizing all the widgets
+		VBox vboxBlue = new VBox();
+		VBox vboxPink = new VBox(); // this creates a pink border around the table
+		VBox vboxColumn1 = new VBox();
+		VBox vboxColumn2 = new VBox();
+		TextField memberidTextField = new TextField();
+		Scene scene = new Scene(vboxBlue, 600, 300);
+		final Spinner<Integer> yearSpinner = new Spinner<Integer>();
+		Image mainIcon = new Image(getClass().getResourceAsStream("/ECSC64.png"));
+		Image pdf = new Image(getClass().getResourceAsStream("/pdf.png"));
+		ImageView pdfImage = new ImageView(pdf);
+		
+		SpinnerValueFactory<Integer> batchSlipValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1970, 3000, 0);
+		yearSpinner.setValueFactory(batchSlipValueFactory);
+		yearSpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
+			  if (!newValue) {
+				  yearSpinner.increment(0); // won't change value, but will commit editor
+				  selectedYear = yearSpinner.getEditor().getText();	
+			  }
+			});
+		
+		/////////////////// ATTRIBUTES ///////////////////
+		r1.setToggleGroup(tg1); 
+        r2.setToggleGroup(tg1); 
+        r2.setSelected(true);
+        c1.setSelected(true);
+        c2.setSelected(true);
+        //yearSpinner.setPadding(new Insets(0,0,0,10));
+        hboxGrey.setPadding(new Insets(5,0,0,5));
+        yearSpinner.setPrefWidth(80);
+        memberidTextField.setPrefWidth(60);
+        vboxColumn1.setSpacing(5);
+        vboxColumn2.setSpacing(15);
+		vboxBlue.setId("box-blue");
+		vboxBlue.setPadding(new Insets(10, 10, 10, 10));
+		vboxPink.setPadding(new Insets(3, 3, 3, 3)); // spacing to make pink from around table
+		vboxPink.setId("box-pink");
+		// vboxGrey.setId("slip-box");
+		hboxGrey.setPrefHeight(688);
+		scene.getStylesheets().add("stylesheet.css");
+		setTitle("Print to PDF");
+		////////////  Check to see if batch exists first////////////
+		
+
+  		yearSpinner.getValueFactory().setValue(Integer.parseInt(selectedYear));	
+		
+		createPDFbutton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				try {
+					new PDF_Renewal_Form(selectedYear, memberidTextField.getText());
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+ 			}
+		});
+		
+		//////////////// ADD CONTENT ///////////////////
+		vboxColumn1.getChildren().addAll(yearSpinner,r1,r2,memberidTextField,c1,c2);
+		vboxColumn2.getChildren().addAll(pdfImage,createPDFbutton);
+		hboxGrey.getChildren().addAll(vboxColumn1,vboxColumn2);
+		vboxBlue.getChildren().add(vboxPink);
+		vboxPink.getChildren().add(hboxGrey);
+		getIcons().add(mainIcon);
+		setScene(scene);
+		show();
+	}
+}

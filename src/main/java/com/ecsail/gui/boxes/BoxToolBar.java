@@ -51,7 +51,8 @@ public class BoxToolBar extends VBox {
 		MenuItem m4_1_4 = new MenuItem("Email List");
 		MenuItem m4_1_5 = new MenuItem("Window Stub");
 		MenuItem m4_1_6 = new MenuItem("Tab Stub");
-		MenuItem m4_1_7 = new MenuItem("Create 2020 membership id's");
+		MenuItem m4_1_7 = new MenuItem("Create membership id's");
+		MenuItem m4_1_8 = new MenuItem("Renewal Forms");
 
         m3_2_6.setOnAction(new EventHandler<ActionEvent>() {  // open active membership list
             @Override public void handle(ActionEvent e) {
@@ -112,6 +113,13 @@ public class BoxToolBar extends VBox {
             }
         });
 		
+		m4_1_8.setOnAction(new EventHandler<ActionEvent>() {  // add new membership
+            @Override public void handle(ActionEvent e) {
+            	TabLauncher.createRenewalForms();
+            }
+        });
+		
+		
         m3_2_1.setOnAction(new EventHandler<ActionEvent>() {  // open active membership list
             @Override public void handle(ActionEvent e) {
             	TabLauncher.openMembershipListTab();
@@ -153,7 +161,7 @@ public class BoxToolBar extends VBox {
             }
         });
         m1_1.getItems().addAll(m1_1_1);
-        m4_1.getItems().addAll(m4_1_1,m4_1_2,m4_1_3,m4_1_4,m4_1_5,m4_1_6,m4_1_7);
+        m4_1.getItems().addAll(m4_1_1,m4_1_2,m4_1_3,m4_1_4,m4_1_5,m4_1_6,m4_1_7,m4_1_8);
         m3_2.getItems().addAll(m3_2_1,m3_2_2,m3_2_3,m3_2_4,m3_2_5,m3_2_6);  // add list items
         menu1.getItems().addAll(m1_1,m1_2);
         menu3.getItems().addAll(m3_1,m3_2);

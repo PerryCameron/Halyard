@@ -23,6 +23,12 @@ public class Object_MembershipList extends Object_Membership {
 
 	
 
+	public Object_MembershipList() {
+		// TODO Auto-generated constructor stub
+	}
+
+
+
 	public void setLname(StringProperty lname) {
 		this.lname = lname;
 	}
