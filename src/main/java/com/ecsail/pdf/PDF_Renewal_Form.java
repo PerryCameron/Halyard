@@ -6,12 +6,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import com.ecsail.main.Paths;
+import com.ecsail.main.SqlSelect;
 import com.ecsail.structures.Object_Boat;
+import com.ecsail.structures.Object_DefinedFee;
 import com.itextpdf.io.font.FontProgramFactory;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.colors.DeviceCmyk;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
+import com.itextpdf.kernel.geom.Rectangle;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
@@ -29,12 +32,16 @@ import com.itextpdf.layout.property.UnitValue;
 public class PDF_Renewal_Form {
 	private static String year;
 	private static String membership_id; 
+	Object_DefinedFee definedFees;
 	private int borderSize = 1;
 	private ArrayList<Object_Boat> boats = new ArrayList<Object_Boat>();
+	Image checkedBox = new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/checked-checkbox9x9.png"))));
+	Image uncheckedBox = new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/unchecked-checkbox9x9.png"))));
 	
 	public PDF_Renewal_Form(String y, String memId) throws IOException {
 		PDF_Renewal_Form.year = y;
 		PDF_Renewal_Form.membership_id = memId;
+		this.definedFees = SqlSelect.selectDefinedFees(Integer.parseInt(year));
 		boats.add(new Object_Boat(0, 0, "Manufacturer", "Year", "Registration", "Model", "Boat Name", "Sail #", true, "Length", "Header", "Keel Type", "PHRF"));
 		boats.add(new Object_Boat(0, 0, "Flying Scot Inc.", "2016", "IN34234", "Flying Scot", "Crow", "3845", true, "19", "800", "Center Board", "PHRF"));
 		boats.add(new Object_Boat(0, 0, "", "", "", "", "", "", true, "", "", "", ""));
@@ -50,23 +57,28 @@ public class PDF_Renewal_Form {
 		// Initialize document
 		Document document = new Document(pdf);
 		document.setTopMargin(0);
-		document.setLeftMargin(0.5f);
-		document.setRightMargin(0.5f);
+		document.setLeftMargin(0.25f);
+		document.setRightMargin(0.25f);
 		//FontProgramFactory.registerFont("c:/windows/fonts/Arial.ttf", "arial");
 		FontProgramFactory.registerFont("c:/windows/fonts/garabd.ttf", "garamond bold");
 		PdfFont font = PdfFontFactory.createRegisteredFont("garamond bold");
 		//PdfFont font = PdfFontFactory.createFont("arial");
 
-		//Rectangle rectangle = pdf.getDefaultPageSize();
-		//float width = rectangle.getWidth() - document.getLeftMargin() - document.getRightMargin();
-		//System.out.println("Page size is " + rectangle);
+		Rectangle rectangle = pdf.getDefaultPageSize();
+		float width = rectangle.getWidth() - document.getLeftMargin() - document.getRightMargin();
+		System.out.println("Page size is " + rectangle);
 		// add tables here
 		document.add(titlePdfTable(font));
-		document.add(membershipNumberPdfTable(font));
+		document.add(membershipIdPdfTable());
+		document.add(membershipAddressPdfTable());
 		document.add(personPdfTable());
 		document.add(childrenPdfTable());
 		document.add(boatsPdfTable());
-		//document.add(testTable());
+		document.add(feesPdfTable());
+		for(int i = 1; i < 6; i++) {
+		document.add(blankTableRow(i));
+		}
+		document.add(signatureTable());
 		// Close document
 		document.close();
 		
@@ -87,28 +99,975 @@ public class PDF_Renewal_Form {
 	
 	///////////  Class Methods ///////////////
 	
-	public Table testTable() {
+	public Table feesPdfTable() {
+		Table mainTable = new Table(12);
+		//mainTable.setWidth(590);
+		Cell cell;
+		Paragraph p;
+		//////////////////HEADERS//////////////////////
+		cell = new Cell(1,4);
+		//cell.setBorder(Border.NO_BORDER);
+		cell.setBorderLeft(new SolidBorder(borderSize));
+		cell.setBorderTop(new SolidBorder(borderSize));
+		cell.setWidth(180);
+		p = new Paragraph("Membership Type");
+		p.setFontSize(10);
+		p.setFixedLeading(10);  // sets spacing between lines of text
+		cell.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f));
+		p.setTextAlignment(TextAlignment.CENTER);
+		cell.add(p);
+		mainTable.addCell(cell);
+		
+		cell = new Cell(1,4);
+		//cell.setBorder(Border.NO_BORDER);
+		cell.setBorderTop(new SolidBorder(borderSize));
+		cell.setWidth(180);
+		p = new Paragraph("Storage and Access");
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		cell.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f));
+		p.setTextAlignment(TextAlignment.CENTER);
+		cell.add(p);
+		mainTable.addCell(cell);
+		
+		cell = new Cell(1,4);
+		//cell.setBorder(Border.NO_BORDER);
+		cell.setBorderTop(new SolidBorder(borderSize));
+		cell.setBorderRight(new SolidBorder(borderSize));
+		cell.setWidth(215);
+		p = new Paragraph("Keys");
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		cell.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f));
+		p.setTextAlignment(TextAlignment.CENTER);
+		cell.add(p);
+		mainTable.addCell(cell);
+		feesTableRow1(mainTable);
+		feesTableRow2(mainTable);
+		feesTableRow3(mainTable);
+		feesTableRow4(mainTable);
+		feesTableRow5(mainTable);
+		feesTableRow6(mainTable);
+		feesTableRow7(mainTable);
+		feesTableRow8(mainTable);
+		feesTableRow9(mainTable);
+		feesTableRow10(mainTable);
+		feesTableRow11(mainTable);
+		return mainTable;
+	}
+	
+	public void feesTableRow1(Table mainTable) {
+		Cell cell;
+		Paragraph p;
+		/////////////////// VISIBLE TABLE CELL LEFT BEGIN Row 1 /////////////////
+		cell = new Cell();   
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		cell.setBorderLeft(new SolidBorder(borderSize));
+		cell.setWidth(10);
+		cell.add(uncheckedBox);
+		mainTable.addCell(cell);
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		p = new Paragraph("Regular Membership");
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.LEFT);
+		cell.add(p);
+		mainTable.addCell(cell);
 
-		Table table = new Table(UnitValue.createPercentArray(new float[] {1, 2, 2, 2, 1}));
+		mainTable.addCell(new Cell().setBorder(Border.NO_BORDER).setBorderBottom(new SolidBorder(0.5f)));
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderRight(new SolidBorder(0.5f));
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		p = new Paragraph("$" + definedFees.getDues_regular());
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.RIGHT);
+		cell.add(p);
+		mainTable.addCell(cell);
+		
+		/////////////////// VISIBLE TABLE CELL CENTER BEGIN /////////////////
+		cell = new Cell();   
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		//cell.setBorderLeft(new SolidBorder(borderSize));
+		cell.setWidth(10);
+		cell.add(uncheckedBox);
+		mainTable.addCell(cell);
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		p = new Paragraph("Wet Slip");
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.LEFT);
+		cell.add(p);
+		mainTable.addCell(cell);
 
-        Cell cell = new Cell(2, 1).add(new Paragraph("S/N"));
-        table.addCell(cell);
+		mainTable.addCell(new Cell().setBorder(Border.NO_BORDER).setBorderBottom(new SolidBorder(0.5f)));
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderRight(new SolidBorder(0.5f));
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		p = new Paragraph("$" + definedFees.getWet_slip());
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.RIGHT);
+		cell.add(p);
+		mainTable.addCell(cell);
+		
+		/////////////////// VISIBLE TABLE CELL RIGHT BEGIN /////////////////
+		cell = new Cell();   
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		//cell.setBorderLeft(new SolidBorder(borderSize));
+		cell.setWidth(10);
+		cell.add(uncheckedBox);
+		mainTable.addCell(cell);
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		p = new Paragraph("Main Gate Extra Key (#16)");
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.LEFT);
+		cell.add(p);
+		mainTable.addCell(cell);
 
-        cell = new Cell(1, 3).add(new Paragraph("Name"));
-        table.addCell(cell);
+		
+		/////////  Multiply Cell //////
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		p = new Paragraph("____ x");
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.RIGHT);
+		cell.add(p);
+		mainTable.addCell(cell);
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderRight(new SolidBorder(borderSize));
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		p = new Paragraph("$" + definedFees.getMain_gate_key());
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.RIGHT);
+		cell.add(p);
+		mainTable.addCell(cell);
+	}
+	
+	public void feesTableRow2(Table mainTable) {
+		Cell cell;
+		Paragraph p;
+		/////////////////// VISIBLE TABLE CELL LEFT BEGIN Row 2 /////////////////
+		cell = new Cell();   
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		cell.setBorderLeft(new SolidBorder(borderSize));
+		cell.setWidth(10);
+		cell.add(uncheckedBox);
+		mainTable.addCell(cell);
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		p = new Paragraph("Family Membership");
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.LEFT);
+		cell.add(p);
+		mainTable.addCell(cell);
 
-        cell = new Cell(2, 1).add(new Paragraph("Age"));
-        table.addCell(cell);
+		mainTable.addCell(new Cell().setBorder(Border.NO_BORDER).setBorderBottom(new SolidBorder(0.5f)));
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderRight(new SolidBorder(0.5f));
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		p = new Paragraph("$" + definedFees.getDues_family());
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.RIGHT);
+		cell.add(p);
+		mainTable.addCell(cell);
+		
+		/////////////////// VISIBLE TABLE CELL CENTER BEGIN /////////////////
+		cell = new Cell();   
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		//cell.setBorderLeft(new SolidBorder(borderSize));
+		cell.setWidth(10);
+		cell.add(uncheckedBox);
+		mainTable.addCell(cell);
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		p = new Paragraph("Beach Parking");
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.LEFT);
+		cell.add(p);
+		mainTable.addCell(cell);
 
-        table.addCell("SURNAME");
-        table.addCell("FIRST NAME");
-        table.addCell("MIDDLE NAME");
-        table.addCell("1");
-        table.addCell("James");
-        table.addCell("Fish");
-        table.addCell("Stone");
-        table.addCell("17");
-        return table;
+		mainTable.addCell(new Cell().setBorder(Border.NO_BORDER).setBorderBottom(new SolidBorder(0.5f)));
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderRight(new SolidBorder(0.5f));
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		p = new Paragraph("$" + definedFees.getBeach());
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.RIGHT);
+		cell.add(p);
+		mainTable.addCell(cell);
+		
+		/////////////////// VISIBLE TABLE CELL RIGHT BEGIN /////////////////
+		cell = new Cell();   
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		//cell.setBorderLeft(new SolidBorder(borderSize));
+		cell.setWidth(10);
+		cell.add(uncheckedBox);
+		mainTable.addCell(cell);
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		p = new Paragraph("Sail Loft Key (SL16)");
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.LEFT);
+		cell.add(p);
+		mainTable.addCell(cell);
+
+		
+		/////////  Multiply Cell //////
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		p = new Paragraph("____ x");
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.RIGHT);
+		cell.add(p);
+		mainTable.addCell(cell);
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderRight(new SolidBorder(borderSize));
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		p = new Paragraph("$" + definedFees.getSail_loft_key());
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.RIGHT);
+		cell.add(p);
+		mainTable.addCell(cell);
+	}
+	
+	public void feesTableRow3(Table mainTable) {
+		Cell cell;
+		Paragraph p;
+		/////////////////// VISIBLE TABLE CELL LEFT BEGIN Row 3 /////////////////
+		cell = new Cell();   
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		cell.setBorderLeft(new SolidBorder(borderSize));
+		cell.setWidth(10);
+		cell.add(uncheckedBox);
+		mainTable.addCell(cell);
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		p = new Paragraph("Lake Associate");
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.LEFT);
+		cell.add(p);
+		mainTable.addCell(cell);
+
+		mainTable.addCell(new Cell().setBorder(Border.NO_BORDER).setBorderBottom(new SolidBorder(0.5f)));
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderRight(new SolidBorder(0.5f));
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		p = new Paragraph("$" + definedFees.getDues_lake_associate());
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.RIGHT);
+		cell.add(p);
+		mainTable.addCell(cell);
+		
+		/////////////////// VISIBLE TABLE CELL CENTER BEGIN /////////////////
+		cell = new Cell();   
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		//cell.setBorderLeft(new SolidBorder(borderSize));
+		cell.setWidth(10);
+		cell.add(uncheckedBox);
+		mainTable.addCell(cell);
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		p = new Paragraph("Winter Storage");
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.LEFT);
+		cell.add(p);
+		mainTable.addCell(cell);
+
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		p = new Paragraph("____ x");
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.RIGHT);
+		cell.add(p);
+		mainTable.addCell(cell);
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderRight(new SolidBorder(0.5f));
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		p = new Paragraph("$" + definedFees.getWinter_storage());
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.RIGHT);
+		cell.add(p);
+		mainTable.addCell(cell);
+		
+		/////////////////// VISIBLE TABLE CELL RIGHT BEGIN /////////////////
+		cell = new Cell();   
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		//cell.setBorderLeft(new SolidBorder(borderSize));
+		cell.setWidth(10);
+		cell.add(uncheckedBox);
+		mainTable.addCell(cell);
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		p = new Paragraph("Sail School Loft Key (SS16)");
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.LEFT);
+		cell.add(p);
+		mainTable.addCell(cell);
+
+		
+		/////////  Multiply Cell //////
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		p = new Paragraph("____ x");
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.RIGHT);
+		cell.add(p);
+		mainTable.addCell(cell);
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderRight(new SolidBorder(borderSize));
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		p = new Paragraph("$" + definedFees.getSail_school_loft_key());
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.RIGHT);
+		cell.add(p);
+		mainTable.addCell(cell);
+	}
+	
+	public void feesTableRow4(Table mainTable) {
+		Cell cell;
+		Paragraph p;
+		/////////////////// VISIBLE TABLE CELL LEFT BEGIN Row 4 /////////////////
+		cell = new Cell();   
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		cell.setBorderLeft(new SolidBorder(borderSize));
+		cell.setWidth(10);
+		cell.add(uncheckedBox);
+		mainTable.addCell(cell);
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		p = new Paragraph("Social Membership");
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.LEFT);
+		cell.add(p);
+		mainTable.addCell(cell);
+
+		mainTable.addCell(new Cell().setBorder(Border.NO_BORDER).setBorderBottom(new SolidBorder(0.5f)));
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderRight(new SolidBorder(0.5f));
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		p = new Paragraph("$" + definedFees.getDues_social());
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.RIGHT);
+		cell.add(p);
+		mainTable.addCell(cell);
+		
+		/////////////////// VISIBLE TABLE CELL CENTER BEGIN /////////////////
+		cell = new Cell();   
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		//cell.setBorderLeft(new SolidBorder(borderSize));
+		cell.setWidth(10);
+		cell.add(uncheckedBox);
+		mainTable.addCell(cell);
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		p = new Paragraph("Sail Loft (sail storage)");
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.LEFT);
+		cell.add(p);
+		mainTable.addCell(cell);
+
+		mainTable.addCell(new Cell().setBorder(Border.NO_BORDER).setBorderBottom(new SolidBorder(0.5f)));
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderRight(new SolidBorder(0.5f));
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		p = new Paragraph("$" + definedFees.getSail_loft());
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.RIGHT);
+		cell.add(p);
+		mainTable.addCell(cell);
+		
+		/////////////////// VISIBLE TABLE CELL RIGHT BEGIN /////////////////
+		cell = new Cell();   
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		//cell.setBorderLeft(new SolidBorder(borderSize));
+		cell.setWidth(10);
+		cell.add(uncheckedBox);
+		mainTable.addCell(cell);
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		p = new Paragraph("Kayak Shed Key (SL16)");
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.LEFT);
+		cell.add(p);
+		mainTable.addCell(cell);
+
+		
+		/////////  Multiply Cell //////
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		p = new Paragraph("____ x");
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.RIGHT);
+		cell.add(p);
+		mainTable.addCell(cell);
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderRight(new SolidBorder(borderSize));
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		p = new Paragraph("$" + definedFees.getKayak_shed_key());
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.RIGHT);
+		cell.add(p);
+		mainTable.addCell(cell);
+	}
+
+	public void feesTableRow5(Table mainTable) {
+		Cell cell;
+		Paragraph p;
+		/////////////////// VISIBLE TABLE CELL LEFT BEGIN Row 5 /////////////////
+
+		cell = new Cell(1, 4);
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderLeft(new SolidBorder(borderSize));
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		cell.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f));
+		p = new Paragraph("Lake Associate");
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.CENTER);
+		cell.add(p);
+		mainTable.addCell(cell);
+
+		/////////////////// VISIBLE TABLE CELL CENTER BEGIN  /////////////////
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		cell.setBorderLeft(new SolidBorder(0.5f));
+		cell.setWidth(10);
+		cell.add(uncheckedBox);
+		mainTable.addCell(cell);
+
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		p = new Paragraph("Outside Kayak Racks");
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.LEFT);
+		cell.add(p);
+		mainTable.addCell(cell);
+
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		p = new Paragraph("____ x");
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.RIGHT);
+		cell.add(p);
+		mainTable.addCell(cell);
+
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderRight(new SolidBorder(0.5f));
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		p = new Paragraph("$" + definedFees.getKayak_rack());
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.RIGHT);
+		cell.add(p);
+		mainTable.addCell(cell);
+
+		/////////////////// VISIBLE TABLE CELL RIGHT BEGIN /////////////////
+
+		cell = new Cell(1, 4);
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		cell.setBorderRight(new SolidBorder(borderSize));
+		//cell.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f));
+		cell.setBackgroundColor(new DeviceCmyk(.5f, .24f, 0, 0.02f));
+		p = new Paragraph("Total Dues and Fees");
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.CENTER);
+		cell.add(p);
+		mainTable.addCell(cell);
+	}
+	
+	public void feesTableRow6(Table mainTable) {
+		Cell cell;
+		Paragraph p;
+		/////////////////// VISIBLE TABLE CELL LEFT BEGIN Row 6 /////////////////
+		cell = new Cell();   
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		cell.setBorderLeft(new SolidBorder(borderSize));
+		cell.setWidth(10);
+		cell.add(uncheckedBox);
+		mainTable.addCell(cell);
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		p = new Paragraph("Deferred Initiation");
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.LEFT);
+		cell.add(p);
+		mainTable.addCell(cell);
+
+		mainTable.addCell(new Cell().setBorder(Border.NO_BORDER).setBorderBottom(new SolidBorder(0.5f)));
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderRight(new SolidBorder(0.5f));
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		p = new Paragraph("$______");
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.RIGHT);
+		cell.add(p);
+		mainTable.addCell(cell);
+		
+		/////////////////// VISIBLE TABLE CELL CENTER BEGIN /////////////////
+		cell = new Cell();   
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		//cell.setBorderLeft(new SolidBorder(borderSize));
+		cell.setWidth(10);
+		cell.add(uncheckedBox);
+		mainTable.addCell(cell);
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		p = new Paragraph("Inside Kayak Storage");
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.LEFT);
+		cell.add(p);
+		mainTable.addCell(cell);
+
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		p = new Paragraph("____ x");
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.RIGHT);
+		cell.add(p);
+		mainTable.addCell(cell);
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderRight(new SolidBorder(0.5f));
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		p = new Paragraph("$" + definedFees.getKayak_shed());
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.RIGHT);
+		cell.add(p);
+		mainTable.addCell(cell);
+		
+		/////////////////// VISIBLE TABLE CELL RIGHT BEGIN /////////////////
+
+		
+		cell = new Cell(1,4);
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		cell.setBorderRight(new SolidBorder(borderSize));
+		Table innerTable = new Table(2);
+		innerTable.addCell(new Cell()
+				.setWidth(110)
+				.setPadding(0)
+				.setBorder(Border.NO_BORDER)
+				.add(new Paragraph("Calculated: $900")
+						.setFontSize(10)
+						.setFixedLeading(10)
+						.setTextAlignment(TextAlignment.LEFT)));
+		innerTable.addCell(new Cell()
+				.setPadding(0)
+				.setBorder(Border.NO_BORDER)
+				.add(new Paragraph("Actual:")
+						.setFontSize(10)
+						.setFixedLeading(10)
+						.setTextAlignment(TextAlignment.LEFT)));
+		cell.add(innerTable);
+		mainTable.addCell(cell);
+	}
+	
+	public void feesTableRow7(Table mainTable) {
+		Cell cell;
+		Paragraph p;
+		/////////////////// VISIBLE TABLE CELL LEFT BEGIN Row 7 /////////////////
+		cell = new Cell();   
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		cell.setBorderLeft(new SolidBorder(borderSize));
+		cell.setWidth(10);
+		cell.add(uncheckedBox);
+		mainTable.addCell(cell);
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		p = new Paragraph("Youth Sailing Donation");
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.LEFT);
+		cell.add(p);
+		mainTable.addCell(cell);
+
+		mainTable.addCell(new Cell().setBorder(Border.NO_BORDER).setBorderBottom(new SolidBorder(0.5f)));
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderRight(new SolidBorder(0.5f));
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		p = new Paragraph("$______");
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.RIGHT);
+		cell.add(p);
+		mainTable.addCell(cell);
+		
+		/////////////////// VISIBLE TABLE CELL CENTER BEGIN /////////////////
+		cell = new Cell();   
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		//cell.setBorderLeft(new SolidBorder(borderSize));
+		cell.setWidth(10);
+		cell.add(uncheckedBox);
+		mainTable.addCell(cell);
+		
+		cell = new Cell(1,2);
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		p = new Paragraph("Sailing School Loft Access");
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.LEFT);
+		cell.add(p);
+		mainTable.addCell(cell);
+
+
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderRight(new SolidBorder(0.5f));
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		p = new Paragraph("$" + definedFees.getSail_school_laser_loft());
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.RIGHT);
+		cell.add(p);
+		mainTable.addCell(cell);
+		
+		/////////////////// VISIBLE TABLE CELL RIGHT BEGIN /////////////////
+
+		
+		cell = new Cell(1,4);
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		cell.setBorderRight(new SolidBorder(borderSize));
+		//cell.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f));
+		cell.setBackgroundColor(new DeviceCmyk(.5f, .24f, 0, 0.02f));
+		p = new Paragraph("Work Credits Earned (subtract)");
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.CENTER);
+		cell.add(p);
+		mainTable.addCell(cell);
+	}
+	
+	public void feesTableRow8(Table mainTable) {
+		Cell cell;
+		Paragraph p;
+		/////////////////// VISIBLE TABLE CELL LEFT BEGIN Row 8 /////////////////
+		cell = new Cell(1,8);
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		cell.setBorderRight(new SolidBorder(0.5f));
+		cell.setBorderLeft(new SolidBorder(borderSize));
+		p = new Paragraph("Check if you wish to be on a wait list: ____ Slip ____ Kayak ____Inside Kayak Storage");
+		p.setFontSize(9);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.LEFT);
+		cell.add(p);
+		mainTable.addCell(cell);
+
+		
+		/////////////////// VISIBLE TABLE CELL RIGHT BEGIN /////////////////
+
+		
+		cell = new Cell(1,4);
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		cell.setBorderRight(new SolidBorder(borderSize));
+		Table innerTable = new Table(2);
+		innerTable.addCell(new Cell()
+				.setWidth(110)
+				.setPadding(0)
+				.setBorder(Border.NO_BORDER)
+				.add(new Paragraph("Calculated: -$150")
+						.setFontSize(10)
+						.setFixedLeading(10)
+						.setTextAlignment(TextAlignment.LEFT)));
+		innerTable.addCell(new Cell()
+				.setPadding(0)
+				.setBorder(Border.NO_BORDER)
+				.add(new Paragraph("Actual:")
+						.setFontSize(10)
+						.setFixedLeading(10)
+						.setTextAlignment(TextAlignment.LEFT)));
+		cell.add(innerTable);
+		mainTable.addCell(cell);
+	}
+	
+	public void feesTableRow9(Table mainTable) {
+		Cell cell;
+		Paragraph p;
+		/////////////////// VISIBLE TABLE CELL LEFT BEGIN Row 8 /////////////////
+		cell = new Cell(1,8);
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		cell.setBorderRight(new SolidBorder(0.5f));
+		cell.setBorderLeft(new SolidBorder(borderSize));
+		p = new Paragraph("Work Credits are $10/credit.  Max: $150 (Approved by committee heads) ");
+				// TODO add credits to defined fee
+		p.setBold();
+		p.setFontSize(9);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.CENTER);
+		cell.add(p);
+		mainTable.addCell(cell);
+
+		
+		/////////////////// VISIBLE TABLE CELL RIGHT BEGIN /////////////////
+
+
+		mainTable.addCell(new Cell(1,4)
+				.setBorder(Border.NO_BORDER)
+				.setBorderRight(new SolidBorder(borderSize))
+				.setBorderBottom(new SolidBorder(0.5f))
+				.setBackgroundColor(new DeviceCmyk(.5f, .24f, 0, 0.02f))
+				.add(new Paragraph("Total Amount of Remittance")
+						.setFontSize(10)
+						.setTextAlignment(TextAlignment.CENTER))
+				);
+
+	}
+	
+	public void feesTableRow10(Table mainTable) {
+		Cell cell;
+		Paragraph p;
+		/////////////////// VISIBLE TABLE CELL LEFT BEGIN Row 10 /////////////////
+		cell = new Cell(1,8);
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		cell.setBorderRight(new SolidBorder(0.5f));
+		cell.setBorderLeft(new SolidBorder(borderSize));
+		p = new Paragraph("Please make checks payable to: \"Eagle Creek Sailing Club\" or \"ECSC\"");
+				// TODO add credits to defined fee
+		p.setBold();
+		p.setFontSize(10);
+		//p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.CENTER);
+		cell.add(p);
+		mainTable.addCell(cell);
+
+		
+		/////////////////// VISIBLE TABLE CELL RIGHT BEGIN /////////////////
+
+
+		cell = new Cell(1,4);
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		cell.setBorderRight(new SolidBorder(borderSize));
+		Table innerTable = new Table(2);
+		innerTable.addCell(new Cell()
+				.setWidth(110)
+				.setPadding(0)
+				.setBorder(Border.NO_BORDER)
+				.add(new Paragraph("Calculated: $950")
+						.setFontSize(10)
+						//.setFixedLeading(10)
+						.setTextAlignment(TextAlignment.LEFT)));
+		innerTable.addCell(new Cell()
+				.setPadding(0)
+				.setBorder(Border.NO_BORDER)
+				.add(new Paragraph("Actual:")
+						.setFontSize(10)
+						//.setFixedLeading(10)
+						.setTextAlignment(TextAlignment.LEFT)));
+		cell.add(innerTable);
+		mainTable.addCell(cell);
+
+	}
+	
+	public void feesTableRow11(Table mainTable) {
+		Cell cell;
+		Paragraph p;
+		/////////////////// VISIBLE TABLE CELL LEFT BEGIN Row 10 /////////////////
+		cell = new Cell(1,8);
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		cell.setBorderRight(new SolidBorder(0.5f));
+		cell.setBorderLeft(new SolidBorder(borderSize));
+		cell.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f));
+		p = new Paragraph("Insert corrections below if not enough room above");
+				// TODO add credits to defined fee
+		p.setBold();
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.CENTER);
+		cell.add(p);
+		mainTable.addCell(cell);
+
+		
+		/////////////////// VISIBLE TABLE CELL RIGHT BEGIN /////////////////
+
+
+		cell = new Cell(1,4);
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		cell.setBorderRight(new SolidBorder(borderSize));
+		p = new Paragraph("Insufficient Check Funds fee: $50");
+		// TODO add credits to defined fee
+		p.setBold();
+		p.setItalic();
+		p.setFontSize(10);
+		p.setFixedLeading(10);
+		p.setTextAlignment(TextAlignment.CENTER);
+		cell.add(p);
+		mainTable.addCell(cell);
+
+	}
+	
+	public Table blankTableRow(int number) {
+		Table mainTable = new Table(1);
+		mainTable
+		.setWidth(590)
+		.addCell(new Cell()
+				.setBorder(Border.NO_BORDER)
+				.setBorderLeft(new SolidBorder(borderSize))
+				.setBorderRight(new SolidBorder(borderSize))
+				.setBorderBottom(new SolidBorder(0.5f))
+				.add(new Paragraph(number + ")")
+						.setFontSize(10))
+				);
+		return mainTable;
+	}
+	
+	public Table signatureTable() {
+		Table mainTable = new Table(1);
+		mainTable
+		.setWidth(590)
+		.addCell(new Cell()
+				.setBorderLeft(new SolidBorder(borderSize))
+				.setBorderRight(new SolidBorder(borderSize))
+				.setBorderTop(new SolidBorder(borderSize))
+				.add(new Paragraph("I understand and agree to the terms set fourth in this "
+						+ "contract(front and back sides) and I agree to "
+						+ "abide by the ECSC Bylaws & General Rules.")
+						.setFontSize(8)
+						.setBold()
+						.setTextAlignment(TextAlignment.CENTER)
+						.setFixedLeading(10)))
+		.addCell(new Cell()
+				.setBorderLeft(new SolidBorder(borderSize))
+				.setBorderRight(new SolidBorder(borderSize))
+				.add(new Paragraph("SIGNATURE: " + printLine(50) + " Date: " + printLine(20))
+						.setFontSize(10)
+						.setTextAlignment(TextAlignment.CENTER)
+						.setFixedLeading(20))
+				
+				);
+		
+		return mainTable;
 	}
 	
 	public Table boatsPdfTable() {
@@ -123,7 +1082,7 @@ public class PDF_Renewal_Form {
 		cell.setBorder(Border.NO_BORDER);
 		cell.setBorderLeft(new SolidBorder(borderSize));
 		cell.setBorderRight(new SolidBorder(borderSize));
-		cell.add(new Paragraph("If boat is co-owned, put a check next to the boat and list co-owner(s) __________________________________").setFontSize(10));
+		cell.add(new Paragraph("If boat is co-owned, put a check next to the boat and list co-owner(s) " + printLine(50)).setFontSize(10));
 		mainTable.addCell(cell);
 		return mainTable;
 	}
@@ -145,6 +1104,8 @@ public class PDF_Renewal_Form {
 		if (isHeader) {
 			cell.setBorderTop(new SolidBorder(borderSize));
 			cell.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f));
+			p.setTextAlignment(TextAlignment.CENTER);
+			p.setFixedLeading(10);  // sets spacing between lines of text
 		}
 		cell.setBorderLeft(new SolidBorder(borderSize));
 		cell.add(p);
@@ -156,6 +1117,8 @@ public class PDF_Renewal_Form {
 		if (isHeader) {
 			cell.setBorderTop(new SolidBorder(borderSize));
 			cell.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f));
+			p.setTextAlignment(TextAlignment.CENTER);
+			p.setFixedLeading(10);  // sets spacing between lines of text
 		}
 		cell.add(p);
 		mainTable.addCell(cell);
@@ -166,6 +1129,8 @@ public class PDF_Renewal_Form {
 		if (isHeader) {
 			cell.setBorderTop(new SolidBorder(borderSize));
 			cell.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f));
+			p.setTextAlignment(TextAlignment.CENTER);
+			p.setFixedLeading(10);  // sets spacing between lines of text
 		}
 		cell.add(p);
 		mainTable.addCell(cell);
@@ -176,6 +1141,8 @@ public class PDF_Renewal_Form {
 		if (isHeader) {
 			cell.setBorderTop(new SolidBorder(borderSize));
 			cell.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f));
+			p.setTextAlignment(TextAlignment.CENTER);
+			p.setFixedLeading(10);  // sets spacing between lines of text
 		}
 		cell.add(p);
 		mainTable.addCell(cell);
@@ -186,6 +1153,8 @@ public class PDF_Renewal_Form {
 		if (isHeader) {
 			cell.setBorderTop(new SolidBorder(borderSize));
 			cell.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f));
+			p.setTextAlignment(TextAlignment.CENTER);
+			p.setFixedLeading(10);  // sets spacing between lines of text
 		}
 		cell.add(p);
 		mainTable.addCell(cell);
@@ -196,6 +1165,8 @@ public class PDF_Renewal_Form {
 		if (isHeader) {
 			cell.setBorderTop(new SolidBorder(borderSize));
 			cell.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f));
+			p.setTextAlignment(TextAlignment.CENTER);
+			p.setFixedLeading(10);  // sets spacing between lines of text
 		}
 		cell.add(p);
 		mainTable.addCell(cell);
@@ -206,6 +1177,8 @@ public class PDF_Renewal_Form {
 		if (isHeader) {
 			cell.setBorderTop(new SolidBorder(borderSize));
 			cell.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f));
+			p.setTextAlignment(TextAlignment.CENTER);
+			p.setFixedLeading(10);  // sets spacing between lines of text
 		}
 		cell.add(p);
 		mainTable.addCell(cell);
@@ -219,6 +1192,8 @@ public class PDF_Renewal_Form {
 		if (isHeader) {
 			cell.setBorderTop(new SolidBorder(borderSize));
 			cell.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f));
+			p.setTextAlignment(TextAlignment.CENTER);
+			p.setFixedLeading(10);  // sets spacing between lines of text
 		}
 		cell.add(p);
 		mainTable.addCell(cell);
@@ -229,13 +1204,11 @@ public class PDF_Renewal_Form {
 		if (isHeader) {
 			cell.setBorderTop(new SolidBorder(borderSize));
 			cell.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f));
+			p.setTextAlignment(TextAlignment.CENTER);
+			p.setFixedLeading(10);  // sets spacing between lines of text
 		}
 		cell.setBorderRight(new SolidBorder(borderSize));
 		cell.add(p);
-		// cell.setBorder(Border.NO_BORDER);
-		// cell.setBorderLeft(new SolidBorder(borderSize));
-		// cell.setBorderRight(new SolidBorder(borderSize));
-		// cell.setBorderTop(new SolidBorder(borderSize));
 		mainTable.addCell(cell);
 	}
 	
@@ -244,7 +1217,7 @@ public class PDF_Renewal_Form {
 		Cell cell;
 		Paragraph p;
 		
-		p = new Paragraph("Children under age 12 (In order of oldest first)");
+		p = new Paragraph("Dependants under age of 21 (In order of oldest first)");
 		p.setFontSize(10);
 		cell = new Cell(1,2);
 		cell.setWidth(580);
@@ -290,6 +1263,7 @@ public class PDF_Renewal_Form {
 		cell.setBorder(Border.NO_BORDER);
 		cell.setBorderLeft(new SolidBorder(borderSize));
 		cell.setBorderTop(new SolidBorder(borderSize));
+		cell.setBorderBottom(new SolidBorder(0.5f));
 		mainTable.addCell(cell);
 		
 		p = new Paragraph("Spouse/Partner Name: Martha. Hunklemont");
@@ -300,6 +1274,7 @@ public class PDF_Renewal_Form {
 		cell.setBorder(Border.NO_BORDER);
 		cell.setBorderRight(new SolidBorder(borderSize));
 		cell.setBorderTop(new SolidBorder(borderSize));
+		cell.setBorderBottom(new SolidBorder(0.5f));
 		mainTable.addCell(cell);
 		
 		p = new Paragraph("Email:");
@@ -307,6 +1282,7 @@ public class PDF_Renewal_Form {
 		cell = new Cell(1,2);
 		cell.setBorder(Border.NO_BORDER);
 		cell.setBorderLeft(new SolidBorder(borderSize));
+		cell.setBorderBottom(new SolidBorder(0.5f));
 		cell.add(p);
 		mainTable.addCell(cell);
 		
@@ -315,6 +1291,7 @@ public class PDF_Renewal_Form {
 		cell = new Cell(1,2);
 		cell.setBorder(Border.NO_BORDER);
 		cell.setBorderRight(new SolidBorder(borderSize));
+		cell.setBorderBottom(new SolidBorder(0.5f));
 		cell.add(p);
 		mainTable.addCell(cell);
 		
@@ -323,13 +1300,15 @@ public class PDF_Renewal_Form {
 		cell = new Cell();
 		cell.setBorder(Border.NO_BORDER);
 		cell.setBorderLeft(new SolidBorder(borderSize));
+		cell.setBorderBottom(new SolidBorder(0.5f));
 		cell.add(p);
 		mainTable.addCell(cell);
 		
-		p = new Paragraph("Birth Year: _____________");
+		p = new Paragraph("Birth Year: ");
 		p.setFontSize(10);
 		cell = new Cell();
 		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderBottom(new SolidBorder(0.5f));
 		cell.add(p);
 		mainTable.addCell(cell);
 		
@@ -337,15 +1316,16 @@ public class PDF_Renewal_Form {
 		p.setFontSize(10);
 		cell = new Cell();
 		cell.setBorder(Border.NO_BORDER);
-		
+		cell.setBorderBottom(new SolidBorder(0.5f));
 		cell.add(p);
 		mainTable.addCell(cell);
 		
-		p = new Paragraph("Birth Year: _____________");
+		p = new Paragraph("Birth Year: ");
 		p.setFontSize(10);
 		cell = new Cell();
 		cell.setBorder(Border.NO_BORDER);
 		cell.setBorderRight(new SolidBorder(borderSize));
+		cell.setBorderBottom(new SolidBorder(0.5f));
 		cell.add(p);
 		mainTable.addCell(cell);
 		
@@ -354,6 +1334,7 @@ public class PDF_Renewal_Form {
 		cell = new Cell(1,2);
 		cell.setBorder(Border.NO_BORDER);
 		cell.setBorderLeft(new SolidBorder(borderSize));
+		cell.setBorderBottom(new SolidBorder(0.5f));
 		cell.setWidth(290);
 		cell.add(p);
 		mainTable.addCell(cell);
@@ -363,6 +1344,7 @@ public class PDF_Renewal_Form {
 		cell = new Cell(1,2);
 		cell.setBorder(Border.NO_BORDER);
 		cell.setBorderRight(new SolidBorder(borderSize));
+		cell.setBorderBottom(new SolidBorder(0.5f));
 		cell.setWidth(290);
 		cell.add(p);
 		mainTable.addCell(cell);
@@ -372,6 +1354,7 @@ public class PDF_Renewal_Form {
 		cell = new Cell(1,2);
 		cell.setBorder(Border.NO_BORDER);
 		cell.setBorderLeft(new SolidBorder(borderSize));
+		cell.setBorderBottom(new SolidBorder(0.5f));
 		cell.setWidth(290);
 		cell.add(p);
 		mainTable.addCell(cell);
@@ -381,6 +1364,7 @@ public class PDF_Renewal_Form {
 		cell = new Cell(1,2);
 		cell.setBorder(Border.NO_BORDER);
 		cell.setBorderRight(new SolidBorder(borderSize));
+		cell.setBorderBottom(new SolidBorder(0.5f));
 		cell.setWidth(290);
 		cell.add(p);
 		mainTable.addCell(cell);
@@ -390,6 +1374,7 @@ public class PDF_Renewal_Form {
 		cell = new Cell(1,2);
 		cell.setBorder(Border.NO_BORDER);
 		cell.setBorderLeft(new SolidBorder(borderSize));
+		cell.setBorderBottom(new SolidBorder(0.5f));
 		cell.setWidth(290);
 		cell.add(p);
 		mainTable.addCell(cell);
@@ -399,12 +1384,15 @@ public class PDF_Renewal_Form {
 		cell = new Cell(1,2);
 		cell.setBorder(Border.NO_BORDER);
 		cell.setBorderRight(new SolidBorder(borderSize));
+		cell.setBorderBottom(new SolidBorder(0.5f));
 		cell.setWidth(290);
 		cell.add(p);
 		mainTable.addCell(cell);
 		
 		p = new Paragraph("Circle any email addresses or phone numbers that you do not want listed in the membership directory");
-		p.setFontSize(10);
+		p.setFontSize(8).setBold();
+		p.setTextAlignment(TextAlignment.CENTER);
+		p.setFixedLeading(10);
 		cell = new Cell(1,4);
 		cell.setBorder(Border.NO_BORDER);
 		cell.setBorderLeft(new SolidBorder(borderSize));
@@ -417,16 +1405,25 @@ public class PDF_Renewal_Form {
 	
 
 	
-	public Table membershipNumberPdfTable(PdfFont font)  { // 580 total cell width
+	public Table membershipIdPdfTable()  { // 580 total cell width
 		
-		Table mainTable = new Table(5);
-		//mainTable.setBorderTop(Border.SOLID);
+		Table mainTable = new Table(2);
 		Cell cell;
 		Paragraph p;
+		
+		p = new Paragraph("If information is missing please add it. If incorrect plase line out and write the correct information next to it, or on the provided space at the bottom of the form");
+		p.setFontSize(8);
+        p.setTextAlignment(TextAlignment.CENTER);
+        p.setFixedLeading(6);
+		cell = new Cell(1,5);
+		cell.setBorder(Border.NO_BORDER);
+		cell.add(p);
+		mainTable.addCell(cell);
 		
 		p = new Paragraph(Integer.parseInt(year) -1 + " Membership Number: 123");
 		p.setFontSize(10);
 		cell = new Cell(1,1);
+		cell.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f));
 		cell.setBorder(Border.NO_BORDER);
 		cell.setBorderTop(new SolidBorder(borderSize));
 		cell.setBorderLeft(new SolidBorder(borderSize));
@@ -436,20 +1433,29 @@ public class PDF_Renewal_Form {
 		
 		p = new Paragraph(Integer.parseInt(year) + " Membership Number: 98");
 		p.setFontSize(10);
+		p.setTextAlignment(TextAlignment.RIGHT);
 		cell = new Cell(1,4);
+		cell.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f));
 		cell.setBorder(Border.NO_BORDER);
 		cell.setBorderTop(new SolidBorder(borderSize));
 		cell.setBorderRight(new SolidBorder(borderSize));
 		cell.add(p);
 		cell.setWidth(400);
 		mainTable.addCell(cell);
-		
-		p = new Paragraph("Address: 4421 N. Frankilin Rd.");
+		return mainTable;
+	}
+	
+	public Table membershipAddressPdfTable()  { // 580 total cell width
+		Table mainTable = new Table(5);
+		mainTable.setWidth(590);
+		Cell cell;
+		Paragraph p;
+		p = new Paragraph("Address: 4421 N. Frankin Hopper Douche Rd.");
 		p.setFontSize(10);
 		cell = new Cell();
 		cell.setBorder(Border.NO_BORDER);
 		cell.setBorderLeft(new SolidBorder(borderSize));
-		cell.setWidth(180);
+		//cell.setWidth(180);
 		cell.add(p);
 
 		mainTable.addCell(cell);
@@ -466,7 +1472,7 @@ public class PDF_Renewal_Form {
 		p.setFontSize(10);
 		cell = new Cell();
 		cell.setBorder(Border.NO_BORDER);
-		cell.setWidth(20);
+
 		cell.add(p);
 
 		mainTable.addCell(cell);
@@ -476,21 +1482,19 @@ public class PDF_Renewal_Form {
 		cell = new Cell();
 		cell.setBorder(Border.NO_BORDER);
 		cell.add(p);
-		cell.setWidth(80);
+
 		mainTable.addCell(cell);
 		
-		p = new Paragraph("Emergency Phone: 123-456-7894");
+		p = new Paragraph("Emergency #: 123-456-7894");
 		p.setFontSize(10);
 		cell = new Cell();
 		cell.setBorder(Border.NO_BORDER);
 		cell.setBorderRight(new SolidBorder(borderSize));
 		cell.add(p);
 		mainTable.addCell(cell);
-		
-
-		
 		return mainTable;
 	}
+	
 	
 	public Table titlePdfTable(PdfFont font)  {
 		
@@ -549,6 +1553,14 @@ public class PDF_Renewal_Form {
 		mainTable.addCell(cell);
 
 		return mainTable;
+	}
+	
+	public String printLine(int length) {
+		String line = "";
+		for(int i =0; i < length; i++) {
+			line = "_" + line;
+		}
+		return line;
 	}
 
 }
