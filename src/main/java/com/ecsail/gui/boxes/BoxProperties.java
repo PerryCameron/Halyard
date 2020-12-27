@@ -79,7 +79,12 @@ public class BoxProperties extends HBox {
         hbox5.setSpacing(5);  // membership HBox
         hbox5.setAlignment(Pos.CENTER_LEFT);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate date = LocalDate.parse(membership.getJoinDate(), formatter);
+        LocalDate date;
+        if(membership.getJoinDate() != null) {
+        date = LocalDate.parse(membership.getJoinDate(), formatter);
+        } else {
+        date = LocalDate.parse("1900-01-01", formatter);
+        }
         joinDatePicker.setValue(date);
         combo_box.setValue(MembershipType.getByCode(membership.getMemType()));
 		hboxGrey.setPadding(new Insets(5, 5, 5, 10));
