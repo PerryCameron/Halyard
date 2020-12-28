@@ -77,6 +77,7 @@ public class PDF_Renewal_Form {
 		if(isOneMembership) {  // we are only printing one membership
 		ms_id = SqlSelect.getMsidFromMembershipID(Integer.parseInt(current_membership_id));
 		membership = SqlSelect.getMembership(ms_id);
+		primary = SqlSelect.getPerson(ms_id, 1);
 		document.add(titlePdfTable(font));
 		document.add(membershipIdPdfTable());
 		document.add(membershipAddressPdfTable());

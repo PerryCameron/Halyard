@@ -923,6 +923,27 @@ public class SqlSelect {
 		return person;
 	}
 	
+	public static Object_Person getPerson(int ms_id, int member_type) {  // nothing calling this
+		Object_Person person = null;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs = stmt
+					.executeQuery(Main.console.setRegexColor("select * from person where MS_ID=" + ms_id + " and MEMBER_TYPE=" + member_type));
+
+			while (rs.next()) {
+				person = (new Object_Person(rs.getInt("P_ID"), rs.getInt("MS_ID"), rs.getInt("MEMBER_TYPE"),
+						rs.getString("F_NAME"), rs.getString("L_NAME"), rs.getString("BIRTHDAY"),
+						rs.getString("OCCUPATION"), rs.getString("BUISNESS"), rs.getBoolean("IS_ACTIVE")));
+			}
+			stmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// System.out.println(thesepeople.toString());
+		return person;
+	}
+	
 	
 	public static int getCount(String table, String column) {  // example-> "email","email_id"
 		int result = 0;
