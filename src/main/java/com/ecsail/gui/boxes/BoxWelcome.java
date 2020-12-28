@@ -25,6 +25,7 @@ public class BoxWelcome extends HBox {
 		Button bodButton = new Button("Board of Directors");
 		Button newButton = new Button("New Membership");
 		Button batchesButton = new Button("Deposits");
+		Button rosterButton = new Button("Rosters");
 		
 		int activeMembership = SqlSelect.getActiveMembershipCount();
 		int activePeople = SqlSelect.getActivePeopleCount();
@@ -53,6 +54,7 @@ public class BoxWelcome extends HBox {
 		peopleListButton.setId("bigbuttontext");
 		slipListButton.setId("bigbuttontext");
 		batchesButton.setId("bigbuttontext");
+		rosterButton.setId("bigbuttontext");
 		activeText.setId("");
 		vboxRight.setSpacing(10);
 		vboxRight.setPadding(new Insets(30,0,0,200));
@@ -62,6 +64,7 @@ public class BoxWelcome extends HBox {
 		bodButton.setPrefSize(width, height);
 		newButton.setPrefSize(width, height);
 		batchesButton.setPrefSize(width, height);
+		rosterButton.setPrefSize(width, height);
 		
 		///////////////// LISTENERS  /////////////////////////
 		
@@ -108,7 +111,7 @@ public class BoxWelcome extends HBox {
 		});
 		////////////////  SET CONTENT ////////////////////////
 		vboxLeft.getChildren().addAll(activeText,familyMembershipText,regularMembershipText,socialMembershipText,lakeAssociateMembershipText,lifeMembershipText,activepeopleText);
-		vboxRight.getChildren().addAll(activeMemListButton,peopleListButton,slipListButton,bodButton,newButton,batchesButton);
+		vboxRight.getChildren().addAll(activeMemListButton,peopleListButton,slipListButton,bodButton,newButton,batchesButton,rosterButton);
 		getChildren().addAll(vboxLeft,vboxRight);
 		
 	}
