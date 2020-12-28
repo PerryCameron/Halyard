@@ -230,6 +230,18 @@ public class SqlDelete {
 		}	
 	}
 	
+	public static void deleteMembershipId(int ms_id) {
+		Statement stmt;
+		try {
+			stmt = ConnectDatabase.connection.createStatement();
+			stmt.execute(Main.console.setRegexColor("delete from membership_id where ms_id='" + ms_id + "';"));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+	}
+	
+	
 	public static void deletePayment(Object_Payment p) {
 		Statement stmt;
 		try {

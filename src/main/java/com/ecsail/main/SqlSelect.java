@@ -722,7 +722,7 @@ public class SqlSelect {
 		return memberships;
 	}
 	
-	// Inserts selected membership into a single membership object  // don't think this is used
+	
 	public static Object_Membership getMembership(int ms_id) {
 		Object_Membership thisMembership = null;
 		try {

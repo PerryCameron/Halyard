@@ -63,6 +63,7 @@ public class Dialogue_RenewalForm extends Stage {
 			});
 		
 		/////////////////// ATTRIBUTES ///////////////////
+		memberidTextField.setText("92");
 		r1.setToggleGroup(tg1); 
         r2.setToggleGroup(tg1); 
         r2.setSelected(true);
@@ -91,7 +92,7 @@ public class Dialogue_RenewalForm extends Stage {
 			@Override
 			public void handle(ActionEvent e) {
 				try {
-					new PDF_Renewal_Form(selectedYear, memberidTextField.getText());
+					new PDF_Renewal_Form(selectedYear, memberidTextField.getText(), r2.isSelected());
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

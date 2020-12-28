@@ -9,6 +9,8 @@ import com.ecsail.main.Paths;
 import com.ecsail.main.SqlSelect;
 import com.ecsail.structures.Object_Boat;
 import com.ecsail.structures.Object_DefinedFee;
+import com.ecsail.structures.Object_Membership;
+import com.ecsail.structures.Object_Person;
 import com.itextpdf.io.font.FontProgramFactory;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.colors.DeviceCmyk;
@@ -31,16 +33,20 @@ import com.itextpdf.layout.property.UnitValue;
 
 public class PDF_Renewal_Form {
 	private static String year;
-	private static String membership_id; 
+	private static String current_membership_id;
+	private static int ms_id;
+	private static Object_Membership membership;
+	private static Object_Person primary;
+	private static Object_Person secondary;
 	Object_DefinedFee definedFees;
 	private int borderSize = 1;
 	private ArrayList<Object_Boat> boats = new ArrayList<Object_Boat>();
 	Image checkedBox = new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/checked-checkbox9x9.png"))));
 	Image uncheckedBox = new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/unchecked-checkbox9x9.png"))));
 	
-	public PDF_Renewal_Form(String y, String memId) throws IOException {
+	public PDF_Renewal_Form(String y, String memId, boolean isOneMembership) throws IOException {
 		PDF_Renewal_Form.year = y;
-		PDF_Renewal_Form.membership_id = memId;
+		PDF_Renewal_Form.current_membership_id = memId;
 		this.definedFees = SqlSelect.selectDefinedFees(Integer.parseInt(year));
 		boats.add(new Object_Boat(0, 0, "Manufacturer", "Year", "Registration", "Model", "Boat Name", "Sail #", true, "Length", "Header", "Keel Type", "PHRF"));
 		boats.add(new Object_Boat(0, 0, "Flying Scot Inc.", "2016", "IN34234", "Flying Scot", "Crow", "3845", true, "19", "800", "Center Board", "PHRF"));
@@ -68,6 +74,9 @@ public class PDF_Renewal_Form {
 		float width = rectangle.getWidth() - document.getLeftMargin() - document.getRightMargin();
 		System.out.println("Page size is " + rectangle);
 		// add tables here
+		if(isOneMembership) {  // we are only printing one membership
+		ms_id = SqlSelect.getMsidFromMembershipID(Integer.parseInt(current_membership_id));
+		membership = SqlSelect.getMembership(ms_id);
 		document.add(titlePdfTable(font));
 		document.add(membershipIdPdfTable());
 		document.add(membershipAddressPdfTable());
@@ -79,6 +88,9 @@ public class PDF_Renewal_Form {
 		document.add(blankTableRow(i));
 		}
 		document.add(signatureTable());
+		}
+		
+		
 		// Close document
 		document.close();
 		
@@ -1420,7 +1432,7 @@ public class PDF_Renewal_Form {
 		cell.add(p);
 		mainTable.addCell(cell);
 		
-		p = new Paragraph(Integer.parseInt(year) -1 + " Membership Number: 123");
+		p = new Paragraph(Integer.parseInt(year) -1 + " Membership Number: " + current_membership_id);
 		p.setFontSize(10);
 		cell = new Cell(1,1);
 		cell.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f));
@@ -1450,7 +1462,7 @@ public class PDF_Renewal_Form {
 		mainTable.setWidth(590);
 		Cell cell;
 		Paragraph p;
-		p = new Paragraph("Address: 4421 N. Frankin Hopper Douche Rd.");
+		p = new Paragraph("Address: " + membership.getAddress());
 		p.setFontSize(10);
 		cell = new Cell();
 		cell.setBorder(Border.NO_BORDER);
@@ -1460,7 +1472,7 @@ public class PDF_Renewal_Form {
 
 		mainTable.addCell(cell);
 		
-		p = new Paragraph("City: Indianapolis");
+		p = new Paragraph("City: " + membership.getCity());
 		p.setFontSize(10);
 		cell = new Cell();
 		cell.setBorder(Border.NO_BORDER);
@@ -1468,7 +1480,7 @@ public class PDF_Renewal_Form {
 
 		mainTable.addCell(cell);
 		
-		p = new Paragraph("State: IN");
+		p = new Paragraph("State: " + membership.getState());
 		p.setFontSize(10);
 		cell = new Cell();
 		cell.setBorder(Border.NO_BORDER);
@@ -1477,7 +1489,7 @@ public class PDF_Renewal_Form {
 
 		mainTable.addCell(cell);
 		
-		p = new Paragraph("Zip: 46226");
+		p = new Paragraph("Zip: " + membership.getZip());
 		p.setFontSize(10);
 		cell = new Cell();
 		cell.setBorder(Border.NO_BORDER);

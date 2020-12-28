@@ -177,6 +177,7 @@ public class BoxProperties extends HBox {
 		SqlDelete.deleteMemos(ms_id);
 		SqlDelete.deleteWorkCredits(ms_id);
 		SqlDelete.deleteMonies(ms_id);
+		SqlDelete.deleteMembershipId(ms_id);  // removes all entries
 		ObservableList<Object_Person> people = SqlSelect.getPeople(ms_id);
 		for(Object_Person p: people) {
 			SqlDelete.deletePhones(p.getP_id());
