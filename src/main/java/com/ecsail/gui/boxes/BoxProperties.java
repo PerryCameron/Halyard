@@ -7,10 +7,12 @@ import java.util.Date;
 import java.util.Optional;
 
 import com.ecsail.enums.MembershipType;
+import com.ecsail.main.Main;
 import com.ecsail.main.SqlDelete;
 import com.ecsail.main.SqlExists;
 import com.ecsail.main.SqlSelect;
 import com.ecsail.main.SqlUpdate;
+import com.ecsail.main.TabLauncher;
 import com.ecsail.structures.Object_DefinedFee;
 import com.ecsail.structures.Object_MemLabels;
 import com.ecsail.structures.Object_MembershipList;
@@ -186,6 +188,8 @@ public class BoxProperties extends HBox {
 			SqlDelete.deletePerson(p.getP_id());
 		}
 		SqlDelete.deleteMembership(ms_id);
+		TabLauncher.removeMembershipRow(ms_id);
+		TabLauncher.closeActiveTab();
 	}
 	
 	private String getStatus() {

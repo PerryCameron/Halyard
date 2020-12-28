@@ -37,6 +37,17 @@ static TabPane tabPane;
 		return thisTab;
 	}
 	
+	public static void closeTab(String tabName) {
+		for(Tab tab: tabPane.getTabs()) {
+			if(tab.getText().equals(tabName))
+				tabPane.getTabs().remove(tab);
+		}
+	}
+	
+	public static void closeActiveTab() {
+		tabPane.getTabs().remove(tabPane.getSelectionModel().getSelectedIndex());
+	}
+	
 	public static int getTabIndex(String tabName) {
 		int result = 0;
 		int count = 0;
@@ -117,10 +128,17 @@ static TabPane tabPane;
 		}
 	}
 	
-	// creates a membership tab from the slip chart
-
+	// gets a row with ms_id
 	
-	// creates a tab from anywhere a membership may or may not be active
+	public static void removeMembershipRow(int ms_id) {
+		int count = 0;
+		int element = 0;
+		for(Object_MembershipList mem: Main.activememberships) {
+			if(mem.getMsid() == ms_id) element = count;
+			count++;
+		}
+		Main.activememberships.remove(element);
+	}
 
 	
 	// gets a specific membership with and ms_id
