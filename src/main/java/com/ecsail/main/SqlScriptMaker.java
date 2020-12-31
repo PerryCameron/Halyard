@@ -219,7 +219,8 @@ public class SqlScriptMaker {
 				+ def.getSail_school_loft_key() + ","
 				+ def.getKayak_rack() + ","
 				+ def.getKayak_shed() + ","
-				+ def.getKayak_shed_key()
+				+ def.getKayak_shed_key() + ","
+				+ def.getWork_credit()
 				+ ");\n";
 	}
 	

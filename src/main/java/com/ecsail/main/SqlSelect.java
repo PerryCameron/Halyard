@@ -151,7 +151,8 @@ public class SqlSelect {
 						rs.getInt("SAIL_SCHOOL_LOFT_KEY"),
 						rs.getInt("KAYAK_RACK"),
 						rs.getInt("KAYAK_SHED"),
-						rs.getInt("KAYAK_SHED_KEY")
+						rs.getInt("KAYAK_SHED_KEY"),
+						rs.getInt("WORK_CREDIT")
 						));
 			}
 		} catch (SQLException e) {
@@ -246,7 +247,8 @@ public class SqlSelect {
 						rs.getInt("SAIL_SCHOOL_LOFT_KEY"),
 						rs.getInt("KAYAK_RACK"),
 						rs.getInt("KAYAK_SHED"),
-						rs.getInt("KAYAK_SHED_KEY")
+						rs.getInt("KAYAK_SHED_KEY"),
+						rs.getInt("WORK_CREDIT")
 						);
 			}
 		} catch (SQLException e) {
@@ -874,7 +876,7 @@ public class SqlSelect {
 						rs.getInt("INITIATION"), rs.getInt("WET_SLIP"), rs.getInt("BEACH"), rs.getInt("WINTER_STORAGE"),
 						rs.getInt("MAIN_GATE_KEY"), rs.getInt("SAIL_LOFT"), rs.getInt("SAIL_LOFT_KEY"),
 						rs.getInt("SAIL_SCHOOL_LASER_LOFT"), rs.getInt("SAIL_SCHOOL_LOFT_KEY"), rs.getInt("KAYAK_RACK"),
-						rs.getInt("KAYAK_SHED"), rs.getInt("kAYAK_SHED_KEY"));
+						rs.getInt("KAYAK_SHED"), rs.getInt("kAYAK_SHED_KEY"), rs.getInt("WORK_CREDIT"));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -1030,7 +1032,7 @@ public class SqlSelect {
 		return result;
 	}
 	
-	public static Object_MembershipId getCount(int ms_id) {  // example-> "email","email_id"
+	public static Object_MembershipId getCount(int ms_id) {  
 		Object_MembershipId thisId = null; // new Object_MembershipId();
 		Statement stmt;
 		try {

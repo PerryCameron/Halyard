@@ -22,13 +22,14 @@ public class Object_DefinedFee {
 	private IntegerProperty kayak_rack;
 	private IntegerProperty kayak_shed;
 	private IntegerProperty kayak_shed_key;
+	private IntegerProperty work_credit;
 	
 	public Object_DefinedFee(Integer fiscal_year, Integer dues_regular, Integer dues_family,
 			Integer dues_lake_associate, Integer dues_social, Integer initiation,
 			Integer wet_slip, Integer beach, Integer winter_storage,
 			Integer main_gate_key, Integer sail_loft, Integer sail_loft_key,
 			Integer sail_school_laser_loft, Integer sail_school_loft_key, Integer kayak_rack,
-			Integer kayak_shed, Integer kayak_shed_key) {
+			Integer kayak_shed, Integer kayak_shed_key, Integer work_credit) {
 
 		this.fiscal_year = new SimpleIntegerProperty(fiscal_year);
 		this.dues_regular = new SimpleIntegerProperty(dues_regular);
@@ -47,6 +48,7 @@ public class Object_DefinedFee {
 		this.kayak_rack = new SimpleIntegerProperty(kayak_rack);
 		this.kayak_shed = new SimpleIntegerProperty(kayak_shed);
 		this.kayak_shed_key = new SimpleIntegerProperty(kayak_shed_key);
+		this.work_credit = new SimpleIntegerProperty(work_credit);
 	}
 	
 	public Object_DefinedFee() {
@@ -307,10 +309,24 @@ public class Object_DefinedFee {
 		this.kayak_shed_keyProperty().set(kayak_shed_key);
 	}
 	
+	public final IntegerProperty work_creditProperty() {
+		return this.work_credit;
+	}
+	
+
+	public final int getWork_credit() {
+		return this.work_creditProperty().get();
+	}
+	
+
+	public final void setWork_credit(final int work_credit) {
+		this.work_creditProperty().set(work_credit);
+	}
+	
 	public final void set(int fiscal_year,int dues_regular,int dues_family,
 			int dues_lake_associate,int dues_social,int initiation,int wet_slip,int beach,
 			int winter_storage,int main_gate_key,int sail_loft,int sail_loft_key,int sail_school_laser_loft,
-			int sail_school_loft_key,int kayak_rack,int kayak_shed,int kayak_shed_key) {
+			int sail_school_loft_key,int kayak_rack,int kayak_shed,int kayak_shed_key, int work_credit) {
 		
 		setFiscal_year(fiscal_year);
 		setDues_regular(dues_regular);
@@ -329,10 +345,7 @@ public class Object_DefinedFee {
 		setKayak_rack(kayak_rack);
 		setKayak_shed(kayak_shed);
 		setKayak_shed_key(kayak_shed_key);
+		setWork_credit(work_credit);
 	}
 
-
-
-
-	
 }

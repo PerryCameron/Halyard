@@ -3,6 +3,7 @@ package com.ecsail.gui.boxes;
 import java.io.IOException;
 import com.ecsail.main.Main;
 import com.ecsail.excel.Xls_email_list;
+import com.ecsail.gui.dialogues.Dialogue_NewYearGenerator;
 import com.ecsail.gui.dialogues.Dialogue_Stub;
 import com.ecsail.main.CreateMembership;
 import com.ecsail.main.SqlScriptMaker;
@@ -34,15 +35,15 @@ public class BoxToolBar extends VBox {
 		MenuItem m1_1_1 = new MenuItem("Create SQL Script");
 		MenuItem m1_2 = new MenuItem("Console");
 		MenuItem m3_1 = new MenuItem("New Membership");
+		MenuItem m3_2 = new MenuItem("New Year Generator");
 		
-		
-		Menu m3_2 = new Menu("List");		
-		MenuItem m3_2_1 = new MenuItem("Active Membership");
-		MenuItem m3_2_2 = new MenuItem("Inactive Membership");
-		MenuItem m3_2_3 = new MenuItem("People");
-		MenuItem m3_2_4 = new MenuItem("Boats");
-		MenuItem m3_2_5 = new MenuItem("Slips");
-		MenuItem m3_2_6 = new MenuItem("Board Members");
+		Menu m3_3 = new Menu("List");		
+		MenuItem m3_3_1 = new MenuItem("Active Membership");
+		MenuItem m3_3_2 = new MenuItem("Inactive Membership");
+		MenuItem m3_3_3 = new MenuItem("People");
+		MenuItem m3_3_4 = new MenuItem("Boats");
+		MenuItem m3_3_5 = new MenuItem("Slips");
+		MenuItem m3_3_6 = new MenuItem("Board Members");
 		
 		Menu m4_1 = new Menu("Create");	
 		MenuItem m4_1_1 = new MenuItem("Treasurer's Report");
@@ -54,13 +55,13 @@ public class BoxToolBar extends VBox {
 		MenuItem m4_1_7 = new MenuItem("Create membership id's");
 		MenuItem m4_1_8 = new MenuItem("Renewal Forms");
 
-        m3_2_6.setOnAction(new EventHandler<ActionEvent>() {  // open active membership list
+        m3_3_6.setOnAction(new EventHandler<ActionEvent>() {  // open active membership list
             @Override public void handle(ActionEvent e) {
             	TabLauncher.openBoardTab();
             }
         });
 		
-        m3_2_3.setOnAction(new EventHandler<ActionEvent>() {  // open active membership list
+        m3_3_3.setOnAction(new EventHandler<ActionEvent>() {  // open active membership list
             @Override public void handle(ActionEvent e) {
 					TabLauncher.openPeopleTab();
             }
@@ -120,13 +121,13 @@ public class BoxToolBar extends VBox {
         });
 		
 		
-        m3_2_1.setOnAction(new EventHandler<ActionEvent>() {  // open active membership list
+        m3_3_1.setOnAction(new EventHandler<ActionEvent>() {  // open active membership list
             @Override public void handle(ActionEvent e) {
             	TabLauncher.openMembershipListTab();
             }
         });
         
-        m3_2_5.setOnAction(new EventHandler<ActionEvent>() {  // open active membership list
+        m3_3_5.setOnAction(new EventHandler<ActionEvent>() {  // open active membership list
             @Override public void handle(ActionEvent e) {
             	TabLauncher.openSlipsTab();
             }
@@ -135,6 +136,12 @@ public class BoxToolBar extends VBox {
         m3_1.setOnAction(new EventHandler<ActionEvent>() {  // add new membership
             @Override public void handle(ActionEvent e) {
             	CreateMembership.Create();
+            }
+        });
+        
+        m3_2.setOnAction(new EventHandler<ActionEvent>() {  // add new membership
+            @Override public void handle(ActionEvent e) {
+            	new Dialogue_NewYearGenerator();
             }
         });
         
@@ -162,9 +169,9 @@ public class BoxToolBar extends VBox {
         });
         m1_1.getItems().addAll(m1_1_1);
         m4_1.getItems().addAll(m4_1_1,m4_1_2,m4_1_3,m4_1_4,m4_1_5,m4_1_6,m4_1_7,m4_1_8);
-        m3_2.getItems().addAll(m3_2_1,m3_2_2,m3_2_3,m3_2_4,m3_2_5,m3_2_6);  // add list items
+        m3_3.getItems().addAll(m3_3_1,m3_3_2,m3_3_3,m3_3_4,m3_3_5,m3_3_6);  // add list items
         menu1.getItems().addAll(m1_1,m1_2);
-        menu3.getItems().addAll(m3_1,m3_2);
+        menu3.getItems().addAll(m3_1,m3_2,m3_3);
         menu4.getItems().add(m4_1);
         
         menuBar.getMenus().addAll(menu1,menu2,menu3,menu4,menu5);
