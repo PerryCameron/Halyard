@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import com.ecsail.structures.Object_Membership;
+import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Person;
 import com.ecsail.structures.Object_Temp;
 
@@ -116,6 +117,20 @@ public class SqlExists {
 		return result;
 	}
 	
+	public static boolean fiscalRecordExists(Object_MembershipList ms, int year) {
+		Boolean result = false;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select Exists(select * FROM money where MS_ID=" + ms.getMsid() + " and FISCAL_YEAR='" + year + "');"));
+			while(rs.next()) {
+			result = rs.getBoolean("Exists(select * FROM money where MS_ID=" + ms.getMsid() + " and FISCAL_YEAR='" + year + "')");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
 	
 	
 	
