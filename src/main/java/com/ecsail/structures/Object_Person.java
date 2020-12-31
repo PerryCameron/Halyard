@@ -31,6 +31,7 @@ public class Object_Person {
     }
 
 public Object_Person() {  // default constructor
+	
 }
 
 

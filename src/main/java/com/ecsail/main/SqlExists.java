@@ -71,6 +71,55 @@ public class SqlExists {
 		return result;
 	}
 	
+	public static boolean personExists(int ms_id, int member_type) {
+		Boolean result = false;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select exists(select * from person where MS_ID=" + ms_id + " and MEMBER_TYPE=" + member_type + ")"));
+			while(rs.next()) {
+			result = rs.getBoolean("exists(select * from person where MS_ID=" + ms_id + " and MEMBER_TYPE=" + member_type + ")");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	public static boolean emailExists(Object_Person p) {
+		Boolean result = false;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select exists(select * from email where P_ID=" + p.getP_id() + " and PRIMARY_USE=true);"));
+			while(rs.next()) {
+			result = rs.getBoolean("exists(select * from email where P_ID=" + p.getP_id() + " and PRIMARY_USE=true)");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	public static boolean cellPhoneExists(Object_Person p) {
+		Boolean result = false;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select exists(select * from phone where P_ID=" + p.getP_id() + " and PHONE_TYPE=true);"));
+			while(rs.next()) {
+			result = rs.getBoolean("exists(select * from email where P_ID=" + p.getP_id() + " and PRIMARY_USE=true)");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	
+	
+	
+	//select exists(select * from person where MS_ID=229 and MEMBER_TYPE=2);
 	public static Boolean slipExists(int ms_id) {
 		Boolean result = false;
 		  // we must convert here (this is getting crazy!)

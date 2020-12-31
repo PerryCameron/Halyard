@@ -473,6 +473,30 @@ public class SqlSelect {
 		return email;
 	}	
 	
+	public static String getEmail(Object_Person person) {
+		Object_Email email = null;
+		String returnEmail = "";
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs = stmt.executeQuery("select * from email where P_ID=" + person.getP_id() +" and PRIMARY_USE=true");
+			while (rs.next()) {
+				email = new Object_Email(
+						rs.getInt("EMAIL_ID")
+						,rs.getInt("P_ID")
+						,rs.getBoolean("PRIMARY_USE")
+						,rs.getString("EMAIL")
+						,rs.getBoolean("EMAIL_LISTED"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if(email.getEmail() != null) {
+			returnEmail = email.getEmail();
+		} 
+		return returnEmail;
+	}
+	
 	
 	public static ObservableList<Object_Memo> getMemos(int ms_id) {
 		String query = "SELECT * FROM memo";
@@ -694,6 +718,23 @@ public class SqlSelect {
 		}
 		return thisPhone;
 	}
+	
+	public static ArrayList<Object_Phone> getPhone(Object_Person p) {  // if p_id = 0 then select all
+		ArrayList<Object_Phone> thisPhone = new ArrayList<Object_Phone>();
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs;
+			rs = stmt.executeQuery(Main.console.setRegexColor("SELECT * from phone Where P_ID=" + p.getP_id() + ""));
+			while (rs.next()) {
+				thisPhone.add(new Object_Phone(rs.getInt("PHONE_ID"), rs.getInt("P_ID"), rs.getBoolean("PHONE_LISTED"),
+						rs.getString("PHONE"), rs.getString("PHONE_TYPE")));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return thisPhone;
+	}
 
 	public static ObservableList<Object_Membership> getMemberships() {
 		ObservableList<Object_Membership> memberships = FXCollections.observableArrayList();
@@ -849,6 +890,35 @@ public class SqlSelect {
 	public static ObservableList<Object_Person> getPeople(int ms_id) {  
 		String query = "SELECT * FROM person WHERE ms_id= '" + ms_id + "'";
 		ObservableList<Object_Person> thesepeople = FXCollections.observableArrayList();
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+		    ResultSet rs;
+			rs = stmt.executeQuery(Main.console.setRegexColor(query + ";"));
+		while (rs.next()) {
+			if(rs.getBoolean("IS_ACTIVE")) {  // only add active people
+			thesepeople.add(new Object_Person(
+					rs.getInt("P_ID"),
+					rs.getInt("MS_ID"),
+					rs.getInt("MEMBER_TYPE"), 		
+					rs.getString("F_NAME"),
+					rs.getString("L_NAME"),
+					rs.getString("BIRTHDAY"),
+					rs.getString("OCCUPATION"),
+					rs.getString("BUISNESS"),
+					rs.getBoolean("IS_ACTIVE")));
+			}
+		}
+		stmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return thesepeople;
+	}
+	
+	public static ArrayList<Object_Person> getPeople(Object_Membership m) {  
+		String query = "SELECT * FROM person WHERE ms_id= '" + m.getMsid() + "' and MEMBER_TYPE=3";
+		ArrayList<Object_Person> thesepeople = new ArrayList<Object_Person>();
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 		    ResultSet rs;

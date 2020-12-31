@@ -4,19 +4,21 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.ecsail.main.Paths;
+import com.ecsail.main.SqlExists;
 import com.ecsail.main.SqlSelect;
 import com.ecsail.structures.Object_Boat;
 import com.ecsail.structures.Object_DefinedFee;
 import com.ecsail.structures.Object_Membership;
 import com.ecsail.structures.Object_Person;
+import com.ecsail.structures.Object_Phone;
 import com.itextpdf.io.font.FontProgramFactory;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.colors.DeviceCmyk;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
-import com.itextpdf.kernel.geom.Rectangle;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
@@ -29,7 +31,6 @@ import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.VerticalAlignment;
 
 import com.itextpdf.layout.property.TextAlignment;
-import com.itextpdf.layout.property.UnitValue;
 
 public class PDF_Renewal_Form {
 	private static String year;
@@ -40,7 +41,10 @@ public class PDF_Renewal_Form {
 	private static Object_Person secondary;
 	Object_DefinedFee definedFees;
 	private int borderSize = 1;
-	private ArrayList<Object_Boat> boats = new ArrayList<Object_Boat>();
+	private List<Object_Boat> boats = new ArrayList<Object_Boat>();
+	private ArrayList<Object_Phone> primaryPhone = new ArrayList<Object_Phone>();
+	private ArrayList<Object_Phone> secondaryPhone = new ArrayList<Object_Phone>();
+	private ArrayList<Object_Person> dependants = new ArrayList<Object_Person>();
 	Image checkedBox = new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/checked-checkbox9x9.png"))));
 	Image uncheckedBox = new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/unchecked-checkbox9x9.png"))));
 	
@@ -48,9 +52,6 @@ public class PDF_Renewal_Form {
 		PDF_Renewal_Form.year = y;
 		PDF_Renewal_Form.current_membership_id = memId;
 		this.definedFees = SqlSelect.selectDefinedFees(Integer.parseInt(year));
-		boats.add(new Object_Boat(0, 0, "Manufacturer", "Year", "Registration", "Model", "Boat Name", "Sail #", true, "Length", "Header", "Keel Type", "PHRF"));
-		boats.add(new Object_Boat(0, 0, "Flying Scot Inc.", "2016", "IN34234", "Flying Scot", "Crow", "3845", true, "19", "800", "Center Board", "PHRF"));
-		boats.add(new Object_Boat(0, 0, "", "", "", "", "", "", true, "", "", "", ""));
 		// Check if our path exists, if not create it
 		Paths.checkPath(Paths.RENEWALFORM + "/" + year);
 		// Initialize PDF writer
@@ -70,25 +71,37 @@ public class PDF_Renewal_Form {
 		PdfFont font = PdfFontFactory.createRegisteredFont("garamond bold");
 		//PdfFont font = PdfFontFactory.createFont("arial");
 
-		Rectangle rectangle = pdf.getDefaultPageSize();
-		float width = rectangle.getWidth() - document.getLeftMargin() - document.getRightMargin();
-		System.out.println("Page size is " + rectangle);
 		// add tables here
-		if(isOneMembership) {  // we are only printing one membership
-		ms_id = SqlSelect.getMsidFromMembershipID(Integer.parseInt(current_membership_id));
-		membership = SqlSelect.getMembership(ms_id);
-		primary = SqlSelect.getPerson(ms_id, 1);
-		document.add(titlePdfTable(font));
-		document.add(membershipIdPdfTable());
-		document.add(membershipAddressPdfTable());
-		document.add(personPdfTable());
-		document.add(childrenPdfTable());
-		document.add(boatsPdfTable());
-		document.add(feesPdfTable());
-		for(int i = 1; i < 6; i++) {
-		document.add(blankTableRow(i));
-		}
-		document.add(signatureTable());
+		if (isOneMembership) { // we are only printing one membership
+			ms_id = SqlSelect.getMsidFromMembershipID(Integer.parseInt(current_membership_id));
+			membership = SqlSelect.getMembership(ms_id);
+			boats = SqlSelect.getBoats(ms_id);
+			boats.add(0, new Object_Boat(0, 0, "Manufacturer", "Year", "Registration", "Model", "Boat Name", "Sail #", true, "Length", "Header", "Keel Type", "PHRF"));
+			boats.add(new Object_Boat(0, 0, "", "", "", "", "", "", false, "", "Blank", "", ""));
+			dependants = SqlSelect.getPeople(membership);
+			primary = SqlSelect.getPerson(ms_id, 1); // 1 = primary member
+			primaryPhone = SqlSelect.getPhone(primary);
+			shortenDate(primary);
+				if(SqlExists.personExists(ms_id, 2)) {
+				secondary = SqlSelect.getPerson(ms_id, 2);
+				secondaryPhone = SqlSelect.getPhone(secondary);
+				shortenDate(secondary);
+				} else {
+					secondary = new Object_Person(0, 0, 0, "", "", "", "", "", false);
+					System.out.println("Susan does not exist");
+				}//Integer pid, Integer ms_id, Integer mt, String fn, String ln, String birthday, String oc, String bu, Boolean active
+				System.out.println(secondary.toString());
+			document.add(titlePdfTable(font));
+			document.add(membershipIdPdfTable());
+			document.add(membershipAddressPdfTable());
+			document.add(personPdfTable());
+			document.add(childrenPdfTable());
+			document.add(boatsPdfTable());
+			document.add(feesPdfTable());
+			for (int i = 1; i < 6; i++) {
+				document.add(blankTableRow(i));
+			}
+			document.add(signatureTable());
 		}
 		
 		
@@ -111,6 +124,94 @@ public class PDF_Renewal_Form {
 	}
 	
 	///////////  Class Methods ///////////////
+	
+	public String getChildren() {
+		String children = "";
+		if (dependants.size() > 0) {
+			int numberOfChildren = dependants.size();
+			for (Object_Person c : dependants) {
+				children += c.getFname();
+				if (c.getBirthday() != null) {
+					children += " (" + c.getBirthday().substring(0, 4) + ")";
+				}
+				if (numberOfChildren != 1)
+					children += ", ";
+				numberOfChildren--;
+			}
+		}
+		return children;
+	}
+
+	public String getChildrenBirthYear() {
+		String children = "";
+		if (dependants.size() > 0) {
+			int numberOfChildren = dependants.size();
+			for (Object_Person c : dependants) {
+				children += c.getBirthday().substring(0,4);
+				if (numberOfChildren != 1)
+					children += ", ";
+				numberOfChildren--;
+			}
+		}
+		return children;
+	}
+	
+	public String removeNulls(String answer) {
+		String cleanedString = "";
+		if(answer != null) {
+			cleanedString = answer;
+		}
+		return cleanedString;
+	}
+	
+	public void shortenDate(Object_Person person) {
+		if(person.getBirthday() != null) {
+			if(person.getBirthday().length() > 4) {
+				person.setBirthday(person.getBirthday().substring(0, 4));
+			}
+		} else {
+			person.setBirthday("");
+		}
+	}
+	
+	public String getEmail(Object_Person person) {
+		String email = "";
+		if(SqlExists.emailExists(person)) {
+			email = SqlSelect.getEmail(person);
+		}
+		return email;
+	}
+	
+	public String getPhone(Object_Person person, String type) {
+		String phone = "";
+		if(person.getMemberType() == 1) { // this is the primary person
+			if(!primaryPhone.isEmpty()) {
+				for(Object_Phone p: primaryPhone) {
+					if(type.equals("CELL")) {
+						if(p.getPhoneType().equals("C")) phone = p.getPhoneNumber();
+					}
+					if(type.equals("EMERGENCY")) {
+						if(p.getPhoneType().equals("E")) phone = p.getPhoneNumber();
+					}
+					if(type.equals("WORK")) {
+						if(p.getPhoneType().equals("W")) phone = p.getPhoneNumber();
+					}
+				}
+			}
+		} else { 
+			if(!secondaryPhone.isEmpty()) {
+				for(Object_Phone p: secondaryPhone) {
+					if(type.equals("CELL")) {
+						if(p.getPhoneType().equals("C")) phone = p.getPhoneNumber();
+					}
+					if(type.equals("WORK")) {
+						if(p.getPhoneType().equals("W")) phone = p.getPhoneNumber();
+					}
+				}
+			}
+		}
+		return phone;
+	}
 	
 	public Table feesPdfTable() {
 		Table mainTable = new Table(12);
@@ -178,10 +279,15 @@ public class PDF_Renewal_Form {
 		cell.setBorderBottom(new SolidBorder(0.5f));
 		cell.setBorderLeft(new SolidBorder(borderSize));
 		cell.setWidth(10);
-		cell.add(uncheckedBox);
+		if (membership.getMemType().equals("RM")) {  // REGULAR MEMBER CHECKBOX
+			cell.add(checkedBox);
+		} else {
+			cell.add(uncheckedBox);
+			
+		}
 		mainTable.addCell(cell);
 		
-		cell = new Cell();
+		cell = new Cell();   
 		cell.setBorder(Border.NO_BORDER);
 		cell.setBorderBottom(new SolidBorder(0.5f));
 		p = new Paragraph("Regular Membership");
@@ -197,7 +303,7 @@ public class PDF_Renewal_Form {
 		cell.setBorder(Border.NO_BORDER);
 		cell.setBorderRight(new SolidBorder(0.5f));
 		cell.setBorderBottom(new SolidBorder(0.5f));
-		p = new Paragraph("$" + definedFees.getDues_regular());
+		p = new Paragraph("$" + definedFees.getDues_regular());  /// REGULAR MEMBER PRICE
 		p.setFontSize(10);
 		p.setFixedLeading(10);
 		p.setTextAlignment(TextAlignment.RIGHT);
@@ -210,7 +316,7 @@ public class PDF_Renewal_Form {
 		cell.setBorderBottom(new SolidBorder(0.5f));
 		//cell.setBorderLeft(new SolidBorder(borderSize));
 		cell.setWidth(10);
-		cell.add(uncheckedBox);
+		cell.add(uncheckedBox);  /// WET SLIP CHECKBOX
 		mainTable.addCell(cell);
 		
 		cell = new Cell();
@@ -229,7 +335,7 @@ public class PDF_Renewal_Form {
 		cell.setBorder(Border.NO_BORDER);
 		cell.setBorderRight(new SolidBorder(0.5f));
 		cell.setBorderBottom(new SolidBorder(0.5f));
-		p = new Paragraph("$" + definedFees.getWet_slip());
+		p = new Paragraph("$" + definedFees.getWet_slip());   ////// WET SLIP COST ////
 		p.setFontSize(10);
 		p.setFixedLeading(10);
 		p.setTextAlignment(TextAlignment.RIGHT);
@@ -242,7 +348,7 @@ public class PDF_Renewal_Form {
 		cell.setBorderBottom(new SolidBorder(0.5f));
 		//cell.setBorderLeft(new SolidBorder(borderSize));
 		cell.setWidth(10);
-		cell.add(uncheckedBox);
+		cell.add(uncheckedBox);  ///// MAIN GATE EXTRA KEY CHECKBOX
 		mainTable.addCell(cell);
 		
 		cell = new Cell();
@@ -260,7 +366,7 @@ public class PDF_Renewal_Form {
 		cell = new Cell();
 		cell.setBorder(Border.NO_BORDER);
 		cell.setBorderBottom(new SolidBorder(0.5f));
-		p = new Paragraph("____ x");
+		p = new Paragraph("____ x");   //// MAIN GATE EXTRA KEY NUMBER OF ///
 		p.setFontSize(10);
 		p.setFixedLeading(10);
 		p.setTextAlignment(TextAlignment.RIGHT);
@@ -271,7 +377,7 @@ public class PDF_Renewal_Form {
 		cell.setBorder(Border.NO_BORDER);
 		cell.setBorderRight(new SolidBorder(borderSize));
 		cell.setBorderBottom(new SolidBorder(0.5f));
-		p = new Paragraph("$" + definedFees.getMain_gate_key());
+		p = new Paragraph("$" + definedFees.getMain_gate_key());  //// GATE KEY COST ////
 		p.setFontSize(10);
 		p.setFixedLeading(10);
 		p.setTextAlignment(TextAlignment.RIGHT);
@@ -283,14 +389,18 @@ public class PDF_Renewal_Form {
 		Cell cell;
 		Paragraph p;
 		/////////////////// VISIBLE TABLE CELL LEFT BEGIN Row 2 /////////////////
-		cell = new Cell();   
+		cell = new Cell();   /////FAMILY Membership////
 		cell.setBorder(Border.NO_BORDER);
 		cell.setBorderBottom(new SolidBorder(0.5f));
 		cell.setBorderLeft(new SolidBorder(borderSize));
 		cell.setWidth(10);
-		cell.add(uncheckedBox);
+		if (membership.getMemType().equals("FM")) {   //// FAMILY MEMBERSHIP CHECK BOX ////
+			cell.add(checkedBox);
+		} else {
+			cell.add(uncheckedBox);
+			
+		}
 		mainTable.addCell(cell);
-		
 		cell = new Cell();
 		cell.setBorder(Border.NO_BORDER);
 		cell.setBorderBottom(new SolidBorder(0.5f));
@@ -307,7 +417,7 @@ public class PDF_Renewal_Form {
 		cell.setBorder(Border.NO_BORDER);
 		cell.setBorderRight(new SolidBorder(0.5f));
 		cell.setBorderBottom(new SolidBorder(0.5f));
-		p = new Paragraph("$" + definedFees.getDues_family());
+		p = new Paragraph("$" + definedFees.getDues_family());   /// FAMILY MEMBERSHIP COST ////
 		p.setFontSize(10);
 		p.setFixedLeading(10);
 		p.setTextAlignment(TextAlignment.RIGHT);
@@ -320,7 +430,7 @@ public class PDF_Renewal_Form {
 		cell.setBorderBottom(new SolidBorder(0.5f));
 		//cell.setBorderLeft(new SolidBorder(borderSize));
 		cell.setWidth(10);
-		cell.add(uncheckedBox);
+		cell.add(uncheckedBox);   //// BEACH PARKING CHECK BOX
 		mainTable.addCell(cell);
 		
 		cell = new Cell();
@@ -352,7 +462,7 @@ public class PDF_Renewal_Form {
 		cell.setBorderBottom(new SolidBorder(0.5f));
 		//cell.setBorderLeft(new SolidBorder(borderSize));
 		cell.setWidth(10);
-		cell.add(uncheckedBox);
+		cell.add(uncheckedBox);  /// SAIL LOFT KEY CHECK BOX ////
 		mainTable.addCell(cell);
 		
 		cell = new Cell();
@@ -398,7 +508,12 @@ public class PDF_Renewal_Form {
 		cell.setBorderBottom(new SolidBorder(0.5f));
 		cell.setBorderLeft(new SolidBorder(borderSize));
 		cell.setWidth(10);
-		cell.add(uncheckedBox);
+		if (membership.getMemType().equals("LA")) {  ////// LAKE ASSOCIATE CHECK BOX ////
+			cell.add(checkedBox);
+		} else {
+			cell.add(uncheckedBox);
+			
+		}   
 		mainTable.addCell(cell);
 		
 		cell = new Cell();
@@ -516,7 +631,12 @@ public class PDF_Renewal_Form {
 		cell.setBorderBottom(new SolidBorder(0.5f));
 		cell.setBorderLeft(new SolidBorder(borderSize));
 		cell.setWidth(10);
-		cell.add(uncheckedBox);
+		if (membership.getMemType().equals("SO")) {
+			cell.add(checkedBox);
+		} else {
+			cell.add(uncheckedBox);
+			
+		}
 		mainTable.addCell(cell);
 		
 		cell = new Cell();
@@ -1086,7 +1206,9 @@ public class PDF_Renewal_Form {
 	public Table boatsPdfTable() {
 		Table mainTable = new Table(9);
 		mainTable.setWidth(590);
+		System.out.println("boats size is " + boats.size());
 		for(Object_Boat b: boats) {
+			System.out.println(b);
 			createBoatTableRow(mainTable, b);
 		}
 		
@@ -1103,6 +1225,7 @@ public class PDF_Renewal_Form {
 	public void createBoatTableRow(Table mainTable, Object_Boat boat) {
 		Boolean isHeader = false;
 		//////// Determine if Header ///
+		if(boat.getWeight() == null) boat.setWeight("");  // quick hack to prevent null exception if weight is null
 		if (boat.getWeight().equals("Header")) // Used unused field to mark the header
 			isHeader = true;
 		else
@@ -1111,7 +1234,7 @@ public class PDF_Renewal_Form {
 		Cell cell;
 		Paragraph p;
 
-		p = new Paragraph(boat.getBoat_name());
+		p = new Paragraph(removeNulls(boat.getBoat_name()));
 		p.setFontSize(10);
 		cell = new Cell();
 		if (isHeader) {
@@ -1124,7 +1247,7 @@ public class PDF_Renewal_Form {
 		cell.add(p);
 		mainTable.addCell(cell);
 
-		p = new Paragraph(boat.getRegistration_num());
+		p = new Paragraph(removeNulls(boat.getRegistration_num()));
 		p.setFontSize(10);
 		cell = new Cell();
 		if (isHeader) {
@@ -1136,7 +1259,7 @@ public class PDF_Renewal_Form {
 		cell.add(p);
 		mainTable.addCell(cell);
 
-		p = new Paragraph(boat.getManufacturer());
+		p = new Paragraph(removeNulls(boat.getManufacturer()));
 		p.setFontSize(10);
 		cell = new Cell();
 		if (isHeader) {
@@ -1148,7 +1271,7 @@ public class PDF_Renewal_Form {
 		cell.add(p);
 		mainTable.addCell(cell);
 
-		p = new Paragraph(boat.getManufacture_year());
+		p = new Paragraph(removeNulls(boat.getManufacture_year()));
 		p.setFontSize(10);
 		cell = new Cell();
 		if (isHeader) {
@@ -1160,7 +1283,7 @@ public class PDF_Renewal_Form {
 		cell.add(p);
 		mainTable.addCell(cell);
 
-		p = new Paragraph(boat.getModel());
+		p = new Paragraph(removeNulls(boat.getModel()));
 		p.setFontSize(10);
 		cell = new Cell();
 		if (isHeader) {
@@ -1172,7 +1295,7 @@ public class PDF_Renewal_Form {
 		cell.add(p);
 		mainTable.addCell(cell);
 
-		p = new Paragraph(boat.getLength());
+		p = new Paragraph(removeNulls(boat.getLength()));
 		p.setFontSize(10);
 		cell = new Cell();
 		if (isHeader) {
@@ -1184,7 +1307,7 @@ public class PDF_Renewal_Form {
 		cell.add(p);
 		mainTable.addCell(cell);
 
-		p = new Paragraph(boat.getKeel());
+		p = new Paragraph(removeNulls(boat.getKeel()));
 		p.setFontSize(10);
 		cell = new Cell();
 		if (isHeader) {
@@ -1199,7 +1322,11 @@ public class PDF_Renewal_Form {
 		if (isHeader)
 			p = new Paragraph("Has Trailer");
 		else
-			p = new Paragraph(boat.isHasTrailer() + "");
+			if(boat.getWeight().equals("Blank")) {  // this is the blank row
+				p = new Paragraph(".");  //maybe put in image?
+			} else {
+				p = new Paragraph(boat.isHasTrailer() + "");
+			}
 		p.setFontSize(10);
 		cell = new Cell();
 		if (isHeader) {
@@ -1211,7 +1338,7 @@ public class PDF_Renewal_Form {
 		cell.add(p);
 		mainTable.addCell(cell);
 
-		p = new Paragraph(boat.getSail_number());
+		p = new Paragraph(removeNulls(boat.getSail_number()));
 		p.setFontSize(10);
 		cell = new Cell();
 		if (isHeader) {
@@ -1226,14 +1353,14 @@ public class PDF_Renewal_Form {
 	}
 	
 	public Table childrenPdfTable() {
-		Table mainTable = new Table(2);
+		Table mainTable = new Table(1);
+		mainTable.setWidth(590);
 		Cell cell;
 		Paragraph p;
 		
-		p = new Paragraph("Dependants under age of 21 (In order of oldest first)");
+		p = new Paragraph("Dependants under age of 21");
 		p.setFontSize(10);
-		cell = new Cell(1,2);
-		cell.setWidth(580);
+		cell = new Cell();
 		cell.add(p);
 		cell.setBorder(Border.NO_BORDER);
 		cell.setBorderLeft(new SolidBorder(borderSize));
@@ -1241,21 +1368,15 @@ public class PDF_Renewal_Form {
 		cell.setBorderTop(new SolidBorder(borderSize));
 		mainTable.addCell(cell);
 		
-		p = new Paragraph("First Name(s):");
+
+		
+		p = new Paragraph("Name and Birthyear(s): " + getChildren());
 		p.setFontSize(10);
 		cell = new Cell();
 		cell.setWidth(290);
 		cell.add(p);
 		cell.setBorder(Border.NO_BORDER);
 		cell.setBorderLeft(new SolidBorder(borderSize));
-		mainTable.addCell(cell);
-		
-		p = new Paragraph("Birth Year(s): ");
-		p.setFontSize(10);
-		cell = new Cell();
-		cell.setWidth(290);
-		cell.add(p);
-		cell.setBorder(Border.NO_BORDER);
 		cell.setBorderRight(new SolidBorder(borderSize));
 		mainTable.addCell(cell);
 		
@@ -1268,7 +1389,7 @@ public class PDF_Renewal_Form {
 		Cell cell;
 		Paragraph p;
 		
-		p = new Paragraph("Member Name: John P. Hunklemont");
+		p = new Paragraph("Member Name: " + primary.getFname() + " " + primary.getLname());
 		p.setFontSize(10);
 		cell = new Cell(1,2);
 		cell.setWidth(290);
@@ -1279,7 +1400,7 @@ public class PDF_Renewal_Form {
 		cell.setBorderBottom(new SolidBorder(0.5f));
 		mainTable.addCell(cell);
 		
-		p = new Paragraph("Spouse/Partner Name: Martha. Hunklemont");
+		p = new Paragraph("Spouse/Partner Name: " + secondary.getFname() + " " + secondary.getLname());
 		p.setFontSize(10);
 		cell = new Cell(1,2);
 		cell.setWidth(290);
@@ -1290,7 +1411,7 @@ public class PDF_Renewal_Form {
 		cell.setBorderBottom(new SolidBorder(0.5f));
 		mainTable.addCell(cell);
 		
-		p = new Paragraph("Email:");
+		p = new Paragraph("Email: " + getEmail(primary));
 		p.setFontSize(10);
 		cell = new Cell(1,2);
 		cell.setBorder(Border.NO_BORDER);
@@ -1299,7 +1420,7 @@ public class PDF_Renewal_Form {
 		cell.add(p);
 		mainTable.addCell(cell);
 		
-		p = new Paragraph("Email:");
+		p = new Paragraph("Email: " + getEmail(secondary));
 		p.setFontSize(10);
 		cell = new Cell(1,2);
 		cell.setBorder(Border.NO_BORDER);
@@ -1308,7 +1429,7 @@ public class PDF_Renewal_Form {
 		cell.add(p);
 		mainTable.addCell(cell);
 		
-		p = new Paragraph("Cell Phone: ");
+		p = new Paragraph("Cell Phone: " + getPhone(primary, "CELL"));
 		p.setFontSize(10);
 		cell = new Cell();
 		cell.setBorder(Border.NO_BORDER);
@@ -1317,7 +1438,7 @@ public class PDF_Renewal_Form {
 		cell.add(p);
 		mainTable.addCell(cell);
 		
-		p = new Paragraph("Birth Year: ");
+		p = new Paragraph("Birth Year: " + primary.getBirthday());
 		p.setFontSize(10);
 		cell = new Cell();
 		cell.setBorder(Border.NO_BORDER);
@@ -1325,7 +1446,7 @@ public class PDF_Renewal_Form {
 		cell.add(p);
 		mainTable.addCell(cell);
 		
-		p = new Paragraph("Cell Phone: ");
+		p = new Paragraph("Cell Phone: " + getPhone(secondary, "CELL"));
 		p.setFontSize(10);
 		cell = new Cell();
 		cell.setBorder(Border.NO_BORDER);
@@ -1333,7 +1454,7 @@ public class PDF_Renewal_Form {
 		cell.add(p);
 		mainTable.addCell(cell);
 		
-		p = new Paragraph("Birth Year: ");
+		p = new Paragraph("Birth Year: " + secondary.getBirthday());
 		p.setFontSize(10);
 		cell = new Cell();
 		cell.setBorder(Border.NO_BORDER);
@@ -1342,7 +1463,7 @@ public class PDF_Renewal_Form {
 		cell.add(p);
 		mainTable.addCell(cell);
 		
-		p = new Paragraph("Occupation: ");
+		p = new Paragraph("Occupation: " + primary.getOccupation());
 		p.setFontSize(10);
 		cell = new Cell(1,2);
 		cell.setBorder(Border.NO_BORDER);
@@ -1352,27 +1473,7 @@ public class PDF_Renewal_Form {
 		cell.add(p);
 		mainTable.addCell(cell);
 		
-		p = new Paragraph("Occupation: ");
-		p.setFontSize(10);
-		cell = new Cell(1,2);
-		cell.setBorder(Border.NO_BORDER);
-		cell.setBorderRight(new SolidBorder(borderSize));
-		cell.setBorderBottom(new SolidBorder(0.5f));
-		cell.setWidth(290);
-		cell.add(p);
-		mainTable.addCell(cell);
-		
-		p = new Paragraph("Company/Business: ");
-		p.setFontSize(10);
-		cell = new Cell(1,2);
-		cell.setBorder(Border.NO_BORDER);
-		cell.setBorderLeft(new SolidBorder(borderSize));
-		cell.setBorderBottom(new SolidBorder(0.5f));
-		cell.setWidth(290);
-		cell.add(p);
-		mainTable.addCell(cell);
-		
-		p = new Paragraph("Company/Business: ");
+		p = new Paragraph("Occupation: " + secondary.getOccupation());
 		p.setFontSize(10);
 		cell = new Cell(1,2);
 		cell.setBorder(Border.NO_BORDER);
@@ -1382,7 +1483,7 @@ public class PDF_Renewal_Form {
 		cell.add(p);
 		mainTable.addCell(cell);
 		
-		p = new Paragraph("Company/Business Phone:");
+		p = new Paragraph("Company/Business: " + primary.getBuisness());
 		p.setFontSize(10);
 		cell = new Cell(1,2);
 		cell.setBorder(Border.NO_BORDER);
@@ -1392,7 +1493,27 @@ public class PDF_Renewal_Form {
 		cell.add(p);
 		mainTable.addCell(cell);
 		
-		p = new Paragraph("Company/Business Phone:");
+		p = new Paragraph("Company/Business: " + secondary.getBuisness());
+		p.setFontSize(10);
+		cell = new Cell(1,2);
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderRight(new SolidBorder(borderSize));
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		cell.setWidth(290);
+		cell.add(p);
+		mainTable.addCell(cell);
+		
+		p = new Paragraph("Company/Business Phone: " + getPhone(primary, "WORK"));
+		p.setFontSize(10);
+		cell = new Cell(1,2);
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderLeft(new SolidBorder(borderSize));
+		cell.setBorderBottom(new SolidBorder(0.5f));
+		cell.setWidth(290);
+		cell.add(p);
+		mainTable.addCell(cell);
+		
+		p = new Paragraph("Company/Business Phone: " + getPhone(secondary, "WORK"));
 		p.setFontSize(10);
 		cell = new Cell(1,2);
 		cell.setBorder(Border.NO_BORDER);
@@ -1420,7 +1541,8 @@ public class PDF_Renewal_Form {
 	
 	public Table membershipIdPdfTable()  { // 580 total cell width
 		
-		Table mainTable = new Table(2);
+		Table mainTable = new Table(3);
+		mainTable.setWidth(590);
 		Cell cell;
 		Paragraph p;
 		
@@ -1428,14 +1550,14 @@ public class PDF_Renewal_Form {
 		p.setFontSize(8);
         p.setTextAlignment(TextAlignment.CENTER);
         p.setFixedLeading(6);
-		cell = new Cell(1,5);
+		cell = new Cell(1,3);
 		cell.setBorder(Border.NO_BORDER);
 		cell.add(p);
 		mainTable.addCell(cell);
 		
 		p = new Paragraph(Integer.parseInt(year) -1 + " Membership Number: " + current_membership_id);
 		p.setFontSize(10);
-		cell = new Cell(1,1);
+		cell = new Cell();
 		cell.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f));
 		cell.setBorder(Border.NO_BORDER);
 		cell.setBorderTop(new SolidBorder(borderSize));
@@ -1444,16 +1566,27 @@ public class PDF_Renewal_Form {
 		cell.setWidth(180);
 		mainTable.addCell(cell);
 		
-		p = new Paragraph(Integer.parseInt(year) + " Membership Number: 98");
+		p = new Paragraph("New Membership Number: 98");
+		p.setFontSize(10);
+		p.setTextAlignment(TextAlignment.LEFT);
+		cell = new Cell();
+		cell.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f));
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderTop(new SolidBorder(borderSize));
+		cell.add(p);
+		cell.setWidth(200);
+		mainTable.addCell(cell);
+		
+		p = new Paragraph("Join Date: " + membership.getJoinDate());
 		p.setFontSize(10);
 		p.setTextAlignment(TextAlignment.RIGHT);
-		cell = new Cell(1,4);
+		cell = new Cell();
 		cell.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f));
 		cell.setBorder(Border.NO_BORDER);
 		cell.setBorderTop(new SolidBorder(borderSize));
 		cell.setBorderRight(new SolidBorder(borderSize));
 		cell.add(p);
-		cell.setWidth(400);
+		//cell.setWidth(195);
 		mainTable.addCell(cell);
 		return mainTable;
 	}
@@ -1498,9 +1631,10 @@ public class PDF_Renewal_Form {
 
 		mainTable.addCell(cell);
 		
-		p = new Paragraph("Emergency #: 123-456-7894");
+		p = new Paragraph("Emergency #: " + getPhone(primary, "EMERGENCY"));
 		p.setFontSize(10);
 		cell = new Cell();
+		cell.setWidth(130);
 		cell.setBorder(Border.NO_BORDER);
 		cell.setBorderRight(new SolidBorder(borderSize));
 		cell.add(p);
