@@ -372,11 +372,13 @@ public class SqlSelect {
 		return theseFiscals;
 	}
 	
-	public static ObservableList<Object_PaidDues> getPaidDues(Object_Deposit currentDeposit) { // overload
-		String query = "SELECT me.MEMBERSHIP_ID, m .*, p.l_name, p.f_name FROM money m INNER JOIN membership "
-				+ "me on m.MS_ID=me.MS_ID INNER JOIN person p ON me.P_ID=p.P_ID WHERE m.FISCAL_YEAR=" 
-				+ currentDeposit.getFiscalYear() + " AND m.COMMITED=true AND m.BATCH=" 
-				+ currentDeposit.getBatch() + " ORDER BY me.MEMBERSHIP_ID";
+	public static ObservableList<Object_PaidDues> getPaidDues(Object_Deposit currentDeposit) { 
+		String query = "SELECT id.MEMBERSHIP_ID, mo.*, p.l_name, p.f_name FROM money mo "
+				+ "INNER JOIN membership_id id on mo.MS_ID=id.MS_ID and mo.FISCAL_YEAR=id.FISCAL_YEAR "
+				+ "INNER JOIN membership me on mo.MS_ID=me.MS_ID "
+				+ "INNER JOIN person p ON me.P_ID=p.P_ID  WHERE mo.FISCAL_YEAR='" + currentDeposit.getFiscalYear() 
+				+ "' AND mo.COMMITED=true AND mo.BATCH=" +currentDeposit.getBatch() + " "
+				+ "ORDER BY me.MEMBERSHIP_ID";
 		ObservableList<Object_PaidDues> theseFiscals = FXCollections.observableArrayList();
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
@@ -400,10 +402,11 @@ public class SqlSelect {
 		return theseFiscals;
 	}
 	
-	public static ObservableList<Object_PaidDues> getPaidDues(String selectedYear) { // overload
-		String query = "SELECT me.MEMBERSHIP_ID, m .*, p.l_name, p.f_name FROM money m INNER JOIN membership "
-				+ "me on m.MS_ID=me.MS_ID INNER JOIN person p ON me.P_ID=p.P_ID WHERE m.FISCAL_YEAR=" 
-				+ selectedYear + " AND m.COMMITED=true ORDER BY me.MEMBERSHIP_ID";
+	public static ObservableList<Object_PaidDues> getPaidDues(String selectedYear) { 
+		String query = "SELECT id.MEMBERSHIP_ID, mo .*, p.l_name, p.f_name FROM money mo "
+				+ "INNER JOIN membership_id id on mo.MS_ID=id.MS_ID and mo.FISCAL_YEAR=id.FISCAL_YEAR "
+				+ "INNER JOIN membership me on mo.MS_ID=me.MS_ID "
+				+ "INNER JOIN person p ON me.P_ID=p.P_ID WHERE mo.FISCAL_YEAR='" + selectedYear + "' AND mo.COMMITED=true ORDER BY id.MEMBERSHIP_ID";
 		ObservableList<Object_PaidDues> theseFiscals = FXCollections.observableArrayList();
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
@@ -578,6 +581,25 @@ public class SqlSelect {
 			e.printStackTrace();
 		}
 		return ids;
+	}
+	
+	public static String getId(int ms_id) {
+		Object_MembershipId id = null;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs = stmt.executeQuery("select * from membership_id where ms_id=" +ms_id + ";");
+			while (rs.next()) {
+				id = new Object_MembershipId(
+						rs.getInt("MID")
+						, rs.getString("FISCAL_YEAR")
+						, rs.getInt("MS_ID")
+						, rs.getString("MEMBERSHIP_ID"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return id.getMembership_id();
 	}
 	
 	// was a list

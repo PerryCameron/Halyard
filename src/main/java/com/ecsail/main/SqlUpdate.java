@@ -458,4 +458,15 @@ public class SqlUpdate {
 		
 	}
 	
+	public static void updateDefinedFee(String year, String field, String attribute) {
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			stmt.execute(Main.console.setRegexColor("UPDATE defined_fee SET " + field + "=" + attribute + " WHERE fiscal_year=" + year + ";"));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
 }

@@ -347,5 +347,26 @@ public class Object_DefinedFee {
 		setKayak_shed_key(kayak_shed_key);
 		setWork_credit(work_credit);
 	}
+	
+	public final void clear() {
+		setFiscal_year(0);
+		setDues_regular(0);
+		setDues_family(0);
+		setDues_lake_associate(0);
+		setDues_social(0);
+		setInitiation(0);
+		setWet_slip(0);
+		setBeach(0);
+		setWinter_storage(0);
+		setMain_gate_key(0);
+		setSail_loft(0);
+		setSail_loft_key(0);
+		setSail_school_laser_loft(0);
+		setSail_school_loft_key(0);
+		setKayak_rack(0);
+		setKayak_shed(0);
+		setKayak_shed_key(0);
+		setWork_credit(0);
+	}
 
 }

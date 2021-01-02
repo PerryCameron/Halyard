@@ -72,6 +72,21 @@ public class SqlExists {
 		return result;
 	}
 	
+	public static boolean memberShipIdExists(int ms_id, String year) {
+		Boolean result = false;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT EXISTS(select * from membership_id WHERE ms_id='" + ms_id + "' and FISCAL_YEAR='" + year + "')"));
+			while(rs.next()) {
+			result = rs.getBoolean("EXISTS(select * from membership_id WHERE ms_id='" + ms_id + "' and FISCAL_YEAR='" + year + "')");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
 	public static boolean personExists(int ms_id, int member_type) {
 		Boolean result = false;
 		try {
@@ -79,6 +94,21 @@ public class SqlExists {
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select exists(select * from person where MS_ID=" + ms_id + " and MEMBER_TYPE=" + member_type + ")"));
 			while(rs.next()) {
 			result = rs.getBoolean("exists(select * from person where MS_ID=" + ms_id + " and MEMBER_TYPE=" + member_type + ")");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	public static boolean definedFeeExists(String year) {
+		Boolean result = false;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select exists(select * from defined_fee where FISCAL_YEAR='" + year + "')"));
+			while(rs.next()) {
+			result = rs.getBoolean("exists(select * from defined_fee where FISCAL_YEAR='" + year + "')");
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

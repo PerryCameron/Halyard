@@ -412,7 +412,6 @@ public class BoxFiscal extends HBox {
 		yscText.setText(fiscals.get(rowIndex).getYsc_donation() + "");
 		otherText.setText(fiscals.get(rowIndex).getOther() + "");
 		initiationText.setText(fiscals.get(rowIndex).getInitiation() + "");
-		//wetSlipSpinner.setText(fiscals.get(rowIndex).getWet_slip() + "");
 		
 		totalWorkCreditTextField.setText(countWorkCredits() + "");
 		totalKeyTextField.setText(countKeys() + "");
@@ -439,23 +438,17 @@ public class BoxFiscal extends HBox {
 		updateBalance();
 		textFields.getBalanceText().setText(getBalance() + "");
 		
-
-		
 		MoneyTabPane.getTabs().addAll(moneyTab,paymentTab);
 		hboxSlip.getChildren().addAll(slipText,addWetSlip);
 		hboxDues.getChildren().addAll(new Label("Dues:"), duesText);
 		hboxSubKey.getChildren().addAll(totalKeyTextField,addKeys);
-		//if(!fiscals.get(rowIndex).isSupplemental())  // do not show for supplemental record
 		hboxSubWK.getChildren().addAll(totalWorkCreditTextField,addWorkCredits);
 		hboxWinterStorage.getChildren().addAll(new Label("Winter Storage"), winterStorageSpinner);
 		hboxKayac.getChildren().addAll(new Label("Kayac Rack"),kayakRackSpinner);
-		//hboxWetSlip.getChildren().addAll(new Label("wetSlip"),wetSlipSpinner);
 		hboxWetSlip.getChildren().addAll(new Label("wetSlip"),hboxSlip);
 		hboxYSC.getChildren().addAll(new Label("YSC Donation"),yscText);
 		hboxOther.getChildren().addAll(new Label("Other:"), otherText);
-		//if(!fiscals.get(rowIndex).isSupplemental())  // do not show for supplemental record
 		hboxInitiation.getChildren().addAll(new Label("Initiation"), initiationText);
-		//if(!fiscals.get(rowIndex).isSupplemental())  // do not show for supplemental record
 		hboxtotalWC.getChildren().addAll(new Label("Total:"),hboxSubWK);
 		hboxtotalKey.getChildren().addAll(new Label("Total:"),hboxSubKey);
 		hboxBeach.getChildren().addAll(new Label("Beach Spot"),beachSpinner);
@@ -571,19 +564,15 @@ public class BoxFiscal extends HBox {
 		int sailLoft = fiscals.get(rowIndex).getSail_loft() * definedFees.getSail_loft();
 		int sailSchoolLoft = fiscals.get(rowIndex).getSail_school_laser_loft() * definedFees.getSail_school_laser_loft();
 		int wetSlip = fiscals.get(rowIndex).getWet_slip();
-		//int wetSlip = fiscals.get(rowIndex).getWet_slip() * definedFees.getWet_slip();
 		int winterStorage = fiscals.get(rowIndex).getWinter_storage() * definedFees.getWinter_storage();
 		int yscDonation = fiscals.get(rowIndex).getYsc_donation();
 		int other = fiscals.get(rowIndex).getOther();
 		int initiation = fiscals.get(rowIndex).getInitiation();
-		
-		System.out.println("--------------------");
-		System.out.println(extraKey + " " + sailLoftKey + " " + kayakShedKey + " " + sailSchoolLoftKey + " " + beachSpot + " " + kayakRack
-				+ " " + kayakShed + " " + sailLoft + " " + sailSchoolLoft + " " + wetSlip + " " + winterStorage + " " + yscDonation 
-				+ " " + dues + " " + other + " " + initiation);
-		System.out.println("--------------------");
-		
-		
+		//System.out.println("--------------------");
+		//System.out.println(extraKey + " " + sailLoftKey + " " + kayakShedKey + " " + sailSchoolLoftKey + " " + beachSpot + " " + kayakRack
+		//		+ " " + kayakShed + " " + sailLoft + " " + sailSchoolLoft + " " + wetSlip + " " + winterStorage + " " + yscDonation 
+		//		+ " " + dues + " " + other + " " + initiation);
+		//System.out.println("--------------------");
 		return extraKey + sailLoftKey + kayakShedKey + sailSchoolLoftKey + beachSpot + kayakRack
 				+kayakShed + sailLoft + sailSchoolLoft + wetSlip + winterStorage + yscDonation 
 				+ dues + other + initiation;
@@ -597,15 +586,15 @@ public class BoxFiscal extends HBox {
 		int credit = 0;
 		if(membershipHasOfficer()) {
 			credit = fiscals.get(rowIndex).getOfficer_credit();  // inserts credit for member type into fiscal
-			System.out.println("Has an officer credit changed to=" + credit);
+			//System.out.println("Has an officer credit changed to=" + credit);
 		} else {
 			if(workCredits >= 15) {
 				credit = 150;
 			} else {
-			credit = workCredits * 10;  
+			credit = workCredits * definedFees.getWork_credit();  
 			}
 		}
-		System.out.println("Credit is " + credit);
+		//System.out.println("Credit is " + credit);
 		return credit;
 	}
 	

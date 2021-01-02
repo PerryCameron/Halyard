@@ -154,6 +154,10 @@ public class TabDeposits extends Tab {
 		yearSpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
 			  if (!newValue) {
 				  selectedYear = yearSpinner.getEditor().getText();
+				  paidDues.clear();
+				  paidDues.addAll(SqlSelect.getPaidDues(selectedYear));
+				  currentDefinedFee.clear();
+				  currentDefinedFee = SqlSelect.getDefinedFee(selectedYear);
 			  }
 			});
 		

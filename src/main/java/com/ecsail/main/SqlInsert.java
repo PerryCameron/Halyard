@@ -3,6 +3,7 @@ package com.ecsail.main;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.ecsail.structures.Object_DefinedFee;
 import com.ecsail.structures.Object_Deposit;
 import com.ecsail.structures.Object_Membership;
 import com.ecsail.structures.Object_MembershipId;
@@ -120,6 +121,23 @@ public class SqlInsert {
 			+ "," + m.getYsc_donation() + "," + m.getPaid() + "," + m.getTotal() 
 			+ "," + m.getCredit() + "," + m.getBalance() + "," + m.getDues() 
 			+  "," + m.isCommitted() + "," + m.isClosed() + "," + m.getOther() + "," + m.getInitiation() + "," + m.isSupplemental() + ");"));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static void addRecord(Object_DefinedFee d) {
+		//Object_DefinedFee definedFees = selectDefinedFees(year);
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			stmt.execute(Main.console.setRegexColor("INSERT INTO defined_fee () VALUES (" 
+			 + d.getFiscal_year() + "," + d.getDues_regular() + "," + d.getDues_family() + "," + d.getDues_lake_associate() 
+			 + "," + d.getDues_social() + "," + d.getInitiation() + "," + d.getWet_slip() + "," + d.getBeach()
+			 + "," + d.getWinter_storage() + "," + d.getMain_gate_key() + "," + d.getSail_loft() + "," + d.getSail_loft_key()
+			 + "," + d.getSail_school_laser_loft() + "," + d.getSail_school_loft_key() + "," + d.getKayak_rack()
+			 + "," + d.getKayak_shed() + "," + d.getKayak_shed_key() + "," + d.getWork_credit()
+			 +");"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
