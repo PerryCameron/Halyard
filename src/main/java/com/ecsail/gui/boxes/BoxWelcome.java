@@ -19,13 +19,13 @@ public class BoxWelcome extends HBox {
 		int height = 70;
 		VBox vboxLeft = new VBox();
 		VBox vboxRight = new VBox();
-		//Button activeMemListButton = new Button("Active Membership List");
+		Button rosterButton = new Button("Rosters");
 		Button peopleListButton = new Button("People");
 		Button slipListButton = new Button("Slips");
 		Button bodButton = new Button("Board of Directors");
 		Button newButton = new Button("New Membership");
 		Button batchesButton = new Button("Deposits");
-		Button rosterButton = new Button("Rosters");
+		Button activeRosterButton = new Button("Active Roster");
 		
 		int activeMembership = SqlSelect.getActiveMembershipCount();
 		int activePeople = SqlSelect.getActivePeopleCount();
@@ -50,25 +50,25 @@ public class BoxWelcome extends HBox {
 		
 		newButton.setId("bigbuttontext");
 		bodButton.setId("bigbuttontext");
-		//activeMemListButton.setId("bigbuttontext");
+		rosterButton.setId("bigbuttontext");
 		peopleListButton.setId("bigbuttontext");
 		slipListButton.setId("bigbuttontext");
 		batchesButton.setId("bigbuttontext");
-		rosterButton.setId("bigbuttontext");
+		activeRosterButton.setId("bigbuttontext");
 		activeText.setId("");
 		vboxRight.setSpacing(10);
 		vboxRight.setPadding(new Insets(30,0,0,200));
-		//activeMemListButton.setPrefSize(width, height);
+		rosterButton.setPrefSize(width, height);
 		peopleListButton.setPrefSize(width, height);
 		slipListButton.setPrefSize(width, height);
 		bodButton.setPrefSize(width, height);
 		newButton.setPrefSize(width, height);
 		batchesButton.setPrefSize(width, height);
-		rosterButton.setPrefSize(width, height);
+		activeRosterButton.setPrefSize(width, height);
 		
 		///////////////// LISTENERS  /////////////////////////
 		
-		rosterButton.setOnAction(new EventHandler<ActionEvent>() {
+		activeRosterButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
 				TabLauncher.openMembershipListTab();
@@ -109,9 +109,18 @@ public class BoxWelcome extends HBox {
 				TabLauncher.openTabBatchedPaidDues();
 			}
 		});
+		
+		rosterButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				TabLauncher.openRoster();
+			}
+		});
+		
+		
 		////////////////  SET CONTENT ////////////////////////
 		vboxLeft.getChildren().addAll(activeText,familyMembershipText,regularMembershipText,socialMembershipText,lakeAssociateMembershipText,lifeMembershipText,activepeopleText);
-		vboxRight.getChildren().addAll(rosterButton,peopleListButton,slipListButton,bodButton,newButton,batchesButton);
+		vboxRight.getChildren().addAll(activeRosterButton,peopleListButton,slipListButton,bodButton,newButton,batchesButton,rosterButton);
 		getChildren().addAll(vboxLeft,vboxRight);
 		
 	}

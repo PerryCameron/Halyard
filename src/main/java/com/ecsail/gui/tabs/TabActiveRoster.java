@@ -10,12 +10,14 @@ import com.ecsail.structures.Object_MembershipList;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
@@ -37,11 +39,26 @@ public class TabActiveRoster extends Tab {
 		///////////////////  OBJECTS //////////////////////////
 		VBox vbox1 = new VBox();
 		VBox vbox2 = new VBox();  // inter vbox
+		VBox vboxRadioButtons = new VBox();
 		HBox controlsHbox = new HBox();
+		
+		ToggleGroup tg1 = new ToggleGroup();  
+		RadioButton r1 = new RadioButton("Active"); 
+        RadioButton r2 = new RadioButton("InActive"); 
+        RadioButton r3 = new RadioButton("New Members"); 
+        
+        
+		r1.setToggleGroup(tg1); 
+        r2.setToggleGroup(tg1);
+        r3.setToggleGroup(tg1);
+        r1.setSelected(true);
 		vbox1.setId("box-blue");
 		vbox2.setId("box-pink");
+		controlsHbox.setSpacing(5);
+		vboxRadioButtons.setSpacing(3);
 		vbox1.setPadding(new Insets(12,12,15,12));
 		vbox2.setPadding(new Insets(3,3,5,3));
+		vboxRadioButtons.setPadding(new Insets(5,5,5,5));
 		vbox1.setAlignment(Pos.TOP_CENTER);
 		vbox1.setPrefHeight(768);
 
@@ -102,8 +119,7 @@ public class TabActiveRoster extends Tab {
 				  if (!newValue) {
 					  selectedYear = yearSpinner.getEditor().getText();
 					  Main.activememberships.clear();
-					  //Main.clearRoster();
-					  Main.activememberships = SqlSelect.getActiveMembershipList(selectedYear);
+					  Main.activememberships.addAll(SqlSelect.getActiveMembershipList(selectedYear));
 					  activeMembershipTableView.setItems(activememberships);
 					  System.out.println(Main.activememberships.size());
 					  //paidDues.addAll(SqlSelect.getPaidDues(selectedYear));
@@ -127,7 +143,8 @@ public class TabActiveRoster extends Tab {
 		    });
 		    
 		    //////////////////// SET CONTENT //////////////////////
-		    controlsHbox.getChildren().add(yearSpinner);
+		    vboxRadioButtons.getChildren().addAll(r1,r2,r3);
+		    controlsHbox.getChildren().addAll(yearSpinner,vboxRadioButtons);
 			vbox1.getChildren().add(vbox2);
 			vbox2.getChildren().addAll(controlsHbox,activeMembershipTableView);
 			setContent(vbox1);

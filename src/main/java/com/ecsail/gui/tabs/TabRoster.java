@@ -23,16 +23,16 @@ import javafx.scene.layout.VBox;
 
 public class TabRoster extends Tab {
 	
-	private ObservableList<Object_MembershipList> activememberships;
+	private ObservableList<Object_MembershipList> rosters;
 	private TableView<Object_MembershipList> activeMembershipTableView = new TableView<>();
 	String selectedYear;
 	
-	public TabRoster(ObservableList<Object_MembershipList> a, String sy) {
+	public TabRoster() {
 		super();
-		this.activememberships = a;
-		this.selectedYear = sy;
-		this.setText("Active Roster");
-		System.out.println("size=" + activememberships.size());
+		this.selectedYear = Main.selectedYear;
+		this.rosters = SqlSelect.getActiveMembershipList(selectedYear);
+		this.setText("Roster");
+		System.out.println("size=" + rosters.size());
 		
 		///////////////////  OBJECTS //////////////////////////
 		VBox vbox1 = new VBox();
@@ -46,7 +46,7 @@ public class TabRoster extends Tab {
 		vbox1.setPrefHeight(768);
 
 			setOnClosed(null);
-			activeMembershipTableView.setItems(activememberships);
+			activeMembershipTableView.setItems(rosters);
 			activeMembershipTableView.setPrefWidth(1000);
 			activeMembershipTableView.setFixedCellSize(30);
 			activeMembershipTableView.setPrefHeight(680);
@@ -101,11 +101,9 @@ public class TabRoster extends Tab {
 			yearSpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
 				  if (!newValue) {
 					  selectedYear = yearSpinner.getEditor().getText();
-					  Main.activememberships.clear();
-					  //Main.clearRoster();
-					  Main.activememberships = SqlSelect.getActiveMembershipList(selectedYear);
-					  activeMembershipTableView.setItems(activememberships);
-					  System.out.println(Main.activememberships.size());
+					  rosters.clear();
+					  rosters.addAll(SqlSelect.getActiveMembershipList(selectedYear));
+
 					  //paidDues.addAll(SqlSelect.getPaidDues(selectedYear));
 					  //currentDefinedFee.clear();
 					  //currentDefinedFee = SqlSelect.getDefinedFee(selectedYear);

@@ -10,6 +10,7 @@ import com.ecsail.gui.tabs.TabDefinedFee;
 import com.ecsail.gui.tabs.TabMembership;
 import com.ecsail.gui.tabs.TabNewYearGenerator;
 import com.ecsail.gui.tabs.TabPeopleList;
+import com.ecsail.gui.tabs.TabRoster;
 import com.ecsail.gui.tabs.TabSlips;
 import com.ecsail.gui.tabs.TabStub;
 import com.ecsail.gui.tabs.TabWelcome;
@@ -77,9 +78,15 @@ static TabPane tabPane;
 	}
 	
 	public static void openMembershipListTab() {
-		if(!tabOpen("Membership List (Active)")) // is the tab already open??
+		if(!tabOpen("Active Roster")) // is the tab already open??
 		tabPane.getTabs().add(new TabActiveRoster(Main.activememberships, Main.selectedYear));
-		tabPane.getSelectionModel().select(getTabIndex("Membership List (Active)"));
+		tabPane.getSelectionModel().select(getTabIndex("Active Roster"));
+	}
+	
+	public static void openRoster() {
+		if(!tabOpen("Roster")) // is the tab already open??
+		tabPane.getTabs().add(new TabRoster());
+		tabPane.getSelectionModel().select(getTabIndex("Roster"));
 	}
 	
 	public static void openWelcomeTab(VBox vboxGrey) {
