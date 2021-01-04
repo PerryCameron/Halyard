@@ -2,33 +2,42 @@ package com.ecsail.gui.tabs;
 
 import java.util.Arrays;
 
+import com.ecsail.main.Main;
+import com.ecsail.main.SqlSelect;
 import com.ecsail.main.TabLauncher;
 import com.ecsail.structures.Object_MembershipList;
 
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-public class TabActiveMembershipList extends Tab {
+public class TabActiveRoster extends Tab {
 	
 	private ObservableList<Object_MembershipList> activememberships;
 	private TableView<Object_MembershipList> activeMembershipTableView = new TableView<>();
+	String selectedYear;
 	
-	public TabActiveMembershipList(ObservableList<Object_MembershipList> a) {
+	public TabActiveRoster(ObservableList<Object_MembershipList> a, String sy) {
 		super();
 		this.activememberships = a;
-		this.setText("Membership List (Active)");
+		this.selectedYear = sy;
+		this.setText("Active Roster");
+		System.out.println("size=" + activememberships.size());
 		
 		///////////////////  OBJECTS //////////////////////////
 		VBox vbox1 = new VBox();
 		VBox vbox2 = new VBox();  // inter vbox
+		HBox controlsHbox = new HBox();
 		vbox1.setId("box-blue");
 		vbox2.setId("box-pink");
 		vbox1.setPadding(new Insets(12,12,15,12));
@@ -84,6 +93,25 @@ public class TabActiveMembershipList extends Tab {
 			activeMembershipTableView.getSortOrder().add(Col3);  // start sorted by membershipID
 			activeMembershipTableView.sort();
 			
+			final Spinner<Integer> yearSpinner = new Spinner<Integer>();
+			SpinnerValueFactory<Integer> wetSlipValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1970, Integer.parseInt(selectedYear), Integer.parseInt(selectedYear));
+			yearSpinner.setValueFactory(wetSlipValueFactory);
+			yearSpinner.setPrefWidth(90);
+			yearSpinner.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_HORIZONTAL);
+			yearSpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
+				  if (!newValue) {
+					  selectedYear = yearSpinner.getEditor().getText();
+					  Main.activememberships.clear();
+					  //Main.clearRoster();
+					  Main.activememberships = SqlSelect.getActiveMembershipList(selectedYear);
+					  activeMembershipTableView.setItems(activememberships);
+					  System.out.println(Main.activememberships.size());
+					  //paidDues.addAll(SqlSelect.getPaidDues(selectedYear));
+					  //currentDefinedFee.clear();
+					  //currentDefinedFee = SqlSelect.getDefinedFee(selectedYear);
+				  }
+				});
+			
 			////////////////////  LISTENERS //////////////////////////
 		    activeMembershipTableView.setRowFactory(tv -> {
 		        TableRow<Object_MembershipList> row = new TableRow<>();
@@ -99,12 +127,17 @@ public class TabActiveMembershipList extends Tab {
 		    });
 		    
 		    //////////////////// SET CONTENT //////////////////////
+		    controlsHbox.getChildren().add(yearSpinner);
 			vbox1.getChildren().add(vbox2);
-			vbox2.getChildren().add(activeMembershipTableView);
+			vbox2.getChildren().addAll(controlsHbox,activeMembershipTableView);
 			setContent(vbox1);
 	}
+	
+	//// Class Methods ////
 
 	private static void createTab(Object_MembershipList clickedRow)  {
 		TabLauncher.createTab(clickedRow.getMembershipId(),clickedRow.getMsid());
 	}
+	
+
 }

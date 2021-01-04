@@ -19,7 +19,7 @@ public class BoxWelcome extends HBox {
 		int height = 70;
 		VBox vboxLeft = new VBox();
 		VBox vboxRight = new VBox();
-		Button activeMemListButton = new Button("Active Membership List");
+		//Button activeMemListButton = new Button("Active Membership List");
 		Button peopleListButton = new Button("People");
 		Button slipListButton = new Button("Slips");
 		Button bodButton = new Button("Board of Directors");
@@ -50,7 +50,7 @@ public class BoxWelcome extends HBox {
 		
 		newButton.setId("bigbuttontext");
 		bodButton.setId("bigbuttontext");
-		activeMemListButton.setId("bigbuttontext");
+		//activeMemListButton.setId("bigbuttontext");
 		peopleListButton.setId("bigbuttontext");
 		slipListButton.setId("bigbuttontext");
 		batchesButton.setId("bigbuttontext");
@@ -58,7 +58,7 @@ public class BoxWelcome extends HBox {
 		activeText.setId("");
 		vboxRight.setSpacing(10);
 		vboxRight.setPadding(new Insets(30,0,0,200));
-		activeMemListButton.setPrefSize(width, height);
+		//activeMemListButton.setPrefSize(width, height);
 		peopleListButton.setPrefSize(width, height);
 		slipListButton.setPrefSize(width, height);
 		bodButton.setPrefSize(width, height);
@@ -68,7 +68,7 @@ public class BoxWelcome extends HBox {
 		
 		///////////////// LISTENERS  /////////////////////////
 		
-		activeMemListButton.setOnAction(new EventHandler<ActionEvent>() {
+		rosterButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
 				TabLauncher.openMembershipListTab();
@@ -111,7 +111,7 @@ public class BoxWelcome extends HBox {
 		});
 		////////////////  SET CONTENT ////////////////////////
 		vboxLeft.getChildren().addAll(activeText,familyMembershipText,regularMembershipText,socialMembershipText,lakeAssociateMembershipText,lifeMembershipText,activepeopleText);
-		vboxRight.getChildren().addAll(activeMemListButton,peopleListButton,slipListButton,bodButton,newButton,batchesButton,rosterButton);
+		vboxRight.getChildren().addAll(rosterButton,peopleListButton,slipListButton,bodButton,newButton,batchesButton);
 		getChildren().addAll(vboxLeft,vboxRight);
 		
 	}

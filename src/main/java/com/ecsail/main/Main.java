@@ -24,6 +24,7 @@ import javafx.stage.WindowEvent;
 public class Main extends Application {
 static ConnectDatabase connect;
 public static ObservableList<Object_MembershipList> activememberships;
+public static String selectedYear; 
 static BorderPane mainPane;
 static TabLauncher mainViewPane;
 public static BoxConsole console;
@@ -31,6 +32,7 @@ static String ipaddress;
 
 public static void main(String[] args) throws SQLException {
         System.out.println("Starting application...");
+        Main.selectedYear = Paths.getYear();
         setUpForFirstTime();
         console = new BoxConsole();
         // this is the tree trunk to the entire program
@@ -81,6 +83,8 @@ public static void main(String[] args) throws SQLException {
 		primaryStage.show();
 		connect = new ConnectDatabase(primaryStage);
 	}
+	
+	//////////////  CLASS METHODS //////////////////////
 	
 	public static Window getPrimaryStage() {  // this is used for alerts
 		return null;

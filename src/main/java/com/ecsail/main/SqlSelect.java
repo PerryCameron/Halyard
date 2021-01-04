@@ -846,7 +846,7 @@ public class SqlSelect {
 		// System.out.println(thisMembership.toString());
 		return thisMembership;
 	}
-	
+/*	
 	public static ObservableList<Object_MembershipList> getActiveMembershipList() {
 		ObservableList<Object_MembershipList> theseactivememberships = FXCollections.observableArrayList();
 		try {
@@ -880,6 +880,44 @@ public class SqlSelect {
 			e.printStackTrace();
 		}
 		System.out.println("Creating List of active membership objects...");
+		return theseactivememberships;
+	}
+	*/
+	public static ObservableList<Object_MembershipList> getActiveMembershipList(String year) {
+		ObservableList<Object_MembershipList> theseactivememberships = FXCollections.observableArrayList();
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs;
+			rs = stmt.executeQuery(Main.console.setRegexColor(
+					"Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,m.JOIN_DATE,m.ACTIVE_MEMBERSHIP,m.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip "
+							+ "from slip s "
+							+ "right join membership m on m.MS_ID=s.MS_ID "
+							+ "left join membership_id id on m.MS_ID=id.MS_ID "
+							+ "left join person p on p.MS_ID=m.MS_ID "
+							+ "where id.FISCAL_YEAR='" + year + "' and p.MEMBER_TYPE=1 and m.active_membership=true order by membership_id"));
+			while (rs.next()) {
+				theseactivememberships.add(new Object_MembershipList(
+						rs.getInt("MS_ID"), 
+						rs.getInt("P_ID"),
+						rs.getInt("MEMBERSHIP_ID"), 
+						rs.getString("JOIN_DATE"), 
+						rs.getBoolean("ACTIVE_MEMBERSHIP"),
+						rs.getString("MEM_TYPE"), 
+						rs.getString("SLIP_NUM"), 
+						rs.getString("L_NAME"),
+						rs.getString("F_NAME"), 
+						rs.getInt("SUBLEASED_TO"), 
+						rs.getString("ADDRESS"), 
+						rs.getString("CITY"), 
+						rs.getString("STATE"),
+						rs.getString("ZIP")));
+			}
+			stmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("Creating Roster list for " + year + "...");
 		return theseactivememberships;
 	}
 	
