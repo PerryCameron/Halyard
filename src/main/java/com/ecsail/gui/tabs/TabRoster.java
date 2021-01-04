@@ -24,7 +24,7 @@ import javafx.scene.layout.VBox;
 public class TabRoster extends Tab {
 	
 	private ObservableList<Object_MembershipList> rosters;
-	private TableView<Object_MembershipList> activeMembershipTableView = new TableView<>();
+	private TableView<Object_MembershipList> rosterTableView = new TableView<>();
 	String selectedYear;
 	
 	public TabRoster() {
@@ -46,10 +46,10 @@ public class TabRoster extends Tab {
 		vbox1.setPrefHeight(768);
 
 			setOnClosed(null);
-			activeMembershipTableView.setItems(rosters);
-			activeMembershipTableView.setPrefWidth(1000);
-			activeMembershipTableView.setFixedCellSize(30);
-			activeMembershipTableView.setPrefHeight(680);
+			rosterTableView.setItems(rosters);
+			rosterTableView.setPrefWidth(1000);
+			rosterTableView.setFixedCellSize(30);
+			rosterTableView.setPrefHeight(680);
 			
 			TableColumn<Object_MembershipList, Integer> Col3 = new TableColumn<Object_MembershipList, Integer>("MEM");
 			Col3.setCellValueFactory(new PropertyValueFactory<Object_MembershipList, Integer>("membershipId"));
@@ -89,9 +89,9 @@ public class TabRoster extends Tab {
 			TableColumn<Object_MembershipList, String> Col11 = new TableColumn<Object_MembershipList, String>("MSID");
 			Col11.setCellValueFactory(new PropertyValueFactory<Object_MembershipList, String>("msid"));
 
-			activeMembershipTableView.getColumns().addAll(Arrays.asList(Col3, Col4, Col5a, Col6, Col6a, Col6b, Col7, Col8, Col9, Col10, Col11));
-			activeMembershipTableView.getSortOrder().add(Col3);  // start sorted by membershipID
-			activeMembershipTableView.sort();
+			rosterTableView.getColumns().addAll(Arrays.asList(Col3, Col4, Col5a, Col6, Col6a, Col6b, Col7, Col8, Col9, Col10, Col11));
+			rosterTableView.getSortOrder().add(Col3);  // start sorted by membershipID
+			rosterTableView.sort();
 			
 			final Spinner<Integer> yearSpinner = new Spinner<Integer>();
 			SpinnerValueFactory<Integer> wetSlipValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1970, Integer.parseInt(selectedYear), Integer.parseInt(selectedYear));
@@ -103,15 +103,11 @@ public class TabRoster extends Tab {
 					  selectedYear = yearSpinner.getEditor().getText();
 					  rosters.clear();
 					  rosters.addAll(SqlSelect.getRoster(selectedYear, true));
-
-					  //paidDues.addAll(SqlSelect.getPaidDues(selectedYear));
-					  //currentDefinedFee.clear();
-					  //currentDefinedFee = SqlSelect.getDefinedFee(selectedYear);
 				  }
 				});
 			
 			////////////////////  LISTENERS //////////////////////////
-		    activeMembershipTableView.setRowFactory(tv -> {
+		    rosterTableView.setRowFactory(tv -> {
 		        TableRow<Object_MembershipList> row = new TableRow<>();
 		        row.setOnMouseClicked(event -> {
 		            if (! row.isEmpty() && event.getButton()==MouseButton.PRIMARY 
@@ -127,7 +123,7 @@ public class TabRoster extends Tab {
 		    //////////////////// SET CONTENT //////////////////////
 		    controlsHbox.getChildren().add(yearSpinner);
 			vbox1.getChildren().add(vbox2);
-			vbox2.getChildren().addAll(controlsHbox,activeMembershipTableView);
+			vbox2.getChildren().addAll(controlsHbox,rosterTableView);
 			setContent(vbox1);
 	}
 	

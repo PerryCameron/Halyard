@@ -27,16 +27,16 @@ import javafx.scene.layout.VBox;
 
 public class TabActiveRoster extends Tab {
 	
-	private ObservableList<Object_MembershipList> activememberships;
+	private ObservableList<Object_MembershipList> rosters;
 	private TableView<Object_MembershipList> activeMembershipTableView = new TableView<>();
 	String selectedYear;
 	
 	public TabActiveRoster(ObservableList<Object_MembershipList> a, String sy) {
 		super();
-		this.activememberships = a;
+		this.rosters = a;
 		this.selectedYear = sy;
 		this.setText("Active Roster");
-		System.out.println("size=" + activememberships.size());
+		System.out.println("size=" + rosters.size());
 		
 		///////////////////  OBJECTS //////////////////////////
 		VBox vbox1 = new VBox();
@@ -46,7 +46,7 @@ public class TabActiveRoster extends Tab {
 		
 		ToggleGroup tg1 = new ToggleGroup();  
 		RadioButton r1 = new RadioButton("Active"); 
-        RadioButton r2 = new RadioButton("Non-Renewed"); 
+        RadioButton r2 = new RadioButton("Non-Renew"); 
         RadioButton r3 = new RadioButton("New Members"); 
         
         
@@ -65,7 +65,7 @@ public class TabActiveRoster extends Tab {
 		vbox1.setPrefHeight(768);
 
 			setOnClosed(null);
-			activeMembershipTableView.setItems(activememberships);
+			activeMembershipTableView.setItems(rosters);
 			activeMembershipTableView.setPrefWidth(1000);
 			activeMembershipTableView.setFixedCellSize(30);
 			activeMembershipTableView.setPrefHeight(680);
@@ -120,13 +120,12 @@ public class TabActiveRoster extends Tab {
 			yearSpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
 				  if (!newValue) {
 					  selectedYear = yearSpinner.getEditor().getText();
-					  Main.activememberships.clear();
-					  Main.activememberships.addAll(SqlSelect.getRoster(selectedYear,true));
-					  activeMembershipTableView.setItems(activememberships);
-					  System.out.println(Main.activememberships.size());
-					  //paidDues.addAll(SqlSelect.getPaidDues(selectedYear));
-					  //currentDefinedFee.clear();
-					  //currentDefinedFee = SqlSelect.getDefinedFee(selectedYear);
+					  rosters.clear();
+					  if(r1.isSelected())
+					  rosters.addAll(SqlSelect.getRoster(selectedYear,true));
+					  if(r2.isSelected())
+					  rosters.addAll(SqlSelect.getRoster(selectedYear,false));
+
 				  }
 				});
 			
@@ -149,8 +148,8 @@ public class TabActiveRoster extends Tab {
 	  		    public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected, Boolean isNowSelected) {
 	  		        if (isNowSelected) { 
 	  		            System.out.println("Active");
-	  		          activememberships.clear();
-	  		          activememberships.addAll(SqlSelect.getRoster(selectedYear, true));
+	  		          rosters.clear();
+	  		          rosters.addAll(SqlSelect.getRoster(selectedYear, true));
 	  		        } 
 	  		    }
 	  		});
@@ -159,8 +158,8 @@ public class TabActiveRoster extends Tab {
 	  		    @Override
 	  		    public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected, Boolean isNowSelected) {
 	  		        if (isNowSelected) { 
-		  		          activememberships.clear();
-		  		          activememberships.addAll(SqlSelect.getRoster(selectedYear, false));
+		  		          rosters.clear();
+		  		          rosters.addAll(SqlSelect.getRoster(selectedYear, false));
 	  		        } else {
 	  		            // ...
 	  		        }
