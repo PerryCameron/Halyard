@@ -1495,7 +1495,22 @@ public class SqlSelect {
 			e.printStackTrace();
 		}
 		return number;
+	}
+	
+	public static int getMid(String year, int ms_id) {
+		int number = 0;
+		ResultSet rs;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			rs = stmt.executeQuery("select mid from membership_id where MS_ID=" + ms_id + " and FISCAL_YEAR=" + year);
+			rs.next();
+			number = rs.getInt("MID");
 		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return number;
 	}
 	
 	public static int getMSID(Object_Temp t,int year, ArrayList<String> errortuples) {

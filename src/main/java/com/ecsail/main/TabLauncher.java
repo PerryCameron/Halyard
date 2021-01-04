@@ -15,7 +15,6 @@ import com.ecsail.gui.tabs.TabStub;
 import com.ecsail.gui.tabs.TabWelcome;
 import com.ecsail.structures.Object_MembershipList;
 
-import javafx.collections.ObservableList;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.Pane;

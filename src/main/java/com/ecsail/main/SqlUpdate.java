@@ -447,16 +447,19 @@ public class SqlUpdate {
 		
 	}
 	
-	public static void updateMembershipId(int mid, String field, String attribute) {
+	public static Boolean updateMembershipId(int mid, String field, String attribute) {
+		Boolean noError = true;
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE membership_id SET " + field + "=\"" + attribute + "\" WHERE mid='" + mid + "';"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			noError = false;
 		}
-		
+		return noError;
 	}
+	
 	
 	public static void updateDefinedFee(String year, String field, String attribute) {
 		try {

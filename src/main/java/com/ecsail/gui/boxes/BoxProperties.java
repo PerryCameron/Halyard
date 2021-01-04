@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.Optional;
 
 import com.ecsail.enums.MembershipType;
+import com.ecsail.main.Paths;
 import com.ecsail.main.SqlDelete;
 import com.ecsail.main.SqlExists;
 import com.ecsail.main.SqlSelect;
@@ -127,11 +128,13 @@ public class BoxProperties extends HBox {
 				}
 			}
 		});
-		
+		//updateMembershipId(int mid, String field, String attribute)
 		changeIDButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
             	String newID = changeMembershipIDTextField.getText();
-            	if(SqlUpdate.updateMembership("MEMBERSHIP_ID", membership.getMsid(), newID))
+            	int mid = SqlSelect.getMid(Paths.getYear(), membership.getMsid());
+            	if(SqlUpdate.updateMembershipId(mid, "membership_id", newID))
+            	//if(SqlUpdate.updateMembership("MEMBERSHIP_ID", membership.getMsid(), newID))
             	if(!newID.equals("")) membership.setMembershipId(Integer.parseInt(newID));
             	labels.getMemberID().setText(newID);  // sets labels in BoxMembership
             	membershipTab.setText("Membership " + newID);
