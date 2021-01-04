@@ -213,7 +213,7 @@ public class ConnectDatabase {
         		String pass = password.getText();
         		String ip = hostName.getValue();
         		if(createConnection(user, pass, ip, port)) {
-        		Main.activememberships = SqlSelect.getActiveMembershipList(Paths.getYear());
+        		Main.activememberships = SqlSelect.getRoster(Main.selectedYear, true);
         		logonStage.close();
         		primaryStage.setTitle("ECSC Membership Database (connected) " + ip);
         		} else {

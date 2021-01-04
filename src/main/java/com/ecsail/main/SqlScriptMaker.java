@@ -162,7 +162,8 @@ public class SqlScriptMaker {
 		+ mid.getMid() + ","
 		+ mid.getFiscal_Year() + "," // stored as integer in database
 		+ mid.getMs_id() + ","
-		+ mid.getMembership_id() + ");\n"; //stored as integer in database
+		+ mid.getMembership_id() + ","
+		+ mid.isIsRenew() + ");\n"; //stored as integer in database
 	}
 	
 	public static String getDepositString(Object_Deposit d) {

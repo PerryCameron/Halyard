@@ -94,6 +94,9 @@ public class Dialogue_DepositPDF extends Stage {
   		batchSpinner.getValueFactory().setValue(currentDeposit.getBatch());	
   		}
 		
+  		/////////////// LISTENERS ///////////////////////
+  		
+  		
 		createPDFbutton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {

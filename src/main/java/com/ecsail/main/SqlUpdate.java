@@ -451,7 +451,20 @@ public class SqlUpdate {
 		Boolean noError = true;
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
-			stmt.execute(Main.console.setRegexColor("UPDATE membership_id SET " + field + "=\"" + attribute + "\" WHERE mid='" + mid + "';"));
+			stmt.execute(Main.console.setRegexColor("UPDATE membership_id SET " + field + "=\"" + attribute + "\" WHERE mid=" + mid));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			noError = false;
+		}
+		return noError;
+	}
+	
+	public static Boolean updateMembershipId(int mid, String field, Boolean attribute) {
+		Boolean noError = true;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			stmt.execute(Main.console.setRegexColor("UPDATE membership_id SET " + field + "=" + attribute + " WHERE mid=" + mid));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

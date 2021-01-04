@@ -7,6 +7,8 @@ import com.ecsail.main.SqlSelect;
 import com.ecsail.main.TabLauncher;
 import com.ecsail.structures.Object_MembershipList;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -44,7 +46,7 @@ public class TabActiveRoster extends Tab {
 		
 		ToggleGroup tg1 = new ToggleGroup();  
 		RadioButton r1 = new RadioButton("Active"); 
-        RadioButton r2 = new RadioButton("InActive"); 
+        RadioButton r2 = new RadioButton("Non-Renewed"); 
         RadioButton r3 = new RadioButton("New Members"); 
         
         
@@ -119,7 +121,7 @@ public class TabActiveRoster extends Tab {
 				  if (!newValue) {
 					  selectedYear = yearSpinner.getEditor().getText();
 					  Main.activememberships.clear();
-					  Main.activememberships.addAll(SqlSelect.getActiveMembershipList(selectedYear));
+					  Main.activememberships.addAll(SqlSelect.getRoster(selectedYear,true));
 					  activeMembershipTableView.setItems(activememberships);
 					  System.out.println(Main.activememberships.size());
 					  //paidDues.addAll(SqlSelect.getPaidDues(selectedYear));
@@ -141,6 +143,40 @@ public class TabActiveRoster extends Tab {
 		        });
 		        return row ;
 		    });
+		    
+	  		r1.selectedProperty().addListener(new ChangeListener<Boolean>() {
+	  		    @Override
+	  		    public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected, Boolean isNowSelected) {
+	  		        if (isNowSelected) { 
+	  		            System.out.println("Active");
+	  		          activememberships.clear();
+	  		          activememberships.addAll(SqlSelect.getRoster(selectedYear, true));
+	  		        } 
+	  		    }
+	  		});
+	  		
+	  		r2.selectedProperty().addListener(new ChangeListener<Boolean>() {
+	  		    @Override
+	  		    public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected, Boolean isNowSelected) {
+	  		        if (isNowSelected) { 
+		  		          activememberships.clear();
+		  		          activememberships.addAll(SqlSelect.getRoster(selectedYear, false));
+	  		        } else {
+	  		            // ...
+	  		        }
+	  		    }
+	  		});
+	  		
+	  		r3.selectedProperty().addListener(new ChangeListener<Boolean>() {
+	  		    @Override
+	  		    public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected, Boolean isNowSelected) {
+	  		        if (isNowSelected) { 
+	  		            System.out.println("New Members");
+	  		        } else {
+	  		            // ...
+	  		        }
+	  		    }
+	  		});
 		    
 		    //////////////////// SET CONTENT //////////////////////
 		    vboxRadioButtons.getChildren().addAll(r1,r2,r3);

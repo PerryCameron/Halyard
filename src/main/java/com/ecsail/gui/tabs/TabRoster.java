@@ -30,7 +30,7 @@ public class TabRoster extends Tab {
 	public TabRoster() {
 		super();
 		this.selectedYear = Main.selectedYear;
-		this.rosters = SqlSelect.getActiveMembershipList(selectedYear);
+		this.rosters = SqlSelect.getRoster(selectedYear, true);
 		this.setText("Roster");
 		System.out.println("size=" + rosters.size());
 		
@@ -102,7 +102,7 @@ public class TabRoster extends Tab {
 				  if (!newValue) {
 					  selectedYear = yearSpinner.getEditor().getText();
 					  rosters.clear();
-					  rosters.addAll(SqlSelect.getActiveMembershipList(selectedYear));
+					  rosters.addAll(SqlSelect.getRoster(selectedYear, true));
 
 					  //paidDues.addAll(SqlSelect.getPaidDues(selectedYear));
 					  //currentDefinedFee.clear();

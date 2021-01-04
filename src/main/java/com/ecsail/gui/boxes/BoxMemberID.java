@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.function.Function;
 
 import com.ecsail.main.EditCell;
+import com.ecsail.main.Main;
 import com.ecsail.main.Paths;
 import com.ecsail.main.SqlDelete;
 import com.ecsail.main.SqlExists;
@@ -12,17 +13,27 @@ import com.ecsail.main.SqlSelect;
 import com.ecsail.main.SqlUpdate;
 import com.ecsail.structures.Object_MembershipId;
 import com.ecsail.structures.Object_MembershipList;
+import javafx.beans.Observable;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableColumn.CellEditEvent;
+import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.Callback;
 
 public class BoxMemberID extends HBox {
 	
@@ -30,9 +41,15 @@ public class BoxMemberID extends HBox {
 	private ObservableList<Object_MembershipId> id;
 	
 	public BoxMemberID(Object_MembershipList m) {
-		this.id = SqlSelect.getIds(m.getMsid());
-
 		
+		this.id = FXCollections.observableArrayList(new Callback<Object_MembershipId, Observable[]>() {
+			@Override
+			public Observable[] call(Object_MembershipId param) {
+				return new Observable[] { param.isRenewProperty() };
+
+			}
+		});
+		this.id.addAll(SqlSelect.getIds(m.getMsid()));
 		/////// OBJECT INSTANCE //////	
 		VBox vbox1 = new VBox(); // holds phone buttons
 		Button idAdd = new Button("Add");
@@ -54,7 +71,7 @@ public class BoxMemberID extends HBox {
 		///// TABLEVIE INSTANCE CREATION AND ATTRIBUTES /////
 		idTableView = new TableView<Object_MembershipId>();
 		idTableView.setItems(id);
-		idTableView.setPrefWidth(172);
+		idTableView.setPrefWidth(262);
 		idTableView.setPrefHeight(140);
 		idTableView.setFixedCellSize(30);
 		idTableView.setEditable(true);
@@ -92,6 +109,40 @@ public class BoxMemberID extends HBox {
                     }
                 }
             );
+        
+     // example for this column found at https://o7planning.org/en/11079/javafx-tableview-tutorial
+		TableColumn<Object_MembershipId, Boolean> Col3 = new TableColumn<Object_MembershipId, Boolean>("Renewed");
+		Col3.setPrefWidth(90);
+		Col3.setCellValueFactory(new Callback<CellDataFeatures<Object_MembershipId, Boolean>, ObservableValue<Boolean>>() {
+	            @Override
+	            public ObservableValue<Boolean> call(CellDataFeatures<Object_MembershipId, Boolean> param) {
+	            	Object_MembershipId id = param.getValue();
+	                SimpleBooleanProperty booleanProp = new SimpleBooleanProperty(id.isIsRenew());
+	                // Note: singleCol.setOnEditCommit(): Not work for
+	                // CheckBoxTableCell.
+	                // When "isListed?" column change.
+	                booleanProp.addListener(new ChangeListener<Boolean>() {
+	                    @Override
+	                    public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue,
+	                            Boolean newValue) {
+	                        id.setIsRenew(newValue);
+	                        //SqlUpdate.updateListed("phone_listed",phone.getPhone_ID(), newValue);
+	                        SqlUpdate.updateMembershipId(id.getMid(), "RENEW", newValue);
+	                    }
+	                });
+	                return booleanProp;
+	            }
+	        });
+	 
+		Col3.setCellFactory(new Callback<TableColumn<Object_MembershipId, Boolean>, //
+	        TableCell<Object_MembershipId, Boolean>>() {
+	            @Override
+	            public TableCell<Object_MembershipId, Boolean> call(TableColumn<Object_MembershipId, Boolean> p) {
+	                CheckBoxTableCell<Object_MembershipId, Boolean> cell = new CheckBoxTableCell<Object_MembershipId, Boolean>();
+	                cell.setAlignment(Pos.CENTER);
+	                return cell;
+	            }
+	        });
 		
 
 		
@@ -105,11 +156,11 @@ public class BoxMemberID extends HBox {
 						if (SqlExists.memberShipIdExists(m.getMsid())) {
 							Object_MembershipId thisId = SqlSelect.getCount(m.getMsid()); // retrieves oldest year																// record for member
 							//System.out.println("mem id is" + thisId.getMembership_id());
-							int fiscalYear = Integer.parseInt(thisId.getFiscal_Year()) - 1; // gets year and subtracts
+							int fiscalYear = Integer.parseInt(Main.selectedYear); // gets year and subtracts
 							newIdTuple = new Object_MembershipId(mid, fiscalYear + "", m.getMsid(),
-									thisId.getMembership_id());
+									"0",true);
 						} else {
-							newIdTuple = new Object_MembershipId(mid, Paths.getYear(), m.getMsid(),m.getMembershipId() + "");
+							newIdTuple = new Object_MembershipId(mid, Paths.getYear(), m.getMsid(),"0",true);
 						}
 						SqlInsert.addMembershipId(newIdTuple);
 						id.add(newIdTuple);
@@ -127,7 +178,7 @@ public class BoxMemberID extends HBox {
 		
 		///////////////////  SET CONTENT  ///////////////////////
 		
-		idTableView.getColumns().addAll(Arrays.asList(Col1,Col2));
+		idTableView.getColumns().addAll(Arrays.asList(Col1,Col2,Col3));
 		vboxPink.getChildren().add(idTableView);  // adds pink border around table
 		vbox1.getChildren().addAll(idAdd, idDelete); // lines buttons up vertically
 		hboxGrey.getChildren().addAll(vboxPink,vbox1);

@@ -555,7 +555,8 @@ public class SqlSelect {
 						rs.getInt("MID")
 						, rs.getString("FISCAL_YEAR")
 						, rs.getInt("MS_ID")
-						, rs.getString("MEMBERSHIP_ID")));
+						, rs.getString("MEMBERSHIP_ID")
+						, rs.getBoolean("RENEW")));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -574,7 +575,8 @@ public class SqlSelect {
 						rs.getInt("MID")
 						, rs.getString("FISCAL_YEAR")
 						, rs.getInt("MS_ID")
-						, rs.getString("MEMBERSHIP_ID")));
+						, rs.getString("MEMBERSHIP_ID")
+						, rs.getBoolean("RENEW")));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -593,7 +595,8 @@ public class SqlSelect {
 						rs.getInt("MID")
 						, rs.getString("FISCAL_YEAR")
 						, rs.getInt("MS_ID")
-						, rs.getString("MEMBERSHIP_ID"));
+						, rs.getString("MEMBERSHIP_ID")
+						, rs.getBoolean("RENEW"));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -883,7 +886,7 @@ public class SqlSelect {
 		return theseactivememberships;
 	}
 	*/
-	public static ObservableList<Object_MembershipList> getActiveMembershipList(String year) {
+	public static ObservableList<Object_MembershipList> getRoster(String year, boolean isActive) {
 		ObservableList<Object_MembershipList> theseactivememberships = FXCollections.observableArrayList();
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
@@ -894,7 +897,7 @@ public class SqlSelect {
 							+ "right join membership m on m.MS_ID=s.MS_ID "
 							+ "left join membership_id id on m.MS_ID=id.MS_ID "
 							+ "left join person p on p.MS_ID=m.MS_ID "
-							+ "where id.FISCAL_YEAR='" + year + "' and p.MEMBER_TYPE=1 and m.active_membership=true order by membership_id"));
+							+ "where id.FISCAL_YEAR='" + year + "' and p.MEMBER_TYPE=1 and id.RENEW=" + isActive + " order by membership_id"));
 			while (rs.next()) {
 				theseactivememberships.add(new Object_MembershipList(
 						rs.getInt("MS_ID"), 
@@ -1097,13 +1100,14 @@ public class SqlSelect {
 		Statement stmt;
 		try {
 			stmt = ConnectDatabase.connection.createStatement();
-			ResultSet rs = stmt.executeQuery("select MID, MIN(FISCAL_YEAR), MS_ID, MAX(MEMBERSHIP_ID) from membership_id where MS_ID=" + ms_id);
+			ResultSet rs = stmt.executeQuery("select MID, MIN(FISCAL_YEAR), MS_ID, MAX(MEMBERSHIP_ID), RENEW from membership_id where MS_ID=" + ms_id);
 			while (rs.next()) {
 				thisId = new Object_MembershipId(
 			rs.getInt("MID")
 			, rs.getString("MIN(FISCAL_YEAR)")
 			, rs.getInt("MS_ID")
-			, rs.getString("MAX(MEMBERSHIP_ID)"));
+			, rs.getString("MAX(MEMBERSHIP_ID)")
+			, rs.getBoolean("RENEW"));
 			};
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
