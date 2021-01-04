@@ -3,14 +3,7 @@ package com.ecsail.gui.dialogues;
 import java.io.IOException;
 
 import com.ecsail.main.Paths;
-import com.ecsail.main.SqlExists;
-import com.ecsail.main.SqlSelect;
-import com.ecsail.pdf.PDF_DepositReport;
 import com.ecsail.pdf.PDF_Renewal_Form;
-import com.ecsail.structures.Object_DefinedFee;
-import com.ecsail.structures.Object_Deposit;
-import com.ecsail.structures.Object_DepositPDF;
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;

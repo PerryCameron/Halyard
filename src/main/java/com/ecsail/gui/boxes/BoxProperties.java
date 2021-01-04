@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.Optional;
 
 import com.ecsail.enums.MembershipType;
-import com.ecsail.main.Main;
 import com.ecsail.main.SqlDelete;
 import com.ecsail.main.SqlExists;
 import com.ecsail.main.SqlSelect;
