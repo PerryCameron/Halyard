@@ -77,9 +77,9 @@ static TabPane tabPane;
 	}
 	
 	public static void openMembershipListTab() {
-		if(!tabOpen("Active Roster")) // is the tab already open??
+		if(!tabOpen("Roster")) // is the tab already open??
 		tabPane.getTabs().add(new TabRoster(Main.activememberships, Main.selectedYear));
-		tabPane.getSelectionModel().select(getTabIndex("Active Roster"));
+		tabPane.getSelectionModel().select(getTabIndex("Roster"));
 	}
 	
 	public static void openWelcomeTab(VBox vboxGrey) {

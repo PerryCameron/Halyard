@@ -104,6 +104,20 @@
     -fx-font-family: "Helvetica";
 }
 
+.titled-pane {
+	-fx-background-color: #e2e3de;
+	-fx-alignment: CENTER;
+	-fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.titled-pane > .title {
+  -fx-background-insets: 0, 1, 2;
+  -fx-background-radius: 0 0 0 0, 0 0 0 0, 0 0 0 0;
+  -fx-padding: 0.166667em 1.166667em 0.25em 0; /* 2 14 3 0 */
+  -fx-font-size: 14px;
+}
+
 .boardgeneral {
 	-fx-font-size: 14px;
 	-fx-alignment: CENTER;

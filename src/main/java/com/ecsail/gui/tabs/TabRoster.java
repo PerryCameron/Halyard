@@ -11,6 +11,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
@@ -18,6 +19,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TitledPane;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
@@ -41,21 +43,27 @@ public class TabRoster extends Tab {
 		VBox vbox1 = new VBox();
 		VBox vbox2 = new VBox();  // inter vbox
 		VBox vboxRadioButtons = new VBox();
+		VBox vboxSpinnerLabel = new VBox();
 		HBox controlsHbox = new HBox();
+		TitledPane titledPane = new TitledPane();
+		Label records = new Label();
 		
 		ToggleGroup tg1 = new ToggleGroup();  
 		RadioButton r1 = new RadioButton("Active"); 
         RadioButton r2 = new RadioButton("Non-Renew"); 
         RadioButton r3 = new RadioButton("New Members"); 
         
-        
+        vboxSpinnerLabel.setSpacing(10);
+        titledPane.setText("Roster " + selectedYear);
+        controlsHbox.setStyle("-fx-background-color:#e2e3de");
+        records.setText(rosters.size() + " Records");
 		r1.setToggleGroup(tg1); 
         r2.setToggleGroup(tg1);
         r3.setToggleGroup(tg1);
         r1.setSelected(true);
 		vbox1.setId("box-blue");
 		vbox2.setId("box-pink");
-		controlsHbox.setSpacing(5);
+		controlsHbox.setSpacing(10);
 		vboxRadioButtons.setSpacing(3);
 		vbox1.setPadding(new Insets(12,12,15,12));
 		vbox2.setPadding(new Insets(3,3,5,3));
@@ -114,7 +122,7 @@ public class TabRoster extends Tab {
 			final Spinner<Integer> yearSpinner = new Spinner<Integer>();
 			SpinnerValueFactory<Integer> wetSlipValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1970, Integer.parseInt(selectedYear), Integer.parseInt(selectedYear));
 			yearSpinner.setValueFactory(wetSlipValueFactory);
-			yearSpinner.setPrefWidth(90);
+			yearSpinner.setPrefWidth(110);
 			yearSpinner.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_HORIZONTAL);
 			yearSpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
 				  if (!newValue) {
@@ -124,7 +132,8 @@ public class TabRoster extends Tab {
 					  rosters.addAll(SqlSelect.getRoster(selectedYear,true));
 					  if(r2.isSelected())
 					  rosters.addAll(SqlSelect.getRoster(selectedYear,false));
-
+					  titledPane.setText("Roster " + selectedYear);
+					  records.setText(rosters.size() + " Records");
 				  }
 				});
 			
@@ -149,6 +158,7 @@ public class TabRoster extends Tab {
 	  		            System.out.println("Active");
 	  		          rosters.clear();
 	  		          rosters.addAll(SqlSelect.getRoster(selectedYear, true));
+	  		          records.setText(rosters.size() + " Records");
 	  		        } 
 	  		    }
 	  		});
@@ -159,6 +169,7 @@ public class TabRoster extends Tab {
 	  		        if (isNowSelected) { 
 		  		          rosters.clear();
 		  		          rosters.addAll(SqlSelect.getRoster(selectedYear, false));
+		  		          records.setText(rosters.size() + " Records");
 	  		        } else {
 	  		            // ...
 	  		        }
@@ -170,6 +181,7 @@ public class TabRoster extends Tab {
 	  		    public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected, Boolean isNowSelected) {
 	  		        if (isNowSelected) { 
 	  		            System.out.println("New Members");
+	  		          records.setText(rosters.size() + " Records");
 	  		        } else {
 	  		            // ...
 	  		        }
@@ -178,9 +190,11 @@ public class TabRoster extends Tab {
 		    
 		    //////////////////// SET CONTENT //////////////////////
 		    vboxRadioButtons.getChildren().addAll(r1,r2,r3);
-		    controlsHbox.getChildren().addAll(yearSpinner,vboxRadioButtons);
+		    vboxSpinnerLabel.getChildren().addAll(yearSpinner, records);
+		    controlsHbox.getChildren().addAll(vboxSpinnerLabel,vboxRadioButtons);
+		    titledPane.setContent(controlsHbox);
 			vbox1.getChildren().add(vbox2);
-			vbox2.getChildren().addAll(controlsHbox,rosterTableView);
+			vbox2.getChildren().addAll(titledPane,rosterTableView);
 			setContent(vbox1);
 	}
 	
