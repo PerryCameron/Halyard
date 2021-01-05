@@ -887,7 +887,7 @@ public class SqlSelect {
 	}
 	*/
 	public static ObservableList<Object_MembershipList> getRoster(String year, boolean isActive) {
-		ObservableList<Object_MembershipList> theseactivememberships = FXCollections.observableArrayList();
+		ObservableList<Object_MembershipList> rosters = FXCollections.observableArrayList();
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			ResultSet rs;
@@ -899,7 +899,7 @@ public class SqlSelect {
 							+ "left join person p on p.MS_ID=m.MS_ID "
 							+ "where id.FISCAL_YEAR='" + year + "' and p.MEMBER_TYPE=1 and id.RENEW=" + isActive + " order by membership_id"));
 			while (rs.next()) {
-				theseactivememberships.add(new Object_MembershipList(
+				rosters.add(new Object_MembershipList(
 						rs.getInt("MS_ID"), 
 						rs.getInt("P_ID"),
 						rs.getInt("MEMBERSHIP_ID"), 
@@ -921,7 +921,44 @@ public class SqlSelect {
 			e.printStackTrace();
 		}
 		System.out.println("Creating Roster list for " + year + "...");
-		return theseactivememberships;
+		return rosters;
+	}
+	
+	public static ObservableList<Object_MembershipList> getNewMemberRoster(String year) {
+		ObservableList<Object_MembershipList> rosters = FXCollections.observableArrayList();
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs;
+			rs = stmt.executeQuery(Main.console.setRegexColor(
+					"select id.membership_id, m.JOIN_DATE, m.MEM_TYPE, m.ACTIVE_MEMBERSHIP, m.ADDRESS, "
+					+ "m.CITY, m.state,m.zip, m.p_id, p.l_name, p.f_name,m.MS_ID from membership m "
+					+ "inner join person p on m.p_id=p.p_id "
+					+ "inner join membership_id id on id.ms_id=m.ms_id "
+					+ "where YEAR(JOIN_DATE)='" + year + "' group by m.MS_ID;"));
+			while (rs.next()) {
+				rosters.add(new Object_MembershipList(
+						rs.getInt("MS_ID"), 
+						rs.getInt("P_ID"),
+						rs.getInt("MEMBERSHIP_ID"), 
+						rs.getString("JOIN_DATE"), 
+						rs.getBoolean("ACTIVE_MEMBERSHIP"),
+						rs.getString("MEM_TYPE"), 
+						"", 
+						rs.getString("L_NAME"),
+						rs.getString("F_NAME"), 
+						0, 
+						rs.getString("ADDRESS"), 
+						rs.getString("CITY"), 
+						rs.getString("STATE"),
+						rs.getString("ZIP")));
+			}
+			stmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("Creating Roster list for " + year + "...");
+		return rosters;
 	}
 	
 	public static Object_DefinedFee selectDefinedFees(int year) {

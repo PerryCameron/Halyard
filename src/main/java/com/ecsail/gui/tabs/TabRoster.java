@@ -129,11 +129,14 @@ public class TabRoster extends Tab {
 					  selectedYear = yearSpinner.getEditor().getText();
 					  rosters.clear();
 					  if(r1.isSelected())
-					  rosters.addAll(SqlSelect.getRoster(selectedYear,true));
+						  rosters.addAll(SqlSelect.getRoster(selectedYear,true));
 					  if(r2.isSelected())
-					  rosters.addAll(SqlSelect.getRoster(selectedYear,false));
+						  rosters.addAll(SqlSelect.getRoster(selectedYear,false));
+					  if(r3.isSelected())
+						  rosters.addAll(SqlSelect.getNewMemberRoster(selectedYear));					  
 					  titledPane.setText("Roster " + selectedYear);
-					  records.setText(rosters.size() + " Records");
+					  records.setText(rosters.size() + " Records"); 
+						  
 				  }
 				});
 			
@@ -180,7 +183,8 @@ public class TabRoster extends Tab {
 	  		    @Override
 	  		    public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected, Boolean isNowSelected) {
 	  		        if (isNowSelected) { 
-	  		            System.out.println("New Members");
+	  		            rosters.clear();
+	  		            rosters.addAll(SqlSelect.getNewMemberRoster(selectedYear));
 	  		          records.setText(rosters.size() + " Records");
 	  		        } else {
 	  		            // ...
