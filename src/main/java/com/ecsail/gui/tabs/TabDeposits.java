@@ -72,7 +72,7 @@ public class TabDeposits extends Tab {
 		});
 		this.selectedYear = new SimpleDateFormat("yyyy").format(new Date());  // lets start at the current year
 		this.paidDues.addAll(SqlSelect.getPaidDues(selectedYear));
-		summaryTotals.setDepositNumber(SqlSelect.getBatchNumber());
+		summaryTotals.setDepositNumber(SqlSelect.getBatchNumber(selectedYear));
 
 		this.currentDefinedFee = SqlSelect.getDefinedFee(selectedYear);
 		this.currentDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date(System.currentTimeMillis()));

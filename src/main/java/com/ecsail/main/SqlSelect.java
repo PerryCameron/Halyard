@@ -1357,12 +1357,12 @@ public class SqlSelect {
 		return committed;
 	}
 	
-	public static int getBatchNumber() {
+	public static int getBatchNumber(String year) {
 		int number = 0;
 		ResultSet rs;
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
-			rs = stmt.executeQuery("SELECT MAX(batch) FROM money WHERE commited=true");
+			rs = stmt.executeQuery("SELECT MAX(batch) FROM money WHERE commited=true and fiscal_year='"+year+"'");
 			rs.next();
 			number = rs.getInt("MAX(batch)");
 		
