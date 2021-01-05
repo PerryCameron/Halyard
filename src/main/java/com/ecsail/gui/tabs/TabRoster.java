@@ -2,7 +2,6 @@ package com.ecsail.gui.tabs;
 
 import java.util.Arrays;
 
-import com.ecsail.main.Main;
 import com.ecsail.main.SqlSelect;
 import com.ecsail.main.TabLauncher;
 import com.ecsail.structures.Object_MembershipList;
@@ -25,17 +24,17 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-public class TabActiveRoster extends Tab {
+public class TabRoster extends Tab {
 	
 	private ObservableList<Object_MembershipList> rosters;
 	private TableView<Object_MembershipList> rosterTableView = new TableView<>();
 	String selectedYear;
 	
-	public TabActiveRoster(ObservableList<Object_MembershipList> a, String sy) {
+	public TabRoster(ObservableList<Object_MembershipList> a, String sy) {
 		super();
 		this.rosters = a;
 		this.selectedYear = sy;
-		this.setText("Active Roster");
+		this.setText("Roster");
 		System.out.println("size=" + rosters.size());
 		
 		///////////////////  OBJECTS //////////////////////////

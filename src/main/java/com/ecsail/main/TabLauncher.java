@@ -3,7 +3,7 @@ package com.ecsail.main;
 import java.io.IOException;
 
 import com.ecsail.gui.dialogues.Dialogue_RenewalForm;
-import com.ecsail.gui.tabs.TabActiveRoster;
+import com.ecsail.gui.tabs.TabRoster;
 import com.ecsail.gui.tabs.TabDeposits;
 import com.ecsail.gui.tabs.TabBoardMembers;
 import com.ecsail.gui.tabs.TabDefinedFee;
@@ -78,7 +78,7 @@ static TabPane tabPane;
 	
 	public static void openMembershipListTab() {
 		if(!tabOpen("Active Roster")) // is the tab already open??
-		tabPane.getTabs().add(new TabActiveRoster(Main.activememberships, Main.selectedYear));
+		tabPane.getTabs().add(new TabRoster(Main.activememberships, Main.selectedYear));
 		tabPane.getSelectionModel().select(getTabIndex("Active Roster"));
 	}
 	
