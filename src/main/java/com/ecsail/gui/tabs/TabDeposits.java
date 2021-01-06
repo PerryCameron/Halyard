@@ -168,7 +168,9 @@ public class TabDeposits extends Tab {
 		batchSpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
 			  if (!newValue) {
 				  batchSpinner.increment(0); // won't change value, but will commit editor
+				  // create batch if it doesn't already exist
 				  summaryTotals.setDepositNumber(Integer.parseInt(batchSpinner.getEditor().getText()));
+				  checkForDepositAndCreateIfNotExist();
 				  refreshButton.fire();
 			  }
 			});
@@ -416,19 +418,30 @@ public class TabDeposits extends Tab {
 	
 	////////////////////////CLASS METHODS //////////////////////////
 	
+	private void checkForDepositAndCreateIfNotExist () {
+		if (SqlExists.ifDepositRecordExists(selectedYear + "", summaryTotals.getDepositNumber())) { // does a deposit exist for selected year and batch?
+			System.out.println("deposit exists");
+			SqlSelect.getDeposit(selectedYear + "", summaryTotals.getDepositNumber()).getDeposit_id();
+		} else { // record does not exist
+			System.out.println("deposit does not exist, creating record");
+			createDepositRecord();
+		}
+	}
+	
 	private void addDepositIdToPayment(Object_PaidDues thisPaidDues) {
 		int pay_id = getPayId(thisPaidDues); // gets relevant object_payment
 		int deposit_id = getDepositId(thisPaidDues);
+		System.out.println("Adding deposit id to payment tuple");
 		SqlUpdate.updatePayment(pay_id, "deposit_id", deposit_id + ""); // add deposit_id to payment tuple
 	}
 	
 	private int getDepositId(Object_PaidDues thisPaidDues) {
 		int deposit_id = 0;
 		if (SqlExists.ifDepositRecordExists(thisPaidDues.getFiscal_year() + "", summaryTotals.getDepositNumber())) { // does a deposit exist for selected year and batch?
-			//System.out.println("deposit exists");
+			System.out.println("deposit exists");
 			deposit_id = SqlSelect.getDeposit(selectedYear + "", summaryTotals.getDepositNumber()).getDeposit_id();
 		} else { // record does not exist
-			//System.out.println("deposit does not exist, creating record");
+			System.out.println("deposit does not exist, creating record");
 			deposit_id = createDepositRecord();
 		}
 		return deposit_id;
