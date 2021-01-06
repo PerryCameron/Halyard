@@ -822,7 +822,7 @@ public class SqlSelect {
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
-					"select ms_id,m.p_id,membership_id,join_date,active_membership," 
+					"select m.ms_id,m.p_id,membership_id,join_date,active_membership," 
 			+ "mem_type,slip_num,l_name,f_name,subleased_to,address,city,state,zip " 
 			+ "from person p right join (Select * from slip right join membership using " 
 			+ "(ms_id)) m using (ms_id) where member_type='1' and ms_id='" + ms_id + "';"));
@@ -934,7 +934,7 @@ public class SqlSelect {
 					+ "m.CITY, m.state,m.zip, m.p_id, p.l_name, p.f_name,m.MS_ID from membership m "
 					+ "inner join person p on m.p_id=p.p_id "
 					+ "inner join membership_id id on id.ms_id=m.ms_id "
-					+ "where YEAR(JOIN_DATE)='" + year + "' group by m.MS_ID;"));
+					+ "where YEAR(JOIN_DATE)='" + year + "' and id.FISCAL_YEAR='" + year + "' group by m.MS_ID;"));
 			while (rs.next()) {
 				rosters.add(new Object_MembershipList(
 						rs.getInt("MS_ID"), 
@@ -1509,11 +1509,11 @@ public class SqlSelect {
 	public static int getNumberOfDeposits() {
 		int number = 0;
 		ResultSet rs;
-		try {
+		try { // select PAY_ID from payment ORDER BY pay_id DESC LIMIT 1
 			Statement stmt = ConnectDatabase.connection.createStatement();
-			rs = stmt.executeQuery("select count(deposit_id) from deposit;");
+			rs = stmt.executeQuery("select deposit_id from deposit ORDER BY deposit_id DESC LIMIT 1;");
 			rs.next();
-			number = rs.getInt("count(deposit_id)");
+			number = rs.getInt("deposit_id");
 		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

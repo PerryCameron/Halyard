@@ -75,7 +75,7 @@ public class TabRoster extends Tab {
 			rosterTableView.setItems(rosters);
 			rosterTableView.setPrefWidth(1000);
 			rosterTableView.setFixedCellSize(30);
-			rosterTableView.setPrefHeight(680);
+			rosterTableView.setPrefHeight(555);
 			
 			TableColumn<Object_MembershipList, Integer> Col3 = new TableColumn<Object_MembershipList, Integer>("MEM");
 			Col3.setCellValueFactory(new PropertyValueFactory<Object_MembershipList, Integer>("membershipId"));
@@ -136,7 +136,7 @@ public class TabRoster extends Tab {
 						  rosters.addAll(SqlSelect.getNewMemberRoster(selectedYear));					  
 					  titledPane.setText("Roster " + selectedYear);
 					  records.setText(rosters.size() + " Records"); 
-						  
+					  rosterTableView.sort();
 				  }
 				});
 			
@@ -162,6 +162,7 @@ public class TabRoster extends Tab {
 	  		          rosters.clear();
 	  		          rosters.addAll(SqlSelect.getRoster(selectedYear, true));
 	  		          records.setText(rosters.size() + " Records");
+	  		          rosterTableView.sort();
 	  		        } 
 	  		    }
 	  		});
@@ -173,6 +174,7 @@ public class TabRoster extends Tab {
 		  		          rosters.clear();
 		  		          rosters.addAll(SqlSelect.getRoster(selectedYear, false));
 		  		          records.setText(rosters.size() + " Records");
+		  		          rosterTableView.sort();
 	  		        } else {
 	  		            // ...
 	  		        }
@@ -186,11 +188,25 @@ public class TabRoster extends Tab {
 	  		            rosters.clear();
 	  		            rosters.addAll(SqlSelect.getNewMemberRoster(selectedYear));
 	  		          records.setText(rosters.size() + " Records");
+	  		        rosterTableView.sort();
 	  		        } else {
 	  		            // ...
 	  		        }
 	  		    }
 	  		});
+	  		
+	  	
+	  		    titledPane.expandedProperty().addListener((obs, wasExpanded, isNowExpanded) -> {
+	  		        if (isNowExpanded) {
+	  		        	//System.out.println("Title Pane Expanded");
+	  		        	rosterTableView.setPrefHeight(555);
+	  		        }
+	  		        if(wasExpanded) {
+	  		        	//System.out.println("Title Pane collapsed");
+	  		        	rosterTableView.setPrefHeight(655);
+	  		        }
+	  		    });
+
 		    
 		    //////////////////// SET CONTENT //////////////////////
 		    vboxRadioButtons.getChildren().addAll(r1,r2,r3);

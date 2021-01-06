@@ -588,11 +588,7 @@ public class BoxFiscal extends HBox {
 			credit = fiscals.get(rowIndex).getOfficer_credit();  // inserts credit for member type into fiscal
 			//System.out.println("Has an officer credit changed to=" + credit);
 		} else {
-			if(workCredits >= 15) {
-				credit = 150;
-			} else {
 			credit = workCredits * definedFees.getWork_credit();  
-			}
 		}
 		//System.out.println("Credit is " + credit);
 		return credit;
