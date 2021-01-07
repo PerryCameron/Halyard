@@ -154,7 +154,7 @@ public class BoxMemberID extends HBox {
 						int mid = SqlSelect.getCount("membership_id", "mid") + 1; // get last mid number add 1
 						Object_MembershipId newIdTuple = null;
 						if (SqlExists.memberShipIdExists(m.getMsid())) {
-							Object_MembershipId thisId = SqlSelect.getCount(m.getMsid()); // retrieves oldest year																// record for member
+							//Object_MembershipId thisId = SqlSelect.getCount(m.getMsid()); // retrieves oldest year																// record for member
 							//System.out.println("mem id is" + thisId.getMembership_id());
 							int fiscalYear = Integer.parseInt(Main.selectedYear); // gets year and subtracts
 							newIdTuple = new Object_MembershipId(mid, fiscalYear + "", m.getMsid(),

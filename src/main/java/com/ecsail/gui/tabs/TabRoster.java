@@ -51,7 +51,8 @@ public class TabRoster extends Tab {
 		ToggleGroup tg1 = new ToggleGroup();  
 		RadioButton r1 = new RadioButton("Active"); 
         RadioButton r2 = new RadioButton("Non-Renew"); 
-        RadioButton r3 = new RadioButton("New Members"); 
+        RadioButton r3 = new RadioButton("New Members");
+        RadioButton r4 = new RadioButton("New Members + Return Members");
         
         vboxSpinnerLabel.setSpacing(10);
         titledPane.setText("Roster " + selectedYear);
@@ -60,6 +61,7 @@ public class TabRoster extends Tab {
 		r1.setToggleGroup(tg1); 
         r2.setToggleGroup(tg1);
         r3.setToggleGroup(tg1);
+        r4.setToggleGroup(tg1);
         r1.setSelected(true);
 		vbox1.setId("box-blue");
 		vbox2.setId("box-pink");
@@ -133,7 +135,9 @@ public class TabRoster extends Tab {
 					  if(r2.isSelected())
 						  rosters.addAll(SqlSelect.getRoster(selectedYear,false));
 					  if(r3.isSelected())
-						  rosters.addAll(SqlSelect.getNewMemberRoster(selectedYear));					  
+						  rosters.addAll(SqlSelect.getNewMemberRoster(selectedYear));
+					  if(r4.isSelected())
+						  rosters.addAll(SqlSelect.getFullNewMemberRoster(selectedYear));
 					  titledPane.setText("Roster " + selectedYear);
 					  records.setText(rosters.size() + " Records"); 
 					  rosterTableView.sort();
@@ -195,8 +199,21 @@ public class TabRoster extends Tab {
 	  		    }
 	  		});
 	  		
-	  	
-	  		    titledPane.expandedProperty().addListener((obs, wasExpanded, isNowExpanded) -> {
+	  		r4.selectedProperty().addListener(new ChangeListener<Boolean>() {
+	  		    @Override
+	  		    public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected, Boolean isNowSelected) {
+	  		        if (isNowSelected) { 
+	  		            rosters.clear();
+	  		            rosters.addAll(SqlSelect.getFullNewMemberRoster(selectedYear));
+	  		          records.setText(rosters.size() + " Records");
+	  		        rosterTableView.sort();
+	  		        } else {
+	  		            // ...
+	  		        }
+	  		    }
+	  		});
+	  		
+	  		titledPane.expandedProperty().addListener((obs, wasExpanded, isNowExpanded) -> {
 	  		        if (isNowExpanded) {
 	  		        	//System.out.println("Title Pane Expanded");
 	  		        	rosterTableView.setPrefHeight(555);
@@ -209,7 +226,7 @@ public class TabRoster extends Tab {
 
 		    
 		    //////////////////// SET CONTENT //////////////////////
-		    vboxRadioButtons.getChildren().addAll(r1,r2,r3);
+		    vboxRadioButtons.getChildren().addAll(r1,r2,r3,r4);
 		    vboxSpinnerLabel.getChildren().addAll(yearSpinner, records);
 		    controlsHbox.getChildren().addAll(vboxSpinnerLabel,vboxRadioButtons);
 		    titledPane.setContent(controlsHbox);
