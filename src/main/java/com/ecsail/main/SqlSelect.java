@@ -431,7 +431,8 @@ public class SqlSelect {
 	}
 	
 	public static ObservableList<Object_PaidDues> getPaidDues(String selectedYear, int batch) { // overload
-		String query = "SELECT m.*, me.MEMBERSHIP_ID, p.l_name, p.f_name FROM money m INNER JOIN membership me on m.MS_ID=me.MS_ID INNER JOIN person p ON me.P_ID=p.P_ID WHERE m.FISCAL_YEAR=" + selectedYear + " AND m.BATCH=" + batch;
+		            //  SELECT mo.*, id.MEMBERSHIP_ID, p.l_name, p.f_name from membership_id id INNER JOIN membership m ON m.MS_ID=id.MS_ID LEFT JOIN person p ON m.P_ID=p.P_ID INNER JOIN money mo ON mo.MS_ID=m.MS_ID Where id.FISCAL_YEAR='2019' AND mo.BATCH=2 AND mo.FISCAL_YEAR='2019';      
+		String query = "SELECT mo.*, id.MEMBERSHIP_ID, p.l_name, p.f_name FROM membership_id id INNER JOIN membership m ON m.MS_ID=id.MS_ID LEFT JOIN person p ON m.P_ID=p.P_ID INNER JOIN money mo ON mo.MS_ID=m.MS_ID WHERE id.FISCAL_YEAR=" + selectedYear + " AND mo.BATCH=" + batch + " AND mo.FISCAL_YEAR=" + selectedYear;
 		ObservableList<Object_PaidDues> theseFiscals = FXCollections.observableArrayList();
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();

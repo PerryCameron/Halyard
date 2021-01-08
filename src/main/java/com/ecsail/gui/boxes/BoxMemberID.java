@@ -46,7 +46,6 @@ public class BoxMemberID extends HBox {
 			@Override
 			public Observable[] call(Object_MembershipId param) {
 				return new Observable[] { param.isRenewProperty() };
-
 			}
 		});
 		this.id.addAll(SqlSelect.getIds(m.getMsid()));

@@ -11,6 +11,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
@@ -44,9 +45,11 @@ public class TabRoster extends Tab {
 		VBox vbox2 = new VBox();  // inter vbox
 		VBox vboxRadioButtons = new VBox();
 		VBox vboxSpinnerLabel = new VBox();
+		VBox vboxCheckBox = new VBox();
 		HBox controlsHbox = new HBox();
 		TitledPane titledPane = new TitledPane();
 		Label records = new Label();
+		CheckBox c1 = new CheckBox("Slip");
 		
 		ToggleGroup tg1 = new ToggleGroup();  
 		RadioButton r1 = new RadioButton("Active"); 
@@ -145,6 +148,18 @@ public class TabRoster extends Tab {
 				});
 			
 			////////////////////  LISTENERS //////////////////////////
+			
+			c1.selectedProperty().addListener(new ChangeListener<Boolean>() {
+				@Override
+				public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+					if (newValue) { // we are setting the membership to inactive
+						System.out.println("Checked");
+					} else {
+						System.out.println("UnChecked");
+					}
+				}
+			});
+			
 		    rosterTableView.setRowFactory(tv -> {
 		        TableRow<Object_MembershipList> row = new TableRow<>();
 		        row.setOnMouseClicked(event -> {
@@ -226,9 +241,10 @@ public class TabRoster extends Tab {
 
 		    
 		    //////////////////// SET CONTENT //////////////////////
+	  		vboxCheckBox.getChildren().add(c1);
 		    vboxRadioButtons.getChildren().addAll(r1,r2,r3,r4);
 		    vboxSpinnerLabel.getChildren().addAll(yearSpinner, records);
-		    controlsHbox.getChildren().addAll(vboxSpinnerLabel,vboxRadioButtons);
+		    controlsHbox.getChildren().addAll(vboxSpinnerLabel,vboxRadioButtons,vboxCheckBox);
 		    titledPane.setContent(controlsHbox);
 			vbox1.getChildren().add(vbox2);
 			vbox2.getChildren().addAll(titledPane,rosterTableView);
@@ -240,6 +256,4 @@ public class TabRoster extends Tab {
 	private static void createTab(Object_MembershipList clickedRow)  {
 		TabLauncher.createTab(clickedRow.getMembershipId(),clickedRow.getMsid());
 	}
-	
-
 }
