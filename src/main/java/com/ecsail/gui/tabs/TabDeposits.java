@@ -401,7 +401,7 @@ public class TabDeposits extends Tab {
 		comboBoxHBox.getChildren().add(comboBox);
 		numberOfRecordsHBox.getChildren().addAll(new Text("Records:"), numberOfRecords);
 		selectionHBox.getChildren().addAll(depositDatePicker, numberOfRecordsHBox);
-		remaindingRenewalHBox.getChildren().addAll(new Text("Memberships not yet renewed: " ),nonRenewed);
+		remaindingRenewalHBox.getChildren().addAll(new Text("Memberships not renewed: " ),nonRenewed);
 		batchNumberHBox.getChildren().addAll(new Label("Deposit Number"),batchSpinner);
 		yearBatchHBox.getChildren().addAll(yearSpinner,batchNumberHBox);
 		buttonHBox.getChildren().addAll(refreshButton,printPdfButton);
@@ -478,7 +478,7 @@ public class TabDeposits extends Tab {
 	}
 	
 	private void updateNonRenewed(Text nonRenewed) {
-		nonRenewed.setText(SqlSelect.getNonMembershipRenewalCount(selectedYear) + "");
+		nonRenewed.setText(SqlSelect.getNonRenewNumber(selectedYear) + "");
 	}
 
 	private void updateMoneyTotals(GridPane gridPane) {  // need to add defined fees object

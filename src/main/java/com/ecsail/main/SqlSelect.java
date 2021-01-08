@@ -1370,7 +1370,7 @@ public class SqlSelect {
 		return number;
 	}
 	
-	public static int getNonMembershipRenewalCount(String year) {  // gives the last memo_id number
+	/*public static int getNonMembershipRenewalCount(String year) {  // gives the last memo_id number
 		int number = 0;
 		ResultSet rs;
 		try {
@@ -1388,6 +1388,7 @@ public class SqlSelect {
 		}
 		return number;
 	}
+	*/
 	
 	public static int getNumberOfNewMemberships(String year) {
 		int number = 0;
@@ -1593,6 +1594,23 @@ public class SqlSelect {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return number;
+	}
+	
+	public static int getNonRenewNumber(String year) {
+		int number = 0;
+		ResultSet rs;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			rs = stmt.executeQuery("select count(*) from membership_id where FISCAL_YEAR='" + year + "' and RENEW=false");
+			rs.next();
+			number = rs.getInt("count(*)");
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println(number);
 		return number;
 	}
 	
