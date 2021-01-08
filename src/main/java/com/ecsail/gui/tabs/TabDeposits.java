@@ -158,6 +158,7 @@ public class TabDeposits extends Tab {
 				  paidDues.addAll(SqlSelect.getPaidDues(selectedYear));
 				  currentDefinedFee.clear();
 				  currentDefinedFee = SqlSelect.getDefinedFee(selectedYear);
+				  refreshButton.fire();
 			  }
 			});
 		
@@ -398,6 +399,7 @@ public class TabDeposits extends Tab {
 		gridPane.add(summaryText.getTotalMoneyText(), 2, 15);
 		GridPane.setHalignment(summaryText.getTotalMoneyText(), HPos.RIGHT);
 		
+		refreshButton.fire();
 		comboBoxHBox.getChildren().add(comboBox);
 		numberOfRecordsHBox.getChildren().addAll(new Text("Records:"), numberOfRecords);
 		selectionHBox.getChildren().addAll(depositDatePicker, numberOfRecordsHBox);
