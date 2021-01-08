@@ -161,7 +161,7 @@ public class Dialogue_NewYearGenerator extends Stage {
 	int mid = SqlSelect.getCount("membership_id", "mid") + 1;
 		Collections.sort(Main.activememberships, new SortByMembershipId());
 		for (Object_MembershipList ml : Main.activememberships) {
-			SqlInsert.addMembershipId(new Object_MembershipId(mid, nextYear, ml.getMsid(), count + "",true));
+			SqlInsert.addMembershipId(new Object_MembershipId(mid, nextYear, ml.getMsid(), count + "",false));
 			mid++;
 			count++;
 		}
@@ -171,7 +171,7 @@ public class Dialogue_NewYearGenerator extends Stage {
 		int mid = SqlSelect.getCount("membership_id", "mid") + 1;
 		Collections.sort(Main.activememberships, new SortByMembershipId());
 		for (Object_MembershipList ml : Main.activememberships) {
-			SqlInsert.addMembershipId(new Object_MembershipId(mid, nextYear, ml.getMsid(), ml.getMembershipId() + "",true));
+			SqlInsert.addMembershipId(new Object_MembershipId(mid, nextYear, ml.getMsid(), ml.getMembershipId() + "",false));
 			mid++;
 		}
 	}
