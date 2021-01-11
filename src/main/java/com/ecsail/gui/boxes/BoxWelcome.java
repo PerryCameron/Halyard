@@ -26,6 +26,8 @@ public class BoxWelcome extends HBox {
 		Button newButton = new Button("Create New Membership");
 		Button batchesButton = new Button("Deposits");
 		Button rosterButton = new Button("Rosters");
+		Button boatsButton = new Button("Boats");
+		Button notesButton = new Button("Notes");
 		
 		int activeMembership = SqlSelect.getActiveMembershipCount();
 		int activePeople = SqlSelect.getActivePeopleCount();
@@ -48,9 +50,10 @@ public class BoxWelcome extends HBox {
 		lifeMembershipText.setStyle("-fx-font: 12 Helvetica;");
 		activepeopleText.setStyle("-fx-font: 14 Helvetica;");
 		
+		notesButton.setId("bigbuttontext");
+		boatsButton.setId("bigbuttontext");
 		newButton.setId("bigbuttontext");
 		bodButton.setId("bigbuttontext");
-		//rosterButton.setId("bigbuttontext");
 		peopleListButton.setId("bigbuttontext");
 		slipListButton.setId("bigbuttontext");
 		batchesButton.setId("bigbuttontext");
@@ -58,7 +61,8 @@ public class BoxWelcome extends HBox {
 		activeText.setId("");
 		vboxRight.setSpacing(10);
 		vboxRight.setPadding(new Insets(30,0,0,200));
-		//rosterButton.setPrefSize(width, height);
+		notesButton.setPrefSize(width, height);
+		boatsButton.setPrefSize(width, height);
 		peopleListButton.setPrefSize(width, height);
 		slipListButton.setPrefSize(width, height);
 		bodButton.setPrefSize(width, height);
@@ -67,6 +71,20 @@ public class BoxWelcome extends HBox {
 		rosterButton.setPrefSize(width, height);
 		
 		///////////////// LISTENERS  /////////////////////////
+		
+		boatsButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				TabLauncher.openBoatsTab();
+			}
+		});
+		
+		notesButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				TabLauncher.openNotesTab();
+			}
+		});
 		
 		rosterButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -114,7 +132,7 @@ public class BoxWelcome extends HBox {
 		
 		////////////////  SET CONTENT ////////////////////////
 		vboxLeft.getChildren().addAll(activeText,familyMembershipText,regularMembershipText,socialMembershipText,lakeAssociateMembershipText,lifeMembershipText,activepeopleText);
-		vboxRight.getChildren().addAll(rosterButton,peopleListButton,slipListButton,bodButton,newButton,batchesButton);
+		vboxRight.getChildren().addAll(rosterButton,peopleListButton,slipListButton,bodButton,newButton,batchesButton,boatsButton,notesButton);
 		getChildren().addAll(vboxLeft,vboxRight);
 		
 	}

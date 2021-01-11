@@ -6,9 +6,11 @@ import com.ecsail.gui.dialogues.Dialogue_RenewalForm;
 import com.ecsail.gui.tabs.TabRoster;
 import com.ecsail.gui.tabs.TabDeposits;
 import com.ecsail.gui.tabs.TabBoardMembers;
+import com.ecsail.gui.tabs.TabBoats;
 import com.ecsail.gui.tabs.TabDefinedFee;
 import com.ecsail.gui.tabs.TabMembership;
 import com.ecsail.gui.tabs.TabNewYearGenerator;
+import com.ecsail.gui.tabs.TabNotes;
 import com.ecsail.gui.tabs.TabPeopleList;
 import com.ecsail.gui.tabs.TabSlips;
 import com.ecsail.gui.tabs.TabStub;
@@ -59,6 +61,16 @@ static TabPane tabPane;
 			count++;	
 		}
 		return result;
+	}
+	
+	public static void openBoatsTab() {
+		tabPane.getTabs().add(new TabBoats("Boats"));
+		tabPane.getSelectionModel().select(getTabIndex("Boats"));
+	}
+	
+	public static void openNotesTab() {
+		tabPane.getTabs().add(new TabNotes("Notes"));
+		tabPane.getSelectionModel().select(getTabIndex("Notes"));
 	}
 	
 	public static void openPeopleTab() {
