@@ -499,6 +499,36 @@ public class Object_Money {
 	public final void setSupplemental(final boolean supplemental) {
 		this.supplementalProperty().set(supplemental);
 	}
+	
+	public final void clear() {
+		setMoney_id(0);
+		setMs_id(0);
+		setFiscal_year(0);
+		setBatch(0);
+		setOfficer_credit(0);
+		setExtra_key(0);
+		setKayac_shed_key(0);
+		setSail_loft_key(0);
+		setSail_school_loft_key(0);
+		setBeach(0);
+		setWet_slip(0);
+		setKayac_rack(0);
+		setKayac_shed(0);
+		setSail_loft(0);
+		setSail_school_laser_loft(0);
+		setWinter_storage(0);
+		setYsc_donation(0);
+		setPaid(0);
+		setTotal(0);
+		setCredit(0);
+		setBalance(0);
+		setDues(0);
+		setCommitted(false);
+		setClosed(false);
+		setOther(0);
+		setInitiation(0);
+		setSupplemental(false);
+	}
 
 	@Override
 	public String toString() {

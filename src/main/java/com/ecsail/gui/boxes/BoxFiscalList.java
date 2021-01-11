@@ -60,7 +60,7 @@ public class BoxFiscalList extends HBox {
 		final Spinner<Integer> yearSpinner = new Spinner<Integer>();
 		SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 2100, Integer.parseInt(currentYear));
 		BoxFiscalList.fiscals = SqlSelect.getMonies(membership.getMsid());
-		Boolean currentFiscalRecordExists = SqlExists.recordExists(currentYear,membership);
+		Boolean currentFiscalRecordExists = SqlExists.moneyExists(currentYear,membership);
 		Object_DefinedFee definedFees = SqlSelect.selectDefinedFees(Integer.parseInt(currentYear));
 		
 		if(!currentFiscalRecordExists) {
@@ -120,7 +120,7 @@ public class BoxFiscalList extends HBox {
 				Object_Money newMoney = new Object_Money(moneyId, membership.getMsid(),
 						Integer.parseInt(yearSpinner.getEditor().getText()), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 						0, 0, 0, 0, 0, getDues(definedFees), false, false, 0, 0, false);
-				if (SqlExists.recordExists(yearSpinner.getEditor().getText(), membership)) {
+				if (SqlExists.moneyExists(yearSpinner.getEditor().getText(), membership)) {
 					newMoney.setSupplemental(true);
 					newMoney.setDues(0);
 				}
@@ -198,7 +198,7 @@ public class BoxFiscalList extends HBox {
 		int addSlip = 0;
 		if(SqlExists.ownsSlip(membership.getMsid()) || SqlExists.subleasesSlip(membership.getMsid())) addSlip = 1;  // member has a slip for current year
 		int moneyId = SqlSelect.getCount("money_id") + 1;
-		if(!SqlExists.recordExists(currentYear,membership)) {  // record doesn't exist
+		if(!SqlExists.moneyExists(currentYear,membership)) {  // record doesn't exist
 			Object_Money newMoney = new Object_Money(moneyId,membership.getMsid(),Integer.parseInt(currentYear),0,getDues(definedFees),0,0,0,0,0,addSlip,0,0,0,0,0,0,0,0,0,0,getDues(definedFees),false,false,0,0,false);
 			SqlInsert.addRecord(newMoney);
 			SqlInsert.addRecord(moneyId,membership);

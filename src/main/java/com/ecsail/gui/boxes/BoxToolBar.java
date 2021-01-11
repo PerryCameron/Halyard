@@ -142,6 +142,7 @@ public class BoxToolBar extends VBox {
         
         m3_2.setOnAction(new EventHandler<ActionEvent>() {  // add new membership
             @Override public void handle(ActionEvent e) {
+            	System.out.println("Trying to launch this POS");
             	new Dialogue_NewYearGenerator();
             }
         });

@@ -228,7 +228,7 @@ public class SqlExists {
 		return result;
 	}
 	
-	public static Boolean recordExists(String year, Object_Membership membership) {
+	public static Boolean moneyExists(String year, Object_Membership membership) {
 		Boolean result = false;		
 		  // we must convert here (this is getting crazy!)
 		try {
@@ -243,6 +243,41 @@ public class SqlExists {
 		}
 		return result;
 	}
+	
+	public static Boolean moneyExists(int ms_id,String year) {
+		boolean result = false;
+		try {  
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs = stmt
+					.executeQuery(Main.console.setRegexColor("select exists(select * from money where ms_id='"+ms_id+"' and fiscal_year='"+year+"');"));
+			while (rs.next()) {
+				result = rs.getBoolean(
+						"exists(select * from money where ms_id='"+ms_id+"' and fiscal_year='"+year+"')");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	public static Boolean moneyExists(int money_id) {
+		boolean result = false;
+		try {  
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs = stmt
+					.executeQuery(Main.console.setRegexColor("select exists(select * from money where money_id=" + money_id + ")"));
+			while (rs.next()) {
+				result = rs.getBoolean(
+						"exists(select * from money where money_id=" + money_id + ")");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
 	
 	public static Boolean ifDepositRecordExists(String year, int batch) {
 		Boolean result = false;		
@@ -296,4 +331,24 @@ public class SqlExists {
 		}
 		return result;
 	}
+	
+	public static Boolean workCreditExists(int money_id) {
+		boolean result = false;
+		try {  
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs = stmt
+					.executeQuery(Main.console.setRegexColor("select exists(select * from work_credit where money_id=" + money_id + ");"));
+			while (rs.next()) {
+				result = rs.getBoolean(
+						"exists(select * from work_credit where money_id=" + money_id + ")");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+
+	
 }

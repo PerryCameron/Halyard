@@ -369,4 +369,17 @@ public class Object_DefinedFee {
 		setWork_credit(0);
 	}
 
+	@Override
+	public String toString() {
+		return "Object_DefinedFee [fiscal_year=" + fiscal_year + ", dues_regular=" + dues_regular + ", dues_family="
+				+ dues_family + ", dues_lake_associate=" + dues_lake_associate + ", dues_social=" + dues_social
+				+ ", initiation=" + initiation + ", wet_slip=" + wet_slip + ", beach=" + beach + ", winter_storage="
+				+ winter_storage + ", main_gate_key=" + main_gate_key + ", sail_loft=" + sail_loft + ", sail_loft_key="
+				+ sail_loft_key + ", sail_school_laser_loft=" + sail_school_laser_loft + ", sail_school_loft_key="
+				+ sail_school_loft_key + ", kayak_rack=" + kayak_rack + ", kayak_shed=" + kayak_shed
+				+ ", kayak_shed_key=" + kayak_shed_key + ", work_credit=" + work_credit + "]";
+	}
+	
+	
+
 }

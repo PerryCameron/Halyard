@@ -6,6 +6,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 
 public class TabBalance extends Tab {
@@ -41,9 +42,10 @@ public class TabBalance extends Tab {
 		vboxTextField.setId("box-lightgrey");
 		vboxTextField.setPrefHeight(139);
 		vboxCommitButton.setPrefWidth(95);
+		vboxCommitButton.setSpacing(10);
 		vboxTextFieldFrame.setPadding(new Insets(3,3,3,3));
 		vboxTextField.setPadding(new Insets(12,0,7,10));
-		vboxCommitButton.setPadding(new Insets(115,0,0,20));
+		vboxCommitButton.setPadding(new Insets(100,0,0,20));
 		//vboxCommitButton.setId("box-test");
 		
 		textFields.getCreditText().setPrefWidth(60);
@@ -61,7 +63,7 @@ public class TabBalance extends Tab {
 		
 		////////////////SETTING CONTENT //////////////
 		
-		vboxCommitButton.getChildren().add(textFields.getCommitButton());
+		vboxCommitButton.getChildren().addAll(textFields.getRenewCheckBox(), textFields.getCommitButton());
 		hboxPaid.getChildren().addAll(new Label("Paid"),textFields.getPaidText());
 		hboxTotalFees.getChildren().addAll(new Label("Total Fees"),textFields.getTotalFeesText());
 		hboxCredit.getChildren().addAll(new Label("Credit"),textFields.getCreditText());

@@ -460,6 +460,19 @@ public class SqlUpdate {
 		return noError;
 	}
 	
+	public static Boolean updateMembershipId(int ms_id, int year, boolean value) {
+		Boolean noError = true;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			stmt.execute(Main.console.setRegexColor("update membership_id set renew=" + value + " where fiscal_year='" + year + "' and ms_id='" + ms_id +"'"));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			noError = false;
+		}
+		return noError;
+	}
+	
 	public static Boolean updateMembershipId(int mid, String field, Boolean attribute) {
 		Boolean noError = true;
 		try {

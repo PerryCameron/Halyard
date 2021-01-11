@@ -54,7 +54,6 @@ public class BoxFiscal extends HBox {
 	private final TextField slipText = new TextField();
 	private final TextField otherText = new TextField();
 	private final TextField initiationText = new TextField();
-//	private final Spinner<Integer> wetSlipSpinner = new Spinner<Integer>();
 	private final Spinner<Integer> beachSpinner = new Spinner<Integer>();
 	private final Spinner<Integer> kayakRackSpinner = new Spinner<Integer>();
 	private final Spinner<Integer> kayakShedSpinner = new Spinner<Integer>();
@@ -233,6 +232,8 @@ public class BoxFiscal extends HBox {
             		SqlUpdate.updateMoney(fiscals.get(rowIndex)); 
             		SqlUpdate.commitFiscalRecord(fiscals.get(rowIndex).getMoney_id(), true);// this could be placed in line above
             		String date = SqlSelect.getPaymentDate(fiscals.get(rowIndex).getMoney_id()); // dates note to check
+            		// update membership_id record to renew or non-renew
+            		SqlUpdate.updateMembershipId(fiscals.get(rowIndex).getMs_id(), fiscals.get(rowIndex).getFiscal_year(), textFields.getRenewCheckBox().isSelected());
             		fiscals.get(rowIndex).setCommitted(true);
             		addPaidNote(date);
             		if(fiscals.get(rowIndex).getOther() != 0) note.add("Other expense: ",date);
@@ -293,6 +294,7 @@ public class BoxFiscal extends HBox {
 		winterStorageSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
 				  fiscals.get(rowIndex).setWinter_storage(newValue);
 				  updateBalance();
+				  SqlUpdate.updateMoney(fiscals.get(rowIndex));
 			});
 		
 		textFields.getPaidText().textProperty().addListener((obd, oldValue, newValue) -> {

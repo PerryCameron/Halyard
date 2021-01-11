@@ -8,9 +8,14 @@ import com.ecsail.main.SortByMembershipId;
 import com.ecsail.main.SqlExists;
 import com.ecsail.main.SqlInsert;
 import com.ecsail.main.SqlSelect;
+import com.ecsail.main.SqlUpdate;
+import com.ecsail.structures.Object_DefinedFee;
 import com.ecsail.structures.Object_MembershipId;
 import com.ecsail.structures.Object_MembershipList;
+import com.ecsail.structures.Object_Money;
+import com.ecsail.structures.Object_Person;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -25,17 +30,20 @@ import javafx.stage.Stage;
 import javafx.scene.control.Label;
 
 public class Dialogue_NewYearGenerator extends Stage {
-	String nextYear;
+	String selectedYear;
 	int stage = 1;
 	Boolean makeNewId = true;
+	private ObservableList<Object_MembershipList> memberships;  // will be inactive when filled
+	private Object_DefinedFee definedFee;
 	public Dialogue_NewYearGenerator() {
-		this.nextYear = returnNextRecordYear();
-		
+		//this.selectedYear = returnNextRecordYear();
+		this.selectedYear = Paths.getYear();  // this will need to be able to change with a spinner
+		this.definedFee = SqlSelect.getDefinedFee(selectedYear); // this will have to update as well
 		Button generateButton = new Button("Yes");
 		Button cancelButton = new Button("Cancel");
 		Button keepSameButton = new Button("Keep Old");
 		//ToggleGroup tg1 = new ToggleGroup();  
-		//RadioButton r1 = new RadioButton("Generate new year records for " + nextYear +"?"); 
+		//RadioButton r1 = new RadioButton("Generate new year records for " + selectedYear +"?"); 
         //RadioButton r2 = new RadioButton("Generate information for "); 
 		Label generateLable = new Label();
  
@@ -56,12 +64,12 @@ public class Dialogue_NewYearGenerator extends Stage {
 		yearSpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
 			  if (!newValue) {
 				  yearSpinner.increment(0); // won't change value, but will commit editor
-				  nextYear = yearSpinner.getEditor().getText();	
+				  selectedYear = yearSpinner.getEditor().getText();	
 			  }
 			});
 		
 		/////////////////// ATTRIBUTES ///////////////////
-		yearSpinner.getValueFactory().setValue(Integer.parseInt(nextYear) + 1);	
+		yearSpinner.getValueFactory().setValue(Integer.parseInt(selectedYear) + 1);	
 		//r1.setToggleGroup(tg1); 
         //r2.setToggleGroup(tg1); 
         //r1.setSelected(true);
@@ -82,14 +90,14 @@ public class Dialogue_NewYearGenerator extends Stage {
 		setTitle("Print to PDF");
 		////////////  Check to see if batch exists first////////////
 		
-		
+
 		generateButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
 				if(stage == 1) {
 					//yes we want to generate a new year
 					vboxColumn1.getChildren().clear();
-					vboxColumn1.getChildren().addAll(new Label("Have you put in the Board Of Directors for " + nextYear + "?"), hboxButtons);
+					vboxColumn1.getChildren().addAll(new Label("Have you put in the Board Of Directors for " + selectedYear + "?"), hboxButtons);
 					stage=2;
 				} else if (stage == 2) {
 					//yes we are happy with all the officers
@@ -115,7 +123,7 @@ public class Dialogue_NewYearGenerator extends Stage {
 		});
 		
 		//////////////// DO STUFF /////////////////
-		generateLable.setText("Generate new year records for " + nextYear + "?");
+		generateLable.setText("Generate new year records for " + selectedYear + "?");
 
 
 		
@@ -136,59 +144,174 @@ public class Dialogue_NewYearGenerator extends Stage {
 	
 	
 	private void generateRecords(Boolean makeNewNumbers) {
+		this.memberships = SqlSelect.getRoster(selectedYear, false);
 		if(makeNewNumbers) {
+			System.out.println("Creating new numbers");
 		createNewNumbers();
 		} else {
+			System.out.println("Creating old numbers");
 		createOldNumbers();
 		}
-
-	// create money record
-		// get next money_id available
-	    // add whether they are an officer
-		// add last years membership type
-		// add last years slip
-		// add last years beach spot
-		// add last years kayak and inside storage
-		// winter storage and work credits will be put in manually
+		generateMoneyRecords();
+	}
+	
+	private void generateMoneyRecords() {
+		Object_Money oldMoney = null;
+		Object_Money currentMoney = null; // this is for adding values of supplemental instead of overwriting
+		Object_Money newMoney = null;
+		int lastYear = Integer.parseInt(selectedYear) - 1;
+		for (Object_MembershipList membership : memberships) {
+			if (SqlExists.moneyExists(membership.getMsid(), selectedYear)) { // preserve values incase supplemental overwright
+				currentMoney = SqlSelect.getMonies(membership.getMsid(), selectedYear);
+			}
+			if (SqlExists.moneyExists(membership.getMsid(), lastYear + "")) { // last years record exists
+				oldMoney = SqlSelect.getMonies(membership.getMsid(), lastYear + "");
+				newMoney = setNewMoneyValues(oldMoney, currentMoney, membership);  // newMoney/oldMoney for clarity
+				updateSql(newMoney, membership);
+			} else {  // last years money record does not exist
+				createSql(membership, currentMoney);
+			}
+			printRecord(newMoney, membership);
+		}
+	}
+	
+	private void createSql(Object_MembershipList ml, Object_Money currentMoney) {
+		Object_Money oldMoney = null;
+		Object_Money newMoney = null;
+		int moneyId = SqlSelect.getCount("money_id") + 1;  // need next money_id for new record
+		oldMoney = new Object_Money(moneyId, ml.getMsid(),Integer.parseInt(selectedYear), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, false, false, 0, 0, false);
+		newMoney = setNewMoneyValues(oldMoney, currentMoney, ml);
+		System.out.print(" No money records for " + (newMoney.getFiscal_year() - 1));
+			SqlUpdate.updateMoney(newMoney);
+	}
+	
+	private void updateSql(Object_Money newMoney, Object_MembershipList ml) {
+		if (SqlExists.moneyExists(newMoney.getMoney_id()))  { // this years record exists
+			SqlUpdate.updateMoney(newMoney);
+			System.out.print(" Update " + newMoney.getFiscal_year() + " record for " + newMoney.getMs_id());
+		} else { // this years record does not exist
+			
+			SqlInsert.addRecord(newMoney); // add money record
+			System.out.print(" Adding Money Record " + newMoney.getFiscal_year() + " record for " + newMoney.getMs_id());
+			if(!SqlExists.workCreditExists(newMoney.getMoney_id())) { // if the work credit doesn't exist
+			SqlInsert.addRecord(newMoney.getMoney_id(), ml); // add blank work credit record
+			System.out.println(" Adding Work Credit " + newMoney.getFiscal_year() + " credit for " + newMoney.getMs_id());
+			}
+		}
+	}
+	
+	private Object_Money setNewMoneyValues(Object_Money oldMoney, Object_Money currentMoney, Object_MembershipList membership) {
+		ObservableList<Object_Person> people = SqlSelect.getPeople(oldMoney.getMs_id());
+		Object_Money newMoney = new Object_Money();
+		if(currentMoney.getMoney_id() != 0) {  // if money record exists lets use its money_id
+		newMoney.setMoney_id(currentMoney.getMoney_id());
+		} else {  // if money record does not exist lets create a new money_id for it
+			newMoney.setMoney_id(SqlSelect.getCount("money_id") + 1);
+		}
 		
-	// create work_credit record
-		// attach to money record with same money_id 1:1 relation
-//}
+		newMoney.setMs_id(oldMoney.getMs_id());
+		newMoney.setFiscal_year(Integer.parseInt(selectedYear));
+		/// adding oldMoney and newMoney because supplemental records would erase entries from
+		/// earlier updates
+		//newMoney.setWinter_storage(oldMoney.getWinter_storage() + currentMoney.getWinter_storage());
+		newMoney.setKayac_rack(oldMoney.getKayac_rack() + currentMoney.getKayac_rack());
+		newMoney.setKayac_shed(oldMoney.getKayac_shed() + currentMoney.getKayac_shed());
+		newMoney.setBeach(oldMoney.getBeach() + currentMoney.getBeach());
+		newMoney.setSail_loft(oldMoney.getSail_loft() + currentMoney.getSail_loft());
+		newMoney.setSail_school_laser_loft(oldMoney.getSail_school_laser_loft() + currentMoney.getSail_school_laser_loft());
+		/// set officer credit here
+		for(Object_Person p: people) {
+			if(p.getMemberType() != 3) {  // if membership has a primary or secondary member
+				if(SqlExists.isOfficer(p,Integer.parseInt(selectedYear))) {  // person is an officer
+					if(membership.getMemType().equals("RM"))
+				    newMoney.setCredit(definedFee.getDues_regular());
+					else if(membership.getMemType().contentEquals("FM"))
+					newMoney.setCredit(definedFee.getDues_family());
+					else if(membership.getMemType().contentEquals("SO"))
+					System.out.println("Social members can't be officers");
+					else if(membership.getMemType().contentEquals("LA"))
+					System.out.println("Lake Associates can't be officers");
+				System.out.println("Membership " + p.getFname() + " " + p.getLname() + " is of type " + p.getMemberType() + " and an officer getting credit of " + newMoney.getCredit());
+				}
+			}
+		}
+		// set slip if owned
+		if(SqlExists.slipExists(membership.getMsid()))
+			newMoney.setWet_slip(definedFee.getWet_slip());
+		
+		// set dues by membership type
+		if(membership.getMemType().equals("RM"))
+		    newMoney.setDues(definedFee.getDues_regular());
+			else if(membership.getMemType().contentEquals("FM"))
+			newMoney.setDues(definedFee.getDues_family());
+			else if(membership.getMemType().contentEquals("SO"))
+			newMoney.setDues(definedFee.getDues_social());
+			else if(membership.getMemType().contentEquals("LA"))
+			newMoney.setDues(definedFee.getDues_lake_associate());
+		
+		// calculate total
+		newMoney.setTotal(calculateFees(newMoney));
+
+		/// calculate balance
+		newMoney.setBalance(newMoney.getTotal() - newMoney.getCredit());
+		
+		return newMoney;
+	}
+	
+	private void printRecord(Object_Money newMoney, Object_MembershipList membership) {
+		System.out.println(" Membership ID " + membership.getMembershipId());
+		System.out.println(" Money_id=" + newMoney.getMoney_id());
+		System.out.print(" Dues=" + newMoney.getDues());
+		System.out.print(" beach=" +newMoney.getBeach());
+		System.out.print(" kayak rack=" + newMoney.getKayac_rack());
+		System.out.print(" kayak shed=" + newMoney.getKayac_shed());
+		System.out.print(" slip=" + newMoney.getWet_slip());
+		System.out.println(" Laser loft fee=" + newMoney.getSail_school_laser_loft());
+		System.out.print(" Total fees=" + newMoney.getTotal());
+		System.out.print(" Credit=" + newMoney.getCredit());
+		System.out.print(" Balance=" + newMoney.getBalance());
+		System.out.println("----------------------");
+	}
+	
+	private int calculateFees(Object_Money newMoney) {
+		int result = 0;
+		result += newMoney.getDues();
+		result += newMoney.getKayac_rack() * definedFee.getKayak_rack();
+		result += newMoney.getBeach() * definedFee.getBeach();
+		result += newMoney.getKayac_shed() * definedFee.getKayak_shed();
+		result += newMoney.getWet_slip();
+		result += newMoney.getSail_loft();
+		result += newMoney.getSail_school_laser_loft() * definedFee.getSail_school_laser_loft();	
+		return result;		
 	}
 	
 	private void createNewNumbers() {
 		int count = 1;
-	int mid = SqlSelect.getCount("membership_id", "mid") + 1;
-		Collections.sort(Main.activememberships, new SortByMembershipId());
-		for (Object_MembershipList ml : Main.activememberships) {
-			SqlInsert.addMembershipId(new Object_MembershipId(mid, nextYear, ml.getMsid(), count + "",false));
+		int mid = SqlSelect.getCount("membership_id", "mid") + 1;
+		Collections.sort(memberships, new SortByMembershipId());
+		for (Object_MembershipList ml : memberships) {
+			if(!SqlExists.memberShipIdExists(ml.getMsid(), selectedYear)) {
+				//System.out.println("Membership " + ml.getMsid() + " exists, Creating new");
+			SqlInsert.addMembershipId(new Object_MembershipId(mid, selectedYear, ml.getMsid(), count + "",false));
 			mid++;
 			count++;
+			} else {
+				//System.out.println("Membership " + ml.getMsid() + " exists");
+			}
 		}
 	}
 	
 	private void createOldNumbers() {
 		int mid = SqlSelect.getCount("membership_id", "mid") + 1;
-		Collections.sort(Main.activememberships, new SortByMembershipId());
-		for (Object_MembershipList ml : Main.activememberships) {
-			SqlInsert.addMembershipId(new Object_MembershipId(mid, nextYear, ml.getMsid(), ml.getMembershipId() + "",false));
-			mid++;
-		}
-	}
-	
-	
-	private String returnNextRecordYear() {
-		int nextRecordYear = Integer.parseInt(Paths.getYear());  // start with current year
-		Boolean hasRecords = true;
-		while(hasRecords) {
-			for(Object_MembershipList ml: Main.activememberships) {
-				// if there are missing records we will say the year has not been generated
-			if(!SqlExists.fiscalRecordExists(ml, nextRecordYear)) hasRecords = false;		
+		Collections.sort(memberships, new SortByMembershipId());
+		for (Object_MembershipList ml : memberships) {
+			if (!SqlExists.memberShipIdExists(ml.getMsid(), selectedYear)) {
+				SqlInsert.addMembershipId(
+						new Object_MembershipId(mid, selectedYear, ml.getMsid(), ml.getMembershipId() + "", false));
+				mid++;
+			} else {
+				System.out.println("Membership " + ml.getMsid() + " exists");
 			}
-			if(hasRecords) nextRecordYear++;  // if we found all the records then go to next year
 		}
-		return nextRecordYear + "";
 	}
-	
-	
 }
