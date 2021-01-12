@@ -41,8 +41,6 @@ public class Object_Boat {
 		this.keel = new SimpleStringProperty(keel);
 		this.phrf = new SimpleStringProperty(phrf);
 	}
-	
-	
 
 	public final IntegerProperty boat_idProperty() {
 		return this.boat_id;
