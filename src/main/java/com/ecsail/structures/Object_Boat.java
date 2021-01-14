@@ -51,22 +51,18 @@ public class Object_Boat {
 		return this.boat_idProperty().get();
 	}
 	
-
 	public final void setBoat_id(final int boat_id) {
 		this.boat_idProperty().set(boat_id);
 	}
 	
-
 	public final IntegerProperty ms_idProperty() {
 		return this.ms_id;
 	}
 	
-
 	public final int getMs_id() {
 		return this.ms_idProperty().get();
 	}
 	
-
 	public final void setMs_id(final int ms_id) {
 		this.ms_idProperty().set(ms_id);
 	}
