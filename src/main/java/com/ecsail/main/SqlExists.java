@@ -91,9 +91,9 @@ public class SqlExists {
 		Boolean result = false;
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
-			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select exists(select * from person where MS_ID=" + ms_id + " and MEMBER_TYPE=" + member_type + ")"));
+			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select exists(select * from person where MS_ID=" + ms_id + " and MEMBER_TYPE=" + member_type + " and is_active=true)"));
 			while(rs.next()) {
-			result = rs.getBoolean("exists(select * from person where MS_ID=" + ms_id + " and MEMBER_TYPE=" + member_type + ")");
+			result = rs.getBoolean("exists(select * from person where MS_ID=" + ms_id + " and MEMBER_TYPE=" + member_type + " and is_active=true)");
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
