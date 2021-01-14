@@ -2,7 +2,6 @@ package com.ecsail.gui.dialogues;
 
 import java.util.Collections;
 
-import com.ecsail.main.Main;
 import com.ecsail.main.Paths;
 import com.ecsail.main.SortByMembershipId;
 import com.ecsail.main.SqlExists;
