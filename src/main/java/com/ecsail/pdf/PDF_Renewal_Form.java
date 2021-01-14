@@ -28,12 +28,13 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.borders.SolidBorder;
+import com.itextpdf.layout.element.AreaBreak;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.VerticalAlignment;
-
+import com.itextpdf.layout.property.AreaBreakType;
 import com.itextpdf.layout.property.TextAlignment;
 
 public class PDF_Renewal_Form {
@@ -79,12 +80,17 @@ public class PDF_Renewal_Form {
 		// add tables here
 		if (isOneMembership) { // we are only printing one membership
 			makeRenewPdf(document);
+			document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+			PDF_Renewal_Form_Back.Create_Back_Side(document);
+			
 		} else {
-	//		ids = SqlSelect.getm
-		//	for(Object_MembershipList m: Main.activememberships) {
-		//		document.add(new Paragraph(m.getMsid() + ""));
-		//	}
-			document.add(new Paragraph("Test 1 2 3"));
+			ids = SqlSelect.getMembershipIds(year);
+			for(Object_MembershipId id: ids) {
+				current_membership_id = id.getMembership_id();
+				System.out.println("printing for membership " + id.getMembership_id());
+				makeRenewPdf(document);
+				document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+			}
 		}
 		
 		
@@ -102,18 +108,17 @@ public class PDF_Renewal_Form {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
 	}
 	
 	///////////  Class Methods ///////////////
 	
 	private void makeRenewPdf(Document document) throws IOException {
 		//FontProgramFactory.registerFont("c:/windows/fonts/Arial.ttf", "arial");
-		FontProgramFactory.registerFont("c:/windows/fonts/garabd.ttf", "garamond bold");
-		PdfFont font = PdfFontFactory.createRegisteredFont("garamond bold");
 		ms_id = SqlSelect.getMsidFromMembershipID(Integer.parseInt(current_membership_id));
 		membership = SqlSelect.getMembership(ms_id);
+		
+		FontProgramFactory.registerFont("c:/windows/fonts/garabd.ttf", "garamond bold");
+		PdfFont font = PdfFontFactory.createRegisteredFont("garamond bold");
 		last_membership_id = SqlSelect.getMembershipId(Integer.parseInt(year) -1, membership.getMsid());
 		dues = SqlSelect.getMonies(ms_id, year);
 		boats = SqlSelect.getBoats(ms_id);
@@ -143,6 +148,9 @@ public class PDF_Renewal_Form {
 			document.add(blankTableRow(i));
 		}
 		document.add(signatureTable());
+		dues.clear();
+		boats.clear();
+		dependants.clear();
 	}
 	
 	
@@ -338,6 +346,7 @@ public class PDF_Renewal_Form {
 		cell.setBorderBottom(new SolidBorder(0.5f));
 		//cell.setBorderLeft(new SolidBorder(borderSize));
 		cell.setWidth(10);
+		
 		if(dues.getWet_slip() > 0) 
 			cell.add(checkedBox);
 		else

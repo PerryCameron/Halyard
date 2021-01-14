@@ -1140,6 +1140,28 @@ public class SqlSelect {
 		return thesepeople;
 	}
 	
+	public static ObservableList<Object_MembershipId> getMembershipIds(String year) {
+		ObservableList<Object_MembershipId> theseIds = FXCollections.observableArrayList();
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+		    ResultSet rs;
+			rs = stmt.executeQuery(Main.console.setRegexColor("select * from membership_id where fiscal_year=" + year));
+		while (rs.next()) {
+			theseIds.add(new Object_MembershipId(
+					rs.getInt("MID"),
+					rs.getString("FISCAL_YEAR"),
+					rs.getInt("MS_ID"), 		
+					rs.getString("MEMBERSHIP_ID"),
+					rs.getBoolean("RENEW")));
+		}
+		stmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return theseIds;
+	}
+	
 	public static Object_Person getPerson(int pid) {  // nothing calling this
 		Object_Person person = null;
 		try {
