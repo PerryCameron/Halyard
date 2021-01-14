@@ -1167,7 +1167,7 @@ public class SqlSelect {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			ResultSet rs = stmt
 					.executeQuery(Main.console.setRegexColor("select * from person where MS_ID=" + ms_id + " and MEMBER_TYPE=" + member_type));
-
+			
 			while (rs.next()) {
 				person = (new Object_Person(rs.getInt("P_ID"), rs.getInt("MS_ID"), rs.getInt("MEMBER_TYPE"),
 						rs.getString("F_NAME"), rs.getString("L_NAME"), rs.getString("BIRTHDAY"),
@@ -1272,13 +1272,13 @@ public class SqlSelect {
 		}
 		return thisSlip;
 	}
-	
+
 	public static int getMembershipIDfromMsid(int msid)  {
 		int result = 0;
 		Statement stmt;
 		try {
 			stmt = ConnectDatabase.connection.createStatement();
-			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select membership_id from membership where ms_id='" + msid + "';"));
+			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select membership_id from membership_id where ms_id='" + msid + "' and fiscal_year=" + Paths.getYear() +";"));
 			while(rs.next()) {
 			result = rs.getInt("MEMBERSHIP_ID");
 			}
@@ -1294,9 +1294,9 @@ public class SqlSelect {
 		Statement stmt;
 		try {
 			stmt = ConnectDatabase.connection.createStatement();
-			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select ms_id from membership where membership_id='" + membership_id + "';"));
+			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select ms_id from membership_id where fiscal_year='" + Paths.getYear() + "' and membership_id='" + membership_id + "';"));
 			while(rs.next()) {
-			result = rs.getInt("MS_ID");
+			result = rs.getInt("ms_id");
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -1554,6 +1554,24 @@ public class SqlSelect {
 			e.printStackTrace();
 		}
 		return number;
+		
+	}
+	
+	public static String getMembershipId(int year, int ms_id) {
+		int id = 0;
+		Statement stmt;
+		
+		try {
+			stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select membership_id from membership_id where fiscal_year='" + year + "' and ms_id='" + ms_id + "'"));
+			rs.next();
+			id = rs.getInt("membership_id");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("For year " + year +  " ms_id=" + ms_id + " they are " + id);
+		return id + "";
 		
 	}
 	
