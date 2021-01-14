@@ -6,12 +6,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ecsail.main.Main;
 import com.ecsail.main.Paths;
 import com.ecsail.main.SqlExists;
 import com.ecsail.main.SqlSelect;
 import com.ecsail.structures.Object_Boat;
 import com.ecsail.structures.Object_DefinedFee;
 import com.ecsail.structures.Object_Membership;
+import com.ecsail.structures.Object_MembershipId;
+import com.ecsail.structures.Object_MembershipList;
+import com.ecsail.structures.Object_Money;
 import com.ecsail.structures.Object_Person;
 import com.ecsail.structures.Object_Phone;
 import com.itextpdf.io.font.FontProgramFactory;
@@ -34,14 +38,17 @@ import com.itextpdf.layout.property.TextAlignment;
 
 public class PDF_Renewal_Form {
 	private static String year;
+	private static String last_membership_id;
 	private static String current_membership_id;
 	private static int ms_id;
 	private static Object_Membership membership;
 	private static Object_Person primary;
 	private static Object_Person secondary;
+	private static Object_Money dues;
 	Object_DefinedFee definedFees;
 	private int borderSize = 1;
 	private List<Object_Boat> boats = new ArrayList<Object_Boat>();
+	private List<Object_MembershipId> ids = new ArrayList<Object_MembershipId>();
 	private ArrayList<Object_Phone> primaryPhone = new ArrayList<Object_Phone>();
 	private ArrayList<Object_Phone> secondaryPhone = new ArrayList<Object_Phone>();
 	private ArrayList<Object_Person> dependants = new ArrayList<Object_Person>();
@@ -66,42 +73,18 @@ public class PDF_Renewal_Form {
 		document.setTopMargin(0);
 		document.setLeftMargin(0.25f);
 		document.setRightMargin(0.25f);
-		//FontProgramFactory.registerFont("c:/windows/fonts/Arial.ttf", "arial");
-		FontProgramFactory.registerFont("c:/windows/fonts/garabd.ttf", "garamond bold");
-		PdfFont font = PdfFontFactory.createRegisteredFont("garamond bold");
+
 		//PdfFont font = PdfFontFactory.createFont("arial");
 
 		// add tables here
 		if (isOneMembership) { // we are only printing one membership
-			ms_id = SqlSelect.getMsidFromMembershipID(Integer.parseInt(current_membership_id));
-			membership = SqlSelect.getMembership(ms_id);
-			boats = SqlSelect.getBoats(ms_id);
-			boats.add(0, new Object_Boat(0, 0, "Manufacturer", "Year", "Registration", "Model", "Boat Name", "Sail #", true, "Length", "Header", "Keel Type", "PHRF"));
-			boats.add(new Object_Boat(0, 0, "", "", "", "", "", "", false, "", "Blank", "", ""));
-			dependants = SqlSelect.getPeople(membership);
-			primary = SqlSelect.getPerson(ms_id, 1); // 1 = primary member
-			primaryPhone = SqlSelect.getPhone(primary);
-			shortenDate(primary);
-				if(SqlExists.personExists(ms_id, 2)) {
-				secondary = SqlSelect.getPerson(ms_id, 2);
-				secondaryPhone = SqlSelect.getPhone(secondary);
-				shortenDate(secondary);
-				} else {
-					secondary = new Object_Person(0, 0, 0, "", "", "", "", "", false);
-					System.out.println("Susan does not exist");
-				}//Integer pid, Integer ms_id, Integer mt, String fn, String ln, String birthday, String oc, String bu, Boolean active
-				System.out.println(secondary.toString());
-			document.add(titlePdfTable(font));
-			document.add(membershipIdPdfTable());
-			document.add(membershipAddressPdfTable());
-			document.add(personPdfTable());
-			document.add(childrenPdfTable());
-			document.add(boatsPdfTable());
-			document.add(feesPdfTable());
-			for (int i = 1; i < 6; i++) {
-				document.add(blankTableRow(i));
-			}
-			document.add(signatureTable());
+			makeRenewPdf(document);
+		} else {
+	//		ids = SqlSelect.getm
+		//	for(Object_MembershipList m: Main.activememberships) {
+		//		document.add(new Paragraph(m.getMsid() + ""));
+		//	}
+			document.add(new Paragraph("Test 1 2 3"));
 		}
 		
 		
@@ -125,18 +108,58 @@ public class PDF_Renewal_Form {
 	
 	///////////  Class Methods ///////////////
 	
+	private void makeRenewPdf(Document document) throws IOException {
+		//FontProgramFactory.registerFont("c:/windows/fonts/Arial.ttf", "arial");
+		FontProgramFactory.registerFont("c:/windows/fonts/garabd.ttf", "garamond bold");
+		PdfFont font = PdfFontFactory.createRegisteredFont("garamond bold");
+		ms_id = SqlSelect.getMsidFromMembershipID(Integer.parseInt(current_membership_id));
+		membership = SqlSelect.getMembership(ms_id);
+		last_membership_id = SqlSelect.getMembershipId(Integer.parseInt(year) -1, membership.getMsid());
+		dues = SqlSelect.getMonies(ms_id, year);
+		boats = SqlSelect.getBoats(ms_id);
+		boats.add(0, new Object_Boat(0, 0, "Manufacturer", "Year", "Registration", "Model", "Boat Name", "Sail #", true, "Length", "Header", "Keel Type", "PHRF"));
+		boats.add(new Object_Boat(0, 0, "", "", "", "", "", "", false, "", "Blank", "", ""));
+		dependants = SqlSelect.getPeople(membership);
+		primary = SqlSelect.getPerson(ms_id, 1); // 1 = primary member
+		primaryPhone = SqlSelect.getPhone(primary);
+		shortenDate(primary);
+			if(SqlExists.personExists(ms_id, 2)) {
+			secondary = SqlSelect.getPerson(ms_id, 2);
+			secondaryPhone = SqlSelect.getPhone(secondary);
+			shortenDate(secondary);
+			} else {
+				secondary = new Object_Person(0, 0, 0, "", "", "", "", "", false);
+				System.out.println("Susan does not exist");
+			}//Integer pid, Integer ms_id, Integer mt, String fn, String ln, String birthday, String oc, String bu, Boolean active
+			System.out.println(secondary.toString());
+		document.add(titlePdfTable(font));
+		document.add(membershipIdPdfTable());
+		document.add(membershipAddressPdfTable());
+		document.add(personPdfTable());
+		document.add(childrenPdfTable());
+		document.add(boatsPdfTable());
+		document.add(feesPdfTable());
+		for (int i = 1; i < 6; i++) {
+			document.add(blankTableRow(i));
+		}
+		document.add(signatureTable());
+	}
+	
+	
 	public String getChildren() {
 		String children = "";
 		if (dependants.size() > 0) {
 			int numberOfChildren = dependants.size();
 			for (Object_Person c : dependants) {
-				children += c.getFname();
-				if (c.getBirthday() != null) {
-					children += " (" + c.getBirthday().substring(0, 4) + ")";
+				if (c.isActive()) {
+					children += c.getFname();
+					if (c.getBirthday() != null) {
+						children += " (" + c.getBirthday().substring(0, 4) + ")";
+					}
+					if (numberOfChildren != 1)
+						children += ", ";
+					numberOfChildren--;
 				}
-				if (numberOfChildren != 1)
-					children += ", ";
-				numberOfChildren--;
 			}
 		}
 		return children;
@@ -283,7 +306,6 @@ public class PDF_Renewal_Form {
 			cell.add(checkedBox);
 		} else {
 			cell.add(uncheckedBox);
-			
 		}
 		mainTable.addCell(cell);
 		
@@ -316,6 +338,9 @@ public class PDF_Renewal_Form {
 		cell.setBorderBottom(new SolidBorder(0.5f));
 		//cell.setBorderLeft(new SolidBorder(borderSize));
 		cell.setWidth(10);
+		if(dues.getWet_slip() > 0) 
+			cell.add(checkedBox);
+		else
 		cell.add(uncheckedBox);  /// WET SLIP CHECKBOX
 		mainTable.addCell(cell);
 		
@@ -348,6 +373,9 @@ public class PDF_Renewal_Form {
 		cell.setBorderBottom(new SolidBorder(0.5f));
 		//cell.setBorderLeft(new SolidBorder(borderSize));
 		cell.setWidth(10);
+		if(dues.getExtra_key() > 0) 
+			cell.add(checkedBox);
+		else
 		cell.add(uncheckedBox);  ///// MAIN GATE EXTRA KEY CHECKBOX
 		mainTable.addCell(cell);
 		
@@ -430,6 +458,9 @@ public class PDF_Renewal_Form {
 		cell.setBorderBottom(new SolidBorder(0.5f));
 		//cell.setBorderLeft(new SolidBorder(borderSize));
 		cell.setWidth(10);
+		if(dues.getBeach() > 0) 
+			cell.add(checkedBox);
+		else
 		cell.add(uncheckedBox);   //// BEACH PARKING CHECK BOX
 		mainTable.addCell(cell);
 		
@@ -545,6 +576,9 @@ public class PDF_Renewal_Form {
 		cell.setBorderBottom(new SolidBorder(0.5f));
 		//cell.setBorderLeft(new SolidBorder(borderSize));
 		cell.setWidth(10);
+		if(dues.getWinter_storage() > 0) 
+			cell.add(checkedBox);
+		else
 		cell.add(uncheckedBox);
 		mainTable.addCell(cell);
 		
@@ -561,6 +595,9 @@ public class PDF_Renewal_Form {
 		cell = new Cell();
 		cell.setBorder(Border.NO_BORDER);
 		cell.setBorderBottom(new SolidBorder(0.5f));
+		if(dues.getWinter_storage() > 0) 
+			p = new Paragraph(dues.getWinter_storage() + " x");
+		else
 		p = new Paragraph("____ x");
 		p.setFontSize(10);
 		p.setFixedLeading(10);
@@ -668,6 +705,9 @@ public class PDF_Renewal_Form {
 		cell.setBorderBottom(new SolidBorder(0.5f));
 		//cell.setBorderLeft(new SolidBorder(borderSize));
 		cell.setWidth(10);
+		if(dues.getSail_loft() > 0) 
+			cell.add(checkedBox);
+		else
 		cell.add(uncheckedBox);
 		mainTable.addCell(cell);
 		
@@ -747,7 +787,7 @@ public class PDF_Renewal_Form {
 		cell.setBorderLeft(new SolidBorder(borderSize));
 		cell.setBorderBottom(new SolidBorder(0.5f));
 		cell.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f));
-		p = new Paragraph("Lake Associate");
+		p = new Paragraph("Miscellaneous");
 		p.setFontSize(10);
 		p.setFixedLeading(10);
 		p.setTextAlignment(TextAlignment.CENTER);
@@ -760,6 +800,9 @@ public class PDF_Renewal_Form {
 		cell.setBorderBottom(new SolidBorder(0.5f));
 		cell.setBorderLeft(new SolidBorder(0.5f));
 		cell.setWidth(10);
+		if(dues.getKayac_rack() > 0) 
+			cell.add(checkedBox);
+		else
 		cell.add(uncheckedBox);
 		mainTable.addCell(cell);
 
@@ -776,7 +819,10 @@ public class PDF_Renewal_Form {
 		cell = new Cell();
 		cell.setBorder(Border.NO_BORDER);
 		cell.setBorderBottom(new SolidBorder(0.5f));
-		p = new Paragraph("____ x");
+		if(dues.getKayac_rack() > 0) 
+			p = new Paragraph(dues.getKayac_rack() + " x");
+		else
+			p = new Paragraph("____ x");
 		p.setFontSize(10);
 		p.setFixedLeading(10);
 		p.setTextAlignment(TextAlignment.RIGHT);
@@ -851,6 +897,9 @@ public class PDF_Renewal_Form {
 		cell.setBorderBottom(new SolidBorder(0.5f));
 		//cell.setBorderLeft(new SolidBorder(borderSize));
 		cell.setWidth(10);
+		if(dues.getKayac_shed() > 0) 
+			cell.add(checkedBox);
+		else
 		cell.add(uncheckedBox);
 		mainTable.addCell(cell);
 		
@@ -867,7 +916,10 @@ public class PDF_Renewal_Form {
 		cell = new Cell();
 		cell.setBorder(Border.NO_BORDER);
 		cell.setBorderBottom(new SolidBorder(0.5f));
-		p = new Paragraph("____ x");
+		if(dues.getKayac_shed() > 0) 
+			p = new Paragraph(dues.getKayac_shed() + " x");
+		else
+			p = new Paragraph("____ x");
 		p.setFontSize(10);
 		p.setFixedLeading(10);
 		p.setTextAlignment(TextAlignment.RIGHT);
@@ -897,7 +949,7 @@ public class PDF_Renewal_Form {
 				.setWidth(110)
 				.setPadding(0)
 				.setBorder(Border.NO_BORDER)
-				.add(new Paragraph("Calculated: $900")
+				.add(new Paragraph("Calculated: $" + dues.getTotal())
 						.setFontSize(10)
 						.setFixedLeading(10)
 						.setTextAlignment(TextAlignment.LEFT)));
@@ -1025,7 +1077,7 @@ public class PDF_Renewal_Form {
 				.setWidth(110)
 				.setPadding(0)
 				.setBorder(Border.NO_BORDER)
-				.add(new Paragraph("Calculated: -$150")
+				.add(new Paragraph("Calculated: -$" + dues.getCredit())
 						.setFontSize(10)
 						.setFixedLeading(10)
 						.setTextAlignment(TextAlignment.LEFT)));
@@ -1105,7 +1157,7 @@ public class PDF_Renewal_Form {
 				.setWidth(110)
 				.setPadding(0)
 				.setBorder(Border.NO_BORDER)
-				.add(new Paragraph("Calculated: $950")
+				.add(new Paragraph("Calculated: $" + dues.getBalance())
 						.setFontSize(10)
 						//.setFixedLeading(10)
 						.setTextAlignment(TextAlignment.LEFT)));
@@ -1555,7 +1607,7 @@ public class PDF_Renewal_Form {
 		cell.add(p);
 		mainTable.addCell(cell);
 		
-		p = new Paragraph(Integer.parseInt(year) -1 + " Membership Number: " + current_membership_id);
+		p = new Paragraph(Integer.parseInt(year) -1 + " Membership Number: " + last_membership_id);
 		p.setFontSize(10);
 		cell = new Cell();
 		cell.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f));
@@ -1566,7 +1618,7 @@ public class PDF_Renewal_Form {
 		cell.setWidth(180);
 		mainTable.addCell(cell);
 		
-		p = new Paragraph("New Membership Number: 98");
+		p = new Paragraph("New Membership Number: " + current_membership_id);
 		p.setFontSize(10);
 		p.setTextAlignment(TextAlignment.LEFT);
 		cell = new Cell();
