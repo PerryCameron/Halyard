@@ -6,7 +6,6 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 
 public class TabBalance extends Tab {
