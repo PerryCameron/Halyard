@@ -10,13 +10,13 @@ import com.itextpdf.layout.property.TextAlignment;
 
 public class PDF_Renewal_Form_Back {
 	public static void Create_Back_Side(Document document) {
-		Table mainTable = new Table(1);
+		Table mainTable = new Table(1); 
 		mainTable.setWidth(590);
 		Paragraph p;
 		Cell cell;
 		cell = new Cell();
 		cell.setBorder(Border.NO_BORDER);
-        p = new Paragraph("Eagle Creek Sailing Club, Inc");
+        p = new Paragraph("Eagle Creek Sailing Club, Inc.");
         p.setTextAlignment(TextAlignment.CENTER);
         p.setFontSize(12).setBold();
         p.setFixedLeading(10);

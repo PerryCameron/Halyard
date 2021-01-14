@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ecsail.main.Main;
 import com.ecsail.main.Paths;
 import com.ecsail.main.SqlExists;
 import com.ecsail.main.SqlSelect;
@@ -14,7 +13,6 @@ import com.ecsail.structures.Object_Boat;
 import com.ecsail.structures.Object_DefinedFee;
 import com.ecsail.structures.Object_Membership;
 import com.ecsail.structures.Object_MembershipId;
-import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Money;
 import com.ecsail.structures.Object_Person;
 import com.ecsail.structures.Object_Phone;
