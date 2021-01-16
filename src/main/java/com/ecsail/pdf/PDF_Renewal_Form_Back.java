@@ -81,7 +81,7 @@ public class PDF_Renewal_Form_Back {
 		listItem = new ListItem();
 		listItem.add(p);
 		list.add(listItem);
-		
+		 
 		list.add("Donations for Junior Sailing Program are not tax deductible, per Internal Revenue "
 				+ "Code Section 501 (C) (7), nor mandatory.  Donations will have no bearing on your status as a Club Member.");
 		list.add("Being legally married 'under the laws of the state of Indiana' is required to hold a Family Membership.");
