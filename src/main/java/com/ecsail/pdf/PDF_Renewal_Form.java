@@ -115,7 +115,7 @@ public class PDF_Renewal_Form {
 		ms_id = SqlSelect.getMsidFromMembershipID(Integer.parseInt(current_membership_id));
 		membership = SqlSelect.getMembership(ms_id);
 		
-		FontProgramFactory.registerFont("c:/windows/fonts/garabd.ttf", "garamond bold");
+		FontProgramFactory.registerFont("c:/windows/fonts/times.ttf", "garamond bold");
 		PdfFont font = PdfFontFactory.createRegisteredFont("garamond bold");
 		last_membership_id = SqlSelect.getMembershipId(Integer.parseInt(year) -1, membership.getMsid());
 		dues = SqlSelect.getMonies(ms_id, year);
@@ -1261,6 +1261,36 @@ public class PDF_Renewal_Form {
 		
 		return mainTable;
 	}
+	
+	public Table volunteerTable() {
+		Table mainTable = new Table(7);
+		mainTable
+		.setWidth(590)
+		.addCell(new Cell(1,7)
+				.setBorderLeft(new SolidBorder(borderSize))
+				.setBorderRight(new SolidBorder(borderSize))
+				.setBorderTop(new SolidBorder(borderSize))
+				.add(new Paragraph("I understand and agree to the terms set fourth in this "
+						+ "contract(front and back sides) and I agree to "
+						+ "abide by the ECSC Bylaws & General Rules.")
+						.setFontSize(8)
+						.setBold()
+						.setTextAlignment(TextAlignment.CENTER)
+						.setFixedLeading(10)))
+		.addCell(new Cell()
+				.setBorderLeft(new SolidBorder(borderSize))
+				.setBorderRight(new SolidBorder(borderSize))
+				.add(new Paragraph("")
+						.setFontSize(10)
+						.setTextAlignment(TextAlignment.CENTER)
+						.setFixedLeading(20))
+				
+				);
+		
+		return mainTable;
+	}
+	
+	
 	
 	public Table boatsPdfTable() {
 		Table mainTable = new Table(9);
