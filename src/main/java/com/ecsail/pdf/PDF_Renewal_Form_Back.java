@@ -129,11 +129,12 @@ public class PDF_Renewal_Form_Back {
 				+ "the Hornback Regatta in October");
 		////  BOLD TEXT HERE
 		p = new Paragraph();
-		p.add(new Text("All boats including Kayaks, Canoes, and Paddleboards kept on the property must be registered with membership and have "
+		p.add(new Text("All watercraft such as Sailboats, Row Boats, Kayaks, Canoes, and Paddleboards kept on the property must be registered with membership and have "
 				+ "current ECSC stickers by Mother's Day " + year).setBold());
 		listItem = new ListItem();
 		listItem.add(p);
 		list.add(listItem);
+		list.add("Only Regular/Family Memberships may keep watercraft on ECSC property");
 		list.add("Make all checks payable to \"Eagle Creek Sailing Club\" or “ECSC”");
 		
 		document.add(list);

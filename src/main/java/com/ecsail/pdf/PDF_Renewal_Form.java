@@ -4,9 +4,13 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import com.ecsail.enums.KeelType;
 import com.ecsail.main.Paths;
+import com.ecsail.main.SortByMembershipId;
+import com.ecsail.main.SortByMembershipId2;
 import com.ecsail.main.SqlExists;
 import com.ecsail.main.SqlSelect;
 import com.ecsail.structures.Object_Boat;
@@ -62,7 +66,6 @@ public class PDF_Renewal_Form {
 		Paths.checkPath(Paths.RENEWALFORM + "/" + year);
 		// Initialize PDF writer
 		
-		
 		PdfWriter writer = new PdfWriter(Paths.RENEWALFORM + "/" + year + "/" + year + "_Renewal_Forms.pdf");
 
 		// Initialize PDF document
@@ -83,14 +86,16 @@ public class PDF_Renewal_Form {
 			
 		} else {
 			ids = SqlSelect.getMembershipIds(year);
+			Collections.sort(ids, new SortByMembershipId2());
 			for(Object_MembershipId id: ids) {
 				current_membership_id = id.getMembership_id();
 				System.out.println("printing for membership " + id.getMembership_id());
 				makeRenewPdf(document);
 				document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+				PDF_Renewal_Form_Back.Create_Back_Side(document);
+				document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
 			}
 		}
-		
 		
 		// Close document
 		document.close();
@@ -132,25 +137,26 @@ public class PDF_Renewal_Form {
 			shortenDate(secondary);
 			} else {
 				secondary = new Object_Person(0, 0, 0, "", "", "", "", "", false);
-				System.out.println("Susan does not exist");
+		//		System.out.println("Susan does not exist");
 			}//Integer pid, Integer ms_id, Integer mt, String fn, String ln, String birthday, String oc, String bu, Boolean active
-			System.out.println(secondary.toString());
+		//	System.out.println(secondary.toString());
 		document.add(titlePdfTable(font));
 		document.add(membershipIdPdfTable());
 		document.add(membershipAddressPdfTable());
 		document.add(personPdfTable());
 		document.add(childrenPdfTable());
 		document.add(boatsPdfTable());
-		document.add(feesPdfTable());
-		for (int i = 1; i < 6; i++) {
+		document.add(feesPdfTable(document));
+		for (int i = 1; i < 12-boats.size(); i++) {  // this is the notes section
 			document.add(blankTableRow(i));
 		}
 		document.add(signatureTable());
+		document.add(volunteerTable());
+		document.add(returnInfoTable());
 		dues.clear();
 		boats.clear();
 		dependants.clear();
 	}
-	
 	
 	public String getChildren() {
 		String children = "";
@@ -189,6 +195,8 @@ public class PDF_Renewal_Form {
 		String cleanedString = "";
 		if(answer != null) {
 			cleanedString = answer;
+			if(answer.equals("null"))
+				cleanedString = "";
 		}
 		return cleanedString;
 	}
@@ -242,7 +250,7 @@ public class PDF_Renewal_Form {
 		return phone;
 	}
 	
-	public Table feesPdfTable() {
+	public Table feesPdfTable(Document document) {
 		Table mainTable = new Table(12);
 		//mainTable.setWidth(590);
 		Cell cell;
@@ -295,7 +303,7 @@ public class PDF_Renewal_Form {
 		feesTableRow8(mainTable);
 		feesTableRow9(mainTable);
 		feesTableRow10(mainTable);
-		feesTableRow11(mainTable);
+		feesTableRow11(mainTable,document);
 		return mainTable;
 	}
 	
@@ -396,7 +404,6 @@ public class PDF_Renewal_Form {
 		cell.add(p);
 		mainTable.addCell(cell);
 
-		
 		/////////  Multiply Cell //////
 		cell = new Cell();
 		cell.setBorder(Border.NO_BORDER);
@@ -1180,7 +1187,7 @@ public class PDF_Renewal_Form {
 
 	}
 	
-	public void feesTableRow11(Table mainTable) {
+	public void feesTableRow11(Table mainTable, Document document) {
 		Cell cell;
 		Paragraph p;
 		/////////////////// VISIBLE TABLE CELL LEFT BEGIN Row 10 /////////////////
@@ -1216,7 +1223,6 @@ public class PDF_Renewal_Form {
 		p.setTextAlignment(TextAlignment.CENTER);
 		cell.add(p);
 		mainTable.addCell(cell);
-
 	}
 	
 	public Table blankTableRow(int number) {
@@ -1239,6 +1245,7 @@ public class PDF_Renewal_Form {
 		mainTable
 		.setWidth(590)
 		.addCell(new Cell()
+				.setBorder(Border.NO_BORDER)
 				.setBorderLeft(new SolidBorder(borderSize))
 				.setBorderRight(new SolidBorder(borderSize))
 				.setBorderTop(new SolidBorder(borderSize))
@@ -1250,6 +1257,7 @@ public class PDF_Renewal_Form {
 						.setTextAlignment(TextAlignment.CENTER)
 						.setFixedLeading(10)))
 		.addCell(new Cell()
+				.setBorder(Border.NO_BORDER)
 				.setBorderLeft(new SolidBorder(borderSize))
 				.setBorderRight(new SolidBorder(borderSize))
 				.add(new Paragraph("SIGNATURE: " + printLine(50) + " Date: " + printLine(20))
@@ -1262,51 +1270,123 @@ public class PDF_Renewal_Form {
 		return mainTable;
 	}
 	
+	public Table returnInfoTable() {
+		Table mainTable = new Table(1);
+		mainTable
+		.setWidth(590)
+		.addCell(new Cell()
+				.setBorder(Border.NO_BORDER)
+				.setBorderLeft(new SolidBorder(borderSize))
+				.setBorderRight(new SolidBorder(borderSize))
+				.setBorderTop(new SolidBorder(borderSize))
+				.setBorderBottom(new SolidBorder(borderSize))
+				.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f))
+				.add(new Paragraph("Enclose Check and Return to: Perry Cameron-ECSC 7078 Windridge Way, Brownsburg IN 46112")
+						.setFontSize(8)
+						.setBold()
+						.setTextAlignment(TextAlignment.CENTER)
+						.setFixedLeading(5)));	
+		return mainTable;
+	}
+	
 	public Table volunteerTable() {
 		Table mainTable = new Table(7);
 		mainTable
 		.setWidth(590)
 		.addCell(new Cell(1,7)
+				.setBorder(Border.NO_BORDER)
 				.setBorderLeft(new SolidBorder(borderSize))
 				.setBorderRight(new SolidBorder(borderSize))
 				.setBorderTop(new SolidBorder(borderSize))
-				.add(new Paragraph("I understand and agree to the terms set fourth in this "
-						+ "contract(front and back sides) and I agree to "
-						+ "abide by the ECSC Bylaws & General Rules.")
+				.add(new Paragraph("Please circle any area in which you are willing to serve as a volunteer in " + year + ". Feel free to contact the charimant directly to volunteer.")
 						.setFontSize(8)
-						.setBold()
 						.setTextAlignment(TextAlignment.CENTER)
 						.setFixedLeading(10)))
 		.addCell(new Cell()
+				.setBorder(Border.NO_BORDER)
 				.setBorderLeft(new SolidBorder(borderSize))
-				.setBorderRight(new SolidBorder(borderSize))
-				.add(new Paragraph("")
-						.setFontSize(10)
+				.add(new Paragraph("DOCK WORK")
+						.setFontSize(8)
 						.setTextAlignment(TextAlignment.CENTER)
-						.setFixedLeading(20))
+						.setFixedLeading(10))
 				
+				)
+		.addCell(new Cell()
+				.setBorder(Border.NO_BORDER)
+				.add(new Paragraph("GROUNDS WORK")
+						.setFontSize(8)
+						.setTextAlignment(TextAlignment.CENTER)
+						.setFixedLeading(10))
+				
+				)
+		.addCell(new Cell()
+				.setBorder(Border.NO_BORDER)
+				.add(new Paragraph("MEMBERSHIP")
+						.setFontSize(8)
+						.setTextAlignment(TextAlignment.CENTER)
+						.setFixedLeading(10))
+				
+				)
+		.addCell(new Cell()
+				.setBorder(Border.NO_BORDER)
+				.add(new Paragraph("PUBLICITY")
+						.setFontSize(8)
+						.setTextAlignment(TextAlignment.CENTER)
+						.setFixedLeading(10))
+				
+				)
+		.addCell(new Cell()
+				.setBorder(Border.NO_BORDER)
+				.add(new Paragraph("RACING")
+						.setFontSize(8)
+						.setTextAlignment(TextAlignment.CENTER)
+						.setFixedLeading(10))
+				
+				)
+		.addCell(new Cell()
+				.setBorder(Border.NO_BORDER)
+				.add(new Paragraph("SAFETY/EDUCATION")
+						.setFontSize(8)
+						.setTextAlignment(TextAlignment.CENTER)
+						.setFixedLeading(10))
+				
+				)
+		.addCell(new Cell()
+				.setBorder(Border.NO_BORDER)
+				.setBorderRight(new SolidBorder(borderSize))
+				.add(new Paragraph("SOCIAL")
+						.setFontSize(8)
+						.setTextAlignment(TextAlignment.CENTER)
+						.setFixedLeading(10))
 				);
 		
 		return mainTable;
 	}
 	
-	
-	
 	public Table boatsPdfTable() {
 		Table mainTable = new Table(9);
 		mainTable.setWidth(590);
-		System.out.println("boats size is " + boats.size());
+		//System.out.println("boats size is " + boats.size());
 		for(Object_Boat b: boats) {
-			System.out.println(b);
+			//System.out.println(b);
 			createBoatTableRow(mainTable, b);
 		}
-		
 		Cell cell;
 		cell = new Cell(1,9);
 		cell.setBorder(Border.NO_BORDER);
 		cell.setBorderLeft(new SolidBorder(borderSize));
 		cell.setBorderRight(new SolidBorder(borderSize));
-		cell.add(new Paragraph("If boat is co-owned, put a check next to the boat and list co-owner(s) " + printLine(50)).setFontSize(10));
+		cell.add(new Paragraph("Keel types: Fin, Wing, Swing, Centerboard, Daggerboard, Full, Bulb, Retractable, Other ")
+				.setTextAlignment(TextAlignment.CENTER)
+				.setFontSize(8));
+		mainTable.addCell(cell);
+
+		cell = new Cell(1,9);
+		cell.setBorder(Border.NO_BORDER);
+		cell.setBorderLeft(new SolidBorder(borderSize));
+		cell.setBorderRight(new SolidBorder(borderSize));
+		cell.add(new Paragraph("If boat is co-owned, put a check next to the boat and list co-owner(s) " + printLine(50))
+				.setFontSize(10));
 		mainTable.addCell(cell);
 		return mainTable;
 	}
@@ -1395,8 +1475,12 @@ public class PDF_Renewal_Form {
 		}
 		cell.add(p);
 		mainTable.addCell(cell);
-
-		p = new Paragraph(removeNulls(boat.getKeel()));
+		String keel = removeNulls(boat.getKeel());
+			if(keel.equals("Keel Type"))
+				p = new Paragraph(removeNulls(keel));
+			else
+				p = new Paragraph(removeNulls("" + KeelType.getByCode(keel)));
+		
 		p.setFontSize(10);
 		cell = new Cell();
 		if (isHeader) {
@@ -1409,12 +1493,15 @@ public class PDF_Renewal_Form {
 		mainTable.addCell(cell);
 
 		if (isHeader)
-			p = new Paragraph("Has Trailer");
+			p = new Paragraph("Trailer");
 		else
 			if(boat.getWeight().equals("Blank")) {  // this is the blank row
 				p = new Paragraph(".");  //maybe put in image?
 			} else {
-				p = new Paragraph(boat.isHasTrailer() + "");
+				if(boat.isHasTrailer()) 
+					p = new Paragraph("yes");
+				else
+					p = new Paragraph("no");
 			}
 		p.setFontSize(10);
 		cell = new Cell();
@@ -1456,8 +1543,6 @@ public class PDF_Renewal_Form {
 		cell.setBorderRight(new SolidBorder(borderSize));
 		cell.setBorderTop(new SolidBorder(borderSize));
 		mainTable.addCell(cell);
-		
-
 		
 		p = new Paragraph("Name and Birthyear(s): " + getChildren());
 		p.setFontSize(10);

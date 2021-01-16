@@ -1580,20 +1580,25 @@ public class SqlSelect {
 	}
 	
 	public static String getMembershipId(int year, int ms_id) {
-		int id = 0;
+		String id = "";
 		Statement stmt;
 		
 		try {
 			stmt = ConnectDatabase.connection.createStatement();
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select membership_id from membership_id where fiscal_year='" + year + "' and ms_id='" + ms_id + "'"));
-			rs.next();
-			id = rs.getInt("membership_id");
+			if (rs.next() == false) {
+				id = "none";
+			} else {
+				do {
+					id = rs.getString("membership_id");
+				} while (rs.next());
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e.printStackTrace();		
 		}
 		System.out.println("For year " + year +  " ms_id=" + ms_id + " they are " + id);
-		return id + "";
+		return id;
 		
 	}
 	
