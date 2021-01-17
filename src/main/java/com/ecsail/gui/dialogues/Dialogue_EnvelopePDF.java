@@ -1,5 +1,9 @@
 package com.ecsail.gui.dialogues;
 
+import java.io.FileNotFoundException;
+
+import com.ecsail.pdf.PDF_Envelope;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -77,7 +81,12 @@ public class Dialogue_EnvelopePDF extends Stage {
 		createPDFbutton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-
+				try {
+					new PDF_Envelope();
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
  			}
 		});
 		
