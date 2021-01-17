@@ -2,6 +2,7 @@ package com.ecsail.main;
 
 import java.io.IOException;
 
+import com.ecsail.gui.dialogues.Dialogue_EnvelopePDF;
 import com.ecsail.gui.dialogues.Dialogue_RenewalForm;
 import com.ecsail.gui.tabs.TabRoster;
 import com.ecsail.gui.tabs.TabDeposits;
@@ -101,6 +102,12 @@ static TabPane tabPane;
 	public static void createRenewalForms() {
 		new Dialogue_RenewalForm();
 	}
+	
+	public static void openEnvelopesDialogue() {
+		new Dialogue_EnvelopePDF();
+	}
+	
+	
 	
 	// creates a membership tab from the membership list
 	public static void createTab(int membershipID, int ms_id)  {
