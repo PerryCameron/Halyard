@@ -9,7 +9,6 @@ import java.util.List;
 
 import com.ecsail.enums.KeelType;
 import com.ecsail.main.Paths;
-import com.ecsail.main.SortByMembershipId;
 import com.ecsail.main.SortByMembershipId2;
 import com.ecsail.main.SqlExists;
 import com.ecsail.main.SqlSelect;
