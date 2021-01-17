@@ -1,6 +1,7 @@
 package com.ecsail.gui.dialogues;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import com.ecsail.pdf.PDF_Envelope;
 
@@ -9,7 +10,6 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
@@ -21,16 +21,14 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class Dialogue_EnvelopePDF extends Stage {
-
-	
+	int membership_id = 0;
+	boolean isOneMembership;
 	public Dialogue_EnvelopePDF() {
 		
 		Button createPDFbutton = new Button("Create Envelope PDF");
 		ToggleGroup tg1 = new ToggleGroup();  
 		RadioButton r1 = new RadioButton("Print All Envelopes"); 
-        RadioButton r2 = new RadioButton("Print one Envelope"); 
-        CheckBox c1 = new CheckBox("Detailed Report");
-        CheckBox c2 = new CheckBox("Summary"); 
+        RadioButton r2 = new RadioButton("Print one Envelope");  
 		HBox hboxGrey = new HBox(); // this is the vbox for organizing all the widgets
 		VBox vboxBlue = new VBox();
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
@@ -43,12 +41,12 @@ public class Dialogue_EnvelopePDF extends Stage {
 		Image pdf = new Image(getClass().getResourceAsStream("/pdf.png"));
 		ImageView pdfImage = new ImageView(pdf);
 		
-		SpinnerValueFactory<Integer> batchSlipValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 50, 0);
+		SpinnerValueFactory<Integer> batchSlipValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 300, 0);
 		batchSpinner.setValueFactory(batchSlipValueFactory);
 		batchSpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
 			  if (!newValue) {
 				  batchSpinner.increment(0); // won't change value, but will commit editor
-				  int fieldValue = Integer.parseInt(batchSpinner.getEditor().getText());
+				  membership_id = Integer.parseInt(batchSpinner.getEditor().getText());
 
 			  }
 			});
@@ -57,8 +55,7 @@ public class Dialogue_EnvelopePDF extends Stage {
 		r1.setToggleGroup(tg1); 
         r2.setToggleGroup(tg1); 
         r2.setSelected(true);
-        c1.setSelected(true);
-        c2.setSelected(true);
+
         //batchSpinner.setPadding(new Insets(0,0,0,10));
         hboxGrey.setPadding(new Insets(5,0,0,5));
         batchSpinner.setPrefWidth(60);
@@ -82,8 +79,11 @@ public class Dialogue_EnvelopePDF extends Stage {
 			@Override
 			public void handle(ActionEvent e) {
 				try {
-					new PDF_Envelope();
+					new PDF_Envelope(r2.isSelected(), membership_id);
 				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
@@ -91,7 +91,7 @@ public class Dialogue_EnvelopePDF extends Stage {
 		});
 		
 		//////////////// ADD CONTENT ///////////////////
-		vboxColumn1.getChildren().addAll(r1,r2,batchSpinner,c1,c2);
+		vboxColumn1.getChildren().addAll(r1,r2,batchSpinner);
 		vboxColumn2.getChildren().addAll(pdfImage,createPDFbutton);
 		hboxGrey.getChildren().addAll(vboxColumn1,vboxColumn2);
 		vboxBlue.getChildren().add(vboxPink);
