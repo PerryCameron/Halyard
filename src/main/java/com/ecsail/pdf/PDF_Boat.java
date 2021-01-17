@@ -15,7 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 	
-public class Pdf_Boat {
+public class PDF_Boat {
 
 		private static List<Object_Boat> boats;
 		static String[] boatHeaders = {

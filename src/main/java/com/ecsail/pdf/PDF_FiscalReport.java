@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
 	
-public class Pdf_FiscalReport {
+public class PDF_FiscalReport {
 
 		private static ObservableList<Object_PaidDues> paidDues;
 		static String[] boatHeaders = {
@@ -37,7 +37,7 @@ public class Pdf_FiscalReport {
 		static String dest = System.getProperty("user.home") + "/Fiscal_Report.pdf";
 	    public static int counter = 1;
 	    
-		public Pdf_FiscalReport(String selectedYear) throws IOException {
+		public PDF_FiscalReport(String selectedYear) throws IOException {
 			paidDues = SqlSelect.getPaidDues(selectedYear);
 			
 			

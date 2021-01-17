@@ -8,7 +8,7 @@ import com.ecsail.gui.dialogues.Dialogue_Stub;
 import com.ecsail.main.CreateMembership;
 import com.ecsail.main.SqlScriptMaker;
 import com.ecsail.main.TabLauncher;
-import com.ecsail.pdf.Pdf_Boat;
+import com.ecsail.pdf.PDF_Boat;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -55,6 +55,7 @@ public class BoxToolBar extends VBox {
 		MenuItem m4_1_6 = new MenuItem("Tab Stub");
 		MenuItem m4_1_7 = new MenuItem("Create membership id's");
 		MenuItem m4_1_8 = new MenuItem("Renewal Forms");
+		MenuItem m4_1_9 = new MenuItem("Create Envelopes");
 
         m3_3_6.setOnAction(new EventHandler<ActionEvent>() {  // open active membership list
             @Override public void handle(ActionEvent e) {
@@ -77,7 +78,7 @@ public class BoxToolBar extends VBox {
 		m4_1_2.setOnAction(new EventHandler<ActionEvent>() {  // add new membership
             @Override public void handle(ActionEvent e) {
             	try {
-					Pdf_Boat.createPdf();
+					PDF_Boat.createPdf();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -118,6 +119,12 @@ public class BoxToolBar extends VBox {
 		m4_1_8.setOnAction(new EventHandler<ActionEvent>() {  // add new membership
             @Override public void handle(ActionEvent e) {
             	TabLauncher.createRenewalForms();
+            }
+        });
+		
+		m4_1_9.setOnAction(new EventHandler<ActionEvent>() {  // add new membership
+            @Override public void handle(ActionEvent e) {
+            	TabLauncher.openEnvelopesDialogue();
             }
         });
 		
@@ -176,7 +183,7 @@ public class BoxToolBar extends VBox {
             }
         });
         m1_1.getItems().addAll(m1_1_1);
-        m4_1.getItems().addAll(m4_1_1,m4_1_2,m4_1_3,m4_1_4,m4_1_5,m4_1_6,m4_1_7,m4_1_8);
+        m4_1.getItems().addAll(m4_1_1,m4_1_2,m4_1_3,m4_1_4,m4_1_5,m4_1_6,m4_1_7,m4_1_8,m4_1_9);
         m3_3.getItems().addAll(m3_3_1,m3_3_2,m3_3_3,m3_3_4,m3_3_5,m3_3_6);  // add list items
         menu1.getItems().addAll(m1_1,m1_2);
         menu3.getItems().addAll(m3_1,m3_2,m3_3,m3_4);
