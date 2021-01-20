@@ -1,6 +1,5 @@
 package com.ecsail.gui.boxes;
 
-import java.io.IOException;
 import com.ecsail.main.Main;
 import com.ecsail.excel.Xls_email_list;
 import com.ecsail.gui.dialogues.Dialogue_NewYearGenerator;
@@ -8,7 +7,7 @@ import com.ecsail.gui.dialogues.Dialogue_Stub;
 import com.ecsail.main.CreateMembership;
 import com.ecsail.main.SqlScriptMaker;
 import com.ecsail.main.TabLauncher;
-import com.ecsail.pdf.PDF_Boat;
+//import com.ecsail.pdf.PDF_Boat;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -75,16 +74,7 @@ public class BoxToolBar extends VBox {
             }
         });
         
-		m4_1_2.setOnAction(new EventHandler<ActionEvent>() {  // add new membership
-            @Override public void handle(ActionEvent e) {
-            	try {
-					PDF_Boat.createPdf();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-            }
-        });
+
 		
 		m4_1_3.setOnAction(new EventHandler<ActionEvent>() {  // add new membership
             @Override public void handle(ActionEvent e) {

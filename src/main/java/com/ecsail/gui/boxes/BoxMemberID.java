@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.function.Function;
 
 import com.ecsail.main.EditCell;
-import com.ecsail.main.Main;
 import com.ecsail.main.Paths;
 import com.ecsail.main.SqlDelete;
 import com.ecsail.main.SqlExists;
@@ -155,8 +154,8 @@ public class BoxMemberID extends HBox {
 						if (SqlExists.memberShipIdExists(m.getMsid())) {
 							//Object_MembershipId thisId = SqlSelect.getCount(m.getMsid()); // retrieves oldest year																// record for member
 							//System.out.println("mem id is" + thisId.getMembership_id());
-							int fiscalYear = Integer.parseInt(Main.selectedYear); // gets year and subtracts
-							newIdTuple = new Object_MembershipId(mid, fiscalYear + "", m.getMsid(),
+							//int fiscalYear = Integer.parseInt(Main.selectedYear); // gets year and subtracts
+							newIdTuple = new Object_MembershipId(mid, 0 + "", m.getMsid(),
 									"0",true);
 						} else {
 							newIdTuple = new Object_MembershipId(mid, Paths.getYear(), m.getMsid(),"0",true);
