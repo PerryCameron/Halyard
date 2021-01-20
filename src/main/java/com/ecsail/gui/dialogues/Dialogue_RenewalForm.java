@@ -32,8 +32,8 @@ public class Dialogue_RenewalForm extends Stage {
 		ToggleGroup tg1 = new ToggleGroup();  
 		RadioButton r1 = new RadioButton("Print All Memberships"); 
         RadioButton r2 = new RadioButton("Print Only Membership Number"); 
-        CheckBox c1 = new CheckBox("Detailed Report");
-        CheckBox c2 = new CheckBox("Summary"); 
+        CheckBox c1 = new CheckBox("Send in email");
+        CheckBox c2 = new CheckBox("Print individual copies"); 
 		HBox hboxGrey = new HBox(); // this is the vbox for organizing all the widgets
 		VBox vboxBlue = new VBox();
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
