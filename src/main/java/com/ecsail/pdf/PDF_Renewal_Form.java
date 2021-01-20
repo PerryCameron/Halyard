@@ -58,48 +58,80 @@ public class PDF_Renewal_Form {
 	Image checkedBox = new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/checked-checkbox9x9.png"))));
 	Image uncheckedBox = new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/unchecked-checkbox9x9.png"))));
 	String filenm = "";
+	private Boolean emailCopies;
 	
-	public PDF_Renewal_Form(String y, String membershipId, boolean isOneMembership) throws IOException {
+	public PDF_Renewal_Form(String y, String membershipId, boolean isOneMembership, boolean emailCopies, boolean seperateFiles) throws IOException {
 		PDF_Renewal_Form.year = y;
 		PDF_Renewal_Form.current_membership_id = membershipId;
+		this.emailCopies = emailCopies;
 		this.definedFees = SqlSelect.selectDefinedFees(Integer.parseInt(year));
 		// Check if our path exists, if not create it
 		Paths.checkPath(Paths.RENEWALFORM + "/" + year);
-		Document document = null;
+
 		// add tables here
 		if (isOneMembership) { // we are only printing one membership
-			document = makeRenewPdf();
-			document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
-			PDF_Renewal_Form_Back.Create_Back_Side(document);
+			makeOneMembershipPDF();
 		} else {
-			filenm = Paths.RENEWALFORM + "/" + year + "/" + year + "_Renewal_Forms.pdf";
-			document = createDocument(filenm);
-			ids = SqlSelect.getMembershipIds(year);
-			Collections.sort(ids, new SortByMembershipId2());
-			for(Object_MembershipId id: ids) {
-				current_membership_id = id.getMembership_id();
-				System.out.println("printing for membership " + id.getMembership_id());
-				makeRenewPdf(document);
-				document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
-				PDF_Renewal_Form_Back.Create_Back_Side(document);
-				document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+			if(seperateFiles) {
+			makeManyMembershipsIntoManyPDF();	
+			} else {
+			makeManyMembershipsIntoOnePDF();
 			}
-		}
-		// Close document
-		document.close();
-		System.out.println("destination=" + Paths.RENEWALFORM + "/" + year + "/" + year + "_Renewal_Forms.pdf");
-		File file = new File(filenm);
-		Desktop desktop = Desktop.getDesktop(); // Gui_Main.class.getProtectionDomain().getCodeSource().getLocation().getPath()
-		// Open the document
-		try {
-			desktop.open(file);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 	
 	///////////  Class Methods ///////////////
+	
+	private void makeOneMembershipPDF() throws IOException {
+			Document document = makeRenewPdf();
+			document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+			PDF_Renewal_Form_Back.Create_Back_Side(document);
+			document.close();
+			openDocumentToView(document);
+	}
+	
+	private void makeManyMembershipsIntoOnePDF() throws IOException {
+		filenm = Paths.RENEWALFORM + "/" + year + "/" + year + "_Renewal_Forms.pdf";
+		Document document = createDocument(filenm);
+		ids = SqlSelect.getMembershipIds(year);
+		Collections.sort(ids, new SortByMembershipId2());
+		for (Object_MembershipId id : ids) {
+			current_membership_id = id.getMembership_id();
+			System.out.println("printing for membership " + id.getMembership_id());
+			makeRenewPdf(document);
+			document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+			PDF_Renewal_Form_Back.Create_Back_Side(document);
+			document.add(new AreaBreak(AreaBreakType.NEXT_PAGE)); // we are putting them in the same file
+		}
+			document.close();
+			openDocumentToView(document);
+	}
+	
+	private void makeManyMembershipsIntoManyPDF() throws IOException {
+		ids = SqlSelect.getMembershipIds(year);
+		Collections.sort(ids, new SortByMembershipId2());
+		for (Object_MembershipId id : ids) {
+			current_membership_id = id.getMembership_id();
+			Document document = makeRenewPdf();
+			document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+			PDF_Renewal_Form_Back.Create_Back_Side(document);
+			document.close();
+		}
+		
+	}
+	
+	private void openDocumentToView(Document document) {
+			System.out.println("destination=" + filenm);
+			File file = new File(filenm);
+			Desktop desktop = Desktop.getDesktop(); // Gui_Main.class.getProtectionDomain().getCodeSource().getLocation().getPath()
+			// Open the document
+			try {
+				desktop.open(file);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	
 	private Document createDocument(String filename) {
 		PdfWriter writer = null;
@@ -121,27 +153,26 @@ public class PDF_Renewal_Form {
 	
 	/// used for making all of them into one PDF
 	private void makeRenewPdf(Document document) throws IOException {
-		//FontProgramFactory.registerFont("c:/windows/fonts/Arial.ttf", "arial");
-		ms_id = SqlSelect.getMsidFromMembershipID(Integer.parseInt(current_membership_id));
-		membership = SqlSelect.getMembership(ms_id);
+		gatherMembershipInformation();  // gets all relevant info for membership obviously
+		addTablesToPDF(document);
+
+	}
+	
+	/// used for making 1
+	private Document makeRenewPdf() throws IOException {
+		gatherMembershipInformation();  // gets all relevant info for membership obviously
+		// create a custom file name with gathered information
+		filenm = Paths.RENEWALFORM + "/" + year + "/" + year + "_Renewal_Form_"
+				+ primary.getLname() + "_" + membership.getMembershipId() + ".pdf";
+		// create the document
+		Document document = createDocument(filenm);
+		addTablesToPDF(document);
+		return document;
+	}
+	
+	private void addTablesToPDF(Document document) throws IOException {
 		FontProgramFactory.registerFont("c:/windows/fonts/times.ttf", "garamond bold");
 		PdfFont font = PdfFontFactory.createRegisteredFont("garamond bold");
-		last_membership_id = SqlSelect.getMembershipId(Integer.parseInt(year) -1, membership.getMsid());
-		dues = SqlSelect.getMonies(ms_id, year);
-		boats = SqlSelect.getBoats(ms_id);
-		boats.add(0, new Object_Boat(0, 0, "Manufacturer", "Year", "Registration", "Model", "Boat Name", "Sail #", true, "Length", "Header", "Keel Type", "PHRF"));
-		boats.add(new Object_Boat(0, 0, "", "", "", "", "", "", false, "", "Blank", "", ""));
-		dependants = SqlSelect.getPeople(membership);
-		primary = SqlSelect.getPerson(ms_id, 1); // 1 = primary member
-		primaryPhone = SqlSelect.getPhone(primary);
-		shortenDate(primary);
-			if(SqlExists.personExists(ms_id, 2)) {
-			secondary = SqlSelect.getPerson(ms_id, 2);
-			secondaryPhone = SqlSelect.getPhone(secondary);
-			shortenDate(secondary);
-			} else {
-				secondary = new Object_Person(0, 0, 0, "", "", "", "", "", false);
-			}
 		document.add(titlePdfTable(font));
 		document.add(membershipIdPdfTable());
 		document.add(membershipAddressPdfTable());
@@ -160,52 +191,29 @@ public class PDF_Renewal_Form {
 		dependants.clear();
 	}
 	
-	/// used for making 1
-	private Document makeRenewPdf() throws IOException {
-		// FontProgramFactory.registerFont("c:/windows/fonts/Arial.ttf", "arial");
+	private void gatherMembershipInformation() {
 		ms_id = SqlSelect.getMsidFromMembershipID(Integer.parseInt(current_membership_id));
 		membership = SqlSelect.getMembership(ms_id);
-		FontProgramFactory.registerFont("c:/windows/fonts/times.ttf", "garamond bold");
-		PdfFont font = PdfFontFactory.createRegisteredFont("garamond bold");
-		last_membership_id = SqlSelect.getMembershipId(Integer.parseInt(year) - 1, membership.getMsid());
+		//FontProgramFactory.registerFont("c:/windows/fonts/times.ttf", "garamond bold");
+		//PdfFont font = PdfFontFactory.createRegisteredFont("garamond bold");
+		last_membership_id = SqlSelect.getMembershipId(Integer.parseInt(year) -1, membership.getMsid());
 		dues = SqlSelect.getMonies(ms_id, year);
 		boats = SqlSelect.getBoats(ms_id);
-		boats.add(0, new Object_Boat(0, 0, "Manufacturer", "Year", "Registration", "Model", "Boat Name", "Sail #", true,
-				"Length", "Header", "Keel Type", "PHRF"));
+		boats.add(0, new Object_Boat(0, 0, "Manufacturer", "Year", "Registration", "Model", "Boat Name", "Sail #", true, "Length", "Header", "Keel Type", "PHRF"));
 		boats.add(new Object_Boat(0, 0, "", "", "", "", "", "", false, "", "Blank", "", ""));
 		dependants = SqlSelect.getPeople(membership);
 		primary = SqlSelect.getPerson(ms_id, 1); // 1 = primary member
 		primaryPhone = SqlSelect.getPhone(primary);
 		shortenDate(primary);
-		if (SqlExists.personExists(ms_id, 2)) {
+			if(SqlExists.personExists(ms_id, 2)) {
 			secondary = SqlSelect.getPerson(ms_id, 2);
 			secondaryPhone = SqlSelect.getPhone(secondary);
 			shortenDate(secondary);
-		} else {
-			secondary = new Object_Person(0, 0, 0, "", "", "", "", "", false);
-		}
-		filenm = Paths.RENEWALFORM + "/" + year + "/" + year + "_Renewal_Form_"
-				+ primary.getLname() + "_" + membership.getMembershipId() + ".pdf";
-		Document document = createDocument(filenm);
-		document.add(titlePdfTable(font));
-		document.add(membershipIdPdfTable());
-		document.add(membershipAddressPdfTable());
-		document.add(personPdfTable());
-		document.add(childrenPdfTable());
-		document.add(boatsPdfTable());
-		document.add(feesPdfTable(document));
-		for (int i = 1; i < 12 - boats.size(); i++) { // this is the notes section
-			document.add(blankTableRow(i));
-		}
-		document.add(signatureTable());
-		document.add(volunteerTable());
-		document.add(returnInfoTable());
-		dues.clear();
-		boats.clear();
-		dependants.clear();
-		return document;
+			} else {
+				secondary = new Object_Person(0, 0, 0, "", "", "", "", "", false);
+			}
 	}
-	
+		
 	public String getChildren() {
 		String children = "";
 		if (dependants.size() > 0) {

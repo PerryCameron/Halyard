@@ -60,7 +60,7 @@ public class Dialogue_RenewalForm extends Stage {
 		r1.setToggleGroup(tg1); 
         r2.setToggleGroup(tg1); 
         r2.setSelected(true);
-        c1.setSelected(true);
+        c1.setSelected(false);
         c2.setSelected(true);
         //yearSpinner.setPadding(new Insets(0,0,0,10));
         hboxGrey.setPadding(new Insets(5,0,0,5));
@@ -85,7 +85,7 @@ public class Dialogue_RenewalForm extends Stage {
 			@Override
 			public void handle(ActionEvent e) {
 				try {
-					new PDF_Renewal_Form(selectedYear, memberidTextField.getText(), r2.isSelected());
+					new PDF_Renewal_Form(selectedYear, memberidTextField.getText(), r2.isSelected(), c1.isSelected(), c2.isSelected());
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
