@@ -20,11 +20,8 @@ import com.ecsail.structures.Object_MembershipId;
 import com.ecsail.structures.Object_Money;
 import com.ecsail.structures.Object_Person;
 import com.ecsail.structures.Object_Phone;
-import com.itextpdf.io.font.FontProgramFactory;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.colors.DeviceCmyk;
-import com.itextpdf.kernel.font.PdfFont;
-import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
@@ -55,15 +52,13 @@ public class PDF_Renewal_Form {
 	private ArrayList<Object_Phone> primaryPhone = new ArrayList<Object_Phone>();
 	private ArrayList<Object_Phone> secondaryPhone = new ArrayList<Object_Phone>();
 	private ArrayList<Object_Person> dependants = new ArrayList<Object_Person>();
-	Image checkedBox = new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/checked-checkbox9x9.png"))));
-	Image uncheckedBox = new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/unchecked-checkbox9x9.png"))));
+	//Image new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/checked-checkbox9x9.png")))) = new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/checked-checkbox9x9.png"))));
+	//Image new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/unchecked-checkbox9x9.png")))) = new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/unchecked-checkbox9x9.png"))));
 	String filenm = "";
-	private Boolean emailCopies;
 	
 	public PDF_Renewal_Form(String y, String membershipId, boolean isOneMembership, boolean emailCopies, boolean seperateFiles) throws IOException {
 		PDF_Renewal_Form.year = y;
 		PDF_Renewal_Form.current_membership_id = membershipId;
-		this.emailCopies = emailCopies;
 		this.definedFees = SqlSelect.selectDefinedFees(Integer.parseInt(year));
 		// Check if our path exists, if not create it
 		Paths.checkPath(Paths.RENEWALFORM + "/" + year);
@@ -104,7 +99,7 @@ public class PDF_Renewal_Form {
 			document.add(new AreaBreak(AreaBreakType.NEXT_PAGE)); // we are putting them in the same file
 		}
 			document.close();
-			openDocumentToView(document);
+			//openDocumentToView(document);
 	}
 	
 	private void makeManyMembershipsIntoManyPDF() throws IOException {
@@ -135,14 +130,17 @@ public class PDF_Renewal_Form {
 	
 	private Document createDocument(String filename) {
 		PdfWriter writer = null;
+		
 		try {
 			writer = new PdfWriter(filename);
+			System.out.println("Created new writer");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		// Initialize PDF document
 		PdfDocument pdf = new PdfDocument(writer);
+		System.out.println("created new PdfDocument");
 		// Initialize document
 		Document document = new Document(pdf);
 		document.setTopMargin(0);
@@ -171,9 +169,7 @@ public class PDF_Renewal_Form {
 	}
 	
 	private void addTablesToPDF(Document document) throws IOException {
-		FontProgramFactory.registerFont("c:/windows/fonts/times.ttf", "garamond bold");
-		PdfFont font = PdfFontFactory.createRegisteredFont("garamond bold");
-		document.add(titlePdfTable(font));
+		document.add(titlePdfTable());
 		document.add(membershipIdPdfTable());
 		document.add(membershipAddressPdfTable());
 		document.add(personPdfTable());
@@ -194,8 +190,6 @@ public class PDF_Renewal_Form {
 	private void gatherMembershipInformation() {
 		ms_id = SqlSelect.getMsidFromMembershipID(Integer.parseInt(current_membership_id));
 		membership = SqlSelect.getMembership(ms_id);
-		//FontProgramFactory.registerFont("c:/windows/fonts/times.ttf", "garamond bold");
-		//PdfFont font = PdfFontFactory.createRegisteredFont("garamond bold");
 		last_membership_id = SqlSelect.getMembershipId(Integer.parseInt(year) -1, membership.getMsid());
 		dues = SqlSelect.getMonies(ms_id, year);
 		boats = SqlSelect.getBoats(ms_id);
@@ -373,9 +367,9 @@ public class PDF_Renewal_Form {
 		cell.setBorderLeft(new SolidBorder(borderSize));
 		cell.setWidth(10);
 		if (membership.getMemType().equals("RM")) {  // REGULAR MEMBER CHECKBOX
-			cell.add(checkedBox);
+			cell.add(new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/checked-checkbox9x9.png")))));
 		} else {
-			cell.add(uncheckedBox);
+			cell.add(new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/unchecked-checkbox9x9.png")))));
 		}
 		mainTable.addCell(cell);
 		
@@ -410,9 +404,9 @@ public class PDF_Renewal_Form {
 		cell.setWidth(10);
 		
 		if(dues.getWet_slip() > 0) 
-			cell.add(checkedBox);
+			cell.add(new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/checked-checkbox9x9.png")))));
 		else
-		cell.add(uncheckedBox);  /// WET SLIP CHECKBOX
+		cell.add(new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/unchecked-checkbox9x9.png")))));  /// WET SLIP CHECKBOX
 		mainTable.addCell(cell);
 		
 		cell = new Cell();
@@ -445,9 +439,9 @@ public class PDF_Renewal_Form {
 		//cell.setBorderLeft(new SolidBorder(borderSize));
 		cell.setWidth(10);
 		if(dues.getExtra_key() > 0) 
-			cell.add(checkedBox);
+			cell.add(new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/checked-checkbox9x9.png")))));
 		else
-		cell.add(uncheckedBox);  ///// MAIN GATE EXTRA KEY CHECKBOX
+		cell.add(new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/unchecked-checkbox9x9.png")))));  ///// MAIN GATE EXTRA KEY CHECKBOX
 		mainTable.addCell(cell);
 		
 		cell = new Cell();
@@ -493,9 +487,9 @@ public class PDF_Renewal_Form {
 		cell.setBorderLeft(new SolidBorder(borderSize));
 		cell.setWidth(10);
 		if (membership.getMemType().equals("FM")) {   //// FAMILY MEMBERSHIP CHECK BOX ////
-			cell.add(checkedBox);
+			cell.add(new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/checked-checkbox9x9.png")))));
 		} else {
-			cell.add(uncheckedBox);
+			cell.add(new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/unchecked-checkbox9x9.png")))));
 			
 		}
 		mainTable.addCell(cell);
@@ -529,9 +523,9 @@ public class PDF_Renewal_Form {
 		//cell.setBorderLeft(new SolidBorder(borderSize));
 		cell.setWidth(10);
 		if(dues.getBeach() > 0) 
-			cell.add(checkedBox);
+			cell.add(new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/checked-checkbox9x9.png")))));
 		else
-		cell.add(uncheckedBox);   //// BEACH PARKING CHECK BOX
+		cell.add(new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/unchecked-checkbox9x9.png")))));   //// BEACH PARKING CHECK BOX
 		mainTable.addCell(cell);
 		
 		cell = new Cell();
@@ -563,7 +557,7 @@ public class PDF_Renewal_Form {
 		cell.setBorderBottom(new SolidBorder(0.5f));
 		//cell.setBorderLeft(new SolidBorder(borderSize));
 		cell.setWidth(10);
-		cell.add(uncheckedBox);  /// SAIL LOFT KEY CHECK BOX ////
+		cell.add(new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/unchecked-checkbox9x9.png")))));  /// SAIL LOFT KEY CHECK BOX ////
 		mainTable.addCell(cell);
 		
 		cell = new Cell();
@@ -610,9 +604,9 @@ public class PDF_Renewal_Form {
 		cell.setBorderLeft(new SolidBorder(borderSize));
 		cell.setWidth(10);
 		if (membership.getMemType().equals("LA")) {  ////// LAKE ASSOCIATE CHECK BOX ////
-			cell.add(checkedBox);
+			cell.add(new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/checked-checkbox9x9.png")))));
 		} else {
-			cell.add(uncheckedBox);
+			cell.add(new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/unchecked-checkbox9x9.png")))));
 			
 		}   
 		mainTable.addCell(cell);
@@ -647,9 +641,9 @@ public class PDF_Renewal_Form {
 		//cell.setBorderLeft(new SolidBorder(borderSize));
 		cell.setWidth(10);
 		if(dues.getWinter_storage() > 0) 
-			cell.add(checkedBox);
+			cell.add(new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/checked-checkbox9x9.png")))));
 		else
-		cell.add(uncheckedBox);
+		cell.add(new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/unchecked-checkbox9x9.png")))));
 		mainTable.addCell(cell);
 		
 		cell = new Cell();
@@ -692,7 +686,7 @@ public class PDF_Renewal_Form {
 		cell.setBorderBottom(new SolidBorder(0.5f));
 		//cell.setBorderLeft(new SolidBorder(borderSize));
 		cell.setWidth(10);
-		cell.add(uncheckedBox);
+		cell.add(new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/unchecked-checkbox9x9.png")))));
 		mainTable.addCell(cell);
 		
 		cell = new Cell();
@@ -739,9 +733,9 @@ public class PDF_Renewal_Form {
 		cell.setBorderLeft(new SolidBorder(borderSize));
 		cell.setWidth(10);
 		if (membership.getMemType().equals("SO")) {
-			cell.add(checkedBox);
+			cell.add(new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/checked-checkbox9x9.png")))));
 		} else {
-			cell.add(uncheckedBox);
+			cell.add(new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/unchecked-checkbox9x9.png")))));
 			
 		}
 		mainTable.addCell(cell);
@@ -776,9 +770,9 @@ public class PDF_Renewal_Form {
 		//cell.setBorderLeft(new SolidBorder(borderSize));
 		cell.setWidth(10);
 		if(dues.getSail_loft() > 0) 
-			cell.add(checkedBox);
+			cell.add(new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/checked-checkbox9x9.png")))));
 		else
-		cell.add(uncheckedBox);
+		cell.add(new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/unchecked-checkbox9x9.png")))));
 		mainTable.addCell(cell);
 		
 		cell = new Cell();
@@ -810,7 +804,7 @@ public class PDF_Renewal_Form {
 		cell.setBorderBottom(new SolidBorder(0.5f));
 		//cell.setBorderLeft(new SolidBorder(borderSize));
 		cell.setWidth(10);
-		cell.add(uncheckedBox);
+		cell.add(new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/unchecked-checkbox9x9.png")))));
 		mainTable.addCell(cell);
 		
 		cell = new Cell();
@@ -871,9 +865,9 @@ public class PDF_Renewal_Form {
 		cell.setBorderLeft(new SolidBorder(0.5f));
 		cell.setWidth(10);
 		if(dues.getKayac_rack() > 0) 
-			cell.add(checkedBox);
+			cell.add(new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/checked-checkbox9x9.png")))));
 		else
-		cell.add(uncheckedBox);
+		cell.add(new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/unchecked-checkbox9x9.png")))));
 		mainTable.addCell(cell);
 
 		cell = new Cell();
@@ -935,7 +929,7 @@ public class PDF_Renewal_Form {
 		cell.setBorderBottom(new SolidBorder(0.5f));
 		cell.setBorderLeft(new SolidBorder(borderSize));
 		cell.setWidth(10);
-		cell.add(uncheckedBox);
+		cell.add(new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/unchecked-checkbox9x9.png")))));
 		mainTable.addCell(cell);
 		
 		cell = new Cell();
@@ -968,9 +962,9 @@ public class PDF_Renewal_Form {
 		//cell.setBorderLeft(new SolidBorder(borderSize));
 		cell.setWidth(10);
 		if(dues.getKayac_shed() > 0) 
-			cell.add(checkedBox);
+			cell.add(new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/checked-checkbox9x9.png")))));
 		else
-		cell.add(uncheckedBox);
+		cell.add(new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/unchecked-checkbox9x9.png")))));
 		mainTable.addCell(cell);
 		
 		cell = new Cell();
@@ -1043,7 +1037,7 @@ public class PDF_Renewal_Form {
 		cell.setBorderBottom(new SolidBorder(0.5f));
 		cell.setBorderLeft(new SolidBorder(borderSize));
 		cell.setWidth(10);
-		cell.add(uncheckedBox);
+		cell.add(new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/unchecked-checkbox9x9.png")))));
 		mainTable.addCell(cell);
 		
 		cell = new Cell();
@@ -1075,7 +1069,7 @@ public class PDF_Renewal_Form {
 		cell.setBorderBottom(new SolidBorder(0.5f));
 		//cell.setBorderLeft(new SolidBorder(borderSize));
 		cell.setWidth(10);
-		cell.add(uncheckedBox);
+		cell.add(new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/unchecked-checkbox9x9.png")))));
 		mainTable.addCell(cell);
 		
 		cell = new Cell(1,2);
@@ -1873,7 +1867,7 @@ public class PDF_Renewal_Form {
 	}
 	
 	
-	public Table titlePdfTable(PdfFont font)  {
+	public Table titlePdfTable()  {
 		
 		Image ecscLogo = new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/EagleCreekLogoForPDF.png"))));
 		Table mainTable = new Table(3);
@@ -1888,7 +1882,8 @@ public class PDF_Renewal_Form {
 		cell.setBorder(Border.NO_BORDER);
         p = new Paragraph("Eagle Creek Sailing Club, Inc");
         p.setTextAlignment(TextAlignment.CENTER);
-        p.setFontSize(12).setBold().setFont(font);
+        //PdfFont font = PDF_Font_Utilities.setFont();
+        p.setFontSize(12).setBold();
         p.setFixedLeading(10);
 		cell.add(p);
 		cell.setVerticalAlignment(VerticalAlignment.MIDDLE);
@@ -1911,7 +1906,8 @@ public class PDF_Renewal_Form {
 		cell.setBorder(Border.NO_BORDER);
         p = new Paragraph(year + " Annual Dues and Fees Statement");
         p.setTextAlignment(TextAlignment.CENTER);
-        p.setFontSize(12).setBold().setFont(font);
+        //PdfFont font = PDF_Font_Utilities.setFont();
+        p.setFontSize(12).setBold();
         p.setFixedLeading(10);
 		cell.add(p);
 		mainTable.addCell(cell);
@@ -1924,7 +1920,8 @@ public class PDF_Renewal_Form {
 		cell.setBorder(Border.NO_BORDER);
         p = new Paragraph("Due February 29, " + year);
         p.setTextAlignment(TextAlignment.CENTER);
-        p.setFontSize(12).setBold().setFont(font);
+        //p.setFontSize(12).setBold().setFont(font);
+        p.setFontSize(12).setBold();
         p.setFixedLeading(10);
 		cell.add(p);
 		mainTable.addCell(cell);

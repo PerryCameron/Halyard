@@ -30,7 +30,8 @@ public class PDF_Renewal_Form_Back {
 		
 		List list = new List().setSymbolIndent(12)
 	            .setListSymbol("\u2022")
-	            .setFont(font);
+	            .setFont(font)
+	            ;
 		
 		
 		document.add(new Paragraph(new Text("\n\n")));
