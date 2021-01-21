@@ -2,6 +2,7 @@ package com.ecsail.pdf;
 
 import java.awt.Desktop;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,20 +41,17 @@ public class PDF_Envelope {
 	private static int ms_id;
 	private List<Object_MembershipId> ids = new ArrayList<Object_MembershipId>();
 	PdfFont font;
+	private boolean isOneMembership;
 	
-	public PDF_Envelope(boolean isOneMembership, int membership_id) throws IOException {
+	public PDF_Envelope(boolean iom, boolean size6x9, String membership_id) throws IOException {
 		this.year=Paths.getYear();
 		Paths.checkPath(Paths.EMAILLIST);
-		this.current_membership_id = membership_id + "";
+		this.current_membership_id = membership_id;
+		this.isOneMembership = iom;
 		
 		FontProgramFactory.registerFont("c:/windows/fonts/times.ttf", "times");
 		this.font = PdfFontFactory.createRegisteredFont("times");
 		// Initialize PDF writer
-
-		PdfWriter writer = new PdfWriter(Paths.EMAILLIST + "_envelopes.pdf");
-
-		// Initialize PDF document
-		PdfDocument pdf = new PdfDocument(writer);
 		
 		// Envelope sizeing https://www.paperpapers.com/envelope-size-chart.html
 		// No. 6 1/4 (#6-1/4) Envelope inches: 3.5 x 6 (mm: 88.9 x 152.4)
@@ -63,9 +61,42 @@ public class PDF_Envelope {
 		// #10 Envelope inches: 4.125 x 9.5 (mm: 104.775 x 241.3)
 		// 9.5 x 72 points = 684 points (the width)
 		// 4.125 x 72 points = 297 points (the height)
+		
+		// #1 Catalog inches: 6 x 9 (mm: 152.4 x 228.6)
+		// 9 x 72 points = 648 (the width)
+		// 6 x 72 points = 432 (the height)
+		
+		if(size6x9) {
+			create6x9 ();
+		} else {
+			create4x9 ();
+		}
+		
+		//		p.setFontSize(10);
+		//  p.setFixedLeading(10);
+		
+		
+
+		System.out.println("destination=" + Paths.EMAILLIST + "_envelopes.pdf");
+		File file = new File(Paths.EMAILLIST + "_envelopes.pdf");
+		Desktop desktop = Desktop.getDesktop(); // Gui_Main.class.getProtectionDomain().getCodeSource().getLocation().getPath()
+
+		// Open the document
+		try {
+			desktop.open(file);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void create4x9 () throws FileNotFoundException {
+		PdfWriter writer = new PdfWriter(Paths.EMAILLIST + "_envelopes.pdf");
+		// Initialize PDF document
+		PdfDocument pdf = new PdfDocument(writer);
 		Rectangle envelope = new Rectangle(684, 297);
 		// Initialize document
-				Document doc = new Document(pdf, new PageSize(envelope));
+		Document doc = new Document(pdf, new PageSize(envelope));
 		doc.setTopMargin(0);
 		doc.setLeftMargin(0.25f);
 		if(isOneMembership) {
@@ -87,22 +118,41 @@ public class PDF_Envelope {
 				doc.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
 			}
 		}
-		//		p.setFontSize(10);
-		//  p.setFixedLeading(10);
-		
 		doc.close();
-
-		System.out.println("destination=" + Paths.EMAILLIST + "_envelopes.pdf");
-		File file = new File(Paths.EMAILLIST + "_envelopes.pdf");
-		Desktop desktop = Desktop.getDesktop(); // Gui_Main.class.getProtectionDomain().getCodeSource().getLocation().getPath()
-
-		// Open the document
-		try {
-			desktop.open(file);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	}
+	
+	// #1 Catalog inches: 6 x 9 (mm: 152.4 x 228.6)
+	// 9 x 72 points = 648 (the width)
+	// 6 x 72 points = 432 (the height)
+	public void create6x9 () throws FileNotFoundException {
+		PdfWriter writer = new PdfWriter(Paths.EMAILLIST + "_envelopes.pdf");
+		// Initialize PDF document
+		PdfDocument pdf = new PdfDocument(writer);
+		Rectangle envelope = new Rectangle(648, 432);
+		// Initialize document
+		Document doc = new Document(pdf, new PageSize(envelope));
+		doc.setTopMargin(0);
+		doc.setLeftMargin(0.25f);
+		if(isOneMembership) {
+			ms_id = SqlSelect.getMsidFromMembershipID(Integer.parseInt(current_membership_id));
+			membership = SqlSelect.getMembershipFromList(ms_id);
+		doc.add(createReturnAddress());
+		doc.add(new Paragraph(new Text("\n\n\n\n\n\n\n\n\n")));
+		doc.add(createAddress());
+		} else {
+			ids = SqlSelect.getMembershipIds(year);
+			Collections.sort(ids, new SortByMembershipId2());
+			for(Object_MembershipId id: ids) {
+				current_membership_id = id.getMembership_id();
+				ms_id = SqlSelect.getMsidFromMembershipID(Integer.parseInt(current_membership_id));
+				membership = SqlSelect.getMembershipFromList(ms_id);
+				doc.add(createReturnAddress());
+				doc.add(new Paragraph(new Text("\n\n\n\n\n")));
+				doc.add(createAddress());
+				doc.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+			}
 		}
+		doc.close();
 	}
 	
 	public Table createReturnAddress() {
@@ -149,7 +199,6 @@ public class PDF_Envelope {
 		mainTable.addCell(cell);
 		
 		return mainTable;
-		
 	}
 	
 	public Table createAddress() {

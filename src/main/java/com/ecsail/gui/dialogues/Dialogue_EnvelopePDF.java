@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -26,39 +27,38 @@ public class Dialogue_EnvelopePDF extends Stage {
 	public Dialogue_EnvelopePDF() {
 		
 		Button createPDFbutton = new Button("Create Envelope PDF");
-		ToggleGroup tg1 = new ToggleGroup();  
-		RadioButton r1 = new RadioButton("Print All Envelopes"); 
-        RadioButton r2 = new RadioButton("Print one Envelope");  
+		ToggleGroup tg1 = new ToggleGroup(); 
+		ToggleGroup tg2 = new ToggleGroup(); 
+		RadioButton t1r1 = new RadioButton("Print All Envelopes"); 
+        RadioButton t1r2 = new RadioButton("Print one Envelope");
+        
+        RadioButton t2r1 = new RadioButton("#10 Envelope"); 
+        RadioButton t2r2 = new RadioButton("#1 Catalog");
 		HBox hboxGrey = new HBox(); // this is the vbox for organizing all the widgets
 		VBox vboxBlue = new VBox();
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
 		VBox vboxColumn1 = new VBox();
 		VBox vboxColumn2 = new VBox();
+		TextField memberidTextField = new TextField();
 		
 		Scene scene = new Scene(vboxBlue, 600, 300);
-		final Spinner<Integer> batchSpinner = new Spinner<Integer>();
 		Image mainIcon = new Image(getClass().getResourceAsStream("/ECSC64.png"));
 		Image pdf = new Image(getClass().getResourceAsStream("/pdf.png"));
 		ImageView pdfImage = new ImageView(pdf);
 		
-		SpinnerValueFactory<Integer> batchSlipValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 300, 0);
-		batchSpinner.setValueFactory(batchSlipValueFactory);
-		batchSpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
-			  if (!newValue) {
-				  batchSpinner.increment(0); // won't change value, but will commit editor
-				  membership_id = Integer.parseInt(batchSpinner.getEditor().getText());
-
-			  }
-			});
 		
 		/////////////////// ATTRIBUTES ///////////////////
-		r1.setToggleGroup(tg1); 
-        r2.setToggleGroup(tg1); 
-        r2.setSelected(true);
+		t1r1.setToggleGroup(tg1); 
+        t1r2.setToggleGroup(tg1); 
+        t1r2.setSelected(true);
+        
+        t2r1.setToggleGroup(tg2); 
+        t2r2.setToggleGroup(tg2); 
+        t2r1.setSelected(true);
 
         //batchSpinner.setPadding(new Insets(0,0,0,10));
         hboxGrey.setPadding(new Insets(5,0,0,5));
-        batchSpinner.setPrefWidth(60);
+        memberidTextField.setPrefWidth(60);
         vboxColumn1.setSpacing(5);
         vboxColumn2.setSpacing(15);
 		vboxBlue.setId("box-blue");
@@ -79,7 +79,7 @@ public class Dialogue_EnvelopePDF extends Stage {
 			@Override
 			public void handle(ActionEvent e) {
 				try {
-					new PDF_Envelope(r2.isSelected(), membership_id);
+					new PDF_Envelope(t1r2.isSelected(), t2r2.isSelected(), memberidTextField.getText());
 				} catch (FileNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -91,7 +91,7 @@ public class Dialogue_EnvelopePDF extends Stage {
 		});
 		
 		//////////////// ADD CONTENT ///////////////////
-		vboxColumn1.getChildren().addAll(r1,r2,batchSpinner);
+		vboxColumn1.getChildren().addAll(t1r1,t1r2,memberidTextField,t2r1,t2r2);
 		vboxColumn2.getChildren().addAll(pdfImage,createPDFbutton);
 		hboxGrey.getChildren().addAll(vboxColumn1,vboxColumn2);
 		vboxBlue.getChildren().add(vboxPink);
