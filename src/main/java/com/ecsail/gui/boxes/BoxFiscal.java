@@ -1,6 +1,7 @@
 package com.ecsail.gui.boxes;
 
 import com.ecsail.gui.tabs.TabBalance;
+import com.ecsail.gui.tabs.TabCredit;
 import com.ecsail.gui.tabs.TabKey;
 import com.ecsail.gui.tabs.TabPayment;
 import com.ecsail.main.Note;
@@ -44,12 +45,13 @@ public class BoxFiscal extends HBox {
 	private ObservableList<Object_Person> people;
 	boolean hasOfficer;
 	Object_Integer numberOfKeys;
+	Object_Integer workCredits;
 	private int rowIndex;
 	private Note note;
 	private final TextField yscText = new TextField();
 	Object_BalanceText textFields = new Object_BalanceText();
 	
-	private final TextField totalWorkCreditTextField = new TextField();
+	//private final TextField totalWorkCreditTextField = new TextField();
 	//private final TextField totalKeyTextField = new TextField();
 	private final TextField duesText;
 	private final TextField slipText = new TextField();
@@ -77,6 +79,7 @@ public class BoxFiscal extends HBox {
 		this.hasOfficer = membershipHasOfficer();
 		this.isCommited = fiscals.get(rowIndex).isCommitted();
 		this.numberOfKeys = new Object_Integer(0);
+		this.workCredits = new Object_Integer(0);
 		////////////// OBJECTS /////////////////////
 		TabPane MoneyTabPane = new TabPane();
 		TabPane keysAndCreditsTabPane = new TabPane();
@@ -84,6 +87,7 @@ public class BoxFiscal extends HBox {
 		TabBalance moneyTab = new TabBalance("Balance", textFields);
 		TabPayment paymentTab = new TabPayment("Payment",fiscals.get(rowIndex),textFields);
 		TabKey keyTab = new TabKey("Keys",fiscals.get(rowIndex), numberOfKeys);
+		TabCredit creditTab = new TabCredit("Work Credits", selectedWorkCreditYear, workCredits);
 		
 		Image image = new Image(getClass().getResourceAsStream("/Arrow.png"));
 		Label workCreditsLabel = new Label("Work Credits");
@@ -147,20 +151,20 @@ public class BoxFiscal extends HBox {
 		yscText.setPrefWidth(60);
 		otherText.setPrefWidth(60);
 		initiationText.setPrefWidth(60);
-		totalWorkCreditTextField.setPrefWidth(60);
+		//totalWorkCreditTextField.setPrefWidth(60);
 		duesText.setPrefWidth(60);
 		beachSpinner.setPrefWidth(60);
 		kayakShedSpinner.setPrefWidth(60);
 		sailLoftSpinner.setPrefWidth(60);
 		sailSchoolLoftSpinner.setPrefWidth(60);
 		duesText.setStyle(disabledColor);		
-		totalWorkCreditTextField.setStyle(disabledColor);
+		//totalWorkCreditTextField.setStyle(disabledColor);
 		
 		vbox1.setAlignment(Pos.CENTER);
 		vbox2.setAlignment(Pos.CENTER);
 		vbox1.setSpacing(5);
 		vbox2.setSpacing(5);
-		totalWorkCreditTextField.setEditable(false);
+		//totalWorkCreditTextField.setEditable(false);
 		//duesText.setEditable(false);
 		textFields.getPaidText().setEditable(false);
 		textFields.getCreditText().setEditable(false);
@@ -361,13 +365,24 @@ public class BoxFiscal extends HBox {
 		    }
 		} );
 		
-		totalWorkCreditTextField.textProperty().addListener((obs, oldText, newText) -> {
-			int credit = Integer.parseInt(newText);
-			fiscals.get(rowIndex).setCredit(countCredit(credit));  // sets credit field in fiscal list tableview
-			textFields.getCreditText().setText(countCredit(credit) + "");  /// sets credit textfield in balance tab
-			textFields.getBalanceText().setText(getBalance() + "");  // sets balance textfield in balance tab
-			fiscals.get(rowIndex).setBalance(getBalance());  // sets focused object
-		});
+		workCredits.integerProperty().addListener( new ChangeListener<Number>() {
+		    public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+		    	fiscals.get(rowIndex).setCredit(countCredit((int)newValue));
+		    	textFields.getCreditText().setText(countCredit((int)newValue) + "");
+		    	textFields.getBalanceText().setText(getBalance() + "");  // sets balance textfield in balance tab
+				fiscals.get(rowIndex).setBalance(getBalance());  // sets focused object
+		        updateBalance();
+		        SqlUpdate.updateMoney(fiscals.get(rowIndex));
+		    }
+		} );
+		
+		//totalWorkCreditTextField.textProperty().addListener((obs, oldText, newText) -> {
+		//	int credit = Integer.parseInt(newText);
+		//	fiscals.get(rowIndex).setCredit(countCredit(credit));  // sets credit field in fiscal list tableview
+		//	textFields.getCreditText().setText(countCredit(credit) + "");  /// sets credit textfield in balance tab
+		//	textFields.getBalanceText().setText(getBalance() + "");  // sets balance textfield in balance tab
+		//	fiscals.get(rowIndex).setBalance(getBalance());  // sets focused object
+		//});
         
         addWetSlip.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
@@ -392,7 +407,7 @@ public class BoxFiscal extends HBox {
 		otherText.setText(fiscals.get(rowIndex).getOther() + "");
 		initiationText.setText(fiscals.get(rowIndex).getInitiation() + "");
 		
-		totalWorkCreditTextField.setText(countWorkCredits() + "");
+		//totalWorkCreditTextField.setText(countWorkCredits() + "");
 		
 		if (fiscals.get(rowIndex).isSupplemental()) {
 			duesText.setEditable(true);
@@ -414,10 +429,9 @@ public class BoxFiscal extends HBox {
 		if(fiscals.get(rowIndex).isCommitted()) setEditable(false);	
 
 		updateBalance();
-		textFields.getBalanceText().setText(getBalance() + "");
-		
+		textFields.getBalanceText().setText(getBalance() + "");	
 		MoneyTabPane.getTabs().addAll(moneyTab,paymentTab);
-		keysAndCreditsTabPane.getTabs().add(keyTab);
+		keysAndCreditsTabPane.getTabs().addAll(keyTab, creditTab);
 		hboxSlip.getChildren().addAll(slipText,addWetSlip);
 		hboxDues.getChildren().addAll(new Label("Dues:"), duesText);
 		hboxWinterStorage.getChildren().addAll(new Label("Winter Storage"), winterStorageSpinner);
@@ -473,7 +487,7 @@ public class BoxFiscal extends HBox {
 		changeState(duesText,isEditable,true);
 		changeState(otherText,isEditable,true);
 		changeState(initiationText,isEditable,true);
-		changeState(totalWorkCreditTextField,isEditable,false);
+		//changeState(totalWorkCreditTextField,isEditable,false);
 		//changeState(totalKeyTextField,isEditable,false);
 		changeState(slipText,isEditable,true);
 		changeState(addWetSlip,isEditable);
@@ -557,13 +571,13 @@ public class BoxFiscal extends HBox {
 		return fiscals.get(rowIndex).getTotal() - fiscals.get(rowIndex).getPaid() - fiscals.get(rowIndex).getCredit();
 	}
 	
-	private int countCredit(int numberOfKeys) {
+	private int countCredit(int workCredits) {
 		int credit = 0;
 		if(membershipHasOfficer()) {
 			credit = fiscals.get(rowIndex).getOfficer_credit();  // inserts credit for member type into fiscal
 			//System.out.println("Has an officer credit changed to=" + credit);
 		} else {
-			credit = numberOfKeys * definedFees.getWork_credit();  
+			credit = workCredits * definedFees.getWork_credit();  
 		}
 		//System.out.println("Credit is " + credit);
 		return credit;
