@@ -58,14 +58,6 @@ public class PDF_Envelope {
 		// 6 inch x 72 points = 432 points (the width)
 		// 3.5 inch x 72 points = 252 points (the height)
 		
-		// #10 Envelope inches: 4.125 x 9.5 (mm: 104.775 x 241.3)
-		// 9.5 x 72 points = 684 points (the width)
-		// 4.125 x 72 points = 297 points (the height)
-		
-		// #1 Catalog inches: 6 x 9 (mm: 152.4 x 228.6)
-		// 9 x 72 points = 648 (the width)
-		// 6 x 72 points = 432 (the height)
-		
 		if(size6x9) {
 			create6x9 ();
 		} else {
@@ -90,6 +82,9 @@ public class PDF_Envelope {
 		}
 	}
 	
+	// #10 Envelope inches: 4.125 x 9.5 (mm: 104.775 x 241.3)
+	// 9.5 x 72 points = 684 points (the width)
+	// 4.125 x 72 points = 297 points (the height)
 	public void create4x9 () throws FileNotFoundException {
 		PdfWriter writer = new PdfWriter(Paths.EMAILLIST + "_envelopes.pdf");
 		// Initialize PDF document
