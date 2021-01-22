@@ -59,6 +59,7 @@ public class TabBalance extends Tab {
 		textFields.getPaidText().setEditable(false);
 		textFields.getTotalFeesText().setStyle(disabledColor);
 		textFields.getPaidText().setStyle(disabledColor);
+		textFields.getRenewCheckBox().setSelected(true);
 		
 		////////////////SETTING CONTENT //////////////
 		
