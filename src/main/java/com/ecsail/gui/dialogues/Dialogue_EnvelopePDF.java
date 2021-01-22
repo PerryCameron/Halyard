@@ -31,7 +31,6 @@ public class Dialogue_EnvelopePDF extends Stage {
 		ToggleGroup tg2 = new ToggleGroup(); 
 		RadioButton t1r1 = new RadioButton("Print All Envelopes"); 
         RadioButton t1r2 = new RadioButton("Print one Envelope");
-        
         RadioButton t2r1 = new RadioButton("#10 Envelope"); 
         RadioButton t2r2 = new RadioButton("#1 Catalog");
 		HBox hboxGrey = new HBox(); // this is the vbox for organizing all the widgets
@@ -45,7 +44,6 @@ public class Dialogue_EnvelopePDF extends Stage {
 		Image mainIcon = new Image(getClass().getResourceAsStream("/ECSC64.png"));
 		Image pdf = new Image(getClass().getResourceAsStream("/pdf.png"));
 		ImageView pdfImage = new ImageView(pdf);
-		
 		
 		/////////////////// ATTRIBUTES ///////////////////
 		t1r1.setToggleGroup(tg1); 
