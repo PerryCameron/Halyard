@@ -17,8 +17,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.ecsail.main.Paths;
 import com.ecsail.main.SqlSelect;
 import com.ecsail.structures.Object_Email;
-import com.ecsail.structures.Object_Membership;
-import com.ecsail.structures.Object_MembershipId;
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Phone;
 import com.ecsail.structures.Object_RosterSelect;
