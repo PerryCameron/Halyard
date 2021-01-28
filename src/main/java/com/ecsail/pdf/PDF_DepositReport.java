@@ -253,8 +253,9 @@ public class PDF_DepositReport {
 		if(dues.getKayac_shed() != 0) addItemRow(detailTable, "Extra Kayak Inside Storage Key Fee", dues.getKayac_shed() * currentDefinedFee.getKayak_shed(), dues.getKayac_shed());
 		if(dues.getYsc_donation() != 0) addItemRow(detailTable, "Youth Sailing Club Donation", dues.getYsc_donation(), 0);
 		if(dues.getOther() != 0) addItemRow(detailTable, "Other", dues.getOther(),0);
-		if(dues.getCredit() != 0) addItemRow(detailTable, "Credit", dues.getCredit(),0);
-		addItemTotalRow(detailTable, dues.getTotal());
+		addItemRow(detailTable, "Total Due", dues.getTotal(),0);
+		if(dues.getCredit() != 0) addCreditRow(detailTable, "Credit", dues.getCredit(),0);
+		addItemPaidRow(detailTable, dues.getPaid());
 		}
 		return detailTable;
 	}
@@ -265,7 +266,7 @@ public class PDF_DepositReport {
 		return result;
 	}
 	
-	private void addItemTotalRow(Table detailTable, int money) {
+	private void addItemPaidRow(Table detailTable, int money) {
 		Cell cell;
 		cell = new Cell();
 		cell.setBorder(Border.NO_BORDER);
@@ -278,7 +279,7 @@ public class PDF_DepositReport {
 		cell = new Cell();
 		cell.setBorder(Border.NO_BORDER);
 		cell.setBorderTop(new SolidBorder(ColorConstants.BLACK, 1));
-		cell.add(new Paragraph("Total")).setFontSize(10);
+		cell.add(new Paragraph("Amount Paid")).setFontSize(10);
 		detailTable.addCell(cell);
 		
 		cell = new Cell();
@@ -304,6 +305,18 @@ public class PDF_DepositReport {
 			detailTable.addCell(new Cell().setTextAlignment(TextAlignment.CENTER).setBorder(Border.NO_BORDER).add(new Paragraph("" + numberOf)).setFontSize(10));	
 		}
 		detailTable.addCell(new Cell().setTextAlignment(TextAlignment.RIGHT).setBorder(Border.NO_BORDER).add(new Paragraph("$" + String.format("%,d", money))).setFontSize(10));
+	}
+	
+	private void addCreditRow(Table detailTable, String label, int money, int numberOf) {
+		detailTable.addCell(new Cell().setBorder(Border.NO_BORDER));
+		detailTable.addCell(new Cell().setBorder(Border.NO_BORDER));
+		detailTable.addCell(new Cell().setBorder(Border.NO_BORDER).add(new Paragraph(label)).setFontSize(10));
+		if(numberOf == 0) {
+		detailTable.addCell(new Cell().setBorder(Border.NO_BORDER));	
+		} else {
+			detailTable.addCell(new Cell().setTextAlignment(TextAlignment.CENTER).setBorder(Border.NO_BORDER).add(new Paragraph("" + numberOf)).setFontSize(10));	
+		}
+		detailTable.addCell(new Cell().setTextAlignment(TextAlignment.RIGHT).setBorder(Border.NO_BORDER).add(new Paragraph("-$" + String.format("%,d", money))).setFontSize(10));
 	}
 	
 	public Table summaryPdfTable()  {
