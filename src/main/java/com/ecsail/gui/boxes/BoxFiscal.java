@@ -221,6 +221,7 @@ public class BoxFiscal extends HBox {
             	if (!fiscals.get(rowIndex).isCommitted()) { 
             		if (!textFields.getBalanceText().getText().equals("0"))
 					textFields.getBalanceText().setStyle("-fx-background-color: #f23a50");
+            		System.out.println("total at commit is " + fiscals.get(rowIndex).getTotal());
             		SqlUpdate.updateMoney(fiscals.get(rowIndex)); 
             		SqlUpdate.commitFiscalRecord(fiscals.get(rowIndex).getMoney_id(), true);// this could be placed in line above
             		String date = SqlSelect.getPaymentDate(fiscals.get(rowIndex).getMoney_id()); // dates note to check
@@ -536,6 +537,7 @@ public class BoxFiscal extends HBox {
 	
 	private void updateBalance() {
 		  fiscals.get(rowIndex).setTotal(updateTotalFeeFields());
+		  System.out.println("total at update balance is " + fiscals.get(rowIndex).getTotal());
 		  textFields.getTotalFeesText().setText(fiscals.get(rowIndex).getTotal() + "");
 		  textFields.getBalanceText().setText(getBalance() + "");
 		  fiscals.get(rowIndex).setBalance(getBalance());
@@ -557,6 +559,7 @@ public class BoxFiscal extends HBox {
 		int yscDonation = fiscals.get(rowIndex).getYsc_donation();
 		int other = fiscals.get(rowIndex).getOther();
 		int initiation = fiscals.get(rowIndex).getInitiation();
+		//int credit = fiscals.get(rowIndex).getCredit();  this will affect the balence on the screen
 		//System.out.println("--------------------");
 		//System.out.println(extraKey + " " + sailLoftKey + " " + kayakShedKey + " " + sailSchoolLoftKey + " " + beachSpot + " " + kayakRack
 		//		+ " " + kayakShed + " " + sailLoft + " " + sailSchoolLoft + " " + wetSlip + " " + winterStorage + " " + yscDonation 
@@ -595,18 +598,6 @@ public class BoxFiscal extends HBox {
 			}
 		}
 		return finalResult;
-	}
-	
-	private int countWorkCredits() {
-		int total = selectedWorkCreditYear.getRacing() + selectedWorkCreditYear.getSocial()
-				+ selectedWorkCreditYear.getOther()+ selectedWorkCreditYear.getHarbor();
-		return total;
-	}
-	
-	private int countKeys() {
-		int total = fiscals.get(rowIndex).getExtra_key() + fiscals.get(rowIndex).getKayac_shed_key()
-				+ fiscals.get(rowIndex).getSail_loft_key() + fiscals.get(rowIndex).getSail_school_loft_key();
-		return total;
 	}
 	
 	public boolean isStringInt(String s) {
