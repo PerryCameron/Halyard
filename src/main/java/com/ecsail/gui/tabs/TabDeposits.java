@@ -200,7 +200,7 @@ public class TabDeposits extends Tab {
                     	summaryTotals.clear();
         				updateSummaryTotals();
       				  //updateCurrentMoneyTotals(); // need error check if batch doesn't exist
-    				  updateMoneyTotals(gridPane);
+    				  updateMoneyTotals();
     				  updateNonRenewed(nonRenewed);
                     }
                 });
@@ -281,7 +281,7 @@ public class TabDeposits extends Tab {
 					}
 				summaryTotals.clear();
 				updateSummaryTotals();	
-				updateMoneyTotals(gridPane);
+				updateMoneyTotals();
 				updateNonRenewed(nonRenewed);
 				numberOfRecords.setText(paidDues.size() + "");
 				
@@ -483,7 +483,7 @@ public class TabDeposits extends Tab {
 		nonRenewed.setText(SqlSelect.getNonRenewNumber(selectedYear) + "");
 	}
 
-	private void updateMoneyTotals(GridPane gridPane) {  // need to add defined fees object
+	private void updateMoneyTotals() {  // need to add defined fees object
 		summaryText.getDuesNumberText().setText(summaryTotals.getDuesNumber() + "");
 		summaryText.getDuesMoneyText().setText("$" + summaryTotals.getDues());
 		
