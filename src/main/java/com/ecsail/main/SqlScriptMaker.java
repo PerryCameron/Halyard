@@ -76,7 +76,7 @@ public class SqlScriptMaker {
 		readFromFile(Paths.SCRIPTS + "/ecsc_create.sql");
 		calculateSums();
 		new Dialogue_DatabaseBackup(newTupleCount);
-		//writeToFile(Paths.SQLBACKUP + "/" + Paths.getYear() + "/ecsc_sql_" + stringDate + ".sql");
+		writeToFile(Paths.SQLBACKUP + "/" + Paths.getYear() + "/ecsc_sql_" + stringDate + ".sql");
 	}
 	
 	public static void writeToFile(String filename) {

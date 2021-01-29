@@ -14,7 +14,7 @@ public class PortForwardingL{
       JSch jsch=new JSch();
 
       String host=null;
-      host="pcameron@eaglecreeksailing.com";
+      host="p@e.com";
       String user=host.substring(0, host.indexOf('@'));
      // String user="root";
       host=host.substring(host.indexOf('@')+1);
@@ -44,7 +44,7 @@ public class PortForwardingL{
   }
 
   public static class MyUserInfo implements UserInfo, UIKeyboardInteractive{
-    String passwd="Pa25191Z345!";
+    String passwd="";
 	public String getPassword(){ return passwd; }
     public boolean promptYesNo(String str){
       Object[] options={ "yes", "no" };
