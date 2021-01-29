@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.ecsail.gui.dialogues.Dialogue_DatabaseBackup;
 import com.ecsail.structures.Object_Boat;
 import com.ecsail.structures.Object_BoatOwner;
 import com.ecsail.structures.Object_DefinedFee;
@@ -23,11 +24,13 @@ import com.ecsail.structures.Object_Payment;
 import com.ecsail.structures.Object_Person;
 import com.ecsail.structures.Object_Phone;
 import com.ecsail.structures.Object_Slip;
+import com.ecsail.structures.Object_TupleCount;
 import com.ecsail.structures.Object_WorkCredit;
 
 import javafx.collections.ObservableList;
 
 public class SqlScriptMaker {
+	static Object_TupleCount newTupleCount;
 	static ArrayList<String> tableCreation = new ArrayList<String>();
 	static ObservableList<Object_Membership> memberships;
 	static ObservableList<Object_MembershipId> ids;
@@ -47,6 +50,7 @@ public class SqlScriptMaker {
 	private static final int ALL = 0;
 	
 	public static void createSql() {
+		SqlScriptMaker.newTupleCount = new Object_TupleCount();
 		System.out.println("Creating SQL script....");
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");  
 		Date date = new Date();  
@@ -69,7 +73,9 @@ public class SqlScriptMaker {
 		deposits = SqlSelect.getDeposits();
 		Paths.checkPath(Paths.SQLBACKUP + "/" + Paths.getYear());
 		readFromFile(Paths.SCRIPTS + "/ecsc_create.sql");
-		writeToFile(Paths.SQLBACKUP + "/" + Paths.getYear() + "/ecsc_sql_" + stringDate + ".sql");
+		calculateSums();
+		new Dialogue_DatabaseBackup(newTupleCount);
+		//writeToFile(Paths.SQLBACKUP + "/" + Paths.getYear() + "/ecsc_sql_" + stringDate + ".sql");
 	}
 	
 	public static void writeToFile(String filename) {
@@ -77,7 +83,6 @@ public class SqlScriptMaker {
 			File file = new File(filename);
 			FileWriter writer = new FileWriter(file, true);
 			// writer.write("use ECSC_SQL;" + System.lineSeparator());
-			printResults();
 			for (String tabe : tableCreation)
 				writer.write(tabe + System.lineSeparator());
 			for (Object_Membership mem : memberships)
@@ -137,23 +142,39 @@ public class SqlScriptMaker {
 		workcredits.clear();
 	}
 	
-	public static void printResults() {
+	public static void calculateSums() {
 		System.out.println("Table creation script is " + tableCreation.size() + " lines.");
+		newTupleCount.setTableCreation(tableCreation.size());
 		System.out.println(memberships.size() +" memberships written");
+		newTupleCount.setMembershipSize(memberships.size());
 		System.out.println(ids.size() + " ids written");
+		newTupleCount.setIdSize(ids.size());
 		System.out.println(people.size() + " people written");
+		newTupleCount.setPeopleSize(people.size());
 		System.out.println(phones.size() + " phone numbers written");
+		newTupleCount.setPhoneSize(phones.size());
 		System.out.println(boats.size() + " boats written");
+		newTupleCount.setBoatSize(boats.size());
 		System.out.println(boatowners.size() + " boatowners written");
+		newTupleCount.setBoatOwnerSize(boatowners.size());
 		System.out.println(slips.size() + " slips written");
+		newTupleCount.setSlipsSize(slips.size());
 		System.out.println(memos.size() + " memos written");
+		newTupleCount.setMemosSize(memos.size());
 		System.out.println(email.size() + " email written");
+		newTupleCount.setEmailSize(email.size());
 		System.out.println(monies.size() + " monies written");
+		newTupleCount.setMoniesSize(monies.size());
 		System.out.println(deposits.size() + " deposits written");
+		newTupleCount.setDepositsSize(deposits.size());
 		System.out.println(payments.size() + " payments written");
+		newTupleCount.setPaymentsSize(payments.size());
 		System.out.println(officers.size() + " officers written");
+		newTupleCount.setOfficersSize(officers.size());
 		System.out.println(definedfees.size() + " definedfees written");
+		newTupleCount.setDefinedFeesSize(definedfees.size());
 		System.out.println(workcredits.size() + " workcredits written");
+		newTupleCount.setWorkCreditsSize(workcredits.size());
 	}
 	
 	public static String getMembershipIdString(Object_MembershipId mid) {
