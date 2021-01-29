@@ -15,6 +15,7 @@ public class Paths {
 	public static final String SCRIPTS = System.getProperty("user.home") + "/.ecsc/scripts";
 	public static final String TUPLECOUNTS = System.getProperty("user.home") + "/.ecsc/tuples.ecs";
 	// "C:\\Users\\pcame\\Documents\\email.xlsx"
+	
 	public static void checkPath(String path) {
 		File recordsDir = new File(path);
 

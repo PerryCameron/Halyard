@@ -1,10 +1,11 @@
 package com.ecsail.main;
 
-import java.io.File;
 import java.sql.SQLException;
 
 import com.ecsail.gui.boxes.BoxToolBar;
 import com.ecsail.structures.Object_MembershipList;
+import com.ecsail.structures.Object_TupleCount;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -23,6 +24,7 @@ import javafx.stage.WindowEvent;
 
 public class Main extends Application {
 static ConnectDatabase connect;
+public static Object_TupleCount edits = new Object_TupleCount();
 public static ObservableList<Object_MembershipList> activememberships;
 public static String selectedYear; 
 static BorderPane mainPane;
@@ -33,6 +35,7 @@ static String ipaddress;
 public static void main(String[] args) throws SQLException {
         System.out.println("Starting application...");
         Main.selectedYear = Paths.getYear();
+        Main.edits = FileIO.openTupleCountObject();
         setUpForFirstTime();
         console = new BoxConsole();
         // this is the tree trunk to the entire program
@@ -91,11 +94,7 @@ public static void main(String[] args) throws SQLException {
 	}
 	
 	public static void setUpForFirstTime() {
-		File recordsDir = new File(System.getProperty("user.home"), "/.ecsc/scripts");
-		if (!recordsDir.exists()) {
-			System.out.println("Creating dir: " + System.getProperty("user.home") + "/.ecsc/scripts"); // USERFILETEMPLATE
-		    recordsDir.mkdirs();
-		}
+		Paths.checkPath(System.getProperty("user.home") + "/.ecsc/scripts");
 	}
 
 }

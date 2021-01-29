@@ -50,7 +50,8 @@ public class SqlScriptMaker {
 	private static final int ALL = 0;
 	
 	public static void createSql() {
-		SqlScriptMaker.newTupleCount = new Object_TupleCount();
+		//SqlScriptMaker.newTupleCount = new Object_TupleCount();
+		SqlScriptMaker.newTupleCount =  Main.edits;
 		System.out.println("Creating SQL script....");
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");  
 		Date date = new Date();  
@@ -144,7 +145,7 @@ public class SqlScriptMaker {
 	
 	public static void calculateSums() {
 	//	System.out.println("Table creation script is " + tableCreation.size() + " lines.");
-		newTupleCount.setTableCreation(tableCreation.size());
+		newTupleCount.setTableCreationSize(tableCreation.size());
 	//	System.out.println(memberships.size() +" memberships written");
 		newTupleCount.setMembershipSize(memberships.size());
 	//	System.out.println(ids.size() + " ids written");

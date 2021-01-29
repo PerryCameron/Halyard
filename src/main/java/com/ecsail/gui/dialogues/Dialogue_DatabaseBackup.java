@@ -17,9 +17,12 @@ import javafx.stage.Stage;
 
 public class Dialogue_DatabaseBackup extends Stage {
 	private List<Object_TupleCount> tuples;
-	public Dialogue_DatabaseBackup(Object_TupleCount newTupleCount) {
+	public Dialogue_DatabaseBackup(Object_TupleCount newTupleCount) {  // newTupleCount is an object already calculated
 		this.tuples = FileIO.openTupleCountObjects();
 		tuples.add(newTupleCount);
+		for(Object_TupleCount t: tuples) {
+			System.out.println(t.toString());
+		}
 		VBox vboxGrey = new VBox(); // this is the vbox for organizing all the widgets
 		VBox vboxBlue = new VBox();
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
@@ -44,6 +47,8 @@ public class Dialogue_DatabaseBackup extends Stage {
 		getIcons().add(mainIcon);
 		setScene(scene);
 		show();
+		tuples.get(tuples.size() - 1).clearEdits();
+		FileIO.saveTupleCountObjects(tuples);
 	}
 	
 	private VBox addInformationVBox() {
@@ -81,7 +86,7 @@ public class Dialogue_DatabaseBackup extends Stage {
 		text = new Text("0");	
 		pane.add(text, 1, 1);
 		
-		text = new Text("0");
+		text = new Text(tuples.get(r).getMembershipEdits() + "");
 		pane.add(text, 2, 1);
 		
 		text = new Text(tuples.get(r).getMembershipSize() + "");	
@@ -95,7 +100,7 @@ public class Dialogue_DatabaseBackup extends Stage {
 		text = new Text("0");	
 		pane.add(text, 1, 2);
 		
-		text = new Text("0");
+		text = new Text(tuples.get(r).getIdEdits() + "");
 		pane.add(text, 2, 2);
 		
 		text = new Text(tuples.get(r).getIdSize() + "");	
@@ -109,7 +114,7 @@ public class Dialogue_DatabaseBackup extends Stage {
 		text = new Text("0");	
 		pane.add(text, 1, 3);
 		
-		text = new Text("0");
+		text = new Text(tuples.get(r).getPeopleEdits() + "");
 		pane.add(text, 2, 3);
 		
 		text = new Text(tuples.get(r).getPeopleSize() + "");	
@@ -123,7 +128,7 @@ public class Dialogue_DatabaseBackup extends Stage {
 		text = new Text("0");	
 		pane.add(text, 1, 4);
 		
-		text = new Text("0");
+		text = new Text(tuples.get(r).getPhoneEdits() + "");
 		pane.add(text, 2, 4);
 		
 		text = new Text(tuples.get(r).getPhoneSize() + "");	
@@ -137,7 +142,7 @@ public class Dialogue_DatabaseBackup extends Stage {
 		text = new Text("0");	
 		pane.add(text, 1, 5);
 		
-		text = new Text("0");
+		text = new Text(tuples.get(r).getBoatEdits() + "");
 		pane.add(text, 2, 5);
 		
 		text = new Text(tuples.get(r).getBoatSize() + "");	
@@ -151,7 +156,7 @@ public class Dialogue_DatabaseBackup extends Stage {
 		text = new Text("0");	
 		pane.add(text, 1, 6);
 		
-		text = new Text("0");
+		text = new Text(tuples.get(r).getBoatOwnerEdits() + "");
 		pane.add(text, 2, 6);
 		
 		text = new Text(tuples.get(r).getBoatOwnerSize() + "");	
@@ -165,7 +170,7 @@ public class Dialogue_DatabaseBackup extends Stage {
 		text = new Text("0");	
 		pane.add(text, 1, 7);
 		
-		text = new Text("0");
+		text = new Text(tuples.get(r).getSlipsEdits() + "");
 		pane.add(text, 2, 7);
 		
 		text = new Text(tuples.get(r).getSlipsSize() + "");	
@@ -179,7 +184,7 @@ public class Dialogue_DatabaseBackup extends Stage {
 		text = new Text("0");	
 		pane.add(text, 1, 8);
 		
-		text = new Text("0");
+		text = new Text(tuples.get(r).getMemosEdits() + "");
 		pane.add(text, 2, 8);
 		
 		text = new Text(tuples.get(r).getMemosSize() + "");	
@@ -193,7 +198,7 @@ public class Dialogue_DatabaseBackup extends Stage {
 		text = new Text("0");	
 		pane.add(text, 1, 9);
 		
-		text = new Text("0");
+		text = new Text(tuples.get(r).getEmailEdits() + "");
 		pane.add(text, 2, 9);
 		
 		text = new Text(tuples.get(r).getEmailSize() + "");	
@@ -207,7 +212,7 @@ public class Dialogue_DatabaseBackup extends Stage {
 		text = new Text("0");	
 		pane.add(text, 1, 10);
 		
-		text = new Text("0");
+		text = new Text(tuples.get(r).getMoniesEdits() + "");
 		pane.add(text, 2, 10);
 		
 		text = new Text(tuples.get(r).getMoniesSize() + "");	
@@ -221,7 +226,7 @@ public class Dialogue_DatabaseBackup extends Stage {
 		text = new Text("0");	
 		pane.add(text, 1, 11);
 		
-		text = new Text("0");
+		text = new Text(tuples.get(r).getDepositsEdits() + "");
 		pane.add(text, 2, 11);
 		
 		text = new Text(tuples.get(r).getDepositsSize() + "");	
@@ -235,7 +240,7 @@ public class Dialogue_DatabaseBackup extends Stage {
 		text = new Text("0");	
 		pane.add(text, 1, 12);
 		
-		text = new Text("0");
+		text = new Text(tuples.get(r).getPaymentsEdits() + "");
 		pane.add(text, 2, 12);
 		
 		text = new Text(tuples.get(r).getPaymentsSize() + "");	
@@ -249,7 +254,7 @@ public class Dialogue_DatabaseBackup extends Stage {
 		text = new Text("0");	
 		pane.add(text, 1, 13);
 		
-		text = new Text("0");
+		text = new Text(tuples.get(r).getDefinedFeesEdits() + "");
 		pane.add(text, 2, 13);
 		
 		text = new Text(tuples.get(r).getDefinedFeesSize() + "");	
@@ -263,7 +268,7 @@ public class Dialogue_DatabaseBackup extends Stage {
 		text = new Text("0");	
 		pane.add(text, 1, 14);
 		
-		text = new Text("0");
+		text = new Text(tuples.get(r).getWorkCreditsEdits() + "");
 		pane.add(text, 2, 14);
 		
 		text = new Text(tuples.get(r).getWorkCreditsSize() + "");	

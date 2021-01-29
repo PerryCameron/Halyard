@@ -26,7 +26,8 @@ public class SqlUpdate {
 					"UPDATE boat SET " + field + "=\"" + attribute + "\" WHERE boat_id='" + phone_id + "';"));
 			else
 				stmt.execute(Main.console.setRegexColor(
-					"UPDATE boat SET " + field + "=null WHERE boat_id='" + phone_id + "';"));	
+					"UPDATE boat SET " + field + "=null WHERE boat_id='" + phone_id + "';"));
+			Main.edits.setBoatEdits(Main.edits.getBoatEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -39,6 +40,7 @@ public class SqlUpdate {
 			stmt = ConnectDatabase.connection.createStatement();
 			stmt.execute(Main.console
 					.setRegexColor("UPDATE boat SET has_trailer=" + hasTrailer + " WHERE boat_id='" + boat_id + "';"));
+			Main.edits.setBoatEdits(Main.edits.getBoatEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -50,6 +52,7 @@ public class SqlUpdate {
 		try {
 			stmt = ConnectDatabase.connection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE boat SET keel=\"" + keel + "\" WHERE boat_id='" + boat_id + "';"));
+			Main.edits.setBoatEdits(Main.edits.getBoatEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -61,6 +64,7 @@ public class SqlUpdate {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE membership SET address=\"" + address
 					+ "\" WHERE ms_id='" + membership.getMsid() + "';"));
+			Main.edits.setMembershipEdits(Main.edits.getMembershipEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -73,6 +77,7 @@ public class SqlUpdate {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE membership SET city=\"" + city
 					+ "\" WHERE ms_id='" + membership.getMsid() + "';"));
+			Main.edits.setMembershipEdits(Main.edits.getMembershipEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -86,6 +91,7 @@ public class SqlUpdate {
 			stmt.execute(Main.console.setRegexColor("UPDATE membership SET state=\"" + state
 				+ "\" WHERE ms_id='" + membership.getMsid() + "';"));
 			membership.setState(state);
+			Main.edits.setMembershipEdits(Main.edits.getMembershipEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -98,6 +104,7 @@ public class SqlUpdate {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE membership SET zip=\"" + zip
 					+ "\" WHERE ms_id='" + membership.getMsid() + "';"));
+			Main.edits.setMembershipEdits(Main.edits.getMembershipEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -117,6 +124,7 @@ public class SqlUpdate {
 			stmt.execute(Main.console.setRegexColor(
 					"UPDATE membership SET " + field + "=\"" + attribute + "\" WHERE ms_id='" + ms_id + "';"));
 			}
+			Main.edits.setMembershipEdits(Main.edits.getMembershipEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			noError = false;
@@ -131,6 +139,7 @@ public class SqlUpdate {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			stmt.execute(Main.console.setRegexColor(
 					"UPDATE membership SET " + field + "=\"" + date + "\" WHERE ms_id='" + ms_id + "';"));
+			Main.edits.setMembershipEdits(Main.edits.getMembershipEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			noError = false;
@@ -158,6 +167,7 @@ public class SqlUpdate {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE membership SET ACTIVE_MEMBERSHIP=" + boolean_value.toString()
 					+ " WHERE ms_id='" + msid + "';"));
+			Main.edits.setMembershipEdits(Main.edits.getMembershipEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

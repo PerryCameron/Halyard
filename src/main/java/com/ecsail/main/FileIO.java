@@ -69,6 +69,35 @@ public static List<Object_Login> logins = new ArrayList<Object_Login>();
 		return tuples;
 	}
 	
+	public static Object_TupleCount openTupleCountObject() {
+		ArrayList<Object_TupleCount> tuples = new ArrayList<Object_TupleCount>();
+		System.out.println();
+		File g = new File(Paths.TUPLECOUNTS);
+		if (g.exists()) {
+			try {
+				ObjectInputStream in = new ObjectInputStream(new FileInputStream(g));
+				Object obj = in.readObject();
+				ArrayList<?> ar = (ArrayList<?>) obj;
+				tuples.clear();
+				for (Object x : ar) {
+				    tuples.add((Object_TupleCount) x);
+				}
+				in.close();
+			} catch (Exception e) {
+				System.out.println("Error occurred during reading the file");
+				System.out.println( e.getMessage() );
+				e.printStackTrace();
+			}			  
+		} else {
+			System.out.println("There is no file " + Paths.TUPLECOUNTS);
+			System.out.println("Creating file " + Paths.TUPLECOUNTS);
+			List<Object_TupleCount> t = new ArrayList<Object_TupleCount>();
+			t.add(new Object_TupleCount());
+			saveTupleCountObjects(t);
+		}
+		return tuples.get(tuples.size() - 1);
+	}
+	
 	public static int getSelectedHost(String hostname) {
 		boolean error = true;
 		int count = 0;
