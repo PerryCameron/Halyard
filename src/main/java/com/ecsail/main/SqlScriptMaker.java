@@ -143,37 +143,37 @@ public class SqlScriptMaker {
 	}
 	
 	public static void calculateSums() {
-		System.out.println("Table creation script is " + tableCreation.size() + " lines.");
+	//	System.out.println("Table creation script is " + tableCreation.size() + " lines.");
 		newTupleCount.setTableCreation(tableCreation.size());
-		System.out.println(memberships.size() +" memberships written");
+	//	System.out.println(memberships.size() +" memberships written");
 		newTupleCount.setMembershipSize(memberships.size());
-		System.out.println(ids.size() + " ids written");
+	//	System.out.println(ids.size() + " ids written");
 		newTupleCount.setIdSize(ids.size());
-		System.out.println(people.size() + " people written");
+	//	System.out.println(people.size() + " people written");
 		newTupleCount.setPeopleSize(people.size());
-		System.out.println(phones.size() + " phone numbers written");
+	//	System.out.println(phones.size() + " phone numbers written");
 		newTupleCount.setPhoneSize(phones.size());
-		System.out.println(boats.size() + " boats written");
+	//	System.out.println(boats.size() + " boats written");
 		newTupleCount.setBoatSize(boats.size());
-		System.out.println(boatowners.size() + " boatowners written");
+	//	System.out.println(boatowners.size() + " boatowners written");
 		newTupleCount.setBoatOwnerSize(boatowners.size());
-		System.out.println(slips.size() + " slips written");
+	//	System.out.println(slips.size() + " slips written");
 		newTupleCount.setSlipsSize(slips.size());
-		System.out.println(memos.size() + " memos written");
+	//	System.out.println(memos.size() + " memos written");
 		newTupleCount.setMemosSize(memos.size());
-		System.out.println(email.size() + " email written");
+	//	System.out.println(email.size() + " email written");
 		newTupleCount.setEmailSize(email.size());
-		System.out.println(monies.size() + " monies written");
+	//	System.out.println(monies.size() + " monies written");
 		newTupleCount.setMoniesSize(monies.size());
-		System.out.println(deposits.size() + " deposits written");
+	//	System.out.println(deposits.size() + " deposits written");
 		newTupleCount.setDepositsSize(deposits.size());
-		System.out.println(payments.size() + " payments written");
+	//	System.out.println(payments.size() + " payments written");
 		newTupleCount.setPaymentsSize(payments.size());
-		System.out.println(officers.size() + " officers written");
+	//	System.out.println(officers.size() + " officers written");
 		newTupleCount.setOfficersSize(officers.size());
-		System.out.println(definedfees.size() + " definedfees written");
+	//	System.out.println(definedfees.size() + " definedfees written");
 		newTupleCount.setDefinedFeesSize(definedfees.size());
-		System.out.println(workcredits.size() + " workcredits written");
+	//	System.out.println(workcredits.size() + " workcredits written");
 		newTupleCount.setWorkCreditsSize(workcredits.size());
 	}
 	
