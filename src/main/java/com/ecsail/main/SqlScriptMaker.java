@@ -308,7 +308,10 @@ public class SqlScriptMaker {
 				+ mem.getMemo_id() + ","
 				+ mem.getMsid() + ",\""
 				+ mem.getMemo_date() + "\",\""
-				+ mem.getMemo() + "\");\n";
+				+ mem.getMemo() + "\""
+				+ mem.getMoney_id() + ",\""
+				+ mem.getCatagory() + "\""
+				+");\n";
 	}
 	
 	public static String getSlipString(Object_Slip sli) {
