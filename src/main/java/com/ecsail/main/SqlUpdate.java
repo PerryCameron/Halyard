@@ -27,7 +27,7 @@ public class SqlUpdate {
 			else
 				stmt.execute(Main.console.setRegexColor(
 					"UPDATE boat SET " + field + "=null WHERE boat_id='" + phone_id + "';"));
-			Main.edits.setBoatEdits(Main.edits.getBoatEdits() + 1);
+			Main.edits.setBoatEdits(Main.edits.getBoatEdits() + 1);  // count number of edits.
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -154,6 +154,7 @@ public class SqlUpdate {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			stmt.execute(Main.console.setRegexColor(
 					"UPDATE deposit SET " + field + "=\"" + date + "\" WHERE deposit_id='" + deposit_id + "';"));
+			Main.edits.setDepositsEdits(Main.edits.getDepositsEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			noError = false;
@@ -180,6 +181,7 @@ public class SqlUpdate {
 			stmt = ConnectDatabase.connection.createStatement();
 			stmt.execute(Main.console.setRegexColor(
 					"UPDATE phone SET " + field + "=" + attribute + " WHERE phone_id='" + phone_id + "';"));
+			Main.edits.setPhoneEdits(Main.edits.getPhoneEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -192,6 +194,7 @@ public class SqlUpdate {
 			stmt = ConnectDatabase.connection.createStatement();
 			stmt.execute(Main.console.setRegexColor(
 					"UPDATE phone SET " + field + "=\"" + attribute + "\" WHERE phone_id='" + phone_id + "';"));
+			Main.edits.setPhoneEdits(Main.edits.getPhoneEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -204,6 +207,7 @@ public class SqlUpdate {
 			stmt = ConnectDatabase.connection.createStatement();
 			stmt.execute(Main.console.setRegexColor(
 					"UPDATE email SET " + field + "=" + attribute + " WHERE email_id='" + email_id + "';"));
+			Main.edits.setEmailEdits(Main.edits.getEmailEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -214,6 +218,7 @@ public class SqlUpdate {
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE email SET email=\"" + email + "\" WHERE email_id='" + email_id + "';"));
+			Main.edits.setEmailEdits(Main.edits.getEmailEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -224,6 +229,7 @@ public class SqlUpdate {
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE officer SET " + field + "=\"" + attribute + "\" WHERE o_id='" + officer_id + "';"));
+			Main.edits.setOfficersEdits(Main.edits.getOfficersEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			//e.printStackTrace();
@@ -239,6 +245,7 @@ public class SqlUpdate {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE person SET birthday=\"" + date
 					+ "\" WHERE p_id='" + person.getP_id() + "';"));
+			Main.edits.setPeopleEdits(Main.edits.getPeopleEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -250,6 +257,7 @@ public class SqlUpdate {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE person SET buisness=\"" + buisness
 					+ "\" WHERE p_id='" + person.getP_id() + "';"));
+			Main.edits.setPeopleEdits(Main.edits.getPeopleEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -261,6 +269,7 @@ public class SqlUpdate {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE person SET occupation=\"" + occupation
 					+ "\" WHERE p_id='" + person.getP_id() + "';"));
+			Main.edits.setPeopleEdits(Main.edits.getPeopleEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -272,6 +281,7 @@ public class SqlUpdate {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE person SET l_name=\"" + lname
 					+ "\" WHERE p_id='" + person.getP_id() + "';"));
+			Main.edits.setPeopleEdits(Main.edits.getPeopleEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -283,6 +293,7 @@ public class SqlUpdate {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE person SET f_name=\"" + fname
 					+ "\" WHERE p_id='" + person.getP_id() + "';"));
+			Main.edits.setPeopleEdits(Main.edits.getPeopleEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -293,6 +304,7 @@ public class SqlUpdate {
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE person SET " + field + "=" + attribute + " WHERE p_id='" + p_id + "';"));
+			Main.edits.setPeopleEdits(Main.edits.getPeopleEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -304,6 +316,7 @@ public class SqlUpdate {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			stmt.execute(Main.console.setRegexColor("update slip set subleased_to='" + ms_id + "' where ms_id='" + membership.getMsid() + "';"));
 			membership.setSubleaser(ms_id);
+			Main.edits.setSlipsEdits(Main.edits.getSlipsEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -316,6 +329,7 @@ public class SqlUpdate {
 			stmt.execute(Main.console.setRegexColor("update slip set subleased_to=null where ms_id='" + membership.getMsid() + "';"));
 			BoxConsole.setInfoLine("Released sublease for slip owner " + membership.getMsid(), "orange");
 			membership.setSubleaser(0);
+			Main.edits.setSlipsEdits(Main.edits.getSlipsEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -329,6 +343,7 @@ public class SqlUpdate {
 			BoxConsole.setInfoLine("Released sublease for subleaser " + subleasee, "orange");
 			Object_MembershipList ownerMembership = TabLauncher.getSubleaser(subleasee);
 			ownerMembership.setSubleaser(0);
+			Main.edits.setSlipsEdits(Main.edits.getSlipsEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -343,6 +358,7 @@ public class SqlUpdate {
 			membership.setSlip("0");
 			Object_MembershipList newSlipOwnerMembership = TabLauncher.getMembership(ms_id);
 			newSlipOwnerMembership.setSlip(slip);
+			Main.edits.setSlipsEdits(Main.edits.getSlipsEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -355,6 +371,7 @@ public class SqlUpdate {
 			stmt = ConnectDatabase.connection.createStatement();
 			stmt.execute(Main.console
 					.setRegexColor("UPDATE money SET commited=" + commit + " WHERE money_id='" + money_id + "';"));
+			Main.edits.setMoniesEdits(Main.edits.getMoniesEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -366,6 +383,7 @@ public class SqlUpdate {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE " + table + " SET " + field + "=\"" + newValue
 					+ "\" WHERE money_id='" + fiscals.get(rowIndex).getMoney_id() + "';"));
+			Main.edits.setMoniesEdits(Main.edits.getMoniesEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -396,6 +414,7 @@ public class SqlUpdate {
 					+ ",other=" + money.getOther()
 					+ ",initiation=" + money.getInitiation()
 					+ " WHERE money_id=" + money.getMoney_id() + ";"));
+			Main.edits.setMoniesEdits(Main.edits.getMoniesEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -408,6 +427,7 @@ public class SqlUpdate {
 			stmt.execute(Main.console.setRegexColor("UPDATE work_credit SET racing=" + swcy.getRacing()
 					+ ",harbor=" + swcy.getHarbor() + ",social=" + swcy.getSocial() + ",other=" + swcy.getOther() 
 					+ " WHERE money_id=" + swcy.getMoney_id() + ";"));
+			Main.edits.setWorkCreditsEdits(Main.edits.getWorkCreditsEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -419,6 +439,7 @@ public class SqlUpdate {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE money SET batch=\"" + batchNumber
 					+ "\" WHERE money_id='" + money_id + "';"));
+			Main.edits.setMoniesEdits(Main.edits.getMoniesEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -430,6 +451,7 @@ public class SqlUpdate {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE money SET closed=" + closed
 					+ " WHERE money_id='" + money_id + "';"));
+			Main.edits.setMoniesEdits(Main.edits.getMoniesEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -440,6 +462,7 @@ public class SqlUpdate {
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE memo SET " + field + "=\"" + attribute + "\" WHERE memo_id='" + memo_id + "';"));
+			Main.edits.setMemosEdits(Main.edits.getMemosEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -450,6 +473,7 @@ public class SqlUpdate {
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE payment SET " + field + "=\"" + attribute + "\" WHERE pay_id='" + pay_id + "';"));
+			Main.edits.setPaymentsEdits(Main.edits.getPaymentsEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -462,6 +486,7 @@ public class SqlUpdate {
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE membership_id SET " + field + "=\"" + attribute + "\" WHERE mid=" + mid));
+			Main.edits.setIdEdits(Main.edits.getIdEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -475,6 +500,7 @@ public class SqlUpdate {
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			stmt.execute(Main.console.setRegexColor("update membership_id set renew=" + value + " where fiscal_year='" + year + "' and ms_id='" + ms_id +"'"));
+			Main.edits.setIdEdits(Main.edits.getIdEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -488,6 +514,7 @@ public class SqlUpdate {
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE membership_id SET " + field + "=" + attribute + " WHERE mid=" + mid));
+			Main.edits.setIdEdits(Main.edits.getIdEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -501,6 +528,7 @@ public class SqlUpdate {
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE defined_fee SET " + field + "=" + attribute + " WHERE fiscal_year=" + year + ";"));
+			Main.edits.setDefinedFeesEdits(Main.edits.getDefinedFeesEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
