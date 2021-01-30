@@ -544,7 +544,7 @@ public class SqlSelect {
 						rs.getString("MEMO_DATE"), 
 						rs.getString("MEMO"),
 						rs.getInt("MONEY_ID"),
-						rs.getString("CATAGORY")));
+						rs.getString("CATEGORY")));
 			}
 			return theseMemos;
 		} catch (SQLException e) {
