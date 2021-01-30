@@ -105,12 +105,12 @@ public class Object_Memo {
 	}
 	
 
-	public final String getcategory() {
+	public final String getCategory() {
 		return this.categoryProperty().get();
 	}
 	
 
-	public final void setcategory(final String category) {
+	public final void setCategory(final String category) {
 		this.categoryProperty().set(category);
 	}
 
