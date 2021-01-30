@@ -308,7 +308,7 @@ public class SqlScriptMaker {
 				+ mem.getMemo_id() + ","
 				+ mem.getMsid() + ",\""
 				+ mem.getMemo_date() + "\",\""
-				+ mem.getMemo() + "\""
+				+ mem.getMemo() + "\","
 				+ mem.getMoney_id() + ",\""
 				+ mem.getCategory() + "\""
 				+");\n";
