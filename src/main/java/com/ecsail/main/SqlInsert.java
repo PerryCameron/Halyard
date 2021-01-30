@@ -8,6 +8,7 @@ import com.ecsail.structures.Object_Deposit;
 import com.ecsail.structures.Object_Membership;
 import com.ecsail.structures.Object_MembershipId;
 import com.ecsail.structures.Object_MembershipList;
+import com.ecsail.structures.Object_Memo;
 import com.ecsail.structures.Object_Money;
 import com.ecsail.structures.Object_Payment;
 import com.ecsail.structures.Object_Person;
@@ -157,10 +158,10 @@ public class SqlInsert {
 		return updateIsSucessful;
 	}
 	
-	public static void addMemo(int memo_id,int msid, String date, String memo) {
+	public static void addMemo(Object_Memo m) {
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
-			stmt.execute(Main.console.setRegexColor("INSERT INTO memo () VALUES (" + memo_id + "," + msid + ",'" + date + "',\"" + memo + "\");"));
+			stmt.execute(Main.console.setRegexColor("INSERT INTO memo () VALUES (" + m.getMemo_id() + "," + m.getMsid() + ",'" + m.getMemo_date() + "',\"" + m.getMemo() + "\"," + m.getMoney_id() + ",\"" + m.getCategory() + "\");"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

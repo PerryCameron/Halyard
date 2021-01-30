@@ -310,7 +310,7 @@ public class SqlScriptMaker {
 				+ mem.getMemo_date() + "\",\""
 				+ mem.getMemo() + "\""
 				+ mem.getMoney_id() + ",\""
-				+ mem.getCatagory() + "\""
+				+ mem.getCategory() + "\""
 				+");\n";
 	}
 	

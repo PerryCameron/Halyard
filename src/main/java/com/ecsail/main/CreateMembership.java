@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 
 import com.ecsail.structures.Object_MembershipId;
 import com.ecsail.structures.Object_MembershipList;
+import com.ecsail.structures.Object_Memo;
 import com.ecsail.structures.Object_Person;
 
 public class CreateMembership {
@@ -45,7 +46,7 @@ public class CreateMembership {
 		String date = dtf.format(now);
 		Object_MembershipList newMembership = new Object_MembershipList(ms_id, pid, membership_id, date,true, "FM", "", "", "", 0, "", "", "", "");
 		if(SqlInsert.addMembershipIsSucessful(newMembership)) {
-			newMemNote.addMemo(note_id,ms_id, date, "Created new membership record");  // adds a note that the membership was created.
+			newMemNote.addMemo(new Object_Memo(note_id,ms_id, date, "Created new membership record",0,"N"));  // adds a note that the membership was created.
 			Main.activememberships.add(newMembership);
 			SqlInsert.addMembershipId(new Object_MembershipId(mid, Paths.getYear(), ms_id, membership_id + "",true));
 			TabLauncher.createTab(newMembership.getMembershipId(),newMembership.getMsid()); 
