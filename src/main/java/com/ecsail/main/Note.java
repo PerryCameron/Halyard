@@ -21,10 +21,10 @@ public class Note {
 		super();
 	}
 
-	public void add(String note, String date) {
+	public void add(String note, String date, int money_id, String catagory) {
 		//String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date(System.currentTimeMillis()));
 		int memo_id = getCount() + 1;
-		memos.add(new Object_Memo(memo_id,msid,date,note));
+		memos.add(new Object_Memo(memo_id,msid,date,note,money_id,catagory));
 		addMemo(memo_id,msid, date, note);
 	}
 
