@@ -38,11 +38,13 @@ import com.itextpdf.layout.property.TextAlignment;
 import javafx.collections.ObservableList;
 
 public class PDF_DepositReport {
+	
 	private static ObservableList<Object_PaidDues> paidDuesForDeposit;  // these are the paid dues for a single deposit
 	private Object_Deposit currentDeposit;
 	private Object_DefinedFee currentDefinedFee;
 	private Object_DepositSummary totals;
 	String fiscalYear;  // save this because I clear current Deposit
+	Boolean includeDollarSigns = false;
 
 	static String[] TDRHeaders = {
 			"Date",
@@ -252,12 +254,16 @@ public class PDF_DepositReport {
 		if(dues.getSail_school_laser_loft() != 0) addItemRow(detailTable, "Extra Sail School Loft Key Fee", dues.getSail_school_laser_loft() * currentDefinedFee.getSail_school_laser_loft(), dues.getSail_school_laser_loft());
 		if(dues.getKayac_shed() != 0) addItemRow(detailTable, "Extra Kayak Inside Storage Key Fee", dues.getKayac_shed() * currentDefinedFee.getKayak_shed(), dues.getKayac_shed());
 		if(dues.getYsc_donation() != 0) addItemRow(detailTable, "Youth Sailing Club Donation", dues.getYsc_donation(), 0);
-		if(dues.getOther() != 0) addItemRow(detailTable, "Other", dues.getOther(),0);
+		if(dues.getOther() != 0) addItemRow(detailTable, "Other: " + getOtherNote(dues) , dues.getOther(),0);
 		addItemRow(detailTable, "Total Due", dues.getTotal(),0);
 		if(dues.getCredit() != 0) addCreditRow(detailTable, "Credit", dues.getCredit(),0);
 		addItemPaidRow(detailTable, dues.getPaid());
 		}
 		return detailTable;
+	}
+	
+	private String getOtherNote(Object_PaidDues dues) {
+		return SqlSelect.getMemos(dues).getMemo();
 	}
 	
 	int retrunWetSlipNumber(int numberOf) {
@@ -291,7 +297,7 @@ public class PDF_DepositReport {
 		cell.setBorder(Border.NO_BORDER);
 		cell.setBorderTop(new SolidBorder(ColorConstants.BLACK, 1));
 		cell.setTextAlignment(TextAlignment.RIGHT);
-		cell.add(new Paragraph("$" + String.format("%,d", money))).setFontSize(10);
+		cell.add(new Paragraph(addDollarSign() + String.format("%,d", money))).setFontSize(10);
 		detailTable.addCell(cell);
 	}
 	
@@ -304,7 +310,7 @@ public class PDF_DepositReport {
 		} else {
 			detailTable.addCell(new Cell().setTextAlignment(TextAlignment.CENTER).setBorder(Border.NO_BORDER).add(new Paragraph("" + numberOf)).setFontSize(10));	
 		}
-		detailTable.addCell(new Cell().setTextAlignment(TextAlignment.RIGHT).setBorder(Border.NO_BORDER).add(new Paragraph("$" + String.format("%,d", money))).setFontSize(10));
+		detailTable.addCell(new Cell().setTextAlignment(TextAlignment.RIGHT).setBorder(Border.NO_BORDER).add(new Paragraph(addDollarSign() + String.format("%,d", money))).setFontSize(10));
 	}
 	
 	private void addCreditRow(Table detailTable, String label, int money, int numberOf) {
@@ -316,7 +322,7 @@ public class PDF_DepositReport {
 		} else {
 			detailTable.addCell(new Cell().setTextAlignment(TextAlignment.CENTER).setBorder(Border.NO_BORDER).add(new Paragraph("" + numberOf)).setFontSize(10));	
 		}
-		detailTable.addCell(new Cell().setTextAlignment(TextAlignment.RIGHT).setBorder(Border.NO_BORDER).add(new Paragraph("-$" + String.format("%,d", money))).setFontSize(10));
+		detailTable.addCell(new Cell().setTextAlignment(TextAlignment.RIGHT).setBorder(Border.NO_BORDER).add(new Paragraph("-" + addDollarSign() + String.format("%,d", money))).setFontSize(10));
 	}
 	
 	public Table summaryPdfTable()  {
@@ -416,7 +422,7 @@ public class PDF_DepositReport {
 		cell.setBorderTop(new SolidBorder(ColorConstants.BLACK, 1));
 		cell.setBorderBottom(new DoubleBorder(ColorConstants.BLACK, 2));
 		cell.setTextAlignment(TextAlignment.RIGHT);
-		cell.add(new Paragraph("$" + String.format("%,d", totals.getTotal()))).setFontSize(10);
+		cell.add(new Paragraph(addDollarSign() + String.format("%,d", totals.getTotal()))).setFontSize(10);
 		mainTable.addCell(cell);
 		
 		return mainTable;
@@ -523,6 +529,12 @@ public class PDF_DepositReport {
 		return t;
 	}
 	
+	public String addDollarSign() {
+		String sign = "";
+		if(includeDollarSigns) sign="$";
+		return sign;
+	}
+	
     public static void sortByMembershipId() {
 		  Collections.sort(paidDuesForDeposit, new Comparator<Object_PaidDues>() {
 		        @Override public int compare(Object_PaidDues p1, Object_PaidDues p2) {
@@ -550,7 +562,7 @@ public class PDF_DepositReport {
 		mainTable.addCell(new Cell());
 		mainTable.addCell(new Cell().add(new Paragraph(label)).setFontSize(10));
 		mainTable.addCell(new Cell().add(new Paragraph(numberOf + "")).setFontSize(10));
-		mainTable.addCell(new Cell().add(new Paragraph("$" + String.format("%,d", money)).setFontSize(10)).setTextAlignment(TextAlignment.RIGHT));
+		mainTable.addCell(new Cell().add(new Paragraph(addDollarSign() + String.format("%,d", money)).setFontSize(10)).setTextAlignment(TextAlignment.RIGHT));
 	}
 	
 	private static void RemoveBorder(Table table)
@@ -578,5 +590,7 @@ public class PDF_DepositReport {
 		}
 		return os.toByteArray();
 	}
+	
+	
 	
 }

@@ -554,6 +554,29 @@ public class SqlSelect {
 		return theseMemos;
 	}
 	
+	public static Object_Memo getMemos(Object_PaidDues dues) {
+		String query = "select * from memo where money_id=" + dues.getMoney_id();
+		Object_Memo thisMemo = null;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs;
+			rs = stmt.executeQuery(query + ";");
+			while (rs.next()) {
+				thisMemo = new Object_Memo( // why do I keep gettin a nullpointer exception here?
+						rs.getInt("MEMO_ID"), 
+						rs.getInt("MS_ID"), 
+						rs.getString("MEMO_DATE"), 
+						rs.getString("MEMO"),
+						rs.getInt("MONEY_ID"),
+						rs.getString("CATEGORY"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return thisMemo;
+	}
+	
 	public static ObservableList<Object_Slip> getSlips() {
 		ObservableList<Object_Slip> slips = FXCollections.observableArrayList();
 		try {
