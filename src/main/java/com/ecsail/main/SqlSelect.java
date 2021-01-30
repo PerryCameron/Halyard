@@ -542,7 +542,9 @@ public class SqlSelect {
 						rs.getInt("MEMO_ID"), 
 						rs.getInt("MS_ID"), 
 						rs.getString("MEMO_DATE"), 
-						rs.getString("MEMO")));
+						rs.getString("MEMO"),
+						rs.getInt("MONEY_ID"),
+						rs.getString("CATAGORY")));
 			}
 			return theseMemos;
 		} catch (SQLException e) {
