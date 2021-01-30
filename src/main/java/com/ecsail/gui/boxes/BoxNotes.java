@@ -90,7 +90,7 @@ public class BoxNotes extends HBox {
         add.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
             	String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date(System.currentTimeMillis()));
-             	note.add("new memo", date);
+             	note.add("new memo", date,0,"N");
             }
         });
         
