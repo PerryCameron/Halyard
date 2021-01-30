@@ -7,6 +7,7 @@ import java.util.function.Function;
 
 import com.ecsail.main.EditCell;
 import com.ecsail.main.Note;
+import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Memo;
 
 import javafx.beans.property.StringProperty;
@@ -16,6 +17,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -69,9 +71,12 @@ public class BoxNotes extends HBox {
             );
 		/// editable row that writes to database when enter is hit
         
-		TableColumn<Object_Memo, String> Col2 = createColumn("Note", Object_Memo::memoProperty);
-		Col2.setPrefWidth(770);
-        Col2.setOnEditCommit(
+		TableColumn<Object_Memo, String> Col2 = new TableColumn<Object_Memo, String>("Type");
+		Col2.setCellValueFactory(new PropertyValueFactory<Object_Memo, String>("category"));
+        
+		TableColumn<Object_Memo, String> Col3 = createColumn("Note", Object_Memo::memoProperty);
+		Col3.setPrefWidth(740);
+        Col3.setOnEditCommit(
                 new EventHandler<CellEditEvent<Object_Memo, String>>() {
                     @Override
                     public void handle(CellEditEvent<Object_Memo, String> t) {
@@ -107,7 +112,7 @@ public class BoxNotes extends HBox {
         
         ///////////// SET CONTENT ////////////////////
         
-		memoTableView.getColumns().addAll(Col1,Col2);
+		memoTableView.getColumns().addAll(Col1,Col2,Col3);
 		buttonVBox.getChildren().addAll(add,delete);
 		vboxPink.getChildren().add(memoTableView);
 		hboxGrey.getChildren().addAll(vboxPink,buttonVBox);
