@@ -229,7 +229,7 @@ public class BoxFiscal extends HBox {
             		SqlUpdate.updateMembershipId(fiscals.get(rowIndex).getMs_id(), fiscals.get(rowIndex).getFiscal_year(), textFields.getRenewCheckBox().isSelected());
             		fiscals.get(rowIndex).setCommitted(true);
             		addPaidNote(date);
-            		if(fiscals.get(rowIndex).getOther() != 0) note.add("Other expense: ",date);
+            		if(fiscals.get(rowIndex).getOther() != 0) note.add("Other expense: ",date,fiscals.get(rowIndex).getMoney_id(),"O");
             		setEditable(false);
             	} else {
 				setEditable(true);
@@ -480,7 +480,7 @@ public class BoxFiscal extends HBox {
 	
 	private void addPaidNote(String date) {
 		note.add("Paid $" + textFields.getPaidText().getText() + " leaving a balance of $" + textFields.getBalanceText().getText() + " for "
-				+ fiscals.get(rowIndex).getFiscal_year(), date);
+				+ fiscals.get(rowIndex).getFiscal_year(), date,0,"P");
 	}
 	
 	private void setEditable(boolean isEditable) {
