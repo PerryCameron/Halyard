@@ -12,17 +12,17 @@ public class Object_Memo {
 	private StringProperty memo_date;
 	private StringProperty memo;
 	private IntegerProperty money_id;
-	private StringProperty catagory;
+	private StringProperty category;
 	
 	public Object_Memo(Integer memo_id, Integer msid, String memo_date,
-			String memo, Integer money_id, String catagory) {
+			String memo, Integer money_id, String category) {
 		super();
 		this.memo_id = new SimpleIntegerProperty(memo_id);
 		this.msid = new SimpleIntegerProperty(msid);
 		this.memo_date = new SimpleStringProperty(memo_date);
 		this.memo = new SimpleStringProperty(memo);
 		this.money_id = new SimpleIntegerProperty(money_id);
-		this.catagory = new SimpleStringProperty(catagory);
+		this.category = new SimpleStringProperty(category);
 	}
 
 	public final IntegerProperty memo_idProperty() {
@@ -100,18 +100,18 @@ public class Object_Memo {
 	}
 	
 
-	public final StringProperty catagoryProperty() {
-		return this.catagory;
+	public final StringProperty categoryProperty() {
+		return this.category;
 	}
 	
 
-	public final String getCatagory() {
-		return this.catagoryProperty().get();
+	public final String getcategory() {
+		return this.categoryProperty().get();
 	}
 	
 
-	public final void setCatagory(final String catagory) {
-		this.catagoryProperty().set(catagory);
+	public final void setcategory(final String category) {
+		this.categoryProperty().set(category);
 	}
 
 }
