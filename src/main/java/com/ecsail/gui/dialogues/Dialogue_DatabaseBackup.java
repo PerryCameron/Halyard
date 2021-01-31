@@ -17,12 +17,14 @@ import javafx.stage.Stage;
 
 public class Dialogue_DatabaseBackup extends Stage {
 	private List<Object_TupleCount> tuples;
-	public Dialogue_DatabaseBackup(Object_TupleCount newTupleCount) {  // newTupleCount is an object already calculated
+	Object_TupleCount addedTuples; // this is to store how many new tuples have been added since last save
+	public Dialogue_DatabaseBackup(Object_TupleCount newTupleCount) {  // newTupleCount is a new object already calculated with the amount of tuples
 		this.tuples = FileIO.openTupleCountObjects();
 		tuples.add(newTupleCount);
-		for(Object_TupleCount t: tuples) {
-			System.out.println(t.toString());
-		}
+		this.addedTuples = getAddedTuples();
+		//for(Object_TupleCount t: tuples) {
+		//	System.out.println(t.toString());
+		//}
 		VBox vboxGrey = new VBox(); // this is the vbox for organizing all the widgets
 		VBox vboxBlue = new VBox();
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
@@ -54,6 +56,7 @@ public class Dialogue_DatabaseBackup extends Stage {
 	private VBox addInformationVBox() {
 		VBox iBox = new VBox();
 		GridPane pane = new GridPane();
+		Object_TupleCount at = getAddedTuples(); 
 		int r = tuples.size() - 1;
 		Font font1 = Font.font("Verdana", FontWeight.BOLD, 14);
 		Text text;
@@ -83,7 +86,7 @@ public class Dialogue_DatabaseBackup extends Stage {
 		text = new Text("Membership");	
 		pane.add(text, 0, 1);
 		
-		text = new Text("0");	
+		text = new Text(at.getMembershipSize() + "");	
 		pane.add(text, 1, 1);
 		
 		text = new Text(tuples.get(r).getMembershipEdits() + "");
@@ -97,7 +100,7 @@ public class Dialogue_DatabaseBackup extends Stage {
 		text = new Text("Id");	
 		pane.add(text, 0, 2);
 		
-		text = new Text("0");	
+		text = new Text(at.getIdSize() + "");	
 		pane.add(text, 1, 2);
 		
 		text = new Text(tuples.get(r).getIdEdits() + "");
@@ -111,7 +114,7 @@ public class Dialogue_DatabaseBackup extends Stage {
 		text = new Text("People");	
 		pane.add(text, 0, 3);
 		
-		text = new Text("0");	
+		text = new Text(at.getPeopleSize() + "");	
 		pane.add(text, 1, 3);
 		
 		text = new Text(tuples.get(r).getPeopleEdits() + "");
@@ -125,7 +128,7 @@ public class Dialogue_DatabaseBackup extends Stage {
 		text = new Text("Phone");	
 		pane.add(text, 0, 4);
 		
-		text = new Text("0");	
+		text = new Text(at.getPhoneSize() + "");	
 		pane.add(text, 1, 4);
 		
 		text = new Text(tuples.get(r).getPhoneEdits() + "");
@@ -139,7 +142,7 @@ public class Dialogue_DatabaseBackup extends Stage {
 		text = new Text("Boat");	
 		pane.add(text, 0, 5);
 		
-		text = new Text("0");	
+		text = new Text(at.getBoatSize() + "");	
 		pane.add(text, 1, 5);
 		
 		text = new Text(tuples.get(r).getBoatEdits() + "");
@@ -153,7 +156,7 @@ public class Dialogue_DatabaseBackup extends Stage {
 		text = new Text("Boat Owner");	
 		pane.add(text, 0, 6);
 		
-		text = new Text("0");	
+		text = new Text(at.getBoatSize() + "");	
 		pane.add(text, 1, 6);
 		
 		text = new Text(tuples.get(r).getBoatOwnerEdits() + "");
@@ -167,7 +170,7 @@ public class Dialogue_DatabaseBackup extends Stage {
 		text = new Text("Slip");	
 		pane.add(text, 0, 7);
 		
-		text = new Text("0");	
+		text = new Text(at.getSlipsSize() + "");	
 		pane.add(text, 1, 7);
 		
 		text = new Text(tuples.get(r).getSlipsEdits() + "");
@@ -181,7 +184,7 @@ public class Dialogue_DatabaseBackup extends Stage {
 		text = new Text("Memo");	
 		pane.add(text, 0, 8);
 		
-		text = new Text("0");	
+		text = new Text(at.getMemosSize() + "");	
 		pane.add(text, 1, 8);
 		
 		text = new Text(tuples.get(r).getMemosEdits() + "");
@@ -195,7 +198,7 @@ public class Dialogue_DatabaseBackup extends Stage {
 		text = new Text("Email");	
 		pane.add(text, 0, 9);
 		
-		text = new Text("0");	
+		text = new Text(at.getEmailSize() + "");	
 		pane.add(text, 1, 9);
 		
 		text = new Text(tuples.get(r).getEmailEdits() + "");
@@ -209,7 +212,7 @@ public class Dialogue_DatabaseBackup extends Stage {
 		text = new Text("Money");	
 		pane.add(text, 0, 10);
 		
-		text = new Text("0");	
+		text = new Text(at.getMoniesSize() + "");	
 		pane.add(text, 1, 10);
 		
 		text = new Text(tuples.get(r).getMoniesEdits() + "");
@@ -223,7 +226,7 @@ public class Dialogue_DatabaseBackup extends Stage {
 		text = new Text("Deposit");	
 		pane.add(text, 0, 11);
 		
-		text = new Text("0");	
+		text = new Text(at.getDepositsSize() + "");	
 		pane.add(text, 1, 11);
 		
 		text = new Text(tuples.get(r).getDepositsEdits() + "");
@@ -237,7 +240,7 @@ public class Dialogue_DatabaseBackup extends Stage {
 		text = new Text("Payment");	
 		pane.add(text, 0, 12);
 		
-		text = new Text("0");	
+		text = new Text(at.getPaymentsSize() + "");	
 		pane.add(text, 1, 12);
 		
 		text = new Text(tuples.get(r).getPaymentsEdits() + "");
@@ -251,7 +254,7 @@ public class Dialogue_DatabaseBackup extends Stage {
 		text = new Text("Defined Fee");	
 		pane.add(text, 0, 13);
 		
-		text = new Text("0");	
+		text = new Text(at.getDefinedFeesSize() + "");	
 		pane.add(text, 1, 13);
 		
 		text = new Text(tuples.get(r).getDefinedFeesEdits() + "");
@@ -265,18 +268,36 @@ public class Dialogue_DatabaseBackup extends Stage {
 		text = new Text("Work Credit");	
 		pane.add(text, 0, 14);
 		
-		text = new Text("0");	
+		text = new Text(at.getWorkCreditsSize() + "");	
 		pane.add(text, 1, 14);
 		
 		text = new Text(tuples.get(r).getWorkCreditsEdits() + "");
 		pane.add(text, 2, 14);
 		
-		text = new Text(tuples.get(r).getWorkCreditsSize() + "");	
+		text = new Text(tuples.get(r).getWorkCreditsSize() + "");	// total size
 		pane.add(text, 3, 14);
 		
 		iBox.getChildren().add(pane);
 		return iBox;
 	}
 	
-
+	private Object_TupleCount getAddedTuples() {
+		Object_TupleCount at = new Object_TupleCount();
+		int last = tuples.size() -1;
+		at.setBoatOwnerSize(tuples.get(last).getBoatOwnerSize() - tuples.get(last - 1).getBoatOwnerSize());
+		at.setBoatSize(tuples.get(last).getBoatSize() - tuples.get(last - 1).getBoatSize());
+		at.setDefinedFeesSize(tuples.get(last).getDefinedFeesSize() - tuples.get(last - 1).getDefinedFeesSize());
+		at.setDepositsSize(tuples.get(last).getDepositsSize() - tuples.get(last - 1).getDepositsSize());
+		at.setEmailSize(tuples.get(last).getDepositsSize() - tuples.get(last - 1).getDepositsSize());
+		at.setIdSize(tuples.get(last).getIdSize() - tuples.get(last - 1).getIdSize());
+		at.setMembershipSize(tuples.get(last).getMembershipSize() - tuples.get(last - 1).getMembershipSize());
+		at.setMemosSize(tuples.get(last).getMemosSize() - tuples.get(last - 1).getMemosSize());
+		at.setMoniesSize(tuples.get(last).getMoniesSize() - tuples.get(last - 1).getMoniesSize());
+		at.setOfficersSize(tuples.get(last).getOfficersSize() - tuples.get(last - 1).getOfficersSize());
+		at.setPaymentsSize(tuples.get(last).getPaymentsSize() - tuples.get(last - 1).getPaymentsSize());
+		at.setPeopleSize(tuples.get(last).getPeopleSize() - tuples.get(last - 1).getPeopleSize());
+		at.setSlipsSize(tuples.get(last).getSlipsSize() - tuples.get(last - 1).getSlipsSize());
+		at.setWorkCreditsSize(tuples.get(last).getWorkCreditsSize() - tuples.get(last - 1).getWorkCreditsSize());
+		return at;
+	}
 }
