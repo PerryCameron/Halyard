@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.ecsail.enums.Officer;
+import com.ecsail.main.Paths;
 import com.ecsail.main.SqlSelect;
 import com.ecsail.main.TabLauncher;
 import com.ecsail.structures.Object_Board;
@@ -287,8 +288,13 @@ public class TabBoardMembers extends Tab {
 		return text;
 	}
 	
-	private static void createTab(int msid)  {
-		Object_MembershipList membership = SqlSelect.getMembershipFromList(msid);
+	private static void createTab(int ms_id)  {
+		Object_MembershipList membership;
+		if(SqlSelect.isActive(ms_id)) { // membership is active and in our object tree
+		membership = SqlSelect.getMembershipFromList(ms_id,Paths.getYear());
+		} else { // membership is not active and needs to be pulled from the SQL Database
+		membership = SqlSelect.getInactiveMembershipFromList(ms_id);
+		}	
 		TabLauncher.createTab(membership);
 	}
 	

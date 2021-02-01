@@ -7,7 +7,6 @@ import java.util.function.Function;
 
 import com.ecsail.main.EditCell;
 import com.ecsail.main.Note;
-import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Memo;
 
 import javafx.beans.property.StringProperty;

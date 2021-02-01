@@ -149,7 +149,7 @@ public class SqlInsert {
 		boolean updateIsSucessful = false;
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
-			stmt.execute(Main.console.setRegexColor("INSERT INTO membership () VALUES (" + nm.getMsid() + ",'" + nm.getPid() + "','" + nm.getMembershipId() + "','" + nm.getJoinDate() + "','FM',1,'','','IN','');")); 
+			stmt.execute(Main.console.setRegexColor("INSERT INTO membership () VALUES (" + nm.getMsid() + ",'" + nm.getPid() + "','" + nm.getJoinDate() + "','FM',1,'','','IN','');")); 
 			updateIsSucessful = true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

@@ -11,7 +11,7 @@ public class Object_Membership {
 
 	private IntegerProperty msid; /// unique auto key for Membership
 	private IntegerProperty pid;  /// pid of Main Member
-	private IntegerProperty membershipId;  // Member ID used in real life
+	//private IntegerProperty membershipId;  // Member ID used in real life
 	private StringProperty joinDate;
 	private StringProperty memType;  // Type of Membership (Family, Regular, Lake Associate(race fellow), Social
 	private BooleanProperty activeMembership;  // Is the membership active?
@@ -20,13 +20,12 @@ public class Object_Membership {
 	private StringProperty state;
 	private StringProperty zip;
 
-	public Object_Membership(Integer msid, Integer pid, Integer membershipId
-			, String joinDate, Boolean activeMembership, String memType
+	public Object_Membership(Integer msid, Integer pid, String joinDate, Boolean activeMembership, String memType
 			, String address, String city, String state, String zip) {
 
 		this.msid = new SimpleIntegerProperty(msid);
 		this.pid = new SimpleIntegerProperty(pid);
-		this.membershipId = new SimpleIntegerProperty(membershipId);
+		//this.membershipId = new SimpleIntegerProperty(membershipId);
 		this.joinDate = new SimpleStringProperty(joinDate);
 		this.memType = new SimpleStringProperty(memType);		
 		this.activeMembership = new SimpleBooleanProperty(activeMembership);
@@ -73,22 +72,6 @@ public class Object_Membership {
 		this.pidProperty().set(pid);
 	}
 	
-
-	public final IntegerProperty membershipIdProperty() {
-		return this.membershipId;
-	}
-	
-
-	public final int getMembershipId() {
-		return this.membershipIdProperty().get();
-	}
-	
-
-	public final void setMembershipId(final int membershipId) {
-		this.membershipIdProperty().set(membershipId);
-	}
-	
-
 	public final StringProperty joinDateProperty() {
 		return this.joinDate;
 	}
@@ -193,11 +176,15 @@ public class Object_Membership {
 		this.zipProperty().set(zip);
 	}
 
+
+
 	@Override
 	public String toString() {
-		return "Object_Membership [msid=" + msid + ", pid=" + pid + ", membershipId=" + membershipId + ", joinDate="
-				+ joinDate + ", memType=" + memType + ", activeMembership=" + activeMembership + ", address=" + address
-				+ ", city=" + city + ", state=" + state + ", zip=" + zip + "]";
+		return "Object_Membership [msid=" + msid + ", pid=" + pid + ", joinDate=" + joinDate + ", memType=" + memType
+				+ ", activeMembership=" + activeMembership + ", address=" + address + ", city=" + city + ", state="
+				+ state + ", zip=" + zip + "]";
 	}
+
+
 
 }

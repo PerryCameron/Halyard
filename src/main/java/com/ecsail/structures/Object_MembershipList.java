@@ -11,14 +11,16 @@ public class Object_MembershipList extends Object_Membership {
 	private StringProperty fname;
 	private StringProperty slip;
 	private IntegerProperty subleaser;
+	private IntegerProperty membershipId;
 	
 	public Object_MembershipList(Integer msid, Integer pid, Integer membershipId, String joinDate, Boolean activeMembership, String memType,
 			String slip, String lname, String fname, Integer subleaser, String address, String city, String state, String zip) {
-		super(msid, pid, membershipId, joinDate, activeMembership, memType, address, city, state, zip);
+		super(msid, pid, joinDate, activeMembership, memType, address, city, state, zip);
 		this.lname = new SimpleStringProperty(lname);
 		this.fname = new SimpleStringProperty(fname);
 		this.slip = new SimpleStringProperty(slip);
 		this.subleaser = new SimpleIntegerProperty(subleaser);
+		this.membershipId = new SimpleIntegerProperty(membershipId);
 	}
 
 	
@@ -126,17 +128,32 @@ public class Object_MembershipList extends Object_Membership {
 		this.subleaserProperty().set(subleaser);
 	}
 
+
+	public final IntegerProperty membershipIdProperty() {
+		return this.membershipId;
+	}
 	
 
 
+
+	public final int getMembershipId() {
+		return this.membershipIdProperty().get();
+	}
+	
+
+
+
+	public final void setMembershipId(final int membershipId) {
+		this.membershipIdProperty().set(membershipId);
+	}
+	
 	@Override
 	public String toString() {
 		return "Object_MembershipList [lname=" + lname + ", fname=" + fname + ", slip=" + slip + ", subleaser="
-				+ subleaser + ", msidProperty()=" + msidProperty() + ", getMsid()=" + getMsid() + ", pidProperty()="
-				+ pidProperty() + ", getPid()=" + getPid() + ", membershipIdProperty()=" + membershipIdProperty()
-				+ ", getMembershipId()=" + getMembershipId() + ", joinDateProperty()=" + joinDateProperty()
-				+ ", getJoinDate()=" + getJoinDate() + ", memTypeProperty()=" + memTypeProperty() + ", getMemType()="
-				+ getMemType() + ", activeMembershipProperty()=" + activeMembershipProperty()
+				+ subleaser + ", membershipId=" + membershipId + ", msidProperty()=" + msidProperty() + ", getMsid()="
+				+ getMsid() + ", pidProperty()=" + pidProperty() + ", getPid()=" + getPid() + ", joinDateProperty()="
+				+ joinDateProperty() + ", getJoinDate()=" + getJoinDate() + ", memTypeProperty()=" + memTypeProperty()
+				+ ", getMemType()=" + getMemType() + ", activeMembershipProperty()=" + activeMembershipProperty()
 				+ ", isActiveMembership()=" + isActiveMembership() + ", addressProperty()=" + addressProperty()
 				+ ", getAddress()=" + getAddress() + ", cityProperty()=" + cityProperty() + ", getCity()=" + getCity()
 				+ ", stateProperty()=" + stateProperty() + ", getState()=" + getState() + ", zipProperty()="
@@ -144,6 +161,5 @@ public class Object_MembershipList extends Object_Membership {
 				+ getClass() + ", hashCode()=" + hashCode() + "]";
 	}
 	
-	
-	
+
 }

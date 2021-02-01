@@ -34,7 +34,7 @@ public class CreateMembership {
 		//int ms_id = SqlSelect.getMSIDCount() + 1;
 		int ms_id = SqlSelect.getCount("membership", "ms_id") +1;
 		//int membership_id = SqlSelect.getMembershipIDCount() +1;
-		int membership_id = SqlSelect.getCount("membership","membership_id") +1;
+		int membership_id = SqlSelect.getHighestMembershipId(Paths.getYear()) +1;
 		int mid = SqlSelect.getCount("membership_id", "mid") +1;
 		
 		int pid = SqlSelect.getCount() + 1;

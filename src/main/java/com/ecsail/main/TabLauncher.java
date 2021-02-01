@@ -122,7 +122,7 @@ static TabPane tabPane;
 		if(SqlSelect.isActive(ms_id)) { // membership is active and in our object tree
 		membership = getMembership(ms_id);
 		} else { // membership is not active and needs to be pulled from the SQL Database
-		membership = SqlSelect.getMembershipFromList(ms_id);
+		membership = SqlSelect.getMembershipFromList(ms_id,Paths.getYear());
 		}	
 		tabPane.getTabs().add(new TabMembership(membership));
 	}

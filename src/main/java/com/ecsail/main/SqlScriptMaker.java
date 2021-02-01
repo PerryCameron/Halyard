@@ -399,7 +399,6 @@ public class SqlScriptMaker {
 			return "INSERT INTO membership () VALUES (" 
 					+ mem.getMsid() + ","
 					+ mem.getPid() + ","
-					+ getCorrectString(mem.getMembershipId()) + ","	
 					+ getCorrectString(mem.getJoinDate()) + ","
 					+ getCorrectString(mem.getMemType()) + ","
 					+ mem.isActiveMembership() + ","

@@ -402,7 +402,7 @@ public class SqlSelect {
 				+ "INNER JOIN membership me on mo.MS_ID=me.MS_ID "
 				+ "INNER JOIN person p ON me.P_ID=p.P_ID  WHERE mo.FISCAL_YEAR='" + currentDeposit.getFiscalYear() 
 				+ "' AND mo.COMMITED=true AND mo.BATCH=" +currentDeposit.getBatch() + " "
-				+ "ORDER BY me.MEMBERSHIP_ID";
+				+ "ORDER BY id.MEMBERSHIP_ID";
 		ObservableList<Object_PaidDues> theseFiscals = FXCollections.observableArrayList();
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
@@ -813,7 +813,7 @@ public class SqlSelect {
 		return thisPhone;
 	}
 
-	public static ObservableList<Object_Membership> getMemberships() {
+	public static ObservableList<Object_Membership> getMemberships() {  /// for SQL Select
 		ObservableList<Object_Membership> memberships = FXCollections.observableArrayList();
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
@@ -823,7 +823,6 @@ public class SqlSelect {
 				memberships.add(new Object_Membership(
 						rs.getInt("MS_ID"), 
 						rs.getInt("P_ID"),
-						rs.getInt("MEMBERSHIP_ID"), 
 						rs.getString("JOIN_DATE"), 
 						rs.getBoolean("ACTIVE_MEMBERSHIP"),
 						rs.getString("MEM_TYPE"), 
@@ -841,41 +840,16 @@ public class SqlSelect {
 	}
 	
 	
-	public static Object_Membership getMembership(int ms_id) {
-		Object_Membership thisMembership = null;
-		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
-			ResultSet rs = stmt
-					.executeQuery(Main.console.setRegexColor("select * from membership WHERE ms_id= '" + ms_id + "';"));
-			while (rs.next()) {
-				thisMembership = new Object_Membership(
-						rs.getInt("MS_ID"), 
-						rs.getInt("P_ID"),
-						rs.getInt("MEMBERSHIP_ID"), 
-						rs.getString("JOIN_DATE"), 
-						rs.getBoolean("ACTIVE_MEMBERSHIP"),
-						rs.getString("MEM_TYPE"), 
-						rs.getString("ADDRESS"), 
-						rs.getString("CITY"), 
-						rs.getString("STATE"),
-						rs.getString("ZIP"));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		// System.out.println(thisMembership.toString());
-		return thisMembership;
-	}
-	
-	public static Object_MembershipList getMembershipFromList(int ms_id) {
+	public static Object_MembershipList getMembershipList(int ms_id, String year) {
 		Object_MembershipList thisMembership = null;
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
-					"select m.ms_id,m.p_id,membership_id,join_date,active_membership," 
-			+ "mem_type,slip_num,l_name,f_name,subleased_to,address,city,state,zip " 
-			+ "from person p right join (Select * from slip right join membership using " 
-			+ "(ms_id)) m using (ms_id) where member_type='1' and ms_id='" + ms_id + "';"));
+					"Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,m.JOIN_DATE,m.ACTIVE_MEMBERSHIP,"
+					+ "m.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,"
+					+ "m.zip from slip s right join membership m on m.MS_ID=s.MS_ID left join membership_id "
+					+ "id on m.MS_ID=id.MS_ID left join person p on p.MS_ID=m.MS_ID where id.FISCAL_YEAR='" + year + "' "
+					+ "and and m.ms_id=" + ms_id));
 			while (rs.next()) {
 				thisMembership = new Object_MembershipList(
 						rs.getInt("MS_ID"), 
@@ -896,22 +870,23 @@ public class SqlSelect {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		// System.out.println(thisMembership.toString());
+
+		System.out.println(thisMembership.toString());
 		return thisMembership;
 	}
-/*	
-	public static ObservableList<Object_MembershipList> getActiveMembershipList() {
-		ObservableList<Object_MembershipList> theseactivememberships = FXCollections.observableArrayList();
+	
+	public static Object_MembershipList getMembershipFromList(int ms_id, String year) {
+		Object_MembershipList thisMembership = null;
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
-			ResultSet rs;
-			rs = stmt.executeQuery(Main.console.setRegexColor(
-					"select ms_id,m.p_id,membership_id"
-					+ ",join_date,active_membership,mem_type,slip_num,l_name,f_name,subleased_to,address,city,state,zip from "
-					+ "person p right join ( Select * from slip right join membership using (ms_id) where "
-					+ "active_membership=true order by membership_id) m using (ms_id) where member_type='1';"));
+			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
+					"Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,m.JOIN_DATE,m.ACTIVE_MEMBERSHIP,"
+					+ "m.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,"
+					+ "m.zip from slip s right join membership m on m.MS_ID=s.MS_ID left join membership_id "
+					+ "id on m.MS_ID=id.MS_ID left join person p on p.MS_ID=m.MS_ID where id.FISCAL_YEAR='" + year + "' "
+					+ "and p.MEMBER_TYPE=1 and m.ms_id=" + ms_id));
 			while (rs.next()) {
-				theseactivememberships.add(new Object_MembershipList(
+				thisMembership = new Object_MembershipList(
 						rs.getInt("MS_ID"), 
 						rs.getInt("P_ID"),
 						rs.getInt("MEMBERSHIP_ID"), 
@@ -925,17 +900,49 @@ public class SqlSelect {
 						rs.getString("ADDRESS"), 
 						rs.getString("CITY"), 
 						rs.getString("STATE"),
-						rs.getString("ZIP")));
-			}
-			stmt.close();
+						rs.getString("ZIP"));
+				}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Creating List of active membership objects...");
-		return theseactivememberships;
+
+		System.out.println(thisMembership.toString());
+		return thisMembership;
 	}
-	*/
+	
+	public static Object_MembershipList getInactiveMembershipFromList(int ms_id) {
+		Object_MembershipList thisMembership = null;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
+					"Select m.MS_ID,m.P_ID,m.JOIN_DATE,m.ACTIVE_MEMBERSHIP,m.MEM_TYPE,s.SLIP_NUM,p.L_NAME,"
+					+ "p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip from slip s right join "
+					+ "membership m on m.MS_ID=s.MS_ID left join person p on p.MS_ID=m.MS_ID where m.ms_id=" + ms_id));
+			while (rs.next()) {
+				thisMembership = new Object_MembershipList(
+						rs.getInt("MS_ID"), 
+						rs.getInt("P_ID"),
+						0, 
+						rs.getString("JOIN_DATE"), 
+						rs.getBoolean("ACTIVE_MEMBERSHIP"),
+						rs.getString("MEM_TYPE"), 
+						rs.getString("SLIP_NUM"), 
+						rs.getString("L_NAME"),
+						rs.getString("F_NAME"), 
+						rs.getInt("SUBLEASED_TO"), 
+						rs.getString("ADDRESS"), 
+						rs.getString("CITY"), 
+						rs.getString("STATE"),
+						rs.getString("ZIP"));
+				}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		System.out.println(thisMembership.toString());
+		return thisMembership;
+	}
+
 	public static ObservableList<Object_MembershipList> getRoster(String year, boolean isActive) {
 		ObservableList<Object_MembershipList> rosters = FXCollections.observableArrayList();
 		try {
@@ -1238,6 +1245,21 @@ public class SqlSelect {
 			ResultSet rs = stmt.executeQuery("select * from " + table + " ORDER BY " + column + " DESC LIMIT 1");
 			rs.next();
 			result =  rs.getInt(column);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	public static int getHighestMembershipId(String year) {  // example-> "email","email_id"
+		int result = 0;
+		Statement stmt;
+		try {
+			stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs = stmt.executeQuery("select Max(membership_id) from membership_id where fiscal_year='" + year + "'");
+			rs.next();
+			result =  rs.getInt("Max(membership_id)");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

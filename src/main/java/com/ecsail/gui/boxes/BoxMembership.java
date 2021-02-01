@@ -2,7 +2,7 @@ package com.ecsail.gui.boxes;
 
 import com.ecsail.enums.MembershipType;
 import com.ecsail.structures.Object_MemLabels;
-import com.ecsail.structures.Object_Membership;
+import com.ecsail.structures.Object_MembershipList;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -10,10 +10,10 @@ import javafx.scene.layout.HBox;
 
 public class BoxMembership extends HBox {
 	
-	private Object_Membership membership;
+	private Object_MembershipList membership;
 	private Object_MemLabels labels;
 
-	public BoxMembership(Object_Membership m, Object_MemLabels ml) {
+	public BoxMembership(Object_MembershipList m, Object_MemLabels ml) {
 		this.membership =  m;
 		this.labels = ml;
 		

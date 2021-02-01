@@ -15,8 +15,8 @@ import com.ecsail.main.SqlExists;
 import com.ecsail.main.SqlSelect;
 import com.ecsail.structures.Object_Boat;
 import com.ecsail.structures.Object_DefinedFee;
-import com.ecsail.structures.Object_Membership;
 import com.ecsail.structures.Object_MembershipId;
+import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Money;
 import com.ecsail.structures.Object_Person;
 import com.ecsail.structures.Object_Phone;
@@ -41,7 +41,7 @@ public class PDF_Renewal_Form {
 	private static String last_membership_id;
 	private static String current_membership_id;
 	private static int ms_id;
-	private static Object_Membership membership;
+	private static Object_MembershipList membership;
 	private static Object_Person primary;
 	private static Object_Person secondary;
 	private static Object_Money dues;
@@ -189,7 +189,9 @@ public class PDF_Renewal_Form {
 	
 	private void gatherMembershipInformation() {
 		ms_id = SqlSelect.getMsidFromMembershipID(Integer.parseInt(current_membership_id));
-		membership = SqlSelect.getMembership(ms_id);
+		System.out.println("MSID=" + ms_id);
+		membership = SqlSelect.getMembershipFromList(ms_id,year);
+		System.out.println(membership.getMsid());
 		last_membership_id = SqlSelect.getMembershipId(Integer.parseInt(year) -1, membership.getMsid());
 		dues = SqlSelect.getMonies(ms_id, year);
 		boats = SqlSelect.getBoats(ms_id);

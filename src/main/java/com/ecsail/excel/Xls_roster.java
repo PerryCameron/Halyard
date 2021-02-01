@@ -30,7 +30,6 @@ public class Xls_roster {
 		this.printChoices = printChoices;
 		ArrayList<String> headers = getHeaders();
 		System.out.println("Creating Roster..");
-		String filename = determingFileName();
 		//String[] columnHeads = {"Membership ID", "Last Name", "First Name", "Join Date", "Street Address","City","State","Zip"};
 		
         // Create a Workbook
@@ -78,7 +77,7 @@ public class Xls_roster {
         FileOutputStream fileOut = null;
 
 		try {
-			fileOut = new FileOutputStream(determingFileName());
+			fileOut = new FileOutputStream(getFileName());
 		} catch (FileNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -107,7 +106,7 @@ public class Xls_roster {
 	
 	//////////////////////////////  CLASS METHODS /////////////////////////////
 	
-	private String determingFileName() {
+	private String getFileName() {
 		Paths.checkPath(Paths.ROSTERS);
 		String fileName = Paths.ROSTERS + "/" + printChoices.getYear();
 		if(printChoices.isActive()) {
