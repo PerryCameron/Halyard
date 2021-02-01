@@ -95,7 +95,7 @@ public class TabList extends Tab {
 //		hboxKSKey.getChildren().addAll(new Label("Kayak Shed Key"),kayakSKeySpinner);
 //		hboxSSLKey.getChildren().addAll(new Label("Sail School Loft Key"),sailSSLKeySpinner);
 //		vboxTextField.getChildren().addAll(hboxKey, hboxSLKey,hboxKSKey,hboxSSLKey);
-		vboxTextFieldFrame.getChildren().add(vboxTextField);
+		vboxTextFieldFrame.getChildren().add(new Label("Tab Stubbity"));
 		vboxBlue.getChildren().add(hboxGrey);
 		hboxGrey.getChildren().addAll(vboxTextFieldFrame);
 		setContent(vboxBlue);

@@ -83,8 +83,8 @@ public class TabRoster extends Tab {
 		RadioButton r1 = new RadioButton("Active"); 
         RadioButton r2 = new RadioButton("Non-Renew"); 
         RadioButton r3 = new RadioButton("New Members");
-        RadioButton r4 = new RadioButton("New Members + Return Members");
-        Button buttonPDF = new Button("Export PDF");
+        RadioButton r4 = new RadioButton("New/Return Members");
+        //Button buttonPDF = new Button("Export PDF");
         Button buttonXLS = new Button("Export XLS");
         
         vboxSpinnerLabel.setSpacing(10);
@@ -377,7 +377,7 @@ public class TabRoster extends Tab {
 	  		vboxCheckBox2.getChildren().addAll(c5,c6,c7,c8);
 	  		vboxCheckBox3.getChildren().addAll(c9,c10,c11,c12);
 	  		vboxCheckBox4.getChildren().add(c13);
-	  		vboxCheckBox5.getChildren().addAll(buttonPDF,buttonXLS);
+	  		vboxCheckBox5.getChildren().addAll(buttonXLS);
 	  		hboxExportFrame.getChildren().add(hboxExport);
 	  		hboxExport.getChildren().addAll(vboxCheckBox1,vboxCheckBox2,vboxCheckBox3,vboxCheckBox4,vboxCheckBox5);
 		    vboxRadioButtons.getChildren().addAll(r1,r2,r3,r4);
