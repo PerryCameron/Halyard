@@ -41,6 +41,7 @@ public class Object_DepositSummary {
 	private int depositNumber;
 	private String depositDate;
 	private int total;
+	private int paid;
 	
 	
 	public Object_DepositSummary() {
@@ -429,6 +430,18 @@ public class Object_DepositSummary {
 		this.depositDate = depositDate;
 	}
 	
+	
+	
+	public int getPaid() {
+		return paid;
+	}
+
+
+	public void setPaid(int paid) {
+		this.paid = paid;
+	}
+
+
 	public void clear() {
 		this.officer_credit = 0;
 		this.gate_key = 0;
@@ -465,6 +478,7 @@ public class Object_DepositSummary {
 		this.otherNumber = 0;
 		this.initiationNumber = 0;
 		this.numberOfRecords =0;
+		this.paid = 0;
 		//this.depositNumber = 0;
 		//this.depositDate = "";
 		this.total = 0;
@@ -473,7 +487,7 @@ public class Object_DepositSummary {
 
 	@Override
 	public String toString() {
-		return "Object_DepositTotals [officer_credit=" + officer_credit + ", gate_key=" + gate_key
+		return "Object_DepositSummary [officer_credit=" + officer_credit + ", gate_key=" + gate_key
 				+ ", kayac_shed_key=" + kayac_shed_key + ", sail_loft_key=" + sail_loft_key + ", sail_school_loft_key="
 				+ sail_school_loft_key + ", beach=" + beach + ", wet_slip=" + wet_slip + ", kayac_rack=" + kayac_rack
 				+ ", kayac_shed=" + kayac_shed + ", sail_loft=" + sail_loft + ", sail_school_laser_loft="
@@ -488,6 +502,6 @@ public class Object_DepositSummary {
 				+ winter_storageNumber + ", ysc_donationNumber=" + ysc_donationNumber + ", creditNumber=" + creditNumber
 				+ ", duesNumber=" + duesNumber + ", otherNumber=" + otherNumber + ", initiationNumber="
 				+ initiationNumber + ", numberOfRecords=" + numberOfRecords + ", depositNumber=" + depositNumber
-				+ ", depositDate=" + depositDate + ", total=" + total + "]";
+				+ ", depositDate=" + depositDate + ", total=" + total + ", paid=" + paid + "]";
 	}
 }

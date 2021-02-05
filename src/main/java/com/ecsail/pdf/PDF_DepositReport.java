@@ -520,26 +520,13 @@ public class PDF_DepositReport {
 				t.setYsc_donationNumber(1 + t.getYsc_donationNumber());
 				t.setYsc_donation(d.getYsc_donation() + t.getYsc_donation());
 			}
+			if (d.getPaid() != 0) {
+				t.setPaid(d.getPaid() + t.getPaid());
+			}
 			numberOfRecordsCounted++;
 		}
-		int total = 0;
-		total += t.getBeach();
-		total -= t.getCredit();
-		total += t.getDues();
-		total += t.getGate_key();
-		total += t.getInitiation();
-		total += t.getKayac_rack();
-		total += t.getKayac_shed();
-		total += t.getKayac_shed_key();
-		total += t.getOther();
-		total += t.getSail_loft();
-		total += t.getSail_loft_key();
-		total += t.getSail_school_laser_loft();
-		total += t.getSail_school_loft_key();
-		total += t.getWet_slip();
-		total += t.getWinter_storage();
-		total += t.getYsc_donation();
-		t.setTotal(total);
+
+		t.setTotal(t.getPaid());  /// sets total to added up payments, kind of redundant but a bug fix and hurts nothing
 		t.setNumberOfRecords(numberOfRecordsCounted);
 		return t;
 	}
