@@ -508,8 +508,8 @@ public class TabDeposits extends Tab {
 		summaryText.getSailSchoolLoftNumberText().setText(summaryTotals.getSail_school_laser_loftNumber() + "");
 		summaryText.getSailSchoolLoftMoneyText().setText("$" + summaryTotals.getSail_school_laser_loft());
 		
-		summaryText.getGateKeyNumberText().setText(summaryTotals.getGate_key() + "");
-		summaryText.getGateKeyMoneyText().setText("$" + summaryTotals.getGate_keyNumber());
+		summaryText.getGateKeyNumberText().setText(summaryTotals.getGate_keyNumber() + "");
+		summaryText.getGateKeyMoneyText().setText("$" + summaryTotals.getGate_key());
 		
 		summaryText.getKayakShedKeyNumberText().setText(summaryTotals.getKayac_shed_keyNumber() + "");
 		summaryText.getKayakShedKeyMoneyText().setText("$" + summaryTotals.getKayac_shed_key());
@@ -550,6 +550,7 @@ public class TabDeposits extends Tab {
 				summaryTotals.setDues(d.getDues() + summaryTotals.getDues());
 			}
 			if (d.getExtra_key() != 0) { /////  EXTRA GATE KEY
+				System.out.println("d.getExtraKey()=" + d.getExtra_key());
 				summaryTotals.setGate_keyNumber(d.getExtra_key() + summaryTotals.getGate_keyNumber());
 				int totalGateKeyDollars = currentDefinedFee.getMain_gate_key() * d.getExtra_key();
 				summaryTotals.setGate_key(summaryTotals.getGate_key() + totalGateKeyDollars);
