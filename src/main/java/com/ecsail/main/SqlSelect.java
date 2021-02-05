@@ -606,7 +606,9 @@ public class SqlSelect {
 						, rs.getString("FISCAL_YEAR")
 						, rs.getInt("MS_ID")
 						, rs.getString("MEMBERSHIP_ID")
-						, rs.getBoolean("RENEW")));
+						, rs.getBoolean("RENEW")
+						, rs.getString("MEM_TYPE")
+						, rs.getBoolean("SELECTED")));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -626,7 +628,9 @@ public class SqlSelect {
 						, rs.getString("FISCAL_YEAR")
 						, rs.getInt("MS_ID")
 						, rs.getString("MEMBERSHIP_ID")
-						, rs.getBoolean("RENEW")));
+						, rs.getBoolean("RENEW")
+						, rs.getString("MEM_TYPE")
+						, rs.getBoolean("SELECTED")));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -646,7 +650,9 @@ public class SqlSelect {
 						, rs.getString("FISCAL_YEAR")
 						, rs.getInt("MS_ID")
 						, rs.getString("MEMBERSHIP_ID")
-						, rs.getBoolean("RENEW"));
+						, rs.getBoolean("RENEW")
+						, rs.getString("MEM_TYPE")
+						, rs.getBoolean("SELECTED"));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -813,7 +819,7 @@ public class SqlSelect {
 		return thisPhone;
 	}
 
-	public static ObservableList<Object_Membership> getMemberships() {  /// for SQL Select
+	public static ObservableList<Object_Membership> getMemberships() {  /// for SQL Script Maker
 		ObservableList<Object_Membership> memberships = FXCollections.observableArrayList();
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
@@ -824,7 +830,6 @@ public class SqlSelect {
 						rs.getInt("MS_ID"), 
 						rs.getInt("P_ID"),
 						rs.getString("JOIN_DATE"), 
-						rs.getBoolean("ACTIVE_MEMBERSHIP"),
 						rs.getString("MEM_TYPE"), 
 						rs.getString("ADDRESS"), 
 						rs.getString("CITY"), 
@@ -845,7 +850,7 @@ public class SqlSelect {
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
-					"Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,m.JOIN_DATE,m.ACTIVE_MEMBERSHIP,"
+					"Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,m.JOIN_DATE,"
 					+ "m.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,"
 					+ "m.zip from slip s right join membership m on m.MS_ID=s.MS_ID left join membership_id "
 					+ "id on m.MS_ID=id.MS_ID left join person p on p.MS_ID=m.MS_ID where id.FISCAL_YEAR='" + year + "' "
@@ -856,7 +861,6 @@ public class SqlSelect {
 						rs.getInt("P_ID"),
 						rs.getInt("MEMBERSHIP_ID"), 
 						rs.getString("JOIN_DATE"), 
-						rs.getBoolean("ACTIVE_MEMBERSHIP"),
 						rs.getString("MEM_TYPE"), 
 						rs.getString("SLIP_NUM"), 
 						rs.getString("L_NAME"),
@@ -880,7 +884,7 @@ public class SqlSelect {
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
-					"Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,m.JOIN_DATE,m.ACTIVE_MEMBERSHIP,"
+					"Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,m.JOIN_DATE,"
 					+ "m.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,"
 					+ "m.zip from slip s right join membership m on m.MS_ID=s.MS_ID left join membership_id "
 					+ "id on m.MS_ID=id.MS_ID left join person p on p.MS_ID=m.MS_ID where id.FISCAL_YEAR='" + year + "' "
@@ -891,7 +895,6 @@ public class SqlSelect {
 						rs.getInt("P_ID"),
 						rs.getInt("MEMBERSHIP_ID"), 
 						rs.getString("JOIN_DATE"), 
-						rs.getBoolean("ACTIVE_MEMBERSHIP"),
 						rs.getString("MEM_TYPE"), 
 						rs.getString("SLIP_NUM"), 
 						rs.getString("L_NAME"),
@@ -915,7 +918,7 @@ public class SqlSelect {
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
-					"Select m.MS_ID,m.P_ID,m.JOIN_DATE,m.ACTIVE_MEMBERSHIP,m.MEM_TYPE,s.SLIP_NUM,p.L_NAME,"
+					"Select m.MS_ID,m.P_ID,m.JOIN_DATE,m.MEM_TYPE,s.SLIP_NUM,p.L_NAME,"
 					+ "p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip from slip s right join "
 					+ "membership m on m.MS_ID=s.MS_ID left join person p on p.MS_ID=m.MS_ID where m.ms_id=" + ms_id));
 			while (rs.next()) {
@@ -924,7 +927,6 @@ public class SqlSelect {
 						rs.getInt("P_ID"),
 						0, 
 						rs.getString("JOIN_DATE"), 
-						rs.getBoolean("ACTIVE_MEMBERSHIP"),
 						rs.getString("MEM_TYPE"), 
 						rs.getString("SLIP_NUM"), 
 						rs.getString("L_NAME"),
@@ -949,7 +951,7 @@ public class SqlSelect {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor(
-					"Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,m.JOIN_DATE,m.ACTIVE_MEMBERSHIP,m.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip "
+					"Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,m.JOIN_DATE,m.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip "
 							+ "from slip s "
 							+ "right join membership m on m.MS_ID=s.MS_ID "
 							+ "left join membership_id id on m.MS_ID=id.MS_ID "
@@ -961,7 +963,6 @@ public class SqlSelect {
 						rs.getInt("P_ID"),
 						rs.getInt("MEMBERSHIP_ID"), 
 						rs.getString("JOIN_DATE"), 
-						rs.getBoolean("ACTIVE_MEMBERSHIP"),
 						rs.getString("MEM_TYPE"), 
 						rs.getString("SLIP_NUM"), 
 						rs.getString("L_NAME"),
@@ -987,7 +988,7 @@ public class SqlSelect {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor(
-					"select id.membership_id, m.JOIN_DATE, m.MEM_TYPE, m.ACTIVE_MEMBERSHIP, m.ADDRESS, "
+					"select id.membership_id, m.JOIN_DATE, m.MEM_TYPE, m.ADDRESS, "
 					+ "m.CITY, m.state,m.zip, m.p_id, p.l_name, p.f_name,m.MS_ID from membership m "
 					+ "inner join person p on m.p_id=p.p_id "
 					+ "inner join membership_id id on id.ms_id=m.ms_id "
@@ -998,7 +999,6 @@ public class SqlSelect {
 						rs.getInt("P_ID"),
 						rs.getInt("MEMBERSHIP_ID"), 
 						rs.getString("JOIN_DATE"), 
-						rs.getBoolean("ACTIVE_MEMBERSHIP"),
 						rs.getString("MEM_TYPE"), 
 						"", 
 						rs.getString("L_NAME"),
@@ -1025,7 +1025,7 @@ public class SqlSelect {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor(
-					"select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,m.JOIN_DATE,m.ACTIVE_MEMBERSHIP,m.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip "
+					"select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,m.JOIN_DATE,m.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip "
 					+ "from membership_id id left join membership m on m.MS_ID=id.MS_ID "
 					+ "left join person p on p.P_ID=m.P_ID left join slip s on s.MS_ID=m.MS_ID "
 					+ "where id.FISCAL_YEAR='" + year + "' and id.MEMBERSHIP_ID > ("
@@ -1039,7 +1039,6 @@ public class SqlSelect {
 						rs.getInt("P_ID"),
 						rs.getInt("MEMBERSHIP_ID"), 
 						rs.getString("JOIN_DATE"), 
-						rs.getBoolean("ACTIVE_MEMBERSHIP"),
 						rs.getString("MEM_TYPE"), 
 						rs.getString("SLIP_NUM"), 
 						rs.getString("L_NAME"),
@@ -1184,7 +1183,9 @@ public class SqlSelect {
 					rs.getString("FISCAL_YEAR"),
 					rs.getInt("MS_ID"), 		
 					rs.getString("MEMBERSHIP_ID"),
-					rs.getBoolean("RENEW")));
+					rs.getBoolean("RENEW"),
+					rs.getString("MEM_TYPE"),
+					rs.getBoolean("SELECTED")));
 		}
 		stmt.close();
 		} catch (SQLException e) {
@@ -1279,7 +1280,9 @@ public class SqlSelect {
 			, rs.getString("MIN(FISCAL_YEAR)")
 			, rs.getInt("MS_ID")
 			, rs.getString("MAX(MEMBERSHIP_ID)")
-			, rs.getBoolean("RENEW"));
+			, rs.getBoolean("RENEW")
+			, rs.getString("MEM_TYPE")
+			, rs.getBoolean("SELECTED"));
 			};
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -1413,12 +1416,12 @@ public class SqlSelect {
 		return workCredits;
 	}
 	
-	public static int getActiveMembershipCount() {  // gives the last memo_id number
+	public static int getActiveMembershipCount(String year) {  // gives the last memo_id number
 		int number = 0;
 		ResultSet rs;
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
-			rs = stmt.executeQuery("select count(*) from membership where active_membership = true");
+			rs = stmt.executeQuery("select count(*) from membership_id where fiscal_year='" + year + "' and renew=true;");
 			rs.next();
 			number = rs.getInt("count(*)");
 		
@@ -1462,26 +1465,6 @@ public class SqlSelect {
 		}
 		return number;
 	}
-	
-	/*public static int getNonMembershipRenewalCount(String year) {  // gives the last memo_id number
-		int number = 0;
-		ResultSet rs;
-		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
-			rs = stmt.executeQuery("SELECT (SELECT Count(MS_ID) from membership "
-					+ "where ACTIVE_MEMBERSHIP=true) - (SELECT Count(m.MS_ID) from membership "
-					+ "m right join money mo on mo.MS_ID=m.MS_ID where mo.commited=true and "
-					+ "mo.fiscal_year='" + year + "' and m.ACTIVE_MEMBERSHIP=true and mo.SUPPLEMENTAL=false) AS INCREASE;");
-			rs.next();
-			number = rs.getInt("INCREASE");
-		
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return number;
-	}
-	*/
 	
 	public static int getNumberOfNewMemberships(String year) {
 		int number = 0;
@@ -1649,7 +1632,7 @@ public class SqlSelect {
 		
 	}
 	
-	public static boolean isActive(int ms_id)
+	public static boolean isActive(int ms_id)  // this needs to go but breaks stuff
 	{
 		boolean active = false;
 		Statement stmt;
@@ -1663,6 +1646,22 @@ public class SqlSelect {
 			e.printStackTrace();
 		}
 		return active;	
+	}
+	
+	public static boolean isRenewed(int ms_id, String year)  
+	{
+		boolean renew = false;
+		Statement stmt;
+		try {
+			stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select RENEW from membership_id where fiscal_year='" + year + "' and ms_id=" + ms_id));
+			rs.next();
+			renew = rs.getBoolean("RENEW");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return renew;	
 	}
 	
 	public static int getNumberOfDeposits() {

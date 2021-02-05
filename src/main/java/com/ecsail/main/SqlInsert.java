@@ -149,7 +149,7 @@ public class SqlInsert {
 		boolean updateIsSucessful = false;
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
-			stmt.execute(Main.console.setRegexColor("INSERT INTO membership () VALUES (" + nm.getMsid() + ",'" + nm.getPid() + "','" + nm.getJoinDate() + "','FM',1,'','','IN','');")); 
+			stmt.execute(Main.console.setRegexColor("INSERT INTO membership () VALUES (" + nm.getMsid() + ",'" + nm.getPid() + "','" + nm.getJoinDate() + "','FM','','','IN','');")); 
 			updateIsSucessful = true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -181,7 +181,8 @@ public class SqlInsert {
 	public static void addMembershipId(Object_MembershipId id) {
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
-			stmt.execute(Main.console.setRegexColor("INSERT INTO membership_id () VALUES (" + id.getMid() + ",'" + id.getFiscal_Year() + "','" + id.getMs_id() + "'," + id.getMembership_id() + "," + id.isIsRenew() + ");"));
+			stmt.execute(Main.console.setRegexColor("INSERT INTO membership_id () VALUES (" + id.getMid() + ",'" + id.getFiscal_Year() + "','" + id.getMs_id() 
+			+ "'," + id.getMembership_id() + "," + id.isIsRenew() + ",'" + id.getMem_type()+ "'," + id.isSelected() + ");"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

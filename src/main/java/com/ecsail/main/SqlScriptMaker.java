@@ -185,7 +185,10 @@ public class SqlScriptMaker {
 		+ mid.getFiscal_Year() + "," // stored as integer in database
 		+ mid.getMs_id() + ","
 		+ mid.getMembership_id() + ","
-		+ mid.isIsRenew() + ");\n"; //stored as integer in database
+		+ mid.isIsRenew() + ","
+		+ getCorrectString(mid.getMem_type()) + ","
+		+ mid.isSelected()
+		+ ");\n"; //stored as integer in database
 	}
 	
 	public static String getDepositString(Object_Deposit d) {
@@ -401,7 +404,6 @@ public class SqlScriptMaker {
 					+ mem.getPid() + ","
 					+ getCorrectString(mem.getJoinDate()) + ","
 					+ getCorrectString(mem.getMemType()) + ","
-					+ mem.isActiveMembership() + ","
 					+ getCorrectString(mem.getAddress()) + ","
 					+ getCorrectString(mem.getCity()) + ","
 					+ getCorrectString(mem.getState()) + ","

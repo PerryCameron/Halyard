@@ -495,6 +495,7 @@ public class SqlUpdate {
 		return noError;
 	}
 	
+	
 	public static Boolean updateMembershipId(int ms_id, int year, boolean value) {
 		Boolean noError = true;
 		try {

@@ -1,6 +1,8 @@
 package com.ecsail.gui.boxes;
 
 import com.ecsail.enums.MembershipType;
+import com.ecsail.main.Paths;
+import com.ecsail.main.SqlSelect;
 import com.ecsail.structures.Object_MemLabels;
 import com.ecsail.structures.Object_MembershipList;
 
@@ -55,7 +57,7 @@ public class BoxMembership extends HBox {
 	
 	private String getStatus() {
 		String result = "not active";
-		if(membership.isActiveMembership()) {
+		if(SqlSelect.isRenewed(membership.getMsid(), Paths.getYear())) {
 			result = "active";
 		}
 		return result;

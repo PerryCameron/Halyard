@@ -291,7 +291,7 @@ public class Dialogue_NewYearGenerator extends Stage {
 		for (Object_MembershipList ml : memberships) {
 			if(!SqlExists.memberShipIdExists(ml.getMsid(), selectedYear)) {
 				//System.out.println("Membership " + ml.getMsid() + " exists, Creating new");
-			SqlInsert.addMembershipId(new Object_MembershipId(mid, selectedYear, ml.getMsid(), count + "",false));
+			SqlInsert.addMembershipId(new Object_MembershipId(mid, selectedYear, ml.getMsid(), count + "",false,ml.getMemType(),false));
 			mid++;
 			count++;
 			} else {
@@ -306,7 +306,7 @@ public class Dialogue_NewYearGenerator extends Stage {
 		for (Object_MembershipList ml : memberships) {
 			if (!SqlExists.memberShipIdExists(ml.getMsid(), selectedYear)) {
 				SqlInsert.addMembershipId(
-						new Object_MembershipId(mid, selectedYear, ml.getMsid(), ml.getMembershipId() + "", false));
+						new Object_MembershipId(mid, selectedYear, ml.getMsid(), ml.getMembershipId() + "", false,ml.getMemType(),false));
 				mid++;
 			} else {
 				System.out.println("Membership " + ml.getMsid() + " exists");

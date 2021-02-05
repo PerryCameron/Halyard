@@ -13,9 +13,9 @@ public class Object_MembershipList extends Object_Membership {
 	private IntegerProperty subleaser;
 	private IntegerProperty membershipId;
 	
-	public Object_MembershipList(Integer msid, Integer pid, Integer membershipId, String joinDate, Boolean activeMembership, String memType,
+	public Object_MembershipList(Integer msid, Integer pid, Integer membershipId, String joinDate, String memType,
 			String slip, String lname, String fname, Integer subleaser, String address, String city, String state, String zip) {
-		super(msid, pid, joinDate, activeMembership, memType, address, city, state, zip);
+		super(msid, pid, joinDate, memType, address, city, state, zip);
 		this.lname = new SimpleStringProperty(lname);
 		this.fname = new SimpleStringProperty(fname);
 		this.slip = new SimpleStringProperty(slip);
@@ -146,20 +146,20 @@ public class Object_MembershipList extends Object_Membership {
 	public final void setMembershipId(final int membershipId) {
 		this.membershipIdProperty().set(membershipId);
 	}
-	
+
+
+
 	@Override
 	public String toString() {
 		return "Object_MembershipList [lname=" + lname + ", fname=" + fname + ", slip=" + slip + ", subleaser="
 				+ subleaser + ", membershipId=" + membershipId + ", msidProperty()=" + msidProperty() + ", getMsid()="
 				+ getMsid() + ", pidProperty()=" + pidProperty() + ", getPid()=" + getPid() + ", joinDateProperty()="
 				+ joinDateProperty() + ", getJoinDate()=" + getJoinDate() + ", memTypeProperty()=" + memTypeProperty()
-				+ ", getMemType()=" + getMemType() + ", activeMembershipProperty()=" + activeMembershipProperty()
-				+ ", isActiveMembership()=" + isActiveMembership() + ", addressProperty()=" + addressProperty()
-				+ ", getAddress()=" + getAddress() + ", cityProperty()=" + cityProperty() + ", getCity()=" + getCity()
+				+ ", getMemType()=" + getMemType() + ", addressProperty()=" + addressProperty() + ", getAddress()="
+				+ getAddress() + ", cityProperty()=" + cityProperty() + ", getCity()=" + getCity()
 				+ ", stateProperty()=" + stateProperty() + ", getState()=" + getState() + ", zipProperty()="
 				+ zipProperty() + ", getZip()=" + getZip() + ", toString()=" + super.toString() + ", getClass()="
 				+ getClass() + ", hashCode()=" + hashCode() + "]";
 	}
-	
 
 }

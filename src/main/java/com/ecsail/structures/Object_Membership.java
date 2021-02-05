@@ -1,8 +1,6 @@
 package com.ecsail.structures;
 
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -14,13 +12,13 @@ public class Object_Membership {
 	//private IntegerProperty membershipId;  // Member ID used in real life
 	private StringProperty joinDate;
 	private StringProperty memType;  // Type of Membership (Family, Regular, Lake Associate(race fellow), Social
-	private BooleanProperty activeMembership;  // Is the membership active?
+	//private BooleanProperty activeMembership;  // Is the membership active?
 	private StringProperty address;
 	private StringProperty city;
 	private StringProperty state;
 	private StringProperty zip;
 
-	public Object_Membership(Integer msid, Integer pid, String joinDate, Boolean activeMembership, String memType
+	public Object_Membership(Integer msid, Integer pid, String joinDate, String memType
 			, String address, String city, String state, String zip) {
 
 		this.msid = new SimpleIntegerProperty(msid);
@@ -28,7 +26,7 @@ public class Object_Membership {
 		//this.membershipId = new SimpleIntegerProperty(membershipId);
 		this.joinDate = new SimpleStringProperty(joinDate);
 		this.memType = new SimpleStringProperty(memType);		
-		this.activeMembership = new SimpleBooleanProperty(activeMembership);
+		//this.activeMembership = new SimpleBooleanProperty(activeMembership);
 		this.address = new SimpleStringProperty(address);
 		this.city = new SimpleStringProperty(city);
 		this.state = new SimpleStringProperty(state);
@@ -101,21 +99,6 @@ public class Object_Membership {
 		this.memTypeProperty().set(memType);
 	}
 	
-
-	public final BooleanProperty activeMembershipProperty() {
-		return this.activeMembership;
-	}
-	
-
-	public final boolean isActiveMembership() {
-		return this.activeMembershipProperty().get();
-	}
-	
-
-	public final void setActiveMembership(final boolean activeMembership) {
-		this.activeMembershipProperty().set(activeMembership);
-	}
-	
 	
 	public final StringProperty addressProperty() {
 		return this.address;
@@ -177,14 +160,10 @@ public class Object_Membership {
 	}
 
 
-
 	@Override
 	public String toString() {
 		return "Object_Membership [msid=" + msid + ", pid=" + pid + ", joinDate=" + joinDate + ", memType=" + memType
-				+ ", activeMembership=" + activeMembership + ", address=" + address + ", city=" + city + ", state="
-				+ state + ", zip=" + zip + "]";
+				+ ", address=" + address + ", city=" + city + ", state=" + state + ", zip=" + zip + "]";
 	}
-
-
 
 }

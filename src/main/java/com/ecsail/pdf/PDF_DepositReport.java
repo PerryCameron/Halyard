@@ -252,13 +252,16 @@ public class PDF_DepositReport {
 		if(dues.getExtra_key() != 0) addItemRow(detailTable, "Extra Gate Key Fee", dues.getExtra_key() * currentDefinedFee.getMain_gate_key(), dues.getExtra_key());
 		if(dues.getSail_loft_key() != 0) addItemRow(detailTable, "Extra Sail Loft Key Fee", dues.getSail_loft_key()* currentDefinedFee.getSail_loft_key(), dues.getSail_loft_key());
 		if(dues.getSail_school_laser_loft() != 0) addItemRow(detailTable, "Extra Sail School Loft Key Fee", dues.getSail_school_laser_loft() * currentDefinedFee.getSail_school_laser_loft(), dues.getSail_school_laser_loft());
-		if(dues.getKayac_shed() != 0) addItemRow(detailTable, "Extra Kayak Inside Storage Key Fee", dues.getKayac_shed() * currentDefinedFee.getKayak_shed(), dues.getKayac_shed());
+		if(dues.getKayac_shed_key() != 0) addItemRow(detailTable, "Extra Inside Storage Key", dues.getKayac_shed_key() * currentDefinedFee.getKayak_shed_key(), dues.getKayac_shed_key());
 		if(dues.getYsc_donation() != 0) addItemRow(detailTable, "Youth Sailing Club Donation", dues.getYsc_donation(), 0);
 		if(dues.getOther() != 0) addItemRow(detailTable, "Other: " + getOtherNote(dues) , dues.getOther(),0);
-		addItemRow(detailTable, "Total Due", dues.getTotal(),0);
+		addItemRow(detailTable, "Total Fees", dues.getTotal(),0);
 		if(dues.getCredit() != 0) addCreditRow(detailTable, "Credit", dues.getCredit(),0);
+		addItemRow(detailTable, "Total Due", dues.getTotal() - dues.getCredit(),0);
 		addItemPaidRow(detailTable, dues.getPaid());
+		if(dues.getBalance() != 0) addBalanceRow(detailTable, "Balance", dues.getBalance(), 0);
 		}
+		
 		return detailTable;
 	}
 	
@@ -299,6 +302,18 @@ public class PDF_DepositReport {
 		cell.setTextAlignment(TextAlignment.RIGHT);
 		cell.add(new Paragraph(addDollarSign() + String.format("%,d", money))).setFontSize(10);
 		detailTable.addCell(cell);
+	}
+	
+	private void addBalanceRow(Table detailTable, String label, int money, int numberOf) {
+		detailTable.addCell(new Cell().setBorder(Border.NO_BORDER));
+		detailTable.addCell(new Cell().setBorder(Border.NO_BORDER));
+		detailTable.addCell(new Cell().setBorder(Border.NO_BORDER).add(new Paragraph(label)).setFontSize(10));
+		if(numberOf == 0) {
+		detailTable.addCell(new Cell().setBorder(Border.NO_BORDER));	
+		} else {
+			detailTable.addCell(new Cell().setTextAlignment(TextAlignment.CENTER).setBorder(Border.NO_BORDER).add(new Paragraph("" + numberOf)).setFontSize(10));	
+		}
+		detailTable.addCell(new Cell().setTextAlignment(TextAlignment.RIGHT).setBorder(Border.NO_BORDER).add(new Paragraph(addDollarSign() + String.format("%,d", money))).setFontSize(10));
 	}
 	
 	private void addItemRow(Table detailTable, String label, int money, int numberOf) {

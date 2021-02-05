@@ -11,17 +11,18 @@ public class Object_MembershipId {
 	private IntegerProperty ms_id;
 	private SimpleStringProperty membership_id;
 	private SimpleBooleanProperty isRenew;
+	private SimpleStringProperty mem_type;
+	private SimpleBooleanProperty selected;
 	
-	public Object_MembershipId(Integer mid, String fiscal_Year, Integer ms_id, String membership_id, Boolean isRenew) {
+	public Object_MembershipId(Integer mid, String fiscal_Year, Integer ms_id, String membership_id, 
+		 Boolean isRenew, String mem_type, Boolean selected) {
 		this.mid = new SimpleIntegerProperty(mid);
 		this.fiscal_Year = new SimpleStringProperty(fiscal_Year);
 		this.ms_id = new SimpleIntegerProperty(ms_id);
 		this.membership_id = new SimpleStringProperty(membership_id);
 		this.isRenew = new SimpleBooleanProperty(isRenew);
-	}
-	
-	public Object_MembershipId() {
-		
+		this.mem_type = new SimpleStringProperty(mem_type);
+		this.selected = new SimpleBooleanProperty(selected);
 	}
 
 	public final IntegerProperty midProperty() {
@@ -82,6 +83,7 @@ public class Object_MembershipId {
 	public final void setMembership_id(final String membership_id) {
 		this.membership_idProperty().set(membership_id);
 	}
+	
 
 	public final SimpleBooleanProperty isRenewProperty() {
 		return this.isRenew;
@@ -95,6 +97,36 @@ public class Object_MembershipId {
 
 	public final void setIsRenew(final boolean isRenew) {
 		this.isRenewProperty().set(isRenew);
+	}
+	
+
+	public final SimpleStringProperty mem_typeProperty() {
+		return this.mem_type;
+	}
+	
+
+	public final String getMem_type() {
+		return this.mem_typeProperty().get();
+	}
+	
+
+	public final void setMem_type(final String mem_type) {
+		this.mem_typeProperty().set(mem_type);
+	}
+	
+
+	public final SimpleBooleanProperty selectedProperty() {
+		return this.selected;
+	}
+	
+
+	public final boolean isSelected() {
+		return this.selectedProperty().get();
+	}
+	
+
+	public final void setSelected(final boolean selected) {
+		this.selectedProperty().set(selected);
 	}
 	
 }

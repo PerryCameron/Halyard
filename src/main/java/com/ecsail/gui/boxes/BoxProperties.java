@@ -7,9 +7,7 @@ import java.util.Date;
 import java.util.Optional;
 
 import com.ecsail.enums.MembershipType;
-import com.ecsail.main.Paths;
 import com.ecsail.main.SqlDelete;
-import com.ecsail.main.SqlExists;
 import com.ecsail.main.SqlSelect;
 import com.ecsail.main.SqlUpdate;
 import com.ecsail.main.TabLauncher;
@@ -18,8 +16,6 @@ import com.ecsail.structures.Object_MemLabels;
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Person;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -29,7 +25,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -58,10 +53,8 @@ public class BoxProperties extends HBox {
         HBox hbox4 = new HBox();  // holds membership type
         HBox hbox5 = new HBox();  // holds delete membership
 
-		Button changeIDButton = new Button("Update");
+
 		Button removeMembershipButton = new Button("Delete");
-		TextField changeMembershipIDTextField = new TextField();
-		CheckBox activeCheckBox = new CheckBox("Membership Active");
 		ComboBox<MembershipType> combo_box = new ComboBox<MembershipType>();
 		DatePicker joinDatePicker = new DatePicker();
 		Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -69,9 +62,6 @@ public class BoxProperties extends HBox {
 		
 		/////////////  ATTRIBUTES /////////////
 
-		changeMembershipIDTextField.setPrefWidth(50);
-		changeMembershipIDTextField.setText(membership.getMembershipId() + "");
-		activeCheckBox.setSelected(membership.isActiveMembership());
         hbox1.setSpacing(5);  // membership HBox
         hbox1.setAlignment(Pos.CENTER_LEFT);
         hbox2.setSpacing(5);  // membership HBox
@@ -108,39 +98,7 @@ public class BoxProperties extends HBox {
 			}
 		};
 		joinDatePicker.setOnAction(event);
-		
-		activeCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-				if (!newValue) { // we are setting the membership to inactive
-					if (SqlExists.slipExists((membership.getMsid()))) { // checking to see if they have a slip
-						System.out.println("I'm sorry this member has a slip, you must change it first, need to add a dialogue here");
-						activeCheckBox.setSelected(true);
-					} else {
-						SqlUpdate.updateMembership(newValue, membership.getMsid());
-						membership.setActiveMembership(newValue); // update the status in the main object
-						labels.getStatus().setText(getStatus()); // update the Membership status label at top of membership view
-					}
-				} else { // we are making the membership active
-					SqlUpdate.updateMembership(newValue, membership.getMsid());
-					membership.setActiveMembership(newValue); // update the status in the main object
-					labels.getStatus().setText(getStatus()); // update the Membership status label at top of											// membership view
-				}
-			}
-		});
-		//updateMembershipId(int mid, String field, String attribute)
-		changeIDButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-            	String newID = changeMembershipIDTextField.getText();
-            	int mid = SqlSelect.getMid(Paths.getYear(), membership.getMsid());
-            	if(SqlUpdate.updateMembershipId(mid, "membership_id", newID))
-            	//if(SqlUpdate.updateMembership("MEMBERSHIP_ID", membership.getMsid(), newID))
-            	if(!newID.equals("")) membership.setMembershipId(Integer.parseInt(newID));
-            	labels.getMemberID().setText(newID);  // sets labels in BoxMembership
-            	membershipTab.setText("Membership " + newID);
-            }
-        });
-		
+			
 		removeMembershipButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
         		alert.setTitle("Remove Membership");
@@ -164,12 +122,11 @@ public class BoxProperties extends HBox {
         });
 		
 		///////////// SET CONTENT ////////////////////
-		hbox1.getChildren().addAll(new Label("Change Membership ID:"),changeMembershipIDTextField,changeIDButton);
+
 		hbox2.getChildren().addAll(new Label("Change join date:"),joinDatePicker);
-		hbox3.getChildren().addAll(activeCheckBox);
 		hbox4.getChildren().addAll(new Label("Membership Type"),combo_box);
 		hbox5.getChildren().addAll(new Label("Remove Membership"),removeMembershipButton);
-		leftVBox.getChildren().addAll(hbox1,hbox2,hbox3,hbox4);
+		leftVBox.getChildren().addAll(hbox2,hbox3,hbox4);
 		centerVBox.getChildren().addAll(hbox5);
 		rightVBox.getChildren().addAll(new BoxMemberID(membership));
 		hboxGrey.getChildren().addAll(leftVBox,centerVBox,rightVBox);
@@ -192,13 +149,6 @@ public class BoxProperties extends HBox {
 		SqlDelete.deleteMembership(ms_id);
 		TabLauncher.removeMembershipRow(ms_id);
 		TabLauncher.closeActiveTab();
-	}
-	
-	private String getStatus() {
-		String result = "not active";
-		if(membership.isActiveMembership()) 
-			result = "active";
-		return result;
 	}
 	
 	// taken from BoxFiscal  this is a duplicate method
