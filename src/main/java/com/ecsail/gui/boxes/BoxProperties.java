@@ -55,7 +55,7 @@ public class BoxProperties extends HBox {
 
 
 		Button removeMembershipButton = new Button("Delete");
-		ComboBox<MembershipType> combo_box = new ComboBox<MembershipType>();
+		//ComboBox<MemberType> combo_box = new ComboBox<MemberType>();
 		DatePicker joinDatePicker = new DatePicker();
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 
@@ -78,7 +78,7 @@ public class BoxProperties extends HBox {
         date = LocalDate.parse("1900-01-01", formatter);
         }
         joinDatePicker.setValue(date);
-        combo_box.setValue(MembershipType.getByCode(membership.getMemType()));
+        //combo_box.setValue(MemberType.getByCode(membership.getMemType()));
 		hboxGrey.setPadding(new Insets(5, 5, 5, 10));
 		hboxGrey.setPrefWidth(942);
 		leftVBox.setSpacing(10);
@@ -86,7 +86,7 @@ public class BoxProperties extends HBox {
 		setId("box-blue");
 		setSpacing(10);
 		hboxGrey.setId("box-grey");
-		combo_box.getItems().setAll(MembershipType.values());
+		//combo_box.getItems().setAll(MemberType.values());
 		
 		///////////// LISTENERS ////////////
 		EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
@@ -111,25 +111,19 @@ public class BoxProperties extends HBox {
             }
         });
 		
-        combo_box.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
-        	SqlUpdate.updateMembership("MEM_TYPE", membership.getMsid(), newValue.getCode());
-        	// SQLUpdate to money object will happen from BoxFiscal when duesText changes
-        	
-            membership.setMemType(newValue.getCode());
-            labels.getMemberType().setText("" + MembershipType.getByCode(newValue.getCode()));
-            duesText.setText(getDues() + "");
-            System.out.println(getDues());
+      /*  combo_box.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
+
         });
-		
+		*/
 		///////////// SET CONTENT ////////////////////
 
 		hbox2.getChildren().addAll(new Label("Change join date:"),joinDatePicker);
-		hbox4.getChildren().addAll(new Label("Membership Type"),combo_box);
+		//hbox4.getChildren().addAll(new Label("Membership Type"),combo_box);
 		hbox5.getChildren().addAll(new Label("Remove Membership"),removeMembershipButton);
-		leftVBox.getChildren().addAll(hbox2,hbox3,hbox4);
-		centerVBox.getChildren().addAll(hbox5);
+		leftVBox.getChildren().addAll(hbox2,hbox3,hbox5);
+		//centerVBox.getChildren().addAll(hbox5);
 		rightVBox.getChildren().addAll(new BoxMemberID(membership));
-		hboxGrey.getChildren().addAll(leftVBox,centerVBox,rightVBox);
+		hboxGrey.getChildren().addAll(leftVBox,rightVBox);
 		getChildren().add(hboxGrey);
 	}
 	

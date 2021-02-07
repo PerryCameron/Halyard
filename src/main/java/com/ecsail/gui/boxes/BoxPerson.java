@@ -3,6 +3,7 @@ package com.ecsail.gui.boxes;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import com.ecsail.enums.MemberType;
 import com.ecsail.gui.tabs.TabPeopleList;
 import com.ecsail.main.SqlUpdate;
 import com.ecsail.main.TabLauncher;
@@ -16,6 +17,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
@@ -57,7 +59,7 @@ public class BoxPerson extends HBox {
 		HBox hbox7 = new BoxEmail(person); // Email
 		HBox hbox8 = new BoxOfficer(person); // Officer
 		HBox hbox9 = new BoxPersonProperties(person, people);
-
+		//ComboBox<MemberType> combo_box = new ComboBox<MemberType>();
 		Label fnameLabel = new Label("First Name");
 		Label lnameLabel = new Label("Last Name");
 		Label occupationLabel = new Label("Occupation");
@@ -125,6 +127,7 @@ public class BoxPerson extends HBox {
 		hbox9.setSpacing(5);
 		hbox9.setId("box-blue");
 		
+		
 		vboxInfoGrey.setPadding(new Insets(25, 5, 5, 5)); // creates space for inner tabpane
 		
 		setPrefWidth(472);
@@ -142,6 +145,7 @@ public class BoxPerson extends HBox {
 		}
 		
 		/////////////// LISTENERS //////////////////////////
+
 		
 		fnameTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
 	        @Override
@@ -206,7 +210,6 @@ public class BoxPerson extends HBox {
 		birthdayDatePicker.setOnAction(event);
 		
 		/////////////// SETTING CONTENT /////////////////////
-		
 		fnameTextField.setText(person.getFname());
 		lnameTextField.setText(person.getLname());
 		businessTextField.setText(person.getBuisness());

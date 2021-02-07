@@ -16,6 +16,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -34,7 +35,8 @@ public class BoxPersonProperties extends HBox {
 		HBox hboxGrey = new HBox(); // this is here for the grey background to make nice apperence
 		Button delButton = new Button("Delete");
 		CheckBox activeCheckBox = new CheckBox("Active");
-
+		ComboBox<MemberType> combo_box = new ComboBox<MemberType>();
+		
 		//////////  LISTENERS /////
 		
       delButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -54,6 +56,10 @@ public class BoxPersonProperties extends HBox {
         			people.get(TabPeopleList.getIndexByPid(person.getP_id())).setActive(newValue);
             }
         });
+        
+	    combo_box.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
+	    	System.out.println(newValue);
+        });
 
 		/////////////////  ATTRIBUTES  /////////////////////
         activeCheckBox.setSelected(person.isActive());
@@ -63,14 +69,16 @@ public class BoxPersonProperties extends HBox {
 		hbox1.setAlignment(Pos.CENTER_LEFT);
 		vbox1.setSpacing(5);
 		hboxGrey.setId("box-grey");
-
+		combo_box.setValue(MemberType.getByCode(person.getMemberType()));
 		hboxGrey.setPadding(new Insets(5,5,5,5));  // spacing around table and buttons
 		hbox1.setPadding(new Insets(25, 0, 0, 15));
 		
 		//////////////// SET  CONTENT ////////////////
+		combo_box.getItems().setAll(MemberType.values());
 		hbox1.getChildren().add(delButton);
 		vbox1.getChildren().addAll(new Label("Person ID: " + person.getP_id()), 
-				new Label("Member Type: " + MemberType.getByCode(person.getMemberType())), // writes type instead of integer
+				new Label("Member Type: "), // writes type instead of integer
+				combo_box,
 				activeCheckBox,
 				new Label("MSID: " + person.getMs_id()));
 		vbox1.getChildren().add(hbox1);
