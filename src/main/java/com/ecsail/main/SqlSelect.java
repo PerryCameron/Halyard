@@ -913,7 +913,7 @@ public class SqlSelect {
 		return thisMembership;
 	}
 	
-	public static Object_MembershipList getInactiveMembershipFromList(int ms_id) {
+	public static Object_MembershipList getMembershipFromListWithoutMembershipId(int ms_id) {
 		Object_MembershipList thisMembership = null;
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
@@ -1630,22 +1630,6 @@ public class SqlSelect {
 		System.out.println("For year " + year +  " ms_id=" + ms_id + " they are " + id);
 		return id;
 		
-	}
-	
-	public static boolean isActive(int ms_id)  // this needs to go but breaks stuff
-	{
-		boolean active = false;
-		Statement stmt;
-		try {
-			stmt = ConnectDatabase.connection.createStatement();
-			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select active_membership from membership where ms_id=" + ms_id));
-			rs.next();
-			active = rs.getBoolean("active_membership");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return active;	
 	}
 	
 	public static boolean isRenewed(int ms_id, String year)  

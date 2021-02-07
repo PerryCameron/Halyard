@@ -10,10 +10,25 @@ import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Memo;
 import com.ecsail.structures.Object_Officer;
 import com.ecsail.structures.Object_Payment;
+import com.ecsail.structures.Object_Person;
 import com.ecsail.structures.Object_Phone;
 
 public class SqlDelete {
 
+	public static boolean deletePerson(Object_Person p) {
+	    boolean noError = false;
+	    	Statement stmt;
+			try {
+				stmt = ConnectDatabase.connection.createStatement();
+				stmt.execute(Main.console.setRegexColor("delete from person where p_id='" + p.getP_id() + "';"));
+				noError = true;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	    return noError;
+	}
+	
 	public static boolean deletePhone(Object_Phone phone) {
 	    boolean noError = false;
 	    	Statement stmt;

@@ -7,6 +7,7 @@ import com.ecsail.enums.MemberType;
 import com.ecsail.gui.boxes.BoxPerson;
 import com.ecsail.gui.boxes.BoxSearch;
 import com.ecsail.main.Paths;
+import com.ecsail.main.SqlExists;
 import com.ecsail.main.SqlSelect;
 import com.ecsail.main.TabLauncher;
 import com.ecsail.structures.Object_MembershipList;
@@ -131,19 +132,21 @@ public class TabPeopleList extends Tab {
 	// creates array list of people objects populated from SQL database
 
 	private static void createPersonBox(Object_Person person)  {
-		Object_MembershipList membership;
-		if(SqlSelect.isActive(person.getMs_id())) { // membership is active and in our object tree
-		membership = SqlSelect.getMembershipFromList(person.getMs_id(),Paths.getYear());
-		} else { // membership is not active and needs to be pulled from the SQL Database
-		membership = SqlSelect.getInactiveMembershipFromList(person.getMs_id());
-		}	
+		Object_MembershipList membership = null;
+		if(SqlExists.currentMembershipIdExists(person.getMs_id())) {
+		membership = SqlSelect.getMembershipFromList(person.getMs_id(), Paths.getYear());
+		} else {
+		membership = SqlSelect.getMembershipFromListWithoutMembershipId(person.getMs_id());
+		}
+		
+		
 		personHBox.getChildren().clear();  // remove if exists
 		System.out.println("cleared the personHBox");
 		personHBox.getChildren().add(new BoxPerson(person, membership));
 	}
 
 	private static void createTab(int msid)  {
-		Object_MembershipList membership = SqlSelect.getMembershipFromList(msid,Paths.getYear());
+		Object_MembershipList membership = SqlSelect.getMembershipFromListWithoutMembershipId(msid);
 		//System.out.println("membership=" + membership);
 		TabLauncher.createTab(membership);
 	}

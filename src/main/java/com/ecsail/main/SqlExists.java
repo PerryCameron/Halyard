@@ -349,6 +349,21 @@ public class SqlExists {
 		return result;
 	}
 	
-
+	public static Boolean currentMembershipIdExists(int ms_id) {
+		boolean result = false;
+		try {  
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs = stmt
+					.executeQuery(Main.console.setRegexColor("select exists(select * from membership_id where fiscal_year='" + Paths.getYear() + "' and ms_id=" + ms_id + ")"));
+			while (rs.next()) {
+				result = rs.getBoolean(
+						"exists(select * from membership_id where fiscal_year='" + Paths.getYear() + "' and ms_id=" + ms_id + ")");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
 	
 }

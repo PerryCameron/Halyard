@@ -1,13 +1,17 @@
 package com.ecsail.gui.boxes;
 
 import com.ecsail.enums.MemberType;
+import com.ecsail.gui.dialogues.Dialogue_Delete;
 import com.ecsail.gui.tabs.TabPeopleList;
+import com.ecsail.main.SqlDelete;
 import com.ecsail.main.SqlUpdate;
 import com.ecsail.structures.Object_Person;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -28,22 +32,19 @@ public class BoxPersonProperties extends HBox {
 		VBox vbox1 = new VBox(); // holds all content
 		HBox hbox1 = new HBox(); // holds remove member features
 		HBox hboxGrey = new HBox(); // this is here for the grey background to make nice apperence
-		Button delButton = new Button("remove");
+		Button delButton = new Button("Delete");
 		CheckBox activeCheckBox = new CheckBox("Active");
 
 		//////////  LISTENERS /////
 		
-      //  delButton.setOnAction(new EventHandler<ActionEvent>() {
-      //      @Override public void handle(ActionEvent e) {
-      //      	try {
-	  //			removePerson("IS_ACTIVE",person.getP_id(), false);
-	  //			} catch (SQLException e1) {
-	  //				// TODO Auto-generated catch block
-	  //				e1.printStackTrace();
-	  //			}
-      //       }
-      //    });
-      //    
+      delButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent e) {
+            	new Dialogue_Delete(p);
+            	//if(deleting)
+	  			//SqlDelete.deletePerson(p);
+             }
+          });
+         
         activeCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
