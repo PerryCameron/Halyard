@@ -108,7 +108,7 @@ public class TabMembership extends Tab {
 		fiscalTabPane.getTabs().add(new Tab("Fiscal", new BoxFiscalList(membership, fiscalTabPane, people, note, duesText)));
 		informationTabPane.getTabs().add(new Tab("Boats", new BoxBoat(membership)));
 		informationTabPane.getTabs().add(new Tab("Notes", new BoxNotes(note)));
-		informationTabPane.getTabs().add(new Tab("Properties", new BoxProperties(membership, labels, this, duesText)));
+		informationTabPane.getTabs().add(new Tab("Properties", new BoxProperties(membership, labels, this)));
 		informationTabPane.getTabs().add(new Tab("Attachments", new BoxAttachment(membership)));
 		informationTabPane.getTabs().add(new Tab("Address", new BoxAddress(membership)));
 		hbox2.getChildren().addAll(peopleTabPane, fiscalTabPane);  // new BoxInformation(membership)

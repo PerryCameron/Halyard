@@ -1,17 +1,13 @@
 package com.ecsail.gui.boxes;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.Optional;
 
-import com.ecsail.enums.MembershipType;
 import com.ecsail.main.SqlDelete;
 import com.ecsail.main.SqlSelect;
 import com.ecsail.main.SqlUpdate;
 import com.ecsail.main.TabLauncher;
-import com.ecsail.structures.Object_DefinedFee;
 import com.ecsail.structures.Object_MemLabels;
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Person;
@@ -25,27 +21,24 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class BoxProperties extends HBox {
 	private Object_MembershipList membership;
 	private Object_MemLabels labels;
-	private TextField duesText;
-	public BoxProperties(Object_MembershipList m, Object_MemLabels l, Tab membershipTab, TextField dt) {
+	//private TextField duesText;
+	public BoxProperties(Object_MembershipList m, Object_MemLabels l, Tab membershipTab) {
 		super();
 		this.membership = m;
 		this.labels = l;
-		this.duesText = dt;
+		//this.duesText = dt;
 		//////////// OBJECTS ///////////////
 		HBox hboxGrey = new HBox();  // this is the vbox for organizing all the widgets
 		VBox leftVBox = new VBox(); // contains viewable children
-		VBox centerVBox = new VBox();
 		VBox rightVBox = new VBox();
         HBox hbox1 = new HBox();  // holds membershipID, Type and Active
         HBox hbox2 = new HBox();  // holds PersonVBoxes (2 instances require a genereic HBox
@@ -143,38 +136,5 @@ public class BoxProperties extends HBox {
 		SqlDelete.deleteMembership(ms_id);
 		TabLauncher.removeMembershipRow(ms_id);
 		TabLauncher.closeActiveTab();
-	}
-	
-	// taken from BoxFiscal  this is a duplicate method
-	private int getDues() {  // takes the membership type and gets the dues
-		Object_DefinedFee definedFees = SqlSelect.getDefinedFee(new SimpleDateFormat("yyyy").format(new Date()));
-		int dues = 0;
-		  switch(membership.getMemType()) 
-	        { 
-	            case "RM": 
-	                dues = definedFees.getDues_regular(); 
-	                break; 
-	            case "SO": 
-	            	dues = definedFees.getDues_social(); 
-	                break; 
-	            case "FM": 
-	            	dues = definedFees.getDues_family();  
-	                break; 
-	            case "LA": 
-	            	dues = definedFees.getDues_lake_associate();  
-	                break; 
-	            case "LM": 
-	            	dues = 0;  // life members have no dues
-	                break; 
-	            case "SM": 
-	            	dues = 0;  // purdue sailing club dues
-	                break; 
-	            case "NR":
-	            	dues = 0;
-	            	break;
-	            default: 
-	            	dues = 0; 
-	        } 
-		return dues;
 	}
 }

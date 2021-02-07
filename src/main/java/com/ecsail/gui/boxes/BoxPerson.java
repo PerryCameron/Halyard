@@ -213,7 +213,7 @@ public class BoxPerson extends HBox {
 		infoTabPane.getTabs().add(new Tab("Phone", hbox6));
 		infoTabPane.getTabs().add(new Tab("Email", hbox7));
 		infoTabPane.getTabs().add(new Tab("Officer", hbox8));
-		infoTabPane.getTabs().add(new TabPersonProperties(p, people));
+		infoTabPane.getTabs().add(new TabPersonProperties(p, people, infoTabPane));
 		vboxInfoGrey.getChildren().add(infoTabPane);
 		hbox1.getChildren().addAll(fnameLabel, fnameTextField);
 		hbox2.getChildren().addAll(lnameLabel, lnameTextField);

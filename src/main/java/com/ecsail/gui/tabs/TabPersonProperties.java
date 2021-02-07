@@ -18,6 +18,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -25,7 +26,7 @@ public class TabPersonProperties extends Tab {
 	private Object_Person person;  // this is the person we are focused on.
 	private ObservableList<Object_Person> people;  // this is only for updating people list when in people list mode
 	private Object_Boolean isDeleted;
-	public TabPersonProperties(Object_Person p, ObservableList<Object_Person> pe) {
+	public TabPersonProperties(Object_Person p, ObservableList<Object_Person> pe, TabPane infoTabPane) {
 		super("Properties");
 		this.person = p;
 		this.people = pe;
@@ -64,6 +65,8 @@ public class TabPersonProperties extends Tab {
 	    isDeleted.xBooleanProperty().addListener((obs, wasDeleted, isDeleted) -> {
 	    	System.out.println("isDeleted=" + isDeleted);
 	    	
+        	if(people != null)  // this updates the people list if in people mode
+    			people.remove(people.get(TabPeopleList.getIndexByPid(person.getP_id())));
 		});
 		
 		/////////////////  ATTRIBUTES  /////////////////////
