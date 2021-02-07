@@ -34,7 +34,7 @@ public class BoxPerson extends HBox {
 	private ObservableList<Object_Person> people;  // this is only for updating people list when in people list mode
 	//private ObservableList<Object_Email> email;
 	
-	public BoxPerson(Object_Person p, Object_MembershipList me) {
+	public BoxPerson(Object_Person p, Object_MembershipList me, TabPane personTabPane) {
 		this.person = p;
 		this.membership = me;
 		

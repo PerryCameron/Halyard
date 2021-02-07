@@ -98,9 +98,9 @@ public class TabMembership extends Tab {
 
         ////////// SETTING CONTENT /////////////////
         
-		peopleTabPane.getTabs().add(new Tab("Primary Member", getPrimaryMember()));
+		peopleTabPane.getTabs().add(new Tab("Primary Member", getPrimaryMember(peopleTabPane)));
         if(hasPerson(SECONDARY)) 
-        	peopleTabPane.getTabs().add(new Tab("Secondary Member", getSecondaryMember()));
+        	peopleTabPane.getTabs().add(new Tab("Secondary Member", getSecondaryMember(peopleTabPane)));
 		if(hasPerson(DEPENDANT)) 
 			addDependentTabs(peopleTabPane);	
 		peopleTabPane.getTabs().add(new Tab("Add", new BoxAddPerson(peopleTabPane, note, membership)));
@@ -128,7 +128,7 @@ public class TabMembership extends Tab {
 		int count2 = 1;
 		for (Object_Person per : people) {
 			if (per.getMemberType() == DEPENDANT) { // if this record is a child of the primary member
-				peopleTabPane.getTabs().add(new Tab("Dependent " + count2, new BoxPerson(people.get(count),membership)));
+				peopleTabPane.getTabs().add(new Tab("Dependent " + count2, new BoxPerson(people.get(count),membership,peopleTabPane)));
 				count2++; // child number
 			}
 			count++; // array element
@@ -155,17 +155,17 @@ public class TabMembership extends Tab {
 		return type;
 	}
 
-	private BoxPerson getSecondaryMember() {
-		BoxPerson secondaryMember = new BoxPerson(people.get(getPerson(SECONDARY)), membership); // gets by membertype
+	private BoxPerson getSecondaryMember(TabPane peopleTabPane) {
+		BoxPerson secondaryMember = new BoxPerson(people.get(getPerson(SECONDARY)), membership,peopleTabPane); // gets by membertype
 		return secondaryMember;
 	}
 	
-	private BoxPerson getPrimaryMember() {
+	private BoxPerson getPrimaryMember(TabPane peopleTabPane) {
 		BoxPerson primaryMember;
 		if (isNewMembership()) 
-			primaryMember = new BoxPerson(CreateMembership.createUser(membership.getMsid()), membership);// create new primary
+			primaryMember = new BoxPerson(CreateMembership.createUser(membership.getMsid()), membership,peopleTabPane);// create new primary
 		else
-			primaryMember = new BoxPerson(people.get(getPerson(PRIMARY)), membership); // load the primary member
+			primaryMember = new BoxPerson(people.get(getPerson(PRIMARY)), membership,peopleTabPane); // load the primary member
 		return primaryMember;
 	}
 	
