@@ -3,8 +3,8 @@ package com.ecsail.gui.boxes;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import com.ecsail.enums.MemberType;
 import com.ecsail.gui.tabs.TabPeopleList;
+import com.ecsail.gui.tabs.TabPersonProperties;
 import com.ecsail.main.SqlUpdate;
 import com.ecsail.main.TabLauncher;
 import com.ecsail.structures.Object_MembershipList;
@@ -17,7 +17,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
@@ -58,7 +57,7 @@ public class BoxPerson extends HBox {
 		HBox hbox6 = new BoxPhone(person); // Phone
 		HBox hbox7 = new BoxEmail(person); // Email
 		HBox hbox8 = new BoxOfficer(person); // Officer
-		HBox hbox9 = new BoxPersonProperties(person, people);
+		//HBox hbox9 = new BoxPersonProperties(person, people);
 		//ComboBox<MemberType> combo_box = new ComboBox<MemberType>();
 		Label fnameLabel = new Label("First Name");
 		Label lnameLabel = new Label("Last Name");
@@ -122,10 +121,7 @@ public class BoxPerson extends HBox {
 		hbox8.setSpacing(5);
 		hbox8.setId("box-blue");
 		
-		hbox9.setPadding(new Insets(5, 5, 5, 5));
-		hbox9.setAlignment(Pos.CENTER);
-		hbox9.setSpacing(5);
-		hbox9.setId("box-blue");
+
 		
 		
 		vboxInfoGrey.setPadding(new Insets(25, 5, 5, 5)); // creates space for inner tabpane
@@ -217,7 +213,7 @@ public class BoxPerson extends HBox {
 		infoTabPane.getTabs().add(new Tab("Phone", hbox6));
 		infoTabPane.getTabs().add(new Tab("Email", hbox7));
 		infoTabPane.getTabs().add(new Tab("Officer", hbox8));
-		infoTabPane.getTabs().add(new Tab("Properties",hbox9));
+		infoTabPane.getTabs().add(new TabPersonProperties(p, people));
 		vboxInfoGrey.getChildren().add(infoTabPane);
 		hbox1.getChildren().addAll(fnameLabel, fnameTextField);
 		hbox2.getChildren().addAll(lnameLabel, lnameTextField);

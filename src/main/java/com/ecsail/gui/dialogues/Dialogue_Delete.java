@@ -1,6 +1,7 @@
 package com.ecsail.gui.dialogues;
 
 import com.ecsail.main.SqlDelete;
+import com.ecsail.structures.Object_Boolean;
 import com.ecsail.structures.Object_Person;
 
 import javafx.event.ActionEvent;
@@ -15,10 +16,10 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class Dialogue_Delete extends Stage {
+	private Object_Boolean xBoolean;
 
-	
-	public Dialogue_Delete(Object_Person p) {
-
+	public Dialogue_Delete(Object_Person p, Object_Boolean x) {
+		this.xBoolean = x;
 		VBox vboxGrey = new VBox(); // this is the vbox for organizing all the widgets
 		VBox vboxBlue = new VBox();
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
@@ -45,14 +46,13 @@ public class Dialogue_Delete extends Stage {
 		
 	      delButton.setOnAction(new EventHandler<ActionEvent>() {
 				public void handle(ActionEvent e) {
-					SqlDelete.deletePerson(p);
-					closeDialogue();
+					closeDialogue(SqlDelete.deletePerson(p));
 	             }
 	          });
 	      
 	      cancelButton.setOnAction(new EventHandler<ActionEvent>() {
 	          @Override public void handle(ActionEvent e) {
-	        	  	closeDialogue();
+	        	  	closeDialogue(false);
 	          }
 	      });
 
@@ -67,7 +67,10 @@ public class Dialogue_Delete extends Stage {
 		show();
 	}
 	
-	private void closeDialogue() {
+	private void closeDialogue(Boolean isDeleted) {
+		if(isDeleted) {
+			xBoolean.setXBoolean(true);	
+			}
 		this.close();
 	}
 }
