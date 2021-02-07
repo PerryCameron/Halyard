@@ -142,7 +142,7 @@ public class TabPeopleList extends Tab {
 		
 		personHBox.getChildren().clear();  // remove if exists
 		System.out.println("cleared the personHBox");
-		personHBox.getChildren().add(new BoxPerson(person, membership));
+		personHBox.getChildren().add(new BoxPerson(person, membership,null)); // null is for tabpane not being used here.
 	}
 
 	private static void createTab(int msid)  {

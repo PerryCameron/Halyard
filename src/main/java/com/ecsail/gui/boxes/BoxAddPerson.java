@@ -39,12 +39,14 @@ public class BoxAddPerson extends VBox {
 	private final int SECONDARY = 2;
 	private final int DEPENDANT = 3;
 	private Boolean hasError = false;
+	private TabPane tp;
 	
 	public BoxAddPerson(TabPane tp, Note n, Object_MembershipList me) {
 		this.note = n;
 		this.ms_id = n.getMsid();
 		this.peopleTabPane = tp;
 		this.membership = me;
+		this.tp = tp;
 		
 		////// OBJECTS //////
 		VBox vboxGrey = new VBox();
@@ -227,7 +229,7 @@ public class BoxAddPerson extends VBox {
 	
 	private void addPerson(String memberType) {
 		SqlInsert.addRecord(person);
-		peopleTabPane.getTabs().add(new Tab(memberType, new BoxPerson(person, membership)));
+		peopleTabPane.getTabs().add(new Tab(memberType, new BoxPerson(person, membership,tp)));  //tp is tappane to remove tab
     	titleLabel.setText("Add New Member");
 		titleLabel.setTextFill(Color.BLACK);
 	}

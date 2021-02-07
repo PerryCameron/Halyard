@@ -26,7 +26,7 @@ public class TabPersonProperties extends Tab {
 	private Object_Person person;  // this is the person we are focused on.
 	private ObservableList<Object_Person> people;  // this is only for updating people list when in people list mode
 	private Object_Boolean isDeleted;
-	public TabPersonProperties(Object_Person p, ObservableList<Object_Person> pe, TabPane infoTabPane) {
+	public TabPersonProperties(Object_Person p, ObservableList<Object_Person> pe, TabPane personTabPane) {
 		super("Properties");
 		this.person = p;
 		this.people = pe;
@@ -34,10 +34,12 @@ public class TabPersonProperties extends Tab {
 		//////////// OBJECTS /////////////////
 		HBox hboxMain = new HBox();
 		VBox vbox1 = new VBox(); // holds all content
-		HBox hbox1 = new HBox(); // holds remove member features
+		//HBox hbox1 = new HBox(); // holds remove member features
 		HBox hboxGrey = new HBox(); // this is here for the grey background to make nice apperence
+		HBox hboxMemberType = new HBox();
+		HBox hboxDelete = new HBox();
 		Button delButton = new Button("Delete");
-		CheckBox activeCheckBox = new CheckBox("Active");
+		CheckBox activeCheckBox = new CheckBox("Is Active");
 		ComboBox<MemberType> combo_box = new ComboBox<MemberType>();
 		
 		//////////  LISTENERS /////
@@ -64,7 +66,7 @@ public class TabPersonProperties extends Tab {
 	    
 	    isDeleted.xBooleanProperty().addListener((obs, wasDeleted, isDeleted) -> {
 	    	System.out.println("isDeleted=" + isDeleted);
-	    	
+	    	removeTab(personTabPane);
         	if(people != null)  // this updates the people list if in people mode
     			people.remove(people.get(TabPeopleList.getIndexByPid(person.getP_id())));
 		});
@@ -77,26 +79,45 @@ public class TabPersonProperties extends Tab {
         activeCheckBox.setSelected(person.isActive());
 		hboxGrey.setPrefWidth(480);
 		hboxGrey.setSpacing(10);  // spacing in between table and buttons
-		hbox1.setSpacing(5);
-		hbox1.setAlignment(Pos.CENTER_LEFT);
+		//hbox1.setSpacing(5);
+		//hbox1.setAlignment(Pos.CENTER_LEFT);
 		vbox1.setSpacing(5);
 		hboxGrey.setId("box-grey");
 		combo_box.setValue(MemberType.getByCode(person.getMemberType()));
 		hboxGrey.setPadding(new Insets(5,5,5,5));  // spacing around table and buttons
-		hbox1.setPadding(new Insets(25, 0, 0, 15));
+		//hbox1.setPadding(new Insets(25, 0, 0, 15));
+		hboxDelete.setSpacing(5);
+		hboxDelete.setAlignment(Pos.CENTER_LEFT);
+		hboxMemberType.setSpacing(5);
+		hboxMemberType.setAlignment(Pos.CENTER_LEFT);
 		
 		//////////////// SET  CONTENT ////////////////
 		combo_box.getItems().setAll(MemberType.values());
-		hbox1.getChildren().add(delButton);
-		vbox1.getChildren().addAll(new Label("Person ID: " + person.getP_id()), 
-				new Label("Member Type: "), // writes type instead of integer
-				combo_box,
-				activeCheckBox,
-				new Label("MSID: " + person.getMs_id()));
-		vbox1.getChildren().add(hbox1);
+		hboxMemberType.getChildren().addAll(new Label("Member Type: "), combo_box);
+		hboxDelete.getChildren().addAll(new Label("Delete Person: "), delButton);
+		vbox1.getChildren().addAll(
+				new Label("Person ID: " + person.getP_id()),
+				new Label("MSID: " + person.getMs_id()),
+				hboxMemberType,
+				hboxDelete,
+				activeCheckBox
+				);
 		hboxGrey.getChildren().add(vbox1);
 		hboxMain.getChildren().add(hboxGrey);
 		hboxMain.setId("box-blue");
 		setContent(hboxMain);
+	}
+	
+	private void removeTab(TabPane personTabPane) {
+		String tabName = "";
+		Tab thisPersonTab = null;
+		if(person.getMemberType() == 1) tabName = "Primary Member";
+		if(person.getMemberType() == 2) tabName = "Secondary";
+		if(person.getMemberType() == 3) tabName = "Dependent";
+		for(Tab t: personTabPane.getTabs()) {
+			if(t.getText().equals(tabName)) 
+				thisPersonTab = t;
+		}
+		personTabPane.getTabs().remove(thisPersonTab);
 	}
 }
