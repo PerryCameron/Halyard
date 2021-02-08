@@ -186,7 +186,7 @@ public class SqlScriptMaker {
 	
 	public static String getWaitListString(Object_WaitList wal) {
 		return
-		"INSERT INTO membership_id () VALUES ("
+		"INSERT INTO waitlist () VALUES ("
 		+ wal.getMs_id() + ","
 		+ wal.isSlipWait() + "," // stored as integer in database
 		+ wal.isKayakWait() + ","
