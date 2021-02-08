@@ -112,6 +112,18 @@ public class SqlUpdate {
 		membership.setZip(zip);
 	}
 	
+	public static void updateMembershipPrimary(int ms_id, int pid) {
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			stmt.execute(Main.console.setRegexColor("UPDATE membership SET p_id=" + pid
+					+ " WHERE ms_id='" + ms_id + "';"));
+			Main.edits.setMembershipEdits(Main.edits.getMembershipEdits() + 1);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public static Boolean updateMembership(String field, int ms_id, String attribute) {
 		Boolean noError = true;
 		Statement stmt;
@@ -133,7 +145,7 @@ public class SqlUpdate {
 		return noError;
 	}
 	
-	public static Boolean updateMembership(String field, int ms_id, LocalDate date) {
+	public static Boolean updateMembership(int ms_id, String field, LocalDate date) {
 		Boolean noError = true;
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
@@ -163,17 +175,17 @@ public class SqlUpdate {
 		return noError;
 	}
 	
-	public static void updateMembership(Boolean boolean_value, int msid) {
-		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
-			stmt.execute(Main.console.setRegexColor("UPDATE membership SET ACTIVE_MEMBERSHIP=" + boolean_value.toString()
-					+ " WHERE ms_id='" + msid + "';"));
-			Main.edits.setMembershipEdits(Main.edits.getMembershipEdits() + 1);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+//	public static void updateMembership(Boolean boolean_value, int msid) {
+//		try {
+//			Statement stmt = ConnectDatabase.connection.createStatement();
+//			stmt.execute(Main.console.setRegexColor("UPDATE membership SET ACTIVE_MEMBERSHIP=" + boolean_value.toString()
+//					+ " WHERE ms_id='" + msid + "';"));
+//			Main.edits.setMembershipEdits(Main.edits.getMembershipEdits() + 1);
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
 	
 	public static void updateListed(String field, int phone_id, Boolean attribute) {
 		Statement stmt;
@@ -301,6 +313,17 @@ public class SqlUpdate {
 	}
 	
 	public static void updatePerson(String field, int p_id, Boolean attribute) { // updates active/inactive
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			stmt.execute(Main.console.setRegexColor("UPDATE person SET " + field + "=" + attribute + " WHERE p_id='" + p_id + "';"));
+			Main.edits.setPeopleEdits(Main.edits.getPeopleEdits() + 1);  // update edits tracking
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static void updatePerson(int p_id, String field, int attribute) { // updates active/inactive
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE person SET " + field + "=" + attribute + " WHERE p_id='" + p_id + "';"));
@@ -536,5 +559,7 @@ public class SqlUpdate {
 		}
 		
 	}
+	
+	
 	
 }

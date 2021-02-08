@@ -2,6 +2,8 @@ package com.ecsail.gui.tabs;
 
 import com.ecsail.enums.MemberType;
 import com.ecsail.gui.dialogues.Dialogue_Delete;
+import com.ecsail.main.SqlExists;
+import com.ecsail.main.SqlSelect;
 import com.ecsail.main.SqlUpdate;
 import com.ecsail.structures.Object_Boolean;
 import com.ecsail.structures.Object_Person;
@@ -61,7 +63,31 @@ public class TabPersonProperties extends Tab {
         });
         
 	    combo_box.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
-	    	System.out.println(newValue);
+	    	
+	    	int ms_id = person.getMs_id();
+	    	int person1Pid = person.getP_id();
+	    	int person2Pid = 0;
+
+	    	if(newValue.toString().equals("Primary")) {  // we want to change member to primary
+	    		person2Pid = getPid(1); // gets pid of current primary member
+	    		if(person2Pid != 0) {
+	    		    SqlUpdate.updatePerson(person2Pid, "MEMBER_TYPE", 2); // change primary to secondary
+	    		}
+	    		SqlUpdate.updatePerson(person1Pid, "MEMBER_TYPE", 1);  // now make this person primary
+	    		SqlUpdate.updateMembershipPrimary(ms_id, person1Pid);  // update the membership primary
+	    	}
+	    	if(newValue.toString().equals("Secondary")) {  // we want to change member to secondary
+	    		person2Pid = getPid(2); // gets pid of current secondary member
+	    		if(person2Pid != 0) {
+	    		    SqlUpdate.updatePerson(person2Pid, "MEMBER_TYPE", 1); // change secondary to primary
+	    		}
+	    		SqlUpdate.updatePerson(person1Pid, "MEMBER_TYPE", 2);  // now make this person secondary
+	    		SqlUpdate.updateMembershipPrimary(ms_id, person2Pid);  // update the membership primary
+	    	}
+	    	if(newValue.toString().equals("Dependant")) {  // not sure what to do probably dialogue saying no!
+	    		System.out.println("Do something with this later");
+	    	}
+	    	
         });
 	    
 	    isDeleted.xBooleanProperty().addListener((obs, wasDeleted, isDeleted) -> {
@@ -106,6 +132,18 @@ public class TabPersonProperties extends Tab {
 		hboxMain.getChildren().add(hboxGrey);
 		hboxMain.setId("box-blue");
 		setContent(hboxMain);
+	}
+	
+	///////////////// CLASS METHODS /////////////////////
+	
+	private int getPid(int type) {
+		int pid = 0;
+		ObservableList<Object_Person> members = SqlSelect.getPeople(person.getMs_id());
+    	for(Object_Person per: members) {
+    		if(per.getMemberType() == type) // here is our current primary
+    			pid = per.getP_id();
+    	}
+		return pid;
 	}
 	
 	private void removeTab(TabPane personTabPane) {

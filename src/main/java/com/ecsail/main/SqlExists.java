@@ -366,4 +366,21 @@ public class SqlExists {
 		return result;
 	}
 	
+	public static Boolean memberExists(int ms_id, int type) {
+		boolean result = false;
+		try {  
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs = stmt
+					.executeQuery(Main.console.setRegexColor("select exists(select * from person where ms_id="+ms_id+" and member_type="+type+")"));
+			while (rs.next()) {
+				result = rs.getBoolean(
+						"exists(select * from person where ms_id="+ms_id+" and member_type="+type+")");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
 }

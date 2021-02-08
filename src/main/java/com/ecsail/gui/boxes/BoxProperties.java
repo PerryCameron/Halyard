@@ -85,7 +85,7 @@ public class BoxProperties extends HBox {
 		EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent e) {
 				LocalDate date = joinDatePicker.getValue();
-				SqlUpdate.updateMembership("JOIN_DATE", membership.getMsid(), date);
+				SqlUpdate.updateMembership(membership.getMsid(),"JOIN_DATE",date);
 				membership.setJoinDate(joinDatePicker.getValue().toString());
 		        labels.getJoinDate().setText(joinDatePicker.getValue().toString());
 			}
