@@ -81,7 +81,7 @@ public class BoxSlip extends HBox {
 		vboxWaitFrame.setPadding(new Insets(2,2,2,2));
 		vboxWait.setPadding(new Insets(5,5,5,5));
 		//vboxWaitFrame.setPrefWidth(50);
-		vboxWaitOuterFrame.setPadding(new Insets(70,15,0,0));
+		vboxWaitOuterFrame.setPadding(new Insets(60,15,0,0));
 		
 		vboxWait.setSpacing(5);
 		errorHBox.setPadding(new Insets(5, 15, 5, 15));  // first Name
