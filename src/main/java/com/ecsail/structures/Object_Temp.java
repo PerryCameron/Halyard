@@ -1,6 +1,6 @@
 package com.ecsail.structures;
 
-public class Object_Temp {
+public class Object_Temp {  // used in TabNewYearGenerator
 	int membership_id;
 	String fname;
 	String lname;
