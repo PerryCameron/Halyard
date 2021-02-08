@@ -383,4 +383,21 @@ public class SqlExists {
 		return result;
 	}
 	
+	public static Boolean waitListExists(int ms_id) {
+		boolean result = false;
+		try {  
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs = stmt
+					.executeQuery(Main.console.setRegexColor("select exists(select * from waitlist where ms_id="+ms_id+")"));
+			while (rs.next()) {
+				result = rs.getBoolean(
+						"exists(select * from waitlist where ms_id="+ms_id+")");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
 }

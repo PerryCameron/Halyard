@@ -2,7 +2,6 @@ package com.ecsail.gui.tabs;
 
 import com.ecsail.enums.MemberType;
 import com.ecsail.gui.dialogues.Dialogue_Delete;
-import com.ecsail.main.SqlExists;
 import com.ecsail.main.SqlSelect;
 import com.ecsail.main.SqlUpdate;
 import com.ecsail.structures.Object_Boolean;

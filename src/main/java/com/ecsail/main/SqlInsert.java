@@ -12,6 +12,7 @@ import com.ecsail.structures.Object_Memo;
 import com.ecsail.structures.Object_Money;
 import com.ecsail.structures.Object_Payment;
 import com.ecsail.structures.Object_Person;
+import com.ecsail.structures.Object_WaitList;
 
 public class SqlInsert {
 	
@@ -189,5 +190,20 @@ public class SqlInsert {
 		}
 	}
 	
-	
+	public static void addWaitList(Object_WaitList w) {
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			stmt.execute(Main.console.setRegexColor("INSERT INTO waitlist () VALUES (" 
+			+ w.getMs_id() + "," 
+			+ w.isSlipWait() + "," 
+			+ w.isKayakWait() + "," 
+			+ w.isShedWait() + ","
+			+ w.isWantToSublease() + "," 
+			+ w.isWantsRelease() + ","
+			+ w.isWantSlipChange() + ");"));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

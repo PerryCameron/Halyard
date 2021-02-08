@@ -1,11 +1,14 @@
 package com.ecsail.gui.boxes;
 
 import com.ecsail.main.SqlExists;
+import com.ecsail.main.SqlInsert;
 import com.ecsail.main.SqlSelect;
 import com.ecsail.main.SqlUpdate;
 import com.ecsail.main.TabLauncher;
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Slip;
+import com.ecsail.structures.Object_WaitList;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -13,6 +16,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Tab;
@@ -27,6 +31,7 @@ import javafx.scene.text.Text;
 public class BoxSlip extends HBox {
 	
 	private Object_MembershipList membership;
+	private Object_WaitList waitList;
 	private String errorMessage;
 	private Object_Slip slip;
 	private Label noSlipLabel;
@@ -55,15 +60,30 @@ public class BoxSlip extends HBox {
 	    this.noSlipLabel = new Label("None");
 	    VBox surroundVBox = new VBox();
 	    this.errorHBox = new HBox();
-	    
-		
-
+	    CheckBox slipWaitCheckBox = new CheckBox("Slip Waitlist");
+	    CheckBox kayakWaitCheckBox = new CheckBox("Kayak Waitlist");
+	    CheckBox shedWaitCheckBox = new CheckBox("Shed Waitlist");
+	    CheckBox wantsToSubleaseCheckBox = new CheckBox("Wants to Sublease");
+	    CheckBox wantsToReleaseCheckBox = new CheckBox("Wants to Release");
+	    CheckBox slipChangeCheckBox = new CheckBox("Slip Change");
+	    VBox vboxWait = new VBox();
+	    VBox vboxWaitFrame = new VBox();
+	    VBox vboxWaitOuterFrame = new VBox();
 		VBox vboxGrey = new VBox();  // this is the vbox for organizing all the widgets
 		//HBox imageHBox = new BoxSlipImage(slip.getSlipNumber());
 		
 		noSlipLabel.setTextFill(Color.DARKCYAN);
 
 		////////////  ATTRIBUTES //////////////////
+		vboxWaitFrame.setId("box-blue");
+		vboxWait.setId("box-grey");
+		vboxWait.setSpacing(10);
+		vboxWaitFrame.setPadding(new Insets(2,2,2,2));
+		vboxWait.setPadding(new Insets(5,5,5,5));
+		//vboxWaitFrame.setPrefWidth(50);
+		vboxWaitOuterFrame.setPadding(new Insets(70,15,0,0));
+		
+		vboxWait.setSpacing(5);
 		errorHBox.setPadding(new Insets(5, 15, 5, 15));  // first Name
 		errorHBox.setAlignment(Pos.CENTER);
 		errorHBox.setSpacing(13);
@@ -77,7 +97,7 @@ public class BoxSlip extends HBox {
 		membershipIdTextField.setPrefWidth(40);
 		mainHBox.setPrefWidth(460);  ///////////// sets the width
 		mainVBox.setPrefWidth(200);
-		mainHBox.setPadding(new Insets(15,15,15,15));
+		mainHBox.setPadding(new Insets(15,15,0,5));
 		hbox2.setSpacing(5);
 		hbox3.setSpacing(5);
 		hbox2.setPadding(new Insets(5,15,5,15));
@@ -142,11 +162,67 @@ public class BoxSlip extends HBox {
 			}
 		});
 		
+		slipWaitCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+            	SqlUpdate.updateWaitList(membership.getMsid(),"SLIPWAIT",newValue);
+            }
+        });
+		kayakWaitCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+            	SqlUpdate.updateWaitList(membership.getMsid(),"KAYAKRACKWAIT",newValue);
+            }
+        });
+		shedWaitCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+            	SqlUpdate.updateWaitList(membership.getMsid(),"SHEDWAIT",newValue);
+            }
+        });
+		wantsToSubleaseCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+            	SqlUpdate.updateWaitList(membership.getMsid(),"WANTSUBLEASE",newValue);
+            }
+        });
+		wantsToReleaseCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+            	SqlUpdate.updateWaitList(membership.getMsid(),"WANTRELEASE",newValue);
+            }
+        });
+		slipChangeCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+            	SqlUpdate.updateWaitList(membership.getMsid(),"WANTSLIPCHANGE",newValue);
+            }
+        });
+		
+		///////////// ACTIONS //////////////////////////////
+		
+		if(SqlExists.waitListExists(m.getMsid())) {
+			waitList = SqlSelect.getWaitList(membership.getMsid());
+		} else { //it doesn't exist
+			waitList = new Object_WaitList(membership.getMsid(),false,false,false,false,false,false);
+			SqlInsert.addWaitList(waitList);
+		}
+		slipWaitCheckBox.setSelected(waitList.isSlipWait());
+		kayakWaitCheckBox.setSelected(waitList.isKayakWait());
+		shedWaitCheckBox.setSelected(waitList.isShedWait());
+		wantsToSubleaseCheckBox.setSelected(waitList.isWantToSublease());
+		slipChangeCheckBox.setSelected(waitList.isWantSlipChange());
+		
 		/////////////  ASSIGN CHILDREN  /////////////////////
 		displaySlip();
 		addControls();
+		vboxWait.getChildren().addAll(slipWaitCheckBox,kayakWaitCheckBox
+				,shedWaitCheckBox,wantsToSubleaseCheckBox
+				,wantsToReleaseCheckBox,slipChangeCheckBox);
+		vboxWaitFrame.getChildren().add(vboxWait);
+		vboxWaitOuterFrame.getChildren().add(vboxWaitFrame);
 		assignVBox.getChildren().addAll(r1,r2,r3,hbox3);
-		mainVBox.getChildren().addAll(hbox1,hbox2,assignVBox); // add slip information
+		mainVBox.getChildren().addAll(hbox1,hbox2,assignVBox,vboxWaitOuterFrame); // add slip information
 		surroundVBox.getChildren().addAll(errorHBox,mainHBox);  // put this in for error messages
 		vboxGrey.getChildren().addAll(surroundVBox);
 		getChildren().addAll(vboxGrey);

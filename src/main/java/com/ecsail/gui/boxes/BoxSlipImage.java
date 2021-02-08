@@ -13,6 +13,7 @@ public class BoxSlipImage extends HBox {
 		
 	Image slipImage = new Image(getClass().getResourceAsStream("/slips/" + filename + "_icon.png"));
 	ImageView imageView = new ImageView(slipImage);	
+	VBox vboxOuter = new VBox(); // allows stretch from other side so the vboxpink doesn't stretch
 	VBox vboxPink = new VBox(); // this creates a pink border around the table
 	imageView.setPreserveRatio(true);
     imageView.setFitHeight(240);
@@ -21,7 +22,8 @@ public class BoxSlipImage extends HBox {
     //imageView.setFitWidth(200);
     setAlignment(Pos.TOP_CENTER);
     vboxPink.getChildren().add(imageView);
-    getChildren().add(vboxPink);
+    vboxOuter.getChildren().add(vboxPink);
+    getChildren().add(vboxOuter);
 	}
 
 }

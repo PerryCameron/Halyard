@@ -25,6 +25,7 @@ import com.ecsail.structures.Object_Person;
 import com.ecsail.structures.Object_Phone;
 import com.ecsail.structures.Object_Slip;
 import com.ecsail.structures.Object_Temp;
+import com.ecsail.structures.Object_WaitList;
 import com.ecsail.structures.Object_WorkCredit;
 
 import javafx.collections.FXCollections;
@@ -1730,6 +1731,30 @@ public class SqlSelect {
 		}
 		return number;
 		
+	}
+	
+	public static Object_WaitList getWaitList(int ms_id) {
+		Object_WaitList thisWaitList = null;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs;
+			rs = stmt.executeQuery(Main.console.setRegexColor("select * from waitlist where ms_id=" + ms_id));
+			while (rs.next()) {
+				thisWaitList = new Object_WaitList(
+						rs.getInt("MS_ID"), 
+						rs.getBoolean("SLIPWAIT"),
+						rs.getBoolean("KAYAKRACKWAIT"),
+						rs.getBoolean("SHEDWAIT"),
+						rs.getBoolean("WANTSUBLEASE"),
+						rs.getBoolean("WANTRELEASE"),
+						rs.getBoolean("WANTSLIPCHANGE")
+						);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return thisWaitList;
 	}
 	
 

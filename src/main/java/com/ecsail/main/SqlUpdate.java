@@ -200,6 +200,19 @@ public class SqlUpdate {
 		}
 	}
 	
+	public static void updateWaitList(int ms_id, String field, Boolean attribute) {
+		Statement stmt;
+		try {
+			stmt = ConnectDatabase.connection.createStatement();
+			stmt.execute(Main.console.setRegexColor(
+					"UPDATE waitlist SET " + field + "=" + attribute + " WHERE ms_id='" + ms_id + "';"));
+			Main.edits.setPhoneEdits(Main.edits.getPhoneEdits() + 1);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public static void updatePhone(String field, int phone_id, String attribute) {
 		Statement stmt;
 		try {
