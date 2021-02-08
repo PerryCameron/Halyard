@@ -1757,5 +1757,27 @@ public class SqlSelect {
 		return thisWaitList;
 	}
 	
-
+	public static ArrayList<Object_WaitList> getWaitLists() {
+		ArrayList<Object_WaitList> thisWaitList = new ArrayList<Object_WaitList>();
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs;
+			rs = stmt.executeQuery(Main.console.setRegexColor("select * from waitlist"));
+			while (rs.next()) {
+				thisWaitList.add(new Object_WaitList(
+						rs.getInt("MS_ID"), 
+						rs.getBoolean("SLIPWAIT"),
+						rs.getBoolean("KAYAKRACKWAIT"),
+						rs.getBoolean("SHEDWAIT"),
+						rs.getBoolean("WANTSUBLEASE"),
+						rs.getBoolean("WANTRELEASE"),
+						rs.getBoolean("WANTSLIPCHANGE")
+						));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return thisWaitList;
+	}
 }

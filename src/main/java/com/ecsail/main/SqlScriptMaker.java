@@ -25,6 +25,7 @@ import com.ecsail.structures.Object_Person;
 import com.ecsail.structures.Object_Phone;
 import com.ecsail.structures.Object_Slip;
 import com.ecsail.structures.Object_TupleCount;
+import com.ecsail.structures.Object_WaitList;
 import com.ecsail.structures.Object_WorkCredit;
 
 import javafx.collections.ObservableList;
@@ -47,6 +48,7 @@ public class SqlScriptMaker {
 	static ObservableList<Object_WorkCredit> workcredits;
 	static ObservableList<Object_Payment> payments;
 	static ObservableList<Object_Deposit> deposits;
+	static ArrayList<Object_WaitList> waitlist;
 	private static final int ALL = 0;
 	
 	public static void createSql() {
@@ -72,6 +74,7 @@ public class SqlScriptMaker {
 		workcredits = SqlSelect.getWorkCredits();
 		payments = SqlSelect.getPayments();
 		deposits = SqlSelect.getDeposits();
+		waitlist = SqlSelect.getWaitLists();
 		Paths.checkPath(Paths.SQLBACKUP + "/" + Paths.getYear());
 		readFromFile(Paths.SCRIPTS + "/ecsc_create.sql");
 		calculateSums();
@@ -116,6 +119,8 @@ public class SqlScriptMaker {
 				writer.write(getDefinedFeeString(def));
 			for (Object_WorkCredit woc : workcredits)
 				writer.write(getWorkCreditString(woc));
+			for (Object_WaitList wal: waitlist)
+				writer.write(getWaitListString(wal));
 			clearMemory();
 			writer.close();
 			System.out.println("SQL script file sucessfully made");
@@ -141,6 +146,7 @@ public class SqlScriptMaker {
 		officers.clear();
 		definedfees.clear();
 		workcredits.clear();
+		waitlist.clear();
 	}
 	
 	public static void calculateSums() {
@@ -176,6 +182,19 @@ public class SqlScriptMaker {
 		newTupleCount.setDefinedFeesSize(definedfees.size());
 	//	System.out.println(workcredits.size() + " workcredits written");
 		newTupleCount.setWorkCreditsSize(workcredits.size());
+	}
+	
+	public static String getWaitListString(Object_WaitList wal) {
+		return
+		"INSERT INTO membership_id () VALUES ("
+		+ wal.getMs_id() + ","
+		+ wal.isSlipWait() + "," // stored as integer in database
+		+ wal.isKayakWait() + ","
+		+ wal.isShedWait() + ","
+		+ wal.isWantToSublease() + ","
+		+ wal.isWantsRelease() + ","
+		+ wal.isWantSlipChange()
+		+ ");\n"; //stored as integer in database
 	}
 	
 	public static String getMembershipIdString(Object_MembershipId mid) {
