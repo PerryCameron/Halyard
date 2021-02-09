@@ -46,13 +46,11 @@ public class BoxProperties extends HBox {
         HBox hbox4 = new HBox();  // holds membership type
         HBox hbox5 = new HBox();  // holds delete membership
 
-
 		Button removeMembershipButton = new Button("Delete");
 		//ComboBox<MemberType> combo_box = new ComboBox<MemberType>();
 		DatePicker joinDatePicker = new DatePicker();
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 
-		
 		/////////////  ATTRIBUTES /////////////
 
         hbox1.setSpacing(5);  // membership HBox

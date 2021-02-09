@@ -1,5 +1,5 @@
 package com.ecsail.gui.boxes;
-
+///////////BUG///////  adding a person as secondary changes the pid in the membership to the secondary
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
@@ -229,7 +229,7 @@ public class BoxAddPerson extends VBox {
 	
 	private void addPerson(String memberType) {
 		SqlInsert.addRecord(person);
-		peopleTabPane.getTabs().add(new Tab(memberType, new BoxPerson(person, membership,tp)));  //tp is tappane to remove tab
+		peopleTabPane.getTabs().add(new Tab(memberType, new BoxPerson(person, membership,tp)));  //tp is tappane to remove tab if deleting
     	titleLabel.setText("Add New Member");
 		titleLabel.setTextFill(Color.BLACK);
 	}
