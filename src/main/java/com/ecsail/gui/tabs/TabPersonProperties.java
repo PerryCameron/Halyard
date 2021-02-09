@@ -61,9 +61,19 @@ public class TabPersonProperties extends Tab {
             }
         });
         
-	    combo_box.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
-	    	
-	    	int ms_id = person.getMs_id();
+	    
+  //      combo_box.valueProperty().addListener(new ChangeListener<String>() {
+   //         @Override 
+    //        public void changed(("rawtypes") ObservableValue ov, String oldValue, String newValue) {
+     //     	System.out.println("NewValue is=" + newValue);
+	  //  	System.out.println("oldValue is=" + oldValue);
+	   // 	System.out.println("options=" + ov);
+        //    }    
+      //  });
+        
+     //   combo_box.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
+
+	/*    	int ms_id = person.getMs_id();
 	    	int person1Pid = person.getP_id();
 	    	int person2Pid = 0;
 
@@ -86,8 +96,8 @@ public class TabPersonProperties extends Tab {
 	    	if(newValue.toString().equals("Dependant")) {  // not sure what to do probably dialogue saying no!
 	    		System.out.println("Do something with this later");
 	    	}
-	    	
-        });
+	*/    	
+     //   });
 	    
 	    isDeleted.xBooleanProperty().addListener((obs, wasDeleted, isDeleted) -> {
 	    	System.out.println("isDeleted=" + isDeleted);
@@ -135,15 +145,15 @@ public class TabPersonProperties extends Tab {
 	
 	///////////////// CLASS METHODS /////////////////////
 	
-	private int getPid(int type) {
-		int pid = 0;
-		ObservableList<Object_Person> members = SqlSelect.getPeople(person.getMs_id());
-    	for(Object_Person per: members) {
-    		if(per.getMemberType() == type) // here is our current primary
-    			pid = per.getP_id();
-    	}
-		return pid;
-	}
+	//private int getPid(int type) {
+	//	int pid = 0;
+	//	ObservableList<Object_Person> members = SqlSelect.getPeople(person.getMs_id());
+    //	for(Object_Person per: members) {
+    //		if(per.getMemberType() == type) // here is our current primary
+    //			pid = per.getP_id();
+    //	}
+	//	return pid;
+	//}
 	
 	private void removeTab(TabPane personTabPane) {
 		String tabName = "";
