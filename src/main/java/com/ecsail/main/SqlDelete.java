@@ -245,6 +245,17 @@ public class SqlDelete {
 		}	
 	}
 	
+	public static void deleteWaitList(int ms_id) {
+		Statement stmt;
+		try {
+			stmt = ConnectDatabase.connection.createStatement();
+			stmt.execute(Main.console.setRegexColor("delete from waitlist where ms_id='" + ms_id + "';"));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+	}
+	
 	public static void deleteMembershipId(int ms_id) {
 		Statement stmt;
 		try {
