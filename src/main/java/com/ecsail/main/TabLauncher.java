@@ -85,7 +85,7 @@ static TabPane tabPane;
 	}
 	
 	public static void openSlipsTab() {
-		tabPane.getTabs().add(new TabSlips("Slips",Main.activememberships));
+		tabPane.getTabs().add(new TabSlips("Slips"));
 		tabPane.getSelectionModel().select(getTabIndex("Slips"));
 	}
 	
