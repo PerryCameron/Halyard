@@ -880,6 +880,8 @@ public class SqlSelect {
 		return thisMembership;
 	}
 	
+
+	
 	public static Object_MembershipList getMembershipFromList(int ms_id, String year) {
 		Object_MembershipList thisMembership = null;
 		try {
@@ -958,6 +960,40 @@ public class SqlSelect {
 							+ "left join membership_id id on m.MS_ID=id.MS_ID "
 							+ "left join person p on p.MS_ID=m.MS_ID "
 							+ "where id.FISCAL_YEAR='" + year + "' and p.MEMBER_TYPE=1 and id.RENEW=" + isActive + " order by membership_id"));
+			while (rs.next()) {
+				rosters.add(new Object_MembershipList(
+						rs.getInt("MS_ID"), 
+						rs.getInt("P_ID"),
+						rs.getInt("MEMBERSHIP_ID"), 
+						rs.getString("JOIN_DATE"), 
+						rs.getString("MEM_TYPE"), 
+						rs.getString("SLIP_NUM"), 
+						rs.getString("L_NAME"),
+						rs.getString("F_NAME"), 
+						rs.getInt("SUBLEASED_TO"), 
+						rs.getString("ADDRESS"), 
+						rs.getString("CITY"), 
+						rs.getString("STATE"),
+						rs.getString("ZIP")));
+			}
+			stmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("Creating Roster list for " + year + "...");
+		return rosters;
+	}
+	
+	public static ObservableList<Object_MembershipList> getSlipRoster(String year) {
+		ObservableList<Object_MembershipList> rosters = FXCollections.observableArrayList();
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs;
+			rs = stmt.executeQuery(Main.console.setRegexColor(
+					"Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,m.JOIN_DATE,m.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip "
+							+ "from slip s inner join membership m on s.ms_id=m.ms_id inner join membership_id id on id.ms_id=m.ms_id "
+							+ "inner join person p on p.p_id=m.p_id where id.fiscal_year="+year));
 			while (rs.next()) {
 				rosters.add(new Object_MembershipList(
 						rs.getInt("MS_ID"), 
@@ -1547,6 +1583,7 @@ public class SqlSelect {
 		return date;
 	}
 	
+	
 	public static int getMoneyCount(String column, int batch) {
 		int number = 0;
 		ResultSet rs;
@@ -1610,7 +1647,7 @@ public class SqlSelect {
 		
 	}
 	
-	public static String getMembershipId(int year, int ms_id) {
+	public static String getMembershipId(String year, int ms_id) {
 		String id = "";
 		Statement stmt;
 		

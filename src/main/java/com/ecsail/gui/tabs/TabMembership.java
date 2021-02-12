@@ -12,6 +12,8 @@ import com.ecsail.gui.boxes.BoxProperties;
 import com.ecsail.gui.boxes.BoxSlip;
 import com.ecsail.main.CreateMembership;
 import com.ecsail.main.Note;
+import com.ecsail.main.Paths;
+import com.ecsail.main.SqlExists;
 import com.ecsail.main.SqlSelect;
 import com.ecsail.structures.Object_MemLabels;
 import com.ecsail.structures.Object_MembershipList;
@@ -178,10 +180,10 @@ public class TabMembership extends Tab {
 	
 	private String setTabLabel() {
 		String tabLabel;
-		if(membership.getMembershipId() == 0) {
+		if(!SqlExists.currentMembershipIdExists(membership.getMembershipId())) {
 			tabLabel = "MSID " + membership.getMsid();
 		} else {
-			tabLabel= "Membership " + membership.getMembershipId();
+			tabLabel= "Membership " + SqlSelect.getMembershipId(Paths.getYear(), membership.getMsid());
 		}
 		return tabLabel;
 	}

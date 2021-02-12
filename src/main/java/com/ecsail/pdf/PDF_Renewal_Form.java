@@ -192,7 +192,7 @@ public class PDF_Renewal_Form {
 		System.out.println("MSID=" + ms_id);
 		membership = SqlSelect.getMembershipFromList(ms_id,year);
 		System.out.println(membership.getMsid());
-		last_membership_id = SqlSelect.getMembershipId(Integer.parseInt(year) -1, membership.getMsid());
+		last_membership_id = SqlSelect.getMembershipId((Integer.parseInt(year) -1) +"" , membership.getMsid());
 		dues = SqlSelect.getMonies(ms_id, year);
 		boats = SqlSelect.getBoats(ms_id);
 		boats.add(0, new Object_Boat(0, 0, "Manufacturer", "Year", "Registration", "Model", "Boat Name", "Sail #", true, "Length", "Header", "Keel Type", "PHRF"));
