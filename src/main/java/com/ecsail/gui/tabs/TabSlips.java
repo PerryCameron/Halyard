@@ -1,9 +1,12 @@
 package com.ecsail.gui.tabs;
 
+import com.ecsail.main.Paths;
+import com.ecsail.main.SqlSelect;
 import com.ecsail.main.TabLauncher;
 import com.ecsail.structures.Object_MembershipList;
 
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.Tab;
@@ -16,8 +19,8 @@ import javafx.scene.transform.Rotate;
 public class TabSlips extends Tab {
 
 	//private ObservableList<Object_Slip> slips;
-	private ObservableList<Object_MembershipList> activememberships;
-	
+	private ObservableList<Object_MembershipList> slipmemberships;
+	private ObservableList<Object_MembershipList> subleaserMemberships;
 	
 	private Text d40 = null ,d39 = null ,a35= null ,a34= null ,b93= null ,b94= null ,c157= null ,c156 = null;
 	private Text d38 = null ,d37 = null ,a33= null ,a32= null ,b91= null ,b92= null ,c155= null ,c154 = null;
@@ -85,9 +88,10 @@ public class TabSlips extends Tab {
 	Rotate rotatef5 = new Rotate();
 	Rotate rotatef6 = new Rotate();
 	
-	public TabSlips(String text, ObservableList<Object_MembershipList> a) {
+	public TabSlips(String text) {
 		super(text);
-		this.activememberships = a;
+		this.slipmemberships = SqlSelect.getSlipRoster(Paths.getYear());
+		this.subleaserMemberships = FXCollections.observableArrayList();
 		fillSlips(); // must be filled the first time.
 		getStaticSlips();  // slips that don't change such as 48 hour docks
 		Pane screenPane = new Pane();
@@ -177,7 +181,7 @@ public class TabSlips extends Tab {
 	}
 	
 	private void fillSlips() {
-		for (Object_MembershipList mem : activememberships) {
+		for (Object_MembershipList mem : slipmemberships) {
 			if (mem.getSlip() != null) {
 				switch (mem.getSlip()) {
 				case "D40":
@@ -886,7 +890,8 @@ public class TabSlips extends Tab {
 		Text returnText = null;
 		if(subleaser != 0) {  /// this slip is subleased
 			//System.out.println("Found subleaser " + subleaser);
-			returnText = new Text(col, row, slip + " " + getSubleaserName(subleaser));
+			subleaserMemberships.add(SqlSelect.getMembershipFromList(subleaser, Paths.getYear()));
+			returnText = new Text(col, row, slip + " " + subleaserMemberships.get(subleaserMemberships.size() - 1).getLname());
 			returnText.setFill(Color.CORNFLOWERBLUE);
 		} else {
 			returnText = new Text(col, row, slip + " " + lName);
@@ -896,7 +901,7 @@ public class TabSlips extends Tab {
 	
 	private String getSubleaserName(Integer msid)  {
 		String lastName = "";
-		for (Object_MembershipList mem1 : activememberships) {
+		for (Object_MembershipList mem1 : slipmemberships) {
 			//System.out.println("sublease msid=" + mem1.getSubleaser() + " msid to compare=" + msid);
 			if(mem1.getMsid() == msid) {
 				lastName = mem1.getLname();  
