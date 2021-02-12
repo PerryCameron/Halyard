@@ -127,6 +127,13 @@ static TabPane tabPane;
 		tabPane.getTabs().add(new TabMembership(membership));
 	}
 	
+	public static void launchTabFromSlips(int ms_id) {
+		Object_MembershipList membership = SqlSelect.getMembershipList(ms_id, Paths.getYear());
+		String tabLabel= "Membership " + membership.getMembershipId();
+		if(!tabOpen(tabLabel)) // is the tab already open??
+		tabPane.getTabs().add(new TabMembership(membership));
+	}
+	
 	public static void createTab(Object_MembershipList membership) {
 		tabPane.getTabs().add(new TabMembership(membership));
 	}

@@ -307,7 +307,12 @@ public class SqlSelect {
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
-					"select m.MEMBERSHIP_ID,m.JOIN_DATE,p.L_NAME,p.F_NAME,EMAIL,PRIMARY_USE from email e inner join person p ON p.P_ID=e.P_ID inner join membership m ON m.ms_id=p.ms_id where m.ACTIVE_MEMBERSHIP=true order by m.MEMBERSHIP_ID"));
+					"select id.MEMBERSHIP_ID,m.JOIN_DATE,p.L_NAME,p.F_NAME,EMAIL,PRIMARY_USE "
+					+ "from email e "
+					+ "inner join person p ON p.P_ID=e.P_ID "
+					+ "inner join membership m ON m.ms_id=p.ms_id "
+					+ "inner join membership_id id ON id.ms_id=m.ms_id "
+					+ "where id.fiscal_year='" + Paths.getYear() + "' order by id.MEMBERSHIP_ID"));
 
 			while (rs.next()) {
 				thisEmailInfo.add(new Object_Email_Information(rs.getInt("MEMBERSHIP_ID"), rs.getString("JOIN_DATE"),
@@ -847,6 +852,7 @@ public class SqlSelect {
 	
 	
 	public static Object_MembershipList getMembershipList(int ms_id, String year) {
+		System.out.println("msid=" + ms_id);
 		Object_MembershipList thisMembership = null;
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
@@ -855,7 +861,7 @@ public class SqlSelect {
 					+ "m.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,"
 					+ "m.zip from slip s right join membership m on m.MS_ID=s.MS_ID left join membership_id "
 					+ "id on m.MS_ID=id.MS_ID left join person p on p.MS_ID=m.MS_ID where id.FISCAL_YEAR='" + year + "' "
-					+ "and and m.ms_id=" + ms_id));
+					+ "and m.ms_id=" + ms_id));
 			while (rs.next()) {
 				thisMembership = new Object_MembershipList(
 						rs.getInt("MS_ID"), 

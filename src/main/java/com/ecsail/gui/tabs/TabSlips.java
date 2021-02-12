@@ -891,23 +891,13 @@ public class TabSlips extends Tab {
 		if(subleaser != 0) {  /// this slip is subleased
 			//System.out.println("Found subleaser " + subleaser);
 			subleaserMemberships.add(SqlSelect.getMembershipFromList(subleaser, Paths.getYear()));
+			// gets the name of the subleaser
 			returnText = new Text(col, row, slip + " " + subleaserMemberships.get(subleaserMemberships.size() - 1).getLname());
 			returnText.setFill(Color.CORNFLOWERBLUE);
 		} else {
 			returnText = new Text(col, row, slip + " " + lName);
 		}
 		return returnText;  //new Text(col1, row1, "D40 " + mem.getLname());
-	}
-	
-	private String getSubleaserName(Integer msid)  {
-		String lastName = "";
-		for (Object_MembershipList mem1 : slipmemberships) {
-			//System.out.println("sublease msid=" + mem1.getSubleaser() + " msid to compare=" + msid);
-			if(mem1.getMsid() == msid) {
-				lastName = mem1.getLname();  
-			}
-		}
-		return lastName;
 	}
 	
 	private void setMouseListener(Text text, int msid, int submsid) {
@@ -929,9 +919,9 @@ public class TabSlips extends Tab {
 			if (e.getClickCount() == 2)  {
 					if(color == Color.CORNFLOWERBLUE) {
 					// this is a sublease
-					TabLauncher.createTab(submsid);	
+					TabLauncher.launchTabFromSlips(submsid);
 					} else {
-					TabLauncher.createTab(msid);	
+					TabLauncher.launchTabFromSlips(msid);		
 					}
 			}
 		});
