@@ -3,8 +3,8 @@ package com.ecsail.gui.tabs;
 import java.util.Arrays;
 
 import com.ecsail.excel.Xls_roster;
-import com.ecsail.main.SqlSelect;
 import com.ecsail.main.TabLauncher;
+import com.ecsail.sql.SQL_SelectMembership;
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_RosterSelect;
 
@@ -176,13 +176,13 @@ public class TabRoster extends Tab {
 					  selectedYear = yearSpinner.getEditor().getText();  /// kept this for clarity, could have used printChoices.getYear()
 					  rosters.clear();
 					  if(r1.isSelected())
-						  rosters.addAll(SqlSelect.getRoster(selectedYear,true));
+						  rosters.addAll(SQL_SelectMembership.getRoster(selectedYear,true));
 					  if(r2.isSelected())
-						  rosters.addAll(SqlSelect.getRoster(selectedYear,false));
+						  rosters.addAll(SQL_SelectMembership.getRoster(selectedYear,false));
 					  if(r3.isSelected())
-						  rosters.addAll(SqlSelect.getNewMemberRoster(selectedYear));
+						  rosters.addAll(SQL_SelectMembership.getNewMemberRoster(selectedYear));
 					  if(r4.isSelected())
-						  rosters.addAll(SqlSelect.getFullNewMemberRoster(selectedYear));
+						  rosters.addAll(SQL_SelectMembership.getFullNewMemberRoster(selectedYear));
 					  titledPane.setText("Roster " + selectedYear);
 					  records.setText(rosters.size() + " Records"); 
 					  rosterTableView.sort();
@@ -308,7 +308,7 @@ public class TabRoster extends Tab {
 	  		        if (isNowSelected) { 
 	  		          setListType("active");
 	  		          rosters.clear();
-	  		          rosters.addAll(SqlSelect.getRoster(selectedYear, true));
+	  		          rosters.addAll(SQL_SelectMembership.getRoster(selectedYear, true));
 	  		          records.setText(rosters.size() + " Records");
 	  		          rosterTableView.sort();
 	  		        } 
@@ -321,7 +321,7 @@ public class TabRoster extends Tab {
 	  		        if (isNowSelected) { 
 	  		        	setListType("non-renew");
 		  		          rosters.clear();
-		  		          rosters.addAll(SqlSelect.getRoster(selectedYear, false));
+		  		          rosters.addAll(SQL_SelectMembership.getRoster(selectedYear, false));
 		  		          records.setText(rosters.size() + " Records");
 		  		          rosterTableView.sort();
 	  		        } else {
@@ -336,7 +336,7 @@ public class TabRoster extends Tab {
 	  		        if (isNowSelected) { 
 	  		        	setListType("new-members");
 	  		            rosters.clear();
-	  		            rosters.addAll(SqlSelect.getNewMemberRoster(selectedYear));
+	  		            rosters.addAll(SQL_SelectMembership.getNewMemberRoster(selectedYear));
 	  		          records.setText(rosters.size() + " Records");
 	  		        rosterTableView.sort();
 	  		        } else {
@@ -351,7 +351,7 @@ public class TabRoster extends Tab {
 	  		        if (isNowSelected) { 
 	  		        	setListType("new-and-return");
 	  		            rosters.clear();
-	  		            rosters.addAll(SqlSelect.getFullNewMemberRoster(selectedYear));
+	  		            rosters.addAll(SQL_SelectMembership.getFullNewMemberRoster(selectedYear));
 	  		          records.setText(rosters.size() + " Records");
 	  		        rosterTableView.sort();
 	  		        } else {

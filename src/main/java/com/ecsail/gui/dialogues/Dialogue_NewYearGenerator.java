@@ -8,6 +8,7 @@ import com.ecsail.main.SqlExists;
 import com.ecsail.main.SqlInsert;
 import com.ecsail.main.SqlSelect;
 import com.ecsail.main.SqlUpdate;
+import com.ecsail.sql.SQL_SelectMembership;
 import com.ecsail.structures.Object_DefinedFee;
 import com.ecsail.structures.Object_MembershipId;
 import com.ecsail.structures.Object_MembershipList;
@@ -143,7 +144,7 @@ public class Dialogue_NewYearGenerator extends Stage {
 	
 	
 	private void generateRecords(Boolean makeNewNumbers) {
-		this.memberships = SqlSelect.getRoster(selectedYear, false);
+		this.memberships = SQL_SelectMembership.getRoster(selectedYear, false);
 		if(makeNewNumbers) {
 			System.out.println("Creating new numbers");
 		createNewNumbers();

@@ -11,6 +11,7 @@ import java.util.List;
 import com.ecsail.main.Paths;
 import com.ecsail.main.SortByMembershipId2;
 import com.ecsail.main.SqlSelect;
+import com.ecsail.sql.SQL_SelectMembership;
 import com.ecsail.structures.Object_MembershipId;
 import com.ecsail.structures.Object_MembershipList;
 import com.itextpdf.io.font.FontProgramFactory;
@@ -96,7 +97,7 @@ public class PDF_Envelope {
 		doc.setLeftMargin(0.25f);
 		if(isOneMembership) {
 			ms_id = SqlSelect.getMsidFromMembershipID(Integer.parseInt(current_membership_id));
-			membership = SqlSelect.getMembershipFromList(ms_id, year);
+			membership = SQL_SelectMembership.getMembershipFromList(ms_id, year);
 		doc.add(createReturnAddress());
 		doc.add(new Paragraph(new Text("\n\n\n\n\n")));
 		doc.add(createAddress());
@@ -106,7 +107,7 @@ public class PDF_Envelope {
 			for(Object_MembershipId id: ids) {
 				current_membership_id = id.getMembership_id();
 				ms_id = SqlSelect.getMsidFromMembershipID(Integer.parseInt(current_membership_id));
-				membership = SqlSelect.getMembershipFromList(ms_id, year);
+				membership = SQL_SelectMembership.getMembershipFromList(ms_id, year);
 				doc.add(createReturnAddress());
 				doc.add(new Paragraph(new Text("\n\n\n\n\n")));
 				doc.add(createAddress());
@@ -130,7 +131,7 @@ public class PDF_Envelope {
 		doc.setLeftMargin(0.25f);
 		if(isOneMembership) {
 			ms_id = SqlSelect.getMsidFromMembershipID(Integer.parseInt(current_membership_id));
-			membership = SqlSelect.getMembershipFromList(ms_id, year);
+			membership = SQL_SelectMembership.getMembershipFromList(ms_id, year);
 		doc.add(createReturnAddress());
 		doc.add(new Paragraph(new Text("\n\n\n\n\n\n\n\n\n")));
 		doc.add(createAddress());
@@ -140,7 +141,7 @@ public class PDF_Envelope {
 			for(Object_MembershipId id: ids) {
 				current_membership_id = id.getMembership_id();
 				ms_id = SqlSelect.getMsidFromMembershipID(Integer.parseInt(current_membership_id));
-				membership = SqlSelect.getMembershipFromList(ms_id, year);
+				membership = SQL_SelectMembership.getMembershipFromList(ms_id, year);
 				doc.add(createReturnAddress());
 				doc.add(new Paragraph(new Text("\n\n\n\n\n")));
 				doc.add(createAddress());

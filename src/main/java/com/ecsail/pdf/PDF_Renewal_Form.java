@@ -13,6 +13,7 @@ import com.ecsail.main.Paths;
 import com.ecsail.main.SortByMembershipId2;
 import com.ecsail.main.SqlExists;
 import com.ecsail.main.SqlSelect;
+import com.ecsail.sql.SQL_SelectMembership;
 import com.ecsail.structures.Object_Boat;
 import com.ecsail.structures.Object_DefinedFee;
 import com.ecsail.structures.Object_MembershipId;
@@ -190,7 +191,7 @@ public class PDF_Renewal_Form {
 	private void gatherMembershipInformation() {
 		ms_id = SqlSelect.getMsidFromMembershipID(Integer.parseInt(current_membership_id));
 		System.out.println("MSID=" + ms_id);
-		membership = SqlSelect.getMembershipFromList(ms_id,year);
+		membership = SQL_SelectMembership.getMembershipFromList(ms_id,year);
 		System.out.println(membership.getMsid());
 		last_membership_id = SqlSelect.getMembershipId((Integer.parseInt(year) -1) +"" , membership.getMsid());
 		dues = SqlSelect.getMonies(ms_id, year);

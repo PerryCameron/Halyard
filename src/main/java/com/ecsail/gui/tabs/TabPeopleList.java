@@ -10,6 +10,7 @@ import com.ecsail.main.Paths;
 import com.ecsail.main.SqlExists;
 import com.ecsail.main.SqlSelect;
 import com.ecsail.main.TabLauncher;
+import com.ecsail.sql.SQL_SelectMembership;
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Person;
 
@@ -134,9 +135,9 @@ public class TabPeopleList extends Tab {
 	private static void createPersonBox(Object_Person person)  {
 		Object_MembershipList membership = null;
 		if(SqlExists.currentMembershipIdExists(person.getMs_id())) {
-		membership = SqlSelect.getMembershipFromList(person.getMs_id(), Paths.getYear());
+		membership = SQL_SelectMembership.getMembershipFromList(person.getMs_id(), Paths.getYear());
 		} else {
-		membership = SqlSelect.getMembershipFromListWithoutMembershipId(person.getMs_id());
+		membership = SQL_SelectMembership.getMembershipFromListWithoutMembershipId(person.getMs_id());
 		}
 		
 		
@@ -146,7 +147,7 @@ public class TabPeopleList extends Tab {
 	}
 
 	private static void createTab(int msid)  {
-		Object_MembershipList membership = SqlSelect.getMembershipFromListWithoutMembershipId(msid);
+		Object_MembershipList membership = SQL_SelectMembership.getMembershipFromListWithoutMembershipId(msid);
 		//System.out.println("membership=" + membership);
 		TabLauncher.createTab(membership);
 	}

@@ -16,6 +16,7 @@ import com.ecsail.gui.tabs.TabPeopleList;
 import com.ecsail.gui.tabs.TabSlips;
 import com.ecsail.gui.tabs.TabStub;
 import com.ecsail.gui.tabs.TabWelcome;
+import com.ecsail.sql.SQL_SelectMembership;
 import com.ecsail.structures.Object_MembershipList;
 
 import javafx.scene.control.Tab;
@@ -122,13 +123,13 @@ static TabPane tabPane;
 		if(SqlSelect.isRenewed(ms_id, Paths.getYear())) { // membership is active and in our object tree
 		membership = getMembership(ms_id);
 		} else { // membership is not active and needs to be pulled from the SQL Database
-		membership = SqlSelect.getMembershipFromList(ms_id,Paths.getYear());
+		membership = SQL_SelectMembership.getMembershipFromList(ms_id,Paths.getYear());
 		}	
 		tabPane.getTabs().add(new TabMembership(membership));
 	}
 	
 	public static void launchTabFromSlips(int ms_id) {
-		Object_MembershipList membership = SqlSelect.getMembershipList(ms_id, Paths.getYear());
+		Object_MembershipList membership = SQL_SelectMembership.getMembershipList(ms_id, Paths.getYear());
 		String tabLabel= "Membership " + membership.getMembershipId();
 		if(!tabOpen(tabLabel)) // is the tab already open??
 		tabPane.getTabs().add(new TabMembership(membership));
