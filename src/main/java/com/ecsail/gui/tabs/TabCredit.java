@@ -1,6 +1,6 @@
 package com.ecsail.gui.tabs;
 
-import com.ecsail.main.SqlUpdate;
+import com.ecsail.sql.SqlUpdate;
 import com.ecsail.structures.Object_Integer;
 import com.ecsail.structures.Object_WorkCredit;
 

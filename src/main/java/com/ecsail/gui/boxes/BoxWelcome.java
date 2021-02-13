@@ -2,8 +2,8 @@ package com.ecsail.gui.boxes;
 
 import com.ecsail.main.CreateMembership;
 import com.ecsail.main.Paths;
-import com.ecsail.main.SqlSelect;
 import com.ecsail.main.TabLauncher;
+import com.ecsail.sql.SqlSelect;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

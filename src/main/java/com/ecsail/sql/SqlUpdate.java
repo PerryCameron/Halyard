@@ -1,10 +1,13 @@
-package com.ecsail.main;
+package com.ecsail.sql;
 
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 
-import com.ecsail.sql.SQL_SelectMembership;
+import com.ecsail.main.BoxConsole;
+import com.ecsail.main.ConnectDatabase;
+import com.ecsail.main.Main;
+import com.ecsail.main.Paths;
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Money;
 import com.ecsail.structures.Object_Person;

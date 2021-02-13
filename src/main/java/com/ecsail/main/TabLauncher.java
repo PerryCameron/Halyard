@@ -17,6 +17,7 @@ import com.ecsail.gui.tabs.TabSlips;
 import com.ecsail.gui.tabs.TabStub;
 import com.ecsail.gui.tabs.TabWelcome;
 import com.ecsail.sql.SQL_SelectMembership;
+import com.ecsail.sql.SqlSelect;
 import com.ecsail.structures.Object_MembershipList;
 
 import javafx.scene.control.Tab;

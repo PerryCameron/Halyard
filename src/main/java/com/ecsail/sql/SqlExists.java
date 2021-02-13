@@ -1,10 +1,13 @@
-package com.ecsail.main;
+package com.ecsail.sql;
 
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.ecsail.main.ConnectDatabase;
+import com.ecsail.main.Main;
+import com.ecsail.main.Paths;
 import com.ecsail.structures.Object_Membership;
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Person;

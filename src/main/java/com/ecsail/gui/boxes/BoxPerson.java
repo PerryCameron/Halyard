@@ -5,8 +5,8 @@ import java.time.format.DateTimeFormatter;
 
 import com.ecsail.gui.tabs.TabPeopleList;
 import com.ecsail.gui.tabs.TabPersonProperties;
-import com.ecsail.main.SqlUpdate;
 import com.ecsail.main.TabLauncher;
+import com.ecsail.sql.SqlUpdate;
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Person;
 

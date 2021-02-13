@@ -1,6 +1,6 @@
 package com.ecsail.gui.boxes;
 
-import com.ecsail.main.SqlUpdate;
+import com.ecsail.sql.SqlUpdate;
 import com.ecsail.structures.Object_MembershipList;
 
 import javafx.beans.value.ChangeListener;

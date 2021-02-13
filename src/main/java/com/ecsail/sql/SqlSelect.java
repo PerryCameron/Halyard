@@ -1,4 +1,4 @@
-package com.ecsail.main;
+package com.ecsail.sql;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -6,6 +6,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ecsail.main.ConnectDatabase;
+import com.ecsail.main.Main;
+import com.ecsail.main.Paths;
 import com.ecsail.structures.Object_Board;
 import com.ecsail.structures.Object_Boat;
 import com.ecsail.structures.Object_BoatOwner;

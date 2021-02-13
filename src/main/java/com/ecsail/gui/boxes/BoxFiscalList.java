@@ -4,10 +4,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.ecsail.main.Note;
-import com.ecsail.main.SqlExists;
-import com.ecsail.main.SqlInsert;
-import com.ecsail.main.SqlSelect;
-import com.ecsail.pdf.SqlDelete;
+import com.ecsail.sql.SqlDelete;
+import com.ecsail.sql.SqlExists;
+import com.ecsail.sql.SqlInsert;
+import com.ecsail.sql.SqlSelect;
 import com.ecsail.structures.Object_DefinedFee;
 import com.ecsail.structures.Object_Membership;
 import com.ecsail.structures.Object_Money;

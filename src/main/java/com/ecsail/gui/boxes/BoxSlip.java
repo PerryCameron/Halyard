@@ -1,10 +1,10 @@
 package com.ecsail.gui.boxes;
 
-import com.ecsail.main.SqlExists;
-import com.ecsail.main.SqlInsert;
-import com.ecsail.main.SqlSelect;
-import com.ecsail.main.SqlUpdate;
 import com.ecsail.main.TabLauncher;
+import com.ecsail.sql.SqlExists;
+import com.ecsail.sql.SqlInsert;
+import com.ecsail.sql.SqlSelect;
+import com.ecsail.sql.SqlUpdate;
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Slip;
 import com.ecsail.structures.Object_WaitList;

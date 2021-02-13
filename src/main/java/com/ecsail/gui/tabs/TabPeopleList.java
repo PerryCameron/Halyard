@@ -7,10 +7,10 @@ import com.ecsail.enums.MemberType;
 import com.ecsail.gui.boxes.BoxPerson;
 import com.ecsail.gui.boxes.BoxSearch;
 import com.ecsail.main.Paths;
-import com.ecsail.main.SqlExists;
-import com.ecsail.main.SqlSelect;
 import com.ecsail.main.TabLauncher;
 import com.ecsail.sql.SQL_SelectMembership;
+import com.ecsail.sql.SqlExists;
+import com.ecsail.sql.SqlSelect;
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Person;
 

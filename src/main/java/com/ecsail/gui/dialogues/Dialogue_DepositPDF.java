@@ -1,8 +1,8 @@
 package com.ecsail.gui.dialogues;
 
-import com.ecsail.main.SqlExists;
-import com.ecsail.main.SqlSelect;
 import com.ecsail.pdf.PDF_DepositReport;
+import com.ecsail.sql.SqlExists;
+import com.ecsail.sql.SqlSelect;
 import com.ecsail.structures.Object_DefinedFee;
 import com.ecsail.structures.Object_Deposit;
 import com.ecsail.structures.Object_DepositPDF;

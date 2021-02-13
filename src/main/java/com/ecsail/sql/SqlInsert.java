@@ -1,8 +1,11 @@
-package com.ecsail.main;
+package com.ecsail.sql;
 
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.ecsail.main.ConnectDatabase;
+import com.ecsail.main.Main;
+import com.ecsail.main.SqlScriptMaker;
 import com.ecsail.structures.Object_DefinedFee;
 import com.ecsail.structures.Object_Deposit;
 import com.ecsail.structures.Object_Membership;

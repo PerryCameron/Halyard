@@ -7,11 +7,11 @@ import java.util.Arrays;
 import java.util.Date;
 
 import com.ecsail.gui.dialogues.Dialogue_DepositPDF;
-import com.ecsail.main.SqlExists;
-import com.ecsail.main.SqlInsert;
-import com.ecsail.main.SqlSelect;
-import com.ecsail.main.SqlUpdate;
 import com.ecsail.main.TabLauncher;
+import com.ecsail.sql.SqlExists;
+import com.ecsail.sql.SqlInsert;
+import com.ecsail.sql.SqlSelect;
+import com.ecsail.sql.SqlUpdate;
 import com.ecsail.structures.Object_DefinedFee;
 import com.ecsail.structures.Object_Deposit;
 import com.ecsail.structures.Object_DepositSummary;

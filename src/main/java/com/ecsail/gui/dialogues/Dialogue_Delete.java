@@ -1,6 +1,6 @@
 package com.ecsail.gui.dialogues;
 
-import com.ecsail.pdf.SqlDelete;
+import com.ecsail.sql.SqlDelete;
 import com.ecsail.structures.Object_Boolean;
 import com.ecsail.structures.Object_Person;
 

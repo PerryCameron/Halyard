@@ -6,11 +6,11 @@ import java.util.function.Function;
 import com.ecsail.enums.MembershipType;
 import com.ecsail.main.EditCell;
 import com.ecsail.main.Paths;
-import com.ecsail.main.SqlExists;
-import com.ecsail.main.SqlInsert;
-import com.ecsail.main.SqlSelect;
-import com.ecsail.main.SqlUpdate;
-import com.ecsail.pdf.SqlDelete;
+import com.ecsail.sql.SqlDelete;
+import com.ecsail.sql.SqlExists;
+import com.ecsail.sql.SqlInsert;
+import com.ecsail.sql.SqlSelect;
+import com.ecsail.sql.SqlUpdate;
 import com.ecsail.structures.Object_MembershipId;
 import com.ecsail.structures.Object_MembershipList;
 

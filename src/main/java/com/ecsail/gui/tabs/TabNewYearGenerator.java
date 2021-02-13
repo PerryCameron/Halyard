@@ -14,8 +14,8 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.ecsail.main.Paths;
-import com.ecsail.main.SqlExists;
-import com.ecsail.main.SqlSelect;
+import com.ecsail.sql.SqlExists;
+import com.ecsail.sql.SqlSelect;
 import com.ecsail.structures.Object_Temp;
 
 // will use this temporarily to make ids.

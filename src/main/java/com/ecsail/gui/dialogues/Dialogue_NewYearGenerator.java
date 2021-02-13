@@ -4,11 +4,11 @@ import java.util.Collections;
 
 import com.ecsail.main.Paths;
 import com.ecsail.main.SortByMembershipId;
-import com.ecsail.main.SqlExists;
-import com.ecsail.main.SqlInsert;
-import com.ecsail.main.SqlSelect;
-import com.ecsail.main.SqlUpdate;
 import com.ecsail.sql.SQL_SelectMembership;
+import com.ecsail.sql.SqlExists;
+import com.ecsail.sql.SqlInsert;
+import com.ecsail.sql.SqlSelect;
+import com.ecsail.sql.SqlUpdate;
 import com.ecsail.structures.Object_DefinedFee;
 import com.ecsail.structures.Object_MembershipId;
 import com.ecsail.structures.Object_MembershipList;

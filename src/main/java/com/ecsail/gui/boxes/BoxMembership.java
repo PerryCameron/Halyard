@@ -2,7 +2,7 @@ package com.ecsail.gui.boxes;
 
 import com.ecsail.enums.MembershipType;
 import com.ecsail.main.Paths;
-import com.ecsail.main.SqlSelect;
+import com.ecsail.sql.SqlSelect;
 import com.ecsail.structures.Object_MemLabels;
 import com.ecsail.structures.Object_MembershipList;
 
