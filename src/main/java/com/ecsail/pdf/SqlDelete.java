@@ -1,8 +1,10 @@
-package com.ecsail.main;
+package com.ecsail.pdf;
 
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.ecsail.main.ConnectDatabase;
+import com.ecsail.main.Main;
 import com.ecsail.structures.Object_Boat;
 import com.ecsail.structures.Object_Email;
 import com.ecsail.structures.Object_MembershipId;

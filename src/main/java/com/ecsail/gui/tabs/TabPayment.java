@@ -7,11 +7,11 @@ import java.util.function.Function;
 
 import com.ecsail.enums.PaymentType;
 import com.ecsail.main.EditCell;
-import com.ecsail.main.SqlDelete;
 import com.ecsail.main.SqlExists;
 import com.ecsail.main.SqlInsert;
 import com.ecsail.main.SqlSelect;
 import com.ecsail.main.SqlUpdate;
+import com.ecsail.pdf.SqlDelete;
 import com.ecsail.structures.Object_BalanceText;
 import com.ecsail.structures.Object_Money;
 import com.ecsail.structures.Object_Payment;

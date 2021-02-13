@@ -4,10 +4,10 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
-import com.ecsail.main.SqlDelete;
 import com.ecsail.main.SqlSelect;
 import com.ecsail.main.SqlUpdate;
 import com.ecsail.main.TabLauncher;
+import com.ecsail.pdf.SqlDelete;
 import com.ecsail.structures.Object_MemLabels;
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Person;

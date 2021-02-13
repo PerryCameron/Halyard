@@ -3,6 +3,8 @@ package com.ecsail.main;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import com.ecsail.pdf.SqlDelete;
 import com.ecsail.structures.Object_Memo;
 
 import javafx.collections.ObservableList;

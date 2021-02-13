@@ -1,7 +1,6 @@
 package com.ecsail.gui.tabs;
 
 import com.ecsail.main.Paths;
-import com.ecsail.main.SqlSelect;
 import com.ecsail.main.TabLauncher;
 import com.ecsail.sql.SQL_SelectMembership;
 import com.ecsail.structures.Object_MembershipList;
