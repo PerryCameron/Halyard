@@ -12,8 +12,6 @@ import com.ecsail.gui.boxes.BoxProperties;
 import com.ecsail.gui.boxes.BoxSlip;
 import com.ecsail.main.CreateMembership;
 import com.ecsail.main.Note;
-import com.ecsail.main.Paths;
-import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.SqlSelect;
 import com.ecsail.structures.Object_MemLabels;
 import com.ecsail.structures.Object_MembershipList;

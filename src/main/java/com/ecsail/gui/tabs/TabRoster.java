@@ -29,6 +29,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TitledPane;
+import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
@@ -87,6 +88,7 @@ public class TabRoster extends Tab {
 		
         Button buttonXLS = new Button("Export XLS");
         
+        tabPane.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
         vboxSpinnerLabel.setSpacing(10);
         titledPane.setText("Roster " + selectedYear);
         controlsHbox.setStyle("-fx-background-color:#e2e3de");
