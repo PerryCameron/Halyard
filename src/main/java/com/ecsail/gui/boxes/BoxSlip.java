@@ -212,7 +212,7 @@ public class BoxSlip extends HBox {
 		shedWaitCheckBox.setSelected(waitList.isShedWait());
 		wantsToSubleaseCheckBox.setSelected(waitList.isWantToSublease());
 		slipChangeCheckBox.setSelected(waitList.isWantSlipChange());
-		
+		wantsToReleaseCheckBox.setSelected(waitList.isWantsRelease());
 		/////////////  ASSIGN CHILDREN  /////////////////////
 		displaySlip();
 		addControls();
