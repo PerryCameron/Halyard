@@ -5,6 +5,7 @@ import java.util.Arrays;
 import com.ecsail.excel.Xls_roster;
 import com.ecsail.gui.tabs.roster.TabSlipOptions;
 import com.ecsail.gui.tabs.roster.TabStandard;
+import com.ecsail.main.Paths;
 import com.ecsail.main.TabLauncher;
 import com.ecsail.sql.SQL_SelectMembership;
 import com.ecsail.structures.Object_MembershipList;
@@ -404,6 +405,21 @@ public class TabRoster extends Tab {
 	  		        	setListType("slip-waitlist");
 	  		            rosters.clear();
 	  		            rosters.addAll(SQL_SelectMembership.getWaitListRoster("wantrelease"));
+	  		          records.setText(rosters.size() + " Records");
+	  		        rosterTableView.sort();
+	  		        } else {
+	  		            // ...
+	  		        }
+	  		    }
+	  		});
+	  		
+	  		rb.getRadioSlip().selectedProperty().addListener(new ChangeListener<Boolean>() {
+	  		    @Override
+	  		    public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected, Boolean isNowSelected) {
+	  		        if (isNowSelected) { 
+	  		        	setListType("slip-waitlist");
+	  		            rosters.clear();
+	  		            rosters.addAll(SQL_SelectMembership.getRosterOfSlipOwners(Paths.getYear()));
 	  		          records.setText(rosters.size() + " Records");
 	  		        rosterTableView.sort();
 	  		        } else {
