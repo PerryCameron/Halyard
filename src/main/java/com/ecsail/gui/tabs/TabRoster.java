@@ -21,7 +21,6 @@ import javafx.geometry.Side;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.Tab;
@@ -30,7 +29,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TitledPane;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
@@ -87,8 +85,6 @@ public class TabRoster extends Tab {
 		
 		CheckBox c13 = new CheckBox("Subleased To");
 		
-		ToggleGroup tg1 = new ToggleGroup(); 
-		
         Button buttonXLS = new Button("Export XLS");
         
         vboxSpinnerLabel.setSpacing(10);
@@ -97,7 +93,7 @@ public class TabRoster extends Tab {
         records.setText(rosters.size() + " Records");
         rb.setSameToggleGroup();
         tabPane.setSide(Side.LEFT);
-        tabPane.setStyle("roster-tab-pane");
+        tabPane.setId("roster-tab-pane");
         rb.getRadioActive().setSelected(true);
         c1.setSelected(true);
         c2.setSelected(true);
