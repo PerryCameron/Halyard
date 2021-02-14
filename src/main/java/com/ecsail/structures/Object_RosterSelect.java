@@ -1,7 +1,8 @@
 package com.ecsail.structures;
 
-public class Object_RosterSelect {
+public class Object_RosterSelect {  /// class purpose is to allow making of excel file Xls_roster
 	private String year;
+	private boolean slipwait;
 	private boolean active;
 	private boolean nonRenew;
 	private boolean newMembers;
@@ -20,11 +21,12 @@ public class Object_RosterSelect {
 	private boolean email;
 	private boolean subleasedto;
 	
-	public Object_RosterSelect(String year, boolean active, boolean nonRenew, boolean newMembers, boolean newAndReturnd,
+	public Object_RosterSelect(String year, boolean slipwait, boolean active, boolean nonRenew, boolean newMembers, boolean newAndReturnd,
 			boolean membership_id, boolean lastName, boolean firstName, boolean joinDate, boolean streetAddress,
 			boolean city, boolean state, boolean zip, boolean memtype, boolean slip, boolean phone, boolean email,
 			boolean subleasedto) {
 		this.year = year;
+		this.slipwait = slipwait;
 		this.active = active;
 		this.nonRenew = nonRenew;
 		this.newMembers = newMembers;
@@ -42,6 +44,7 @@ public class Object_RosterSelect {
 		this.phone = phone;
 		this.email = email;
 		this.subleasedto = subleasedto;
+		
 	}
 
 	public String getYear() {
@@ -186,6 +189,14 @@ public class Object_RosterSelect {
 
 	public void setSubleasedto(boolean subleasedto) {
 		this.subleasedto = subleasedto;
+	}
+
+	public boolean isSlipwait() {
+		return slipwait;
+	}
+
+	public void setSlipwait(boolean slipwait) {
+		this.slipwait = slipwait;
 	}
 
 }

@@ -827,30 +827,7 @@ public class SqlSelect {
 		return thisPhone;
 	}
 
-	public static ObservableList<Object_Membership> getMemberships() {  /// for SQL Script Maker
-		ObservableList<Object_Membership> memberships = FXCollections.observableArrayList();
-		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
-			ResultSet rs;
-			rs = stmt.executeQuery(Main.console.setRegexColor("select * from membership;"));
-			while (rs.next()) {
-				memberships.add(new Object_Membership(
-						rs.getInt("MS_ID"), 
-						rs.getInt("P_ID"),
-						rs.getString("JOIN_DATE"), 
-						rs.getString("MEM_TYPE"), 
-						rs.getString("ADDRESS"), 
-						rs.getString("CITY"), 
-						rs.getString("STATE"),
-						rs.getString("ZIP")));
-			}
-			stmt.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return memberships;
-	}
+
 	
 	
 

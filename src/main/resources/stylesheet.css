@@ -69,6 +69,7 @@
 -fx-tab-min-width:90px;
 }
 
+
 .tab-pane .tab {
     -fx-background-insets: 0 0 0 0,0,0;
     -fx-background-color: #d9d2d2;
@@ -229,6 +230,27 @@
 	}
 
 #column-align-right {
-  -fx-alignment: center-right;
+  	-fx-alignment: center-right;
 }
 
+#rostertab-pane {
+	-fx-tab-min-width: 10px;
+}
+
+#roster-tab-pane .tab {
+    -fx-background-insets: 0 0 0 0,0,0;
+    -fx-background-color: #d9d2d2;
+    
+}
+
+#roster-tab-pane .tab:selected {
+ 	-fx-background-color: #9fc0c7;
+  /*  -fx-background-image: url("background.jpg");*/
+}
+
+#roster-tab-pane .tab-label { 
+    -fx-alignment: CENTER;
+    -fx-text-fill: #828282;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+}

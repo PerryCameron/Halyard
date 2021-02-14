@@ -137,7 +137,10 @@ static TabPane tabPane;
 	}
 	
 	public static void createTab(Object_MembershipList membership) {
+		String tabLabel= "Membership " + membership.getMembershipId();
+		if(!tabOpen(tabLabel)) 
 		tabPane.getTabs().add(new TabMembership(membership));
+		tabPane.getSelectionModel().select(getTabIndex(tabLabel)); // focus on tab we are wanting
 	}
 	
 	public static void openBoardTab() {

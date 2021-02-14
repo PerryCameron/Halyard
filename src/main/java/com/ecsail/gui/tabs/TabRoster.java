@@ -3,9 +3,11 @@ package com.ecsail.gui.tabs;
 import java.util.Arrays;
 
 import com.ecsail.excel.Xls_roster;
+import com.ecsail.gui.tabs.roster.TabStandard;
 import com.ecsail.main.TabLauncher;
 import com.ecsail.sql.SQL_SelectMembership;
 import com.ecsail.structures.Object_MembershipList;
+import com.ecsail.structures.Object_RosterRadioButtons;
 import com.ecsail.structures.Object_RosterSelect;
 
 import javafx.beans.value.ChangeListener;
@@ -15,6 +17,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Side;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -22,6 +25,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -37,6 +41,7 @@ public class TabRoster extends Tab {
 	private ObservableList<Object_MembershipList> rosters;
 	private TableView<Object_MembershipList> rosterTableView = new TableView<>();
 	private Object_RosterSelect printChoices;
+	private Object_RosterRadioButtons rb;
 	String selectedYear;
 	
 	public TabRoster(ObservableList<Object_MembershipList> a, String sy) {
@@ -44,13 +49,15 @@ public class TabRoster extends Tab {
 		this.rosters = a;
 		this.selectedYear = sy;
 		this.setText("Roster");
-		this.printChoices = new Object_RosterSelect(sy, true, false, false, false, true, true, true, false, false, false, false, false, false, false, false, false, false);
+		this.rb = new Object_RosterRadioButtons();
+		this.printChoices = new Object_RosterSelect(sy, false, true, false, false, false, true, true, true, false, false, false, false, false, false, false, false, false, false);
 		System.out.println("size=" + rosters.size());
 		
 		///////////////////  OBJECTS //////////////////////////
 		VBox vbox1 = new VBox();
 		VBox vbox2 = new VBox();  // inter vbox
-		VBox vboxRadioButtons = new VBox();
+		VBox vboxRadioButton1 = new VBox();
+		VBox vboxRadioButton2 = new VBox();
 		VBox vboxSpinnerLabel = new VBox();
 		VBox vboxCheckBox1 = new VBox();
 		VBox vboxCheckBox2 = new VBox();
@@ -61,6 +68,7 @@ public class TabRoster extends Tab {
 		HBox hboxExportFrame = new HBox();
 		HBox controlsHbox = new HBox();
 		TitledPane titledPane = new TitledPane();
+		TabPane tabPane = new TabPane();
 		Label records = new Label();
 		CheckBox c1 = new CheckBox("Membership Id");
 		CheckBox c2 = new CheckBox("Last Name");
@@ -79,23 +87,18 @@ public class TabRoster extends Tab {
 		
 		CheckBox c13 = new CheckBox("Subleased To");
 		
-		ToggleGroup tg1 = new ToggleGroup();  
-		RadioButton r1 = new RadioButton("Active"); 
-        RadioButton r2 = new RadioButton("Non-Renew"); 
-        RadioButton r3 = new RadioButton("New Members");
-        RadioButton r4 = new RadioButton("New/Return Members");
-        //Button buttonPDF = new Button("Export PDF");
+		ToggleGroup tg1 = new ToggleGroup(); 
+		
         Button buttonXLS = new Button("Export XLS");
         
         vboxSpinnerLabel.setSpacing(10);
         titledPane.setText("Roster " + selectedYear);
         controlsHbox.setStyle("-fx-background-color:#e2e3de");
         records.setText(rosters.size() + " Records");
-		r1.setToggleGroup(tg1); 
-        r2.setToggleGroup(tg1);
-        r3.setToggleGroup(tg1);
-        r4.setToggleGroup(tg1);
-        r1.setSelected(true);
+        rb.setSameToggleGroup();
+        tabPane.setSide(Side.LEFT);
+        tabPane.setStyle("roster-tab-pane");
+        rb.getRadioActive().setSelected(true);
         c1.setSelected(true);
         c2.setSelected(true);
         c3.setSelected(true);
@@ -110,10 +113,12 @@ public class TabRoster extends Tab {
 		//vboxCheckBox2.setSpacing(2);
 		vboxCheckBox4.setSpacing(5);
 		controlsHbox.setSpacing(10);
-		vboxRadioButtons.setSpacing(3);
+		vboxRadioButton1.setSpacing(3);
+		vboxRadioButton2.setSpacing(3);
 		vbox1.setPadding(new Insets(12,12,15,12));
 		vbox2.setPadding(new Insets(3,3,5,3));
-		vboxRadioButtons.setPadding(new Insets(5,5,5,5));
+		vboxRadioButton1.setPadding(new Insets(5,5,5,5));
+		vboxRadioButton2.setPadding(new Insets(5,5,5,5));
 		vbox1.setAlignment(Pos.TOP_CENTER);
 		vbox1.setPrefHeight(768);
 
@@ -175,19 +180,21 @@ public class TabRoster extends Tab {
 					  printChoices.setYear(yearSpinner.getEditor().getText());
 					  selectedYear = yearSpinner.getEditor().getText();  /// kept this for clarity, could have used printChoices.getYear()
 					  rosters.clear();
-					  if(r1.isSelected())
+					  if(rb.getRadioActive().isSelected())
 						  rosters.addAll(SQL_SelectMembership.getRoster(selectedYear,true));
-					  if(r2.isSelected())
+					  if(rb.getRadioNonRenew().isSelected())
 						  rosters.addAll(SQL_SelectMembership.getRoster(selectedYear,false));
-					  if(r3.isSelected())
+					  if(rb.getRadioNewMembers().isSelected())
 						  rosters.addAll(SQL_SelectMembership.getNewMemberRoster(selectedYear));
-					  if(r4.isSelected())
+					  if(rb.getRadioNewReturnMembers().isSelected())
 						  rosters.addAll(SQL_SelectMembership.getFullNewMemberRoster(selectedYear));
 					  titledPane.setText("Roster " + selectedYear);
 					  records.setText(rosters.size() + " Records"); 
 					  rosterTableView.sort();
 				  }
 				});
+			
+
 			
 			////////////////////  LISTENERS //////////////////////////
 			
@@ -302,7 +309,8 @@ public class TabRoster extends Tab {
 		        return row ;
 		    });
 		    
-	  		r1.selectedProperty().addListener(new ChangeListener<Boolean>() {
+		    
+	  		rb.getRadioActive().selectedProperty().addListener(new ChangeListener<Boolean>() {
 	  		    @Override
 	  		    public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected, Boolean isNowSelected) {
 	  		        if (isNowSelected) { 
@@ -315,7 +323,7 @@ public class TabRoster extends Tab {
 	  		    }
 	  		});
 	  		
-	  		r2.selectedProperty().addListener(new ChangeListener<Boolean>() {
+	  		rb.getRadioNonRenew().selectedProperty().addListener(new ChangeListener<Boolean>() {
 	  		    @Override
 	  		    public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected, Boolean isNowSelected) {
 	  		        if (isNowSelected) { 
@@ -330,7 +338,7 @@ public class TabRoster extends Tab {
 	  		    }
 	  		});
 	  		
-	  		r3.selectedProperty().addListener(new ChangeListener<Boolean>() {
+	  		rb.getRadioNewMembers().selectedProperty().addListener(new ChangeListener<Boolean>() {
 	  		    @Override
 	  		    public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected, Boolean isNowSelected) {
 	  		        if (isNowSelected) { 
@@ -345,13 +353,28 @@ public class TabRoster extends Tab {
 	  		    }
 	  		});
 	  		
-	  		r4.selectedProperty().addListener(new ChangeListener<Boolean>() {
+	  		rb.getRadioNewReturnMembers().selectedProperty().addListener(new ChangeListener<Boolean>() {
 	  		    @Override
 	  		    public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected, Boolean isNowSelected) {
 	  		        if (isNowSelected) { 
 	  		        	setListType("new-and-return");
 	  		            rosters.clear();
 	  		            rosters.addAll(SQL_SelectMembership.getFullNewMemberRoster(selectedYear));
+	  		          records.setText(rosters.size() + " Records");
+	  		        rosterTableView.sort();
+	  		        } else {
+	  		            // ...
+	  		        }
+	  		    }
+	  		});
+	  		
+	  		rb.getRadioSlipWaitList().selectedProperty().addListener(new ChangeListener<Boolean>() {
+	  		    @Override
+	  		    public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected, Boolean isNowSelected) {
+	  		        if (isNowSelected) { 
+	  		        	setListType("slip-waitlist");
+	  		            rosters.clear();
+	  		            rosters.addAll(SQL_SelectMembership.getWaitListRoster("slipwait"));
 	  		          records.setText(rosters.size() + " Records");
 	  		        rosterTableView.sort();
 	  		        } else {
@@ -370,8 +393,7 @@ public class TabRoster extends Tab {
 	  		        	rosterTableView.setPrefHeight(655);
 	  		        }
 	  		    });
-
-		    
+	  		
 		    //////////////////// SET CONTENT //////////////////////
 	  		vboxCheckBox1.getChildren().addAll(c1,c2,c3,c4);
 	  		vboxCheckBox2.getChildren().addAll(c5,c6,c7,c8);
@@ -380,9 +402,12 @@ public class TabRoster extends Tab {
 	  		vboxCheckBox5.getChildren().addAll(buttonXLS);
 	  		hboxExportFrame.getChildren().add(hboxExport);
 	  		hboxExport.getChildren().addAll(vboxCheckBox1,vboxCheckBox2,vboxCheckBox3,vboxCheckBox4,vboxCheckBox5);
-		    vboxRadioButtons.getChildren().addAll(r1,r2,r3,r4);
+		    //vboxRadioButton1.getChildren().addAll(rb.getRadioActive(),rb.,r3,r4);
+		    //vboxRadioButton2.getChildren().addAll(r5,r6);
+	  		tabPane.getTabs().add(new TabStandard(rb));
 		    vboxSpinnerLabel.getChildren().addAll(yearSpinner, records);
-		    controlsHbox.getChildren().addAll(vboxSpinnerLabel,vboxRadioButtons,hboxExportFrame);
+		    // vboxRadioButton1,vboxRadioButton2
+		    controlsHbox.getChildren().addAll(vboxSpinnerLabel,tabPane,hboxExportFrame);
 		    titledPane.setContent(controlsHbox);
 			vbox1.getChildren().add(vbox2);
 			vbox2.getChildren().addAll(titledPane,rosterTableView);
@@ -398,24 +423,35 @@ public class TabRoster extends Tab {
         	printChoices.setNonRenew(false);
         	printChoices.setNewMembers(false);
         	printChoices.setNewAndReturnd(false);
+        	printChoices.setSlipwait(false);
                  break;
         case "non-renew":
         	printChoices.setActive(false);
         	printChoices.setNonRenew(true);
         	printChoices.setNewMembers(false);
         	printChoices.setNewAndReturnd(false);
+        	printChoices.setSlipwait(false);
                  break;
         case "new-members":
         	printChoices.setActive(false);
         	printChoices.setNonRenew(false);
         	printChoices.setNewMembers(true);
         	printChoices.setNewAndReturnd(false);
+        	printChoices.setSlipwait(false);
                  break;
         case "new-and-return":
         	printChoices.setActive(false);
         	printChoices.setNonRenew(false);
         	printChoices.setNewMembers(false);
         	printChoices.setNewAndReturnd(true);
+        	printChoices.setSlipwait(false);
+        		break;
+        case "slip-waitlist":
+        	printChoices.setActive(false);
+        	printChoices.setNonRenew(false);
+        	printChoices.setNewMembers(false);
+        	printChoices.setNewAndReturnd(false);
+        	printChoices.setSlipwait(true);
         		break;
         }
 	}

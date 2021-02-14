@@ -6,6 +6,7 @@ import java.sql.Statement;
 
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.Main;
+import com.ecsail.structures.Object_Membership;
 import com.ecsail.structures.Object_MembershipList;
 
 import javafx.collections.FXCollections;
@@ -181,7 +182,42 @@ public class SQL_SelectMembership {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Creating Roster list for " + year + "...");
+		return rosters;
+	}
+	
+	public static ObservableList<Object_MembershipList> getWaitListRoster(String waitlist) {
+		ObservableList<Object_MembershipList> rosters = FXCollections.observableArrayList();
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs;
+			rs = stmt.executeQuery(Main.console.setRegexColor(
+					"Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,m.JOIN_DATE,m.MEM_TYPE,p.L_NAME,p.F_NAME,m.address,m.city,m.state,m.zip "
+					+ "from waitlist w "
+					+ "inner join membership m on w.ms_id=m.ms_id "
+					+ "left join membership_id id on m.MS_ID=id.MS_ID "
+					+ "left join person p on p.MS_ID=m.MS_ID "
+					+ "where " + waitlist + "=true group by m.ms_id"));
+			while (rs.next()) {
+				rosters.add(new Object_MembershipList(
+						rs.getInt("MS_ID"), 
+						rs.getInt("P_ID"),
+						rs.getInt("MEMBERSHIP_ID"), 
+						rs.getString("JOIN_DATE"), 
+						rs.getString("MEM_TYPE"), 
+						"", 
+						rs.getString("L_NAME"),
+						rs.getString("F_NAME"), 
+						0, 
+						rs.getString("ADDRESS"), 
+						rs.getString("CITY"), 
+						rs.getString("STATE"),
+						rs.getString("ZIP")));
+			}
+			stmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return rosters;
 	}
 	
@@ -257,8 +293,31 @@ public class SQL_SelectMembership {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Creating Full New Member Roster list for " + year + "...");
 		return rosters;
 	}
 	
+	public static ObservableList<Object_Membership> getMemberships() {  /// for SQL Script Maker
+		ObservableList<Object_Membership> memberships = FXCollections.observableArrayList();
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs;
+			rs = stmt.executeQuery(Main.console.setRegexColor("select * from membership;"));
+			while (rs.next()) {
+				memberships.add(new Object_Membership(
+						rs.getInt("MS_ID"), 
+						rs.getInt("P_ID"),
+						rs.getString("JOIN_DATE"), 
+						rs.getString("MEM_TYPE"), 
+						rs.getString("ADDRESS"), 
+						rs.getString("CITY"), 
+						rs.getString("STATE"),
+						rs.getString("ZIP")));
+			}
+			stmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return memberships;
+	}
 }

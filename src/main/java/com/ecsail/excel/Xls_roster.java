@@ -115,6 +115,8 @@ public class Xls_roster {
 			fileName += " Non-renew";
 		} else if (printChoices.isNewMembers()) {
 			fileName += " Novel_Member";
+		} else if (printChoices.isSlipwait()) {
+			fileName += " Slip_Waiting_List";
 		} else {  // is both new and re-returning members
 			fileName += " New Member";
 		}

@@ -180,10 +180,10 @@ public class TabMembership extends Tab {
 	
 	private String setTabLabel() {
 		String tabLabel;
-		if(!SqlExists.currentMembershipIdExists(membership.getMembershipId())) {
+		if(membership.getMembershipId() == 0) {
 			tabLabel = "MSID " + membership.getMsid();
 		} else {
-			tabLabel= "Membership " + SqlSelect.getMembershipId(Paths.getYear(), membership.getMsid());
+			tabLabel= "Membership " + membership.getMembershipId();
 		}
 		return tabLabel;
 	}
