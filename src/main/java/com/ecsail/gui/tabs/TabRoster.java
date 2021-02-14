@@ -3,6 +3,7 @@ package com.ecsail.gui.tabs;
 import java.util.Arrays;
 
 import com.ecsail.excel.Xls_roster;
+import com.ecsail.gui.tabs.roster.TabSlipOptions;
 import com.ecsail.gui.tabs.roster.TabStandard;
 import com.ecsail.main.TabLauncher;
 import com.ecsail.sql.SQL_SelectMembership;
@@ -321,6 +322,21 @@ public class TabRoster extends Tab {
 	  		    }
 	  		});
 	  		
+	  		rb.getRadioAll().selectedProperty().addListener(new ChangeListener<Boolean>() {
+	  		    @Override
+	  		    public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected, Boolean isNowSelected) {
+	  		        if (isNowSelected) { 
+	  		        	setListType("all");
+		  		          rosters.clear();
+		  		          rosters.addAll(SQL_SelectMembership.getRosterOfAll(selectedYear));
+		  		          records.setText(rosters.size() + " Records");
+		  		          rosterTableView.sort();
+	  		        } else {
+	  		            // ...
+	  		        }
+	  		    }
+	  		});
+	  		
 	  		rb.getRadioNonRenew().selectedProperty().addListener(new ChangeListener<Boolean>() {
 	  		    @Override
 	  		    public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected, Boolean isNowSelected) {
@@ -381,6 +397,21 @@ public class TabRoster extends Tab {
 	  		    }
 	  		});
 	  		
+	  		rb.getRadioOpenSlips().selectedProperty().addListener(new ChangeListener<Boolean>() {
+	  		    @Override
+	  		    public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected, Boolean isNowSelected) {
+	  		        if (isNowSelected) { 
+	  		        	setListType("slip-waitlist");
+	  		            rosters.clear();
+	  		            rosters.addAll(SQL_SelectMembership.getWaitListRoster("wantrelease"));
+	  		          records.setText(rosters.size() + " Records");
+	  		        rosterTableView.sort();
+	  		        } else {
+	  		            // ...
+	  		        }
+	  		    }
+	  		});
+	  		
 	  		titledPane.expandedProperty().addListener((obs, wasExpanded, isNowExpanded) -> {
 	  		        if (isNowExpanded) {
 	  		        	//System.out.println("Title Pane Expanded");
@@ -402,7 +433,7 @@ public class TabRoster extends Tab {
 	  		hboxExport.getChildren().addAll(vboxCheckBox1,vboxCheckBox2,vboxCheckBox3,vboxCheckBox4,vboxCheckBox5);
 		    //vboxRadioButton1.getChildren().addAll(rb.getRadioActive(),rb.,r3,r4);
 		    //vboxRadioButton2.getChildren().addAll(r5,r6);
-	  		tabPane.getTabs().add(new TabStandard(rb));
+	  		tabPane.getTabs().addAll(new TabStandard(rb), new TabSlipOptions(rb));
 		    vboxSpinnerLabel.getChildren().addAll(yearSpinner, records);
 		    // vboxRadioButton1,vboxRadioButton2
 		    controlsHbox.getChildren().addAll(vboxSpinnerLabel,tabPane,hboxExportFrame);

@@ -7,9 +7,9 @@ import javafx.scene.control.Tab;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-public class TabStandard extends Tab {
+public class TabSlipOptions extends Tab {
 	
-	public TabStandard(Object_RosterRadioButtons rb) {
+	public TabSlipOptions(Object_RosterRadioButtons rb) {
 		HBox hboxFrame = new HBox();
 		HBox hboxMain = new HBox();
 		VBox vboxRadioButton1 = new VBox();
@@ -19,6 +19,7 @@ public class TabStandard extends Tab {
 		hboxFrame.setId("box-blue");
 		hboxFrame.setPadding(new Insets(2,2,2,2));
 		hboxMain.setId("box-pink");
+		hboxMain.setMinWidth(hboxFrame.getWidth() - 4);
 		vboxRadioButton1.setSpacing(5);
 		vboxRadioButton2.setSpacing(5);
 		vboxRadioButton1.setPadding(new Insets(8,5,5,5));
@@ -27,11 +28,13 @@ public class TabStandard extends Tab {
 		//getStyleClass().add("roster-tab-pane");
         ////////////////////SET CONTENT //////////////////////
 		
-		vboxRadioButton1.getChildren().addAll(rb.getRadioAll(),rb.getRadioActive(),rb.getRadioNonRenew());
-		vboxRadioButton2.getChildren().addAll(rb.getRadioNewMembers(),rb.getRadioNewReturnMembers());
+		vboxRadioButton1.getChildren().addAll(rb.getRadioSlip(),rb.getRadioWantsToSublease(),rb.getRadioOpenSlips());
+		vboxRadioButton2.getChildren().addAll(rb.getRadioSlipChange(),rb.getRadioSubLeasedSlips(),rb.getRadioSlipWaitList());
+		
 		hboxMain.getChildren().addAll(vboxRadioButton1,vboxRadioButton2);
 		hboxFrame.getChildren().add(hboxMain);
 		setContent(hboxFrame);
+		System.out.println(hboxFrame.getWidth() + " is the width");
 	}
 
 }
