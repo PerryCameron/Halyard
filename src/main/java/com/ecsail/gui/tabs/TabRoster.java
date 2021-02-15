@@ -458,6 +458,21 @@ public class TabRoster extends Tab {
 	  		    }
 	  		});
 	  		
+	  		rb.getRadioSubLeasedSlips().selectedProperty().addListener(new ChangeListener<Boolean>() {
+	  		    @Override
+	  		    public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected, Boolean isNowSelected) {
+	  		        if (isNowSelected) { 
+	  		        	setListType("subleasedslips");
+	  		            rosters.clear();
+	  		            rosters.addAll(SQL_SelectMembership.getRosterOfSubleasedSlips());
+	  		          records.setText(rosters.size() + " Records");
+	  		        rosterTableView.sort();
+	  		        } else {
+	  		            // ...
+	  		        }
+	  		    }
+	  		});
+	  		
 	  		titledPane.expandedProperty().addListener((obs, wasExpanded, isNowExpanded) -> {
 	  		        if (isNowExpanded) {
 	  		        	//System.out.println("Title Pane Expanded");

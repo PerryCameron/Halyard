@@ -143,7 +143,7 @@ public class SQL_SelectMembership {
 						rs.getInt("MEMBERSHIP_ID"), 
 						rs.getString("JOIN_DATE"), 
 						rs.getString("MEM_TYPE"), 
-						rs.getString("SUBLEASED_TO"), /// shows subleased slip
+						rs.getString("SLIP_NUM"), /// shows subleased slip
 						rs.getString("L_NAME"),
 						rs.getString("F_NAME"), 
 						rs.getInt("SUBLEASED_TO"), 
