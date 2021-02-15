@@ -3,6 +3,7 @@ package com.ecsail.gui.tabs;
 import java.util.Arrays;
 
 import com.ecsail.excel.Xls_roster;
+import com.ecsail.gui.tabs.roster.TabKayakLists;
 import com.ecsail.gui.tabs.roster.TabSlipOptions;
 import com.ecsail.gui.tabs.roster.TabStandard;
 import com.ecsail.main.Paths;
@@ -494,7 +495,7 @@ public class TabRoster extends Tab {
 	  		hboxExport.getChildren().addAll(vboxCheckBox1,vboxCheckBox2,vboxCheckBox3,vboxCheckBox4,vboxCheckBox5);
 		    //vboxRadioButton1.getChildren().addAll(rb.getRadioActive(),rb.,r3,r4);
 		    //vboxRadioButton2.getChildren().addAll(r5,r6);
-	  		tabPane.getTabs().addAll(new TabStandard(rb), new TabSlipOptions(rb));
+	  		tabPane.getTabs().addAll(new TabStandard(rb), new TabSlipOptions(rb),new TabKayakLists(rb));
 		    vboxSpinnerLabel.getChildren().addAll(yearSpinner, records);
 		    // vboxRadioButton1,vboxRadioButton2
 		    controlsHbox.getChildren().addAll(vboxSpinnerLabel,tabPane,hboxExportFrame);
