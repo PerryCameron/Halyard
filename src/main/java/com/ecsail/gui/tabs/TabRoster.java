@@ -402,7 +402,7 @@ public class TabRoster extends Tab {
 	  		    @Override
 	  		    public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected, Boolean isNowSelected) {
 	  		        if (isNowSelected) { 
-	  		        	setListType("slip-waitlist");
+	  		        	setListType("wantsrelease");
 	  		            rosters.clear();
 	  		            rosters.addAll(SQL_SelectMembership.getWaitListRoster("wantrelease"));
 	  		          records.setText(rosters.size() + " Records");
@@ -417,9 +417,39 @@ public class TabRoster extends Tab {
 	  		    @Override
 	  		    public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected, Boolean isNowSelected) {
 	  		        if (isNowSelected) { 
-	  		        	setListType("slip-waitlist");
+	  		        	setListType("slipOwners");
 	  		            rosters.clear();
 	  		            rosters.addAll(SQL_SelectMembership.getRosterOfSlipOwners(Paths.getYear()));
+	  		          records.setText(rosters.size() + " Records");
+	  		        rosterTableView.sort();
+	  		        } else {
+	  		            // ...
+	  		        }
+	  		    }
+	  		});
+	  		
+	  		rb.getRadioWantsToSublease().selectedProperty().addListener(new ChangeListener<Boolean>() {
+	  		    @Override
+	  		    public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected, Boolean isNowSelected) {
+	  		        if (isNowSelected) { 
+	  		        	setListType("wantsublease");
+	  		            rosters.clear();
+	  		            rosters.addAll(SQL_SelectMembership.getWaitListRoster("wantsublease"));
+	  		          records.setText(rosters.size() + " Records");
+	  		        rosterTableView.sort();
+	  		        } else {
+	  		            // ...
+	  		        }
+	  		    }
+	  		});
+	  		
+	  		rb.getRadioSlipChange().selectedProperty().addListener(new ChangeListener<Boolean>() {
+	  		    @Override
+	  		    public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected, Boolean isNowSelected) {
+	  		        if (isNowSelected) { 
+	  		        	setListType("wantsublease");
+	  		            rosters.clear();
+	  		            rosters.addAll(SQL_SelectMembership.getWaitListRoster("wantslipchange"));
 	  		          records.setText(rosters.size() + " Records");
 	  		        rosterTableView.sort();
 	  		        } else {
