@@ -28,7 +28,6 @@ public class TabKayakLists extends Tab {
 		setId("rostertab-pane");
 		//getStyleClass().add("roster-tab-pane");
         ////////////////////SET CONTENT //////////////////////
-		
 		vboxRadioButton1.getChildren().addAll(rb.getRadioKayakRackOwners(),rb.getRadioKayakRackWaitList());
 		vboxRadioButton2.getChildren().addAll(rb.getRadioShedOwner(),rb.getRadioShedWaitList());
 		hboxMain.getChildren().addAll(vboxRadioButton1,vboxRadioButton2);
