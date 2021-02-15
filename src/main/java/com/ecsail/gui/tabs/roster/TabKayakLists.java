@@ -17,8 +17,10 @@ public class TabKayakLists extends Tab {
 		
 		////////////////// ATTRIBUTES ////////////////////////
 		hboxFrame.setId("box-blue");
-		hboxFrame.setPadding(new Insets(2,2,2,2));
+		hboxFrame.setPadding(new Insets(2,2,2,5));
 		hboxMain.setId("box-pink");
+		vboxRadioButton1.setPrefWidth(148);
+		vboxRadioButton2.setPrefWidth(146);
 		vboxRadioButton1.setSpacing(5);
 		vboxRadioButton2.setSpacing(5);
 		vboxRadioButton1.setPadding(new Insets(8,5,5,5));
