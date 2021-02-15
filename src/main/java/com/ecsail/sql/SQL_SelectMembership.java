@@ -6,6 +6,7 @@ import java.sql.Statement;
 
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.Main;
+import com.ecsail.main.Paths;
 import com.ecsail.structures.Object_Membership;
 import com.ecsail.structures.Object_MembershipList;
 
@@ -306,7 +307,7 @@ public class SQL_SelectMembership {
 					+ "left join membership_id id on m.MS_ID=id.MS_ID "
 					+ "left join person p on p.MS_ID=m.MS_ID "
 					+ "left join slip s on s.MS_ID=m.MS_ID "
-					+ "where " + waitlist + "=true group by m.ms_id"));
+					+ "where " + waitlist + "=true and id.fiscal_year='" + Paths.getYear() + "' group by m.ms_id"));
 			while (rs.next()) {
 				rosters.add(new Object_MembershipList(
 						rs.getInt("MS_ID"), 
