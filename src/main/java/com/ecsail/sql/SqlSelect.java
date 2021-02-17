@@ -1304,7 +1304,7 @@ public class SqlSelect {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return number + 1;
+		return number;
 	}
 
 	public static String getPaymentDate(int moneyid) {

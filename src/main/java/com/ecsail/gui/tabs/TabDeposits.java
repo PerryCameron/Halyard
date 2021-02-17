@@ -60,7 +60,8 @@ public class TabDeposits extends Tab {
 	Text numberOfRecords = new Text("0");
 	String currentDate;
 	String selectedYear;
-
+	final Spinner<Integer> batchSpinner = new Spinner<Integer>();
+	
 	public TabDeposits(String text) { 
 		super(text);
 		this.paidDues =  FXCollections.observableArrayList(new Callback<Object_PaidDues, Observable[]>() {
@@ -154,6 +155,7 @@ public class TabDeposits extends Tab {
 		yearSpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
 			  if (!newValue) {
 				  selectedYear = yearSpinner.getEditor().getText();
+				  batchSpinner.getValueFactory().setValue(SqlSelect.getBatchNumber(selectedYear)); // set batch to last one for a given year
 				  paidDues.clear();
 				  paidDues.addAll(SqlSelect.getPaidDues(selectedYear));
 				  currentDefinedFee.clear();
@@ -162,7 +164,7 @@ public class TabDeposits extends Tab {
 			  }
 			});
 		
-		final Spinner<Integer> batchSpinner = new Spinner<Integer>();
+		//final Spinner<Integer> batchSpinner = new Spinner<Integer>();
 		SpinnerValueFactory<Integer> batchValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, summaryTotals.getDepositNumber()); // 0 to batch, display batch
 		batchSpinner.setValueFactory(batchValueFactory);
 		batchSpinner.setPrefWidth(60);
@@ -530,7 +532,7 @@ public class TabDeposits extends Tab {
 		summaryText.getCreditsMoneyText().setText("$" + summaryTotals.getCredit());
 		
 		summaryText.getTotalNumberText().setText(summaryTotals.getNumberOfRecords() + "");
-		summaryText.getTotalMoneyText().setText("$" + summaryTotals.getTotal());
+		summaryText.getTotalMoneyText().setText("$" + summaryTotals.getPaid());
 	}
 	
 	private void updateSummaryTotals() {
@@ -611,25 +613,8 @@ public class TabDeposits extends Tab {
 				summaryTotals.setYsc_donation(d.getYsc_donation() + summaryTotals.getYsc_donation());
 			}
 			numberOfRecordsCounted++;
+			summaryTotals.setPaid(d.getPaid() + summaryTotals.getPaid());
 		}
-		int total = 0;
-		total += summaryTotals.getBeach();
-		total -= summaryTotals.getCredit();
-		total += summaryTotals.getDues();
-		total += summaryTotals.getGate_key();
-		total += summaryTotals.getInitiation();
-		total += summaryTotals.getKayac_rack();
-		total += summaryTotals.getKayac_shed();
-		total += summaryTotals.getKayac_shed_key();
-		total += summaryTotals.getOther();
-		total += summaryTotals.getSail_loft();
-		total += summaryTotals.getSail_loft_key();
-		total += summaryTotals.getSail_school_laser_loft();
-		total += summaryTotals.getSail_school_loft_key();
-		total += summaryTotals.getWet_slip();
-		total += summaryTotals.getWinter_storage();
-		total += summaryTotals.getYsc_donation();
-		summaryTotals.setTotal(total);
 		summaryTotals.setNumberOfRecords(numberOfRecordsCounted);
 	}
 }
