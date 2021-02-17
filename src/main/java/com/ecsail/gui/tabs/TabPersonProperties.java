@@ -59,44 +59,6 @@ public class TabPersonProperties extends Tab {
         			people.get(TabPeopleList.getIndexByPid(person.getP_id())).setActive(newValue);
             }
         });
-        
-	    
-  //      combo_box.valueProperty().addListener(new ChangeListener<String>() {
-   //         @Override 
-    //        public void changed(("rawtypes") ObservableValue ov, String oldValue, String newValue) {
-     //     	System.out.println("NewValue is=" + newValue);
-	  //  	System.out.println("oldValue is=" + oldValue);
-	   // 	System.out.println("options=" + ov);
-        //    }    
-      //  });
-        
-     //   combo_box.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
-
-	/*    	int ms_id = person.getMs_id();
-	    	int person1Pid = person.getP_id();
-	    	int person2Pid = 0;
-
-	    	if(newValue.toString().equals("Primary")) {  // we want to change member to primary
-	    		person2Pid = getPid(1); // gets pid of current primary member
-	    		if(person2Pid != 0) {
-	    		    SqlUpdate.updatePerson(person2Pid, "MEMBER_TYPE", 2); // change primary to secondary
-	    		}
-	    		SqlUpdate.updatePerson(person1Pid, "MEMBER_TYPE", 1);  // now make this person primary
-	    		SqlUpdate.updateMembershipPrimary(ms_id, person1Pid);  // update the membership primary
-	    	}
-	    	if(newValue.toString().equals("Secondary")) {  // we want to change member to secondary
-	    		person2Pid = getPid(2); // gets pid of current secondary member
-	    		if(person2Pid != 0) {
-	    		    SqlUpdate.updatePerson(person2Pid, "MEMBER_TYPE", 1); // change secondary to primary
-	    		}
-	    		SqlUpdate.updatePerson(person1Pid, "MEMBER_TYPE", 2);  // now make this person secondary
-	    		SqlUpdate.updateMembershipPrimary(ms_id, person2Pid);  // update the membership primary
-	    	}
-	    	if(newValue.toString().equals("Dependant")) {  // not sure what to do probably dialogue saying no!
-	    		System.out.println("Do something with this later");
-	    	}
-	*/    	
-     //   });
 	    
 	    isDeleted.xBooleanProperty().addListener((obs, wasDeleted, isDeleted) -> {
 	    	System.out.println("isDeleted=" + isDeleted);
