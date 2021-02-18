@@ -5,7 +5,8 @@ import javafx.scene.control.Tab;
 import javafx.scene.layout.VBox;
 
 public class TabWelcome extends Tab {
-	public TabWelcome(VBox vboxGrey) {
+	
+	public TabWelcome(VBox vboxGrey) {  // check box welcome
 		super();
 		setText("Welcome");
 		
