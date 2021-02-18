@@ -1215,10 +1215,11 @@ public class SqlSelect {
 		ResultSet rs;
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
-			rs = stmt.executeQuery("select count(*) from membership where active_membership = true and mem_type='" + type + "'");
+			rs = stmt.executeQuery("select count(*) from membership m "
+					+ "inner join membership_id id on m.ms_id=id.ms_id "
+					+ "where id.fiscal_year='" + Paths.getYear() + "' and id.mem_type='" + type + "' and id.renew=true;");
 			rs.next();
 			number = rs.getInt("count(*)");
-		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -1226,14 +1227,15 @@ public class SqlSelect {
 		return number;
 	}
 	
-	//
-	
 	public static int getActivePeopleCount() {  // gives the last memo_id number
 		int number = 0;
 		ResultSet rs;
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
-			rs = stmt.executeQuery("select count(*) from membership m inner join person p on m.ms_id = p.ms_id where m.ACTIVE_MEMBERSHIP=true;");
+			rs = stmt.executeQuery("select count(*) from person p "
+					+ "inner join membership m on m.ms_id=p.ms_id "
+					+ "left join membership_id id on id.ms_id=m.ms_id "
+					+ "where id.fiscal_year='" + Paths.getYear() + "' and id.renew=true");
 			rs.next();
 			number = rs.getInt("count(*)");
 		
