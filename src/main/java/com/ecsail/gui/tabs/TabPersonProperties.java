@@ -106,26 +106,29 @@ public class TabPersonProperties extends Tab {
 	
 	///////////////// CLASS METHODS /////////////////////
 	
-	//private int getPid(int type) {
-	//	int pid = 0;
-	//	ObservableList<Object_Person> members = SqlSelect.getPeople(person.getMs_id());
-    //	for(Object_Person per: members) {
-    //		if(per.getMemberType() == type) // here is our current primary
-    //			pid = per.getP_id();
-    //	}
-	//	return pid;
-	//}
-	
+
 	private void removeTab(TabPane personTabPane) {
-		String tabName = "";
-		Tab thisPersonTab = null;
-		if(person.getMemberType() == 1) tabName = "Primary Member";
-		if(person.getMemberType() == 2) tabName = "Secondary";
-		if(person.getMemberType() == 3) tabName = "Dependent";
-		for(Tab t: personTabPane.getTabs()) {
-			if(t.getText().equals(tabName)) 
-				thisPersonTab = t;
-		}
+		Tab thisPersonTab = personTabPane.getSelectionModel().getSelectedItem();
 		personTabPane.getTabs().remove(thisPersonTab);
 	}
+	
+
+	////// two methods below are interesting but not used ///////////
+	//public static ArrayList<Node> getAllNodes(Parent root) {
+	//    ArrayList<Node> nodes = new ArrayList<Node>();
+	//    addAllDescendents(root, nodes);
+	//    return nodes;
+	//}
+	
+	//private static void addAllDescendents(Parent parent, ArrayList<Node> nodes) {
+	//    for (Node node : parent.getChildrenUnmodifiable()) {
+	//        nodes.add(node);
+	//        if (node instanceof Parent) {
+	//        	//if (node instanceof TextField) {
+	//            addAllDescendents((Parent)node, nodes);
+	//            System.out.println("node = " + node);
+	//        	//}
+	//        }
+	//    }
+	//}
 }
