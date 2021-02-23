@@ -21,7 +21,7 @@ public class SQL_SelectMembership {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor(
-					"Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,m.JOIN_DATE,m.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip "
+					"Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,m.JOIN_DATE,id.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip "
 							+ "from slip s "
 							+ "right join membership m on m.MS_ID=s.MS_ID "
 							+ "left join membership_id id on m.MS_ID=id.MS_ID "
@@ -58,7 +58,7 @@ public class SQL_SelectMembership {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor(
-					"Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,m.JOIN_DATE,m.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip "
+					"Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,m.JOIN_DATE,id.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip "
 							+ "from slip s "
 							+ "right join membership m on m.MS_ID=s.MS_ID "
 							+ "left join membership_id id on m.MS_ID=id.MS_ID "
@@ -95,7 +95,7 @@ public class SQL_SelectMembership {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor(
-					"Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,m.JOIN_DATE,m.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip "
+					"Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,m.JOIN_DATE,id.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip "
 					+ "from slip s "
 					+ "inner join membership m on s.ms_id=m.ms_id "
 					+ "left join membership_id id on m.MS_ID=id.MS_ID "
@@ -132,7 +132,7 @@ public class SQL_SelectMembership {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor(
-					"Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,m.JOIN_DATE,m.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip from slip s "
+					"Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,m.JOIN_DATE,id.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip from slip s "
 					+ "inner join membership m on s.ms_id=m.ms_id "
 					+ "left join membership_id id on m.MS_ID=id.MS_ID "
 					+ "left join person p on p.MS_ID=s.subleased_to "
@@ -268,7 +268,7 @@ public class SQL_SelectMembership {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor(
-					"Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,m.JOIN_DATE,m.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip "
+					"Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,m.JOIN_DATE,id.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip "
 							+ "from slip s inner join membership m on s.ms_id=m.ms_id inner join membership_id id on id.ms_id=m.ms_id "
 							+ "inner join person p on p.p_id=m.p_id where id.fiscal_year="+year));
 			while (rs.next()) {
@@ -301,7 +301,7 @@ public class SQL_SelectMembership {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor(
-					"Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,m.JOIN_DATE,m.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip "
+					"Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,m.JOIN_DATE,id.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip "
 					+ "from waitlist w "
 					+ "inner join membership m on w.ms_id=m.ms_id "
 					+ "left join membership_id id on m.MS_ID=id.MS_ID "
@@ -338,7 +338,7 @@ public class SQL_SelectMembership {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor(
-					"select id.membership_id, m.JOIN_DATE, m.MEM_TYPE, m.ADDRESS, "
+					"select id.membership_id, m.JOIN_DATE, id.MEM_TYPE, m.ADDRESS, "
 					+ "m.CITY, m.state,m.zip, m.p_id, p.l_name, p.f_name,m.MS_ID from membership m "
 					+ "inner join person p on m.p_id=p.p_id "
 					+ "inner join membership_id id on id.ms_id=m.ms_id "
@@ -375,7 +375,7 @@ public class SQL_SelectMembership {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor(
-					"select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,m.JOIN_DATE,m.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip "
+					"select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,m.JOIN_DATE,id.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip "
 					+ "from membership_id id left join membership m on m.MS_ID=id.MS_ID "
 					+ "left join person p on p.P_ID=m.P_ID left join slip s on s.MS_ID=m.MS_ID "
 					+ "where id.FISCAL_YEAR='" + year + "' and id.MEMBERSHIP_ID > ("
