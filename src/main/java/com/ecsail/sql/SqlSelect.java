@@ -1423,8 +1423,8 @@ public class SqlSelect {
 			rs.next();
 			renew = rs.getBoolean("RENEW");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("membership id record does not exist for ms_id " + ms_id + " for year " + year);
+			//e.printStackTrace();
 		}
 		return renew;	
 	}
