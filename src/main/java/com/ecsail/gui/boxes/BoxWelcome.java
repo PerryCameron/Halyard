@@ -32,7 +32,7 @@ public class BoxWelcome extends HBox {
 		
 		int activeMembership = SqlSelect.getActiveMembershipCount(Paths.getYear());
 		int activePeople = SqlSelect.getActivePeopleCount();
-		int familyMembership = SqlSelect.getMembershipTypeCount("FM");
+		//int familyMembership = SqlSelect.getMembershipTypeCount("FM");
 		Text activeText = new Text("There are currently " + activeMembership + " active memberships");
 		Text familyMembershipText = new Text("	-" + SqlSelect.getMembershipTypeCount("FM") + " family memberships");
 		Text regularMembershipText = new Text("	-" + SqlSelect.getMembershipTypeCount("RM") + " regular memberships");
