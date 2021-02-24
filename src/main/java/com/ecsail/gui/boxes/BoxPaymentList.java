@@ -33,7 +33,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-public class BoxFiscalList extends HBox {
+public class BoxPaymentList extends HBox {
 	
 	private static ObservableList<Object_Money> fiscals = null;
 	private static TabPane parentTabPane;
@@ -44,14 +44,14 @@ public class BoxFiscalList extends HBox {
 	
 	String currentYear;
 	@SuppressWarnings("unchecked")
-	public BoxFiscalList(Object_Membership membership, TabPane t, ObservableList<Object_Person> p, Note n, TextField dt) {
+	public BoxPaymentList(Object_Membership membership, TabPane t, ObservableList<Object_Person> p, Note n, TextField dt) {
 		super();
-		BoxFiscalList.membership = membership;
+		BoxPaymentList.membership = membership;
 		this.currentYear = new SimpleDateFormat("yyyy").format(new Date());
-		BoxFiscalList.duesText = dt;
-		BoxFiscalList.note = n;
-		BoxFiscalList.parentTabPane = t;
-		BoxFiscalList.people = p;
+		BoxPaymentList.duesText = dt;
+		BoxPaymentList.note = n;
+		BoxPaymentList.parentTabPane = t;
+		BoxPaymentList.people = p;
 		VBox vboxGrey = new VBox();  // this is the vbox for organizing all the widgets
         HBox hbox1 = new HBox();  // holds membershipID, Type and Active
         HBox deleteButtonHBox = new HBox();
@@ -59,7 +59,7 @@ public class BoxFiscalList extends HBox {
 		Button deleteFiscalRecord = new Button("Delete");
 		final Spinner<Integer> yearSpinner = new Spinner<Integer>();
 		SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 2100, Integer.parseInt(currentYear));
-		BoxFiscalList.fiscals = SqlSelect.getMonies(membership.getMsid());
+		BoxPaymentList.fiscals = SqlSelect.getMonies(membership.getMsid());
 		Boolean currentFiscalRecordExists = SqlExists.moneyExists(currentYear,membership);
 		Object_DefinedFee definedFees = SqlSelect.selectDefinedFees(Integer.parseInt(currentYear));
 		
