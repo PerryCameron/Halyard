@@ -12,15 +12,17 @@ public class Object_MembershipList extends Object_Membership {
 	private StringProperty slip;
 	private IntegerProperty subleaser;
 	private IntegerProperty membershipId;
+	private StringProperty selectedYear;
 	
 	public Object_MembershipList(Integer msid, Integer pid, Integer membershipId, String joinDate, String memType,
-			String slip, String lname, String fname, Integer subleaser, String address, String city, String state, String zip) {
+			String slip, String lname, String fname, Integer subleaser, String address, String city, String state, String zip, String selectedYear) {
 		super(msid, pid, joinDate, memType, address, city, state, zip);
 		this.lname = new SimpleStringProperty(lname);
 		this.fname = new SimpleStringProperty(fname);
 		this.slip = new SimpleStringProperty(slip);
 		this.subleaser = new SimpleIntegerProperty(subleaser);
 		this.membershipId = new SimpleIntegerProperty(membershipId);
+		this.selectedYear = new SimpleStringProperty(selectedYear);
 	}
 
 	
@@ -147,19 +149,37 @@ public class Object_MembershipList extends Object_Membership {
 		this.membershipIdProperty().set(membershipId);
 	}
 
+	public final StringProperty selectedYearProperty() {
+		return this.selectedYear;
+	}
+	
+
+
+
+	public final String getSelectedYear() {
+		return this.selectedYearProperty().get();
+	}
+	
+
+
+
+	public final void setSelectedYear(final String selectedYear) {
+		this.selectedYearProperty().set(selectedYear);
+	}
+
 
 
 	@Override
 	public String toString() {
 		return "Object_MembershipList [lname=" + lname + ", fname=" + fname + ", slip=" + slip + ", subleaser="
-				+ subleaser + ", membershipId=" + membershipId + ", msidProperty()=" + msidProperty() + ", getMsid()="
-				+ getMsid() + ", pidProperty()=" + pidProperty() + ", getPid()=" + getPid() + ", joinDateProperty()="
-				+ joinDateProperty() + ", getJoinDate()=" + getJoinDate() + ", memTypeProperty()=" + memTypeProperty()
-				+ ", getMemType()=" + getMemType() + ", addressProperty()=" + addressProperty() + ", getAddress()="
-				+ getAddress() + ", cityProperty()=" + cityProperty() + ", getCity()=" + getCity()
-				+ ", stateProperty()=" + stateProperty() + ", getState()=" + getState() + ", zipProperty()="
-				+ zipProperty() + ", getZip()=" + getZip() + ", toString()=" + super.toString() + ", getClass()="
-				+ getClass() + ", hashCode()=" + hashCode() + "]";
+				+ subleaser + ", membershipId=" + membershipId + ", selectedYear=" + selectedYear + ", msidProperty()="
+				+ msidProperty() + ", getMsid()=" + getMsid() + ", pidProperty()=" + pidProperty() + ", getPid()="
+				+ getPid() + ", joinDateProperty()=" + joinDateProperty() + ", getJoinDate()=" + getJoinDate()
+				+ ", memTypeProperty()=" + memTypeProperty() + ", getMemType()=" + getMemType() + ", addressProperty()="
+				+ addressProperty() + ", getAddress()=" + getAddress() + ", cityProperty()=" + cityProperty()
+				+ ", getCity()=" + getCity() + ", stateProperty()=" + stateProperty() + ", getState()=" + getState()
+				+ ", zipProperty()=" + zipProperty() + ", getZip()=" + getZip() + ", toString()=" + super.toString()
+				+ ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + "]";
 	}
 
 }

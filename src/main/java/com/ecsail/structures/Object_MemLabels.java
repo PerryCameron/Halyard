@@ -8,12 +8,14 @@ public class Object_MemLabels {
     private Label memberID;
     private Label memberType;
     private Label status;
+    private Label selectedYear;
     
 	public Object_MemLabels() {
 		this.joinDate = new Label();
 		this.memberID = new Label();
 		this.memberType = new Label();
 		this.status = new Label();
+		this.selectedYear = new Label();
 	}
 	
 	public Label getJoinDate() {
@@ -46,6 +48,14 @@ public class Object_MemLabels {
 
 	public void setStatus(Label status) {
 		this.status = status;
+	}
+
+	public Label getSelectedYear() {
+		return selectedYear;
+	}
+
+	public void setSelectedYear(Label selectedYear) {
+		this.selectedYear = selectedYear;
 	}
 
 }

@@ -46,7 +46,7 @@ public class CreateMembership {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		LocalDateTime now = LocalDateTime.now(); 
 		String date = dtf.format(now);
-		Object_MembershipList newMembership = new Object_MembershipList(ms_id, pid, membership_id, date, "FM", "", "", "", 0, "", "", "", "");
+		Object_MembershipList newMembership = new Object_MembershipList(ms_id, pid, membership_id, date, "FM", "", "", "", 0, "", "", "", "", Paths.getYear());
 		if(SqlInsert.addMembershipIsSucessful(newMembership)) {
 			newMemNote.addMemo(new Object_Memo(note_id,ms_id, date, "Created new membership record",0,"N"));  // adds a note that the membership was created.
 			Main.activememberships.add(newMembership);
