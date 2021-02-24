@@ -172,7 +172,7 @@ public class SQL_SelectMembership {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
 					"Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,id.FISCAL_YEAR,m.JOIN_DATE,"
-					+ "m.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,"
+					+ "id.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,"
 					+ "m.zip from slip s right join membership m on m.MS_ID=s.MS_ID left join membership_id "
 					+ "id on m.MS_ID=id.MS_ID left join person p on p.MS_ID=m.MS_ID where id.FISCAL_YEAR='" + year + "' "
 					+ "and m.ms_id=" + ms_id));
@@ -207,7 +207,7 @@ public class SQL_SelectMembership {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
 					"Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,id.FISCAL_YEAR,m.JOIN_DATE,"
-					+ "m.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,"
+					+ "id.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,"
 					+ "m.zip from slip s right join membership m on m.MS_ID=s.MS_ID left join membership_id "
 					+ "id on m.MS_ID=id.MS_ID left join person p on p.MS_ID=m.MS_ID where id.FISCAL_YEAR='" + year + "' "
 					+ "and p.MEMBER_TYPE=1 and m.ms_id=" + ms_id));
@@ -241,7 +241,7 @@ public class SQL_SelectMembership {
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
-					"Select m.MS_ID,m.P_ID,m.JOIN_DATE,m.MEM_TYPE,s.SLIP_NUM,p.L_NAME,"
+					"Select m.MS_ID,m.P_ID,m.JOIN_DATE,id.MEM_TYPE,s.SLIP_NUM,p.L_NAME,"
 					+ "p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip from slip s right join "
 					+ "membership m on m.MS_ID=s.MS_ID left join person p on p.MS_ID=m.MS_ID where m.ms_id=" + ms_id));
 			while (rs.next()) {
