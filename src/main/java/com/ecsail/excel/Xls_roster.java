@@ -77,7 +77,9 @@ public class Xls_roster {
         FileOutputStream fileOut = null;
 
 		try {
-			fileOut = new FileOutputStream(getFileName());
+			String filename = getFileName();
+			fileOut = new FileOutputStream(filename);
+			System.out.println("Creating " + filename);
 		} catch (FileNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
