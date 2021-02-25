@@ -57,7 +57,7 @@ public class BoxMembership extends HBox {
         hbox4.setAlignment(Pos.CENTER_LEFT);
         hbox5.setAlignment(Pos.CENTER_LEFT);
     
-        getChildren().addAll(hbox5,hbox1,hbox2,hbox3,hbox4);
+        getChildren().addAll(hbox5,hbox1,hbox2,hbox3);
         
 	} // CONSTRUCTOR END
 	
