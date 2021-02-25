@@ -243,16 +243,21 @@ public class PDF_DepositReport {
 		
 		if(dues.getDues() != 0) addItemRow(detailTable, "Annual Dues", dues.getDues(),0);
 		if(dues.getWinter_storage() != 0) addItemRow(detailTable, "Winter Storage Fee", dues.getWinter_storage() * currentDefinedFee.getWinter_storage(), dues.getWinter_storage());
+		//// access ////
 		if(dues.getWet_slip() != 0) addItemRow(detailTable, "Wet Slip Fee", dues.getWet_slip(),retrunWetSlipNumber(dues.getWet_slip()));
 		if(dues.getBeach() != 0) addItemRow(detailTable, "Beach Spot Fee", dues.getBeach() * currentDefinedFee.getBeach(), dues.getBeach());
 		if(dues.getKayac_rack() != 0) addItemRow(detailTable, "Kayak Rack Fee", dues.getKayac_rack() * currentDefinedFee.getKayak_rack(), dues.getKayac_rack());
 		if(dues.getKayac_shed() != 0) addItemRow(detailTable, "Kayak Inside Storage Fee", dues.getKayac_shed() * currentDefinedFee.getKayak_shed(), dues.getKayac_shed());
 		if(dues.getSail_loft() != 0) addItemRow(detailTable, "Sail Loft Access Fee", dues.getSail_loft()* currentDefinedFee.getSail_loft(), dues.getSail_loft());
-		if(dues.getInitiation() != 0) addItemRow(detailTable, "Initiation Fee", dues.getInitiation(), 0);
+		if(dues.getSail_school_laser_loft() != 0) addItemRow(detailTable, "Sail School Loft Acess", dues.getSail_school_laser_loft() * currentDefinedFee.getSail_school_laser_loft(), dues.getSail_school_laser_loft());
+
+		//// keys ////
 		if(dues.getExtra_key() != 0) addItemRow(detailTable, "Extra Gate Key Fee", dues.getExtra_key() * currentDefinedFee.getMain_gate_key(), dues.getExtra_key());
-		if(dues.getSail_loft_key() != 0) addItemRow(detailTable, "Extra Sail Loft Key Fee", dues.getSail_loft_key()* currentDefinedFee.getSail_loft_key(), dues.getSail_loft_key());
-		if(dues.getSail_school_laser_loft() != 0) addItemRow(detailTable, "Extra Sail School Loft Key Fee", dues.getSail_school_laser_loft() * currentDefinedFee.getSail_school_laser_loft(), dues.getSail_school_laser_loft());
+		if(dues.getSail_school_loft_key() != 0) addItemRow(detailTable, "Extra Sail School Loft Key Fee", dues.getSail_school_loft_key() * currentDefinedFee.getSail_school_loft_key(), dues.getSail_school_loft_key());
 		if(dues.getKayac_shed_key() != 0) addItemRow(detailTable, "Extra Inside Storage Key", dues.getKayac_shed_key() * currentDefinedFee.getKayak_shed_key(), dues.getKayac_shed_key());
+		if(dues.getSail_loft_key() != 0) addItemRow(detailTable, "Extra Sail Loft Key Fee", dues.getSail_loft_key()* currentDefinedFee.getSail_loft_key(), dues.getSail_loft_key());
+
+		if(dues.getInitiation() != 0) addItemRow(detailTable, "Initiation Fee", dues.getInitiation(), 0);
 		if(dues.getYsc_donation() != 0) addItemRow(detailTable, "Youth Sailing Club Donation", dues.getYsc_donation(), 0);
 		if(dues.getOther() != 0) addItemRow(detailTable, "Other: " + getOtherNote(dues) , dues.getOther(),0);
 		addItemRow(detailTable, "Total Fees", dues.getTotal(),0);
