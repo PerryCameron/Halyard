@@ -384,7 +384,7 @@ public class PDF_DepositReport {
 			addSummaryRow(mainTable, "Sail Loft Access Fee" , totals.getSail_loftNumber(), totals.getSail_loft());
 		}
 		if (totals.getSail_school_laser_loft() != 0) {
-			addSummaryRow(mainTable, "Sail School Loft Access Fee" , totals.getSail_school_loft_keyNumber(), totals.getSail_school_loft_key());
+			addSummaryRow(mainTable, "Sail School Loft Access Fee" , totals.getSail_school_laser_loftNumber(), totals.getSail_school_laser_loft());
 		}
 		if (totals.getInitiation() != 0) {
 			addSummaryRow(mainTable, "Initiation Fee" , totals.getInitiationNumber(), totals.getInitiation());
@@ -508,6 +508,7 @@ public class PDF_DepositReport {
 			if (d.getSail_school_laser_loft() != 0) {  ///////// SAIL SCHOOL LOFT ACCESS ///////// IN NUMBER OF
 				t.setSail_school_laser_loftNumber(d.getSail_school_laser_loft() + t.getSail_school_laser_loftNumber());
 				int totalSailSchoolLoftDollars = currentDefinedFee.getSail_school_laser_loft() * d.getSail_school_laser_loft();
+				System.out.println("Sail school laser loft=" + totalSailSchoolLoftDollars);
 				t.setSail_school_laser_loft(totalSailSchoolLoftDollars + t.getSail_school_laser_loft());
 			}
 			if (d.getSail_school_loft_key() != 0) {  ////////// SAIL SCHOOL LOFT KEY ///////// IN NUMBER OF
