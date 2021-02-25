@@ -383,6 +383,9 @@ public class PDF_DepositReport {
 		if (totals.getSail_loft() != 0) {
 			addSummaryRow(mainTable, "Sail Loft Access Fee" , totals.getSail_loftNumber(), totals.getSail_loft());
 		}
+		if (totals.getSail_school_laser_loft() != 0) {
+			addSummaryRow(mainTable, "Sail School Loft Access Fee" , totals.getSail_school_loft_keyNumber(), totals.getSail_school_loft_key());
+		}
 		if (totals.getInitiation() != 0) {
 			addSummaryRow(mainTable, "Initiation Fee" , totals.getInitiationNumber(), totals.getInitiation());
 		}
@@ -597,7 +600,5 @@ public class PDF_DepositReport {
 		}
 		return os.toByteArray();
 	}
-	
-	
 	
 }
