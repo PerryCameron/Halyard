@@ -102,7 +102,7 @@ public class SQL_SelectMembership {
 					+ "inner join membership m on s.ms_id=m.ms_id "
 					+ "left join membership_id id on m.MS_ID=id.MS_ID "
 					+ "left join person p on p.MS_ID=m.MS_ID "
-					+ "group by m.ms_id"));
+					+ "where p.MEMBER_TYPE=1 and FISCAL_YEAR="+ Paths.getYear()));
 			while (rs.next()) {
 				rosters.add(new Object_MembershipList(
 						rs.getInt("MS_ID"), 
@@ -139,7 +139,7 @@ public class SQL_SelectMembership {
 					+ "inner join membership m on s.ms_id=m.ms_id "
 					+ "left join membership_id id on m.MS_ID=id.MS_ID "
 					+ "left join person p on p.MS_ID=s.subleased_to "
-					+ "where subleased_to IS NOT NULL group by m.ms_id;"));
+					+ "where subleased_to IS NOT NULL and p.MEMBER_TYPE=1 and FISCAL_YEAR="+ Paths.getYear()));
 			while (rs.next()) {
 				rosters.add(new Object_MembershipList(
 						rs.getInt("MS_ID"), 
@@ -316,7 +316,7 @@ public class SQL_SelectMembership {
 					+ "left join membership_id id on m.MS_ID=id.MS_ID "
 					+ "left join person p on p.MS_ID=m.MS_ID "
 					+ "left join slip s on s.MS_ID=m.MS_ID "
-					+ "where " + waitlist + "=true and id.fiscal_year='" + Paths.getYear() + "' group by m.ms_id"));
+					+ "where " + waitlist + "=true and id.fiscal_year='" + Paths.getYear() + "' and p.MEMBER_TYPE=1"));
 			while (rs.next()) {
 				rosters.add(new Object_MembershipList(
 						rs.getInt("MS_ID"), 
