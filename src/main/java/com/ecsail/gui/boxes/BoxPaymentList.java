@@ -1,6 +1,7 @@
 package com.ecsail.gui.boxes;
 
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 
 import com.ecsail.main.Note;
@@ -66,6 +67,8 @@ public class BoxPaymentList extends HBox {
 		if(!currentFiscalRecordExists) {
 			createCurrentFiscalRecord(definedFees);  // if no money records exist, create one
 		} 
+		
+		Collections.sort(BoxPaymentList.fiscals, (p1,p2) -> Integer.compare(p2.getFiscal_year(), (p1.getFiscal_year())));
 		
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
 		TableView<Object_Money> fiscalTableView = new TableView<Object_Money>();

@@ -44,7 +44,8 @@ public class TabSlips extends Tab {
 	private Text d2 = null ,d1 = null ,a3= null  ,b55= null ,b56= null ,c119= null ,c118 = null;
 	private Text a2= null  ,b53 = null ,b54= null ,c117= null ,c116 = null;
 	private Text a1= null  ,b51 = null ,b52= null ,c115= null ,c114 = null;
-	private Text f6= null  ,f5 = null ,f4= null ,f3= null ,f2 = null,f1 = null;
+	//private Text f6= null  ,f5 = null ,f4= null ,f3= null ,f2 = null,f1 = null;
+	private Text f6= null  ,f5 = null ,f4= null ,f3= null ,f2 = null;
 	private Text b50= null, b48= null, h482= null, h483= null, h484= null, h485 = null;
 	
 	private int col1 = 20;
@@ -81,7 +82,7 @@ public class TabSlips extends Tab {
 	private int row23 = row21 + 42; // b50
 	private int row24 = row22 + 42; // b48
 	
-	Rotate rotatef1 = new Rotate();
+	//Rotate rotatef1 = new Rotate();
 	Rotate rotatef2 = new Rotate();
 	Rotate rotatef3 = new Rotate();
 	Rotate rotatef4 = new Rotate();
@@ -121,7 +122,7 @@ public class TabSlips extends Tab {
 		vboxPink.setId("box-pink");
 		vboxGrey.setId("slip-box");
 		vboxGrey.setPrefHeight(688);
-		rotatef1.setAngle(314);
+		//rotatef1.setAngle(314);
 		rotatef2.setAngle(314);
 		rotatef3.setAngle(314);
 		rotatef4.setAngle(314);
@@ -162,7 +163,8 @@ public class TabSlips extends Tab {
 		screenPane.getChildren().addAll(a2,b53,b54,c117,c116);
 		screenPane.getChildren().addAll(a1,b51,b52,c115,c114);
 		screenPane.getChildren().addAll(b48,b50);
-		screenPane.getChildren().addAll(f1,f2,f3,f4,f5,f6);
+		//screenPane.getChildren().addAll(f1,f2,f3,f4,f5,f6);
+		screenPane.getChildren().addAll(f3,f4,f5,f6);
 		screenPane.getChildren().addAll(h482,h483,h484,h485);
 	}
 
@@ -864,20 +866,20 @@ public class TabSlips extends Tab {
 					f3.getTransforms().addAll(rotatef3);
 					setMouseListener(f3, mem.getMsid(), mem.getSubleaser());
 					break;
-				case "F02":
-					rotatef2.setPivotX(234); 
-				    rotatef2.setPivotY(570);
-					f2 = getLastName(234,570, "F02", mem.getLname(), mem.getSubleaser());
-					f2.getTransforms().addAll(rotatef2);
-					setMouseListener(f2, mem.getMsid(), mem.getSubleaser());
-					break;
-				case "F01":
-					rotatef1.setPivotX(252); 
-				    rotatef1.setPivotY(588);
-					f1 = getLastName(252,588, "F01", mem.getLname(), mem.getSubleaser());
-					f1.getTransforms().addAll(rotatef1);
-					setMouseListener(f1, mem.getMsid(), mem.getSubleaser());
-					break;
+			//	case "F02":
+			//		rotatef2.setPivotX(234); 
+			//	    rotatef2.setPivotY(570);
+			//		f2 = getLastName(234,570, "F02", mem.getLname(), mem.getSubleaser());
+			//		f2.getTransforms().addAll(rotatef2);
+			//		setMouseListener(f2, mem.getMsid(), mem.getSubleaser());
+			//		break;
+			//	case "F01":
+			//		rotatef1.setPivotX(252); 
+			//	    rotatef1.setPivotY(588);
+			//		f1 = getLastName(252,588, "F01", mem.getLname(), mem.getSubleaser());
+			//		f1.getTransforms().addAll(rotatef1);
+			//		setMouseListener(f1, mem.getMsid(), mem.getSubleaser());
+			//		break;
 				default:  
 					break;
 				}
@@ -885,6 +887,8 @@ public class TabSlips extends Tab {
 		}
 	}
 	
+	//h485 = new Text(299,624, "48 Hour dock");
+	//h485.setRotate(-45);
 
 	private Text getLastName(int col, int row, String slip, String lName, int subleaser) {
 		Text returnText = null;

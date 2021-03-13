@@ -2,6 +2,7 @@ package com.ecsail.gui.tabs;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.function.Function;
 
@@ -47,11 +48,12 @@ public class TabPayment extends Tab {
 		this.fiscalRecord = m;
 		this.balanceTextField = o;
 		System.out.println("Started Payment tab with money_id=" + fiscalRecord.getMoney_id());
+		/// does a payment exist
 		if(SqlExists.paymentExists(fiscalRecord.getMoney_id())) {
 			this.payments = SqlSelect.getPayments(fiscalRecord.getMoney_id());
 			System.out.println("A record for money_id=" + fiscalRecord.getMoney_id() + " exists. Opening Payment");
 			// pull up payments from database
-		} else {
+		} else {  // if not create one
 			this.payments = FXCollections.observableArrayList();
 			System.out.println("Creating a new entry");
 			int pay_id = SqlSelect.getNumberOfPayments() + 1;
@@ -59,6 +61,8 @@ public class TabPayment extends Tab {
 			SqlInsert.addRecord(payments.get(payments.size() - 1));
 			System.out.println(payments.get(0).toString());
 		}
+		
+		
 		VBox vboxGrey = new VBox();  // this is the vbox for organizing all the widgets
 		VBox vboxBlue = new VBox();
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
