@@ -49,8 +49,13 @@ public class PDF_Envelope {
 		Paths.checkPath(Paths.EMAILLIST);
 		this.current_membership_id = membership_id;
 		this.isOneMembership = iom;
-		
+
+		if(System.getProperty("os.name").equals("Windows 10"))
 		FontProgramFactory.registerFont("c:/windows/fonts/times.ttf", "times");
+		else if(System.getProperty("os.name").equals("Mac OS X"))
+		FontProgramFactory.registerFont("/Library/Fonts/SF-Compact-Display-Regular.otf", "times");
+			
+		
 		this.font = PdfFontFactory.createRegisteredFont("times");
 		// Initialize PDF writer
 		
