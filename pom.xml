@@ -2,25 +2,44 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>ECSC</groupId>
-	<artifactId>ECSC</artifactId>
-	<version>0.0.72-SNAPSHOT</version>
+	<groupId>com.eaglecreeksailing</groupId>
+	<artifactId>ecsc-membership-app</artifactId>
+	<version>0.0.75-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	</properties>
 	
-		<dependencies>
+	  <!-- More Project Information -->
+  <name>ECSC Database</name>
+  <description>An application for maintaining a membership database.  Features include:
+1) Storage of memberships and access to all memberships including all past memberships.
+2) Management of payments, deposits, and reports.
+3) Envelope printer
+4) Management of boats and slips, and waiting lists.
+5) Easily make all sorts of lists, with easy export to excell.
+6) Stores historical records, such as payments, membership type, and number.
+7) Maintains a list of all Officers including a historical view of all Board of Directors.</description>
+  <url>www.eaglecreeksailing.com</url>
+  <inceptionYear>2020</inceptionYear>
+
+
+	
+	<dependencies>
 		<!-- https://mvnrepository.com/artifact/com.jcraft/jsch -->
 		<dependency>
-    	<groupId>com.jcraft</groupId>
-    	<artifactId>jsch</artifactId>
-   		 <version>0.1.55</version>
+			<groupId>com.jcraft</groupId>
+			<artifactId>jsch</artifactId>
+			<version>0.1.55</version>
 		</dependency>
-	
+
 		<dependency>
-    	<groupId>javax.mail</groupId>
-   		 <artifactId>mail</artifactId>
-   		 <version>1.4.7</version>
-        </dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4.7</version>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
 		<dependency>
 			<groupId>mysql</groupId>
@@ -36,9 +55,9 @@
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.itextpdf/layout -->
 		<dependency>
-    		<groupId>com.itextpdf</groupId>
-    		<artifactId>layout</artifactId>
-    		<version>7.1.13</version>
+			<groupId>com.itextpdf</groupId>
+			<artifactId>layout</artifactId>
+			<version>7.1.13</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
 		<dependency>
@@ -55,6 +74,12 @@
 	</dependencies>
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.9.1</version>
+			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -107,4 +132,8 @@
 			</plugin>
 		</plugins>
 	</build>
+	<organization>
+		<name>Eagle Creek Sailing Club</name>
+		<url>www.ecsail.org</url>
+	</organization>
 </project>
