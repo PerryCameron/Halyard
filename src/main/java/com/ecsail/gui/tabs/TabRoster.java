@@ -474,6 +474,37 @@ public class TabRoster extends Tab {
 	  		    }
 	  		});
 	  		
+	  		rb.getRadioShedOwner().selectedProperty().addListener(new ChangeListener<Boolean>() {
+	  		    @Override
+	  		    public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected, Boolean isNowSelected) {
+	  		        if (isNowSelected) { 
+	  		        	setListType("shedowners");
+	  		            rosters.clear();
+	  		            rosters.addAll(SQL_SelectMembership.getRosterOfKayakShedOwners(Paths.getYear()));
+	  		          records.setText(rosters.size() + " Records");
+	  		        rosterTableView.sort();
+	  		        } else {
+	  		            // ...
+	  		        }
+	  		    }
+	  		});
+	  		
+	  		rb.getRadioKayakRackOwners().selectedProperty().addListener(new ChangeListener<Boolean>() {
+	  		    @Override
+	  		    public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected, Boolean isNowSelected) {
+	  		        if (isNowSelected) { 
+	  		        	setListType("rackowners");
+	  		            rosters.clear();
+	  		            rosters.addAll(SQL_SelectMembership.getRosterOfKayakRackOwners(Paths.getYear()));
+	  		          records.setText(rosters.size() + " Records");
+	  		        rosterTableView.sort();
+	  		        System.out.println("Roster of those with a kayak rack");
+	  		        } else {
+	  		            // ...
+	  		        }
+	  		    }
+	  		});
+	  		
 	  		titledPane.expandedProperty().addListener((obs, wasExpanded, isNowExpanded) -> {
 	  		        if (isNowExpanded) {
 	  		        	//System.out.println("Title Pane Expanded");
