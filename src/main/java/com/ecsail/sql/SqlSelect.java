@@ -19,6 +19,7 @@ import com.ecsail.structures.Object_Email_Information;
 import com.ecsail.structures.Object_Membership;
 import com.ecsail.structures.Object_MembershipId;
 import com.ecsail.structures.Object_Memo;
+import com.ecsail.structures.Object_Memo2;
 import com.ecsail.structures.Object_Money;
 import com.ecsail.structures.Object_Officer;
 import com.ecsail.structures.Object_PaidDues;
@@ -547,6 +548,32 @@ public class SqlSelect {
 			rs = stmt.executeQuery(query + ";");
 			while (rs.next()) {
 				theseMemos.add(new Object_Memo( // why do I keep gettin a nullpointer exception here?
+						rs.getInt("MEMO_ID"), 
+						rs.getInt("MS_ID"), 
+						rs.getString("MEMO_DATE"), 
+						rs.getString("MEMO"),
+						rs.getInt("MONEY_ID"),
+						rs.getString("CATEGORY")));
+			}
+			return theseMemos;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return theseMemos;
+	}
+	
+	public static ObservableList<Object_Memo2> getAllMemosForTabNotes(String year) {
+		ObservableList<Object_Memo2> theseMemos = FXCollections.observableArrayList();
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs;
+			rs = stmt.executeQuery("select * from memo \n"
+					+ "left join membership_id id on memo.ms_id=id.ms_id\n"
+					+ "where year(memo_date)='"+year+"' and id.fiscal_year='"+year+"';");
+			while (rs.next()) {
+				theseMemos.add(new Object_Memo2( // why do I keep gettin a nullpointer exception here?
+						rs.getString("MEMBERSHIP_ID"),
 						rs.getInt("MEMO_ID"), 
 						rs.getInt("MS_ID"), 
 						rs.getString("MEMO_DATE"), 
