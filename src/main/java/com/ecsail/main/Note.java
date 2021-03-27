@@ -3,7 +3,8 @@ package com.ecsail.main;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
+import java.util.Collections;
+import java.util.Comparator;
 import com.ecsail.sql.SqlDelete;
 import com.ecsail.sql.SqlInsert;
 import com.ecsail.sql.SqlUpdate;
@@ -19,6 +20,8 @@ public class Note {
 		super();
 		this.memos = memos;
 		this.msid = m;
+		//Collections.sort(memos, (p1,p2) -> p1.getMemo_date().compareTo(p2.getMemo_date()));
+		Collections.sort(memos, Comparator.comparing(Object_Memo::getMemo_date).reversed());
 	}
 	
 	public Note() { // overload
