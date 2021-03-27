@@ -10,6 +10,7 @@ import com.ecsail.main.Note;
 import com.ecsail.structures.Object_Memo;
 
 import javafx.beans.property.StringProperty;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -47,6 +48,9 @@ public class BoxNotes extends HBox {
 		setPadding(new Insets(5, 5, 5, 5));  // creates space for blue frame
 		setId("box-blue");
 		hboxGrey.setPrefWidth(942);
+		
+		
+		
 		
 		TableView<Object_Memo> memoTableView = new TableView<Object_Memo>();
 		memoTableView.setEditable(true);
