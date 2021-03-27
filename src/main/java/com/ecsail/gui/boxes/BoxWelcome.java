@@ -51,6 +51,7 @@ public class BoxWelcome extends HBox {
 		lifeMembershipText.setStyle("-fx-font: 12 Helvetica;");
 		activepeopleText.setStyle("-fx-font: 14 Helvetica;");
 		
+		vboxLeft.setPrefWidth(570);
 		notesButton.setId("bigbuttontext");
 		boatsButton.setId("bigbuttontext");
 		newButton.setId("bigbuttontext");
@@ -61,7 +62,7 @@ public class BoxWelcome extends HBox {
 		rosterButton.setId("bigbuttontext");
 		activeText.setId("");
 		vboxRight.setSpacing(10);
-		vboxRight.setPadding(new Insets(30,0,0,200));
+		vboxRight.setPadding(new Insets(30,0,0,0));
 		notesButton.setPrefSize(width, height);
 		boatsButton.setPrefSize(width, height);
 		peopleListButton.setPrefSize(width, height);
