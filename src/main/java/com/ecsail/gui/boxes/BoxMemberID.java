@@ -1,7 +1,10 @@
 package com.ecsail.gui.boxes;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import com.ecsail.enums.MembershipType;
 import com.ecsail.main.EditCell;
@@ -72,6 +75,9 @@ public class BoxMemberID extends HBox {
 		vboxPink.setPadding(new Insets(2,2,2,2)); // spacing to make pink fram around table
 
 		///// TABLEVIE INSTANCE CREATION AND ATTRIBUTES /////
+				//Collections.sort(id, (id1,id2) -> id1.getFiscal_Year().compareTo(id2.getFiscal_Year()));
+				Collections.sort(id, Comparator.comparing(Object_MembershipId::getFiscal_Year).reversed());
+
 		idTableView = new TableView<Object_MembershipId>();
 		idTableView.setItems(id);
 		idTableView.setPrefWidth(352);
