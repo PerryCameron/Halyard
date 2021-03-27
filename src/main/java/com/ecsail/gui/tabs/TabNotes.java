@@ -1,32 +1,49 @@
 package com.ecsail.gui.tabs;
 
-import com.ecsail.main.Paths;
-import com.ecsail.structures.Object_Memo;
+import java.util.Arrays;
 
+import com.ecsail.main.Paths;
+import com.ecsail.sql.SqlSelect;
+import com.ecsail.structures.Object_Memo2;
+
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TitledPane;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 
 public class TabNotes extends Tab {
-	private TableView<Object_Memo> notesTableView = new TableView<>();
-	private ObservableList<Object_Memo> memos;
+	private TableView<Object_Memo2> notesTableView = new TableView<>();
+	private ObservableList<Object_Memo2> memos;
 	String selectedYear;
+	String options;
+	Boolean n;
+	Boolean o;
+	Boolean p;
 	
 	public TabNotes(String text) {
 		super(text);
 		this.selectedYear = Paths.getYear();
+		this.memos = SqlSelect.getAllMemosForTabNotes(Paths.getYear());
 		VBox vboxGrey = new VBox();  // this is the vbox for organizing all the widgets
 		VBox vboxBlue = new VBox();
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
 		TitledPane titledPane = new TitledPane();
 		HBox controlsHbox = new HBox();
 
+		CheckBox oCheckBox = new CheckBox("Other");
+		CheckBox nCheckBox = new CheckBox("Regular");
+		CheckBox pCheckBox = new CheckBox("Payment");
+		controlsHbox.setSpacing(7);
 		vboxBlue.setId("box-blue");
 		vboxBlue.setPadding(new Insets(10,10,10,10));
 		vboxPink.setPadding(new Insets(3,3,3,3)); // spacing to make pink from around table
@@ -51,14 +68,60 @@ public class TabNotes extends Tab {
 		notesTableView.setFixedCellSize(30);
 		notesTableView.setPrefHeight(555);
 		
+		TableColumn<Object_Memo2, String> Col1 = new TableColumn<Object_Memo2, String>("MEM");
+		Col1.setCellValueFactory(new PropertyValueFactory<Object_Memo2, String>("membershipId"));
 		
-		controlsHbox.getChildren().add(yearSpinner);
+		TableColumn<Object_Memo2, String> Col2 = new TableColumn<Object_Memo2, String>("DATE");
+		Col2.setCellValueFactory(new PropertyValueFactory<Object_Memo2, String>("memo_date"));
+		
+		TableColumn<Object_Memo2, String> Col3 = new TableColumn<Object_Memo2, String>("TYPE");
+		Col3.setCellValueFactory(new PropertyValueFactory<Object_Memo2, String>("category"));
+		
+		TableColumn<Object_Memo2, String> Col4 = new TableColumn<Object_Memo2, String>("NOTE");
+		Col4.setCellValueFactory(new PropertyValueFactory<Object_Memo2, String>("memo"));
+		
+		oCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+            	o = newValue;
+            	setOptions();
+            }
+        });
+		
+		nCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+            	n = newValue;
+            	setOptions();
+            }
+        });
+		
+		pCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+            	p = newValue;
+            	setOptions();
+            }
+        });
+		
+		notesTableView.getColumns().addAll(Arrays.asList(Col1, Col2, Col3, Col4));
+		controlsHbox.getChildren().addAll(yearSpinner,nCheckBox,oCheckBox,pCheckBox);
 		titledPane.setContent(controlsHbox);
 		vboxGrey.getChildren().addAll(titledPane,notesTableView);
 		vboxBlue.getChildren().add(vboxPink);
 		vboxPink.getChildren().add(vboxGrey);
 		setContent(vboxBlue);
 		
+	}
+	
+	private void setOptions() {
+		options = "";
+		System.out.print("The answer is" + p);
+		if(p) options+=" and category='P'";
+		if(o) options+=" and category='O'";
+		if(n) options+=" and category='N'";
+		
+		System.out.println("options");
 	}
 	
 }
