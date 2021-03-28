@@ -31,7 +31,7 @@ public class TabStandard extends Tab {
         ////////////////////SET CONTENT //////////////////////
 		
 		vboxRadioButton1.getChildren().addAll(rb.getRadioAll(),rb.getRadioActive(),rb.getRadioNonRenew());
-		vboxRadioButton2.getChildren().addAll(rb.getRadioNewMembers(),rb.getRadioNewReturnMembers());
+		vboxRadioButton2.getChildren().addAll(rb.getRadioNewMembers(),rb.getRadioNewReturnMembers(), rb.getRadioAllActiveMembers());
 		
 		hboxMain.getChildren().addAll(vboxRadioButton1,vboxRadioButton2);
 		hboxFrame.getChildren().add(hboxMain);
