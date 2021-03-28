@@ -9,6 +9,7 @@ public class Object_RosterRadioButtons {
     RadioButton radioNonRenew = new RadioButton("Non-Renew"); 
     RadioButton radioNewMembers = new RadioButton("New Members");
     RadioButton radioNewReturnMembers = new RadioButton("New/Return Members");
+    RadioButton radioAllActiveMembers = new RadioButton("All Active Members");
     
     RadioButton radioSlipWaitList = new RadioButton("Slip Waitlist");
     RadioButton radioSlip = new RadioButton("Slip Owners");
@@ -24,7 +25,7 @@ public class Object_RosterRadioButtons {
     ToggleGroup tg1 = new ToggleGroup();
     
 	public Object_RosterRadioButtons(RadioButton radioAll, RadioButton radioActive, RadioButton radioNonRenew,
-			RadioButton radioNewMembers, RadioButton radioNewReturnMembers, RadioButton radioSlipWaitList,
+			RadioButton radioNewMembers, RadioButton radioNewReturnMembers, RadioButton radioAllActiveMembers, RadioButton radioSlipWaitList,
 			RadioButton radioSlip, RadioButton radioWantsToSublease, RadioButton radioOpenSlips,
 			RadioButton radioSlipChange, RadioButton radioSubLeasedSlips, RadioButton radioKayakRackWaitList,
 			RadioButton radioKayakRackOwners, RadioButton radioShedWaitList, RadioButton radioShedOwner) {
@@ -33,6 +34,7 @@ public class Object_RosterRadioButtons {
 		this.radioNonRenew = radioNonRenew;
 		this.radioNewMembers = radioNewMembers;
 		this.radioNewReturnMembers = radioNewReturnMembers;
+		this.radioAllActiveMembers = radioAllActiveMembers;
 		this.radioSlipWaitList = radioSlipWaitList;
 		this.radioSlip = radioSlip;
 		this.radioWantsToSublease = radioWantsToSublease;
@@ -55,6 +57,7 @@ public class Object_RosterRadioButtons {
 		radioNonRenew.setToggleGroup(tg1);
 		radioNewMembers.setToggleGroup(tg1);
 		radioNewReturnMembers.setToggleGroup(tg1);
+		radioAllActiveMembers.setToggleGroup(tg1);
 		radioSlipWaitList.setToggleGroup(tg1);
 		radioSlip.setToggleGroup(tg1);
 		radioWantsToSublease.setToggleGroup(tg1);
@@ -185,6 +188,14 @@ public class Object_RosterRadioButtons {
 
 	public void setRadioShedOwner(RadioButton radioShedOwner) {
 		this.radioShedOwner = radioShedOwner;
+	}
+
+	public RadioButton getRadioAllActiveMembers() {
+		return radioAllActiveMembers;
+	}
+
+	public void setRadioAllActiveMembers(RadioButton radioAllActiveMembers) {
+		this.radioAllActiveMembers = radioAllActiveMembers;
 	}
 	
 }
