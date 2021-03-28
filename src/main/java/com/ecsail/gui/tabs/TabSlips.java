@@ -14,6 +14,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
@@ -150,18 +151,21 @@ public class TabSlips extends Tab {
 	// places all Text() objects, in a method so it can be refreshed.
 	private Group addDocks(int leftDock, int rightDock, int start) {
 	    Group group = new Group();
+	    Rotate rotate = new Rotate();
 	    Rectangle rect;
 	    int dockWidth = 80;
 	    int dockHeight = 10;
 	    int stemWidth = 20;
+	    int gapDistance = 42;
 	    // draw left docks
 	    int y = 23;
+	    
 	    for(int i = 0; i < leftDock; i++) {
 	    rect = new Rectangle(start,y,dockWidth,dockHeight);  // y position always starts at 23
 	    rect.setFill(Color.BLACK);
 	    rect.setStroke(Color.BLACK);
 	    group.getChildren().add(rect);
-	    y+=42;
+	    y+=gapDistance;
 	    }
 	    // draw right docks 
 	    y = 23;  // set back to default start point for right dock
@@ -170,17 +174,44 @@ public class TabSlips extends Tab {
 	    rect.setFill(Color.BLACK);
 	    rect.setStroke(Color.BLACK);
 	    group.getChildren().add(rect);
-	    y+=42;
+	    y+=gapDistance;
 	    }
 	    // draw stem
-	    rect = new Rectangle(start + dockWidth,23,stemWidth,y);  // y position always starts at 23
+	    rect = new Rectangle(start + dockWidth,23,stemWidth,y - 21);  // y position always starts at 23
 	    rect.setFill(Color.BLACK);
 	    rect.setStroke(Color.BLACK);
+	    group.getChildren().addAll(rect,getOctagon(110.0,470.0,42.0));
+	    // draw angled stem
+	    int x = 135;
+	    y = 510;
+	    rect = new Rectangle(x,y,stemWidth,220);  // y position always starts at 23
+	    rect.setFill(Color.BLACK);
+	    rect.setStroke(Color.BLACK);
+	    rotate.setAngle(315);
+	    rotate.setPivotX(x); 
+	    rotate.setPivotY(y);
+	    rect.getTransforms().addAll(rotate);
 	    group.getChildren().add(rect);
-		//screenPane.getChildren().add(group);
 	    return group;
 	}
 	
+	private Polygon getOctagon(double x, double y, double size) {
+		Polygon oct = new Polygon();
+		setPolygonSides(oct, x, y, size, 8);
+	    return oct;
+	}
+	
+	private static void setPolygonSides(Polygon polygon, double centerX, double centerY, double radius, int sides) {
+	    polygon.getPoints().clear();
+	    final double angleStep = Math.PI * 2 / sides;
+	    double angle = 0; // assumes one point is located directly beneat the center point
+	    for (int i = 0; i < sides; i++, angle += angleStep) {
+	        polygon.getPoints().addAll(
+	                Math.sin(angle) * radius + centerX, // x coordinate of the corner
+	                Math.cos(angle) * radius + centerY // y coordinate of the corner
+	        );
+	    }
+	}
 	
 	private void addAllSlips(Pane screenPane) {
 		screenPane.getChildren().addAll(d40,d39,a35,a34,b93,b94,c157,c156);
