@@ -202,13 +202,6 @@
 	-fx-background-color: #d8e3e6;  /* blue selected tab background in person */
 }
 
-#slip-box {
-  -fx-background-image: url("file:///C:/Users/pcame/git/ECSC/src/main/resources/slips/Slips.png");
-  -fx-background-position: center center;
-}
-
-/*C:\Users\pcame\git\ECSC\src\main\resources\slips\Slips.png*/
-
 #slip-fonts {
 	-fx-font-size: 11px;
 	-fx-font-family: "Arial";
