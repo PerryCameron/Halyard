@@ -9,10 +9,12 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.scene.Group;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 
@@ -61,24 +63,24 @@ public class TabSlips extends Tab {
 	private int row2 = 45;  // d38
 	private int row3 = row1 + 42;  // d36
 	private int row4 = row2 + 42;  // d34
-	private int row5 = row3 + 41;  // d32
-	private int row6 = row4 + 41;  // d30
+	private int row5 = row3 + 42;  // d32
+	private int row6 = row4 + 42;  // d30
 	private int row7 = row5 + 42;  // d28
 	private int row8 = row6 + 42;  // d26
-	private int row9 = row7 + 41;  // d24
-	private int row10 = row8 + 41; // d22
+	private int row9 = row7 + 42;  // d24
+	private int row10 = row8 + 42; // d22
 	private int row11 = row9 + 42; // d20
 	private int row12 = row10 + 42; // d18
-	private int row13 = row11 + 41; // d16
-	private int row14 = row12 + 41; // d14
+	private int row13 = row11 + 42; // d16
+	private int row14 = row12 + 42; // d14
 	private int row15 = row13 + 42; // d12
 	private int row16 = row14 + 42; // d10
-	private int row17 = row15 + 41; // d08
-	private int row18 = row16 + 41; // d06
+	private int row17 = row15 + 42; // d08
+	private int row18 = row16 + 42; // d06
 	private int row19 = row17 + 42; // d04
 	private int row20 = row18 + 42; // d02
-	private int row21 = row19 + 41; // a02
-	private int row22 = row20 + 41; // a01
+	private int row21 = row19 + 42; // a02
+	private int row22 = row20 + 42; // a01
 	private int row23 = row21 + 42; // b50
 	private int row24 = row22 + 42; // b48
 	
@@ -94,9 +96,10 @@ public class TabSlips extends Tab {
 		this.slipmemberships = SQL_SelectMembership.getSlipRoster(Paths.getYear());
 		this.subleaserMemberships = FXCollections.observableArrayList();
 		fillSlips(); // must be filled the first time.
-		getStaticSlips();  // slips that don't change such as 48 hour docks
+		//getStaticSlips();  // slips that don't change such as 48 hour docks
 		Pane screenPane = new Pane();
-
+		
+		
 		VBox vboxGrey = new VBox();  // this is the vbox for organizing all the widgets
 		VBox vboxBlue = new VBox();
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
@@ -108,7 +111,12 @@ public class TabSlips extends Tab {
 		    	screenPane.getChildren().clear();
 		    	fillSlips();
 		    	getStaticSlips();  // slips that don't change such as 48 hour docks
-		    	addAllChildren(screenPane);
+		    	screenPane.getChildren().add(addDocks(10,10,col1));
+		    	screenPane.getChildren().add(addDocks(7,11,col3));
+		    	screenPane.getChildren().add(addDocks(11,12,col5));
+		    	screenPane.getChildren().add(addDocks(11,11,col7));
+		    	//addDocks(screenPane,10,10,20);
+		    	addAllSlips(screenPane);
 		        //System.out.println("Refreshing Slips");
 		    }
 		});
@@ -130,7 +138,8 @@ public class TabSlips extends Tab {
 		rotatef6.setAngle(314);
 		
 		//////////////////  SET CONTENT ///////////////
-		addAllChildren(screenPane);
+		//addAllDocks(screenPane);
+		//addAllSlips(screenPane);
 		//// What is this?  //screenPane.getChildren().addAll(d4,d3,a-1,a-2,b57,b58,c121,c120);
 		vboxGrey.getChildren().add(screenPane);
 		vboxBlue.getChildren().add(vboxPink);
@@ -139,7 +148,41 @@ public class TabSlips extends Tab {
 
 	}
 	// places all Text() objects, in a method so it can be refreshed.
-	private void addAllChildren(Pane screenPane) {
+	private Group addDocks(int leftDock, int rightDock, int start) {
+	    Group group = new Group();
+	    Rectangle rect;
+	    int dockWidth = 80;
+	    int dockHeight = 10;
+	    int stemWidth = 20;
+	    // draw left docks
+	    int y = 23;
+	    for(int i = 0; i < leftDock; i++) {
+	    rect = new Rectangle(start,y,dockWidth,dockHeight);  // y position always starts at 23
+	    rect.setFill(Color.BLACK);
+	    rect.setStroke(Color.BLACK);
+	    group.getChildren().add(rect);
+	    y+=42;
+	    }
+	    // draw right docks 
+	    y = 23;  // set back to default start point for right dock
+	    for(int i = 0; i < rightDock; i++) {
+	    rect = new Rectangle(start + dockWidth + stemWidth,y,dockWidth,dockHeight);  // y position always starts at 23
+	    rect.setFill(Color.BLACK);
+	    rect.setStroke(Color.BLACK);
+	    group.getChildren().add(rect);
+	    y+=42;
+	    }
+	    // draw stem
+	    rect = new Rectangle(start + dockWidth,23,stemWidth,y);  // y position always starts at 23
+	    rect.setFill(Color.BLACK);
+	    rect.setStroke(Color.BLACK);
+	    group.getChildren().add(rect);
+		//screenPane.getChildren().add(group);
+	    return group;
+	}
+	
+	
+	private void addAllSlips(Pane screenPane) {
 		screenPane.getChildren().addAll(d40,d39,a35,a34,b93,b94,c157,c156);
 		screenPane.getChildren().addAll(d38,d37,a33,a32,b91,b92,c155,c154);
 		screenPane.getChildren().addAll(d36,d35,a31,a30,b89,b90,c153,c152);
