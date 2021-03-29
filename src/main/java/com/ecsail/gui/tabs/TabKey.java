@@ -4,6 +4,7 @@ import com.ecsail.structures.Object_Integer;
 import com.ecsail.structures.Object_Money;
 
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
@@ -35,6 +36,16 @@ public class TabKey extends Tab {
 		HBox hboxSLKey = new HBox();
 		HBox hboxKSKey = new HBox();
 		HBox hboxSSLKey = new HBox();
+		
+		VBox vboxKeyLabel = new VBox();
+		VBox vboxSLKeyLabel = new VBox();
+		VBox vboxKSKeyLabel = new VBox();
+		VBox vboxSSLKeyLabel = new VBox();
+		
+		VBox vboxKeyBox = new VBox();
+		VBox vboxSLKeyBox = new VBox();
+		VBox vboxKSKeyBox = new VBox();
+		VBox vboxSSLKeyBox = new VBox();
 
 		////////////////ATTRIBUTES ///////////////////
 		
@@ -54,10 +65,15 @@ public class TabKey extends Tab {
 		kayakSKeySpinner.setPrefWidth(60);
 		sailSSLKeySpinner.setPrefWidth(60);
 
-		hboxKey.setSpacing(58.5);
-		hboxSLKey.setSpacing(42.5);
-		hboxKSKey.setSpacing(24);
-		hboxSSLKey.setSpacing(4);
+		vboxKeyLabel.setPrefWidth(130);
+		vboxSLKeyLabel.setPrefWidth(130);
+		vboxKSKeyLabel.setPrefWidth(130);
+		vboxSSLKeyLabel.setPrefWidth(130);
+		
+		vboxKeyLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxSLKeyLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxKSKeyLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxSSLKeyLabel.setAlignment(Pos.CENTER_LEFT);
 		
 		//////////////// LISTENERS ///////////////////
 		
@@ -91,10 +107,20 @@ public class TabKey extends Tab {
 
 		////////////////SETTING CONTENT //////////////
 		
-		hboxKey.getChildren().addAll(new Label("Gate Key"),extraKeySpinner);
-		hboxSLKey.getChildren().addAll(new Label("Sail Loft Key"),sailLKeySpinner);
-		hboxKSKey.getChildren().addAll(new Label("Kayak Shed Key"),kayakSKeySpinner);
-		hboxSSLKey.getChildren().addAll(new Label("Sail School Loft Key"),sailSSLKeySpinner);
+		vboxKeyLabel.getChildren().add(new Label("Gate Key"));
+		vboxSLKeyLabel.getChildren().add(new Label("Sail Loft Key"));
+		vboxKSKeyLabel.getChildren().add(new Label("Kayak Shed Key"));
+		vboxSSLKeyLabel.getChildren().add(new Label("Sail School Loft Key"));
+		
+		vboxKeyBox.getChildren().add(extraKeySpinner);
+		vboxSLKeyBox.getChildren().add(sailLKeySpinner);
+		vboxKSKeyBox.getChildren().add(kayakSKeySpinner);
+		vboxSSLKeyBox.getChildren().add(sailSSLKeySpinner);
+		
+		hboxKey.getChildren().addAll(vboxKeyLabel,vboxKeyBox);
+		hboxSLKey.getChildren().addAll(vboxSLKeyLabel,vboxSLKeyBox);
+		hboxKSKey.getChildren().addAll(vboxKSKeyLabel,vboxKSKeyBox);
+		hboxSSLKey.getChildren().addAll(vboxSSLKeyLabel,vboxSSLKeyBox);
 		vboxTextField.getChildren().addAll(hboxKey, hboxSLKey,hboxKSKey,hboxSSLKey);
 		vboxTextFieldFrame.getChildren().add(vboxTextField);
 		vboxBlue.getChildren().add(hboxGrey);
