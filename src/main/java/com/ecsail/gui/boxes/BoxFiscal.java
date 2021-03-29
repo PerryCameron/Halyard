@@ -98,26 +98,53 @@ public class BoxFiscal extends HBox {
 		VBox vboxGrey = new VBox();  // this is the vbox for organizing all the widgets
 		VBox mainVbox = new VBox();
 		HBox mainHbox = new HBox();
-		//HBox comboHBox = new HBox();
-		
-		HBox hboxWinterStorage = new HBox();
-		HBox hboxKayac = new HBox();
-		HBox hboxWetSlip = new HBox();
-		HBox hboxYSC = new HBox();
-		
-		HBox hboxDues = new HBox();
 		HBox hboxtotalWC = new HBox();
 		HBox hboxtotalKey = new HBox();
-		HBox hboxBeach = new HBox();
-		HBox hboxKayakShed = new HBox();
-		HBox hboxSailLoft = new HBox();
-		HBox hboxSailSchoolLoft = new HBox();
 		VBox vbox1 = new VBox();
 		VBox vbox2 = new VBox();
 		HBox hboxButtonCommit = new HBox();
-		HBox hboxOther = new HBox();
-		HBox hboxInitiation = new HBox();
 		HBox hboxSlip = new HBox();
+		
+		
+		HBox hboxDues = new HBox();
+		HBox hboxBeach = new HBox();
+		HBox hboxKayac = new HBox();
+		HBox hboxKayakShed = new HBox();
+		HBox hboxSailLoft = new HBox();
+		HBox hboxSailSchoolLoft = new HBox();
+		HBox hboxWetSlip = new HBox();
+		HBox hboxWinterStorage = new HBox();
+		HBox hboxYSC = new HBox();
+		HBox hboxInitiation = new HBox();
+		HBox hboxOther = new HBox();
+		
+		VBox vboxDuesLabel = new VBox();
+		VBox vboxBeachLabel = new VBox();
+		VBox vboxKayacLabel = new VBox();
+		VBox vboxKayakShedLabel = new VBox();
+		VBox vboxSailLoftLabel = new VBox();
+		VBox vboxSailSchoolLoftLabel = new VBox();
+		VBox vboxWetSlipLabel = new VBox();
+		VBox vboxWinterStorageLabel = new VBox();
+		VBox vboxYSCLabel = new VBox();
+		VBox vboxInitiationLabel = new VBox();
+		VBox vboxOtherLabel = new VBox();
+		
+		VBox vboxDuesBox = new VBox();
+		VBox vboxBeachBox = new VBox();
+		VBox vboxKayacBox = new VBox();
+		VBox vboxKayakShedBox = new VBox();
+		VBox vboxSailLoftBox = new VBox();
+		VBox vboxSailSchoolLoftBox = new VBox();
+		VBox vboxWetSlipBox = new VBox();
+		VBox vboxWinterStorageBox = new VBox();
+		VBox vboxYSCBox = new VBox();
+		VBox vboxInitiationBox = new VBox();
+		VBox vboxOtherBox = new VBox();
+
+		
+		
+		
 		Button addWetSlip = new Button();
 
 		//////////////// ATTRIBUTES ///////////////////
@@ -126,23 +153,34 @@ public class BoxFiscal extends HBox {
 		feesLabel.setId("bold-label");
 		BalanceLabel.setId("bold-label");
 		keysLabel.setId("bold-label");
-		hboxDues.setSpacing(78);
 		addWetSlip.setId("default-button");
 		addWetSlip.setGraphic(new ImageView(image));
 		
-		hboxWinterStorage.setSpacing(28);
-		hboxKayac.setSpacing(48.5);  // kayak rack
-		hboxWetSlip.setSpacing(68.5);
-		hboxYSC.setSpacing(35);
-		hboxOther.setSpacing(75);
-		hboxInitiation.setSpacing(61);  //// adjust here
+		int width = 100;
+		vboxDuesLabel.setPrefWidth(width);
+		vboxBeachLabel.setPrefWidth(width);
+		vboxKayacLabel.setPrefWidth(width);
+		vboxKayakShedLabel.setPrefWidth(width);
+		vboxSailLoftLabel.setPrefWidth(width);
+		vboxSailSchoolLoftLabel.setPrefWidth(width);
+		vboxWetSlipLabel.setPrefWidth(width);
+		vboxWinterStorageLabel.setPrefWidth(width);
+		vboxYSCLabel.setPrefWidth(width);
+		vboxInitiationLabel.setPrefWidth(width);
+		vboxOtherLabel.setPrefWidth(width);
 		
-		hboxtotalWC.setSpacing(36.5);
-		hboxtotalKey.setSpacing(36.5);
-		hboxBeach.setSpacing(48);
-		hboxKayakShed.setSpacing(47); // kayak shed
-		hboxSailLoft.setSpacing(65);  // sail loft
-		hboxSailSchoolLoft.setSpacing(25.5);
+		vboxDuesLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxBeachLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxKayacLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxKayakShedLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxSailLoftLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxSailSchoolLoftLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxWetSlipLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxWinterStorageLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxYSCLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxInitiationLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxOtherLabel.setAlignment(Pos.CENTER_LEFT);
+		
 		winterStorageSpinner.setPrefWidth(60);
 		kayakRackSpinner.setPrefWidth(60);
 		slipText.setPrefWidth(35);
@@ -434,17 +472,43 @@ public class BoxFiscal extends HBox {
 		MoneyTabPane.getTabs().addAll(moneyTab,paymentTab);
 		keysAndCreditsTabPane.getTabs().addAll(keyTab, creditTab);
 		hboxSlip.getChildren().addAll(slipText,addWetSlip);
-		hboxDues.getChildren().addAll(new Label("Dues:"), duesText);
-		hboxWinterStorage.getChildren().addAll(new Label("Winter Storage"), winterStorageSpinner);
-		hboxKayac.getChildren().addAll(new Label("Kayac Rack"),kayakRackSpinner);
-		hboxWetSlip.getChildren().addAll(new Label("wetSlip"),hboxSlip);
-		hboxYSC.getChildren().addAll(new Label("YSC Donation"),yscText);
-		hboxOther.getChildren().addAll(new Label("Other:"), otherText);
-		hboxInitiation.getChildren().addAll(new Label("Initiation"), initiationText);
-		hboxBeach.getChildren().addAll(new Label("Beach Spot"),beachSpinner);
-		hboxKayakShed.getChildren().addAll(new Label("Kayak Shed"),kayakShedSpinner);
-		hboxSailLoft.getChildren().addAll(new Label("Sail Loft"),sailLoftSpinner);
-		hboxSailSchoolLoft.getChildren().addAll(new Label("Sail School Loft"),sailSchoolLoftSpinner);
+		
+		vboxDuesLabel.getChildren().add(new Label("Dues:"));
+		vboxBeachLabel.getChildren().add(new Label("Beach Spot:"));
+		vboxKayacLabel.getChildren().add(new Label("Kayak Rack:"));
+		vboxKayakShedLabel.getChildren().add(new Label("Kayak Shed:"));
+		vboxSailLoftLabel.getChildren().add(new Label("Sail Loft:"));
+		vboxSailSchoolLoftLabel.getChildren().add(new Label("Sail School Loft:"));
+		vboxWetSlipLabel.getChildren().add(new Label("Wet Slip:"));
+		vboxWinterStorageLabel.getChildren().add(new Label("Winter Storage:"));
+		vboxYSCLabel.getChildren().add(new Label("YSP Donation:"));
+		vboxInitiationLabel.getChildren().add(new Label("Initiation:"));
+		vboxOtherLabel.getChildren().add(new Label("Other:"));
+		
+		vboxDuesBox.getChildren().add(duesText);
+		vboxBeachBox.getChildren().add(beachSpinner);
+		vboxKayacBox.getChildren().add(kayakRackSpinner);
+		vboxKayakShedBox.getChildren().add(kayakShedSpinner);
+		vboxSailLoftBox.getChildren().add(sailLoftSpinner);
+		vboxSailSchoolLoftBox.getChildren().add(sailSchoolLoftSpinner);
+		vboxWetSlipBox.getChildren().add(hboxSlip);
+		vboxWinterStorageBox.getChildren().add(winterStorageSpinner);
+		vboxYSCBox.getChildren().add(yscText);
+		vboxInitiationBox.getChildren().add(initiationText);
+		vboxOtherBox.getChildren().add(otherText);
+		
+		hboxDues.getChildren().addAll(vboxDuesLabel,vboxDuesBox);
+		hboxBeach.getChildren().addAll(vboxBeachLabel,vboxBeachBox);
+		hboxKayac.getChildren().addAll(vboxKayacLabel,vboxKayacBox);
+		hboxKayakShed.getChildren().addAll(vboxKayakShedLabel,vboxKayakShedBox);
+		hboxSailLoft.getChildren().addAll(vboxSailLoftLabel,vboxSailLoftBox);
+		hboxSailSchoolLoft.getChildren().addAll(vboxSailSchoolLoftLabel,vboxSailSchoolLoftBox);
+		hboxWetSlip.getChildren().addAll(vboxWetSlipLabel,vboxWetSlipBox);
+		hboxWinterStorage.getChildren().addAll(vboxWinterStorageLabel,vboxWinterStorageBox);
+		hboxYSC.getChildren().addAll(vboxYSCLabel,vboxYSCBox);
+		hboxInitiation.getChildren().addAll(vboxInitiationLabel,vboxInitiationBox);
+		hboxOther.getChildren().addAll(vboxOtherLabel,vboxOtherBox);
+		
 		vbox1.getChildren().addAll(keysAndCreditsTabPane,MoneyTabPane);
 		vbox2.getChildren().addAll(feesLabel,hboxDues,hboxBeach,hboxKayac,hboxKayakShed,hboxSailLoft,hboxSailSchoolLoft,hboxWetSlip,hboxWinterStorage,hboxYSC,hboxInitiation, hboxOther);
 		mainHbox.getChildren().addAll(vbox2,vbox1);
