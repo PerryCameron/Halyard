@@ -74,67 +74,17 @@ public class BoxWelcome extends HBox {
 		
 		///////////////// LISTENERS  /////////////////////////
 		
-		boatsButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				TabLauncher.openBoatsTab();
-			}
-		});
-		
-		notesButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				TabLauncher.openNotesTab();
-			}
-		});
-		
-		rosterButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				TabLauncher.openMembershipListTab();
-			}
-		});
-		
-		peopleListButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				TabLauncher.openPeopleTab();
-			}
-		});
-		
-		slipListButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				TabLauncher.openSlipsTab();
-			}
-		});
-		
-		bodButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				TabLauncher.openBoardTab();
-			}
-		});
-		
-		newButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				CreateMembership.Create();
-			}
-		});
-		
-		batchesButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				TabLauncher.openTabBatchedPaidDues();
-			}
-		});
-		
-		
-		
+		boatsButton.setOnAction((event) ->TabLauncher.openBoatsTab());
+		notesButton.setOnAction((event) -> TabLauncher.openNotesTab());
+		rosterButton.setOnAction((event) -> TabLauncher.openMembershipListTab());
+		peopleListButton.setOnAction((event) -> TabLauncher.openPeopleTab());
+		slipListButton.setOnAction((event) -> TabLauncher.openSlipsTab());
+		bodButton.setOnAction((event) -> TabLauncher.openBoardTab());
+		newButton.setOnAction((event) ->CreateMembership.Create());
+		batchesButton.setOnAction((event) ->TabLauncher.openTabBatchedPaidDues());
+
 		////////////////  SET CONTENT ////////////////////////
 		vboxLeft.getChildren().addAll(activeText,familyMembershipText,regularMembershipText,socialMembershipText,lakeAssociateMembershipText,lifeMembershipText,activepeopleText);
-	//	vboxLeft.getChildren().addAll(activeText,activepeopleText);
 		vboxRight.getChildren().addAll(rosterButton,peopleListButton,slipListButton,bodButton,newButton,batchesButton,boatsButton,notesButton);
 		getChildren().addAll(vboxLeft,vboxRight);
 		
