@@ -180,34 +180,26 @@ public class BoxMemberID extends HBox {
 		
 		/////////////////// LISTENERS //////////////////////////////
 		
-				idAdd.setOnAction(new EventHandler<ActionEvent>() {
-					@Override
-					public void handle(ActionEvent e) {
-						int mid = SqlSelect.getCount("membership_id", "mid") + 1; // get last mid number add 1
-						Object_MembershipId newIdTuple = null;
-						if (SqlExists.memberShipIdExists(m.getMsid())) {
-							//Object_MembershipId thisId = SqlSelect.getCount(m.getMsid()); // retrieves oldest year																// record for member
-							//System.out.println("mem id is" + thisId.getMembership_id());
-							//int fiscalYear = Integer.parseInt(Main.selectedYear); // gets year and subtracts
-							newIdTuple = new Object_MembershipId(mid, 0 + "", m.getMsid(),
-									"0",true,m.getMemType(),false);
-						} else {
-							newIdTuple = new Object_MembershipId(mid, Paths.getYear(), m.getMsid(),"0",true,m.getMemType(),false);
-						}
-						SqlInsert.addMembershipId(newIdTuple);
-						id.add(newIdTuple);
-					}
-				});
-        
-        idDelete.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-            	int selectedIndex = idTableView.getSelectionModel().getSelectedIndex();
-            		if(selectedIndex >= 0)
-            			if(SqlDelete.deleteMembershipId(id.get(selectedIndex)))  // if it is properly deleted in our database
-            				idTableView.getItems().remove(selectedIndex); // remove it from our GUI
-            }
-        });
-		
+		idAdd.setOnAction((event) -> {
+			int mid = SqlSelect.getCount("membership_id", "mid") + 1; // get last mid number add 1
+			Object_MembershipId newIdTuple = null;
+			if (SqlExists.memberShipIdExists(m.getMsid())) {
+				newIdTuple = new Object_MembershipId(mid, 0 + "", m.getMsid(), "0", true, m.getMemType(), false);
+			} else {
+				newIdTuple = new Object_MembershipId(mid, Paths.getYear(), m.getMsid(), "0", true, m.getMemType(),
+						false);
+			}
+			SqlInsert.addMembershipId(newIdTuple);
+			id.add(newIdTuple);
+		});
+
+		idDelete.setOnAction((event) -> {
+			int selectedIndex = idTableView.getSelectionModel().getSelectedIndex();
+			if (selectedIndex >= 0)
+				if (SqlDelete.deleteMembershipId(id.get(selectedIndex))) // if it is properly deleted in our database
+					idTableView.getItems().remove(selectedIndex); // remove it from our GUI
+		});
+
 		///////////////////  SET CONTENT  ///////////////////////
 		
 		idTableView.getColumns().addAll(Arrays.asList(Col1,Col2,Col3,Col4));
