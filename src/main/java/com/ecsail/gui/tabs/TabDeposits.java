@@ -182,44 +182,44 @@ public class TabDeposits extends Tab {
 		TableColumn<Object_PaidDues, Boolean> Col1 = new TableColumn<Object_PaidDues, Boolean>("Select");
 		Col1.setPrefWidth(50);
 		Col1.setCellValueFactory(new Callback<CellDataFeatures<Object_PaidDues, Boolean>, ObservableValue<Boolean>>() {
-            @Override
-            public ObservableValue<Boolean> call(CellDataFeatures<Object_PaidDues, Boolean> param) {
-            	Object_PaidDues thisPaidDues = param.getValue();
-                SimpleBooleanProperty booleanProp = new SimpleBooleanProperty(thisPaidDues.isClosed());
-                booleanProp.addListener(new ChangeListener<Boolean>() {
- 
-                    @Override
-                    public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue,
-                            Boolean newValue) {
-                    	thisPaidDues.setClosed(newValue);  // sets checkbox value in table
-                    	if(newValue) { // if checked
-                    	setBatchAndClose(thisPaidDues, summaryTotals.getDepositNumber(), true);
-                    	System.out.println(thisPaidDues.toString());
-                    	addDepositIdToPayment(thisPaidDues);  // does lots of stuff
-                    	} else { // if unchecked
-                    	setBatchAndClose(thisPaidDues, 0, false);
-                    	}
-                    	summaryTotals.clear();
-        				updateSummaryTotals();
-      				  //updateCurrentMoneyTotals(); // need error check if batch doesn't exist
-    				  updateMoneyTotals();
-    				  updateNonRenewed(nonRenewed);
-                    }
-                });
-                return booleanProp;
-            }
-        });
-		
+			@Override
+			public ObservableValue<Boolean> call(CellDataFeatures<Object_PaidDues, Boolean> param) {
+				Object_PaidDues thisPaidDues = param.getValue();
+				SimpleBooleanProperty booleanProp = new SimpleBooleanProperty(thisPaidDues.isClosed());
+				booleanProp.addListener(new ChangeListener<Boolean>() {
+
+					@Override
+					public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue,
+							Boolean newValue) {
+						thisPaidDues.setClosed(newValue); // sets checkbox value in table
+						if (newValue) { // if checked
+							setBatchAndClose(thisPaidDues, summaryTotals.getDepositNumber(), true);
+							System.out.println(thisPaidDues.toString());
+							addDepositIdToPayment(thisPaidDues); // does lots of stuff
+						} else { // if unchecked
+							setBatchAndClose(thisPaidDues, 0, false);
+						}
+						summaryTotals.clear();
+						updateSummaryTotals();
+						// updateCurrentMoneyTotals(); // need error check if batch doesn't exist
+						updateMoneyTotals();
+						updateNonRenewed(nonRenewed);
+					}
+				});
+				return booleanProp;
+			}
+		});
+
 		Col1.setCellFactory(new Callback<TableColumn<Object_PaidDues, Boolean>, //
-		        TableCell<Object_PaidDues, Boolean>>() {
-		            @Override
-		            public TableCell<Object_PaidDues, Boolean> call(TableColumn<Object_PaidDues, Boolean> p) {
-		                CheckBoxTableCell<Object_PaidDues, Boolean> cell = new CheckBoxTableCell<Object_PaidDues, Boolean>();
-		                cell.setAlignment(Pos.CENTER);
-		                return cell;
-		            }
-		        });
-		
+				TableCell<Object_PaidDues, Boolean>>() {
+			@Override
+			public TableCell<Object_PaidDues, Boolean> call(TableColumn<Object_PaidDues, Boolean> p) {
+				CheckBoxTableCell<Object_PaidDues, Boolean> cell = new CheckBoxTableCell<Object_PaidDues, Boolean>();
+				cell.setAlignment(Pos.CENTER);
+				return cell;
+			}
+		});
+
 		TableColumn<Object_PaidDues, Integer> Col2 = new TableColumn<Object_PaidDues, Integer>("Batch");
 		Col2.setCellValueFactory(new PropertyValueFactory<Object_PaidDues, Integer>("batch"));
 		
@@ -261,20 +261,17 @@ public class TabDeposits extends Tab {
 		//////////////////  LISTENERS  //////////////////////
 		
 		paidDuesTableView.setRowFactory(tv -> {
-	        TableRow<Object_PaidDues> row = new TableRow<>();
-	        row.setOnMouseClicked(event -> {
-	            if (! row.isEmpty() && event.getButton()==MouseButton.PRIMARY 
-	                 && event.getClickCount() == 2) {
-	            	Object_PaidDues clickedRow = row.getItem();
+			TableRow<Object_PaidDues> row = new TableRow<>();
+			row.setOnMouseClicked(event -> {
+				if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
+					Object_PaidDues clickedRow = row.getItem();
 					TabLauncher.createTab(clickedRow.getMs_id());
-	            }
-	        });
-	        return row ;
-	    });
-		
-		refreshButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
+				}
+			});
+			return row;
+		});
+
+		refreshButton.setOnAction((event) -> {
 				paidDues.clear();
 					if(comboBox.getValue().equals("Show All")) {
 					paidDues.addAll(SqlSelect.getPaidDues(selectedYear));
@@ -293,29 +290,19 @@ public class TabDeposits extends Tab {
 				depositDatePicker.setValue(date);
 				}
 				//check if deposit exists here
+			});
+		
+		printPdfButton.setOnAction((event) -> new Dialogue_DepositPDF(currentDeposit, currentDefinedFee, selectedYear));
 
-			}
-			});
-		
-		printPdfButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				new Dialogue_DepositPDF(currentDeposit, currentDefinedFee, selectedYear);
-				}
-			});
-		
-	    comboBox.valueProperty().addListener(new ChangeListener<String>() {
-	        @Override public void changed(ObservableValue ov, String oldv, String newv) {
-	        	refreshButton.fire();
-	        }    
-	    });
-	    
+		comboBox.valueProperty().addListener((change) -> refreshButton.fire());
+
 		EventHandler<ActionEvent> pickerEvent = new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent e) {
 				LocalDate date = depositDatePicker.getValue();
 				SqlUpdate.updateDeposit("DEPOSIT_DATE", currentDeposit.getDeposit_id(), date);
 			}
 		};
+		
 		depositDatePicker.setOnAction(pickerEvent);
 		
 		///////////////////  SET CONTENT  ///////////////////////
