@@ -4,9 +4,6 @@ import com.ecsail.main.CreateMembership;
 import com.ecsail.main.Paths;
 import com.ecsail.main.TabLauncher;
 import com.ecsail.sql.SqlSelect;
-
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
@@ -20,7 +17,6 @@ public class BoxWelcome extends HBox {
 		int height = 70;
 		VBox vboxLeft = new VBox();
 		VBox vboxRight = new VBox();
-		//Button rosterButton = new Button("Rosters");
 		Button peopleListButton = new Button("People");
 		Button slipListButton = new Button("Slips");
 		Button bodButton = new Button("Board of Directors");
@@ -31,8 +27,7 @@ public class BoxWelcome extends HBox {
 		Button notesButton = new Button("Notes");
 		
 		int activeMembership = SqlSelect.getActiveMembershipCount(Paths.getYear());
-		int activePeople = SqlSelect.getActivePeopleCount();
-		//int familyMembership = SqlSelect.getMembershipTypeCount("FM");
+		int activePeople = SqlSelect.getActivePeopleCount();;
 		Text activeText = new Text("There are currently " + activeMembership + " active memberships");
 		Text familyMembershipText = new Text("	-" + SqlSelect.getMembershipTypeCount("FM") + " family memberships");
 		Text regularMembershipText = new Text("	-" + SqlSelect.getMembershipTypeCount("RM") + " regular memberships");
@@ -74,20 +69,19 @@ public class BoxWelcome extends HBox {
 		
 		///////////////// LISTENERS  /////////////////////////
 		
-		boatsButton.setOnAction((event) ->TabLauncher.openBoatsTab());
+		boatsButton.setOnAction((event) -> TabLauncher.openBoatsTab());
 		notesButton.setOnAction((event) -> TabLauncher.openNotesTab());
 		rosterButton.setOnAction((event) -> TabLauncher.openMembershipListTab());
 		peopleListButton.setOnAction((event) -> TabLauncher.openPeopleTab());
 		slipListButton.setOnAction((event) -> TabLauncher.openSlipsTab());
 		bodButton.setOnAction((event) -> TabLauncher.openBoardTab());
-		newButton.setOnAction((event) ->CreateMembership.Create());
-		batchesButton.setOnAction((event) ->TabLauncher.openTabBatchedPaidDues());
+		newButton.setOnAction((event) -> CreateMembership.Create());
+		batchesButton.setOnAction((event) -> TabLauncher.openTabBatchedPaidDues());
 
 		////////////////  SET CONTENT ////////////////////////
 		vboxLeft.getChildren().addAll(activeText,familyMembershipText,regularMembershipText,socialMembershipText,lakeAssociateMembershipText,lifeMembershipText,activepeopleText);
 		vboxRight.getChildren().addAll(rosterButton,peopleListButton,slipListButton,bodButton,newButton,batchesButton,boatsButton,notesButton);
 		getChildren().addAll(vboxLeft,vboxRight);
-		
 	}
 
 }
