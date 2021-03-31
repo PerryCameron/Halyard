@@ -10,7 +10,6 @@ import com.ecsail.main.Note;
 import com.ecsail.structures.Object_Memo;
 
 import javafx.beans.property.StringProperty;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;

@@ -48,7 +48,7 @@ public class TabSlips extends Tab {
 	private Text a2= null  ,b53 = null ,b54= null ,c117= null ,c116 = null;
 	private Text a1= null  ,b51 = null ,b52= null ,c115= null ,c114 = null;
 	//private Text f6= null  ,f5 = null ,f4= null ,f3= null ,f2 = null,f1 = null;
-	private Text f6= null  ,f5 = null ,f4= null ,f3= null ,f2 = null;
+	private Text f6= null  ,f5 = null ,f4= null ,f3= null; // ,f2 = null;
 	private Text b50= null, b48= null, h482= null, h483= null, h484= null, h485 = null;
 	
 	private int col1 = 20;
