@@ -98,8 +98,6 @@ public class BoxFiscal extends HBox {
 		VBox vboxGrey = new VBox();  // this is the vbox for organizing all the widgets
 		VBox mainVbox = new VBox();
 		HBox mainHbox = new HBox();
-		HBox hboxtotalWC = new HBox();
-		HBox hboxtotalKey = new HBox();
 		VBox vbox1 = new VBox();
 		VBox vbox2 = new VBox();
 		HBox hboxButtonCommit = new HBox();
