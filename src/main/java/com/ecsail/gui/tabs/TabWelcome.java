@@ -6,7 +6,7 @@ import javafx.scene.layout.VBox;
 
 public class TabWelcome extends Tab {
 	
-	public TabWelcome(VBox vboxGrey) {  // check box welcome
+	public TabWelcome(VBox vboxGrey) {  // check boxWelcome
 		super();
 		setText("Welcome");
 		
@@ -18,11 +18,13 @@ public class TabWelcome extends Tab {
 		vboxPink.setPadding(new Insets(3,3,3,3)); // spacing to make pink from around table
 		vboxPink.setId("box-pink");
 		vboxBlue.setPrefWidth(1028);
-		vboxGrey.setPrefHeight(688);
+		vboxGrey.setPrefHeight(680);
+		vboxGrey.setMaxHeight(Double.MAX_VALUE);
 		
 		vboxBlue.getChildren().add(vboxPink);
 		vboxPink.getChildren().add(vboxGrey);
 		setContent(vboxBlue);
+		System.out.println("VBox Grey is" + vboxGrey.getHeight());
 		
 	}
 }

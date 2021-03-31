@@ -79,7 +79,7 @@ public class BoxWelcome extends HBox {
 		batchesButton.setOnAction((event) -> TabLauncher.openTabBatchedPaidDues());
 
 		////////////////  SET CONTENT ////////////////////////
-		vboxLeft.getChildren().addAll(activeText,familyMembershipText,regularMembershipText,socialMembershipText,lakeAssociateMembershipText,lifeMembershipText,activepeopleText);
+		//vboxLeft.getChildren().addAll(activeText,familyMembershipText,regularMembershipText,socialMembershipText,lakeAssociateMembershipText,lifeMembershipText,activepeopleText);
 		vboxRight.getChildren().addAll(rosterButton,peopleListButton,slipListButton,bodButton,newButton,batchesButton,boatsButton,notesButton);
 		getChildren().addAll(vboxLeft,vboxRight);
 	}

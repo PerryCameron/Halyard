@@ -33,14 +33,14 @@ public static BoxConsole console;
 static String ipaddress;
 
 public static void main(String[] args) throws SQLException {
-        System.out.println("Starting application...");
-        Main.selectedYear = Paths.getYear();
-        Main.edits = FileIO.openTupleCountObject();
-        setUpForFirstTime();
-        console = new BoxConsole();
-        // this is the tree trunk to the entire program
-        launch(args);
-    }
+	System.out.println("Starting application...");
+	Main.selectedYear = Paths.getYear();
+	Main.edits = FileIO.openTupleCountObject();
+	setUpForFirstTime();
+	console = new BoxConsole();
+	// this is the tree trunk to the entire program
+	launch(args);
+}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -55,19 +55,19 @@ public static void main(String[] args) throws SQLException {
 
 		primaryStage.setOnHiding(new EventHandler<WindowEvent>() {
 
-	         @Override
-	         public void handle(WindowEvent event) {
-	             Platform.runLater(new Runnable() {
-	                 @Override
-	                 public void run() {
-	                     System.out.println("Application Closed by click to Close Button(X)");
-	                     connect.close();
-	                     System.exit(0);
-	                 }
-	             });
-	         }
-	     });
-		
+			@Override
+			public void handle(WindowEvent event) {
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
+						System.out.println("Application Closed by click to Close Button(X)");
+						connect.close();
+						System.exit(0);
+					}
+				});
+			}
+		});
+
 		/////////////////   ATTRIBUTES /////////////////////
 		scene.getStylesheets().add("stylesheet.css");
 

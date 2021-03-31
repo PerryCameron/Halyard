@@ -17,6 +17,8 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.Tab;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -58,6 +60,17 @@ public class TabBoardMembers extends Tab {
 	Label chairs = new Label("Committee Chairs");
 	Label board = new Label("Board of Directors");
 	
+	/// experimental ///
+	//String filename = "2020";
+	//Image slipImage = new Image(getClass().getResourceAsStream("/Stickers/" + filename + ".png"));
+	//Image slipImage = new Image(getClass().getResourceAsStream("/Stickers/" + filename + ".png"), 600, 600, false, false);
+	//ImageView imageView = new ImageView(slipImage);
+	//imageView.setScaleX(0.20);
+	//imageView.setScaleY(0.20);
+	//VBox image = new VBox();
+	//image.getChildren().add(imageView);
+	//// experimental ///
+	
 	final Spinner<Integer> yearSpinner = new Spinner<Integer>();
 	SpinnerValueFactory<Integer> wetSlipValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1970, Integer.parseInt(selectedYear) + 1, Integer.parseInt(selectedYear));
 	yearSpinner.setValueFactory(wetSlipValueFactory);
@@ -98,8 +111,11 @@ public class TabBoardMembers extends Tab {
 	board.getStyleClass().add("title");
 	
 	officersHBox.setSpacing(120);
+	//officersHBox.setStyle("-fx-background-color: blue");
 	committeeHBox.setSpacing(30);
+	//committeeHBox.setStyle("-fx-background-color: blue");
 	boardMembersHBox.setSpacing(40);
+	//boardMembersHBox.setStyle("-fx-background-color: blue");
 	vboxPink.setSpacing(10);
 	yearSpinner.setPrefWidth(145);
 	offciersTitleHBox.setSpacing(190);
@@ -112,11 +128,11 @@ public class TabBoardMembers extends Tab {
 	addOfficers(officerVBox1, officerVBox2);
 	addChairmen(committeeVBox1, committeeVBox2);
 	addBoard(boardMembersVBox1,boardMembersVBox2,boardMembersVBox3);
-		
-	officersHBox.getChildren().addAll(officerVBox1);
-	committeeHBox.getChildren().addAll(committeeVBox1);
-	officersHBox.getChildren().add(officerVBox2);
-	committeeHBox.getChildren().add(committeeVBox2);
+	
+
+	
+	officersHBox.getChildren().addAll(officerVBox1,officerVBox2);
+	committeeHBox.getChildren().addAll(committeeVBox1,committeeVBox2);
 	boardMembersHBox.getChildren().addAll(boardMembersVBox1,boardMembersVBox2,boardMembersVBox3);
 
 	offciersTitleHBox.getChildren().addAll(year, yearSpinner);
