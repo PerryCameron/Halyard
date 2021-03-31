@@ -4,8 +4,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.function.Function;
-import java.util.stream.Collectors;
-
 import com.ecsail.enums.MembershipType;
 import com.ecsail.main.EditCell;
 import com.ecsail.main.Paths;
