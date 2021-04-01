@@ -19,7 +19,7 @@ public class TabWelcome extends Tab {
 		vboxPink.setId("box-pink");
 		vboxBlue.setPrefWidth(1028);
 		vboxGrey.setPrefHeight(680);
-		vboxGrey.setMaxHeight(Double.MAX_VALUE);
+		// vboxGrey.setPrefHeight(688);
 		
 		vboxBlue.getChildren().add(vboxPink);
 		vboxPink.getChildren().add(vboxGrey);
