@@ -30,6 +30,7 @@ public static String selectedYear;
 static BorderPane mainPane;
 static TabLauncher mainViewPane;
 public static BoxConsole console;
+private static Stage pStage;
 static String ipaddress;
 
 public static void main(String[] args) throws SQLException {
@@ -37,6 +38,7 @@ public static void main(String[] args) throws SQLException {
 	Main.selectedYear = Paths.getYear();
 	Main.edits = FileIO.openTupleCountObject();
 	setUpForFirstTime();
+	
 	console = new BoxConsole();
 	// this is the tree trunk to the entire program
 	launch(args);
@@ -47,6 +49,7 @@ public static void main(String[] args) throws SQLException {
 		Group root = new Group();
 		mainPane = new BorderPane();
 		mainViewPane = new TabLauncher();  // This one is for a single membership
+		pStage = primaryStage;
 		Pane topPane = new Pane();
 		VBox toolbar = new BoxToolBar();
 		
@@ -67,6 +70,7 @@ public static void main(String[] args) throws SQLException {
 				});
 			}
 		});
+		
 
 		/////////////////   ATTRIBUTES /////////////////////
 		scene.getStylesheets().add("stylesheet.css");
@@ -88,9 +92,11 @@ public static void main(String[] args) throws SQLException {
 	}
 	
 	//////////////  CLASS METHODS //////////////////////
+
+	
 	
 	public static Window getPrimaryStage() {  // this is used for alerts
-		return null;
+		return pStage;
 	}
 	
 	public static void setUpForFirstTime() {

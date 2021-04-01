@@ -6,6 +6,7 @@ import com.ecsail.excel.Xls_roster;
 import com.ecsail.gui.tabs.roster.TabKayakLists;
 import com.ecsail.gui.tabs.roster.TabSlipOptions;
 import com.ecsail.gui.tabs.roster.TabStandard;
+import com.ecsail.main.Main;
 import com.ecsail.main.Paths;
 import com.ecsail.main.TabLauncher;
 import com.ecsail.sql.SQL_SelectMembership;
@@ -122,7 +123,7 @@ public class TabRoster extends Tab {
 		vboxRadioButton1.setPadding(new Insets(5, 5, 5, 5));
 		vboxRadioButton2.setPadding(new Insets(5, 5, 5, 5));
 		vbox1.setAlignment(Pos.TOP_CENTER);
-		vbox1.setPrefHeight(768);
+		vbox1.setPrefHeight(900);
 
 		setOnClosed(null);
 		rosterTableView.setItems(rosters);
@@ -202,6 +203,10 @@ public class TabRoster extends Tab {
 
 		//////////////////// LISTENERS //////////////////////////
 
+		Main.getPrimaryStage().heightProperty().addListener((obs, oldVal, newVal) -> {
+		    	 rosterTableView.setPrefHeight(545.0 + (double)newVal - 796.0);// 796 is start height
+		});
+		
 		buttonXLS.setOnAction((event) -> new Xls_roster(rosters, printChoices));
 
 		c1.selectedProperty().addListener(new ChangeListener<Boolean>() {
