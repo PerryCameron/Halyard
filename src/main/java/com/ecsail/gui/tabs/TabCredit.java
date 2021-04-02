@@ -5,6 +5,7 @@ import com.ecsail.structures.Object_Integer;
 import com.ecsail.structures.Object_WorkCredit;
 
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
@@ -26,8 +27,6 @@ public class TabCredit extends Tab {
 		this.selectedWorkCreditYear = swc;
 		this.workCredit = wc;
 		
-
-		
 		VBox vboxTextFieldFrame = new VBox();  // this is the vbox for organizing all the widgets
 		VBox vboxTextField = new VBox();
 		VBox vboxBlue = new VBox();
@@ -36,6 +35,16 @@ public class TabCredit extends Tab {
 		HBox hboxHarbor = new HBox();
 		HBox hboxSocial = new HBox();
 		HBox hboxOther = new HBox();
+		
+		VBox vboxRacingLabel = new VBox();
+		VBox vboxHarborLabel = new VBox();
+		VBox vboxSocialLabel = new VBox();
+		VBox vboxOtherLabel = new VBox();
+		
+		VBox vboxRacingBox = new VBox();
+		VBox vboxHarborBox = new VBox();
+		VBox vboxSocialBox = new VBox();
+		VBox vboxOtherBox = new VBox();
 
 		////////////////ATTRIBUTES ///////////////////
 		
@@ -54,11 +63,16 @@ public class TabCredit extends Tab {
 		harborSpinner.setPrefWidth(60);
 		socialSpinner.setPrefWidth(60);
 		otherSpinner.setPrefWidth(60);
+		vboxRacingLabel.setPrefWidth(130);
+		vboxHarborLabel.setPrefWidth(130);
+		vboxSocialLabel.setPrefWidth(130);
+		vboxOtherLabel.setPrefWidth(130);
+		
+		vboxRacingLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxHarborLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxSocialLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxOtherLabel.setAlignment(Pos.CENTER_LEFT);
 
-		hboxRacing.setSpacing(30);
-		hboxHarbor.setSpacing(28);
-		hboxSocial.setSpacing(35);
-		hboxOther.setSpacing(35);
 		//////////////// LISTENERS ///////////////////
 		SpinnerValueFactory<Integer> racingValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 15, selectedWorkCreditYear.getRacing());
 		racingSpinner.setValueFactory(racingValueFactory);
@@ -92,13 +106,21 @@ public class TabCredit extends Tab {
 				  updateCredit();
 		});
 
-
+		vboxRacingLabel.getChildren().add(new Label("Racing"));
+		vboxHarborLabel.getChildren().add(new Label("Harbor"));
+		vboxSocialLabel.getChildren().add(new Label("Social"));
+		vboxOtherLabel.getChildren().add(new Label("Other"));
+		
+		vboxRacingBox.getChildren().add(racingSpinner);
+		vboxHarborBox.getChildren().add(harborSpinner);
+		vboxSocialBox.getChildren().add(socialSpinner);
+		vboxOtherBox.getChildren().add(otherSpinner);
 		////////////////SETTING CONTENT //////////////
 		
-		hboxRacing.getChildren().addAll(new Label("Racing"),racingSpinner);
-		hboxHarbor.getChildren().addAll(new Label("Harbor"),harborSpinner);
-		hboxSocial.getChildren().addAll(new Label("Social"),socialSpinner);
-		hboxOther.getChildren().addAll(new Label("Other"),otherSpinner);
+		hboxRacing.getChildren().addAll(vboxRacingLabel,vboxRacingBox);
+		hboxHarbor.getChildren().addAll(vboxHarborLabel,vboxHarborBox);
+		hboxSocial.getChildren().addAll(vboxSocialLabel,vboxSocialBox);
+		hboxOther.getChildren().addAll(vboxOtherLabel,vboxOtherBox);
 		vboxTextField.getChildren().addAll(hboxRacing, hboxHarbor,hboxSocial,hboxOther);
 		vboxTextFieldFrame.getChildren().add(vboxTextField);
 		vboxBlue.getChildren().add(hboxGrey);
