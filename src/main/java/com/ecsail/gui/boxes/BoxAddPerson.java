@@ -78,6 +78,18 @@ public class BoxAddPerson extends VBox {
 		HBox hbox8 = new HBox(); // Populate Title
 		HBox hbox9 = new HBox(); // populate
 		
+		VBox vboxFnameLabel = new VBox();
+		VBox vboxLnameLabel = new VBox();
+		VBox vboxOccupLabel = new VBox();
+		VBox vboxBuisnLabel = new VBox();
+		VBox vboxBirthLabel = new VBox();
+		
+		VBox vboxFnameBox = new VBox();
+		VBox vboxLnameBox = new VBox();
+		VBox vboxOccupBox = new VBox();
+		VBox vboxBuisnBox = new VBox();
+		VBox vboxBirthBox = new VBox();
+		
 		///////////////  ATTRIBUTES ////////////////
 		setPrefWidth(460);
 		fnameTextField.setPrefSize(240, 10);
@@ -96,24 +108,24 @@ public class BoxAddPerson extends VBox {
 		hboxTitle.setSpacing(13);
 		// Insets(double top, double right, double bottom, double left)
 		hbox1.setPadding(new Insets(5, 15, 5, 60));  // first Name
-		hbox1.setAlignment(Pos.CENTER_LEFT);
-		hbox1.setSpacing(13);
+		//hbox1.setAlignment(Pos.CENTER_LEFT);
+		//hbox1.setSpacing(13);
 
 		hbox2.setPadding(new Insets(5, 15, 5, 60));  // last name
-		hbox2.setAlignment(Pos.CENTER_LEFT);
-		hbox2.setSpacing(14.5);
+		//hbox2.setAlignment(Pos.CENTER_LEFT);
+		//hbox2.setSpacing(14.5);
 
 		hbox3.setPadding(new Insets(5, 15, 5, 60));  // occupation
-		hbox3.setAlignment(Pos.CENTER_LEFT);
-		hbox3.setSpacing(10);
+		//hbox3.setAlignment(Pos.CENTER_LEFT);
+		//hbox3.setSpacing(10);
 
 		hbox4.setPadding(new Insets(5, 15, 5, 60));  // business
-		hbox4.setAlignment(Pos.CENTER_LEFT);
-		hbox4.setSpacing(25);
+		//hbox4.setAlignment(Pos.CENTER_LEFT);
+		//hbox4.setSpacing(25);
 
 		hbox5.setPadding(new Insets(5, 15, 5, 60));  // birthday
-		hbox5.setAlignment(Pos.CENTER_LEFT);
-		hbox5.setSpacing(25);
+		//hbox5.setAlignment(Pos.CENTER_LEFT);
+		//hbox5.setSpacing(25);
 		
 		hbox6.setPadding(new Insets(5, 15, 5, 60));  // member type
 		hbox6.setAlignment(Pos.CENTER_LEFT);
@@ -134,34 +146,58 @@ public class BoxAddPerson extends VBox {
 		setId("box-blue");
 		vboxGrey.setId("box-grey");
 		
+		vboxFnameLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxLnameLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxOccupLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxBuisnLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxBirthLabel.setAlignment(Pos.CENTER_LEFT);
+		
+		vboxFnameLabel.setPrefWidth(80);
+		vboxLnameLabel.setPrefWidth(80);
+		vboxOccupLabel.setPrefWidth(80);
+		vboxBuisnLabel.setPrefWidth(80);
+		vboxBirthLabel.setPrefWidth(80);
+		
 		/////////////////  LISTENERS  /////////////////////
-        addButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-            	int pid = SqlSelect.getCount("person","p_id") + 1;
-            	person = new Object_Person(pid, ms_id, memberType.getValue().getCode(), fnameTextField.getText(), 
-            			lnameTextField.getText(), getBirthday(birthdayDatePicker.getValue()), 
-            			occupationTextField.getText(), businessTextField.getText(), true);
+		addButton.setOnAction((event) -> {
+			int pid = SqlSelect.getCount("person", "p_id") + 1;
+			person = new Object_Person(pid, ms_id, memberType.getValue().getCode(), fnameTextField.getText(),
+					lnameTextField.getText(), getBirthday(birthdayDatePicker.getValue()), occupationTextField.getText(),
+					businessTextField.getText(), true);
 
-					// if adding member succeeds, clear the form
-					if(!setNewMember(person)) {
-						String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date(System.currentTimeMillis()));
-						note.add("New person: " + fnameTextField.getText() + " " + lnameTextField.getText() + " - (PID " + pid + ") added as " + memberType.getValue().toString() + ".",date,0,"N");
-						fnameTextField.setText("");
-						lnameTextField.setText("");
-						businessTextField.setText("");
-						occupationTextField.setText("");
-						birthdayDatePicker.setValue(null);
-						memberType.setValue(MemberType.getByCode(1)); // sets to primary
-					}
-            }
-        });
+			// if adding member succeeds, clear the form
+			if (!setNewMember(person)) {
+				String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date(System.currentTimeMillis()));
+				note.add("New person: " + fnameTextField.getText() + " " + lnameTextField.getText() + " - (PID " + pid
+						+ ") added as " + memberType.getValue().toString() + ".", date, 0, "N");
+				fnameTextField.setText("");
+				lnameTextField.setText("");
+				businessTextField.setText("");
+				occupationTextField.setText("");
+				birthdayDatePicker.setValue(null);
+				memberType.setValue(MemberType.getByCode(1)); // sets to primary
+			}
+		});
+		
+		
+		vboxFnameLabel.getChildren().add(fnameLabel);
+		vboxLnameLabel.getChildren().add(lnameLabel);
+		vboxOccupLabel.getChildren().add(occupationLabel);
+		vboxBuisnLabel.getChildren().add(businessLabel);
+		vboxBirthLabel.getChildren().add(birthdayLabel);
+		
+		vboxFnameBox.getChildren().add(fnameTextField);
+		vboxLnameBox.getChildren().add(lnameTextField);
+		vboxOccupBox.getChildren().add(occupationTextField);
+		vboxBuisnBox.getChildren().add(businessTextField);
+		vboxBirthBox.getChildren().add(birthdayDatePicker);
 		
 		hboxTitle.getChildren().addAll(titleLabel);
-		hbox1.getChildren().addAll(fnameLabel, fnameTextField);
-		hbox2.getChildren().addAll(lnameLabel, lnameTextField);
-		hbox3.getChildren().addAll(occupationLabel, occupationTextField);
-		hbox4.getChildren().addAll(businessLabel, businessTextField);
-		hbox5.getChildren().addAll(birthdayLabel, birthdayDatePicker);
+		hbox1.getChildren().addAll(vboxFnameLabel, vboxFnameBox);
+		hbox2.getChildren().addAll(vboxLnameLabel, vboxLnameBox);
+		hbox3.getChildren().addAll(vboxOccupLabel, vboxOccupBox);
+		hbox4.getChildren().addAll(vboxBuisnLabel, vboxBuisnBox);
+		hbox5.getChildren().addAll(vboxBirthLabel, vboxBirthBox);
 		hbox6.getChildren().addAll(memberTypeLabel,memberType);
 		hbox7.getChildren().addAll(addButton);
 		hbox8.getChildren().addAll(addFromPidLabel);
@@ -199,25 +235,24 @@ public class BoxAddPerson extends VBox {
 	
 	private String getMemberType(Object_Person person, Boolean hasError) {
 		String memberType = null;
-		switch(person.getMemberType()) 
-        { 
-            case PRIMARY: 
-            	memberType = "Primary";
-            	if(SqlExists.personExists(person.getP_id(),PRIMARY,ms_id))
-            		printErrorMessage("A primary member already exists for this account");
-                break; 
-            case SECONDARY: 
-            	memberType = "Secondary";
-            	if(SqlExists.personExists(person.getP_id(),SECONDARY,ms_id)) {
-            		printErrorMessage("A secondary member already exists for this account");
-            	}
-                break; 
-            case DEPENDANT: 
-            	memberType = "Dependant";
-                break; 
-            default: 
-                System.out.println("no match"); 
-        } 
+		switch (person.getMemberType()) {
+		case PRIMARY:
+			memberType = "Primary";
+			if (SqlExists.personExists(person.getP_id(), PRIMARY, ms_id))
+				printErrorMessage("A primary member already exists for this account");
+			break;
+		case SECONDARY:
+			memberType = "Secondary";
+			if (SqlExists.personExists(person.getP_id(), SECONDARY, ms_id)) {
+				printErrorMessage("A secondary member already exists for this account");
+			}
+			break;
+		case DEPENDANT:
+			memberType = "Dependant";
+			break;
+		default:
+			System.out.println("no match");
+		}
 		return memberType;
 	}
 	
