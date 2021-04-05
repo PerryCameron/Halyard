@@ -11,6 +11,7 @@ import com.ecsail.gui.boxes.BoxPerson;
 import com.ecsail.gui.boxes.BoxProperties;
 import com.ecsail.gui.boxes.BoxSlip;
 import com.ecsail.main.CreateMembership;
+import com.ecsail.main.Main;
 import com.ecsail.main.Note;
 import com.ecsail.sql.SqlSelect;
 import com.ecsail.structures.Object_MemLabels;
@@ -95,6 +96,14 @@ public class TabMembership extends Tab {
         AnchorPane.setBottomAnchor(mainScrollPane, 0.0);
         AnchorPane.setLeftAnchor(mainScrollPane, 0.0);
         AnchorPane.setRightAnchor(mainScrollPane, 0.0);
+        
+        ////////// LISTENERS ///////////////////////
+        
+		Main.getPrimaryStage().heightProperty().addListener((obs, oldVal, newVal) -> {
+			 //System.out.println(mainScrollPane.getHeight());
+			 //System.out.println(vboxPink.getHeight());
+			 mainScrollPane.setPrefHeight(680 + (double)newVal - 796);// 570 is start height
+		});
 
         ////////// SETTING CONTENT /////////////////
         
