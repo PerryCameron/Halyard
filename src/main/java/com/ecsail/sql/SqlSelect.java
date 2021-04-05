@@ -18,6 +18,7 @@ import com.ecsail.structures.Object_Email;
 import com.ecsail.structures.Object_Email_Information;
 import com.ecsail.structures.Object_Membership;
 import com.ecsail.structures.Object_MembershipId;
+import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Memo;
 import com.ecsail.structures.Object_Memo2;
 import com.ecsail.structures.Object_Money;
@@ -1486,6 +1487,63 @@ public class SqlSelect {
 			e.printStackTrace();
 		}
 		return number;
+	}
+	
+	//////////  FOR CHARTS /////////////
+	public static int getNumberOfActiveMembershipsForYear(int year) {
+		int number = 0;
+		ResultSet rs;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			rs = stmt.executeQuery("select count(*) from membership_id where fiscal_year=" + year + " and renew=true");
+			rs.next();
+			number = rs.getInt("count(*)");
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return number;
+	}
+	
+	public static int getNumberOfInactiveMembershipsForYear(int year) {
+		int number = 0;
+		ResultSet rs;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			rs = stmt.executeQuery("select count(*) from membership_id where fiscal_year=" + year + " and renew=false");
+			rs.next();
+			number = rs.getInt("count(*)");
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return number;
+	}
+	
+	public static int getNumberOfNewMembershipsForYear(int year) {
+		int number = 0;
+		ResultSet rs;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			rs = stmt.executeQuery("select count(*) from membership where year(join_date) =" + year);
+			rs.next();
+			number = rs.getInt("count(*)");
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return number;
+	}
+	
+	public static int getNumberOfReturningMembershipsForYear(int year) {
+		ObservableList<Object_MembershipList> rosters = SQL_SelectMembership.getFullNewMemberRoster(year + "");
+		for(Object_MembershipList r: rosters) {
+		//	if(r.getJoinDate())
+		}
+		return year;
 	}
 	
 	public static int getMid(String year, int ms_id) {

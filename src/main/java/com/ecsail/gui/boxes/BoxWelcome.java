@@ -1,14 +1,11 @@
 package com.ecsail.gui.boxes;
 
 import com.ecsail.main.CreateMembership;
-import com.ecsail.main.Paths;
 import com.ecsail.main.TabLauncher;
-import com.ecsail.sql.SqlSelect;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 // this is the contents inside tabWelcome() launched from ConnectDatabase() about line 229
 public class BoxWelcome extends HBox {
 	
@@ -17,6 +14,7 @@ public class BoxWelcome extends HBox {
 		int height = 70;
 		VBox vboxLeft = new VBox();
 		VBox vboxRight = new VBox();
+		//Pane mainPane = new Pane();
 		Button peopleListButton = new Button("People");
 		Button slipListButton = new Button("Slips");
 		Button bodButton = new Button("Board of Directors");
@@ -26,25 +24,25 @@ public class BoxWelcome extends HBox {
 		Button boatsButton = new Button("Boats");
 		Button notesButton = new Button("Notes");
 		
-		int activeMembership = SqlSelect.getActiveMembershipCount(Paths.getYear());
-		int activePeople = SqlSelect.getActivePeopleCount();;
-		Text activeText = new Text("There are currently " + activeMembership + " active memberships");
-		Text familyMembershipText = new Text("	-" + SqlSelect.getMembershipTypeCount("FM") + " family memberships");
-		Text regularMembershipText = new Text("	-" + SqlSelect.getMembershipTypeCount("RM") + " regular memberships");
-		Text socialMembershipText = new Text("	-" + SqlSelect.getMembershipTypeCount("SO") + " social memberships");
-		Text lakeAssociateMembershipText = new Text("	-" + SqlSelect.getMembershipTypeCount("LA") + " lake associates");
-		Text lifeMembershipText = new Text("	-" + SqlSelect.getMembershipTypeCount("LM") + " life memberships");
-		Text activepeopleText = new Text("There are currently " + activePeople + " people attached to active memberships");
+		//int activeMembership = SqlSelect.getActiveMembershipCount(Paths.getYear());
+		//int activePeople = SqlSelect.getActivePeopleCount();;
+		//Text activeText = new Text("There are currently " + activeMembership + " active memberships");
+		//Text familyMembershipText = new Text("	-" + SqlSelect.getMembershipTypeCount("FM") + " family memberships");
+		//Text regularMembershipText = new Text("	-" + SqlSelect.getMembershipTypeCount("RM") + " regular memberships");
+		//Text socialMembershipText = new Text("	-" + SqlSelect.getMembershipTypeCount("SO") + " social memberships");
+		//Text lakeAssociateMembershipText = new Text("	-" + SqlSelect.getMembershipTypeCount("LA") + " lake associates");
+		//Text lifeMembershipText = new Text("	-" + SqlSelect.getMembershipTypeCount("LM") + " life memberships");
+		//Text activepeopleText = new Text("There are currently " + activePeople + " people attached to active memberships");
 	
 		////////////////  ATTRIBUTES //////////////////////////////
 		
-		activeText.setStyle("-fx-font: 14 Helvetica;");
-		familyMembershipText.setStyle("-fx-font: 12 Helvetica;");
-		regularMembershipText.setStyle("-fx-font: 12 Helvetica;");
-		socialMembershipText.setStyle("-fx-font: 12 Helvetica;");
-		lakeAssociateMembershipText.setStyle("-fx-font: 12 Helvetica;");
-		lifeMembershipText.setStyle("-fx-font: 12 Helvetica;");
-		activepeopleText.setStyle("-fx-font: 14 Helvetica;");
+		//activeText.setStyle("-fx-font: 14 Helvetica;");
+		//familyMembershipText.setStyle("-fx-font: 12 Helvetica;");
+		//regularMembershipText.setStyle("-fx-font: 12 Helvetica;");
+		//socialMembershipText.setStyle("-fx-font: 12 Helvetica;");
+		//lakeAssociateMembershipText.setStyle("-fx-font: 12 Helvetica;");
+		//lifeMembershipText.setStyle("-fx-font: 12 Helvetica;");
+		//activepeopleText.setStyle("-fx-font: 14 Helvetica;");
 		
 		vboxLeft.setPrefWidth(570);
 		notesButton.setId("bigbuttontext");
@@ -55,7 +53,7 @@ public class BoxWelcome extends HBox {
 		slipListButton.setId("bigbuttontext");
 		batchesButton.setId("bigbuttontext");
 		rosterButton.setId("bigbuttontext");
-		activeText.setId("");
+		//activeText.setId("");
 		vboxRight.setSpacing(10);
 		vboxRight.setPadding(new Insets(30,0,0,0));
 		notesButton.setPrefSize(width, height);
@@ -68,6 +66,7 @@ public class BoxWelcome extends HBox {
 		rosterButton.setPrefSize(width, height);
 		
 		///////////////// LISTENERS  /////////////////////////
+
 		
 		boatsButton.setOnAction((event) -> TabLauncher.openBoatsTab());
 		notesButton.setOnAction((event) -> TabLauncher.openNotesTab());
@@ -79,8 +78,9 @@ public class BoxWelcome extends HBox {
 		batchesButton.setOnAction((event) -> TabLauncher.openTabBatchedPaidDues());
 
 		////////////////  SET CONTENT ////////////////////////
-		//vboxLeft.getChildren().addAll(activeText,familyMembershipText,regularMembershipText,socialMembershipText,lakeAssociateMembershipText,lifeMembershipText,activepeopleText);
 		vboxRight.getChildren().addAll(rosterButton,peopleListButton,slipListButton,bodButton,newButton,batchesButton,boatsButton,notesButton);
+		vboxLeft.getChildren().addAll(Charts.getBarChart(),Charts.getLineChart());
+		//vboxLeft.getChildren().addAll(Charts.getLineChart());
 		getChildren().addAll(vboxLeft,vboxRight);
 	}
 
