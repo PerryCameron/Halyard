@@ -25,7 +25,10 @@ public class PDF_Renewal_Form_Back {
 		int nextYear = year + 1;
 		//PdfFont font = PdfFontFactory.createFont(FontConstants.TIMES_ROMAN);
 		
+		if(System.getProperty("os.name").equals("Windows 10"))
 		FontProgramFactory.registerFont("c:/windows/fonts/times.ttf", "times");
+		else if(System.getProperty("os.name").equals("Mac OS X"))
+		FontProgramFactory.registerFont("/Library/Fonts/SF-Compact-Display-Regular.otf", "times");
 		PdfFont font = PdfFontFactory.createRegisteredFont("times");
 		
 		List list = new List().setSymbolIndent(12)
@@ -136,7 +139,7 @@ public class PDF_Renewal_Form_Back {
 		listItem.add(p);
 		list.add(listItem);
 		list.add("Only Regular/Family Memberships may keep watercraft on ECSC property");
-		list.add("Make all checks payable to \"Eagle Creek Sailing Club\" or “ECSC”");
+		list.add("Make all checks payable to \"Eagle Creek Sailing Club\" or ï¿½ECSCï¿½");
 		
 		document.add(list);
 		//document.add(list);
