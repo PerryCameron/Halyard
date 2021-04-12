@@ -44,6 +44,7 @@ public class PDF_BoardOfDirectors extends Table {
 		Cell cell;
 		Paragraph p;
 		cell = new Cell(1,2);
+		cell.setBorder(Border.NO_BORDER);
 		p = new Paragraph(set.getSelectedYear() + " Officers");
 		p.setFontSize(set.getNormalFontSize() + 4);
 		p.setFont(set.getColumnHead());
@@ -74,6 +75,7 @@ public class PDF_BoardOfDirectors extends Table {
 		Cell cell;
 		Paragraph p;
 		cell = new Cell(1,2);
+		cell.setBorder(Border.NO_BORDER);
 		p = new Paragraph("Commitee Chairs");
 		p.setFontSize(set.getNormalFontSize() + 4);
 		p.setFont(set.getColumnHead());
@@ -110,6 +112,7 @@ public class PDF_BoardOfDirectors extends Table {
 		Cell cell;
 		Paragraph p;
 		cell = new Cell(1,3);
+		cell.setBorder(Border.NO_BORDER);
 		p = new Paragraph("Current Board Members");
 		p.setFontSize(set.getNormalFontSize() + 4);
 		p.setFont(set.getColumnHead());

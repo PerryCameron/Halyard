@@ -79,7 +79,7 @@ public class PDF_Directory {
 		doc.add(new PDF_ChapterPage(1, "Membership Information",set));
 		doc.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
 		
-		createMemberInfoPages(doc);
+		//createMemberInfoPages(doc);
 		doc.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
 		
 		new PDF_MembersByNumber(set, doc, rosters);

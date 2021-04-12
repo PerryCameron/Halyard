@@ -1,6 +1,5 @@
 package com.ecsail.pdf.directory;
 
-import com.itextpdf.kernel.colors.DeviceCmyk;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.element.Cell;
@@ -33,6 +32,7 @@ public class PDF_TableOfContents extends Table {
 		//cell.setHorizontalAlignment(HorizontalAlignment.CENTER);
 		cell.setVerticalAlignment(VerticalAlignment.MIDDLE);
 		cell.setHeight(set.getTitleBoxHeight() + 10);
+		cell.setBorder(Border.NO_BORDER);
 		p = new Paragraph("Membership Directory");
 		p.setFontSize(set.getNormalFontSize() + 8);
 		p.setFont(set.getColumnHead());

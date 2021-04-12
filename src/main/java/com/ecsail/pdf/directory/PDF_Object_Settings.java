@@ -22,7 +22,8 @@ public class PDF_Object_Settings {
 	private float titleBoxHeight;
 	private PdfFont columnHead;
 	private DeviceCmyk mainColor;
-	private Style emailColor; 
+	private Style emailColor;
+	private int numberOfColumns; // this is the number of columns in MembersByNumber
 	
 	public PDF_Object_Settings(String selectedYear) {
 		super();
@@ -35,6 +36,7 @@ public class PDF_Object_Settings {
 		this.columnHead = constructFontHeading();
 		this.mainColor = new DeviceCmyk(.93f, 0, 0.7f, 0.62f);  // green color in document
 		this.emailColor = new Style().setFontColor(ColorConstants.BLUE);
+		this.numberOfColumns = 28;
 
 	}
 	
@@ -120,5 +122,15 @@ public class PDF_Object_Settings {
 	public void setEmailColor(Style emailColor) {
 		this.emailColor = emailColor;
 	}
+
+	public int getNumberOfColumns() {
+		return numberOfColumns;
+	}
+
+	public void setNumberOfColumns(int numberOfColumns) {
+		this.numberOfColumns = numberOfColumns;
+	}
+	
+	
 	
 }
