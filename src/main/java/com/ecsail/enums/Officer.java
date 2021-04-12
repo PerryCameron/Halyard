@@ -53,6 +53,15 @@ public enum Officer {
 	       }
 	       return null;
 	   }
+	   
+	   public static String getNameByCode(String officerCode) {
+	       for (Officer g : Officer.values()) {
+	           if (g.code.equals(officerCode)) {
+	               return g.getText();
+	           }
+	       }
+	       return null;
+	   }
 	 
 	   @Override
 	   public String toString() {

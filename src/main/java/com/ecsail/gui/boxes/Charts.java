@@ -31,17 +31,21 @@ public class Charts {
 		//XYChart.Series<String,Number> seriesActive = new Series<String, Number>();
 		XYChart.Series<String,Number> seriesNonRenew = new Series<String, Number>();
 		XYChart.Series<String,Number> seriesNewMembers = new Series<String, Number>();
+		////XYChart.Series<String,Number> seriesReturnMembers = new Series<String, Number>();
 		//seriesActive.setName("Active");
 		seriesNonRenew.setName("Non-Renew");
 		seriesNewMembers.setName("New");
+		////seriesReturnMembers.setName("Return");
         //populating the series with data
 		for (int i = 0; i < numberOfYears; i++) {
 		//int activeMembers = SqlSelect.getNumberOfActiveMembershipsForYear(startYear);
 		int nonRenewMembers = SqlSelect.getNumberOfInactiveMembershipsForYear(startYear);
 		int newMembers = SqlSelect.getNumberOfNewMembershipsForYear(startYear);
+		////int returnMembers = SqlSelect.getNumberOfReturningMembershipsForYear(startYear + "");
         //seriesActive.getData().add(new Data<String, Number>(startYear + "", activeMembers));
         seriesNonRenew.getData().add(new Data<String, Number>(startYear + "", nonRenewMembers));
         seriesNewMembers.getData().add(new Data<String, Number>(startYear + "", newMembers));
+        ////seriesReturnMembers.getData().add(new Data<String, Number>(startYear + "", returnMembers));
         startYear++;
 		}
         lineChart.getData().addAll(Arrays.asList(seriesNonRenew,seriesNewMembers));

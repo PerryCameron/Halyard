@@ -9,6 +9,7 @@ import java.util.List;
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.Main;
 import com.ecsail.main.Paths;
+import com.ecsail.pdf.directory.PDF_Object_Officer;
 import com.ecsail.structures.Object_Board;
 import com.ecsail.structures.Object_Boat;
 import com.ecsail.structures.Object_BoatOwner;
@@ -284,6 +285,27 @@ public class SqlSelect {
 		return thisOfficer;
 	}
 	
+	public static ArrayList<PDF_Object_Officer> getOfficersByYear(String selectedYear) {
+		ArrayList<PDF_Object_Officer> officers = new ArrayList<PDF_Object_Officer>();
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs;
+			rs = stmt.executeQuery(Main.console.setRegexColor("select * from officer o left join person p on o.P_ID=p.P_ID where OFF_YEAR=" + selectedYear));
+			while (rs.next()) {
+				officers.add(new PDF_Object_Officer(
+						rs.getString("F_NAME"),
+						rs.getString("L_NAME"),
+						rs.getString("OFF_TYPE"),
+						rs.getString("BOARD_YEAR"), // beginning of board term
+						rs.getString("OFF_YEAR")));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return officers;
+	}
+	
 	public static ObservableList<Object_Officer> getOfficer(String field, int attribute) {  //p_id
 		ObservableList<Object_Officer> thisOfficer = FXCollections.observableArrayList();
 		try {
@@ -514,6 +536,7 @@ public class SqlSelect {
 	}	
 	
 	public static String getEmail(Object_Person person) {
+		System.out.println(person);
 		Object_Email email = null;
 		String returnEmail = "";
 		try {
@@ -855,14 +878,21 @@ public class SqlSelect {
 		return thisPhone;
 	}
 
+	public static String getPhone(Object_Person p, String type) {  // if p_id = 0 then select all
+		String phone = "";
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs;
+			rs = stmt.executeQuery(Main.console.setRegexColor("select * from phone where P_ID=" + p.getP_id() + " and PHONE_LISTED=true and PHONE_TYPE='" + type + "'"));
+			rs.next();
+			phone = rs.getString("PHONE");
 
-	
-	
-
-	
-
-	
-
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return phone;
+	}
 	
 	public static Object_DefinedFee selectDefinedFees(int year) {
 		Statement stmt;
@@ -921,7 +951,7 @@ public class SqlSelect {
 		return thesepeople;
 	}
 	
-	public static ArrayList<Object_Person> getPeople(Object_Membership m) {  
+	public static ArrayList<Object_Person> getDependants(Object_Membership m) {  
 		String query = "SELECT * FROM person WHERE ms_id= '" + m.getMsid() + "' and MEMBER_TYPE=3";
 		ArrayList<Object_Person> thesepeople = new ArrayList<Object_Person>();
 		try {
@@ -1001,7 +1031,7 @@ public class SqlSelect {
 		return theseIds;
 	}
 	
-	public static Object_Person getPerson(int pid) {  // nothing calling this
+	public static Object_Person getPerson(int pid) {  
 		Object_Person person = null;
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
@@ -1022,7 +1052,7 @@ public class SqlSelect {
 		return person;
 	}
 	
-	public static Object_Person getPerson(int ms_id, int member_type) {  // nothing calling this
+	public static Object_Person getPerson(int ms_id, int member_type) {  
 		Object_Person person = null;
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
@@ -1538,12 +1568,34 @@ public class SqlSelect {
 		return number;
 	}
 	
-	public static int getNumberOfReturningMembershipsForYear(int year) {
-		ObservableList<Object_MembershipList> rosters = SQL_SelectMembership.getFullNewMemberRoster(year + "");
+	/// not a pure SQL FUNCTION was having difficulties narrowing it down pure SQL.
+	public static int getNumberOfReturningMembershipsForYear(String year) {
+		ObservableList<Object_MembershipList> rosters = SQL_SelectMembership.getReturnMembers(year);
+		int count = 0;
 		for(Object_MembershipList r: rosters) {
-		//	if(r.getJoinDate())
+			if(SqlExists.memberShipIdExists(r.getMsid(), ((Integer.parseInt(year) - 1) + ""))) {
+				if(!isActive(r.getMsid(), (Integer.parseInt(year) - 1) + ""));
+				count++;
+			} else {  // record doesn't exist
+			count++;	
+			}
 		}
-		return year;
+		return count;
+	}
+	
+	public static boolean isActive(int ms_id, String year) {
+		Boolean result = false;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("Select renew from membership_id where FISCAL_YEAR='"+year+"' and MS_ID='"+ms_id+"'"));
+			while(rs.next()) {
+			result = rs.getBoolean("renew");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
 	}
 	
 	public static int getMid(String year, int ms_id) {

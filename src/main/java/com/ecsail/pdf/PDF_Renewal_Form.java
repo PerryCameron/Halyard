@@ -198,11 +198,12 @@ public class PDF_Renewal_Form {
 		boats = SqlSelect.getBoats(ms_id);
 		boats.add(0, new Object_Boat(0, 0, "Manufacturer", "Year", "Registration", "Model", "Boat Name", "Sail #", true, "Length", "Header", "Keel Type", "PHRF"));
 		boats.add(new Object_Boat(0, 0, "", "", "", "", "", "", false, "", "Blank", "", ""));
-		dependants = SqlSelect.getPeople(membership);
+		dependants = SqlSelect.getDependants
+				(membership);
 		primary = SqlSelect.getPerson(ms_id, 1); // 1 = primary member
 		primaryPhone = SqlSelect.getPhone(primary);
 		shortenDate(primary);
-			if(SqlExists.personExists(ms_id, 2)) {
+			if(SqlExists.activePersonExists(ms_id, 2)) {
 			secondary = SqlSelect.getPerson(ms_id, 2);
 			secondaryPhone = SqlSelect.getPhone(secondary);
 			shortenDate(secondary);

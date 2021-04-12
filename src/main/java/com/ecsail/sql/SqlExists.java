@@ -15,6 +15,8 @@ import com.ecsail.structures.Object_Temp;
 
 public class SqlExists {
 	
+	// this may be a duplicate, for instance it dosent need int pid, and why the inner join
+	// this is used on BoxAddPerson only
 	public static Boolean personExists(int pid, int type, int ms_id) {
 		Boolean answer = false;
 		try {
@@ -90,7 +92,7 @@ public class SqlExists {
 		return result;
 	}
 	
-	public static boolean personExists(int ms_id, int member_type) {
+	public static boolean activePersonExists(int ms_id, int member_type) {
 		Boolean result = false;
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
@@ -135,13 +137,13 @@ public class SqlExists {
 		return result;
 	}
 	
-	public static boolean cellPhoneExists(Object_Person p) {
+	public static boolean cellPhoneExists(Object_Person p, String type) {
 		Boolean result = false;
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
-			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select exists(select * from phone where P_ID=" + p.getP_id() + " and PHONE_TYPE=true);"));
+			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select exists(select * from phone where P_ID=" + p.getP_id() + " and PHONE_LISTED=true and PHONE_TYPE='" + type + "')"));
 			while(rs.next()) {
-			result = rs.getBoolean("exists(select * from email where P_ID=" + p.getP_id() + " and PRIMARY_USE=true)");
+			result = rs.getBoolean("exists(select * from phone where P_ID=" + p.getP_id() + " and PHONE_LISTED=true and PHONE_TYPE='" + type + "')");
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
