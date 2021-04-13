@@ -5,6 +5,7 @@ import java.sql.Statement;
 
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.Main;
+import com.ecsail.structures.Object_Award;
 import com.ecsail.structures.Object_Boat;
 import com.ecsail.structures.Object_Email;
 import com.ecsail.structures.Object_MembershipId;
@@ -77,6 +78,20 @@ public class SqlDelete {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			stmt.execute(Main.console
 					.setRegexColor("delete from officer where o_id='" + officer.getOfficer_id() + "';"));
+			noError = true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return noError;
+	}
+	
+	public static boolean deleteAward(Object_Award a) {
+		boolean noError = false;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			stmt.execute(Main.console
+					.setRegexColor("delete from awards where award_id='" + a.getAwardId() + "';"));
 			noError = true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

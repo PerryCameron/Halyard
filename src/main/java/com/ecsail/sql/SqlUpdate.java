@@ -269,6 +269,21 @@ public class SqlUpdate {
 		}
 	}
 	
+	public static void updateAward(String field, int awardId, String attribute) {
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			stmt.execute(Main.console.setRegexColor("UPDATE awards SET " + field + "=\"" + attribute + "\" WHERE award_id='" + awardId + "';"));
+			Main.edits.setOfficersEdits(Main.edits.getOfficersEdits() + 1);  // update edits tracking
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+			alert.setTitle("Error Dialog");
+			alert.setHeaderText("Duplicate");
+			alert.setContentText("Duplicate entry!");
+			alert.showAndWait();
+		}
+	}
+	
 	public static void updateBirthday(LocalDate date, Object_Person person) {
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();

@@ -70,6 +70,7 @@ public class BoxPerson extends HBox {
 		HBox hbox6 = new BoxPhone(person); // Phone
 		HBox hbox7 = new BoxEmail(person); // Email
 		HBox hbox8 = new BoxOfficer(person); // Officer
+		HBox hbox9 = new BoxAward(person);
 
 		Label fnameLabel = new Label("First Name");
 		Label lnameLabel = new Label("Last Name");
@@ -118,6 +119,11 @@ public class BoxPerson extends HBox {
 		hbox8.setAlignment(Pos.CENTER);
 		hbox8.setSpacing(5);
 		hbox8.setId("box-blue");
+		
+		hbox9.setPadding(new Insets(5, 5, 5, 5));
+		hbox9.setAlignment(Pos.CENTER);
+		hbox9.setSpacing(5);
+		hbox9.setId("box-blue");
 		
 		vbLnameLabel.setPrefWidth(75);
 		vbFnameLabel.setPrefWidth(75);
@@ -222,6 +228,7 @@ public class BoxPerson extends HBox {
 		infoTabPane.getTabs().add(new Tab("Email", hbox7));
 		infoTabPane.getTabs().add(new Tab("Officer", hbox8));
 		infoTabPane.getTabs().add(new TabPersonProperties(p, people, personTabPane));
+		infoTabPane.getTabs().add(new Tab("Awards", hbox9));
 		vboxInfoGrey.getChildren().add(infoTabPane);
 		
 		vbLnameLabel.getChildren().add(lnameLabel);

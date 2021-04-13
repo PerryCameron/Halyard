@@ -6,6 +6,7 @@ import java.sql.Statement;
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.Main;
 import com.ecsail.main.SqlScriptMaker;
+import com.ecsail.structures.Object_Award;
 import com.ecsail.structures.Object_DefinedFee;
 import com.ecsail.structures.Object_Deposit;
 import com.ecsail.structures.Object_Membership;
@@ -57,17 +58,23 @@ public class SqlInsert {
 		}
 	}
 	
-	public static void addRecord(Object_Payment op) {
+	public static void addPaymentRecord(Object_Payment op) {
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
-			stmt.execute(Main.console.setRegexColor("INSERT into payment () VALUES (" 
-			+ op.getPay_id() + "," 
-			+ op.getMoney_id() + "," 
-			+ op.getCheckNumber() + ",'" 
-			+ op.getPaymentType() + "','" 
-			+ op.getPaymentDate() + "','" 
-			+ op.getPaymentAmount() + "','" 
-			+ op.getDeposit_id() + "');"));
+			stmt.execute(Main.console.setRegexColor("INSERT into payment () VALUES (" + op.getPay_id() + ","
+					+ op.getMoney_id() + "," + op.getCheckNumber() + ",'" + op.getPaymentType() + "','"
+					+ op.getPaymentDate() + "','" + op.getPaymentAmount() + "','" + op.getDeposit_id() + "');"));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static void addAwardRecord(Object_Award a) {
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			stmt.execute(Main.console.setRegexColor("INSERT into awards () VALUES (" + a.getAwardId() + ","
+					+ a.getPid() + ",'" + a.getAwardYear() + "','" + a.getAwardType() + "')"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

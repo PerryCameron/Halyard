@@ -10,6 +10,7 @@ import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.Main;
 import com.ecsail.main.Paths;
 import com.ecsail.pdf.directory.PDF_Object_Officer;
+import com.ecsail.structures.Object_Award;
 import com.ecsail.structures.Object_Board;
 import com.ecsail.structures.Object_Boat;
 import com.ecsail.structures.Object_BoatOwner;
@@ -24,6 +25,7 @@ import com.ecsail.structures.Object_Memo;
 import com.ecsail.structures.Object_Memo2;
 import com.ecsail.structures.Object_Money;
 import com.ecsail.structures.Object_Officer;
+import com.ecsail.structures.Object_OfficerWithName;
 import com.ecsail.structures.Object_PaidDues;
 import com.ecsail.structures.Object_Payment;
 import com.ecsail.structures.Object_Person;
@@ -37,6 +39,27 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 public class SqlSelect {
 
+	
+	
+	public static ArrayList<Object_OfficerWithName> getOfficersWithNames(String type) {
+		ArrayList<Object_OfficerWithName> theseOfficers = new ArrayList<Object_OfficerWithName>();
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs;
+			rs = stmt.executeQuery(Main.console.setRegexColor("select F_NAME,L_NAME,OFF_YEAR from officer o left join person p on o.P_ID=p.P_ID where OFF_TYPE='"+type+"'"));
+			while (rs.next()) {
+				theseOfficers.add(new Object_OfficerWithName(
+						rs.getString("L_NAME"), 
+						rs.getString("F_NAME"),
+						rs.getString("OFF_YEAR")
+						));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return theseOfficers;
+	}
 	
 	public static ObservableList<Object_WorkCredit> getWorkCredits() {
 		ObservableList<Object_WorkCredit> thisWorkCredit = FXCollections.observableArrayList();
@@ -325,6 +348,26 @@ public class SqlSelect {
 			e.printStackTrace();
 		}
 		return thisOfficer;
+	}
+	
+	public static ObservableList<Object_Award> getAwards(Object_Person p) {  //p_id
+		ObservableList<Object_Award> thisAwards = FXCollections.observableArrayList();
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs = stmt
+					.executeQuery(Main.console.setRegexColor("select * from awards where P_ID=" + p.getP_id()));
+			while (rs.next()) {
+				thisAwards.add(new Object_Award(
+						rs.getInt("AWARD_ID"), 
+						rs.getInt("P_ID"), 
+						rs.getString("AWARD_YEAR"),
+						rs.getString("AWARD_TYPE")));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return thisAwards;
 	}
 	
 	public static ObservableList<Object_Email_Information> getEmailInfo() {
