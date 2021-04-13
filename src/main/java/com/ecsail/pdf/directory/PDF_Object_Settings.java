@@ -23,7 +23,8 @@ public class PDF_Object_Settings {
 	private PdfFont columnHead;
 	private DeviceCmyk mainColor;
 	private Style emailColor;
-	private int numberOfColumns; // this is the number of columns in MembersByNumber
+	private int numberOfRowsByNumber; // this is the number of columns in MembersByNumber
+	private int numberOfCommodoreColumes; // this is the number of rows in Commodore Page
 	
 	public PDF_Object_Settings(String selectedYear) {
 		super();
@@ -36,8 +37,8 @@ public class PDF_Object_Settings {
 		this.columnHead = constructFontHeading();
 		this.mainColor = new DeviceCmyk(.93f, 0, 0.7f, 0.62f);  // green color in document
 		this.emailColor = new Style().setFontColor(ColorConstants.BLUE);
-		this.numberOfColumns = 28;
-
+		this.numberOfRowsByNumber = 28;
+		this.numberOfCommodoreColumes = 2;
 	}
 	
 	private PdfFont constructFontHeading() {
@@ -54,9 +55,12 @@ public class PDF_Object_Settings {
 		return pdfFont;
 	}
 
-
 	public String getLogoPath() {
 		return logoPath;
+	}
+
+	public void setLogoPath(String logoPath) {
+		this.logoPath = logoPath;
 	}
 
 	public String getSelectedYear() {
@@ -83,6 +87,14 @@ public class PDF_Object_Settings {
 		this.fixedLeading = fixedLeading;
 	}
 
+	public int getFixedLeadingNarrow() {
+		return fixedLeadingNarrow;
+	}
+
+	public void setFixedLeadingNarrow(int fixedLeadingNarrow) {
+		this.fixedLeadingNarrow = fixedLeadingNarrow;
+	}
+
 	public float getTitleBoxHeight() {
 		return titleBoxHeight;
 	}
@@ -107,14 +119,6 @@ public class PDF_Object_Settings {
 		this.mainColor = mainColor;
 	}
 
-	public int getFixedLeadingNarrow() {
-		return fixedLeadingNarrow;
-	}
-
-	public void setFixedLeadingNarrow(int fixedLeadingNarrow) {
-		this.fixedLeadingNarrow = fixedLeadingNarrow;
-	}
-
 	public Style getEmailColor() {
 		return emailColor;
 	}
@@ -123,14 +127,23 @@ public class PDF_Object_Settings {
 		this.emailColor = emailColor;
 	}
 
-	public int getNumberOfColumns() {
-		return numberOfColumns;
+	public int getNumberOfRowsByNumber() {
+		return numberOfRowsByNumber;
 	}
 
-	public void setNumberOfColumns(int numberOfColumns) {
-		this.numberOfColumns = numberOfColumns;
+	public void setNumberOfRowsByNumber(int numberOfRowsByNumber) {
+		this.numberOfRowsByNumber = numberOfRowsByNumber;
 	}
-	
-	
+
+	public int getNumberOfCommodoreColumes() {
+		return numberOfCommodoreColumes;
+	}
+
+	public void setNumberOfCommodoreColumes(int numberOfCommodoreColumes) {
+		this.numberOfCommodoreColumes = numberOfCommodoreColumes;
+	}
+
+
+
 	
 }
