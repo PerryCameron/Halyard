@@ -80,7 +80,9 @@ public class PDF_Directory {
 		doc.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
 		
 		//createMemberInfoPages(doc);
-		doc.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+		//doc.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+		
+		doc.add(new PDF_CommodoreList(2,set));
 		
 		new PDF_MembersByNumber(set, doc, rosters);
 		doc.close();
