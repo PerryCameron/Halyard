@@ -451,7 +451,7 @@ public class TabDeposits extends Tab {
 	private int createPaymentRecord(Object_PaidDues thisPaidDues) {
 		int pay_id = SqlSelect.getNumberOfPayments() + 1;
 		Object_Payment newPayment = new Object_Payment(pay_id,thisPaidDues.getMoney_id(),"0","CH",currentDate, "0",1);
-		SqlInsert.addRecord(newPayment);
+		SqlInsert.addPaymentRecord(newPayment);
 		return pay_id;
 	}
 	
