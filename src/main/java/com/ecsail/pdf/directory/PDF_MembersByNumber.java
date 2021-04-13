@@ -32,7 +32,7 @@ public class PDF_MembersByNumber {
 		// used to know where we are in iterations
 		int count = 0;
 		// determines number of people we will put in a column
-		int columnLength = this.set.getNumberOfColumns();
+		int columnLength = this.set.getNumberOfRowsByNumber();
 		// determines number of people left that won't perfectly fill a column, the straglers
 		int remainder = rosters.size() % columnLength;
 		// determines the total number of columns we have not including one needed for any straglers
