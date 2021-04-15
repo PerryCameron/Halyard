@@ -55,8 +55,8 @@ public class PDF_Directory {
 		PdfWriter writer = new PdfWriter(Paths.EMAILLIST + "_directory.pdf");
 		// Initialize PDF document
 		PdfDocument pdf = new PdfDocument(writer);
-		PageSize A5v = new PageSize(PageSize.A5.getWidth(), PageSize.A5.getHeight());
-		Document doc = new Document(pdf, new PageSize(A5v));
+		//PageSize A5v = new PageSize(PageSize.A5.getWidth(), PageSize.A5.getHeight());
+		Document doc = new Document(pdf, new PageSize(set.getPageSize()));
 		doc.setLeftMargin(0.5f);
 		doc.setRightMargin(0.5f);
 		doc.setTopMargin(1f);

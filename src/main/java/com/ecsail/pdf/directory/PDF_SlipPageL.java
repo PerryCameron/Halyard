@@ -1,6 +1,5 @@
 package com.ecsail.pdf.directory;
 import com.itextpdf.kernel.colors.ColorConstants;
-import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
@@ -14,7 +13,7 @@ public class PDF_SlipPageL extends Table {
 	public PDF_SlipPageL(int numColumns, PDF_Object_Settings set) {
 		super(numColumns);
 		this.set = set;
-		setWidth(PageSize.A5.getWidth() * 0.95f);
+		setWidth(set.getPageSize().getWidth() * 0.95f);
 		setHorizontalAlignment(HorizontalAlignment.CENTER);
 		Cell cell;
 		cell = new Cell();

@@ -51,11 +51,11 @@ public class PDF_TableOfContents extends Table {
 		addCell(addVerticalSpace(1));
 		addCell(addChapter("Members - Listed by Number"));
 		addCell(addVerticalSpace(1));
+		addCell(addChapter("Wet Slip Chart"));
+		addCell(addVerticalSpace(1));
 		addCell(addChapter("Sportsmanship of the Year Award"));
 		addCell(addVerticalSpace(1));
 		addCell(addChapter("Past Commodores"));
-		addCell(addVerticalSpace(1));
-		addCell(addChapter("Wet Slip Chart"));
 		addCell(addVerticalSpace(2));
 		addAddress();
 	}

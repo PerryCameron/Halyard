@@ -2,7 +2,6 @@ package com.ecsail.pdf.directory;
 
 import com.ecsail.structures.Object_MembershipList;
 import com.itextpdf.kernel.colors.ColorConstants;
-import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.borders.SolidBorder;
 import com.itextpdf.layout.element.Cell;
@@ -19,7 +18,7 @@ public class PDF_MemberShipInformation extends Table {
 		this.set = set;
 		Object_MembershipInformation ms = new Object_MembershipInformation(m);
 
-		setWidth(PageSize.A5.getWidth() * 0.9f);  // makes table 90% of page width
+		setWidth(set.getPageSize().getWidth() * 0.9f);  // makes table 90% of page width
 		setHorizontalAlignment(HorizontalAlignment.CENTER);
 		
 		Cell cell;

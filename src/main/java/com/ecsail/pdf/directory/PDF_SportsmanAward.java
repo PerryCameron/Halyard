@@ -69,7 +69,12 @@ public class PDF_SportsmanAward extends Table {
 
 		Cell cell;
 		
-		new Paragraph("\n");
+		cell = new Cell(1,2);
+		p = new Paragraph("\n\n");
+		cell.add(p);
+		cell.setBorder(Border.NO_BORDER);
+		addCell(cell);
+		
 		cell = new Cell(1,2);
 		p = new Paragraph("Sportsmanship Award");
 		p.setFont(set.getColumnHead());

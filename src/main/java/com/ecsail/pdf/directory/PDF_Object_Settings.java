@@ -13,6 +13,11 @@ import com.itextpdf.kernel.colors.DeviceRgb;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.layout.Style;
+import com.itextpdf.kernel.geom.Rectangle;
+
+// No. 6 1/4 (#6-1/4) Envelope inches: 3.5 x 6 (mm: 88.9 x 152.4)
+// 6 inch x 72 points = 432 points (the width)
+// 3.5 inch x 72 points = 252 points (the height)
 
 public class PDF_Object_Settings {
 	public static final String HEADINGS = "src/main/resources/fonts/Fredoka_One/FredokaOne-Regular.ttf";
@@ -30,6 +35,9 @@ public class PDF_Object_Settings {
 	private Style emailColor;
 	private int numberOfRowsByNumber; // this is the number of columns in MembersByNumber
 	private int numberOfCommodoreColumes; // this is the number of rows in Commodore Page
+	private float width;
+	private float height;
+	private Rectangle pageSize;
 	
 	public PDF_Object_Settings(String selectedYear) {
 		super();
@@ -46,8 +54,18 @@ public class PDF_Object_Settings {
 		this.emailColor = new Style().setFontColor(ColorConstants.BLUE);
 		this.numberOfRowsByNumber = 28;
 		this.numberOfCommodoreColumes = 2;
+		this.width = 5.5f;
+		this.height = 8.5f;
+		this.pageSize = getSizeOfRectangle();
 	}
 	
+	private com.itextpdf.kernel.geom.Rectangle getSizeOfRectangle() {
+		float widthPoints = 72 * this.width;
+		float heightPoints = 72 * this.height;
+		Rectangle sheet = new Rectangle(widthPoints, heightPoints);
+		return sheet;
+	}
+
 	private PdfFont constructFontHeading() {
 		PdfFont pdfFont = null;
 		
@@ -165,7 +183,13 @@ public class PDF_Object_Settings {
 	public void setSlipFontSize(int slipFontSize) {
 		this.slipFontSize = slipFontSize;
 	}
-	
-	
+
+	public com.itextpdf.kernel.geom.Rectangle getPageSize() {
+		return pageSize;
+	}
+
+	public void setPageSize(Rectangle pageSize) {
+		this.pageSize = pageSize;
+	}	
 	
 }

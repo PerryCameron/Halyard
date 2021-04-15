@@ -57,7 +57,13 @@ public class PDF_CommodoreList extends Table {
 
 		Cell cell;
 		
-		new Paragraph("\n");
+		cell = new Cell(1,2);
+		p = new Paragraph("\n\n");
+		cell.add(p);
+		cell.setBorder(Border.NO_BORDER);
+		addCell(cell);
+		
+		
 		cell = new Cell(1,2);
 		p = new Paragraph("Past Commodores");
 		p.setFont(set.getColumnHead());

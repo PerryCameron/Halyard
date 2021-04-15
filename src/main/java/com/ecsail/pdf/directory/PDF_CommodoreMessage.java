@@ -1,6 +1,5 @@
 package com.ecsail.pdf.directory;
 
-import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
@@ -13,7 +12,7 @@ public class PDF_CommodoreMessage extends Table {
 	public PDF_CommodoreMessage(int numColumns, PDF_Object_Settings set) {
 		super(numColumns);
 		this.set = set;
-		setWidth(PageSize.A5.getWidth() * 0.9f);  // makes table 90% of page width
+		setWidth(set.getPageSize().getWidth() * 0.9f);  // makes table 90% of page width
 		setHorizontalAlignment(HorizontalAlignment.CENTER);
 		
 		///////////////// Cells ////////////////////////////
@@ -23,7 +22,7 @@ public class PDF_CommodoreMessage extends Table {
 		String commodoreParagraph2 = "I encourage everyone to take advantage of the myriad of opportunities at our club from social events to racing and volunteer work parties.  Your board works hard to have plenty to offer all ages and interests.  There are many ways to meet new people, share a few laughs and maybe even learn a thing or two.";
 		String commodoreParagraph3 = "I am optimistic that 2021 will be a much more enjoyable and interactive year for us all.  Hopefully we will be able to catch up with old friends, make new ones, and take advantage of all the magic afforded by our beloved club.  Please respect others as we have made great strides but COVID is not behind us yet.  My biggest requests are that we all share a fat happy smile and greet each other warmly, offer a helping hand without being asked, show grace if you feel offended, and spread some joy.  Remember that for all of us this is a 100% discretionary time and income activity, so let’s keep it safe and enjoyable for all.";
 		
-		addCell(addVerticalSpace(1));
+		addCell(addVerticalSpace(2));
 		addCell(newParagraph(commodoreTitle));
 		addCell(addVerticalSpace(1));
 		addCell(newParagraph(commodoreParagraph1));

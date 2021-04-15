@@ -42,7 +42,7 @@ import com.itextpdf.layout.property.TextAlignment;
 		if(dock.equals("A")) {
 		addBlankSpace();
 		buildTopRow();
-		buildDocks();
+		buildDocksClockWise();
 		buildSingleADock(rowSpot);
 		buildBlankRowDock();
 		buildADockBottom();
@@ -52,7 +52,7 @@ import com.itextpdf.layout.property.TextAlignment;
 		if(dock.equals("B")) {
 		addBlankSpace();
 		buildTopRow();
-		buildDocks();
+		buildDocksCounterClockWise();
 		buildClubDock("Racing");
 		buildBlankRowDock();
 		buildBottomRow();
@@ -60,14 +60,14 @@ import com.itextpdf.layout.property.TextAlignment;
 		if(dock.equals("C")) {
 		addBlankSpace();
 		buildTopRow();
-		buildDocks();
+		buildDocksClockWise();
 		buildBlankRowDock();
 		buildBottomRow();
 		}
 		if(dock.equals("D")) {
 		addBlankSpace();
 		buildTopRow();
-		buildDocks();
+		buildDocksClockWise();
 		buildBottomRow();
 		addBlankSpace();
 		}
@@ -84,12 +84,23 @@ import com.itextpdf.layout.property.TextAlignment;
 		
 	}
 	
-	public void buildDocks() {
+	public void buildDocksClockWise() {
 		//System.out.println("lDocks=" +lDocks);
 		for(int i = 0; i < (4 * lDocks); i+=4) {
 			addCell(createLeftDock(i));
 			addCell(createCenterDock());
 			addCell(createRightDock(i+1));
+			buildBlankRowDock();
+			rowSpot = i;
+		}
+	}
+	
+	public void buildDocksCounterClockWise() {
+		//System.out.println("lDocks=" +lDocks);
+		for(int i = 0; i < (4 * lDocks); i+=4) {
+			addCell(createLeftDock(i + 1));
+			addCell(createCenterDock());
+			addCell(createRightDock(i));
 			buildBlankRowDock();
 			rowSpot = i;
 		}
@@ -208,18 +219,17 @@ import com.itextpdf.layout.property.TextAlignment;
 		String name = slips.get(element + offset).getlName() + ", " + returnInitial(slips.get(element + offset).getfName());
 		boolean isSublease = false;
 		if (slips.get(element + offset).getSubleaseMsID() != 0) {
-
 			Object_MembershipList subleaser = new Object_MembershipList();
 			subleaser = SQL_SelectMembership.getMembershipList(slips.get(element + offset).getSubleaseMsID(), set.getSelectedYear());
-			name = returnInitial(subleaser.getFname()) + " " + subleaser.getLname();
+			name = subleaser.getLname() + " " + returnInitial(subleaser.getFname());
 			isSublease = true;
 		}
 		Paragraph p;
 
 		// there is no subleaser
-		if (!setLeft)
+		if (!setLeft)  //dock is on right
 			p = new Paragraph(name + " " + slips.get(element + offset).getSlipNum());
-		else
+		else 	    	//dock is on left 
 			p = new Paragraph(slips.get(element + offset).getSlipNum() + "  " + name);
 		if(isSublease) p.setFontColor(ColorConstants.BLUE);
 		return p;

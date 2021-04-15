@@ -6,7 +6,6 @@ import java.util.Comparator;
 
 import com.ecsail.enums.Officer;
 import com.ecsail.sql.SqlSelect;
-import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
@@ -23,7 +22,7 @@ public class PDF_BoardOfDirectors extends Table {
 		this.set = set;
 		officers=SqlSelect.getOfficersByYear(set.getSelectedYear());
 		Collections.sort(officers , Comparator.comparing(PDF_Object_Officer::getLname));
-		setWidth(PageSize.A5.getWidth() * 0.9f);  // makes table 90% of page width
+		setWidth(set.getPageSize().getWidth() * 0.9f);  // makes table 90% of page width
 		setHorizontalAlignment(HorizontalAlignment.CENTER);
 		Cell cell = new Cell();
 		cell.setBorder(Border.NO_BORDER);
@@ -57,7 +56,7 @@ public class PDF_BoardOfDirectors extends Table {
 		Paragraph p;
 		cell = new Cell(1,2);
 		cell.setBorder(Border.NO_BORDER);
-		p = new Paragraph(set.getSelectedYear() + " Officers");
+		p = new Paragraph("\n" + set.getSelectedYear() + " Officers");
 		p.setFontSize(set.getNormalFontSize() + 4);
 		p.setFont(set.getColumnHead());
 		p.setTextAlignment(TextAlignment.CENTER);
