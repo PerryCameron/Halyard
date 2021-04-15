@@ -22,15 +22,19 @@ public class SqlUpdate {
 	static Alert alert = new Alert(AlertType.ERROR);
 
 	
-	public static final void updateBoat(String field, int phone_id, String attribute) {
+	public static final void updateBoat(String field, int boat_id, String attribute) {
 		try {			
 			Statement stmt = ConnectDatabase.connection.createStatement();
-			if(attribute != null)
-			stmt.execute(Main.console.setRegexColor(
-					"UPDATE boat SET " + field + "=\"" + attribute + "\" WHERE boat_id='" + phone_id + "';"));
-			else
+			if(attribute == null) 
 				stmt.execute(Main.console.setRegexColor(
-					"UPDATE boat SET " + field + "=null WHERE boat_id='" + phone_id + "';"));
+					"UPDATE boat SET " + field + "=null WHERE boat_id='" + boat_id + "';"));
+			else if(attribute.equals("")) 
+				stmt.execute(Main.console.setRegexColor(
+						"UPDATE boat SET " + field + "=null WHERE boat_id='" + boat_id + "';"));
+			else
+			stmt.execute(Main.console.setRegexColor(
+					"UPDATE boat SET " + field + "=\"" + attribute + "\" WHERE boat_id='" + boat_id + "';"));
+
 			Main.edits.setBoatEdits(Main.edits.getBoatEdits() + 1);  // count number of edits.
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
