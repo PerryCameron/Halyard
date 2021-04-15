@@ -23,7 +23,7 @@ public class Object_MembershipInformation {
 	String boats;
 	
 	public Object_MembershipInformation(Object_MembershipList m) {
-		this.primary = SqlSelect.getPerson(m.getPid());
+		this.primary = SqlSelect.getPersonByPid(m.getPid());
 		this.secondary = getSecondaryPerson(m);
 		this.children = getChildrenString(m);
 		getSecondaryPhoneAndEmail();

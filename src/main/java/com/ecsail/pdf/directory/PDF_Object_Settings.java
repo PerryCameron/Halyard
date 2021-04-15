@@ -5,8 +5,11 @@ import java.io.IOException;
 import com.itextpdf.io.font.FontProgram;
 import com.itextpdf.io.font.FontProgramFactory;
 import com.itextpdf.io.font.PdfEncodings;
+import com.itextpdf.kernel.colors.CalRgb;
+import com.itextpdf.kernel.colors.Color;
 import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.colors.DeviceCmyk;
+import com.itextpdf.kernel.colors.DeviceRgb;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.layout.Style;
@@ -17,11 +20,13 @@ public class PDF_Object_Settings {
 	private String logoPath;
 	private String selectedYear;
 	private int normalFontSize;
+	private int slipFontSize;
 	private int fixedLeading;
 	private int fixedLeadingNarrow;
 	private float titleBoxHeight;
 	private PdfFont columnHead;
 	private DeviceCmyk mainColor;
+	private Color dockColor;
 	private Style emailColor;
 	private int numberOfRowsByNumber; // this is the number of columns in MembersByNumber
 	private int numberOfCommodoreColumes; // this is the number of rows in Commodore Page
@@ -31,11 +36,13 @@ public class PDF_Object_Settings {
 		this.logoPath = "/Stickers/2021complete.png";
 		this.selectedYear = selectedYear;
 		this.normalFontSize = 10;
+		this.slipFontSize = 6;
 		this.fixedLeading = 25;
 		this.fixedLeadingNarrow = 10;
 		this.titleBoxHeight =20;
 		this.columnHead = constructFontHeading();
 		this.mainColor = new DeviceCmyk(.93f, 0, 0.7f, 0.62f);  // green color in document
+		this.dockColor  = new DeviceRgb(237, 237, 237);
 		this.emailColor = new Style().setFontColor(ColorConstants.BLUE);
 		this.numberOfRowsByNumber = 28;
 		this.numberOfCommodoreColumes = 2;
@@ -143,7 +150,22 @@ public class PDF_Object_Settings {
 		this.numberOfCommodoreColumes = numberOfCommodoreColumes;
 	}
 
+	public Color getDockColor() {
+		return dockColor;
+	}
 
+	public void setDockColor(Color dockColor) {
+		this.dockColor = dockColor;
+	}
 
+	public int getSlipFontSize() {
+		return slipFontSize;
+	}
+
+	public void setSlipFontSize(int slipFontSize) {
+		this.slipFontSize = slipFontSize;
+	}
+	
+	
 	
 }

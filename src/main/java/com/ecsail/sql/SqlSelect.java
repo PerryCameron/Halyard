@@ -9,6 +9,8 @@ import java.util.List;
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.Main;
 import com.ecsail.main.Paths;
+import com.ecsail.pdf.directory.Object_SlipInfo;
+import com.ecsail.pdf.directory.Object_Sportsmen;
 import com.ecsail.pdf.directory.PDF_Object_Officer;
 import com.ecsail.structures.Object_Award;
 import com.ecsail.structures.Object_Board;
@@ -52,6 +54,26 @@ public class SqlSelect {
 						rs.getString("L_NAME"), 
 						rs.getString("F_NAME"),
 						rs.getString("OFF_YEAR")
+						));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return theseOfficers;
+	}
+	
+	public static ArrayList<Object_Sportsmen> getSportsManAwardNames() {
+		ArrayList<Object_Sportsmen> theseOfficers = new ArrayList<Object_Sportsmen>();
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs;
+			rs = stmt.executeQuery(Main.console.setRegexColor("select AWARD_YEAR,F_NAME,L_Name from awards a left join person p on a.P_ID=p.P_ID"));
+			while (rs.next()) {
+				theseOfficers.add(new Object_Sportsmen(
+						rs.getString("AWARD_YEAR"),
+						rs.getString("F_NAME"),
+						rs.getString("L_NAME") 
 						));
 			}
 		} catch (SQLException e) {
@@ -1074,7 +1096,7 @@ public class SqlSelect {
 		return theseIds;
 	}
 	
-	public static Object_Person getPerson(int pid) {  
+	public static Object_Person getPersonByPid(int pid) {  
 		Object_Person person = null;
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
@@ -1739,5 +1761,29 @@ public class SqlSelect {
 			e.printStackTrace();
 		}
 		return thisWaitList;
+	}
+
+	public static ArrayList<Object_SlipInfo> getSlipsForDock(String dock) {
+		ArrayList<Object_SlipInfo> thisSlipInfo = new ArrayList<Object_SlipInfo>();
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs;
+			rs = stmt.executeQuery(Main.console.setRegexColor("select SLIP_NUM,SUBLEASED_TO,F_NAME,L_NAME  from slip s \n"
+					+ "left join membership m on s.MS_ID=m.MS_ID \n"
+					+ "left join person p on m.P_ID=p.P_ID \n"
+					+ "where slip_num LIKE '" +dock + "%'"));
+			while (rs.next()) {
+				thisSlipInfo.add(new Object_SlipInfo(
+						rs.getString("SLIP_NUM"), 
+						rs.getInt("SUBLEASED_TO"),
+						rs.getString("F_NAME"),
+						rs.getString("L_NAME")
+						));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return thisSlipInfo;
 	}
 }

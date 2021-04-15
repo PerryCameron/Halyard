@@ -79,12 +79,25 @@ public class PDF_Directory {
 		doc.add(new PDF_ChapterPage(1, "Membership Information",set));
 		doc.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
 		
-		//createMemberInfoPages(doc);
-		//doc.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
-		
-		doc.add(new PDF_CommodoreList(2,set));
+		createMemberInfoPages(doc);
+		doc.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
 		
 		new PDF_MembersByNumber(set, doc, rosters);
+		
+		
+		doc.add(new PDF_SlipPageL(2,set));
+		doc.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+		
+		doc.add(new PDF_SlipPageR(2,set));
+		doc.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+		
+		doc.add(new PDF_SportsmanAward(2,set));
+		doc.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+		
+		doc.add(new PDF_CommodoreList(2,set));
+		doc.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+		
+		
 		doc.close();
 	}
 

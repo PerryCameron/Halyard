@@ -27,12 +27,24 @@ public class PDF_BoardOfDirectors extends Table {
 		setHorizontalAlignment(HorizontalAlignment.CENTER);
 		Cell cell = new Cell();
 		cell.setBorder(Border.NO_BORDER);
-		cell.add(new Paragraph("\n"));
+		//cell.add(new Paragraph("\n"));
 		cell.add(createOfficersTable());
-		cell.add(new Paragraph("\n"));
+		//cell.add(new Paragraph("\n"));
 		cell.add(createChairmenTable());
-		cell.add(new Paragraph("\n"));
+		//cell.add(new Paragraph("\n"));
 		cell.add(createBODTable());
+		addCell(cell);
+		
+		cell = new Cell();
+		cell.add(new Paragraph("\n\n\n"));
+		cell.setBorder(Border.NO_BORDER);
+		addCell(cell);
+		
+		cell = new Cell();
+		cell.setBorder(Border.NO_BORDER);
+		Paragraph p = new Paragraph("\u00a9Eagle Creek Sailking club 1969-"+set.getSelectedYear()+" - This directory may not be used for commercial purposes");
+		p.setTextAlignment(TextAlignment.CENTER);
+		cell.add(p);
 		addCell(cell);
 	}
 
@@ -48,17 +60,15 @@ public class PDF_BoardOfDirectors extends Table {
 		p = new Paragraph(set.getSelectedYear() + " Officers");
 		p.setFontSize(set.getNormalFontSize() + 4);
 		p.setFont(set.getColumnHead());
-
-		//cell.setBackgroundColor(new DeviceCmyk(.93f, 0, 0.7f, 0.62f));
 		p.setTextAlignment(TextAlignment.CENTER);
 		p.setFontColor(set.getMainColor());
 		cell.add(p);
 		officerTable.addCell(cell);
 		
-		cell = new Cell(1,2);
-		cell.add(new Paragraph("\n"));
-		cell.setBorder(Border.NO_BORDER);
-		officerTable.addCell(cell);
+		//cell = new Cell(1,2);
+		//cell.add(new Paragraph("\n"));
+		//cell.setBorder(Border.NO_BORDER);
+		//officerTable.addCell(cell);
 		
 		addOfficerToTable(officerTable, "CO");
 		addOfficerToTable(officerTable, "VC");
@@ -84,10 +94,10 @@ public class PDF_BoardOfDirectors extends Table {
 		cell.add(p);
 		chairTable.addCell(cell);
 		
-		cell = new Cell(1,2);
-		cell.add(new Paragraph("\n"));
-		cell.setBorder(Border.NO_BORDER);
-		chairTable.addCell(cell);
+		//cell = new Cell(1,2);
+		//cell.add(new Paragraph("\n"));
+		//cell.setBorder(Border.NO_BORDER);
+		//chairTable.addCell(cell);
 		
 		addOfficerToTable(chairTable, "HM");
 		addOfficerToTable(chairTable, "AH");
@@ -121,10 +131,10 @@ public class PDF_BoardOfDirectors extends Table {
 		cell.add(p);
 		bodTable.addCell(cell);
 		
-		cell = new Cell(1,3);
-		cell.add(new Paragraph("\n"));
-		cell.setBorder(Border.NO_BORDER);
-		bodTable.addCell(cell);
+		//cell = new Cell(1,3);
+		//cell.add(new Paragraph("\n"));
+		//cell.setBorder(Border.NO_BORDER);
+		//bodTable.addCell(cell);
 		
 		createBoardMemberTables(bodTable); // will create 3 more cells and put a table in each
 		
