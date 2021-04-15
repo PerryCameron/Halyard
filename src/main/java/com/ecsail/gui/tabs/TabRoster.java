@@ -207,98 +207,59 @@ public class TabRoster extends Tab {
 		
 		buttonXLS.setOnAction((event) -> new Xls_roster(rosters, printChoices));
 
-		c1.selectedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-				printChoices.setMembership_id(observable.getValue());
-			}
-		});
+		c1.selectedProperty().addListener(
+				(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> 
+				printChoices.setMembership_id(observable.getValue()));
 
-		c2.selectedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-				printChoices.setLastName(observable.getValue());
-			}
-		});
-
-		c3.selectedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-				printChoices.setFirstName(observable.getValue());
-			}
-		});
-
-		c4.selectedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-				printChoices.setJoinDate(observable.getValue());
-			}
-		});
-
-		c5.selectedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-				printChoices.setStreetAddress(observable.getValue());
-			}
-		});
-
-		c6.selectedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-				printChoices.setCity(observable.getValue());
-			}
-		});
-
-		c7.selectedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-				printChoices.setState(observable.getValue());
-			}
-		});
-
-		c8.selectedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-				printChoices.setZip(observable.getValue());
-			}
-		});
-
-		c9.selectedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-				printChoices.setMemtype(observable.getValue());
-			}
-		});
-
-		c10.selectedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-				printChoices.setSlip(observable.getValue());
-			}
-		});
-
-		c11.selectedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-				printChoices.setPhone(observable.getValue());
-			}
-		});
-
-		c12.selectedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-				printChoices.setEmail(observable.getValue());
-			}
-		});
-
-		c13.selectedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-				printChoices.setSubleasedto(observable.getValue());
-			}
-		});
+		c2.selectedProperty().addListener(
+				(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> 
+				printChoices.setLastName(observable.getValue()));
 		
+		c3.selectedProperty().addListener(
+				(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> 
+				printChoices.setFirstName(observable.getValue()));
+		
+		c4.selectedProperty().addListener(
+				(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) ->
+				printChoices.setJoinDate(observable.getValue()));
 
+		c5.selectedProperty().addListener(
+				(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> 
+				printChoices.setStreetAddress(observable.getValue()));
+
+		c6.selectedProperty().addListener(
+				(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> 
+				printChoices.setCity(observable.getValue()));
+		
+		c7.selectedProperty().addListener(
+				(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> 
+				printChoices.setState(observable.getValue()));
+		
+		c8.selectedProperty().addListener(
+				(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> 
+				printChoices.setZip(observable.getValue()));
+		
+		c9.selectedProperty().addListener(
+				(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> 
+				printChoices.setMemtype(observable.getValue()));
+		
+		c10.selectedProperty().addListener(
+				(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> 
+				printChoices.setSlip(observable.getValue()));
+
+		c11.selectedProperty().addListener(
+				(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> 
+				printChoices.setPhone(observable.getValue()));
+
+		c12.selectedProperty().addListener(
+				(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> 
+				printChoices.setEmail(observable.getValue()));
+
+		c13.selectedProperty().addListener(
+				(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> 
+				printChoices.setSubleasedto(observable.getValue()));
+
+		
 		rosterTableView.setRowFactory(tv -> {
 			TableRow<Object_MembershipList> row = new TableRow<>();
 			row.setOnMouseClicked(event -> {
