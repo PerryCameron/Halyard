@@ -10,6 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
+import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -104,6 +105,7 @@ public class TabSlips extends Tab {
 		VBox vboxGrey = new VBox();  // this is the vbox for organizing all the widgets
 		VBox vboxBlue = new VBox();
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
+		Button createPdfButton = new Button("Create PDF");
 		
 		///// LISTENERS //////
 		/// this listens for a focus on the slips tab and refreshes data everytime.
@@ -116,9 +118,11 @@ public class TabSlips extends Tab {
 		    	screenPane.getChildren().add(addDocks(7,11,col3));
 		    	screenPane.getChildren().add(addDocks(11,12,col5));
 		    	screenPane.getChildren().add(addDocks(11,11,col7));
+		    	screenPane.getChildren().add(createPdfButton);
 		    	//addDocks(screenPane,10,10,20);
 		    	addAllSlips(screenPane);
 		        //System.out.println("Refreshing Slips");
+		    	//setContent(createPdfButton);
 		    }
 		});
 				
@@ -137,6 +141,8 @@ public class TabSlips extends Tab {
 		rotatef4.setAngle(314);
 		rotatef5.setAngle(314);
 		rotatef6.setAngle(314);
+		createPdfButton.setLayoutX(750);
+		createPdfButton.setLayoutY(600);
 		
 		//////////////////  SET CONTENT ///////////////
 		//addAllDocks(screenPane);
