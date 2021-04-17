@@ -12,6 +12,7 @@ import java.util.Date;
 import com.ecsail.gui.dialogues.Dialogue_DatabaseBackup;
 import com.ecsail.sql.SQL_SelectMembership;
 import com.ecsail.sql.SqlSelect;
+import com.ecsail.structures.Object_Award;
 import com.ecsail.structures.Object_Boat;
 import com.ecsail.structures.Object_BoatOwner;
 import com.ecsail.structures.Object_DefinedFee;
@@ -51,6 +52,8 @@ public class SqlScriptMaker {
 	static ObservableList<Object_Payment> payments;
 	static ObservableList<Object_Deposit> deposits;
 	static ArrayList<Object_WaitList> waitlist;
+	static ArrayList<Object_Award>awards;
+	
 	private static final int ALL = 0;
 	
 	public static void createSql() {
@@ -77,6 +80,7 @@ public class SqlScriptMaker {
 		payments = SqlSelect.getPayments();
 		deposits = SqlSelect.getDeposits();
 		waitlist = SqlSelect.getWaitLists();
+		awards = SqlSelect.getAwards();
 		Paths.checkPath(Paths.SQLBACKUP + "/" + Paths.getYear());
 		readFromFile(Paths.SCRIPTS + "/ecsc_create.sql");
 		calculateSums();
@@ -123,6 +127,9 @@ public class SqlScriptMaker {
 				writer.write(getWorkCreditString(woc));
 			for (Object_WaitList wal: waitlist)
 				writer.write(getWaitListString(wal));
+			for (Object_Award oa: awards) {
+				writer.write(getAwardsString(oa));
+			}
 			clearMemory();
 			writer.close();
 			System.out.println("SQL script file sucessfully made");
@@ -131,6 +138,8 @@ public class SqlScriptMaker {
 		}
 	}
 	
+
+
 	public static void clearMemory() {
 		tableCreation.clear();
 		memberships.clear();
@@ -149,8 +158,10 @@ public class SqlScriptMaker {
 		definedfees.clear();
 		workcredits.clear();
 		waitlist.clear();
+		awards.clear();
 	}
 	
+	// this is to calculate changes to display everytime you back up the database.
 	public static void calculateSums() {
 	//	System.out.println("Table creation script is " + tableCreation.size() + " lines.");
 		newTupleCount.setTableCreationSize(tableCreation.size());
@@ -184,6 +195,16 @@ public class SqlScriptMaker {
 		newTupleCount.setDefinedFeesSize(definedfees.size());
 	//	System.out.println(workcredits.size() + " workcredits written");
 		newTupleCount.setWorkCreditsSize(workcredits.size());
+	}
+	
+	private static String getAwardsString(Object_Award oa) {
+		return
+		"INSERT INTO awards () VALUES ("
+		+ oa.getAwardId() + ","
+		+ oa.getPid() + ",'"
+		+ oa.getAwardYear() + "','"
+		+ oa.getAwardType() + "');\n";
+		
 	}
 	
 	public static String getWaitListString(Object_WaitList wal) {

@@ -1786,4 +1786,25 @@ public class SqlSelect {
 		}
 		return thisSlipInfo;
 	}
+
+	public static ArrayList<Object_Award> getAwards() {
+		ArrayList<Object_Award> theseAwards = new ArrayList<Object_Award>();
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs;
+			rs = stmt.executeQuery(Main.console.setRegexColor(""));
+			while (rs.next()) {
+				theseAwards.add(new Object_Award(
+						rs.getInt("AWARD_ID"),
+						rs.getInt("P_ID"), 
+						rs.getString("AWARD_YEAR"),
+						rs.getString("AWARD_TYPE")
+						));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return theseAwards;
+	}
 }
