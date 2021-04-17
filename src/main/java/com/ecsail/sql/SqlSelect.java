@@ -1792,7 +1792,7 @@ public class SqlSelect {
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			ResultSet rs;
-			rs = stmt.executeQuery(Main.console.setRegexColor(""));
+			rs = stmt.executeQuery(Main.console.setRegexColor("select * from awards"));
 			while (rs.next()) {
 				theseAwards.add(new Object_Award(
 						rs.getInt("AWARD_ID"),
