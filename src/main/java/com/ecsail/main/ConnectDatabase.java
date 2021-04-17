@@ -54,7 +54,7 @@ public class ConnectDatabase {
 			this.port = currentLogon.getPort();
 			loadHostsInComboBox();
 		}
-		TabLauncher.openWelcomeTab(vboxGrey);
+		Launcher.openWelcomeTab(vboxGrey);
 		
 		//System.out.println(FileIO.logins.get(0).toString());
 		displayLogOn(primaryStage);

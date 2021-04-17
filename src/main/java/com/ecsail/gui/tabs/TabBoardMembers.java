@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.ecsail.enums.Officer;
-import com.ecsail.main.TabLauncher;
+import com.ecsail.main.Launcher;
 import com.ecsail.sql.SQL_SelectMembership;
 import com.ecsail.sql.SqlSelect;
 import com.ecsail.structures.Object_Board;
@@ -305,7 +305,7 @@ public class TabBoardMembers extends Tab {
 	private static void createTab(int ms_id)  {
 		Object_MembershipList membership;
 		membership = SQL_SelectMembership.getMembershipFromListWithoutMembershipId(ms_id);
-		TabLauncher.createTab(membership);
+		Launcher.createTab(membership);
 	}
 	
 }

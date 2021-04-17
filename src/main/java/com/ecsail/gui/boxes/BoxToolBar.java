@@ -6,7 +6,7 @@ import com.ecsail.gui.dialogues.Dialogue_NewYearGenerator;
 import com.ecsail.gui.dialogues.Dialogue_Stub;
 import com.ecsail.main.CreateMembership;
 import com.ecsail.main.SqlScriptMaker;
-import com.ecsail.main.TabLauncher;
+import com.ecsail.main.Launcher;
 import com.ecsail.pdf.directory.PDF_Directory;
 
 import javafx.scene.Scene;
@@ -58,24 +58,24 @@ public class BoxToolBar extends VBox {
 		
 		MenuItem m6_1 = new MenuItem("Create Membership Pages");
 
-        m3_3_6.setOnAction((event) -> TabLauncher.openBoardTab());
-        m3_3_3.setOnAction((event) -> TabLauncher.openPeopleTab());
+        m3_3_6.setOnAction((event) -> Launcher.openBoardTab());
+        m3_3_3.setOnAction((event) -> Launcher.openPeopleTab());
         m1_1_1.setOnAction((event) -> SqlScriptMaker.createSql());
-		m4_1_3.setOnAction((event) -> TabLauncher.openTabBatchedPaidDues());
+		m4_1_3.setOnAction((event) -> Launcher.openTabBatchedPaidDues());
 		m4_1_4.setOnAction((event) -> Xls_email_list.createSpreadSheet());
 		m4_1_5.setOnAction((event) -> new Dialogue_Stub());
-		m4_1_6.setOnAction((event) -> TabLauncher.openTabStub());
-		m4_1_7.setOnAction((event) -> TabLauncher.openTabNewYearGenerator());
-		m4_1_8.setOnAction((event) -> TabLauncher.createRenewalForms());
-		m4_1_9.setOnAction((event) -> TabLauncher.openEnvelopesDialogue());
-        m3_3_1.setOnAction((event) -> TabLauncher.openMembershipListTab());
-        m3_3_5.setOnAction((event) -> TabLauncher.openSlipsTab());
+		m4_1_6.setOnAction((event) -> Launcher.openTabStub());
+		m4_1_7.setOnAction((event) -> Launcher.openTabNewYearGenerator());
+		m4_1_8.setOnAction((event) -> Launcher.createRenewalForms());
+		m4_1_9.setOnAction((event) -> Launcher.openEnvelopesDialogue());
+        m3_3_1.setOnAction((event) -> Launcher.openRosterTab());
+        m3_3_5.setOnAction((event) -> Launcher.openSlipsTab());
         m3_1.setOnAction((event) -> CreateMembership.Create());
         m3_2.setOnAction((event) ->  {
             	System.out.println("Trying to launch this POS");
             	new Dialogue_NewYearGenerator();
             });
-        m3_4.setOnAction((event) -> TabLauncher.openFeeTab());
+        m3_4.setOnAction((event) -> Launcher.openFeeTab());
         
         m1_2.setOnAction((event) ->  {
             	////////// OBJECTS /////////

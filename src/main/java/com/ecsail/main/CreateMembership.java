@@ -51,7 +51,7 @@ public class CreateMembership {
 			newMemNote.addMemo(new Object_Memo(note_id,ms_id, date, "Created new membership record",0,"N"));  // adds a note that the membership was created.
 			Main.activememberships.add(newMembership);
 			SqlInsert.addMembershipId(new Object_MembershipId(mid, Paths.getYear(), ms_id, membership_id + "",true,"RM",false));
-			TabLauncher.createTab(newMembership.getMembershipId(),newMembership.getMsid()); 
+			Launcher.createTab(newMembership.getMembershipId(),newMembership.getMsid()); 
 		}
 	}
 }

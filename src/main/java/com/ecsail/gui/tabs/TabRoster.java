@@ -8,7 +8,7 @@ import com.ecsail.gui.tabs.roster.TabSlipOptions;
 import com.ecsail.gui.tabs.roster.TabStandard;
 import com.ecsail.main.Main;
 import com.ecsail.main.Paths;
-import com.ecsail.main.TabLauncher;
+import com.ecsail.main.Launcher;
 import com.ecsail.sql.SQL_SelectMembership;
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_RosterRadioButtons;
@@ -571,6 +571,6 @@ public class TabRoster extends Tab {
 	}
 
 	private static void createTab(Object_MembershipList clickedRow) {
-		TabLauncher.createTab(clickedRow.getMembershipId(), clickedRow.getMsid());
+		Launcher.createTab(clickedRow.getMembershipId(), clickedRow.getMsid());
 	}
 }

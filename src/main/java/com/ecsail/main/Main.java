@@ -28,7 +28,7 @@ public static Object_TupleCount edits = new Object_TupleCount();
 public static ObservableList<Object_MembershipList> activememberships;
 public static String selectedYear; 
 static BorderPane mainPane;
-static TabLauncher mainViewPane;
+static Launcher mainViewPane;
 public static BoxConsole console;
 private static Stage pStage;
 static String ipaddress;
@@ -48,7 +48,7 @@ public static void main(String[] args) throws SQLException {
 	public void start(Stage primaryStage) throws Exception {
 		Group root = new Group();
 		mainPane = new BorderPane();
-		mainViewPane = new TabLauncher();  // This one is for a single membership
+		mainViewPane = new Launcher();  // This one is for a single membership
 		pStage = primaryStage;
 		Pane topPane = new Pane();
 		VBox toolbar = new BoxToolBar();

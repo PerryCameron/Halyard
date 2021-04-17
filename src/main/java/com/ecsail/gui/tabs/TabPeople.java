@@ -7,7 +7,7 @@ import com.ecsail.enums.MemberType;
 import com.ecsail.gui.boxes.BoxPerson;
 import com.ecsail.gui.boxes.BoxSearch;
 import com.ecsail.main.Paths;
-import com.ecsail.main.TabLauncher;
+import com.ecsail.main.Launcher;
 import com.ecsail.sql.SQL_SelectMembership;
 import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.SqlSelect;
@@ -149,7 +149,7 @@ public class TabPeople extends Tab {
 	private static void createTab(int msid)  {
 		Object_MembershipList membership = SQL_SelectMembership.getMembershipFromListWithoutMembershipId(msid);
 		//System.out.println("membership=" + membership);
-		TabLauncher.createTab(membership);
+		Launcher.createTab(membership);
 	}
 	
 	public void printPeople() {

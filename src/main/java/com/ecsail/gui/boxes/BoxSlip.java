@@ -1,6 +1,6 @@
 package com.ecsail.gui.boxes;
 
-import com.ecsail.main.TabLauncher;
+import com.ecsail.main.Launcher;
 import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.SqlInsert;
 import com.ecsail.sql.SqlSelect;
@@ -373,7 +373,7 @@ public class BoxSlip extends HBox {
 
 		text.setOnMouseClicked(e -> {
 			if (e.getClickCount() == 1)  {
-					TabLauncher.createTab(msid);
+					Launcher.createTab(msid);
 			}
 		});
 	}

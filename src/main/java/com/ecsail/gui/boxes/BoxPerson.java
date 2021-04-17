@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter;
 
 import com.ecsail.gui.tabs.TabPeople;
 import com.ecsail.gui.tabs.TabPersonProperties;
-import com.ecsail.main.TabLauncher;
+import com.ecsail.main.Launcher;
 import com.ecsail.sql.SqlUpdate;
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Person;
@@ -38,7 +38,7 @@ public class BoxPerson extends HBox {
 		this.person = p;
 		this.membership = me;
 		
-		if(TabLauncher.tabOpen("People List")) {
+		if(Launcher.tabOpen("People List")) {
 			this.people = TabPeople.people;
 		} else {
 			this.people = null;

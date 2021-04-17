@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.Date;
 
 import com.ecsail.gui.dialogues.Dialogue_DepositPDF;
-import com.ecsail.main.TabLauncher;
+import com.ecsail.main.Launcher;
 import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.SqlInsert;
 import com.ecsail.sql.SqlSelect;
@@ -265,7 +265,7 @@ public class TabDeposits extends Tab {
 			row.setOnMouseClicked(event -> {
 				if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
 					Object_PaidDues clickedRow = row.getItem();
-					TabLauncher.createTab(clickedRow.getMs_id());
+					Launcher.createTab(clickedRow.getMs_id());
 				}
 			});
 			return row;

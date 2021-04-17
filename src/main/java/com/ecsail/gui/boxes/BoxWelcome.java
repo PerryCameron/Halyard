@@ -1,7 +1,7 @@
 package com.ecsail.gui.boxes;
 
 import com.ecsail.main.CreateMembership;
-import com.ecsail.main.TabLauncher;
+import com.ecsail.main.Launcher;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
@@ -68,14 +68,14 @@ public class BoxWelcome extends HBox {
 		///////////////// LISTENERS  /////////////////////////
 
 		
-		boatsButton.setOnAction((event) -> TabLauncher.openBoatsTab());
-		notesButton.setOnAction((event) -> TabLauncher.openNotesTab());
-		rosterButton.setOnAction((event) -> TabLauncher.openMembershipListTab());
-		peopleListButton.setOnAction((event) -> TabLauncher.openPeopleTab());
-		slipListButton.setOnAction((event) -> TabLauncher.openSlipsTab());
-		bodButton.setOnAction((event) -> TabLauncher.openBoardTab());
+		boatsButton.setOnAction((event) -> Launcher.openBoatsTab());
+		notesButton.setOnAction((event) -> Launcher.openNotesTab());
+		rosterButton.setOnAction((event) -> Launcher.openRosterTab());
+		peopleListButton.setOnAction((event) -> Launcher.openPeopleTab());
+		slipListButton.setOnAction((event) -> Launcher.openSlipsTab());
+		bodButton.setOnAction((event) -> Launcher.openBoardTab());
 		newButton.setOnAction((event) -> CreateMembership.Create());
-		batchesButton.setOnAction((event) -> TabLauncher.openTabBatchedPaidDues());
+		batchesButton.setOnAction((event) -> Launcher.openTabBatchedPaidDues());
 
 		////////////////  SET CONTENT ////////////////////////
 		vboxRight.getChildren().addAll(rosterButton,peopleListButton,slipListButton,bodButton,newButton,batchesButton,boatsButton,notesButton);

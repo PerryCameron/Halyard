@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
-import com.ecsail.main.TabLauncher;
+import com.ecsail.main.Launcher;
 import com.ecsail.sql.SqlDelete;
 import com.ecsail.sql.SqlSelect;
 import com.ecsail.sql.SqlUpdate;
@@ -133,7 +133,7 @@ public class BoxProperties extends HBox {
 			SqlDelete.deletePerson(p.getP_id());
 		}
 		SqlDelete.deleteMembership(ms_id);
-		TabLauncher.removeMembershipRow(ms_id);
-		TabLauncher.closeActiveTab();
+		Launcher.removeMembershipRow(ms_id);
+		Launcher.closeActiveTab();
 	}
 }

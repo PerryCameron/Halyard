@@ -1,7 +1,7 @@
 package com.ecsail.gui.tabs;
 
 import com.ecsail.main.Paths;
-import com.ecsail.main.TabLauncher;
+import com.ecsail.main.Launcher;
 import com.ecsail.sql.SQL_SelectMembership;
 import com.ecsail.sql.SqlInsert;
 import com.ecsail.sql.SqlSelect;
@@ -1010,9 +1010,9 @@ public class TabSlips extends Tab {
 			if (e.getClickCount() == 2)  {
 					if(color == Color.CORNFLOWERBLUE) {
 					// this is a sublease
-					TabLauncher.launchTabFromSlips(submsid);
+					Launcher.launchTabFromSlips(submsid);
 					} else {
-					TabLauncher.launchTabFromSlips(msid);		
+					Launcher.launchTabFromSlips(msid);		
 					}
 			}
 		});

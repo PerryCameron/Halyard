@@ -25,11 +25,11 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
-public class TabLauncher extends Pane {
+public class Launcher extends Pane {
 static TabPane tabPane;
 //private ObservableList<Object_MembershipList> activememberships;
 
-	public TabLauncher() { 
+	public Launcher() { 
 		tabPane = new TabPane();
 		tabPane.setId("toolbar-box");
 		getChildren().add(tabPane);
@@ -91,7 +91,7 @@ static TabPane tabPane;
 		tabPane.getSelectionModel().select(getTabIndex("Slips"));
 	}
 	
-	public static void openMembershipListTab() {
+	public static void openRosterTab() {
 		if(!tabOpen("Roster")) // is the tab already open??
 		tabPane.getTabs().add(new TabRoster(Main.activememberships, Main.selectedYear));
 		tabPane.getSelectionModel().select(getTabIndex("Roster"));
