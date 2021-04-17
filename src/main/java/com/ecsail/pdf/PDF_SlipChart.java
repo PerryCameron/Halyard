@@ -5,16 +5,26 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import com.ecsail.main.Paths;
-
+import com.ecsail.pdf.directory.PDF_Dock;
+import com.ecsail.pdf.directory.PDF_Object_Settings;
+import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.geom.PageSize;
+import com.itextpdf.kernel.geom.Rectangle;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
+import com.itextpdf.layout.borders.Border;
+import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.property.HorizontalAlignment;
+import com.itextpdf.layout.property.TextAlignment;
 
 public class PDF_SlipChart {
 
-	public PDF_SlipChart() {
+	private PDF_Object_Settings set;
+	public PDF_SlipChart(String year) {
+		this.set = new PDF_Object_Settings(year);
 	try {
 		createChart();
 	} catch (FileNotFoundException e1) {
@@ -22,8 +32,8 @@ public class PDF_SlipChart {
 		e1.printStackTrace();
 	}
 
-	System.out.println("destination=" + Paths.EMAILLIST + "_SlipCart.pdf");
-	File file = new File(Paths.EMAILLIST + "_directory.pdf");
+	System.out.println("destination=" + Paths.EMAILLIST + "SlipChart.pdf");
+	File file = new File(Paths.EMAILLIST + "SlipChart.pdf");
 	Desktop desktop = Desktop.getDesktop(); // Gui_Main.class.getProtectionDomain().getCodeSource().getLocation().getPath()
 
 	// Open the document
@@ -33,20 +43,69 @@ public class PDF_SlipChart {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
+	
 	}
 	public void createChart() throws FileNotFoundException {
-		PdfWriter writer = new PdfWriter(Paths.EMAILLIST + "_directory.pdf");
+		PdfWriter writer = new PdfWriter(Paths.EMAILLIST + "SlipChart.pdf");
 		// Initialize PDF document
 		PdfDocument pdf = new PdfDocument(writer);
-		// PageSize A5v = new PageSize(PageSize.A5.getWidth(), PageSize.A5.getHeight());
-		Document doc = new Document(pdf, new PageSize(PageSize.A4));
+		Rectangle envelope = new Rectangle(PageSize.A4.getHeight(), PageSize.A4.getWidth());
+		Document doc = new Document(pdf, new PageSize(envelope));
 		doc.setLeftMargin(0.5f);
 		doc.setRightMargin(0.5f);
 		doc.setTopMargin(1f);
 		doc.setBottomMargin(0.5f);
-		doc.add(new Paragraph("slipchart"));
-		//Collections.sort(rosters, Comparator.comparing(Object_MembershipList::getLname));
+		Table mainTable = new Table(4);
+		mainTable.setWidth(PageSize.A4.getHeight() * 0.95f);  // actually sets the width
+		mainTable.setHorizontalAlignment(HorizontalAlignment.CENTER);
+		
+		
+		Cell cell;
+		cell = new Cell();
+		cell.add(new PDF_Dock(3,"D",10,10,set,false));
+		cell.setBorder(Border.NO_BORDER);
+		mainTable.addCell(cell);
 
+		cell = new Cell(2,1);
+		cell.add(new PDF_Dock(3,"A",6,11,set,false));
+		cell.setBorder(Border.NO_BORDER);
+		mainTable.addCell(cell);
+		
+		cell = new Cell(2,1);
+		cell.add(new PDF_Dock(3,"B",11,11,set,false));
+		cell.setBorder(Border.NO_BORDER);
+		mainTable.addCell(cell);
+		
+		/////// LEGEND /////////
+		Paragraph p;
+		p = new Paragraph("\n\n" + set.getSelectedYear() +" Dock Assignments");
+		p.setFontColor(set.getMainColor());
+		p.setFont(set.getColumnHead());
+		p.setTextAlignment(TextAlignment.CENTER);
+		cell.add(p);
+		
+		p = new Paragraph("Sublease ***");
+		//p.setFontColor(ColorConstants.BLUE);
+		p.setFontSize(set.getSlipFontSize());
+		p.setTextAlignment(TextAlignment.CENTER);
+		cell.add(p);
+
+		//////// LEGEND END //////
+		
+		cell = new Cell(2,1);
+		cell.add(new PDF_Dock(3,"C",11,11,set,false));
+		cell.setBorder(Border.NO_BORDER);
+		mainTable.addCell(cell);
+		
+		cell = new Cell();
+		cell.add(new PDF_Dock(3,"F",0,5,set,false));
+		cell.setBorder(Border.NO_BORDER);
+		mainTable.addCell(cell);
+		
+
+		
+
+		doc.add(mainTable);
 		doc.close();
 	}
 	

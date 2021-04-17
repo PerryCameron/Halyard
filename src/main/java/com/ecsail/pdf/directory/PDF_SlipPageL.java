@@ -17,12 +17,12 @@ public class PDF_SlipPageL extends Table {
 		setHorizontalAlignment(HorizontalAlignment.CENTER);
 		Cell cell;
 		cell = new Cell();
-		cell.add(new PDF_Dock(3,"D",10,10,set));
+		cell.add(new PDF_Dock(3,"D",10,10,set,true));
 		cell.setBorder(Border.NO_BORDER);
 		addCell(cell);
 		
 		cell = new Cell(2,1);
-		cell.add(new PDF_Dock(3,"A",6,11,set));
+		cell.add(new PDF_Dock(3,"A",6,11,set,true));
 		cell.setBorder(Border.NO_BORDER);
 		
 		Paragraph p;
@@ -40,7 +40,7 @@ public class PDF_SlipPageL extends Table {
 		addCell(cell);
 		
 		cell = new Cell();
-		cell.add(new PDF_Dock(3,"F",0,5,set));
+		cell.add(new PDF_Dock(3,"F",0,5,set,true));
 		cell.setBorder(Border.NO_BORDER);
 		addCell(cell);
 	}

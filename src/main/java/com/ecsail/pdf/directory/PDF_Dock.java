@@ -24,14 +24,16 @@ import com.itextpdf.layout.property.TextAlignment;
 	   int rowSpot = 0;
 	   String dock;
 	   float dockWidth;
+	   boolean inColor;
 	   
-	public PDF_Dock(int numColumns, String dock, int lDocks, int rDocks, PDF_Object_Settings set) {
+	public PDF_Dock(int numColumns, String dock, int lDocks, int rDocks, PDF_Object_Settings set, boolean inColor) {
 		super(numColumns);
 		this.slips = SqlSelect.getSlipsForDock(dock);
 		this.lDocks = lDocks;
 		this.rDocks = rDocks;
 		this.dock = dock;
 		this.set = set;
+		this.inColor = inColor;
 		
 		setWidth(PageSize.A5.getWidth() * 0.40f);  // makes table 45% of page width
 		this.dockWidth = this.getWidth().getValue() * 0.45f;
@@ -217,7 +219,9 @@ import com.itextpdf.layout.property.TextAlignment;
 	
 	private Paragraph getName(int element, int offset, boolean setLeft) {
 		String name = slips.get(element + offset).getlName() + ", " + returnInitial(slips.get(element + offset).getfName());
+		
 		boolean isSublease = false;
+		/// find out if this is a sublease and put there name in if they are.
 		if (slips.get(element + offset).getSubleaseMsID() != 0) {
 			Object_MembershipList subleaser = new Object_MembershipList();
 			subleaser = SQL_SelectMembership.getMembershipList(slips.get(element + offset).getSubleaseMsID(), set.getSelectedYear());
@@ -227,11 +231,15 @@ import com.itextpdf.layout.property.TextAlignment;
 		Paragraph p;
 
 		// there is no subleaser
-		if (!setLeft)  //dock is on right
+		if (!setLeft) { //dock is on right
+			if(!inColor && isSublease) name = "*** " + name;
 			p = new Paragraph(name + " " + slips.get(element + offset).getSlipNum());
-		else 	    	//dock is on left 
+		}
+		else  {	    	//dock is on left 
+			if(!inColor && isSublease) name = name + " ***";
 			p = new Paragraph(slips.get(element + offset).getSlipNum() + "  " + name);
-		if(isSublease) p.setFontColor(ColorConstants.BLUE);
+			}
+		if(isSublease && inColor) p.setFontColor(ColorConstants.BLUE);
 		return p;
 	}
 	

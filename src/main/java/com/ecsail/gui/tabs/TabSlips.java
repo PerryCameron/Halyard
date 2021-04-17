@@ -1,6 +1,7 @@
 package com.ecsail.gui.tabs;
 
 import com.ecsail.main.Paths;
+import com.ecsail.pdf.PDF_SlipChart;
 import com.ecsail.main.Launcher;
 import com.ecsail.sql.SQL_SelectMembership;
 import com.ecsail.structures.Object_MembershipList;
@@ -127,7 +128,7 @@ public class TabSlips extends Tab {
 		});
 		
 		createPdfButton.setOnAction((event) -> {
-        	System.out.println("Create PDF");
+        	new PDF_SlipChart(Paths.getYear());
         });
 				
 		///////////////// ATTRIBUTES /////////////////
