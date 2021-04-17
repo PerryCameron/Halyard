@@ -7,7 +7,6 @@ import java.io.IOException;
 import com.ecsail.main.Paths;
 import com.ecsail.pdf.directory.PDF_Dock;
 import com.ecsail.pdf.directory.PDF_Object_Settings;
-import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.geom.Rectangle;
 import com.itextpdf.kernel.pdf.PdfDocument;
@@ -58,8 +57,7 @@ public class PDF_SlipChart {
 		Table mainTable = new Table(4);
 		mainTable.setWidth(PageSize.A4.getHeight() * 0.95f);  // actually sets the width
 		mainTable.setHorizontalAlignment(HorizontalAlignment.CENTER);
-		
-		
+
 		Cell cell;
 		cell = new Cell();
 		cell.add(new PDF_Dock(3,"D",10,10,set,false));
@@ -101,14 +99,9 @@ public class PDF_SlipChart {
 		cell.add(new PDF_Dock(3,"F",0,5,set,false));
 		cell.setBorder(Border.NO_BORDER);
 		mainTable.addCell(cell);
-		
-
-		
 
 		doc.add(mainTable);
 		doc.close();
 	}
-	
-
 }
 

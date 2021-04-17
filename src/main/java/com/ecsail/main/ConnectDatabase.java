@@ -9,7 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.ecsail.gui.boxes.BoxWelcome;
-import com.ecsail.sql.SQL_SelectMembership;
+import com.ecsail.sql.Sql_SelectMembership;
 import com.ecsail.structures.Object_Login;
 
 import javafx.application.Platform;
@@ -214,7 +214,7 @@ public class ConnectDatabase {
         		String pass = password.getText();
         		String ip = hostName.getValue();
         		if(createConnection(user, pass, ip, port)) {
-        		Main.activememberships = SQL_SelectMembership.getRoster(Main.selectedYear, true);
+        		Main.activememberships = Sql_SelectMembership.getRoster(Main.selectedYear, true);
         		logonStage.close();
         		primaryStage.setTitle("ECSC Membership Database (connected) " + ip);
         		} else {

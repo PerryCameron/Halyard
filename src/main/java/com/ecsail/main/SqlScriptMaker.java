@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import com.ecsail.gui.dialogues.Dialogue_DatabaseBackup;
-import com.ecsail.sql.SQL_SelectMembership;
+import com.ecsail.sql.Sql_SelectMembership;
 import com.ecsail.sql.SqlSelect;
 import com.ecsail.structures.Object_Award;
 import com.ecsail.structures.Object_Boat;
@@ -64,7 +64,7 @@ public class SqlScriptMaker {
 		Date date = new Date();  
 		String stringDate = formatter.format(date);
 		stringDate.replaceAll("\\s+", "");
-		memberships = SQL_SelectMembership.getMemberships();
+		memberships = Sql_SelectMembership.getMemberships();
 		ids = SqlSelect.getIds();
 		people = SqlSelect.getPeople(); 
 		phones = SqlSelect.getPhone(ALL);

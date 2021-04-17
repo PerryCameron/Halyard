@@ -9,7 +9,7 @@ import com.ecsail.gui.tabs.roster.TabStandard;
 import com.ecsail.main.Main;
 import com.ecsail.main.Paths;
 import com.ecsail.main.Launcher;
-import com.ecsail.sql.SQL_SelectMembership;
+import com.ecsail.sql.Sql_SelectMembership;
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_RosterRadioButtons;
 import com.ecsail.structures.Object_RosterSelect;
@@ -186,13 +186,13 @@ public class TabRoster extends Tab {
 																	/// printChoices.getYear()
 				rosters.clear();
 				if (rb.getRadioActive().isSelected())
-					rosters.addAll(SQL_SelectMembership.getRoster(selectedYear, true));
+					rosters.addAll(Sql_SelectMembership.getRoster(selectedYear, true));
 				if (rb.getRadioNonRenew().isSelected())
-					rosters.addAll(SQL_SelectMembership.getRoster(selectedYear, false));
+					rosters.addAll(Sql_SelectMembership.getRoster(selectedYear, false));
 				if (rb.getRadioNewMembers().isSelected())
-					rosters.addAll(SQL_SelectMembership.getNewMemberRoster(selectedYear));
+					rosters.addAll(Sql_SelectMembership.getNewMemberRoster(selectedYear));
 				if (rb.getRadioNewReturnMembers().isSelected())
-					rosters.addAll(SQL_SelectMembership.getFullNewMemberRoster(selectedYear));
+					rosters.addAll(Sql_SelectMembership.getFullNewMemberRoster(selectedYear));
 				titledPane.setText("Roster " + selectedYear);
 				records.setText(rosters.size() + " Records");
 				rosterTableView.sort();
@@ -279,7 +279,7 @@ public class TabRoster extends Tab {
 				if (isNowSelected) {
 					setListType("active");
 					rosters.clear();
-					rosters.addAll(SQL_SelectMembership.getRoster(selectedYear, true));
+					rosters.addAll(Sql_SelectMembership.getRoster(selectedYear, true));
 					records.setText(rosters.size() + " Records");
 					rosterTableView.sort();
 				}
@@ -293,7 +293,7 @@ public class TabRoster extends Tab {
 				if (isNowSelected) {
 					setListType("all");
 					rosters.clear();
-					rosters.addAll(SQL_SelectMembership.getRosterOfAll(selectedYear));
+					rosters.addAll(Sql_SelectMembership.getRosterOfAll(selectedYear));
 					records.setText(rosters.size() + " Records");
 					rosterTableView.sort();
 				} else {
@@ -309,7 +309,7 @@ public class TabRoster extends Tab {
 				if (isNowSelected) {
 					setListType("non-renew");
 					rosters.clear();
-					rosters.addAll(SQL_SelectMembership.getRoster(selectedYear, false));
+					rosters.addAll(Sql_SelectMembership.getRoster(selectedYear, false));
 					records.setText(rosters.size() + " Records");
 					rosterTableView.sort();
 				} else {
@@ -325,7 +325,7 @@ public class TabRoster extends Tab {
 				if (isNowSelected) {
 					setListType("new-members");
 					rosters.clear();
-					rosters.addAll(SQL_SelectMembership.getNewMemberRoster(selectedYear));
+					rosters.addAll(Sql_SelectMembership.getNewMemberRoster(selectedYear));
 					records.setText(rosters.size() + " Records");
 					rosterTableView.sort();
 				} else {
@@ -341,7 +341,7 @@ public class TabRoster extends Tab {
 				if (isNowSelected) {
 					setListType("new-and-return");
 					rosters.clear();
-					rosters.addAll(SQL_SelectMembership.getFullNewMemberRoster(selectedYear));
+					rosters.addAll(Sql_SelectMembership.getFullNewMemberRoster(selectedYear));
 					records.setText(rosters.size() + " Records");
 					rosterTableView.sort();
 				} else {
@@ -357,7 +357,7 @@ public class TabRoster extends Tab {
 				if (isNowSelected) {
 					setListType("slip-waitlist");
 					rosters.clear();
-					rosters.addAll(SQL_SelectMembership.getWaitListRoster("slipwait"));
+					rosters.addAll(Sql_SelectMembership.getWaitListRoster("slipwait"));
 					records.setText(rosters.size() + " Records");
 					rosterTableView.sort();
 				} else {
@@ -373,7 +373,7 @@ public class TabRoster extends Tab {
 				if (isNowSelected) {
 					setListType("wantsrelease");
 					rosters.clear();
-					rosters.addAll(SQL_SelectMembership.getWaitListRoster("wantrelease"));
+					rosters.addAll(Sql_SelectMembership.getWaitListRoster("wantrelease"));
 					records.setText(rosters.size() + " Records");
 					rosterTableView.sort();
 				} else {
@@ -389,7 +389,7 @@ public class TabRoster extends Tab {
 				if (isNowSelected) {
 					setListType("slipOwners");
 					rosters.clear();
-					rosters.addAll(SQL_SelectMembership.getRosterOfSlipOwners(Paths.getYear()));
+					rosters.addAll(Sql_SelectMembership.getRosterOfSlipOwners(Paths.getYear()));
 					records.setText(rosters.size() + " Records");
 					rosterTableView.sort();
 				} else {
@@ -405,7 +405,7 @@ public class TabRoster extends Tab {
 				if (isNowSelected) {
 					setListType("wantsublease");
 					rosters.clear();
-					rosters.addAll(SQL_SelectMembership.getWaitListRoster("wantsublease"));
+					rosters.addAll(Sql_SelectMembership.getWaitListRoster("wantsublease"));
 					records.setText(rosters.size() + " Records");
 					rosterTableView.sort();
 				} else {
@@ -421,7 +421,7 @@ public class TabRoster extends Tab {
 				if (isNowSelected) {
 					setListType("wantsublease");
 					rosters.clear();
-					rosters.addAll(SQL_SelectMembership.getWaitListRoster("wantslipchange"));
+					rosters.addAll(Sql_SelectMembership.getWaitListRoster("wantslipchange"));
 					records.setText(rosters.size() + " Records");
 					rosterTableView.sort();
 				} else {
@@ -437,7 +437,7 @@ public class TabRoster extends Tab {
 				if (isNowSelected) {
 					setListType("subleasedslips");
 					rosters.clear();
-					rosters.addAll(SQL_SelectMembership.getRosterOfSubleasedSlips());
+					rosters.addAll(Sql_SelectMembership.getRosterOfSubleasedSlips());
 					records.setText(rosters.size() + " Records");
 					rosterTableView.sort();
 				} else {
@@ -453,7 +453,7 @@ public class TabRoster extends Tab {
 				if (isNowSelected) {
 					setListType("shedowners");
 					rosters.clear();
-					rosters.addAll(SQL_SelectMembership.getRosterOfKayakShedOwners(Paths.getYear()));
+					rosters.addAll(Sql_SelectMembership.getRosterOfKayakShedOwners(Paths.getYear()));
 					records.setText(rosters.size() + " Records");
 					rosterTableView.sort();
 				} else {
@@ -469,7 +469,7 @@ public class TabRoster extends Tab {
 				if (isNowSelected) {
 					setListType("rackowners");
 					rosters.clear();
-					rosters.addAll(SQL_SelectMembership.getRosterOfKayakRackOwners(Paths.getYear()));
+					rosters.addAll(Sql_SelectMembership.getRosterOfKayakRackOwners(Paths.getYear()));
 					records.setText(rosters.size() + " Records");
 					rosterTableView.sort();
 					System.out.println("Roster of those with a kayak rack");
@@ -486,7 +486,7 @@ public class TabRoster extends Tab {
 				if (isNowSelected) {
 					setListType("all-active-members");
 					rosters.clear();
-					rosters.addAll(SQL_SelectMembership.getRosterOfAllActiveMembers(Paths.getYear()));
+					rosters.addAll(Sql_SelectMembership.getRosterOfAllActiveMembers(Paths.getYear()));
 					records.setText(rosters.size() + " Records");
 					rosterTableView.sort();
 					System.out.println("Roster of those with a kayak rack");

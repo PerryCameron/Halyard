@@ -3,7 +3,7 @@ package com.ecsail.pdf.directory;
 import java.util.Collections;
 import java.util.Comparator;
 
-import com.ecsail.sql.SQL_SelectMembership;
+import com.ecsail.sql.Sql_SelectMembership;
 import com.ecsail.sql.SqlSelect;
 import com.ecsail.structures.Object_MembershipList;
 import com.itextpdf.kernel.colors.ColorConstants;
@@ -224,7 +224,7 @@ import com.itextpdf.layout.property.TextAlignment;
 		/// find out if this is a sublease and put there name in if they are.
 		if (slips.get(element + offset).getSubleaseMsID() != 0) {
 			Object_MembershipList subleaser = new Object_MembershipList();
-			subleaser = SQL_SelectMembership.getMembershipList(slips.get(element + offset).getSubleaseMsID(), set.getSelectedYear());
+			subleaser = Sql_SelectMembership.getMembershipList(slips.get(element + offset).getSubleaseMsID(), set.getSelectedYear());
 			name = subleaser.getLname() + " " + returnInitial(subleaser.getFname());
 			isSublease = true;
 		}

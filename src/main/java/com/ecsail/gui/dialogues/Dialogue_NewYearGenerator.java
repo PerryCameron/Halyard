@@ -4,7 +4,7 @@ import java.util.Collections;
 
 import com.ecsail.main.Paths;
 import com.ecsail.main.SortByMembershipId;
-import com.ecsail.sql.SQL_SelectMembership;
+import com.ecsail.sql.Sql_SelectMembership;
 import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.SqlInsert;
 import com.ecsail.sql.SqlSelect;
@@ -144,7 +144,7 @@ public class Dialogue_NewYearGenerator extends Stage {
 	
 	
 	private void generateRecords(Boolean makeNewNumbers) {
-		this.memberships = SQL_SelectMembership.getRoster(selectedYear, false);
+		this.memberships = Sql_SelectMembership.getRoster(selectedYear, false);
 		if(makeNewNumbers) {
 			System.out.println("Creating new numbers");
 		createNewNumbers();

@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import com.ecsail.main.Paths;
-import com.ecsail.sql.SQL_SelectMembership;
+import com.ecsail.sql.Sql_SelectMembership;
 import com.ecsail.structures.Object_MembershipList;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
@@ -27,7 +27,7 @@ public class PDF_Directory {
 	public PDF_Directory(String year) {
 		this.set = new PDF_Object_Settings(year);
 		
-		this.rosters = SQL_SelectMembership.getRoster(year, true);
+		this.rosters = Sql_SelectMembership.getRoster(year, true);
 		Paths.checkPath(Paths.EMAILLIST);
 
 		
@@ -80,7 +80,7 @@ public class PDF_Directory {
 		doc.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
 		
 		createMemberInfoPages(doc);
-		doc.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+		//doc.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
 		
 		new PDF_MembersByNumber(set, doc, rosters);
 		
