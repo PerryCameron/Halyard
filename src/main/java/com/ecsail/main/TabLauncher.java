@@ -12,7 +12,7 @@ import com.ecsail.gui.tabs.TabDefinedFee;
 import com.ecsail.gui.tabs.TabMembership;
 import com.ecsail.gui.tabs.TabNewYearGenerator;
 import com.ecsail.gui.tabs.TabNotes;
-import com.ecsail.gui.tabs.TabPeopleList;
+import com.ecsail.gui.tabs.TabPeople;
 import com.ecsail.gui.tabs.TabSlips;
 import com.ecsail.gui.tabs.TabStub;
 import com.ecsail.gui.tabs.TabWelcome;
@@ -77,7 +77,7 @@ static TabPane tabPane;
 	}
 	
 	public static void openPeopleTab() {
-		tabPane.getTabs().add(new TabPeopleList("People List"));
+		tabPane.getTabs().add(new TabPeople("People"));
 		tabPane.getSelectionModel().select(getTabIndex("People List"));
 	}
 	

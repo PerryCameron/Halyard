@@ -3,7 +3,7 @@ package com.ecsail.gui.boxes;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import com.ecsail.gui.tabs.TabPeopleList;
+import com.ecsail.gui.tabs.TabPeople;
 import com.ecsail.gui.tabs.TabPersonProperties;
 import com.ecsail.main.TabLauncher;
 import com.ecsail.sql.SqlUpdate;
@@ -39,7 +39,7 @@ public class BoxPerson extends HBox {
 		this.membership = me;
 		
 		if(TabLauncher.tabOpen("People List")) {
-			this.people = TabPeopleList.people;
+			this.people = TabPeople.people;
 		} else {
 			this.people = null;
 		}
@@ -167,7 +167,7 @@ public class BoxPerson extends HBox {
 						if(person.getMemberType()==1)  // only update table if this is the primary member
 							membership.setFname(fnameTextField.getText());
 							if(people != null)  // this updates the people list if in people mode
-								people.get(TabPeopleList.getIndexByPid(person.getP_id())).setFname(fnameTextField.getText());
+								people.get(TabPeople.getIndexByPid(person.getP_id())).setFname(fnameTextField.getText());
 	            }
 	        }
 	    });
@@ -181,7 +181,7 @@ public class BoxPerson extends HBox {
 	            		if(person.getMemberType()==1)  // only update table if this is the primary member
 	            			membership.setLname(lnameTextField.getText());
 	            			if(people != null)  // this updates the people list if in people mode
-	            				people.get(TabPeopleList.getIndexByPid(person.getP_id())).setLname(lnameTextField.getText());
+	            				people.get(TabPeople.getIndexByPid(person.getP_id())).setLname(lnameTextField.getText());
 	            }
 	        }
 	    });
@@ -193,7 +193,7 @@ public class BoxPerson extends HBox {
 	            if (oldValue) {  // we have focused and unfocused
 	            		SqlUpdate.updateOccupation(occupationTextField.getText(),person);
 	            		if(people != null)  // this updates the people list if in people mode
-	            			people.get(TabPeopleList.getIndexByPid(person.getP_id())).setOccupation(occupationTextField.getText());
+	            			people.get(TabPeople.getIndexByPid(person.getP_id())).setOccupation(occupationTextField.getText());
 	            }
 	        }
 	    });
@@ -205,7 +205,7 @@ public class BoxPerson extends HBox {
 	            if (oldValue) {  // we have focused and unfocused
 	            		SqlUpdate.updateBuisness(businessTextField.getText(), person);
 	            		if(people != null)  // this updates the people list if in people mode
-	            			people.get(TabPeopleList.getIndexByPid(person.getP_id())).setBuisness(businessTextField.getText());
+	            			people.get(TabPeople.getIndexByPid(person.getP_id())).setBuisness(businessTextField.getText());
 	            }
 	        }
 	    });

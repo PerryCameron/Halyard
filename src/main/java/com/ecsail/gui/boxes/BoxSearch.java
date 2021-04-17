@@ -1,6 +1,6 @@
 package com.ecsail.gui.boxes;
 
-import com.ecsail.gui.tabs.TabPeopleList;
+import com.ecsail.gui.tabs.TabPeople;
 import com.ecsail.structures.Object_Person;
 
 import javafx.event.ActionEvent;
@@ -37,7 +37,7 @@ public class BoxSearch extends HBox {
 		
 		searchRecords.setOnAction(new EventHandler<ActionEvent>() {
 	           @Override public void handle(ActionEvent e) {
-	        	   TabPeopleList.searchLastName(searchBox.getText());
+	        	   TabPeople.searchLastName(searchBox.getText());
 	        	   //System.out.println("Text is" + searchBox.getText());
 	            }
 	        });
@@ -49,7 +49,7 @@ public class BoxSearch extends HBox {
 	        {
 	            if (ke.getCode().equals(KeyCode.ENTER))
 	            {
-	            	TabPeopleList.searchLastName(searchBox.getText());
+	            	TabPeople.searchLastName(searchBox.getText());
 	            }
 	        }
 	    });

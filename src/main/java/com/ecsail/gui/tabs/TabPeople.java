@@ -31,7 +31,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
-public class TabPeopleList extends Tab {
+public class TabPeople extends Tab {
 
 	//private Object_MembershipList membership;
 	public static ObservableList<Object_Person> people;
@@ -47,9 +47,9 @@ public class TabPeopleList extends Tab {
 	static int pick = 1;
 
 	@SuppressWarnings("unchecked")
-	public TabPeopleList(String text) {
+	public TabPeople(String text) {
 		super(text);
-		TabPeopleList.people = SqlSelect.getPeople();
+		TabPeople.people = SqlSelect.getPeople();
 		
 		VBox vbox1 = new VBox(); // main vbox
 		VBox vbox2 = new VBox(); // sepearates box search and box people

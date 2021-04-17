@@ -17,7 +17,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -165,23 +164,19 @@ public class BoxEmail extends HBox {
 			
 			/////////////////  LISTENERS ////////////////////////
 
-	        emailAdd.setOnAction(new EventHandler<ActionEvent>() {
-	            @Override public void handle(ActionEvent e) {
+	        emailAdd.setOnAction((event) -> {
 	            	int email_id = SqlSelect.getCount("email","email_id"); // gets last memo_id number
 					email_id++; // lets select next number
 	            	email.add(new Object_Email(email_id,person.getP_id(),true,"new email",true)); // lets add it to our list
 						SqlInsert.addRecord(email_id,person.getP_id(),true,"new email",true); // lets add it to our database
-	            }
 	        });
 	        
-	        emailDelete.setOnAction(new EventHandler<ActionEvent>() {
-	            @Override public void handle(ActionEvent e) {
+	        emailDelete.setOnAction((event) -> {
 	        	    int selectedIndex = emailTableView.getSelectionModel().getSelectedIndex();
 	        	    	if(selectedIndex >= 0) // make sure something is selected
 	        	    		if(SqlDelete.deleteEmail(email.get(selectedIndex)))  // if deleted in database
 	        	    			emailTableView.getItems().remove(selectedIndex); // remove from GUI 
-	            }
-	        });
+	            });
 	        
 	        ///////////////////  SET CONTENT ////////////////////
 	        

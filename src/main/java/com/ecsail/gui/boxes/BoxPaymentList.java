@@ -170,6 +170,7 @@ public class BoxPaymentList extends HBox {
 	
 	private int getDues(Object_DefinedFee definedFees) {  // takes the membership type and gets the dues
 		int dues = 0;
+		if(membership.getMemType() != null) {
 		  switch(membership.getMemType()) 
 	        { 
 	            case "RM": 
@@ -193,6 +194,7 @@ public class BoxPaymentList extends HBox {
 	            default: 
 	            	dues = 0; 
 	        } 
+		} else dues = 0;
 		return dues;
 	}
 	

@@ -56,7 +56,7 @@ public class TabPersonProperties extends Tab {
                //activeCheckBox.setSelected(!newValue);
             	SqlUpdate.updatePerson("IS_ACTIVE",person.getP_id(),newValue);
             	if(people != null)  // this updates the people list if in people mode
-        			people.get(TabPeopleList.getIndexByPid(person.getP_id())).setActive(newValue);
+        			people.get(TabPeople.getIndexByPid(person.getP_id())).setActive(newValue);
             }
         });
 	    
@@ -64,7 +64,7 @@ public class TabPersonProperties extends Tab {
 	    	System.out.println("isDeleted=" + isDeleted);
 	    	removeTab(personTabPane);
         	if(people != null)  // this updates the people list if in people mode
-    			people.remove(people.get(TabPeopleList.getIndexByPid(person.getP_id())));
+    			people.remove(people.get(TabPeople.getIndexByPid(person.getP_id())));
 		});
 		
 		/////////////////  ATTRIBUTES  /////////////////////

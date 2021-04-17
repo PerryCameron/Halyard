@@ -3,6 +3,9 @@ package com.ecsail.gui.tabs;
 import com.ecsail.main.Paths;
 import com.ecsail.main.TabLauncher;
 import com.ecsail.sql.SQL_SelectMembership;
+import com.ecsail.sql.SqlInsert;
+import com.ecsail.sql.SqlSelect;
+import com.ecsail.structures.Object_Email;
 import com.ecsail.structures.Object_MembershipList;
 
 import javafx.beans.value.ObservableValue;
@@ -125,6 +128,10 @@ public class TabSlips extends Tab {
 		    	//setContent(createPdfButton);
 		    }
 		});
+		
+		createPdfButton.setOnAction((event) -> {
+        	System.out.println("Create PDF");
+        });
 				
 		///////////////// ATTRIBUTES /////////////////
 		
