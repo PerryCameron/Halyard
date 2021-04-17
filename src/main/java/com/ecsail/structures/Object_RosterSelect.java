@@ -2,11 +2,14 @@ package com.ecsail.structures;
 
 public class Object_RosterSelect {  /// class purpose is to allow making of excel file Xls_roster
 	private String year;
+	// lists
 	private boolean slipwait;
 	private boolean active;
 	private boolean nonRenew;
 	private boolean newMembers;
 	private boolean newAndReturnd;
+	
+	// elements
 	private boolean membership_id;
 	private boolean lastName;
 	private boolean firstName;

@@ -1,5 +1,6 @@
 package com.ecsail.excel;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -14,6 +15,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.ecsail.main.Main;
 import com.ecsail.main.Paths;
 import com.ecsail.sql.SqlSelect;
 import com.ecsail.structures.Object_Email;
@@ -22,6 +24,8 @@ import com.ecsail.structures.Object_Phone;
 import com.ecsail.structures.Object_RosterSelect;
 
 import javafx.collections.ObservableList;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 
 public class Xls_roster {
 	private Object_RosterSelect printChoices;
@@ -75,11 +79,17 @@ public class Xls_roster {
         }
         
         FileOutputStream fileOut = null;
-
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save");
+        fileChooser.getExtensionFilters().addAll(new ExtensionFilter("Excel Files", "*.xlsx"));
+        fileChooser.setInitialDirectory(new File(Paths.ROSTERS + "/"));
+        fileChooser.setInitialFileName(getFileName());
+        File file = fileChooser.showSaveDialog(Main.getPrimaryStage());
+        
+        
 		try {
-			String filename = getFileName();
-			fileOut = new FileOutputStream(filename);
-			System.out.println("Creating " + filename);
+			fileOut = new FileOutputStream(file);
+			System.out.println("Creating " + file);
 		} catch (FileNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -110,15 +120,17 @@ public class Xls_roster {
 	
 	private String getFileName() {
 		Paths.checkPath(Paths.ROSTERS);
-		String fileName = Paths.ROSTERS + "/" + printChoices.getYear();
+		String fileName = printChoices.getYear();
 		if(printChoices.isActive()) {
 			fileName += " Active";
 		} else if (printChoices.isNonRenew()) {
 			fileName += " Non-renew";
 		} else if (printChoices.isNewMembers()) {
-			fileName += " Novel_Member";
+			fileName += " New_Member";
 		} else if (printChoices.isSlipwait()) {
 			fileName += " Slip_Waiting_List";
+		} else if (printChoices.isSlip()) {
+			fileName += " Slip_Owners_List";
 		} else {  // is both new and re-returning members
 			fileName += " New Member";
 		}
