@@ -13,7 +13,7 @@ import com.ecsail.structures.Object_MembershipList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class SQL_SelectMembership {
+public class Sql_SelectMembership {
 	
 
 	public static ObservableList<Object_MembershipList> getRosterOfKayakRackOwners(String year) {
