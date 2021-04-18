@@ -74,9 +74,9 @@ public class Xls_email_list {
             sheet.autoSizeColumn(i);
         }
         FileOutputStream fileOut = null;
-        Paths.checkPath(Paths.EMAILLIST);
+        Paths.checkPath(Paths.ECSCHOME);
 		try {
-			fileOut = new FileOutputStream(Paths.EMAILLIST + "/Email_List.xlsx");
+			fileOut = new FileOutputStream(Paths.ECSCHOME + "/Email_List.xlsx");
 		} catch (FileNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

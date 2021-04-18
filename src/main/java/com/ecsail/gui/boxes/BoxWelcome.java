@@ -24,25 +24,8 @@ public class BoxWelcome extends HBox {
 		Button boatsButton = new Button("Boats");
 		Button notesButton = new Button("Notes");
 		
-		//int activeMembership = SqlSelect.getActiveMembershipCount(Paths.getYear());
-		//int activePeople = SqlSelect.getActivePeopleCount();;
-		//Text activeText = new Text("There are currently " + activeMembership + " active memberships");
-		//Text familyMembershipText = new Text("	-" + SqlSelect.getMembershipTypeCount("FM") + " family memberships");
-		//Text regularMembershipText = new Text("	-" + SqlSelect.getMembershipTypeCount("RM") + " regular memberships");
-		//Text socialMembershipText = new Text("	-" + SqlSelect.getMembershipTypeCount("SO") + " social memberships");
-		//Text lakeAssociateMembershipText = new Text("	-" + SqlSelect.getMembershipTypeCount("LA") + " lake associates");
-		//Text lifeMembershipText = new Text("	-" + SqlSelect.getMembershipTypeCount("LM") + " life memberships");
-		//Text activepeopleText = new Text("There are currently " + activePeople + " people attached to active memberships");
-	
 		////////////////  ATTRIBUTES //////////////////////////////
 		
-		//activeText.setStyle("-fx-font: 14 Helvetica;");
-		//familyMembershipText.setStyle("-fx-font: 12 Helvetica;");
-		//regularMembershipText.setStyle("-fx-font: 12 Helvetica;");
-		//socialMembershipText.setStyle("-fx-font: 12 Helvetica;");
-		//lakeAssociateMembershipText.setStyle("-fx-font: 12 Helvetica;");
-		//lifeMembershipText.setStyle("-fx-font: 12 Helvetica;");
-		//activepeopleText.setStyle("-fx-font: 14 Helvetica;");
 		
 		vboxLeft.setPrefWidth(570);
 		notesButton.setId("bigbuttontext");
@@ -53,7 +36,6 @@ public class BoxWelcome extends HBox {
 		slipListButton.setId("bigbuttontext");
 		batchesButton.setId("bigbuttontext");
 		rosterButton.setId("bigbuttontext");
-		//activeText.setId("");
 		vboxRight.setSpacing(10);
 		vboxRight.setPadding(new Insets(30,0,0,0));
 		notesButton.setPrefSize(width, height);

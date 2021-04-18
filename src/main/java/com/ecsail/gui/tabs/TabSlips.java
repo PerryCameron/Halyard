@@ -99,7 +99,6 @@ public class TabSlips extends Tab {
 		this.slipmemberships = Sql_SelectMembership.getSlipRoster(Paths.getYear());
 		this.subleaserMemberships = FXCollections.observableArrayList();
 		fillSlips(); // must be filled the first time.
-		//getStaticSlips();  // slips that don't change such as 48 hour docks
 		Pane screenPane = new Pane();
 		
 		
@@ -133,6 +132,7 @@ public class TabSlips extends Tab {
 				
 		///////////////// ATTRIBUTES /////////////////
 		
+		createPdfButton.setId("mediumbuttontext");
 		vboxBlue.setId("box-blue");
 		screenPane.setId("slip-fonts");
 		vboxBlue.setPadding(new Insets(10,10,10,10));
@@ -256,7 +256,6 @@ public class TabSlips extends Tab {
 	private void getStaticSlips() {
 		b50 = new Text(col6,row23, "B50 Racing");
 		b48 = new Text(col6,row24, "B48 Racing");
-
 		h482 = new Text(252,576, "48 Hour dock");
 		h482.setRotate(-45);
 		h483 = new Text(271,596, "48 Hour dock");

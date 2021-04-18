@@ -9,7 +9,7 @@ public class Object_RosterRadioButtons {
     RadioButton radioNonRenew = new RadioButton("Non-Renew"); 
     RadioButton radioNewMembers = new RadioButton("New Members");
     RadioButton radioNewReturnMembers = new RadioButton("New/Return Members");
-    RadioButton radioAllActiveMembers = new RadioButton("Primary/Secondary");
+    RadioButton radioAllPeople = new RadioButton("All Active People");
     
     RadioButton radioSlipWaitList = new RadioButton("Slip Waitlist");
     RadioButton radioSlip = new RadioButton("Slip Owners");
@@ -34,7 +34,7 @@ public class Object_RosterRadioButtons {
 		this.radioNonRenew = radioNonRenew;
 		this.radioNewMembers = radioNewMembers;
 		this.radioNewReturnMembers = radioNewReturnMembers;
-		this.radioAllActiveMembers = radioAllActiveMembers;
+		this.radioAllPeople = radioAllActiveMembers;
 		this.radioSlipWaitList = radioSlipWaitList;
 		this.radioSlip = radioSlip;
 		this.radioWantsToSublease = radioWantsToSublease;
@@ -57,7 +57,7 @@ public class Object_RosterRadioButtons {
 		radioNonRenew.setToggleGroup(tg1);
 		radioNewMembers.setToggleGroup(tg1);
 		radioNewReturnMembers.setToggleGroup(tg1);
-		radioAllActiveMembers.setToggleGroup(tg1);
+		radioAllPeople.setToggleGroup(tg1);
 		radioSlipWaitList.setToggleGroup(tg1);
 		radioSlip.setToggleGroup(tg1);
 		radioWantsToSublease.setToggleGroup(tg1);
@@ -191,18 +191,18 @@ public class Object_RosterRadioButtons {
 	}
 
 	public RadioButton getRadioAllActiveMembers() {
-		return radioAllActiveMembers;
+		return radioAllPeople;
 	}
 
 	public void setRadioAllActiveMembers(RadioButton radioAllActiveMembers) {
-		this.radioAllActiveMembers = radioAllActiveMembers;
+		this.radioAllPeople = radioAllActiveMembers;
 	}
 
 	@Override
 	public String toString() {
 		return "Object_RosterRadioButtons [radioAll=" + radioAll + ", radioActive=" + radioActive + ", radioNonRenew="
 				+ radioNonRenew + ", radioNewMembers=" + radioNewMembers + ", radioNewReturnMembers="
-				+ radioNewReturnMembers + ", radioAllActiveMembers=" + radioAllActiveMembers + ", radioSlipWaitList="
+				+ radioNewReturnMembers + ", radioAllActiveMembers=" + radioAllPeople + ", radioSlipWaitList="
 				+ radioSlipWaitList + "]";
 	}
 	

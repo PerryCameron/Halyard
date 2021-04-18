@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import com.ecsail.main.Paths;
+import com.ecsail.main.SaveFileChooser;
 import com.ecsail.pdf.directory.PDF_Dock;
 import com.ecsail.pdf.directory.PDF_Object_Settings;
 import com.itextpdf.kernel.geom.PageSize;
@@ -22,30 +23,33 @@ import com.itextpdf.layout.property.TextAlignment;
 public class PDF_SlipChart {
 
 	private PDF_Object_Settings set;
+
 	public PDF_SlipChart(String year) {
 		this.set = new PDF_Object_Settings(year);
-	try {
-		createChart();
-	} catch (FileNotFoundException e1) {
-		// TODO Auto-generated catch block
-		e1.printStackTrace();
+		File fileToOpen = null;
+		
+		try {
+			fileToOpen = createChart();
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		Desktop desktop = Desktop.getDesktop(); // Gui_Main.class.getProtectionDomain().getCodeSource().getLocation().getPath()
+
+		// Open the document
+		try {
+			desktop.open(fileToOpen);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
-	System.out.println("destination=" + Paths.EMAILLIST + "SlipChart.pdf");
-	File file = new File(Paths.EMAILLIST + "SlipChart.pdf");
-	Desktop desktop = Desktop.getDesktop(); // Gui_Main.class.getProtectionDomain().getCodeSource().getLocation().getPath()
-
-	// Open the document
-	try {
-		desktop.open(file);
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-	
-	}
-	public void createChart() throws FileNotFoundException {
-		PdfWriter writer = new PdfWriter(Paths.EMAILLIST + "SlipChart.pdf");
+	public File createChart() throws FileNotFoundException {
+		File file = new SaveFileChooser(Paths.ECSCHOME + "/", "SlipChart.pdf", "PDF files", "*.pdf").getFile();
+		PdfWriter writer = new PdfWriter(file);
 		// Initialize PDF document
 		PdfDocument pdf = new PdfDocument(writer);
 		Rectangle envelope = new Rectangle(PageSize.A4.getHeight(), PageSize.A4.getWidth());
@@ -55,53 +59,53 @@ public class PDF_SlipChart {
 		doc.setTopMargin(1f);
 		doc.setBottomMargin(0.5f);
 		Table mainTable = new Table(4);
-		mainTable.setWidth(PageSize.A4.getHeight() * 0.95f);  // actually sets the width
+		mainTable.setWidth(PageSize.A4.getHeight() * 0.95f); // actually sets the width
 		mainTable.setHorizontalAlignment(HorizontalAlignment.CENTER);
 
 		Cell cell;
 		cell = new Cell();
-		cell.add(new PDF_Dock(3,"D",10,10,set,false));
+		cell.add(new PDF_Dock(3, "D", 10, 10, set, false));
 		cell.setBorder(Border.NO_BORDER);
 		mainTable.addCell(cell);
 
-		cell = new Cell(2,1);
-		cell.add(new PDF_Dock(3,"A",6,11,set,false));
+		cell = new Cell(2, 1);
+		cell.add(new PDF_Dock(3, "A", 6, 11, set, false));
 		cell.setBorder(Border.NO_BORDER);
 		mainTable.addCell(cell);
-		
-		cell = new Cell(2,1);
-		cell.add(new PDF_Dock(3,"B",11,11,set,false));
+
+		cell = new Cell(2, 1);
+		cell.add(new PDF_Dock(3, "B", 11, 11, set, false));
 		cell.setBorder(Border.NO_BORDER);
 		mainTable.addCell(cell);
-		
+
 		/////// LEGEND /////////
 		Paragraph p;
-		p = new Paragraph("\n\n" + set.getSelectedYear() +" Dock Assignments");
+		p = new Paragraph("\n\n" + set.getSelectedYear() + " Dock Assignments");
 		p.setFontColor(set.getMainColor());
 		p.setFont(set.getColumnHead());
 		p.setTextAlignment(TextAlignment.CENTER);
 		cell.add(p);
-		
+
 		p = new Paragraph("Sublease ***");
-		//p.setFontColor(ColorConstants.BLUE);
+		// p.setFontColor(ColorConstants.BLUE);
 		p.setFontSize(set.getSlipFontSize());
 		p.setTextAlignment(TextAlignment.CENTER);
 		cell.add(p);
 
 		//////// LEGEND END //////
-		
-		cell = new Cell(2,1);
-		cell.add(new PDF_Dock(3,"C",11,11,set,false));
+
+		cell = new Cell(2, 1);
+		cell.add(new PDF_Dock(3, "C", 11, 11, set, false));
 		cell.setBorder(Border.NO_BORDER);
 		mainTable.addCell(cell);
-		
+
 		cell = new Cell();
-		cell.add(new PDF_Dock(3,"F",0,5,set,false));
+		cell.add(new PDF_Dock(3, "F", 0, 5, set, false));
 		cell.setBorder(Border.NO_BORDER);
 		mainTable.addCell(cell);
 
 		doc.add(mainTable);
 		doc.close();
+		return file;
 	}
 }
-

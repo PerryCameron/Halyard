@@ -28,7 +28,7 @@ public class PDF_Directory {
 		this.set = new PDF_Object_Settings(year);
 		
 		this.rosters = Sql_SelectMembership.getRoster(year, true);
-		Paths.checkPath(Paths.EMAILLIST);
+		Paths.checkPath(Paths.ECSCHOME);
 
 		
 		try {
@@ -38,8 +38,8 @@ public class PDF_Directory {
 			e1.printStackTrace();
 		}
 
-		System.out.println("destination=" + Paths.EMAILLIST + "_directory.pdf");
-		File file = new File(Paths.EMAILLIST + "_directory.pdf");
+		System.out.println("destination=" + Paths.ECSCHOME + "_directory.pdf");
+		File file = new File(Paths.ECSCHOME + "_directory.pdf");
 		Desktop desktop = Desktop.getDesktop(); // Gui_Main.class.getProtectionDomain().getCodeSource().getLocation().getPath()
 
 		// Open the document
@@ -52,7 +52,7 @@ public class PDF_Directory {
 	}
 	
 	public void createDirectory() throws FileNotFoundException {
-		PdfWriter writer = new PdfWriter(Paths.EMAILLIST + "_directory.pdf");
+		PdfWriter writer = new PdfWriter(Paths.ECSCHOME + "_directory.pdf");
 		// Initialize PDF document
 		PdfDocument pdf = new PdfDocument(writer);
 		//PageSize A5v = new PageSize(PageSize.A5.getWidth(), PageSize.A5.getHeight());

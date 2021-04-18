@@ -10,8 +10,8 @@ public class SaveFileChooser {
 	public SaveFileChooser(String directory, String fileName, String Description, String extention) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save");
-        fileChooser.getExtensionFilters().addAll(new ExtensionFilter("Excel Files", "*.xlsx"));
-        fileChooser.setInitialDirectory(new File(Paths.ROSTERS + "/"));
+        fileChooser.getExtensionFilters().addAll(new ExtensionFilter(Description, extention));
+        fileChooser.setInitialDirectory(new File(directory + "/"));
         fileChooser.setInitialFileName(fileName);
         this.file = fileChooser.showSaveDialog(Main.getPrimaryStage());  
 	}

@@ -218,6 +218,10 @@
 	-fx-font-size: 22px;
 }
 
+#mediumbuttontext {
+	-fx-font-size: 16px;
+}
+
 #titled > .title {
 	-fx-font-size: 12px;
 	}
