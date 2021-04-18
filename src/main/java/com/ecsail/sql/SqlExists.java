@@ -47,6 +47,20 @@ public class SqlExists {
 		return answer;
 	}
 	
+	public static Boolean statRecordExists(int fiscal_year) {
+		Boolean recordExists = false;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT EXISTS(SELECT * FROM stats WHERE FISCAL_YEAR='" + fiscal_year + "')"));
+			rs.next();
+			recordExists = rs.getBoolean("EXISTS(SELECT * FROM stats WHERE FISCAL_YEAR='" + fiscal_year + "')");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return recordExists;
+	}
+	
 	public static boolean memberShipExists(int ms_id) {
 		Boolean result = false;
 		try {

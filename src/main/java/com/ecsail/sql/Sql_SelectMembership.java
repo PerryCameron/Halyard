@@ -536,8 +536,8 @@ public class Sql_SelectMembership {
 		return rosters;
 	}
 	
-	public static ObservableList<Object_MembershipList> getReturnMembers(String year) { // and those who lost their membership number
-		int lastYear = Integer.parseInt(year) - 1;
+	public static ObservableList<Object_MembershipList> getReturnMembers(int fiscalYear) { // and those who lost their membership number
+		int lastYear = fiscalYear - 1;
 		ObservableList<Object_MembershipList> rosters = FXCollections.observableArrayList();
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
@@ -546,8 +546,8 @@ public class Sql_SelectMembership {
 					"select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,id.FISCAL_YEAR,m.JOIN_DATE,id.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip "
 					+ "from membership_id id left join membership m on m.MS_ID=id.MS_ID "
 					+ "left join person p on p.P_ID=m.P_ID left join slip s on s.MS_ID=m.MS_ID "
-					+ "where id.FISCAL_YEAR='" + year + "' and YEAR(m.JOIN_DATE) < "+ year +" and id.MEMBERSHIP_ID > ("
-					+ "select membership_id from membership_id where FISCAL_YEAR='" + year + "' and MS_ID=("
+					+ "where id.FISCAL_YEAR='" + fiscalYear + "' and YEAR(m.JOIN_DATE) < "+ fiscalYear +" and id.MEMBERSHIP_ID > ("
+					+ "select membership_id from membership_id where FISCAL_YEAR='" + fiscalYear + "' and MS_ID=("
 					+ "select MS_ID from membership_id where FISCAL_YEAR='" + lastYear + "' and membership_id=("
 					+ "select max(membership_id) from membership_id where FISCAL_YEAR='" + lastYear + "' and membership_id < 500 and id.renew=1))) "
 					+ " and id.MEMBERSHIP_ID < 500;"));

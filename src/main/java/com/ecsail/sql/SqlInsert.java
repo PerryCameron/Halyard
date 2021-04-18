@@ -16,6 +16,7 @@ import com.ecsail.structures.Object_Memo;
 import com.ecsail.structures.Object_Money;
 import com.ecsail.structures.Object_Payment;
 import com.ecsail.structures.Object_Person;
+import com.ecsail.structures.Object_Stats;
 import com.ecsail.structures.Object_WaitList;
 
 public class SqlInsert {
@@ -211,6 +212,33 @@ public class SqlInsert {
 			+ w.isWantToSublease() + "," 
 			+ w.isWantsRelease() + ","
 			+ w.isWantSlipChange() + ");"));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static void addStatRecord(Object_Stats s) {
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			stmt.execute(Main.console.setRegexColor("INSERT INTO stats () VALUES (" 
+			+ s.getStatId() + "," 
+			+ s.getFiscalYear() + "," 
+			+ s.getActiveMemberships() + "," 
+			+ s.getNonRenewMemberships() + ","
+			+ s.getReturnMemberships() + "," 
+			+ s.getNewMemberships() + ","
+			+ s.getSecondaryMembers() + ","
+			+ s.getDependants() + ","
+			+ s.getNumberOfBoats() + ","
+			+ s.getFamily() + ","
+			+ s.getSocial() + ","
+			+ s.getLakeAssociates() + ","
+			+ s.getLifeMembers() + ","
+			+ s.getRaceFellows() + ","
+			+ s.getStudent() + ","
+			+ s.getDeposits() + ","
+			+ s.getInitiation() + ");"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

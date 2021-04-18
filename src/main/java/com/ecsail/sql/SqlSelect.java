@@ -1634,12 +1634,12 @@ public class SqlSelect {
 	}
 	
 	/// not a pure SQL FUNCTION was having difficulties narrowing it down pure SQL.
-	public static int getNumberOfReturningMembershipsForYear(String year) {
-		ObservableList<Object_MembershipList> rosters = Sql_SelectMembership.getReturnMembers(year);
+	public static int getNumberOfReturningMembershipsForYear(int fiscalYear) {
+		ObservableList<Object_MembershipList> rosters = Sql_SelectMembership.getReturnMembers(fiscalYear);
 		int count = 0;
 		for(Object_MembershipList r: rosters) {
-			if(SqlExists.memberShipIdExists(r.getMsid(), ((Integer.parseInt(year) - 1) + ""))) {
-				if(!isActive(r.getMsid(), (Integer.parseInt(year) - 1) + ""));
+			if(SqlExists.memberShipIdExists(r.getMsid(), ((fiscalYear - 1) + ""))) {
+				if(!isActive(r.getMsid(), ((fiscalYear - 1) + "")));
 				count++;
 			} else {  // record doesn't exist
 			count++;	

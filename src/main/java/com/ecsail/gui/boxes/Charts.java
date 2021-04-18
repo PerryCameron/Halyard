@@ -1,9 +1,15 @@
 package com.ecsail.gui.boxes;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import com.ecsail.main.Paths;
+import com.ecsail.sql.SqlDelete;
+import com.ecsail.sql.SqlExists;
+import com.ecsail.sql.SqlInsert;
 import com.ecsail.sql.SqlSelect;
+import com.ecsail.sql.SqlUpdate;
+import com.ecsail.structures.Object_Stats;
 
 import javafx.scene.chart.Axis;
 import javafx.scene.chart.BarChart;
@@ -15,7 +21,33 @@ import javafx.scene.chart.XYChart.Data;
 import javafx.scene.chart.XYChart.Series;
 
 public class Charts {
+	ArrayList<Object_Stats> stats;
+	
+	public Charts() {
+		stats = new ArrayList<Object_Stats>();
+	}
+	
+	public void reload() {
+		stats.clear();
+	}
 
+	static public void updateStats() {
+			int statId = 0;
+			int selectedYear = 2000;
+			Object_Stats stats;
+			int numberOfYears = Integer.parseInt(Paths.getYear()) - selectedYear + 1;
+			for (int i = 0; i < numberOfYears; i++) {
+				stats = new Object_Stats(selectedYear);
+				stats.setStatId(statId);
+				stats.refreshStatsForYear();  // built in function for the object to update itself.
+				SqlDelete.deleteStatistics();
+				SqlInsert.addStatRecord(stats);
+				System.out.println("Adding " + selectedYear);
+				selectedYear++;
+				statId++;
+			}
+	}
+	
 	static public LineChart<String, Number> getLineChart() {
 		int startYear = 2000;
 		int numberOfYears = Integer.parseInt(Paths.getYear()) - startYear + 1;

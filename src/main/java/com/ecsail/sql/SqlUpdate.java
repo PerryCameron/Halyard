@@ -11,6 +11,7 @@ import com.ecsail.main.Paths;
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Money;
 import com.ecsail.structures.Object_Person;
+import com.ecsail.structures.Object_Stats;
 import com.ecsail.structures.Object_WorkCredit;
 
 import javafx.collections.ObservableList;
@@ -594,6 +595,33 @@ public class SqlUpdate {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	public static void updateStatRecord(Object_Stats s)  {
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			stmt.execute(Main.console.setRegexColor("UPDATE stats SET " +
+			"ACTIVE_MEMBERSHIPS=" + s.getActiveMemberships() + "," +
+			"NON_RENEW=" + s.getNonRenewMemberships() + "," +
+			"RETURN_MEMBERS=" + s.getReturnMemberships() + "," +
+			"NEW_MEMBERS=" + s.getNewMemberships()+ "," +
+			"SECONDARY_MEMBERS=" + s.getSecondaryMembers() + "," +
+			"DEPENDANTS=" + s.getDependants() + "," +
+			"NUMBER_OF_BOATS=" + s.getNumberOfBoats() + "," +
+			"FAMILY=" + s.getFamily() + "," +
+			"SOCIAL=" + s.getSocial() + "," +
+			"LAKEASSOCIATES=" + s.getLakeAssociates() + "," +
+			"LIFEMEMBERS=" + s.getLifeMembers() + "," +
+			"RACEFELLOWS=" + s.getRaceFellows() + "," +
+			"STUDENT=" + s.getStudent() + "," +
+			"DEPOSITS=" + s.getDeposits() + "," +
+			"INIATION="  + s.getInitiation() + 
+			" WHERE FISCAL_YEAR='" + s.getFiscalYear() + "'"));
+			Main.edits.setMemosEdits(Main.edits.getMemosEdits() + 1);  // update edits tracking
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	

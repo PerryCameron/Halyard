@@ -1,11 +1,12 @@
 package com.ecsail.structures;
 
+
 import com.ecsail.sql.SqlSelect;
 
 public class Object_Stats {
 	
 int statId;
-String fiscalYear;
+int fiscalYear;
 int activeMemberships;
 int nonRenewMemberships;
 int returnMemberships;
@@ -22,7 +23,7 @@ int student;
 double deposits;
 double initiation;
 
-public Object_Stats(int statId, String fiscalYear, int activeMemberships, int nonRenewMemberships,
+public Object_Stats(int statId, int fiscalYear, int activeMemberships, int nonRenewMemberships,
 		int returnMemberships, int newMemberships, int secondaryMembers, int dependants, int numberOfBoats, int family,
 		int social, int lakeAssociates, int lifeMembers, int raceFellows, int student, double deposits,
 		double initiation) {
@@ -46,15 +47,18 @@ public Object_Stats(int statId, String fiscalYear, int activeMemberships, int no
 	this.initiation = initiation;
 }
 
-public Object_Stats(String startYear) {
-	
+public Object_Stats(int fiscalYear) {
+	this.fiscalYear = fiscalYear;
 }
 
-public void refreshStats(String year) {
-	Integer startYear = Integer.parseInt(year);
-	setNonRenewMemberships(SqlSelect.getNumberOfInactiveMembershipsForYear(startYear));
-	setNewMemberships(SqlSelect.getNumberOfNewMembershipsForYear(startYear));
+public void refreshStatsForYear() {
+	setNonRenewMemberships(SqlSelect.getNumberOfInactiveMembershipsForYear(this.fiscalYear));
+	setNewMemberships(SqlSelect.getNumberOfNewMembershipsForYear(this.fiscalYear));
+	setActiveMemberships(SqlSelect.getNumberOfActiveMembershipsForYear(this.fiscalYear));
+	setReturnMemberships(SqlSelect.getNumberOfReturningMembershipsForYear(this.fiscalYear));
 }
+
+
 
 public int getStatId() {
 	return statId;
@@ -64,11 +68,11 @@ public void setStatId(int statId) {
 	this.statId = statId;
 }
 
-public String getFiscalYear() {
+public int getFiscalYear() {
 	return fiscalYear;
 }
 
-public void setFiscalYear(String fiscalYear) {
+public void setFiscalYear(int fiscalYear) {
 	this.fiscalYear = fiscalYear;
 }
 

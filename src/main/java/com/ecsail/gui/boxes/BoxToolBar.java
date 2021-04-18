@@ -28,14 +28,17 @@ public class BoxToolBar extends VBox {
 		Menu menu3 = new Menu("Membership");
 		Menu menu4 = new Menu("Reports");
 		Menu menu5 = new Menu("About");
-		Menu menu6 = new Menu("Directory");
+		//Menu menu6 = new Menu("Directory");
 		
 		Menu m1_1 = new Menu("Export");
 		MenuItem m1_1_1 = new MenuItem("Create SQL Script");
 		MenuItem m1_2 = new MenuItem("Console");
+		MenuItem m1_3 = new MenuItem("Update Statistics");
+		
 		MenuItem m3_1 = new MenuItem("New Membership");
 		MenuItem m3_2 = new MenuItem("New Year Generator");
 		MenuItem m3_4 = new MenuItem("Fees");
+		
 		
 		Menu m3_3 = new Menu("List");		
 		MenuItem m3_3_1 = new MenuItem("Active Membership");
@@ -54,13 +57,13 @@ public class BoxToolBar extends VBox {
 		MenuItem m4_1_6 = new MenuItem("Tab Stub");
 		MenuItem m4_1_7 = new MenuItem("Create membership id's");
 		MenuItem m4_1_8 = new MenuItem("Renewal Forms");
-		MenuItem m4_1_9 = new MenuItem("Create Envelopes");
-		
-		MenuItem m6_1 = new MenuItem("Create Membership Pages");
+		MenuItem m4_1_9 = new MenuItem("Create Envelopes");	
+		MenuItem m4_1_10 = new MenuItem("Create Directory");
 
         m3_3_6.setOnAction((event) -> Launcher.openBoardTab());
         m3_3_3.setOnAction((event) -> Launcher.openPeopleTab());
         m1_1_1.setOnAction((event) -> SqlScriptMaker.createSql());
+        m1_3.setOnAction((event) -> Charts.updateStats());
 		m4_1_3.setOnAction((event) -> Launcher.openTabBatchedPaidDues());
 		m4_1_4.setOnAction((event) -> Xls_email_list.createSpreadSheet());
 		m4_1_5.setOnAction((event) -> new Dialogue_Stub());
@@ -88,16 +91,16 @@ public class BoxToolBar extends VBox {
                 newWindow.show();
             });
         
-        m6_1.setOnAction((event) -> new PDF_Directory("2021"));
+        m4_1_10.setOnAction((event) -> new PDF_Directory("2021"));
         
         m1_1.getItems().addAll(m1_1_1);
-        m4_1.getItems().addAll(m4_1_1,m4_1_2,m4_1_3,m4_1_4,m4_1_5,m4_1_6,m4_1_7,m4_1_8,m4_1_9);
+        m4_1.getItems().addAll(m4_1_1,m4_1_2,m4_1_3,m4_1_4,m4_1_5,m4_1_6,m4_1_7,m4_1_8,m4_1_9,m4_1_10);
         m3_3.getItems().addAll(m3_3_1,m3_3_2,m3_3_3,m3_3_4,m3_3_5,m3_3_6);  // add list items
-        menu1.getItems().addAll(m1_1,m1_2);
+        menu1.getItems().addAll(m1_1,m1_2,m1_3);
         menu3.getItems().addAll(m3_1,m3_2,m3_3,m3_4);
         menu4.getItems().add(m4_1);
-        menu6.getItems().add(m6_1);
-        menuBar.getMenus().addAll(menu1,menu2,menu3,menu4,menu5,menu6);
+
+        menuBar.getMenus().addAll(menu1,menu2,menu3,menu4,menu5);
 
         //toolBar.setAlignment(Pos.CENTER_LEFT);
 		//toolBar.getChildren().addAll(searchField,membershipList,peopleList,boatList,reports,console,addNewMembership);

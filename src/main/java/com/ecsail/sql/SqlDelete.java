@@ -18,6 +18,20 @@ import com.ecsail.structures.Object_Phone;
 
 public class SqlDelete {
 
+	public static boolean deleteStatistics() {
+	    boolean noError = false;
+    	Statement stmt;
+		try {
+			stmt = ConnectDatabase.connection.createStatement();
+			stmt.execute(Main.console.setRegexColor("delete from stats"));
+			noError = true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    return noError;
+	}
+	
 	public static boolean deletePerson(Object_Person p) {
 	    boolean noError = false;
 	    	Statement stmt;
