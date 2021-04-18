@@ -1,9 +1,9 @@
 package com.ecsail.gui.dialogues;
 
 import java.util.Collections;
+import java.util.Comparator;
 
 import com.ecsail.main.Paths;
-import com.ecsail.main.SortByMembershipId;
 import com.ecsail.sql.Sql_SelectMembership;
 import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.SqlInsert;
@@ -288,7 +288,7 @@ public class Dialogue_NewYearGenerator extends Stage {
 	private void createNewNumbers() {
 		int count = 1;
 		int mid = SqlSelect.getCount("membership_id", "mid") + 1;
-		Collections.sort(memberships, new SortByMembershipId());
+		Collections.sort(memberships, Comparator.comparing(Object_MembershipList::getMembershipId));
 		for (Object_MembershipList ml : memberships) {
 			if(!SqlExists.memberShipIdExists(ml.getMsid(), selectedYear)) {
 				//System.out.println("Membership " + ml.getMsid() + " exists, Creating new");
@@ -303,7 +303,7 @@ public class Dialogue_NewYearGenerator extends Stage {
 	
 	private void createOldNumbers() {
 		int mid = SqlSelect.getCount("membership_id", "mid") + 1;
-		Collections.sort(memberships, new SortByMembershipId());
+		Collections.sort(memberships, Comparator.comparing(Object_MembershipList::getMembershipId));
 		for (Object_MembershipList ml : memberships) {
 			if (!SqlExists.memberShipIdExists(ml.getMsid(), selectedYear)) {
 				SqlInsert.addMembershipId(

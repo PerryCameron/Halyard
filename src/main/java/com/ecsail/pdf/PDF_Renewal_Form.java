@@ -6,11 +6,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import com.ecsail.enums.KeelType;
 import com.ecsail.main.Paths;
-import com.ecsail.main.SortByMembershipId2;
 import com.ecsail.sql.Sql_SelectMembership;
 import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.SqlSelect;
@@ -90,7 +90,7 @@ public class PDF_Renewal_Form {
 		filenm = Paths.RENEWALFORM + "/" + year + "/" + year + "_Renewal_Forms.pdf";
 		Document document = createDocument(filenm);
 		ids = SqlSelect.getMembershipIds(year);
-		Collections.sort(ids, new SortByMembershipId2());
+		Collections.sort(ids, Comparator.comparing(Object_MembershipId::getMembership_id));
 		for (Object_MembershipId id : ids) {
 			current_membership_id = id.getMembership_id();
 			System.out.println("printing for membership " + id.getMembership_id());
@@ -105,7 +105,7 @@ public class PDF_Renewal_Form {
 	
 	private void makeManyMembershipsIntoManyPDF() throws IOException {
 		ids = SqlSelect.getMembershipIds(year);
-		Collections.sort(ids, new SortByMembershipId2());
+		Collections.sort(ids, Comparator.comparing(Object_MembershipId::getMembership_id));
 		for (Object_MembershipId id : ids) {
 			current_membership_id = id.getMembership_id();
 			Document document = makeRenewPdf();

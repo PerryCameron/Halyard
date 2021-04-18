@@ -1,6 +1,8 @@
 package com.ecsail.gui.tabs;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 
 import com.ecsail.excel.Xls_roster;
 import com.ecsail.gui.tabs.roster.TabKayakLists;
@@ -72,16 +74,15 @@ public class TabRoster extends Tab {
 		TitledPane titledPane = new TitledPane();
 		TabPane tabPane = new TabPane();
 		Label records = new Label();
+		
 		CheckBox c1 = new CheckBox("Membership Id");
 		CheckBox c2 = new CheckBox("Last Name");
 		CheckBox c3 = new CheckBox("First Name");
 		CheckBox c4 = new CheckBox("Join Date");
-
 		CheckBox c5 = new CheckBox("Address");
 		CheckBox c6 = new CheckBox("City");
 		CheckBox c7 = new CheckBox("State");
 		CheckBox c8 = new CheckBox("Zip");
-
 		CheckBox c9 = new CheckBox("Membership Type");
 		CheckBox c10 = new CheckBox("Slip");
 		CheckBox c11 = new CheckBox("Phone");
@@ -110,8 +111,6 @@ public class TabRoster extends Tab {
 		hboxExport.setSpacing(10);
 		hboxExportFrame.setPadding(new Insets(2, 2, 2, 2));
 		hboxExport.setPadding(new Insets(5, 5, 5, 5));
-		// vboxCheckBox1.setSpacing(2);
-		// vboxCheckBox2.setSpacing(2);
 		vboxCheckBox4.setSpacing(5);
 		controlsHbox.setSpacing(10);
 		vboxRadioButton1.setSpacing(3);
@@ -272,8 +271,10 @@ public class TabRoster extends Tab {
 					setListType("active");
 					rosters.clear();
 					rosters.addAll(Sql_SelectMembership.getRoster(selectedYear, true));
+					
 					records.setText(rosters.size() + " Records");
-					rosterTableView.sort();
+					//rosterTableView.sort();
+					Collections.sort(rosters, Comparator.comparing(Object_MembershipList::getMembershipId));
 				}
 			}
 		});
@@ -288,7 +289,8 @@ public class TabRoster extends Tab {
 					rosters.clear();
 					rosters.addAll(Sql_SelectMembership.getRosterOfAll(selectedYear));
 					records.setText(rosters.size() + " Records");
-					rosterTableView.sort();
+					//rosterTableView.sort();
+					Collections.sort(rosters, Comparator.comparing(Object_MembershipList::getMembershipId));
 				} 
 			}
 		});
@@ -302,9 +304,8 @@ public class TabRoster extends Tab {
 					rosters.clear();
 					rosters.addAll(Sql_SelectMembership.getRoster(selectedYear, false));
 					records.setText(rosters.size() + " Records");
-					rosterTableView.sort();
-				} else {
-					// ...
+					//rosterTableView.sort();
+					Collections.sort(rosters, Comparator.comparing(Object_MembershipList::getMembershipId));
 				}
 			}
 		});
@@ -318,9 +319,8 @@ public class TabRoster extends Tab {
 					rosters.clear();
 					rosters.addAll(Sql_SelectMembership.getNewMemberRoster(selectedYear));
 					records.setText(rosters.size() + " Records");
-					rosterTableView.sort();
-				} else {
-					// ...
+					//rosterTableView.sort();
+					Collections.sort(rosters, Comparator.comparing(Object_MembershipList::getMembershipId));
 				}
 			}
 		});
@@ -334,9 +334,8 @@ public class TabRoster extends Tab {
 					rosters.clear();
 					rosters.addAll(Sql_SelectMembership.getFullNewMemberRoster(selectedYear));
 					records.setText(rosters.size() + " Records");
-					rosterTableView.sort();
-				} else {
-					// ...
+					//rosterTableView.sort();
+					Collections.sort(rosters, Comparator.comparing(Object_MembershipList::getMembershipId));
 				}
 			}
 		});
@@ -350,9 +349,8 @@ public class TabRoster extends Tab {
 					rosters.clear();
 					rosters.addAll(Sql_SelectMembership.getWaitListRoster("slipwait"));
 					records.setText(rosters.size() + " Records");
-					rosterTableView.sort();
-				} else {
-					// ...
+					//rosterTableView.sort();
+					Collections.sort(rosters, Comparator.comparing(Object_MembershipList::getMembershipId));
 				}
 			}
 		});
@@ -366,9 +364,8 @@ public class TabRoster extends Tab {
 					rosters.clear();
 					rosters.addAll(Sql_SelectMembership.getWaitListRoster("wantrelease"));
 					records.setText(rosters.size() + " Records");
-					rosterTableView.sort();
-				} else {
-					// ...
+					//rosterTableView.sort();
+					Collections.sort(rosters, Comparator.comparing(Object_MembershipList::getMembershipId));
 				}
 			}
 		});
@@ -382,9 +379,8 @@ public class TabRoster extends Tab {
 					rosters.clear();
 					rosters.addAll(Sql_SelectMembership.getRosterOfSlipOwners(Paths.getYear()));
 					records.setText(rosters.size() + " Records");
-					rosterTableView.sort();
-				} else {
-					// ...
+					//rosterTableView.sort();
+					Collections.sort(rosters, Comparator.comparing(Object_MembershipList::getMembershipId));
 				}
 			}
 		});
@@ -398,9 +394,8 @@ public class TabRoster extends Tab {
 					rosters.clear();
 					rosters.addAll(Sql_SelectMembership.getWaitListRoster("wantsublease"));
 					records.setText(rosters.size() + " Records");
-					rosterTableView.sort();
-				} else {
-					// ...
+					//rosterTableView.sort();
+					Collections.sort(rosters, Comparator.comparing(Object_MembershipList::getMembershipId));
 				}
 			}
 		});
@@ -414,9 +409,8 @@ public class TabRoster extends Tab {
 					rosters.clear();
 					rosters.addAll(Sql_SelectMembership.getWaitListRoster("wantslipchange"));
 					records.setText(rosters.size() + " Records");
-					rosterTableView.sort();
-				} else {
-					// ...
+					//rosterTableView.sort();
+					Collections.sort(rosters, Comparator.comparing(Object_MembershipList::getMembershipId));
 				}
 			}
 		});
@@ -430,9 +424,8 @@ public class TabRoster extends Tab {
 					rosters.clear();
 					rosters.addAll(Sql_SelectMembership.getRosterOfSubleasedSlips());
 					records.setText(rosters.size() + " Records");
-					rosterTableView.sort();
-				} else {
-					// ...
+					//rosterTableView.sort();
+					Collections.sort(rosters, Comparator.comparing(Object_MembershipList::getMembershipId));
 				}
 			}
 		});
@@ -446,9 +439,8 @@ public class TabRoster extends Tab {
 					rosters.clear();
 					rosters.addAll(Sql_SelectMembership.getRosterOfKayakShedOwners(Paths.getYear()));
 					records.setText(rosters.size() + " Records");
-					rosterTableView.sort();
-				} else {
-					// ...
+					//rosterTableView.sort();
+					Collections.sort(rosters, Comparator.comparing(Object_MembershipList::getMembershipId));
 				}
 			}
 		});
@@ -462,10 +454,8 @@ public class TabRoster extends Tab {
 					rosters.clear();
 					rosters.addAll(Sql_SelectMembership.getRosterOfKayakRackOwners(Paths.getYear()));
 					records.setText(rosters.size() + " Records");
-					rosterTableView.sort();
-					System.out.println("Roster of those with a kayak rack");
-				} else {
-					// ...
+					//rosterTableView.sort();
+					Collections.sort(rosters, Comparator.comparing(Object_MembershipList::getMembershipId));
 				}
 			}
 		});
@@ -479,10 +469,8 @@ public class TabRoster extends Tab {
 					rosters.clear();
 					rosters.addAll(Sql_SelectMembership.getRosterOfAllActiveMembers(Paths.getYear()));
 					records.setText(rosters.size() + " Records");
-					rosterTableView.sort();
-					System.out.println("Roster of those with a kayak rack");
-				} else {
-					// ...
+					//rosterTableView.sort();
+					Collections.sort(rosters, Comparator.comparing(Object_MembershipList::getMembershipId));
 				}
 			}
 		});
@@ -529,6 +517,7 @@ public class TabRoster extends Tab {
 			rosters.addAll(Sql_SelectMembership.getFullNewMemberRoster(selectedYear));
 		if (rb.getRadioAll().isSelected())
 			rosters.addAll(Sql_SelectMembership.getRosterOfAll(selectedYear));
+		Collections.sort(rosters, Comparator.comparing(Object_MembershipList::getMembershipId));
 	}
 
 	//// Class Methods ////

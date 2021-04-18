@@ -1,5 +1,7 @@
 package com.ecsail.structures;
 
+import com.ecsail.sql.SqlSelect;
+
 public class Object_Stats {
 	
 int statId;
@@ -42,6 +44,16 @@ public Object_Stats(int statId, String fiscalYear, int activeMemberships, int no
 	this.student = student;
 	this.deposits = deposits;
 	this.initiation = initiation;
+}
+
+public Object_Stats(String startYear) {
+	
+}
+
+public void refreshStats(String year) {
+	Integer startYear = Integer.parseInt(year);
+	setNonRenewMemberships(SqlSelect.getNumberOfInactiveMembershipsForYear(startYear));
+	setNewMemberships(SqlSelect.getNumberOfNewMembershipsForYear(startYear));
 }
 
 public int getStatId() {

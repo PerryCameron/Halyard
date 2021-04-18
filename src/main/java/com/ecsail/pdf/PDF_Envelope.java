@@ -6,10 +6,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import com.ecsail.main.Paths;
-import com.ecsail.main.SortByMembershipId2;
 import com.ecsail.sql.Sql_SelectMembership;
 import com.ecsail.sql.SqlSelect;
 import com.ecsail.structures.Object_MembershipId;
@@ -108,7 +108,8 @@ public class PDF_Envelope {
 		doc.add(createAddress());
 		} else {
 			ids = SqlSelect.getMembershipIds(year);
-			Collections.sort(ids, new SortByMembershipId2());
+			Collections.sort(ids, Comparator.comparing(Object_MembershipId::getMembership_id));
+
 			for(Object_MembershipId id: ids) {
 				current_membership_id = id.getMembership_id();
 				ms_id = SqlSelect.getMsidFromMembershipID(Integer.parseInt(current_membership_id));
@@ -142,7 +143,7 @@ public class PDF_Envelope {
 		doc.add(createAddress());
 		} else {
 			ids = SqlSelect.getMembershipIds(year);
-			Collections.sort(ids, new SortByMembershipId2());
+			Collections.sort(ids, Comparator.comparing(Object_MembershipId::getMembership_id));
 			for(Object_MembershipId id: ids) {
 				current_membership_id = id.getMembership_id();
 				ms_id = SqlSelect.getMsidFromMembershipID(Integer.parseInt(current_membership_id));
