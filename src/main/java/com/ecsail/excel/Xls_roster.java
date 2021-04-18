@@ -15,8 +15,8 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import com.ecsail.main.Main;
 import com.ecsail.main.Paths;
+import com.ecsail.main.SaveFileChooser;
 import com.ecsail.sql.SqlSelect;
 import com.ecsail.structures.Object_Email;
 import com.ecsail.structures.Object_MembershipList;
@@ -24,8 +24,6 @@ import com.ecsail.structures.Object_Phone;
 import com.ecsail.structures.Object_RosterSelect;
 
 import javafx.collections.ObservableList;
-import javafx.stage.FileChooser;
-import javafx.stage.FileChooser.ExtensionFilter;
 
 public class Xls_roster {
 	private Object_RosterSelect printChoices;
@@ -37,23 +35,23 @@ public class Xls_roster {
 		//String[] columnHeads = {"Membership ID", "Last Name", "First Name", "Join Date", "Street Address","City","State","Zip"};
 		
         // Create a Workbook
-        Workbook workbook = new XSSFWorkbook(); // new HSSFWorkbook() for generating `.xls` file
+        Workbook workBook = new XSSFWorkbook(); // new HSSFWorkbook() for generating `.xls` file
 
         /* CreationHelper helps us create instances of various things like DataFormat, 
            Hyperlink, RichTextString etc, in a format (HSSF, XSSF) independent way */
-       // CreationHelper createHelper = workbook.getCreationHelper();
+        // CreationHelper createHelper = workbook.getCreationHelper();
 
         // Create a Sheet
-        Sheet sheet = workbook.createSheet(printChoices.getYear() + " Roster");
+        Sheet sheet = workBook.createSheet(printChoices.getYear() + " Roster");
 
         // Create a Font for styling header cells
-        Font headerFont = workbook.createFont();
+        Font headerFont = workBook.createFont();
         headerFont.setBold(true);
         headerFont.setFontHeightInPoints((short) 12);
         headerFont.setColor(IndexedColors.BLACK.getIndex());
         
         // Create a CellStyle with the font
-        CellStyle headerCellStyle = workbook.createCellStyle();
+        CellStyle headerCellStyle = workBook.createCellStyle();
         headerCellStyle.setFont(headerFont);
         
         // Create a Row
@@ -72,21 +70,54 @@ public class Xls_roster {
             createRow(sheet,rowNum,m);
             rowNum++;
         }
-        
-        // makes the columns nice widths for the data
-        for(int i = 0; i < headers.size(); i++) {
-            sheet.autoSizeColumn(i);
-        }
-        
-        FileOutputStream fileOut = null;
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Save");
-        fileChooser.getExtensionFilters().addAll(new ExtensionFilter("Excel Files", "*.xlsx"));
-        fileChooser.setInitialDirectory(new File(Paths.ROSTERS + "/"));
-        fileChooser.setInitialFileName(getFileName());
-        File file = fileChooser.showSaveDialog(Main.getPrimaryStage());
-        
-        
+
+		// makes the columns nice widths for the data
+		for (int i = 0; i < headers.size(); i++) {
+			sheet.autoSizeColumn(i);
+		}
+
+		File file = new SaveFileChooser(Paths.ROSTERS + "/", getFileName(), "Excel Files", "*.xlsx").getFile();
+
+		if (file != null) {
+			FileOutputStream fileOut = getFileOutPutStream(file); 
+			writeToWorkbook(workBook, fileOut);
+			closeFileStream(fileOut);
+			closeWorkBook(workBook);
+		}
+
+	}
+	
+	private void closeWorkBook(Workbook workBook) {
+		try {
+			workBook.close();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+
+	//////////////////////////////  CLASS METHODS /////////////////////////////
+	
+	private void closeFileStream(FileOutputStream fileOut) {
+		try {
+			fileOut.close();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+	
+	private void writeToWorkbook(Workbook workbook, FileOutputStream fileOut) {
+		try {
+			workbook.write(fileOut);
+		} catch (IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+	}
+	
+	private FileOutputStream getFileOutPutStream(File file) {
+		FileOutputStream fileOut = null;
 		try {
 			fileOut = new FileOutputStream(file);
 			System.out.println("Creating " + file);
@@ -94,29 +125,8 @@ public class Xls_roster {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-        try {
-			workbook.write(fileOut);
-		} catch (IOException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		}
-        try {
-			fileOut.close();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-        
-        try {
-			workbook.close();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
+		return fileOut;
 	}
-	
-	//////////////////////////////  CLASS METHODS /////////////////////////////
 	
 	private String getFileName() {
 		Paths.checkPath(Paths.ROSTERS);
@@ -131,9 +141,14 @@ public class Xls_roster {
 			fileName += " Slip_Waiting_List";
 		} else if (printChoices.isSlip()) {
 			fileName += " Slip_Owners_List";
+		} else if (printChoices.isActiveAndInactive()) {
+			fileName += " Active_And_Inactive";
+		} else if (printChoices.isAll()) {
+			fileName += " ActiveAndInactive";
 		} else {  // is both new and re-returning members
 			fileName += " New Member";
 		}
+		System.out.println("Filename " + fileName + " is selected");
 		return fileName += " Roster.xlsx";
 	}
 	

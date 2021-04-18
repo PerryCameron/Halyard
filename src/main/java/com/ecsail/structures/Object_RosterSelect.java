@@ -4,10 +4,12 @@ public class Object_RosterSelect {  /// class purpose is to allow making of exce
 	private String year;
 	// lists
 	private boolean slipwait;
+	private boolean all;
 	private boolean active;
 	private boolean nonRenew;
 	private boolean newMembers;
 	private boolean newAndReturnd;
+	private boolean activeAndInactive;
 	
 	// elements
 	private boolean membership_id;
@@ -24,16 +26,19 @@ public class Object_RosterSelect {  /// class purpose is to allow making of exce
 	private boolean email;
 	private boolean subleasedto;
 	
-	public Object_RosterSelect(String year, boolean slipwait, boolean active, boolean nonRenew, boolean newMembers, boolean newAndReturnd,
-			boolean membership_id, boolean lastName, boolean firstName, boolean joinDate, boolean streetAddress,
+	public Object_RosterSelect(String year, boolean slipwait, boolean all, boolean active, boolean nonRenew, boolean newMembers, boolean newAndReturnd,
+			boolean activeAndInactive, boolean membership_id, boolean lastName, boolean firstName, boolean joinDate, boolean streetAddress,
 			boolean city, boolean state, boolean zip, boolean memtype, boolean slip, boolean phone, boolean email,
 			boolean subleasedto) {
+		
 		this.year = year;
 		this.slipwait = slipwait;
+		this.all = all;
 		this.active = active;
 		this.nonRenew = nonRenew;
 		this.newMembers = newMembers;
 		this.newAndReturnd = newAndReturnd;
+		this.activeAndInactive = activeAndInactive;
 		this.membership_id = membership_id;
 		this.lastName = lastName;
 		this.firstName = firstName;
@@ -46,8 +51,7 @@ public class Object_RosterSelect {  /// class purpose is to allow making of exce
 		this.slip = slip;
 		this.phone = phone;
 		this.email = email;
-		this.subleasedto = subleasedto;
-		
+		this.subleasedto = subleasedto;	
 	}
 
 	public String getYear() {
@@ -56,6 +60,22 @@ public class Object_RosterSelect {  /// class purpose is to allow making of exce
 
 	public void setYear(String year) {
 		this.year = year;
+	}
+
+	public boolean isSlipwait() {
+		return slipwait;
+	}
+
+	public void setSlipwait(boolean slipwait) {
+		this.slipwait = slipwait;
+	}
+
+	public boolean isAll() {
+		return all;
+	}
+
+	public void setAll(boolean all) {
+		this.all = all;
 	}
 
 	public boolean isActive() {
@@ -88,6 +108,14 @@ public class Object_RosterSelect {  /// class purpose is to allow making of exce
 
 	public void setNewAndReturnd(boolean newAndReturnd) {
 		this.newAndReturnd = newAndReturnd;
+	}
+
+	public boolean isActiveAndInactive() {
+		return activeAndInactive;
+	}
+
+	public void setActiveAndInactive(boolean activeAndInactive) {
+		this.activeAndInactive = activeAndInactive;
 	}
 
 	public boolean isMembership_id() {
@@ -192,14 +220,6 @@ public class Object_RosterSelect {  /// class purpose is to allow making of exce
 
 	public void setSubleasedto(boolean subleasedto) {
 		this.subleasedto = subleasedto;
-	}
-
-	public boolean isSlipwait() {
-		return slipwait;
-	}
-
-	public void setSlipwait(boolean slipwait) {
-		this.slipwait = slipwait;
 	}
 
 }

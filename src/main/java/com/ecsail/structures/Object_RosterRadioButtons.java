@@ -9,7 +9,7 @@ public class Object_RosterRadioButtons {
     RadioButton radioNonRenew = new RadioButton("Non-Renew"); 
     RadioButton radioNewMembers = new RadioButton("New Members");
     RadioButton radioNewReturnMembers = new RadioButton("New/Return Members");
-    RadioButton radioAllActiveMembers = new RadioButton("All Active Members");
+    RadioButton radioAllActiveMembers = new RadioButton("Primary/Secondary");
     
     RadioButton radioSlipWaitList = new RadioButton("Slip Waitlist");
     RadioButton radioSlip = new RadioButton("Slip Owners");
@@ -197,5 +197,15 @@ public class Object_RosterRadioButtons {
 	public void setRadioAllActiveMembers(RadioButton radioAllActiveMembers) {
 		this.radioAllActiveMembers = radioAllActiveMembers;
 	}
+
+	@Override
+	public String toString() {
+		return "Object_RosterRadioButtons [radioAll=" + radioAll + ", radioActive=" + radioActive + ", radioNonRenew="
+				+ radioNonRenew + ", radioNewMembers=" + radioNewMembers + ", radioNewReturnMembers="
+				+ radioNewReturnMembers + ", radioAllActiveMembers=" + radioAllActiveMembers + ", radioSlipWaitList="
+				+ radioSlipWaitList + "]";
+	}
+	
+	
 	
 }

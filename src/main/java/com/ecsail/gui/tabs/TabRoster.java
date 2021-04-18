@@ -51,7 +51,7 @@ public class TabRoster extends Tab {
 		this.selectedYear = sy;
 		this.setText("Roster");
 		this.rb = new Object_RosterRadioButtons();
-		this.printChoices = new Object_RosterSelect(sy, false, true, false, false, false, true, true, true, false,
+		this.printChoices = new Object_RosterSelect(sy, false, false, true, false, false, false, false, true, true, true, false,
 				false, false, false, false, false, false, false, false, false);
 		System.out.println("size=" + rosters.size());
 
@@ -174,6 +174,7 @@ public class TabRoster extends Tab {
 				.addAll(Arrays.asList(Col1, Col2, Col3, Col4, Col5, Col6, Col7, Col8, Col9, Col10, Col11));
 
 		final Spinner<Integer> yearSpinner = new Spinner<Integer>();
+		
 		SpinnerValueFactory<Integer> wetSlipValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1970,
 				Integer.parseInt(selectedYear), Integer.parseInt(selectedYear));
 		yearSpinner.setValueFactory(wetSlipValueFactory);
@@ -182,17 +183,8 @@ public class TabRoster extends Tab {
 		yearSpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
 			if (!newValue) {
 				printChoices.setYear(yearSpinner.getEditor().getText());
-				selectedYear = yearSpinner.getEditor().getText(); /// kept this for clarity, could have used
-																	/// printChoices.getYear()
-				rosters.clear();
-				if (rb.getRadioActive().isSelected())
-					rosters.addAll(Sql_SelectMembership.getRoster(selectedYear, true));
-				if (rb.getRadioNonRenew().isSelected())
-					rosters.addAll(Sql_SelectMembership.getRoster(selectedYear, false));
-				if (rb.getRadioNewMembers().isSelected())
-					rosters.addAll(Sql_SelectMembership.getNewMemberRoster(selectedYear));
-				if (rb.getRadioNewReturnMembers().isSelected())
-					rosters.addAll(Sql_SelectMembership.getFullNewMemberRoster(selectedYear));
+				selectedYear = yearSpinner.getEditor().getText(); /// kept this for clarity, could have used printChoices.getYear()
+				changeSelectedRoster();
 				titledPane.setText("Roster " + selectedYear);
 				records.setText(rosters.size() + " Records");
 				rosterTableView.sort();
@@ -291,14 +283,13 @@ public class TabRoster extends Tab {
 			public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected,
 					Boolean isNowSelected) {
 				if (isNowSelected) {
+					System.out.println("you selected all");
 					setListType("all");
 					rosters.clear();
 					rosters.addAll(Sql_SelectMembership.getRosterOfAll(selectedYear));
 					records.setText(rosters.size() + " Records");
 					rosterTableView.sort();
-				} else {
-					// ...
-				}
+				} 
 			}
 		});
 
@@ -508,19 +499,16 @@ public class TabRoster extends Tab {
 		});
 
 		//////////////////// SET CONTENT //////////////////////
+		
 		vboxCheckBox1.getChildren().addAll(c1, c2, c3, c4);
 		vboxCheckBox2.getChildren().addAll(c5, c6, c7, c8);
 		vboxCheckBox3.getChildren().addAll(c9, c10, c11, c12);
-		// vboxCheckBox4.getChildren().addAll(c13); /// this adds the subleased to check
-		// box but makes it too wide
 		vboxCheckBox5.getChildren().addAll(buttonXLS);
 		hboxExportFrame.getChildren().add(hboxExport);
 		hboxExport.getChildren().addAll(vboxCheckBox1, vboxCheckBox2, vboxCheckBox3, vboxCheckBox4, vboxCheckBox5);
-		// vboxRadioButton1.getChildren().addAll(rb.getRadioActive(),rb.,r3,r4);
-		// vboxRadioButton2.getChildren().addAll(r5,r6);
 		tabPane.getTabs().addAll(new TabStandard(rb), new TabSlipOptions(rb), new TabKayakLists(rb));
 		vboxSpinnerLabel.getChildren().addAll(yearSpinner, records);
-		// vboxRadioButton1,vboxRadioButton2
+
 		controlsHbox.getChildren().addAll(vboxSpinnerLabel, tabPane, hboxExportFrame);
 		titledPane.setContent(controlsHbox);
 		vbox1.getChildren().add(vbox2);
@@ -528,18 +516,43 @@ public class TabRoster extends Tab {
 		setContent(vbox1);
 	}
 
-	//// Class Methods ////
+	/// this only changes when the year spinner changes
+	private void changeSelectedRoster() {
+		rosters.clear();
+		if (rb.getRadioActive().isSelected())
+			rosters.addAll(Sql_SelectMembership.getRoster(selectedYear, true));
+		if (rb.getRadioNonRenew().isSelected())
+			rosters.addAll(Sql_SelectMembership.getRoster(selectedYear, false));
+		if (rb.getRadioNewMembers().isSelected())
+			rosters.addAll(Sql_SelectMembership.getNewMemberRoster(selectedYear));
+		if (rb.getRadioNewReturnMembers().isSelected())
+			rosters.addAll(Sql_SelectMembership.getFullNewMemberRoster(selectedYear));
+		if (rb.getRadioAll().isSelected())
+			rosters.addAll(Sql_SelectMembership.getRosterOfAll(selectedYear));
+	}
 
+	//// Class Methods ////
 	private void setListType(String type) {
 		switch (type) {
+		case "all":
+			printChoices.setAll(true);
+			printChoices.setActive(false);
+			printChoices.setNonRenew(false);
+			printChoices.setNewMembers(false);
+			printChoices.setNewAndReturnd(false);
+			printChoices.setSlipwait(false);
+			System.out.println("All was chosen");
 		case "active":
+			printChoices.setAll(false);
 			printChoices.setActive(true);
 			printChoices.setNonRenew(false);
 			printChoices.setNewMembers(false);
 			printChoices.setNewAndReturnd(false);
 			printChoices.setSlipwait(false);
+			System.out.println("Active was chosen");
 			break;
 		case "non-renew":
+			printChoices.setAll(false);
 			printChoices.setActive(false);
 			printChoices.setNonRenew(true);
 			printChoices.setNewMembers(false);
@@ -547,6 +560,7 @@ public class TabRoster extends Tab {
 			printChoices.setSlipwait(false);
 			break;
 		case "new-members":
+			printChoices.setAll(false);
 			printChoices.setActive(false);
 			printChoices.setNonRenew(false);
 			printChoices.setNewMembers(true);
@@ -554,6 +568,7 @@ public class TabRoster extends Tab {
 			printChoices.setSlipwait(false);
 			break;
 		case "new-and-return":
+			printChoices.setAll(false);
 			printChoices.setActive(false);
 			printChoices.setNonRenew(false);
 			printChoices.setNewMembers(false);
@@ -561,6 +576,7 @@ public class TabRoster extends Tab {
 			printChoices.setSlipwait(false);
 			break;
 		case "slip-waitlist":
+			printChoices.setAll(false);
 			printChoices.setActive(false);
 			printChoices.setNonRenew(false);
 			printChoices.setNewMembers(false);
