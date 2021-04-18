@@ -14,6 +14,7 @@ public class Paths {
 	public static final String HOSTS = System.getProperty("user.home") + "/.ecsc/hosts.ecs";
 	public static final String SCRIPTS = System.getProperty("user.home") + "/.ecsc/scripts";
 	public static final String TUPLECOUNTS = System.getProperty("user.home") + "/.ecsc/tuples.ecs";
+	public static final String SLIPCHART = System.getProperty("user.home") + "/Documents/ECSC/SlipCharts";
 	// "C:\\Users\\pcame\\Documents\\email.xlsx"
 	
 	public static void checkPath(String path) {
@@ -27,6 +28,10 @@ public class Paths {
 	
 	public static String getYear() {
 		return new SimpleDateFormat("yyyy").format(new Date());
+	}
+	
+	public static String getDate() {
+		return new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 	}
 	
 }
