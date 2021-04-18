@@ -33,6 +33,7 @@ import com.ecsail.structures.Object_Payment;
 import com.ecsail.structures.Object_Person;
 import com.ecsail.structures.Object_Phone;
 import com.ecsail.structures.Object_Slip;
+import com.ecsail.structures.Object_Stats;
 import com.ecsail.structures.Object_Temp;
 import com.ecsail.structures.Object_WaitList;
 import com.ecsail.structures.Object_WorkCredit;
@@ -1094,6 +1095,40 @@ public class SqlSelect {
 			e.printStackTrace();
 		}
 		return theseIds;
+	}
+	
+	public static ArrayList<Object_Stats> getStatistics() {
+		ArrayList<Object_Stats> stats = new ArrayList<Object_Stats>();
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+		    ResultSet rs;
+			rs = stmt.executeQuery(Main.console.setRegexColor("select * from stats"));
+		while (rs.next()) {
+			stats.add(new Object_Stats(
+					rs.getInt("STAT_ID"),
+					rs.getInt("FISCAL_YEAR"),
+					rs.getInt("ACTIVE_MEMBERSHIPS"),
+					rs.getInt("NON_RENEW"),
+					rs.getInt("RETURN_MEMBERS"),
+					rs.getInt("NEW_MEMBERS"),
+					rs.getInt("SECONDARY_MEMBERS"),
+					rs.getInt("DEPENDANTS"),
+					rs.getInt("NUMBER_OF_BOATS"),
+					rs.getInt("FAMILY"),
+					rs.getInt("SOCIAL"),
+					rs.getInt("LAKEASSOCIATES"),
+					rs.getInt("LIFEMEMBERS"),
+					rs.getInt("RACEFELLOWS"),
+					rs.getInt("STUDENT"),
+					rs.getDouble("DEPOSITS"),
+					rs.getDouble("INIATION")));
+		}
+		stmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return stats;
 	}
 	
 	public static Object_Person getPersonByPid(int pid) {  

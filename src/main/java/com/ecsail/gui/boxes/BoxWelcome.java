@@ -10,6 +10,7 @@ import javafx.scene.layout.VBox;
 public class BoxWelcome extends HBox {
 	
 	public BoxWelcome() {
+		Charts.populateCharts();
 		int width = 400;
 		int height = 70;
 		VBox vboxLeft = new VBox();

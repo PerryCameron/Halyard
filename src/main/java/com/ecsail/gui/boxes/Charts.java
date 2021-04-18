@@ -5,10 +5,8 @@ import java.util.Arrays;
 
 import com.ecsail.main.Paths;
 import com.ecsail.sql.SqlDelete;
-import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.SqlInsert;
 import com.ecsail.sql.SqlSelect;
-import com.ecsail.sql.SqlUpdate;
 import com.ecsail.structures.Object_Stats;
 
 import javafx.scene.chart.Axis;
@@ -21,26 +19,27 @@ import javafx.scene.chart.XYChart.Data;
 import javafx.scene.chart.XYChart.Series;
 
 public class Charts {
-	ArrayList<Object_Stats> stats;
+	public static ArrayList<Object_Stats> stats;
 	
-	public Charts() {
-		stats = new ArrayList<Object_Stats>();
+	public static void populateCharts() {
+		stats = SqlSelect.getStatistics();
 	}
 	
-	public void reload() {
+	public static void reload() {
 		stats.clear();
+		stats = SqlSelect.getStatistics();
 	}
 
 	static public void updateStats() {
 			int statId = 0;
 			int selectedYear = 2000;
 			Object_Stats stats;
+			SqlDelete.deleteStatistics();
 			int numberOfYears = Integer.parseInt(Paths.getYear()) - selectedYear + 1;
 			for (int i = 0; i < numberOfYears; i++) {
 				stats = new Object_Stats(selectedYear);
 				stats.setStatId(statId);
 				stats.refreshStatsForYear();  // built in function for the object to update itself.
-				SqlDelete.deleteStatistics();
 				SqlInsert.addStatRecord(stats);
 				System.out.println("Adding " + selectedYear);
 				selectedYear++;
@@ -49,44 +48,26 @@ public class Charts {
 	}
 	
 	static public LineChart<String, Number> getLineChart() {
-		int startYear = 2000;
-		int numberOfYears = Integer.parseInt(Paths.getYear()) - startYear + 1;
         final Axis<String> xAxis = new CategoryAxis();
         final NumberAxis yAxis = new NumberAxis();
-		//xAxis.setLabel("Years");
-		final LineChart<String,Number> lineChart = 
-                new LineChart<String,Number>(xAxis,yAxis);
-		
-		//int activeMembership = SqlSelect.getActiveMembershipCount(Paths.getYear());
+		final LineChart<String,Number> lineChart = new LineChart<String,Number>(xAxis,yAxis);
 		lineChart.setTitle("Non-renewed, New, and Return Memberships");
-		//lineChart.setPrefHeight(200);
-		//XYChart.Series<String,Number> seriesActive = new Series<String, Number>();
 		XYChart.Series<String,Number> seriesNonRenew = new Series<String, Number>();
 		XYChart.Series<String,Number> seriesNewMembers = new Series<String, Number>();
-		////XYChart.Series<String,Number> seriesReturnMembers = new Series<String, Number>();
-		//seriesActive.setName("Active");
+		XYChart.Series<String,Number> seriesReturnMembers = new Series<String, Number>();
 		seriesNonRenew.setName("Non-Renew");
 		seriesNewMembers.setName("New");
-		////seriesReturnMembers.setName("Return");
-        //populating the series with data
-		for (int i = 0; i < numberOfYears; i++) {
-		//int activeMembers = SqlSelect.getNumberOfActiveMembershipsForYear(startYear);
-		int nonRenewMembers = SqlSelect.getNumberOfInactiveMembershipsForYear(startYear);
-		int newMembers = SqlSelect.getNumberOfNewMembershipsForYear(startYear);
-		////int returnMembers = SqlSelect.getNumberOfReturningMembershipsForYear(startYear + "");
-        //seriesActive.getData().add(new Data<String, Number>(startYear + "", activeMembers));
-        seriesNonRenew.getData().add(new Data<String, Number>(startYear + "", nonRenewMembers));
-        seriesNewMembers.getData().add(new Data<String, Number>(startYear + "", newMembers));
-        ////seriesReturnMembers.getData().add(new Data<String, Number>(startYear + "", returnMembers));
-        startYear++;
+		seriesReturnMembers.setName("Return");
+		for (Object_Stats s: stats) {
+        seriesNonRenew.getData().add(new Data<String, Number>(s.getFiscalYear() + "", s.getNonRenewMemberships()));
+        seriesNewMembers.getData().add(new Data<String, Number>(s.getFiscalYear() + "", s.getNewMemberships()));
+        seriesReturnMembers.getData().add(new Data<String, Number>(s.getFiscalYear() + "", s.getReturnMemberships()));
 		}
-        lineChart.getData().addAll(Arrays.asList(seriesNonRenew,seriesNewMembers));
+        lineChart.getData().addAll(Arrays.asList(seriesNonRenew,seriesNewMembers,seriesReturnMembers));
         return lineChart;
 	}
 	
 	static public BarChart<String,Number> getBarChart() {
-		int startYear = 2000;
-		int numberOfYears = Integer.parseInt(Paths.getYear()) - startYear + 1;
 		final CategoryAxis xAxis = new CategoryAxis();
         final NumberAxis yAxis = new NumberAxis();
         final BarChart<String,Number> bc = 
@@ -98,10 +79,8 @@ public class Charts {
         //yAxis.setLabel("Number of Members");
         XYChart.Series<String,Number> series1 = new Series<String,Number>();
         //series1.setName("2003");
-        for (int i = 0; i < numberOfYears; i++) {
-        	int activeMembers = SqlSelect.getNumberOfActiveMembershipsForYear(startYear);
-        series1.getData().add(new Data<String,Number>(startYear + "", activeMembers));
-        startYear++;
+        for (Object_Stats s: stats) {
+        series1.getData().add(new Data<String,Number>(s.getFiscalYear() + "", s.getActiveMemberships()));
         }
 		bc.getData().addAll(Arrays.asList(series1));
 		return bc;
