@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.function.Function;
 import com.ecsail.enums.MembershipType;
 import com.ecsail.main.EditCell;
+import com.ecsail.main.FixInput;
 import com.ecsail.main.Paths;
 import com.ecsail.sql.SqlDelete;
 import com.ecsail.sql.SqlExists;
@@ -95,7 +96,7 @@ public class BoxMemberID extends HBox {
 				int mid = ((Object_MembershipId) t.getTableView().getItems().get(t.getTablePosition().getRow()))
 						.getMid();
 				// SqlUpdate.updatePhone("phone", phone_id, t.getNewValue());
-				SqlUpdate.updateMembershipId(mid, "fiscal_year", t.getNewValue());
+				SqlUpdate.updateMembershipId(mid, "fiscal_year", FixInput.changeEmptyStringToZero(t.getNewValue()));
 			}
 		});
 
@@ -109,7 +110,7 @@ public class BoxMemberID extends HBox {
 						.setMembership_id(t.getNewValue());
 				int mid = ((Object_MembershipId) t.getTableView().getItems().get(t.getTablePosition().getRow()))
 						.getMid();
-				SqlUpdate.updateMembershipId(mid, "membership_id", t.getNewValue());
+				SqlUpdate.updateMembershipId(mid, "membership_id", FixInput.changeEmptyStringToZero(t.getNewValue()));
 			}
 		});
 
