@@ -14,6 +14,7 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.StackedBarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Data;
 import javafx.scene.chart.XYChart.Series;
@@ -84,5 +85,33 @@ public class Charts {
         }
 		bc.getData().addAll(Arrays.asList(series1));
 		return bc;
+	}
+	
+	static public StackedBarChart<String,Number> getStackedBarChart() {
+		final CategoryAxis xAxis = new CategoryAxis();
+        final NumberAxis yAxis = new NumberAxis();
+        StackedBarChart<String, Number> sbc = 
+                new StackedBarChart<>(xAxis, yAxis); 
+        xAxis.setLabel("Year");
+        sbc.setTitle("Active Memberships By Year");
+		XYChart.Series<String,Number> seriesFamily = new Series<String, Number>();
+		XYChart.Series<String,Number> seriesRegular = new Series<String, Number>();
+		XYChart.Series<String,Number> seriesSocial = new Series<String, Number>();
+		XYChart.Series<String,Number> seriesLakeAssociate = new Series<String, Number>();
+		XYChart.Series<String,Number> seriesLifeMember = new Series<String, Number>();
+		seriesFamily.setName("Family");
+		seriesRegular.setName("Regular");
+		seriesSocial.setName("Social");
+		seriesLakeAssociate.setName("Lake Associate");
+		seriesLifeMember.setName("Life Member");
+        for (Object_Stats s: stats) {
+    		seriesFamily.getData().add(new XYChart.Data<>(s.getFiscalYear() + "",s.getFamily()));
+    		seriesRegular.getData().add(new XYChart.Data<>(s.getFiscalYear() + "",s.getRegular()));
+    		seriesSocial.getData().add(new XYChart.Data<>(s.getFiscalYear() + "",s.getSocial()));
+    		seriesLakeAssociate.getData().add(new XYChart.Data<>(s.getFiscalYear() + "",s.getLakeAssociates()));
+    		seriesLifeMember.getData().add(new XYChart.Data<>(s.getFiscalYear() + "",s.getLifeMembers()));
+        }
+        sbc.getData().addAll(Arrays.asList(seriesFamily,seriesRegular,seriesSocial,seriesLakeAssociate,seriesLifeMember));
+		return sbc;
 	}
 }

@@ -232,6 +232,7 @@ public class SqlInsert {
 			+ s.getDependants() + ","
 			+ s.getNumberOfBoats() + ","
 			+ s.getFamily() + ","
+			+ s.getRegular() + ","
 			+ s.getSocial() + ","
 			+ s.getLakeAssociates() + ","
 			+ s.getLifeMembers() + ","

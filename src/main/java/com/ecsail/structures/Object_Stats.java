@@ -15,6 +15,7 @@ int secondaryMembers;
 int dependants;
 int numberOfBoats;
 int family;
+int regular;
 int social;
 int lakeAssociates;
 int lifeMembers;
@@ -25,7 +26,7 @@ double initiation;
 
 public Object_Stats(int statId, int fiscalYear, int activeMemberships, int nonRenewMemberships,
 		int returnMemberships, int newMemberships, int secondaryMembers, int dependants, int numberOfBoats, int family,
-		int social, int lakeAssociates, int lifeMembers, int raceFellows, int student, double deposits,
+		int regular, int social, int lakeAssociates, int lifeMembers, int raceFellows, int student, double deposits,
 		double initiation) {
 	super();
 	this.statId = statId;
@@ -38,6 +39,7 @@ public Object_Stats(int statId, int fiscalYear, int activeMemberships, int nonRe
 	this.dependants = dependants;
 	this.numberOfBoats = numberOfBoats;
 	this.family = family;
+	this.regular = regular;
 	this.social = social;
 	this.lakeAssociates = lakeAssociates;
 	this.lifeMembers = lifeMembers;
@@ -56,9 +58,13 @@ public void refreshStatsForYear() {
 	setNewMemberships(SqlSelect.getNumberOfNewMembershipsForYear(this.fiscalYear));
 	setActiveMemberships(SqlSelect.getNumberOfActiveMembershipsForYear(this.fiscalYear));
 	setReturnMemberships(SqlSelect.getNumberOfReturningMembershipsForYear(this.fiscalYear));
+	setFamily(SqlSelect.getNumberOfMembersOfType("FM", this.fiscalYear));
+	setRegular(SqlSelect.getNumberOfMembersOfType("RM", this.fiscalYear));
+	setSocial(SqlSelect.getNumberOfMembersOfType("SO", this.fiscalYear));
+	setLakeAssociates(SqlSelect.getNumberOfMembersOfType("LA", this.fiscalYear));
+	setLifeMembers(SqlSelect.getNumberOfMembersOfType("LM", this.fiscalYear));
+	setStudent(SqlSelect.getNumberOfMembersOfType("SM", this.fiscalYear));
 }
-
-
 
 public int getStatId() {
 	return statId;
@@ -194,6 +200,14 @@ public double getInitiation() {
 
 public void setInitiation(double initiation) {
 	this.initiation = initiation;
+}
+
+public int getRegular() {
+	return regular;
+}
+
+public void setRegular(int regular) {
+	this.regular = regular;
 }
 
 

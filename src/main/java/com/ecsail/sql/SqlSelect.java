@@ -1115,6 +1115,7 @@ public class SqlSelect {
 					rs.getInt("DEPENDANTS"),
 					rs.getInt("NUMBER_OF_BOATS"),
 					rs.getInt("FAMILY"),
+					rs.getInt("REGULAR"),
 					rs.getInt("SOCIAL"),
 					rs.getInt("LAKEASSOCIATES"),
 					rs.getInt("LIFEMEMBERS"),
@@ -1720,6 +1721,23 @@ public class SqlSelect {
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			rs = stmt.executeQuery("select count(*) from membership_id where FISCAL_YEAR='" + year + "' and RENEW=false");
+			rs.next();
+			number = rs.getInt("count(*)");
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println(number);
+		return number;
+	}
+	
+	public static int getNumberOfMembersOfType(String type, int year) {
+		int number = 0;
+		ResultSet rs;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			rs = stmt.executeQuery("select count(*) from membership_id where MEM_TYPE='" + type + "' and FISCAL_YEAR='" + year + "';");
 			rs.next();
 			number = rs.getInt("count(*)");
 		

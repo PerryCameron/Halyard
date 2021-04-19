@@ -623,7 +623,4 @@ public class SqlUpdate {
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
 }

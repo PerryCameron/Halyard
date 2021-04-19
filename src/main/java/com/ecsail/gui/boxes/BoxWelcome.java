@@ -62,7 +62,7 @@ public class BoxWelcome extends HBox {
 
 		////////////////  SET CONTENT ////////////////////////
 		vboxRight.getChildren().addAll(rosterButton,peopleListButton,slipListButton,bodButton,newButton,batchesButton,boatsButton,notesButton);
-		vboxLeft.getChildren().addAll(Charts.getBarChart(),Charts.getLineChart());
+		vboxLeft.getChildren().addAll(Charts.getStackedBarChart(),Charts.getLineChart());
 		//vboxLeft.getChildren().addAll(Charts.getLineChart());
 		getChildren().addAll(vboxLeft,vboxRight);
 	}
