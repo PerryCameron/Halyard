@@ -6,6 +6,7 @@ import com.ecsail.charts.MembershipLineChart;
 import com.ecsail.charts.MembershipStackedBarChart;
 import com.ecsail.main.CreateMembership;
 import com.ecsail.main.Launcher;
+import com.ecsail.main.Statistics;
 import com.ecsail.structures.Object_Stats;
 
 import javafx.geometry.Insets;

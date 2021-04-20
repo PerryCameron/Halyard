@@ -1,7 +1,7 @@
-package com.ecsail.gui.boxes;
+package com.ecsail.main;
 
 import java.util.ArrayList;
-import com.ecsail.main.Paths;
+
 import com.ecsail.sql.SqlDelete;
 import com.ecsail.sql.SqlInsert;
 import com.ecsail.sql.SqlSelect;
