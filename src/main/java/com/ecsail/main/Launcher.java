@@ -2,10 +2,12 @@ package com.ecsail.main;
 
 import java.io.IOException;
 
+import com.ecsail.gui.boxes.BoxWelcome;
 import com.ecsail.gui.dialogues.Dialogue_EnvelopePDF;
 import com.ecsail.gui.dialogues.Dialogue_RenewalForm;
 import com.ecsail.gui.tabs.TabRoster;
 import com.ecsail.gui.tabs.TabDeposits;
+import com.ecsail.gui.tabs.TabLogin;
 import com.ecsail.gui.tabs.TabBoardMembers;
 import com.ecsail.gui.tabs.TabBoats;
 import com.ecsail.gui.tabs.TabDefinedFee;
@@ -23,7 +25,6 @@ import com.ecsail.structures.Object_MembershipList;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 
 public class Launcher extends Pane {
 static TabPane tabPane;
@@ -97,8 +98,12 @@ static TabPane tabPane;
 		tabPane.getSelectionModel().select(getTabIndex("Roster"));
 	}
 	
-	public static void openWelcomeTab(VBox vboxGrey) {
-		tabPane.getTabs().add(new TabWelcome(vboxGrey));
+	public static void openWelcomeTab(BoxWelcome boxWelcome) {
+		tabPane.getTabs().add(new TabWelcome(boxWelcome));
+	}
+	
+	public static void openLoginTab() {
+		tabPane.getTabs().add(new TabLogin("Log in"));
 	}
 	
 	public static void createRenewalForms() {

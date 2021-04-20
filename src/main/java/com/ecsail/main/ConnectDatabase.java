@@ -44,7 +44,6 @@ public class ConnectDatabase {
 	private boolean connectionSucess; 
 	ObservableList<String> choices = FXCollections.observableArrayList();
 	protected String exception = "";
-	private VBox vboxGrey = new VBox(); // allows us to add content to the welcome tab.
 	boolean toggle = true;
 
 	public ConnectDatabase(Stage primaryStage) {
@@ -54,9 +53,10 @@ public class ConnectDatabase {
 			this.port = currentLogon.getPort();
 			loadHostsInComboBox();
 		}
-		Launcher.openWelcomeTab(vboxGrey);
+
+		//Launcher.openWelcomeTab(vboxGrey);
+		Launcher.openLoginTab();
 		
-		//System.out.println(FileIO.logins.get(0).toString());
 		displayLogOn(primaryStage);
 	}
 	
@@ -334,7 +334,10 @@ public class ConnectDatabase {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			connection = DriverManager.getConnection(server, user, password);
-			vboxGrey.getChildren().add(new BoxWelcome());
+			Launcher.closeActiveTab();
+			//vboxGrey.getChildren().add();
+			Launcher.openWelcomeTab(new BoxWelcome());
+			
 			showStatus();
 			sucessful = true;
 			// Creating a Statement object

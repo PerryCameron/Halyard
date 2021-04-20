@@ -63,7 +63,7 @@ public class BoxToolBar extends VBox {
         m3_3_6.setOnAction((event) -> Launcher.openBoardTab());
         m3_3_3.setOnAction((event) -> Launcher.openPeopleTab());
         m1_1_1.setOnAction((event) -> SqlScriptMaker.createSql());
-        m1_3.setOnAction((event) -> Charts.updateStats());
+        m1_3.setOnAction((event) -> Statistics.updateStats());
 		m4_1_3.setOnAction((event) -> Launcher.openTabBatchedPaidDues());
 		m4_1_4.setOnAction((event) -> Xls_email_list.createSpreadSheet());
 		m4_1_5.setOnAction((event) -> new Dialogue_Stub());

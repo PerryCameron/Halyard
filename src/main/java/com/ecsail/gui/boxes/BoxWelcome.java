@@ -1,19 +1,40 @@
 package com.ecsail.gui.boxes;
 
+import java.util.ArrayList;
+
+import com.ecsail.charts.MembershipLineChart;
+import com.ecsail.charts.MembershipStackedBarChart;
 import com.ecsail.main.CreateMembership;
 import com.ecsail.main.Launcher;
+import com.ecsail.structures.Object_Stats;
+
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 // this is the contents inside tabWelcome() launched from ConnectDatabase() about line 229
 public class BoxWelcome extends HBox {
-	
+	public ArrayList<Object_Stats> stats;
+	private VBox vboxLeft;
+
+	public VBox getVboxLeft() {
+		return vboxLeft;
+	}
+
+
+	public void setVboxLeft(VBox vboxLeft) {
+		this.vboxLeft = vboxLeft;
+	}
+
+
 	public BoxWelcome() {
-		Charts.populateCharts();
+		Statistics dbStats = new Statistics();
+		this.stats = dbStats.populateStats();
+		this.vboxLeft = new VBox();
+		
 		int width = 400;
 		int height = 70;
-		VBox vboxLeft = new VBox();
+		
 		VBox vboxRight = new VBox();
 		//Pane mainPane = new Pane();
 		Button peopleListButton = new Button("People");
@@ -26,7 +47,6 @@ public class BoxWelcome extends HBox {
 		Button notesButton = new Button("Notes");
 		
 		////////////////  ATTRIBUTES //////////////////////////////
-		
 		
 		vboxLeft.setPrefWidth(570);
 		notesButton.setId("bigbuttontext");
@@ -60,11 +80,18 @@ public class BoxWelcome extends HBox {
 		newButton.setOnAction((event) -> CreateMembership.Create());
 		batchesButton.setOnAction((event) -> Launcher.openTabBatchedPaidDues());
 
+
 		////////////////  SET CONTENT ////////////////////////
 		vboxRight.getChildren().addAll(rosterButton,peopleListButton,slipListButton,bodButton,newButton,batchesButton,boatsButton,notesButton);
-		vboxLeft.getChildren().addAll(Charts.getStackedBarChart(),Charts.getLineChart());
+		vboxLeft.getChildren().addAll(new MembershipStackedBarChart(stats),new MembershipLineChart(stats));
 		//vboxLeft.getChildren().addAll(Charts.getLineChart());
 		getChildren().addAll(vboxLeft,vboxRight);
 	}
 
+
+	public ArrayList<Object_Stats> getStats() {
+		return stats;
+	}
+	
 }
+
