@@ -1,36 +1,23 @@
 package com.ecsail.gui.boxes;
 
-import java.util.ArrayList;
-
 import com.ecsail.charts.MembershipLineChart;
 import com.ecsail.charts.MembershipStackedBarChart;
 import com.ecsail.main.CreateMembership;
 import com.ecsail.main.Launcher;
 import com.ecsail.main.Statistics;
-import com.ecsail.structures.Object_Stats;
-
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 // this is the contents inside tabWelcome() launched from ConnectDatabase() about line 229
 public class BoxWelcome extends HBox {
-	public ArrayList<Object_Stats> stats;
+	//public ArrayList<Object_Stats> stats;
 	private VBox vboxLeft;
-
-	public VBox getVboxLeft() {
-		return vboxLeft;
-	}
-
-
-	public void setVboxLeft(VBox vboxLeft) {
-		this.vboxLeft = vboxLeft;
-	}
-
-
+	private Statistics dbStats;
+	
 	public BoxWelcome() {
-		Statistics dbStats = new Statistics();
-		this.stats = dbStats.populateStats();
+		this.dbStats = new Statistics();
+		//this.stats = dbStats.populateStats();
 		this.vboxLeft = new VBox();
 		
 		int width = 400;
@@ -84,14 +71,22 @@ public class BoxWelcome extends HBox {
 
 		////////////////  SET CONTENT ////////////////////////
 		vboxRight.getChildren().addAll(rosterButton,peopleListButton,slipListButton,bodButton,newButton,batchesButton,boatsButton,notesButton);
-		vboxLeft.getChildren().addAll(new MembershipStackedBarChart(stats),new MembershipLineChart(stats));
+		vboxLeft.getChildren().addAll(new MembershipStackedBarChart(dbStats.getStats()),new MembershipLineChart(dbStats.getStats()));
 		//vboxLeft.getChildren().addAll(Charts.getLineChart());
 		getChildren().addAll(vboxLeft,vboxRight);
 	}
 
+	public VBox getVboxLeft() {
+		return vboxLeft;
+	}
 
-	public ArrayList<Object_Stats> getStats() {
-		return stats;
+
+	public void setVboxLeft(VBox vboxLeft) {
+		this.vboxLeft = vboxLeft;
+	}
+
+	public Statistics getDbStats() {
+		return dbStats;
 	}
 	
 }

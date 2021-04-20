@@ -40,4 +40,8 @@ public class Statistics {
 				statId++;
 			}
 	}
+
+	public ArrayList<Object_Stats> getStats() {
+		return stats;
+	}
 }

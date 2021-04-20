@@ -38,7 +38,8 @@ public class TabWelcome extends Tab {
 		this.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
 		    if (newValue) {  // focus Gained
 		    	boxWelcome.getVboxLeft().getChildren().clear();
-		    	boxWelcome.getVboxLeft().getChildren().addAll(new MembershipStackedBarChart(boxWelcome.getStats()),new MembershipLineChart(boxWelcome.getStats()));
+		    	boxWelcome.getDbStats().reload();
+		    	boxWelcome.getVboxLeft().getChildren().addAll(new MembershipStackedBarChart(boxWelcome.getDbStats().getStats()),new MembershipLineChart(boxWelcome.getDbStats().getStats()));
 		    	
 		    }
 		});

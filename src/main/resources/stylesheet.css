@@ -251,3 +251,8 @@
     -fx-font-size: 10px;
     -fx-font-weight: bold;
 }
+
+.chart 
+{
+    -fx-create-symbols: false;
+}
