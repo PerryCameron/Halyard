@@ -36,14 +36,14 @@ import javafx.stage.Stage;
 public class ConnectDatabase {
 
 	public static Connection connection;
-	private int thisLogon = FileIO.getDefaultLogon();
+	//private int thisLogon = FileIO.getDefaultLogon();
 	private double titleBarHeight;
 	private Object_Login currentLogon;
 	private String port; 
 	private boolean connectionSucess; 
 	private ObservableList<String> choices = FXCollections.observableArrayList();
 	private String exception = "";
-	private boolean toggle = true;
+	//private boolean toggle = true;
 
 	public ConnectDatabase(Stage primaryStage) {
 		if (FileIO.hostFileExists()) {
@@ -52,8 +52,7 @@ public class ConnectDatabase {
 			this.port = currentLogon.getPort();
 			loadHostsInComboBox();
 		}
-		//Launcher.openWelcomeTab(vboxGrey);
-		Launcher.openLoginTab();
+		Launcher.openLoginTab(); // makes it look nice, tab not for anything useful
 		displayLogOn(primaryStage);
 	}
 	
@@ -123,6 +122,7 @@ public class ConnectDatabase {
 		
 		///////////////////// ATTRIBUTES //////////////////////////
 		
+		/*  // for testing
 		infoBox8.setStyle("-fx-background-color: #c5c7c1;");  // gray
 		infoBox1.setStyle("-fx-background-color: #4d6955;");  //green
 		infoBox2.setStyle("-fx-background-color: #feffab;");  // yellow
@@ -131,6 +131,7 @@ public class ConnectDatabase {
 		infoBox5.setStyle("-fx-background-color: #e83115;");  // purble
 		infoBox6.setStyle("-fx-background-color: #15e8e4;");  // light blue
 		infoBox7.setStyle("-fx-background-color: #e89715;");  // orange
+		*/
 		
 		infoBox1.setPadding(new Insets(5,5,5,5));
 		infoBox2.setPadding(new Insets(5,5,5,5));
@@ -320,7 +321,7 @@ public class ConnectDatabase {
 		
 		// saves new login object
         saveButton1.setOnAction((event) -> {
-            	FileIO.logins.add(new Object_Login(portText.getText(), hostNameField.getText(), username.getText(), password.getText(), "sshUser","sshPass", false, true));
+            	FileIO.logins.add(new Object_Login(portText.getText(), hostNameField.getText(), username.getText(), password.getText(), sshUser.getText(),sshPass.getText(), defaultCheck.isSelected(), useSshTunnel.isSelected()));
             	FileIO.saveLoginObjects();
             	choices.add(hostNameField.getText());  // add new host name into combo box
             	hostName.setValue(hostNameField.getText());  // set combo box default to new host name
