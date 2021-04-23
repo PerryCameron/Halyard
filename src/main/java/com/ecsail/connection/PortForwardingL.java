@@ -1,4 +1,5 @@
-package com.ecsail.main;
+
+package com.ecsail.connection;
 
 import com.jcraft.jsch.*;
 import javax.swing.*;

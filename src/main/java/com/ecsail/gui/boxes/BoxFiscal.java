@@ -17,11 +17,8 @@ import com.ecsail.structures.Object_Officer;
 import com.ecsail.structures.Object_Person;
 import com.ecsail.structures.Object_WorkCredit;
 
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -237,9 +234,7 @@ public class BoxFiscal extends HBox {
 			}
 		});
 		
-		duesText.focusedProperty().addListener(new ChangeListener<Boolean>() {  // only for manual entry
-	        @Override
-	        public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+		duesText.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
 	            //focus out
 	            if (oldValue) {  // we have focused and unfocused
 	            	if(!isNumeric(duesText.getText())) {
@@ -249,11 +244,9 @@ public class BoxFiscal extends HBox {
 	            	updateItem(Integer.parseInt(duesText.getText()),"dues");
 	            	updateBalance();
 	            }
-	        }
-	    });
+	        });
 
-        textFields.getCommitButton().setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
+        textFields.getCommitButton().setOnAction((event) -> {
             	if (!fiscals.get(rowIndex).isCommitted()) { 
             		if (!textFields.getBalanceText().getText().equals("0"))
 					textFields.getBalanceText().setStyle("-fx-background-color: #f23a50");
@@ -272,17 +265,8 @@ public class BoxFiscal extends HBox {
 				fiscals.get(rowIndex).setCommitted(false);
 				SqlUpdate.commitFiscalRecord(fiscals.get(rowIndex).getMoney_id(), false);
             	}
-            }
-        });
-		// String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date(System.currentTimeMillis()));
-		
-/*		SpinnerValueFactory<Integer> wetSlipValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1, fiscals.get(rowIndex).getWet_slip());
-		wetSlipSpinner.setValueFactory(wetSlipValueFactory);
-		wetSlipSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
-				  fiscals.get(rowIndex).setWet_slip(newValue);
-				  updateBalance();
-			});
-*/	
+            });
+
 		SpinnerValueFactory<Integer> beachValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 5, fiscals.get(rowIndex).getBeach());
 		beachSpinner.setValueFactory(beachValueFactory);
 		beachSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
@@ -339,9 +323,7 @@ public class BoxFiscal extends HBox {
         	fiscals.get(rowIndex).setBalance(getBalance());
 		});
 		
-		yscText.focusedProperty().addListener(new ChangeListener<Boolean>() {
-	        @Override
-	        public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+		yscText.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
 	            //focus out
 	            if (oldValue) {  // we have focused and unfocused
 	            	if(!isNumeric(yscText.getText())) {
@@ -350,12 +332,9 @@ public class BoxFiscal extends HBox {
 	            	updateItem(Integer.parseInt(yscText.getText()), "ysc");
 	            	updateBalance();
 	            }
-	        }
-	    });
+	        });
 		
-		slipText.focusedProperty().addListener(new ChangeListener<Boolean>() {
-	        @Override
-	        public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+		slipText.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
 	            //focus out
 	            if (oldValue) {  // we have focused and unfocused
 	            	if(!isNumeric(otherText.getText())) {
@@ -364,12 +343,9 @@ public class BoxFiscal extends HBox {
 	            	updateItem(Integer.parseInt(slipText.getText()),"wetslip");
 	            	updateBalance();
 	            }
-	        }
-	    });
+	        });
 		
-		otherText.focusedProperty().addListener(new ChangeListener<Boolean>() {
-	        @Override
-	        public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+		otherText.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
 	            //focus out
 	            if (oldValue) {  // we have focused and unfocused
 	            	if(!isNumeric(otherText.getText())) {
@@ -378,12 +354,9 @@ public class BoxFiscal extends HBox {
 	            	updateItem(Integer.parseInt(otherText.getText()),"other");
 	            	updateBalance();
 	            }
-	        }
-	    });
+	        });
 		
-		initiationText.focusedProperty().addListener(new ChangeListener<Boolean>() {
-	        @Override
-	        public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+		initiationText.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
 	            //focus out
 	            if (oldValue) {  // we have focused and unfocused
 	            	if(!isNumeric(initiationText.getText())) {
@@ -392,43 +365,28 @@ public class BoxFiscal extends HBox {
 	            	updateItem(Integer.parseInt(initiationText.getText()), "initiation");
 	            	updateBalance();
 	            }
-	        }
-	    });
+	        });
 		
-		numberOfKeys.integerProperty().addListener( new ChangeListener<Number>() {
-		    public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+		numberOfKeys.integerProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
 		        updateBalance();
 		        SqlUpdate.updateMoney(fiscals.get(rowIndex));
-		    }
-		} );
+		    });
 		
-		workCredits.integerProperty().addListener( new ChangeListener<Number>() {
-		    public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+		workCredits.integerProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
 		    	fiscals.get(rowIndex).setCredit(countCredit((int)newValue));
 		    	textFields.getCreditText().setText(countCredit((int)newValue) + "");
 		    	textFields.getBalanceText().setText(getBalance() + "");  // sets balance textfield in balance tab
 				fiscals.get(rowIndex).setBalance(getBalance());  // sets focused object
 		        updateBalance();
 		        SqlUpdate.updateMoney(fiscals.get(rowIndex));
-		    }
-		} );
-		
-		//totalWorkCreditTextField.textProperty().addListener((obs, oldText, newText) -> {
-		//	int credit = Integer.parseInt(newText);
-		//	fiscals.get(rowIndex).setCredit(countCredit(credit));  // sets credit field in fiscal list tableview
-		//	textFields.getCreditText().setText(countCredit(credit) + "");  /// sets credit textfield in balance tab
-		//	textFields.getBalanceText().setText(getBalance() + "");  // sets balance textfield in balance tab
-		//	fiscals.get(rowIndex).setBalance(getBalance());  // sets focused object
-		//});
+		    });
         
-        addWetSlip.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
+        addWetSlip.setOnAction((event) -> {
             	slipText.setText(definedFees.getWet_slip() + "");
             	updateItem(Integer.parseInt(slipText.getText()),"wetslip");
             	updateBalance();
             	SqlUpdate.updateMoney(fiscals.get(rowIndex));
-            }
-        });
+            });
 
         //totalWorkCredits
 		

@@ -15,8 +15,6 @@ import com.ecsail.structures.Object_Login;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -38,13 +36,14 @@ import javafx.stage.Stage;
 public class ConnectDatabase {
 
 	public static Connection connection;
-	int thisLogon = FileIO.getDefaultLogon();
-	Object_Login currentLogon;
-	String port; 
+	private int thisLogon = FileIO.getDefaultLogon();
+	private double titleBarHeight;
+	private Object_Login currentLogon;
+	private String port; 
 	private boolean connectionSucess; 
-	ObservableList<String> choices = FXCollections.observableArrayList();
-	protected String exception = "";
-	boolean toggle = true;
+	private ObservableList<String> choices = FXCollections.observableArrayList();
+	private String exception = "";
+	private boolean toggle = true;
 
 	public ConnectDatabase(Stage primaryStage) {
 		if (FileIO.hostFileExists()) {
@@ -53,10 +52,8 @@ public class ConnectDatabase {
 			this.port = currentLogon.getPort();
 			loadHostsInComboBox();
 		}
-
 		//Launcher.openWelcomeTab(vboxGrey);
 		Launcher.openLoginTab();
-		
 		displayLogOn(primaryStage);
 	}
 	
@@ -64,97 +61,168 @@ public class ConnectDatabase {
 	}
 	
 	public void displayLogOn(Stage primaryStage) {
-		int width = 490;
+		int width = 500;
 		int height = 200;
 		Stage logonStage = new Stage();
 		logonStage.setTitle("Login");
+		Image ecscLogo = new Image(getClass().getResourceAsStream(Paths.LOGO));
+		ImageView logo = new ImageView(ecscLogo);
 		VBox vboxBlue = new VBox();
 		VBox vboxLeft = new VBox(); // this creates a pink border around the table
 		Pane loginPane = new Pane();
 		Scene secondScene = new Scene(loginPane, width, height);
+		
 		HBox errorHBox = new HBox();  // for displaying errors above
+		HBox vboxUserLabel = new HBox();
+		HBox vboxUserText = new HBox();
+		HBox vboxPassLabel = new HBox();
+		HBox vboxPassText = new HBox();
+		HBox vboxHostLabel = new HBox();
+		HBox vboxHostText = new HBox();
+		HBox vboxHostLabel2 = new HBox();
+		HBox vboxHostText2 = new HBox();
+		HBox vboxSshUserLable = new HBox();
+		HBox vboxSshUserText = new HBox();
+		HBox vboxSshPassLable = new HBox();
+		HBox vboxSshPassText = new HBox();
+		HBox vboxPortLabel = new HBox();
+		HBox vboxPortText = new HBox();
 		HBox infoBox1 = new HBox();
 		HBox infoBox2 = new HBox(); 
 		HBox infoBox3 = new HBox();
 		HBox infoBox4 = new HBox();
-		HBox infoBox5 = new HBox();		
-		HBox buttonBox = new HBox(); // for login and cancel buttons
+		HBox infoBox5 = new HBox();	
+		HBox infoBox6 = new HBox();
+		HBox infoBox7 = new HBox();	
+		HBox infoBox8 = new HBox();
+		HBox buttonBox1 = new HBox(); // for login and cancel buttons
 		HBox buttonBox2 = new HBox(); // for save and cancel buttons
+		HBox buttonBox3 = new HBox(); // for 
 		HBox addBox = new HBox();
 		HBox mainHBox = new HBox();
 		VBox vboxRight = new VBox();
 		
-		TextField username = new TextField();
-		username.setPromptText("Username");
-		PasswordField password = new PasswordField();
-		password.setPromptText("Password");
 		ComboBox<String> hostName = new ComboBox<String>(choices);
-		CheckBox defaultCheck = new CheckBox("Default");
+		CheckBox defaultCheck = new CheckBox("Default Login");
+		CheckBox useSshTunnel = new CheckBox("Use ssh tunnel");
 		TextField portText = new TextField();
-		TextField hostnameField = new TextField();
+		TextField hostNameField = new TextField();
+		TextField sshUser = new TextField();
+		TextField sshPass = new PasswordField();
+		TextField username = new TextField();
+		TextField password = new PasswordField();
 		Button loginButton = new Button("Login");
 		Button cancelButton1 = new Button("Cancel");
 		Button cancelButton2 = new Button("Cancel");
+		Button cancelButton3 = new Button("Cancel");
 		Button saveButton1 = new Button("Save");
 		Button saveButton2 = new Button("Save");
 		Button deleteButton = new Button("Delete");
 		Text newConnectText = new Text("New");
 		Text editConnectText = new Text("Edit");
-		//Pane secondaryLayout = new Pane();
-		Image mainIcon = new Image(getClass().getResourceAsStream("/ECSC64.png"));
-		logonStage.getIcons().add(mainIcon);
+		
 		///////////////////// ATTRIBUTES //////////////////////////
 		
-
-		infoBox4.setAlignment(Pos.CENTER_LEFT);
-		portText.setText("3306");
-		infoBox1.setSpacing(17);
-		infoBox2.setSpacing(19);
-		infoBox3.setSpacing(11);
-		infoBox4.setSpacing(45.5);
-		buttonBox2.setSpacing(5);
-		portText.setPrefWidth(60);
-		vboxLeft.setSpacing(10);
-		vboxLeft.setPadding(new Insets(0,0,0,15));
-		setMouseListener(newConnectText);
-		setMouseListener(editConnectText);
-		logonStage.setAlwaysOnTop(true);
-		Image ecscLogo = new Image(getClass().getResourceAsStream(Paths.LOGO));
-		ImageView logo = new ImageView(ecscLogo);
-		addBox.setPadding(new Insets(0,0,0,20));
-		addBox.setSpacing(15);
-		buttonBox.setPadding(new Insets(0,0,0,35));
-		buttonBox2.setPadding(new Insets(0,0,0,110));
+		infoBox8.setStyle("-fx-background-color: #c5c7c1;");  // gray
+		infoBox1.setStyle("-fx-background-color: #4d6955;");  //green
+		infoBox2.setStyle("-fx-background-color: #feffab;");  // yellow
+		infoBox3.setStyle("-fx-background-color: #e83115;");  // red
+		infoBox4.setStyle("-fx-background-color: #201ac9;");  // blue
+		infoBox5.setStyle("-fx-background-color: #e83115;");  // purble
+		infoBox6.setStyle("-fx-background-color: #15e8e4;");  // light blue
+		infoBox7.setStyle("-fx-background-color: #e89715;");  // orange
+		
+		infoBox1.setPadding(new Insets(5,5,5,5));
+		infoBox2.setPadding(new Insets(5,5,5,5));
+		infoBox3.setPadding(new Insets(5,5,5,5));
+		infoBox8.setPadding(new Insets(15,5,25,5));
+		buttonBox1.setPadding(new Insets(0,0,0,35));
+		buttonBox2.setPadding(new Insets(0,0,0,60));
 		vboxRight.setPadding(new Insets(20,20,0,20));
-		infoBox5.setPadding(new Insets(10,0,0,0));
-		buttonBox.setSpacing(10);
+		vboxLeft.setPadding(new Insets(0,0,0,15));
+		vboxBlue.setPadding(new Insets(10,10,10,10));
+		
+		vboxSshUserLable.setPadding(new Insets(5,5,5,5));
+		vboxSshUserText.setPadding(new Insets(5,5,5,5));
+		vboxSshPassLable.setPadding(new Insets(5,5,5,5));
+		vboxSshPassText.setPadding(new Insets(5,5,5,5));
+		vboxPortText.setPadding(new Insets(5,5,5,0));
+		vboxPortLabel.setPadding(new Insets(5,5,5,5));
+		
+		vboxUserLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxPassLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxHostLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxHostLabel2.setAlignment(Pos.CENTER_LEFT);
+		vboxSshUserLable.setAlignment(Pos.CENTER_LEFT);
+		vboxSshPassLable.setAlignment(Pos.CENTER_LEFT);
+		vboxPortLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxPortText.setAlignment(Pos.CENTER_LEFT);
+		infoBox4.setAlignment(Pos.CENTER_LEFT);
+		addBox.setAlignment(Pos.CENTER_LEFT);
+		infoBox5.setAlignment(Pos.CENTER);
+
+		username.setPromptText("Username");
+		password.setPromptText("Password");
+
+		//Pane secondaryLayout = new Pane();
+		Image mainIcon = new Image(getClass().getResourceAsStream("/ECSC64.png"));
+
+		portText.setText("3306");
+		vboxUserLabel.setPrefWidth(90);
+		vboxPassLabel.setPrefWidth(90);
+		vboxHostLabel.setPrefWidth(90);
+		vboxHostLabel2.setPrefWidth(90);
+		vboxSshUserLable.setPrefWidth(90);
+		vboxSshPassLable.setPrefWidth(90);
+		vboxPortLabel.setPrefWidth(90);
+		portText.setPrefWidth(60);
+		
+		username.setPrefWidth(200);
+		password.setPrefWidth(200);
+		hostName.setPrefWidth(200);
+		hostNameField.setPrefWidth(200);
+		sshUser.setPrefWidth(200);
+		sshPass.setPrefWidth(200);
+		vboxPortText.setPrefWidth(200);
+		vboxBlue.setPrefWidth(width);
+
+		buttonBox1.setSpacing(10);
+		buttonBox2.setSpacing(10);
+		addBox.setSpacing(15);
+		vboxPortText.setSpacing(20);	
+		logonStage.setAlwaysOnTop(true);
 		newConnectText.setFill(Color.CORNFLOWERBLUE);
 		editConnectText.setFill(Color.CORNFLOWERBLUE);
+		
 		if(currentLogon != null) {  // only true if starting for first time
 		username.setText(currentLogon.getUser());
 		password.setText(currentLogon.getPasswd());
 		hostName.setValue(currentLogon.getHost());
+		sshUser.setText(currentLogon.getSshUser());
+		sshPass.setText(currentLogon.getSshPass());
+		useSshTunnel.setSelected(currentLogon.isSshForward());
+		defaultCheck.setSelected(currentLogon.isDefault());
 		}
 		secondScene.getStylesheets().add("stylesheet.css");
 		mainHBox.setId("box-pink");
 		vboxBlue.setId("box-blue");
-		//vboxRight.setId("box-grey");
-		vboxBlue.setPadding(new Insets(10,10,10,10));
-		vboxBlue.setPrefWidth(width);
-		vboxBlue.setPrefHeight(height);
-		vboxLeft.setPrefHeight(height - 20);
-		infoBox5.setSpacing(10);
-		username.setPrefWidth(200);
-		password.setPrefWidth(200);
-		hostName.setPrefWidth(200);
-		hostnameField.setPrefWidth(200);
 		
 		Platform.runLater(() -> username.requestFocus());
+		
+		///////////////////// LISTENERS //////////////////////////  
+		
+		vboxBlue.heightProperty().addListener((obs, oldVal, newVal) -> {
+			logonStage.setHeight((double)newVal + titleBarHeight);
+			System.out.println("vboxBlue=" + newVal + " set stage to" + logonStage.getHeight() + "scene=" + secondScene.getHeight());
+		});  
+		
+		setMouseListener(newConnectText);
+		
+		setMouseListener(editConnectText);
 		
 		// when host name combo box changes
 		hostName.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
 			currentLogon = FileIO.logins.get(FileIO.getSelectedHost(options.getValue()));
-			//System.out.println(currentLogon.toString());
 			username.setText(currentLogon.getUser());
 			password.setText(currentLogon.getPasswd());
         });
@@ -164,130 +232,161 @@ public class ConnectDatabase {
 			if (e.getClickCount() == 1) {
 					infoBox4.getChildren().addAll(new Label("Port:"), portText);
 					logonStage.setHeight(height + 69);
-					vboxBlue.setPrefHeight(height + 30);
-					vboxLeft.setPrefHeight(height + 30);
 					username.setText("");
 					password.setText("");
-					buttonBox2.getChildren().clear();
-					buttonBox2.getChildren().addAll(saveButton1,cancelButton2);
-					infoBox5.getChildren().clear();
-					infoBox5.getChildren().add(buttonBox2);
+					infoBox8.getChildren().clear();
+					infoBox8.getChildren().add(buttonBox3);
 					infoBox3.getChildren().clear();
-					infoBox3.getChildren().addAll(new Label("Hostname: "), hostnameField);
+					infoBox3.getChildren().addAll(new Label("Hostname: "), hostNameField);
 			}
 		});
 		
 		// edits currently selected host
 		editConnectText.setOnMouseClicked(e -> {
 			if (e.getClickCount() == 1) {
-					infoBox4.getChildren().addAll(new Label("Port:"), portText, defaultCheck);
-					logonStage.setHeight(height + 69);
-					vboxBlue.setPrefHeight(height + 30);
-					vboxLeft.setPrefHeight(height + 30);
-					buttonBox2.getChildren().clear();
-					buttonBox2.getChildren().addAll(saveButton2,deleteButton,cancelButton2);
-					infoBox5.getChildren().clear();
-					infoBox5.getChildren().add(buttonBox2);
+					infoBox5.setPadding(new Insets(5,5,5,5));
 					infoBox3.getChildren().clear();
-					infoBox3.getChildren().addAll(new Label("Hostname: "), hostnameField);
-					hostnameField.setText(currentLogon.getHost());
+					infoBox3.getChildren().addAll(vboxHostLabel2, vboxHostText2);
+					infoBox4.getChildren().addAll(vboxPortLabel, vboxPortText);
+					infoBox5.getChildren().add(useSshTunnel);
+					infoBox6.getChildren().addAll(vboxSshUserLable,vboxSshUserText);
+					infoBox7.getChildren().addAll(vboxSshPassLable,vboxSshPassText);
+					infoBox8.getChildren().clear();
+					infoBox8.getChildren().add(buttonBox2);
+					hostNameField.setText(currentLogon.getHost());
+					
 			}
 		});
 		
 		// takes you back to original screen
-		cancelButton2.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-				infoBox4.getChildren().clear();
-				logonStage.setHeight(height + 38);
-				vboxBlue.setPrefHeight(200);
-				vboxLeft.setPrefHeight(180);
-				infoBox3.getChildren().clear();
-				infoBox3.getChildren().addAll(new Label("Hostname: "), hostName);
-				infoBox5.getChildren().clear();
-				infoBox5.getChildren().addAll(addBox,buttonBox);
-            }
-        });
+		cancelButton2.setOnAction((event) -> {
+			infoBox3.getChildren().clear();
+			infoBox3.getChildren().addAll(vboxHostLabel, vboxHostText);
+			infoBox4.getChildren().clear();
+			infoBox5.getChildren().clear();
+			infoBox5.setPadding(Insets.EMPTY);
+			infoBox6.getChildren().clear();
+			infoBox7.getChildren().clear();
+			infoBox8.getChildren().clear();
+			infoBox8.getChildren().addAll(addBox, buttonBox1);
+		});
 		
-        loginButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
+		/// duplicated cancelButton 3 for simplicity
+		cancelButton3.setOnAction((event) -> {
+			infoBox3.getChildren().clear();
+		    infoBox3.getChildren().addAll(vboxHostLabel, vboxHostText);
+			infoBox4.getChildren().clear();
+			infoBox5.getChildren().clear();
+			infoBox5.setPadding(Insets.EMPTY);
+			infoBox6.getChildren().clear();
+			infoBox7.getChildren().clear();
+			infoBox8.getChildren().clear();
+			infoBox8.getChildren().addAll(addBox, buttonBox1);
+		});
+		
+        loginButton.setOnAction((event) -> {
         		String user = username.getText();
         		String pass = password.getText();
-        		String ip = hostName.getValue();
-        		if(createConnection(user, pass, ip, port)) {
+        		String host = hostName.getValue();
+        		String sUser = sshUser.getText();
+        		String sPass = sshPass.getText();
+        		String loopback = "127.0.0.1";
+        		// create ssh tunnel
+        		new PortForwardingL(host,loopback,3306,3306,sUser,sPass); 
+        		// create mysql login
+        		if(createConnection(user, pass, loopback, port)) {
         		Main.activememberships = Sql_SelectMembership.getRoster(Main.selectedYear, true);
         		logonStage.close();
-        		primaryStage.setTitle("ECSC Membership Database (connected) " + ip);
+        		primaryStage.setTitle("ECSC Membership Database (connected) " + host);
         		} else {
         			primaryStage.setTitle("ECSC Membership Database (not connected)");
         			System.out.println(exception);
         		}
-            }
         });
         
         // deletes log on from list
-		deleteButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
+		deleteButton.setOnAction((event) -> {
 				int element = FileIO.getSelectedHost(currentLogon.getHost());
 				if (element >= 0) {
 					FileIO.logins.remove(element);
 					FileIO.saveLoginObjects();
-					removeHostFromComboBox(hostnameField.getText());
+					removeHostFromComboBox(hostNameField.getText());
 					// should probably set combo box to default here
 	            	cancelButton2.fire(); // refresh login back to original
 				} else {
 					System.out.println("need to build error for removing element");
 				}
-			}
-		});
+			});
 		
 		// saves new login object
-        saveButton1.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-            	FileIO.logins.add(new Object_Login(portText.getText(), hostnameField.getText(), username.getText(), password.getText(), false));
+        saveButton1.setOnAction((event) -> {
+            	FileIO.logins.add(new Object_Login(portText.getText(), hostNameField.getText(), username.getText(), password.getText(), "sshUser","sshPass", false, true));
             	FileIO.saveLoginObjects();
-            	choices.add(hostnameField.getText());  // add new host name into combo box
-            	hostName.setValue(hostnameField.getText());  // set combo box default to new host name
+            	choices.add(hostNameField.getText());  // add new host name into combo box
+            	hostName.setValue(hostNameField.getText());  // set combo box default to new host name
             	cancelButton2.fire(); // refresh login back to original
-            }
-        });
+            });
         
 		// saves changes to existing login object
-        saveButton2.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
+        saveButton2.setOnAction((event) -> {
             	int element = FileIO.getSelectedHost(currentLogon.getHost());  // get element number
             	String oldHost = currentLogon.getHost(); // save hostname for later
             	if(element >= 0) {  // the element exists, why wouldn't it exist
             		// change the specific login in the login list
-            		FileIO.logins.get(element).setHost(hostnameField.getText());
+            		FileIO.logins.get(element).setHost(hostNameField.getText());
             		FileIO.logins.get(element).setUser(username.getText());
             		FileIO.logins.get(element).setPasswd(password.getText());
             		FileIO.logins.get(element).setPort(portText.getText());
+            		FileIO.logins.get(element).setSshUser(sshUser.getText());
+            		FileIO.logins.get(element).setSshPass(sshPass.getText());
+            		FileIO.logins.get(element).setDefault(defaultCheck.isSelected());
+            		FileIO.logins.get(element).setSshForward(useSshTunnel.isSelected());
+            		
             		FileIO.saveLoginObjects();
-            		updateHostInComboBox(oldHost, hostnameField.getText());
-            		hostName.setValue(hostnameField.getText());
+            		updateHostInComboBox(oldHost, hostNameField.getText());
+            		hostName.setValue(hostNameField.getText());
             		cancelButton2.fire(); // refresh login back to original
             	} else {
             		System.out.println("need to build error for non matching host here");
             	}
-            }
-        });
+            });
+        
+		//useSshTunnel.setSelected(currentLogon.isSshForward());
+		//defaultCheck.setSelected(currentLogon.isDefault());
         
         // exits program 
-        cancelButton1.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-            	System.exit(0);
-            }
-        });
+        cancelButton1.setOnAction((event) -> System.exit(0));
         
-		infoBox1.getChildren().addAll(new Label("Username:"), username);
-		infoBox2.getChildren().addAll(new Label("Password:"), password);
-		infoBox3.getChildren().addAll(new Label("Hostname: "), hostName);
+        /////////////// SET CONTENT /////////////////////
+		logonStage.getIcons().add(mainIcon);
+		
+        vboxUserLabel.getChildren().add(new Label("Username:"));
+        vboxPassLabel.getChildren().add(new Label("Password:"));
+        vboxHostLabel.getChildren().add(new Label("Hostname:"));
+        vboxHostLabel2.getChildren().add(new Label("Hostname:"));
+        vboxSshUserLable.getChildren().add(new Label("ssh user:"));
+        vboxSshPassLable.getChildren().add(new Label("ssh pass:"));
+		vboxPortLabel.getChildren().add(new Label("Port:"));
+		vboxPortText.getChildren().addAll(portText, defaultCheck);
+        vboxUserText.getChildren().add(username);
+        vboxPassText.getChildren().add(password);
+        vboxHostText.getChildren().add(hostName);
+        vboxHostText2.getChildren().add(hostNameField);
+        vboxSshUserText.getChildren().add(sshUser);
+		vboxSshPassText.getChildren().add(sshPass);
+		addBox.getChildren().addAll(newConnectText, editConnectText);
+        buttonBox1.getChildren().addAll(loginButton,cancelButton1);
+        buttonBox2.getChildren().addAll(saveButton2,deleteButton,cancelButton3);
+        buttonBox3.getChildren().addAll(saveButton1,cancelButton2);
+        
+		infoBox1.getChildren().addAll(vboxUserLabel, vboxUserText);
+		infoBox2.getChildren().addAll(vboxPassLabel, vboxPassText);
+		infoBox3.getChildren().addAll(vboxHostLabel, vboxHostText);
+        infoBox8.getChildren().addAll(addBox, buttonBox1);
+        
+        vboxLeft.getChildren().addAll(errorHBox,infoBox1, infoBox2, infoBox3, infoBox4, infoBox5, infoBox6, infoBox7, infoBox8);
         vboxRight.getChildren().addAll(logo);
-        buttonBox.getChildren().addAll(loginButton,cancelButton1);
-        addBox.getChildren().addAll(newConnectText, editConnectText);
-        infoBox5.getChildren().addAll(addBox,buttonBox);
-        vboxLeft.getChildren().addAll(errorHBox,infoBox1, infoBox2, infoBox3, infoBox4, infoBox5);
+        
 		logonStage.setX(primaryStage.getX() + 260);
 		logonStage.setY(primaryStage.getY() + 300);
 		mainHBox.getChildren().addAll(vboxLeft, vboxRight);
@@ -295,6 +394,8 @@ public class ConnectDatabase {
 		loginPane.getChildren().add(vboxBlue);
 		logonStage.setScene(secondScene);
 		logonStage.show();
+		this.titleBarHeight = logonStage.getHeight() - secondScene.getHeight();
+		logonStage.setHeight(vboxBlue.getHeight() + titleBarHeight);
 	}
 	
 	private void updateHostInComboBox(String host, String newHost) {
@@ -337,7 +438,6 @@ public class ConnectDatabase {
 			Launcher.closeActiveTab();
 			//vboxGrey.getChildren().add();
 			Launcher.openWelcomeTab(new BoxWelcome());
-			
 			showStatus();
 			sucessful = true;
 			// Creating a Statement object
