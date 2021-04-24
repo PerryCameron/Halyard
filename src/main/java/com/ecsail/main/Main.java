@@ -31,6 +31,7 @@ static BorderPane mainPane;
 static Launcher mainViewPane;
 public static BoxConsole console;
 private static Stage pStage;
+private static Scene mainScene;
 static String ipaddress;
 
 public static void main(String[] args) throws SQLException {
@@ -54,7 +55,7 @@ public static void main(String[] args) throws SQLException {
 		VBox toolbar = new BoxToolBar();
 		
 		//////////////////  OBJECTS  //////////////////////
-		final Scene scene = new Scene(root, 1028, 768, Color.WHITE);
+		Main.mainScene = new Scene(root, 1028, 768, Color.WHITE);
 
 		primaryStage.setOnHiding(new EventHandler<WindowEvent>() {
 
@@ -73,7 +74,7 @@ public static void main(String[] args) throws SQLException {
 		
 
 		/////////////////   ATTRIBUTES /////////////////////
-		scene.getStylesheets().add("stylesheet.css");
+		mainScene.getStylesheets().add("stylesheet.css");
 
 		////////////////   SET CONTENT ////////////////////
 		Image mainIcon = new Image(getClass().getResourceAsStream("/ECSC64.png"));
@@ -86,7 +87,7 @@ public static void main(String[] args) throws SQLException {
 		mainPane.setCenter(mainViewPane);
 		mainPane.setPrefWidth(Double.MAX_VALUE);
 		root.getChildren().addAll(mainPane);
-		primaryStage.setScene(scene);
+		primaryStage.setScene(mainScene);
 		primaryStage.show();
 		connect = new ConnectDatabase(primaryStage);
 	}
@@ -97,6 +98,10 @@ public static void main(String[] args) throws SQLException {
 	
 	public static Window getPrimaryStage() {  // this is used for alerts
 		return pStage;
+	}
+	
+	public static Scene getPrimaryScene() {
+		return mainScene;
 	}
 	
 	public static void setUpForFirstTime() {
