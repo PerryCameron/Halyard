@@ -404,7 +404,10 @@ public class SqlSelect {
 					+ "inner join person p ON p.P_ID=e.P_ID "
 					+ "inner join membership m ON m.ms_id=p.ms_id "
 					+ "inner join membership_id id ON id.ms_id=m.ms_id "
-					+ "where id.fiscal_year='" + Paths.getYear() + "' order by id.MEMBERSHIP_ID"));
+					+ "where id.fiscal_year='" + Paths.getYear() 
+					+ "' and id.renew=true"
+					
+					+ " order by id.MEMBERSHIP_ID"));
 
 			while (rs.next()) {
 				thisEmailInfo.add(new Object_Email_Information(rs.getInt("MEMBERSHIP_ID"), rs.getString("JOIN_DATE"),
