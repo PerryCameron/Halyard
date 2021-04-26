@@ -150,7 +150,7 @@ public class TabDeposits extends Tab {
 		final Spinner<Integer> yearSpinner = new Spinner<Integer>();
 		SpinnerValueFactory<Integer> wetSlipValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1970, Integer.parseInt(selectedYear), Integer.parseInt(selectedYear));
 		yearSpinner.setValueFactory(wetSlipValueFactory);
-		yearSpinner.setPrefWidth(90);
+		yearSpinner.setPrefWidth(95);
 		yearSpinner.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_HORIZONTAL);
 		yearSpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
 			  if (!newValue) {
