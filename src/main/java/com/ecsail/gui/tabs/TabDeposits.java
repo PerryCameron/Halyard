@@ -160,6 +160,7 @@ public class TabDeposits extends Tab {
 				  paidDues.addAll(SqlSelect.getPaidDues(selectedYear));
 				  currentDefinedFee.clear();
 				  currentDefinedFee = SqlSelect.getDefinedFee(selectedYear);
+				  summaryTotals.setDepositNumber(Integer.parseInt(batchSpinner.getEditor().getText()));
 				  refreshButton.fire();
 			  }
 			});
