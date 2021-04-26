@@ -64,9 +64,9 @@ public class BoxPaymentList extends HBox {
 		Boolean currentFiscalRecordExists = SqlExists.moneyExists(currentYear,membership);
 		Object_DefinedFee definedFees = SqlSelect.selectDefinedFees(Integer.parseInt(currentYear));
 		
-		if(!currentFiscalRecordExists) {
-			createCurrentFiscalRecord(definedFees);  // if no money records exist, create one
-		} 
+		//if(!currentFiscalRecordExists) {
+		//	createCurrentFiscalRecord(definedFees);  // if no money records exist, create one
+		//} 
 		
 		Collections.sort(BoxPaymentList.fiscals, (p1,p2) -> Integer.compare(p2.getFiscal_year(), (p1.getFiscal_year())));
 		

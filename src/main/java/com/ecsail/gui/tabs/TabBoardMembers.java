@@ -305,7 +305,7 @@ public class TabBoardMembers extends Tab {
 	private static void createTab(int ms_id)  {
 		Object_MembershipList membership;
 		membership = Sql_SelectMembership.getMembershipFromListWithoutMembershipId(ms_id);
-		Launcher.createTab(membership);
+		Launcher.createActiveMembershipTab(membership);
 	}
 	
 }

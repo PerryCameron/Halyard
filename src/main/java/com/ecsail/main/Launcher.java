@@ -141,8 +141,19 @@ static TabPane tabPane;
 		tabPane.getTabs().add(new TabMembership(membership));
 	}
 	
-	public static void createTab(Object_MembershipList membership) {
+	// fills incomplete object with latest information and opens tab.
+	public static void createActiveMembershipTab(Object_MembershipList membership) {
+		System.out.print("Found active member");
+		membership = Sql_SelectMembership.getMembershipFromList(membership.getMsid(), Paths.getYear());
 		String tabLabel= "Membership " + membership.getMembershipId();
+		if(!tabOpen(tabLabel)) 
+		tabPane.getTabs().add(new TabMembership(membership));
+		tabPane.getSelectionModel().select(getTabIndex(tabLabel)); // focus on tab we are wanting
+	}
+	
+	public static void createInactiveMemberTab(Object_MembershipList membership) {
+		System.out.println("Found inactive member");
+		String tabLabel= "MSID " + membership.getMsid();
 		if(!tabOpen(tabLabel)) 
 		tabPane.getTabs().add(new TabMembership(membership));
 		tabPane.getSelectionModel().select(getTabIndex(tabLabel)); // focus on tab we are wanting

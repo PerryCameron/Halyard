@@ -111,13 +111,13 @@ public class TabPeople extends Tab {
 	                 && event.getClickCount() == 2) {
 	                Object_Person clickedRow = row.getItem();
 					createTab(clickedRow.getMs_id());
-					System.out.println("clickedrow= " + clickedRow.getMs_id());
+					//System.out.println("clickedrow= " + clickedRow.getMs_id());
 	            }
 	            if (! row.isEmpty() && event.getButton()==MouseButton.PRIMARY 
 		                 && event.getClickCount() == 1) {
 		                Object_Person clickedRow = row.getItem();
 		                createPersonBox(clickedRow);
-						System.out.println("clickedrow= " + clickedRow.getP_id());
+						//System.out.println("clickedrow= " + clickedRow.getP_id());
 		        }
 	            
 	        });
@@ -142,14 +142,16 @@ public class TabPeople extends Tab {
 		
 		
 		personHBox.getChildren().clear();  // remove if exists
-		System.out.println("cleared the personHBox");
+		//System.out.println("cleared the personHBox");
 		personHBox.getChildren().add(new BoxPerson(person, membership,null)); // null is for tabpane not being used here.
 	}
 
 	private static void createTab(int msid)  {
 		Object_MembershipList membership = Sql_SelectMembership.getMembershipFromListWithoutMembershipId(msid);
-		//System.out.println("membership=" + membership);
-		Launcher.createTab(membership);
+		 if(!SqlSelect.isRenewed(msid, Paths.getYear()))
+		 Launcher.createInactiveMemberTab(membership);
+		 else
+		 Launcher.createActiveMembershipTab(membership);
 	}
 	
 	public void printPeople() {
