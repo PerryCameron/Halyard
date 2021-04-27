@@ -1,5 +1,7 @@
 package com.ecsail.gui.boxes;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -13,6 +15,7 @@ import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.SqlInsert;
 import com.ecsail.sql.SqlSelect;
 import com.ecsail.sql.SqlUpdate;
+import com.ecsail.structures.Object_MemLabels;
 import com.ecsail.structures.Object_MembershipId;
 import com.ecsail.structures.Object_MembershipList;
 
@@ -28,6 +31,8 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TablePosition;
@@ -41,12 +46,14 @@ import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
 public class BoxMemberID extends HBox {
-
+	Object_MembershipList membership;
+	private Object_MemLabels labels;
 	private TableView<Object_MembershipId> idTableView;
 	private ObservableList<Object_MembershipId> id;
-
-	public BoxMemberID(Object_MembershipList m) {
-
+    LocalDate date;
+    
+	public BoxMemberID(Object_MembershipList m, Object_MemLabels l) {
+		this.membership = m;
 		this.id = FXCollections.observableArrayList(new Callback<Object_MembershipId, Observable[]>() {
 			@Override
 			public Observable[] call(Object_MembershipId param) {
@@ -54,35 +61,48 @@ public class BoxMemberID extends HBox {
 			}
 		});
 		this.id.addAll(SqlSelect.getIds(m.getMsid()));
+		this.labels = l;
 		/////// OBJECT INSTANCE //////
-		HBox hboxButtons = new HBox(); // holds phone buttons
+		HBox hboxControls = new HBox(); // holds phone buttons
 		Button idAdd = new Button("Add");
 		Button idDelete = new Button("Delete");
 		VBox vboxGrey = new VBox(); // this is here for the grey background to make nice apperence
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
-
+		HBox hboxJoinDate = new HBox();
+		HBox hboxButtons = new HBox();
+		DatePicker joinDatePicker = new DatePicker();
+		
 		//// OBJECT ATTRIBUTES /////
+		hboxJoinDate.setAlignment(Pos.CENTER_LEFT);
+		hboxJoinDate.setSpacing(5);
+		hboxButtons.setSpacing(5);
 		idAdd.setPrefWidth(60);
 		idDelete.setPrefWidth(60);
-		hboxButtons.setSpacing(5); // spacing between buttons
-		//vboxGrey.setPrefWidth(500);
+		hboxControls.setSpacing(60); // spacing between buttons and joinDatePicker
+		vboxGrey.setPrefWidth(460);
 		vboxGrey.setSpacing(10); // spacing in between table and buttons
 		vboxGrey.setId("box-grey");
 		vboxPink.setId("box-pink");
 		vboxGrey.setPadding(new Insets(5, 5, 5, 5)); // spacing around table and buttons
 		vboxPink.setPadding(new Insets(2, 2, 2, 2)); // spacing to make pink fram around table
-		//vboxGrey.setStyle("-fx-background-color: #4d6955;");  //green
-		///// TABLEVIE INSTANCE CREATION AND ATTRIBUTES /////
-		// Collections.sort(id, (id1,id2) ->
-		//// id1.getFiscal_Year().compareTo(id2.getFiscal_Year()));
+		setPadding(new Insets(5, 5, 5, 5));  // creates space for blue frame
+		setId("box-blue");
+		
 		Collections.sort(id, Comparator.comparing(Object_MembershipId::getFiscal_Year).reversed());
 
 		idTableView = new TableView<Object_MembershipId>();
 		idTableView.setItems(id);
-		//idTableView.setPrefWidth(352);
-		idTableView.setPrefHeight(370);
+		idTableView.setPrefHeight(360);
 		idTableView.setFixedCellSize(30);
 		idTableView.setEditable(true);
+		
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        if(membership.getJoinDate() != null) {
+        date = LocalDate.parse(membership.getJoinDate(), formatter);
+        } else {
+        date = LocalDate.parse("1900-01-01", formatter);
+        }
+        joinDatePicker.setValue(date);
 
 		// example for this column found at
 		// https://gist.github.com/james-d/be5bbd6255a4640a5357#file-editcell-java-L109
@@ -102,7 +122,7 @@ public class BoxMemberID extends HBox {
 
 		TableColumn<Object_MembershipId, String> Col2 = createColumn("Mem ID",
 				Object_MembershipId::membership_idProperty);
-		Col2.setPrefWidth(40);
+		Col2.setPrefWidth(80);
 		Col2.setOnEditCommit(new EventHandler<CellEditEvent<Object_MembershipId, String>>() {
 			@Override
 			public void handle(CellEditEvent<Object_MembershipId, String> t) {
@@ -181,8 +201,8 @@ public class BoxMemberID extends HBox {
 			}
 		});
 		
-		TableColumn<Object_MembershipId, Boolean> Col5 = new TableColumn<Object_MembershipId, Boolean>("Late");
-		Col5.setPrefWidth(90);
+		TableColumn<Object_MembershipId, Boolean> Col5 = new TableColumn<Object_MembershipId, Boolean>("Renew Late");
+		Col5.setPrefWidth(100);
 		Col5.setCellValueFactory(
 				new Callback<CellDataFeatures<Object_MembershipId, Boolean>, ObservableValue<Boolean>>() {
 					@Override
@@ -217,6 +237,13 @@ public class BoxMemberID extends HBox {
 
 		/////////////////// LISTENERS //////////////////////////////
 
+		joinDatePicker.setOnAction((event -> {
+			LocalDate date = joinDatePicker.getValue();
+			SqlUpdate.updateMembership(membership.getMsid(), "JOIN_DATE", date);
+			membership.setJoinDate(joinDatePicker.getValue().toString());
+			labels.getJoinDate().setText(joinDatePicker.getValue().toString());
+		}));
+		
 		idAdd.setOnAction((event) -> {
 			int mid = SqlSelect.getCount("membership_id", "mid") + 1; // get last mid number add 1
 			Object_MembershipId newIdTuple = null;
@@ -239,10 +266,12 @@ public class BoxMemberID extends HBox {
 
 		/////////////////// SET CONTENT ///////////////////////
 
+		hboxJoinDate.getChildren().addAll(new Label("Join Date"), joinDatePicker);
+		hboxButtons.getChildren().addAll(idAdd, idDelete);
 		idTableView.getColumns().addAll(Arrays.asList(Col1, Col2, Col3, Col4, Col5));
 		vboxPink.getChildren().add(idTableView); // adds pink border around table
-		hboxButtons.getChildren().addAll(idAdd, idDelete); // lines buttons up vertically
-		vboxGrey.getChildren().addAll(hboxButtons,vboxPink);
+		hboxControls.getChildren().addAll(hboxJoinDate, hboxButtons); // lines buttons up vertically
+		vboxGrey.getChildren().addAll(hboxControls,vboxPink);
 		getChildren().add(vboxGrey);
 
 	} // end of constructor
