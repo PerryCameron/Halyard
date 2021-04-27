@@ -1,14 +1,10 @@
 package com.ecsail.gui.boxes;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import com.ecsail.main.Launcher;
 import com.ecsail.sql.SqlDelete;
 import com.ecsail.sql.SqlSelect;
-import com.ecsail.sql.SqlUpdate;
-import com.ecsail.structures.Object_MemLabels;
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Person;
 
@@ -21,7 +17,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.HBox;
@@ -30,12 +25,10 @@ import javafx.scene.layout.VBox;
 ///  this class is for the properties tab in membership view
 public class BoxProperties extends HBox {
 	private Object_MembershipList membership;
-	private Object_MemLabels labels;
 	//private TextField duesText;
-	public BoxProperties(Object_MembershipList m, Object_MemLabels l, Tab membershipTab) {
+	public BoxProperties(Object_MembershipList m, Tab membershipTab) {
 		super();
 		this.membership = m;
-		this.labels = l;
 		//this.duesText = dt;
 		//////////// OBJECTS ///////////////
 		HBox hboxGrey = new HBox();  // this is the vbox for organizing all the widgets
@@ -48,8 +41,6 @@ public class BoxProperties extends HBox {
         HBox hbox5 = new HBox();  // holds delete membership
 
 		Button removeMembershipButton = new Button("Delete");
-		//ComboBox<MemberType> combo_box = new ComboBox<MemberType>();
-		DatePicker joinDatePicker = new DatePicker();
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 
 		/////////////  ATTRIBUTES /////////////
@@ -62,15 +53,7 @@ public class BoxProperties extends HBox {
         hbox4.setAlignment(Pos.CENTER_LEFT);
         hbox5.setSpacing(5);  // membership HBox
         hbox5.setAlignment(Pos.CENTER_LEFT);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate date;
-        if(membership.getJoinDate() != null) {
-        date = LocalDate.parse(membership.getJoinDate(), formatter);
-        } else {
-        date = LocalDate.parse("1900-01-01", formatter);
-        }
-        joinDatePicker.setValue(date);
-        //combo_box.setValue(MemberType.getByCode(membership.getMemType()));
+
 		hboxGrey.setPadding(new Insets(5, 5, 5, 10));
 		hboxGrey.setPrefWidth(942);
 		leftVBox.setSpacing(10);
@@ -81,15 +64,7 @@ public class BoxProperties extends HBox {
 		//combo_box.getItems().setAll(MemberType.values());
 		
 		///////////// LISTENERS ////////////
-		EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent e) {
-				LocalDate date = joinDatePicker.getValue();
-				SqlUpdate.updateMembership(membership.getMsid(),"JOIN_DATE",date);
-				membership.setJoinDate(joinDatePicker.getValue().toString());
-		        labels.getJoinDate().setText(joinDatePicker.getValue().toString());
-			}
-		};
-		joinDatePicker.setOnAction(event);
+
 			
 		removeMembershipButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
@@ -109,7 +84,7 @@ public class BoxProperties extends HBox {
 		*/
 		///////////// SET CONTENT ////////////////////
 
-		hbox2.getChildren().addAll(new Label("Change join date:"),joinDatePicker);
+
 		//hbox4.getChildren().addAll(new Label("Membership Type"),combo_box);
 		hbox5.getChildren().addAll(new Label("Remove Membership"),removeMembershipButton);
 		leftVBox.getChildren().addAll(hbox2,hbox3,hbox5);
