@@ -4,6 +4,7 @@ import com.ecsail.gui.boxes.BoxAddPerson;
 import com.ecsail.gui.boxes.BoxAddress;
 import com.ecsail.gui.boxes.BoxAttachment;
 import com.ecsail.gui.boxes.BoxBoat;
+import com.ecsail.gui.boxes.BoxMemberID;
 import com.ecsail.gui.boxes.BoxPaymentList;
 import com.ecsail.gui.boxes.BoxMembership;
 import com.ecsail.gui.boxes.BoxNotes;
@@ -114,6 +115,7 @@ public class TabMembership extends Tab {
 			addDependentTabs(peopleTabPane);	
 		peopleTabPane.getTabs().add(new Tab("Add", new BoxAddPerson(peopleTabPane, note, membership)));
 		fiscalTabPane.getTabs().add(new Tab("Slip", new BoxSlip(membership, this)));
+		fiscalTabPane.getTabs().add(new Tab("History", new BoxMemberID(membership)));
 		fiscalTabPane.getTabs().add(new Tab("Payments", new BoxPaymentList(membership, fiscalTabPane, people, note, duesText)));
 		informationTabPane.getTabs().add(new Tab("Boats", new BoxBoat(membership)));
 		informationTabPane.getTabs().add(new Tab("Notes", new BoxNotes(note)));

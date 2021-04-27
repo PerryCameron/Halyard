@@ -55,23 +55,23 @@ public class BoxMemberID extends HBox {
 		});
 		this.id.addAll(SqlSelect.getIds(m.getMsid()));
 		/////// OBJECT INSTANCE //////
-		VBox vbox1 = new VBox(); // holds phone buttons
+		HBox hboxButtons = new HBox(); // holds phone buttons
 		Button idAdd = new Button("Add");
 		Button idDelete = new Button("Delete");
-		HBox hboxGrey = new HBox(); // this is here for the grey background to make nice apperence
+		VBox vboxGrey = new VBox(); // this is here for the grey background to make nice apperence
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
 
 		//// OBJECT ATTRIBUTES /////
 		idAdd.setPrefWidth(60);
 		idDelete.setPrefWidth(60);
-		vbox1.setSpacing(5); // spacing between buttons
-		hboxGrey.setPrefWidth(550);
-		hboxGrey.setSpacing(10); // spacing in between table and buttons
-		hboxGrey.setId("box-grey");
+		hboxButtons.setSpacing(5); // spacing between buttons
+		//vboxGrey.setPrefWidth(500);
+		vboxGrey.setSpacing(10); // spacing in between table and buttons
+		vboxGrey.setId("box-grey");
 		vboxPink.setId("box-pink");
-		hboxGrey.setPadding(new Insets(5, 5, 5, 5)); // spacing around table and buttons
+		vboxGrey.setPadding(new Insets(5, 5, 5, 5)); // spacing around table and buttons
 		vboxPink.setPadding(new Insets(2, 2, 2, 2)); // spacing to make pink fram around table
-
+		//vboxGrey.setStyle("-fx-background-color: #4d6955;");  //green
 		///// TABLEVIE INSTANCE CREATION AND ATTRIBUTES /////
 		// Collections.sort(id, (id1,id2) ->
 		//// id1.getFiscal_Year().compareTo(id2.getFiscal_Year()));
@@ -80,7 +80,7 @@ public class BoxMemberID extends HBox {
 		idTableView = new TableView<Object_MembershipId>();
 		idTableView.setItems(id);
 		//idTableView.setPrefWidth(352);
-		idTableView.setPrefHeight(140);
+		idTableView.setPrefHeight(370);
 		idTableView.setFixedCellSize(30);
 		idTableView.setEditable(true);
 
@@ -102,7 +102,7 @@ public class BoxMemberID extends HBox {
 
 		TableColumn<Object_MembershipId, String> Col2 = createColumn("Mem ID",
 				Object_MembershipId::membership_idProperty);
-		Col2.setPrefWidth(100);
+		Col2.setPrefWidth(40);
 		Col2.setOnEditCommit(new EventHandler<CellEditEvent<Object_MembershipId, String>>() {
 			@Override
 			public void handle(CellEditEvent<Object_MembershipId, String> t) {
@@ -241,9 +241,9 @@ public class BoxMemberID extends HBox {
 
 		idTableView.getColumns().addAll(Arrays.asList(Col1, Col2, Col3, Col4, Col5));
 		vboxPink.getChildren().add(idTableView); // adds pink border around table
-		vbox1.getChildren().addAll(idAdd, idDelete); // lines buttons up vertically
-		hboxGrey.getChildren().addAll(vboxPink, vbox1);
-		getChildren().add(hboxGrey);
+		hboxButtons.getChildren().addAll(idAdd, idDelete); // lines buttons up vertically
+		vboxGrey.getChildren().addAll(hboxButtons,vboxPink);
+		getChildren().add(vboxGrey);
 
 	} // end of constructor
 

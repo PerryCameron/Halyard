@@ -510,7 +510,7 @@ public class Sql_SelectMembership {
 					+ "select membership_id from membership_id where FISCAL_YEAR='" + year + "' and MS_ID=("
 					+ "select MS_ID from membership_id where FISCAL_YEAR='" + lastYear + "' and membership_id=("
 					+ "select max(membership_id) from membership_id where FISCAL_YEAR='" + lastYear + "' and membership_id < 500 and id.renew=1))) "
-					+ " and id.MEMBERSHIP_ID < 500;"));
+					+ " and id.LATE_RENEW=false and id.MEMBERSHIP_ID < 500;"));
 			while (rs.next()) {
 				rosters.add(new Object_MembershipList(
 						rs.getInt("MS_ID"), 

@@ -27,6 +27,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+///  this class is for the properties tab in membership view
 public class BoxProperties extends HBox {
 	private Object_MembershipList membership;
 	private Object_MemLabels labels;
@@ -113,7 +114,7 @@ public class BoxProperties extends HBox {
 		hbox5.getChildren().addAll(new Label("Remove Membership"),removeMembershipButton);
 		leftVBox.getChildren().addAll(hbox2,hbox3,hbox5);
 		//centerVBox.getChildren().addAll(hbox5);
-		rightVBox.getChildren().addAll(new BoxMemberID(membership));
+		//rightVBox.getChildren().addAll(new BoxMemberID(membership));
 		hboxGrey.getChildren().addAll(leftVBox,rightVBox);
 		getChildren().add(hboxGrey);
 	}
