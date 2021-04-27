@@ -356,7 +356,7 @@ public class ConnectDatabase {
         
         // exits program 
         cancelButton1.setOnAction((event) -> System.exit(0));
-        
+
         /////////////// SET CONTENT /////////////////////
 		logonStage.getIcons().add(mainIcon);
 		
@@ -520,4 +520,14 @@ public class ConnectDatabase {
 	public void setConnectionSucess(boolean connectionSucess) {
 		this.connectionSucess = connectionSucess;
 	}
+
+	public static Connection getConnection() {
+		return connection;
+	}
+
+	public static void setConnection(Connection connection) {
+		ConnectDatabase.connection = connection;
+	}
+	
+	
 }

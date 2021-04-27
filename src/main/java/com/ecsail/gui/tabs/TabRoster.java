@@ -55,7 +55,7 @@ public class TabRoster extends Tab {
 		this.rb = new Object_RosterRadioButtons();
 		this.printChoices = new Object_RosterSelect(sy, false, false, true, false, false, false, false, true, true, true, false,
 				false, false, false, false, false, false, false, false, false);
-		System.out.println("size=" + rosters.size());
+		//System.out.println("size=" + rosters.size());
 
 		/////////////////// OBJECTS //////////////////////////
 		VBox vbox1 = new VBox();
@@ -284,7 +284,7 @@ public class TabRoster extends Tab {
 			public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected,
 					Boolean isNowSelected) {
 				if (isNowSelected) {
-					System.out.println("you selected all");
+					//System.out.println("you selected all");
 					setListType("all");
 					rosters.clear();
 					rosters.addAll(Sql_SelectMembership.getRosterOfAll(selectedYear));
@@ -530,7 +530,7 @@ public class TabRoster extends Tab {
 			printChoices.setNewMembers(false);
 			printChoices.setNewAndReturnd(false);
 			printChoices.setSlipwait(false);
-			System.out.println("All was chosen");
+			//System.out.println("All was chosen");
 		case "active":
 			printChoices.setAll(false);
 			printChoices.setActive(true);
@@ -538,7 +538,7 @@ public class TabRoster extends Tab {
 			printChoices.setNewMembers(false);
 			printChoices.setNewAndReturnd(false);
 			printChoices.setSlipwait(false);
-			System.out.println("Active was chosen");
+			//System.out.println("Active was chosen");
 			break;
 		case "non-renew":
 			printChoices.setAll(false);

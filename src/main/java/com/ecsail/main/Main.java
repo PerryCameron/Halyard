@@ -23,7 +23,7 @@ import javafx.stage.WindowEvent;
 
 
 public class Main extends Application {
-static ConnectDatabase connect;
+static ConnectDatabase connect;  // mysql connection
 public static Object_TupleCount edits = new Object_TupleCount();
 public static ObservableList<Object_MembershipList> activememberships;
 public static String selectedYear; 
@@ -65,7 +65,11 @@ public static void main(String[] args) throws SQLException {
 					@Override
 					public void run() {
 						System.out.println("Application Closed by click to Close Button(X)");
+						//close MySql connection
 						connect.close();
+						// close ssh Tunnel connection
+
+						
 						System.exit(0);
 					}
 				});

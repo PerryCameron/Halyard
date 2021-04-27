@@ -65,7 +65,7 @@ public class BoxMemberID extends HBox {
 		idAdd.setPrefWidth(60);
 		idDelete.setPrefWidth(60);
 		vbox1.setSpacing(5); // spacing between buttons
-		hboxGrey.setPrefWidth(480);
+		hboxGrey.setPrefWidth(550);
 		hboxGrey.setSpacing(10); // spacing in between table and buttons
 		hboxGrey.setId("box-grey");
 		vboxPink.setId("box-pink");
@@ -79,7 +79,7 @@ public class BoxMemberID extends HBox {
 
 		idTableView = new TableView<Object_MembershipId>();
 		idTableView.setItems(id);
-		idTableView.setPrefWidth(352);
+		//idTableView.setPrefWidth(352);
 		idTableView.setPrefHeight(140);
 		idTableView.setFixedCellSize(30);
 		idTableView.setEditable(true);
@@ -100,7 +100,7 @@ public class BoxMemberID extends HBox {
 			}
 		});
 
-		TableColumn<Object_MembershipId, String> Col2 = createColumn("Membership ID",
+		TableColumn<Object_MembershipId, String> Col2 = createColumn("Mem ID",
 				Object_MembershipId::membership_idProperty);
 		Col2.setPrefWidth(100);
 		Col2.setOnEditCommit(new EventHandler<CellEditEvent<Object_MembershipId, String>>() {
@@ -154,7 +154,7 @@ public class BoxMemberID extends HBox {
 					@Override
 					public ObservableValue<Boolean> call(CellDataFeatures<Object_MembershipId, Boolean> param) {
 						Object_MembershipId id = param.getValue();
-						SimpleBooleanProperty booleanProp = new SimpleBooleanProperty(id.isIsRenew());
+						SimpleBooleanProperty booleanProp = new SimpleBooleanProperty(id.isRenew());
 						// Note: singleCol.setOnEditCommit(): Not work for
 						// CheckBoxTableCell.
 						// When "isListed?" column change.
@@ -180,6 +180,40 @@ public class BoxMemberID extends HBox {
 				return cell;
 			}
 		});
+		
+		TableColumn<Object_MembershipId, Boolean> Col5 = new TableColumn<Object_MembershipId, Boolean>("Late");
+		Col5.setPrefWidth(90);
+		Col5.setCellValueFactory(
+				new Callback<CellDataFeatures<Object_MembershipId, Boolean>, ObservableValue<Boolean>>() {
+					@Override
+					public ObservableValue<Boolean> call(CellDataFeatures<Object_MembershipId, Boolean> param) {
+						Object_MembershipId id = param.getValue();
+						SimpleBooleanProperty booleanProp = new SimpleBooleanProperty(id.isLateRenew());
+						// Note: singleCol.setOnEditCommit(): Not work for
+						// CheckBoxTableCell.
+						// When "isListed?" column change.
+						booleanProp.addListener(new ChangeListener<Boolean>() {
+							@Override
+							public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue,
+									Boolean newValue) {
+								id.setIsLateRenew(newValue);
+
+								SqlUpdate.updateMembershipId(id.getMid(), "LATE_RENEW", newValue);
+							}
+						});
+						return booleanProp;
+					}
+				});
+ 
+		Col5.setCellFactory(new Callback<TableColumn<Object_MembershipId, Boolean>, //
+				TableCell<Object_MembershipId, Boolean>>() {
+			@Override
+			public TableCell<Object_MembershipId, Boolean> call(TableColumn<Object_MembershipId, Boolean> p) {
+				CheckBoxTableCell<Object_MembershipId, Boolean> cell = new CheckBoxTableCell<Object_MembershipId, Boolean>();
+				cell.setAlignment(Pos.CENTER);
+				return cell;
+			}
+		});
 
 		/////////////////// LISTENERS //////////////////////////////
 
@@ -187,10 +221,10 @@ public class BoxMemberID extends HBox {
 			int mid = SqlSelect.getCount("membership_id", "mid") + 1; // get last mid number add 1
 			Object_MembershipId newIdTuple = null;
 			if (SqlExists.memberShipIdExists(m.getMsid())) {
-				newIdTuple = new Object_MembershipId(mid, 0 + "", m.getMsid(), "0", true, m.getMemType(), false);
+				newIdTuple = new Object_MembershipId(mid, 0 + "", m.getMsid(), "0", true, m.getMemType(), false, false);
 			} else {
 				newIdTuple = new Object_MembershipId(mid, Paths.getYear(), m.getMsid(), "0", true, m.getMemType(),
-						false);
+						false, false);
 			}
 			SqlInsert.addMembershipId(newIdTuple);
 			id.add(newIdTuple);
@@ -205,7 +239,7 @@ public class BoxMemberID extends HBox {
 
 		/////////////////// SET CONTENT ///////////////////////
 
-		idTableView.getColumns().addAll(Arrays.asList(Col1, Col2, Col3, Col4));
+		idTableView.getColumns().addAll(Arrays.asList(Col1, Col2, Col3, Col4, Col5));
 		vboxPink.getChildren().add(idTableView); // adds pink border around table
 		vbox1.getChildren().addAll(idAdd, idDelete); // lines buttons up vertically
 		hboxGrey.getChildren().addAll(vboxPink, vbox1);

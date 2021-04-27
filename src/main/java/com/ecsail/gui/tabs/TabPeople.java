@@ -154,18 +154,18 @@ public class TabPeople extends Tab {
 		 Launcher.createActiveMembershipTab(membership);
 	}
 	
-	public void printPeople() {
-	      for (Object_Person num : people) { 		      
-	           System.out.println(num); 		
-	      }
-	}
+	//public void printPeople() {
+	//      for (Object_Person num : people) { 		      
+	//           System.out.println(num); 		
+	//      }
+	//}
 	
 	public Object_Person getPersonByPid(int pid) {
 		int index = 0;
 		int count = 0;
 		for(Object_Person person : people) {
 			if(person.getP_id() == pid) {
-				System.out.println("Found pid " + pid);
+				//System.out.println("Found pid " + pid);
 				index = count; 
 			}
 			count++;
@@ -178,7 +178,7 @@ public class TabPeople extends Tab {
 		int count = 0;
 		for(Object_Person person : people) {
 			if(person.getP_id() == pid) {
-				System.out.println("Found pid " + pid);
+				//System.out.println("Found pid " + pid);
 				index = count; 
 			}
 			count++;
@@ -194,7 +194,7 @@ public class TabPeople extends Tab {
 		Matcher m = p.matcher(o.getLname());
 		
 			while(m.find()) {
-				System.out.println(m.group() + " found on row " + count);
+				//System.out.println(m.group() + " found on row " + count);
 				if(flag) {
 					pick = count;
 					flag = false;

@@ -13,9 +13,10 @@ public class Object_MembershipId {
 	private SimpleBooleanProperty isRenew;
 	private SimpleStringProperty mem_type;
 	private SimpleBooleanProperty selected;
+	private SimpleBooleanProperty isLateRenew;
 	
 	public Object_MembershipId(Integer mid, String fiscal_Year, Integer ms_id, String membership_id, 
-		 Boolean isRenew, String mem_type, Boolean selected) {
+		 Boolean isRenew, String mem_type, Boolean selected, Boolean isLateRenew) {
 		this.mid = new SimpleIntegerProperty(mid);
 		this.fiscal_Year = new SimpleStringProperty(fiscal_Year);
 		this.ms_id = new SimpleIntegerProperty(ms_id);
@@ -23,6 +24,7 @@ public class Object_MembershipId {
 		this.isRenew = new SimpleBooleanProperty(isRenew);
 		this.mem_type = new SimpleStringProperty(mem_type);
 		this.selected = new SimpleBooleanProperty(selected);
+		this.isLateRenew = new SimpleBooleanProperty(isLateRenew);
 	}
 
 	public final IntegerProperty midProperty() {
@@ -90,7 +92,7 @@ public class Object_MembershipId {
 	}
 	
 
-	public final boolean isIsRenew() {
+	public final boolean isRenew() {
 		return this.isRenewProperty().get();
 	}
 	
@@ -127,6 +129,20 @@ public class Object_MembershipId {
 
 	public final void setSelected(final boolean selected) {
 		this.selectedProperty().set(selected);
+	}
+
+	public final SimpleBooleanProperty isLateRenewProperty() {
+		return this.isLateRenew;
+	}
+	
+
+	public final boolean isLateRenew() {
+		return this.isLateRenewProperty().get();
+	}
+	
+
+	public final void setIsLateRenew(final boolean isLateRenew) {
+		this.isLateRenewProperty().set(isLateRenew);
 	}
 	
 }

@@ -605,7 +605,7 @@ public class SqlSelect {
 	}	
 	
 	public static String getEmail(Object_Person person) {
-		System.out.println(person);
+		//System.out.println(person);
 		Object_Email email = null;
 		String returnEmail = "";
 		try {
@@ -736,7 +736,8 @@ public class SqlSelect {
 						, rs.getString("MEMBERSHIP_ID")
 						, rs.getBoolean("RENEW")
 						, rs.getString("MEM_TYPE")
-						, rs.getBoolean("SELECTED")));
+						, rs.getBoolean("SELECTED")
+						, rs.getBoolean("LATE_RENEW")));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -758,7 +759,8 @@ public class SqlSelect {
 						, rs.getString("MEMBERSHIP_ID")
 						, rs.getBoolean("RENEW")
 						, rs.getString("MEM_TYPE")
-						, rs.getBoolean("SELECTED")));
+						, rs.getBoolean("SELECTED")
+						, rs.getBoolean("LATE_RENEW")));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -780,7 +782,8 @@ public class SqlSelect {
 						, rs.getString("MEMBERSHIP_ID")
 						, rs.getBoolean("RENEW")
 						, rs.getString("MEM_TYPE")
-						, rs.getBoolean("SELECTED"));
+						, rs.getBoolean("SELECTED")
+						, rs.getBoolean("LATE_RENEW"));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -1090,7 +1093,8 @@ public class SqlSelect {
 					rs.getString("MEMBERSHIP_ID"),
 					rs.getBoolean("RENEW"),
 					rs.getString("MEM_TYPE"),
-					rs.getBoolean("SELECTED")));
+					rs.getBoolean("SELECTED"),
+				    rs.getBoolean("LATE_RENEW")));
 		}
 		stmt.close();
 		} catch (SQLException e) {
@@ -1222,7 +1226,8 @@ public class SqlSelect {
 			, rs.getString("MAX(MEMBERSHIP_ID)")
 			, rs.getBoolean("RENEW")
 			, rs.getString("MEM_TYPE")
-			, rs.getBoolean("SELECTED"));
+			, rs.getBoolean("SELECTED")
+			, rs.getBoolean("LATE_RENEW"));
 			};
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -1570,7 +1575,7 @@ public class SqlSelect {
 			// TODO Auto-generated catch block
 			e.printStackTrace();		
 		}
-		System.out.println("For year " + year +  " ms_id=" + ms_id + " they are " + id);
+		//System.out.println("For year " + year +  " ms_id=" + ms_id + " they are " + id);
 		return id;
 		
 	}
@@ -1731,7 +1736,7 @@ public class SqlSelect {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println(number);
+		//System.out.println(number);
 		return number;
 	}
 	
@@ -1748,7 +1753,7 @@ public class SqlSelect {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println(number);
+		//System.out.println(number);
 		return number;
 	}
 	

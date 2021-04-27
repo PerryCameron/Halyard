@@ -194,7 +194,7 @@ public class SqlInsert {
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			stmt.execute(Main.console.setRegexColor("INSERT INTO membership_id () VALUES (" + id.getMid() + ",'" + id.getFiscal_Year() + "','" + id.getMs_id() 
-			+ "'," + id.getMembership_id() + "," + id.isIsRenew() + ",'" + id.getMem_type()+ "'," + id.isSelected() + ");"));
+			+ "'," + id.getMembership_id() + "," + id.isRenew() + ",'" + id.getMem_type()+ "'," + id.isSelected() + ");"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -227,9 +227,10 @@ public class SqlScriptMaker {
 		+ mid.getFiscal_Year() + "," // stored as integer in database
 		+ mid.getMs_id() + ","
 		+ mid.getMembership_id() + ","
-		+ mid.isIsRenew() + ","
+		+ mid.isRenew() + ","
 		+ getCorrectString(mid.getMem_type()) + ","
-		+ mid.isSelected()
+		+ mid.isSelected() + ","
+		+ mid.isLateRenew()
 		+ ");\n"; //stored as integer in database
 	}
 	
