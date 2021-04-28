@@ -2,6 +2,7 @@ package com.ecsail.main;
 
 import java.util.ArrayList;
 
+import com.ecsail.gui.dialogues.Dialogue_StatisticsStatusBar;
 import com.ecsail.sql.SqlDelete;
 import com.ecsail.sql.SqlInsert;
 import com.ecsail.sql.SqlSelect;
@@ -24,7 +25,7 @@ public class Statistics {
 		stats = SqlSelect.getStatistics();
 	}
 
-	public static void updateStats() {
+	public static void updateStats(Dialogue_StatisticsStatusBar statBar) {
 			int statId = 0;
 			int selectedYear = 2000;
 			Object_Stats stats;
