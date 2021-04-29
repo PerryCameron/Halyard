@@ -47,6 +47,20 @@ public class SqlExists {
 		return answer;
 	}
 	
+	public static Boolean memoExists(int money_id) {
+		Boolean answer = false;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT EXISTS(SELECT * FROM memo WHERE MONEY_ID=" + money_id + ");"));
+			rs.next();
+		    answer = rs.getBoolean("EXISTS(SELECT * FROM memo WHERE MONEY_ID=" + money_id + ")");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return answer;
+	}
+	
 	public static Boolean statRecordExists(int fiscal_year) {
 		Boolean recordExists = false;
 		try {

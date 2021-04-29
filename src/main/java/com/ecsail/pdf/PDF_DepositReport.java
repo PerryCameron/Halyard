@@ -271,6 +271,8 @@ public class PDF_DepositReport {
 	}
 	
 	private String getOtherNote(Object_PaidDues dues) {
+		System.out.println(dues.getF_name() + " " + dues.getL_name());
+		System.out.println(dues);
 		return SqlSelect.getMemos(dues).getMemo();
 	}
 	

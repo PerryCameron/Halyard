@@ -7,6 +7,7 @@ public enum MembershipType {
 	   LAKEASS("LA", "Lake Associate"),
 	   LIFEMEM("LM", "Life Member"),
 	   STUDENT("SM", "Student"),
+	   RACEFELLOW("RF", "Race Fellow"),
 	   NONRENE("NR", "Non-Renew")
 	   ;
 	 

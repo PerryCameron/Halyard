@@ -258,7 +258,12 @@ public class BoxFiscal extends HBox {
             		SqlUpdate.updateMembershipId(fiscals.get(rowIndex).getMs_id(), fiscals.get(rowIndex).getFiscal_year(), textFields.getRenewCheckBox().isSelected());
             		fiscals.get(rowIndex).setCommitted(true);
             		addPaidNote(date);
-            		if(fiscals.get(rowIndex).getOther() != 0) note.add("Other expense: ",date,fiscals.get(rowIndex).getMoney_id(),"O");
+            		// if we put an amount in other we need to make a note
+            		if(fiscals.get(rowIndex).getOther() != 0) {
+            			// make sure the memo dosen't already exist
+            			if(!SqlExists.memoExists(fiscals.get(rowIndex).getMoney_id())) 
+            			note.add("Other expense: ",date,fiscals.get(rowIndex).getMoney_id(),"O");
+            		}
             		setEditable(false);
             	} else {
 				setEditable(true);

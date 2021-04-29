@@ -684,6 +684,7 @@ public class SqlSelect {
 	
 	public static Object_Memo getMemos(Object_PaidDues dues) {
 		String query = "select * from memo where money_id=" + dues.getMoney_id();
+		System.out.println("select * from memo where money_id=" + dues.getMoney_id());
 		Object_Memo thisMemo = null;
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
@@ -702,6 +703,7 @@ public class SqlSelect {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		System.out.println(thisMemo);
 		return thisMemo;
 	}
 	
