@@ -319,6 +319,7 @@ public class Sql_SelectMembership {
 	}
 	
 	public static Object_MembershipList getMembershipFromList(int ms_id, String year) {
+		System.out.println("Pulling membership for ms_id=" + ms_id + " for the year year");
 		Object_MembershipList thisMembership = null;
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
