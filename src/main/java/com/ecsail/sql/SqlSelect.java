@@ -703,7 +703,7 @@ public class SqlSelect {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println(thisMemo);
+		//System.out.println(thisMemo);
 		return thisMemo;
 	}
 	

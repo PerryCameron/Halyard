@@ -373,7 +373,7 @@ public class BoxSlip extends HBox {
 
 		text.setOnMouseClicked(e -> {
 			if (e.getClickCount() == 1)  {
-					Launcher.createTab(msid);
+					Launcher.createTabForBoxSlip(msid);
 			}
 		});
 	}

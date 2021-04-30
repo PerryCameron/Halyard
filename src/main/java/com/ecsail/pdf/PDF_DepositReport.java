@@ -10,11 +10,13 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import com.ecsail.main.Paths;
+import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.SqlSelect;
 import com.ecsail.structures.Object_DefinedFee;
 import com.ecsail.structures.Object_Deposit;
 import com.ecsail.structures.Object_DepositPDF;
 import com.ecsail.structures.Object_DepositSummary;
+import com.ecsail.structures.Object_Memo;
 import com.ecsail.structures.Object_PaidDues;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.colors.ColorConstants;
@@ -271,9 +273,16 @@ public class PDF_DepositReport {
 	}
 	
 	private String getOtherNote(Object_PaidDues dues) {
-		System.out.println(dues.getF_name() + " " + dues.getL_name());
-		System.out.println(dues);
-		return SqlSelect.getMemos(dues).getMemo();
+		String thisMemo = null;
+		System.out.println("Getting memo for " + dues.getF_name() + " " + dues.getL_name());
+		System.out.println("Money ID=" + dues.getMoney_id());
+		// make sure the memo exists
+		if(SqlExists.memoExists(dues.getMoney_id())) {
+		thisMemo = SqlSelect.getMemos(dues).getMemo();
+		} else {
+		thisMemo = "No note for this entry";
+		}
+		return thisMemo;
 	}
 	
 	int retrunWetSlipNumber(int numberOf) {

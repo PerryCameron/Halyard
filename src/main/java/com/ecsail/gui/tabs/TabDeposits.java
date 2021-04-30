@@ -270,12 +270,12 @@ public class TabDeposits extends Tab {
 			row.setOnMouseClicked(event -> {
 				if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
 					Object_PaidDues clickedRow = row.getItem();
-
-					Launcher.createTab(clickedRow.getMs_id());
+					System.out.println("TabDeposits: membership=" + clickedRow.toString());
+					Launcher.createTabForDeposits(clickedRow.getMs_id(), selectedYear);
 				}
 			});
 			return row;
-		});
+		});  // different for accounts that are not active any more
 
 		refreshButton.setOnAction((event) -> {
 			paidDues.clear();

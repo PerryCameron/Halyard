@@ -576,6 +576,6 @@ public class TabRoster extends Tab {
 	}
 
 	private static void createTab(Object_MembershipList clickedRow) {
-		Launcher.createTab(clickedRow.getMembershipId(), clickedRow.getMsid());
+		Launcher.createMembershipTabForRoster(clickedRow.getMembershipId(), clickedRow.getMsid());
 	}
 }
