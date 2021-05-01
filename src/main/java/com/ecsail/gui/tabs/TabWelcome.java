@@ -30,7 +30,7 @@ public class TabWelcome extends Tab {
 		
 		Main.getPrimaryStage().heightProperty().addListener((obs, oldVal, newVal) -> {
 			 //System.out.println((double)newVal);
-			 System.out.println(vboxPink.getHeight());
+			// System.out.println(vboxPink.getHeight());
 			 vboxPink.setPrefHeight(686 + (double)newVal - 796);// 570 is start height
 		});
 		

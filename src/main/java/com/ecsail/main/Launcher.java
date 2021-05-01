@@ -28,6 +28,7 @@ import javafx.scene.layout.Pane;
 
 public class Launcher extends Pane {
 static TabPane tabPane;
+
 //private ObservableList<Object_MembershipList> activememberships;
 
 	public Launcher() { 

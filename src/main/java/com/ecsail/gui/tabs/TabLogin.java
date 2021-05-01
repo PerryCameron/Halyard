@@ -1,5 +1,7 @@
 package com.ecsail.gui.tabs;
 
+import com.ecsail.main.Main;
+
 import javafx.geometry.Insets;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.HBox;
@@ -9,7 +11,8 @@ public class TabLogin extends Tab {
 
 	public TabLogin(String text) {
 		super(text);
-		
+		double stageHeight = Main.getPrimaryStage().getHeight();
+		double titleBarHeight = Main.getPrimaryStage().getHeight() - Main.getPrimaryScene().getHeight();
 		VBox inner = new VBox();
 		HBox vboxGrey = new HBox();  // this is the vbox for organizing all the widgets
 		VBox vboxBlue = new VBox();
@@ -20,7 +23,9 @@ public class TabLogin extends Tab {
 		vboxPink.setPadding(new Insets(3,3,3,3)); // spacing to make pink from around table
 		vboxPink.setId("box-pink");
 		//vboxGrey.setId("slip-box");
-		vboxGrey.setPrefHeight(688);
+		vboxBlue.setPrefHeight(Main.getPrimaryScene().getHeight() - titleBarHeight);
+		vboxGrey.setPrefHeight(700);
+		//vboxGrey.setPrefHeight(688);
 		vboxGrey.setPrefWidth(1003);
 
 		vboxPink.setPrefHeight(686);
@@ -28,6 +33,7 @@ public class TabLogin extends Tab {
 		vboxBlue.getChildren().add(vboxPink);
 		vboxPink.getChildren().add(vboxGrey);
 		setContent(vboxBlue);
+		System.out.println("stage="+stageHeight+" titleBar="+ titleBarHeight+ " scene=" + Main.getPrimaryScene().getHeight());
 		
 	}
 	

@@ -394,8 +394,14 @@ public class ConnectDatabase {
 		loginPane.getChildren().add(vboxBlue);
 		logonStage.setScene(secondScene);
 		logonStage.show();
+		float windowsOffsetHeight = 0.0f;
+		if(Paths.isWindows()) {
+			windowsOffsetHeight = -10.0f;
+			vboxBlue.setPrefWidth(width - windowsOffsetHeight);
+		}
+		System.out.println(Paths.getOperatingSystem());
 		this.titleBarHeight = logonStage.getHeight() - secondScene.getHeight();
-		logonStage.setHeight(vboxBlue.getHeight() + titleBarHeight);
+		logonStage.setHeight(vboxBlue.getHeight() + titleBarHeight + windowsOffsetHeight);
 		logonStage.setResizable(false);
 	}
 	
