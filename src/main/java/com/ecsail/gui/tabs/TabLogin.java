@@ -34,7 +34,8 @@ public class TabLogin extends Tab {
 		vboxPink.getChildren().add(vboxGrey);
 		setContent(vboxBlue);
 		System.out.println("stage="+stageHeight+" titleBar="+ titleBarHeight+ " scene=" + Main.getPrimaryScene().getHeight());
-		
+		System.out.println("vboxBlue="+vboxBlue.getHeight()+" vboxPink="+ vboxPink.getHeight()+ " vBoxGrey=" + vboxGrey.getHeight());
+
 	}
 	
 }
