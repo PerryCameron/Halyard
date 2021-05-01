@@ -28,7 +28,7 @@ public class TabLogin extends Tab {
 		//vboxGrey.setPrefHeight(688);
 		vboxGrey.setPrefWidth(1003);
 
-		vboxPink.setPrefHeight(686);
+		vboxPink.setPrefHeight(695);
 		vboxGrey.getChildren().add(inner);
 		vboxBlue.getChildren().add(vboxPink);
 		vboxPink.getChildren().add(vboxGrey);
