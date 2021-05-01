@@ -33,6 +33,7 @@ public static BoxConsole console;
 private static Stage pStage;
 private static Scene mainScene;
 static String ipaddress;
+VBox toolbar = new BoxToolBar();
 
 public static void main(String[] args) throws SQLException {
 	System.out.println("Starting application...");
@@ -52,7 +53,7 @@ public static void main(String[] args) throws SQLException {
 		mainViewPane = new Launcher();  // This one is for a single membership
 		pStage = primaryStage;
 		Pane topPane = new Pane();
-		VBox toolbar = new BoxToolBar();
+		//VBox toolbar = new BoxToolBar();
 		
 		//////////////////  OBJECTS  //////////////////////
 		Main.mainScene = new Scene(root, 1028, 768, Color.WHITE);
@@ -98,7 +99,9 @@ public static void main(String[] args) throws SQLException {
 	
 	//////////////  CLASS METHODS //////////////////////
 
-	
+	public static double getToolBarHeight() {
+		return 10;
+	}
 	
 	public static Window getPrimaryStage() {  // this is used for alerts
 		return pStage;

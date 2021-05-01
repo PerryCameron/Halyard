@@ -23,8 +23,8 @@ public class TabLogin extends Tab {
 		vboxPink.setPadding(new Insets(3,3,3,3)); // spacing to make pink from around table
 		vboxPink.setId("box-pink");
 		//vboxGrey.setId("slip-box");
-		vboxBlue.setPrefHeight(Main.getPrimaryScene().getHeight() - titleBarHeight -10);
-		vboxGrey.setPrefHeight(700);
+		vboxBlue.setPrefHeight(Main.getPrimaryScene().getHeight() - titleBarHeight - Main.getToolBarHeight());
+		//vboxGrey.setPrefHeight(700);
 		//vboxGrey.setPrefHeight(688);
 		vboxGrey.setPrefWidth(1003);
 
