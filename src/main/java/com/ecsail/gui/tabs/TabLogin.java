@@ -1,6 +1,7 @@
 package com.ecsail.gui.tabs;
 
 import com.ecsail.main.Main;
+import com.ecsail.main.Paths;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Tab;
@@ -22,10 +23,10 @@ public class TabLogin extends Tab {
 		vboxBlue.setPadding(new Insets(10,10,10,10));
 		vboxPink.setPadding(new Insets(3,3,3,3)); // spacing to make pink from around table
 		vboxPink.setId("box-pink");
-		//vboxGrey.setId("slip-box");
+		if(Paths.isWindows())
 		vboxBlue.setPrefHeight(Main.getPrimaryScene().getHeight() - titleBarHeight - Main.getToolBarHeight());
-		//vboxGrey.setPrefHeight(700);
-		//vboxGrey.setPrefHeight(688);
+		else
+		vboxBlue.setPrefHeight(Main.getPrimaryScene().getHeight() - titleBarHeight - Main.getToolBarHeight() -24);
 		vboxGrey.setPrefWidth(1003);
 
 		vboxPink.setPrefHeight(695);
