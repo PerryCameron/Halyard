@@ -4,6 +4,8 @@ import com.ecsail.charts.MembershipLineChart;
 import com.ecsail.charts.MembershipStackedBarChart;
 import com.ecsail.gui.boxes.BoxWelcome;
 import com.ecsail.main.Main;
+import com.ecsail.main.Paths;
+
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.scene.control.Tab;
@@ -14,7 +16,8 @@ public class TabWelcome extends Tab {
 	public TabWelcome(BoxWelcome boxWelcome) {  // check boxWelcome
 		super();
 		setText("Welcome");
-		
+		double stageHeight = Main.getPrimaryStage().getHeight();
+		double titleBarHeight = Main.getPrimaryStage().getHeight() - Main.getPrimaryScene().getHeight();
 		VBox vboxBlue = new VBox();
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
 		
@@ -24,9 +27,11 @@ public class TabWelcome extends Tab {
 		vboxPink.setId("box-pink");
 		vboxBlue.setPrefWidth(1028);
 		boxWelcome.setPrefHeight(680);
-		// vboxGrey.setPrefHeight(688)
-		vboxPink.setMaxHeight(1000);
-		vboxPink.setPrefHeight(686);
+		if(Paths.isWindows())
+		vboxBlue.setPrefHeight(Main.getPrimaryScene().getHeight() - titleBarHeight - Main.getToolBarHeight());
+		else
+		vboxBlue.setPrefHeight(Main.getPrimaryScene().getHeight() - titleBarHeight - Main.getToolBarHeight() -24);
+		vboxPink.setPrefHeight(695);
 		
 		Main.getPrimaryStage().heightProperty().addListener((obs, oldVal, newVal) -> {
 			 //System.out.println((double)newVal);
