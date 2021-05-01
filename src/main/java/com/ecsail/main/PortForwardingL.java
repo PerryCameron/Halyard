@@ -12,7 +12,7 @@ public class PortForwardingL {
 
 		try {
 			JSch jsch = new JSch();
-			jsch.setKnownHosts("/Users/parrishcameron/.ssh/known_hosts");
+			jsch.setKnownHosts(System.getProperty("user.home") + "/.ssh/known_hosts");
 
 			HostKeyRepository hkr = jsch.getHostKeyRepository();
 			HostKey[] hks = hkr.getHostKey();
