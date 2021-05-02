@@ -16,7 +16,6 @@ import com.ecsail.structures.Object_DefinedFee;
 import com.ecsail.structures.Object_Deposit;
 import com.ecsail.structures.Object_DepositPDF;
 import com.ecsail.structures.Object_DepositSummary;
-import com.ecsail.structures.Object_Memo;
 import com.ecsail.structures.Object_PaidDues;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.colors.ColorConstants;

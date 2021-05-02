@@ -69,26 +69,31 @@ static TabPane tabPane;
 	}
 	
 	public static void openBoatsTab() {
+		if(!tabOpen("Boats"))
 		tabPane.getTabs().add(new TabBoats("Boats"));
 		tabPane.getSelectionModel().select(getTabIndex("Boats"));
 	}
 	
 	public static void openNotesTab() {
+		if(!tabOpen("Notes"))
 		tabPane.getTabs().add(new TabNotes("Notes"));
 		tabPane.getSelectionModel().select(getTabIndex("Notes"));
 	}
 	
 	public static void openPeopleTab() {
+		if(!tabOpen("People"))
 		tabPane.getTabs().add(new TabPeople("People"));
-		tabPane.getSelectionModel().select(getTabIndex("People List"));
+		tabPane.getSelectionModel().select(getTabIndex("People"));
 	}
 	
 	public static void openFeeTab() {
+		System.out.println("this is the defined fee tab");
 		tabPane.getTabs().add(new TabDefinedFee("Fees"));
 		tabPane.getSelectionModel().select(getTabIndex("Fees"));
 	}
 	
 	public static void openSlipsTab() {
+		if(!tabOpen("Slips"))
 		tabPane.getTabs().add(new TabSlips("Slips"));
 		tabPane.getSelectionModel().select(getTabIndex("Slips"));
 	}

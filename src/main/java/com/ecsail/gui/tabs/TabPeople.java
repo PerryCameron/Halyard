@@ -154,12 +154,6 @@ public class TabPeople extends Tab {
 		 Launcher.createActiveMembershipTab(membership);
 	}
 	
-	//public void printPeople() {
-	//      for (Object_Person num : people) { 		      
-	//           System.out.println(num); 		
-	//      }
-	//}
-	
 	public Object_Person getPersonByPid(int pid) {
 		int index = 0;
 		int count = 0;

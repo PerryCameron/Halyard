@@ -112,35 +112,26 @@ public class BoxAddress extends HBox {
            // hold address HBox
 		
         /////////////////// LISTENERS /////////////////////////
-        memAddressTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-	        @Override
-	        public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+        memAddressTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
 	            //focus out
 	            if (oldValue) {  // we have focused and unfocused
 	            		SqlUpdate.updateAddress(memAddressTextField.getText(),membership);
 	            }
-	        }
-	    });
+	        });
                 
-        memCityTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-	        @Override
-	        public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+        memCityTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
 	            //focus out
 	            if (oldValue) {  // we have focused and unfocused
 	            		SqlUpdate.updateCity(memCityTextField.getText(),membership);
 	            }
-	        }
-	    });
+	        });
   
-        memZipcodeTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-	        @Override
-	        public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+        memZipcodeTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
 	            //focus out
 	            if (oldValue) {  // we have focused and unfocused
 	            		SqlUpdate.updateZipcode(memZipcodeTextField.getText(),membership);
 	            }
-	        }
-	    });
+	        });
         
         stateComboBox.valueProperty().addListener(new ChangeListener<String>() {
             @Override 
