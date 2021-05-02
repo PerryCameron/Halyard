@@ -2,6 +2,7 @@ package com.ecsail.gui.boxes;
 
 import com.ecsail.main.Main;
 import com.ecsail.excel.Xls_email_list;
+import com.ecsail.gui.dialogues.Dialogue_DirectoryCreation;
 import com.ecsail.gui.dialogues.Dialogue_NewYearGenerator;
 import com.ecsail.gui.dialogues.Dialogue_StatisticsStatusBar;
 import com.ecsail.gui.dialogues.Dialogue_Stub;
@@ -95,7 +96,7 @@ public class BoxToolBar extends VBox {
                 newWindow.show();
             });
         
-        m4_1_10.setOnAction((event) -> new PDF_Directory("2021"));
+        m4_1_10.setOnAction((event) -> new Dialogue_DirectoryCreation());
         
         m1_1.getItems().addAll(m1_1_1);
         m4_1.getItems().addAll(m4_1_1,m4_1_2,m4_1_3,m4_1_4,m4_1_5,m4_1_6,m4_1_7,m4_1_8,m4_1_9,m4_1_10);

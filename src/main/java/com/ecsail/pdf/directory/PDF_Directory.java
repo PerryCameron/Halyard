@@ -18,13 +18,14 @@ import com.itextpdf.layout.element.AreaBreak;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.property.AreaBreakType;
 import javafx.collections.ObservableList;
+import javafx.scene.control.TextArea;
 
 public class PDF_Directory {
 	private ObservableList<Object_MembershipList> rosters;
 	
 	PDF_Object_Settings set;
 	
-	public PDF_Directory(String year) {
+	public PDF_Directory(String year, TextArea textArea) {
 		this.set = new PDF_Object_Settings(year);
 		
 		this.rosters = Sql_SelectMembership.getRoster(year, true);
