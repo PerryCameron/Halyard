@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import com.ecsail.main.Paths;
 import com.ecsail.sql.Sql_SelectMembership;
@@ -18,46 +20,37 @@ import com.itextpdf.layout.element.AreaBreak;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.property.AreaBreakType;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.scene.control.TextArea;
 
 public class PDF_Directory {
 	private ObservableList<Object_MembershipList> rosters;
 	
-	PDF_Object_Settings set;
+	static PDF_Object_Settings set;
+	TextArea textArea;
+	String message = "";
+	static Document doc;
 	
 	public PDF_Directory(String year, TextArea textArea) {
-		this.set = new PDF_Object_Settings(year);
-		
+		PDF_Directory.set = new PDF_Object_Settings(year);
+		this.textArea = textArea;
+		this.message = new String();
+
 		this.rosters = Sql_SelectMembership.getRoster(year, true);
 		Paths.checkPath(Paths.ECSCHOME);
-
+		textArea.setText("Creating " + year + " directory");
 		
+		PdfWriter writer = null;
 		try {
-			createDirectory();
-		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
-		System.out.println("destination=" + Paths.ECSCHOME + "_directory.pdf");
-		File file = new File(Paths.ECSCHOME + "_directory.pdf");
-		Desktop desktop = Desktop.getDesktop(); // Gui_Main.class.getProtectionDomain().getCodeSource().getLocation().getPath()
-
-		// Open the document
-		try {
-			desktop.open(file);
-		} catch (IOException e) {
+			writer = new PdfWriter(Paths.ECSCHOME + "_directory.pdf");
+		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-	
-	public void createDirectory() throws FileNotFoundException {
-		PdfWriter writer = new PdfWriter(Paths.ECSCHOME + "_directory.pdf");
 		// Initialize PDF document
 		PdfDocument pdf = new PdfDocument(writer);
 		//PageSize A5v = new PageSize(PageSize.A5.getWidth(), PageSize.A5.getHeight());
-		Document doc = new Document(pdf, new PageSize(set.getPageSize()));
+		this.doc = new Document(pdf, new PageSize(set.getPageSize()));
 		doc.setLeftMargin(0.5f);
 		doc.setRightMargin(0.5f);
 		doc.setTopMargin(1f);
@@ -65,47 +58,90 @@ public class PDF_Directory {
 		
 		Collections.sort(rosters , Comparator.comparing(Object_MembershipList::getLname));
 		
-		doc.add(new PDF_Cover(1, set));
-		doc.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
-		
-		doc.add(new PDF_CommodoreMessage(1,set));
-		doc.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
-		
-		doc.add(new PDF_BoardOfDirectors(1,set));
-		doc.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
-		
-		doc.add(new PDF_TableOfContents(1,set));
-		doc.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
-		
-		doc.add(new PDF_ChapterPage(1, "Membership Information",set));
-		doc.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
-		
-		createMemberInfoPages(doc);
-		//doc.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
-		
-		new PDF_MembersByNumber(set, doc, rosters);
-		
-		
-		doc.add(new PDF_SlipPageL(2,set));
-		doc.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
-		
-		doc.add(new PDF_SlipPageR(2,set));
-		doc.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
-		
-		doc.add(new PDF_SportsmanAward(2,set));
-		doc.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
-		
-		doc.add(new PDF_CommodoreList(2,set));
-		doc.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
-		
-		
-		doc.close();
+		createDirectoryTask();
 	}
+	
+	private void createDirectoryTask() {
+
+	    Task<String> task = new Task<String>(){
+	        @Override
+	        protected String call() {
+	    		doc.add(new PDF_Cover(1, set));
+	    		doc.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+	    		textArea.appendText("Created Cover\n");
+	                
+	    		doc.add(new PDF_CommodoreMessage(1,set));
+	    		doc.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+	    		textArea.appendText("Created Commodore Message\n");
+	    		
+	    		doc.add(new PDF_BoardOfDirectors(1,set));
+	    		doc.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+	    		textArea.appendText("Created Board of Directors\n");
+	    		
+	    		doc.add(new PDF_TableOfContents(1,set));
+	    		doc.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+	    		textArea.appendText("Created Table of Contents\n");
+	    		
+	    		doc.add(new PDF_ChapterPage(1, "Membership Information",set));
+	    		doc.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+	    		textArea.appendText("Created Membership Information Chapter Page\n");
+	    		
+	    		createMemberInfoPages(doc);
+	    		doc.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+	    		
+	    		new PDF_MembersByNumber(set, doc, rosters);
+	    		
+	    		doc.add(new PDF_SlipPageL(2,set));
+	    		doc.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+	    		textArea.appendText("Created D and A dock page\n");
+	    		
+	    		doc.add(new PDF_SlipPageR(2,set));
+	    		doc.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+	    		textArea.appendText("Created B and C dock page\n");
+	    		
+	    		doc.add(new PDF_SportsmanAward(2,set));
+	    		doc.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+	    		textArea.appendText("Created sportsman award page\n");
+	    		
+	    		doc.add(new PDF_CommodoreList(2,set));
+	    		doc.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+	    		textArea.appendText("Created directory page\n");
+	    		doc.close();
+	    		
+	    		System.out.println("destination=" + Paths.ECSCHOME + "_directory.pdf");
+	    		File file = new File(Paths.ECSCHOME + "_directory.pdf");
+	    		Desktop desktop = Desktop.getDesktop(); // Gui_Main.class.getProtectionDomain().getCodeSource().getLocation().getPath()
+
+	    		// Open the document
+	    		try {
+	    			desktop.open(file);
+	    		} catch (IOException e) {
+	    			// TODO Auto-generated catch block
+	    			e.printStackTrace();
+	    		}
+				return "Directory Sucessfully Created!";
+	        }
+	    };
+	    task.setOnScheduled(e -> { System.out.println("scheduled");});
+	    task.setOnSucceeded(e -> { 
+	    	textArea.setText((String) e.getSource().getValue()); 
+	    	System.out.println("Finished making directory");});
+	    task.setOnFailed(e -> { System.out.println("This failed"); });
+	    exec.execute(task);
+
+	}
+	
+	private final Executor exec = Executors.newCachedThreadPool(runnable -> {
+	    Thread t = new Thread(runnable);
+	    t.setDaemon(true);
+	    return t ;
+	});
 
 	private void createMemberInfoPages(Document doc) {
 			int count = 0;
 			doc.add(new Paragraph("\n"));
 			for(Object_MembershipList l: rosters) {
+			textArea.appendText("Creating entry for " + l.getFname() + " " + l.getLname() + "\n");
 			doc.add(new PDF_MemberShipInformation(2,l,set));
 			count++;
 			if(count % 6 == 0) {
