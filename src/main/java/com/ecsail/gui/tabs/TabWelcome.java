@@ -16,7 +16,6 @@ public class TabWelcome extends Tab {
 	public TabWelcome(BoxWelcome boxWelcome) {  // check boxWelcome
 		super();
 		setText("Welcome");
-		double stageHeight = Main.getPrimaryStage().getHeight();
 		double titleBarHeight = Main.getPrimaryStage().getHeight() - Main.getPrimaryScene().getHeight();
 		VBox vboxBlue = new VBox();
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
