@@ -50,7 +50,7 @@ public class PDF_Directory {
 		// Initialize PDF document
 		PdfDocument pdf = new PdfDocument(writer);
 		//PageSize A5v = new PageSize(PageSize.A5.getWidth(), PageSize.A5.getHeight());
-		this.doc = new Document(pdf, new PageSize(set.getPageSize()));
+		PDF_Directory.doc = new Document(pdf, new PageSize(set.getPageSize()));
 		doc.setLeftMargin(0.5f);
 		doc.setRightMargin(0.5f);
 		doc.setTopMargin(1f);
