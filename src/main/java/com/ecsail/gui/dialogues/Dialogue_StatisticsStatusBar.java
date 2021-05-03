@@ -14,6 +14,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -34,7 +35,7 @@ public class Dialogue_StatisticsStatusBar extends Stage {
 		VBox vboxGrey = new VBox(); // this is the vbox for organizing all the widgets
 		VBox vboxBlue = new VBox();
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
-		Scene scene = new Scene(vboxBlue, 600, 300);
+		Scene scene = new Scene(vboxBlue, 400, 200);
 		Button startButton = new Button("Start");
 		
 		HBox hboxYearChoose = new HBox();
@@ -50,18 +51,14 @@ public class Dialogue_StatisticsStatusBar extends Stage {
 		vboxPink.setId("box-pink");
 		// vboxGrey.setId("slip-box");
 		
-		pb.setPrefHeight(20);
-		pb.setPrefWidth(100);
+		pb.setPrefSize(300, 30);
 		startYearTextField.setPrefWidth(80);
 		stopYearTextField.setPrefWidth(80);
 		vboxGrey.setPrefHeight(688);
 		vboxGrey.setAlignment(Pos.CENTER);
+		hboxYearChoose.setAlignment(Pos.CENTER);
 		scene.getStylesheets().add("stylesheet.css");
-		hboxYearChoose.getChildren().addAll(startYearTextField, stopYearTextField);
-		vboxGrey.getChildren().addAll(hboxYearChoose,pb,startButton);
-		vboxGrey.setSpacing(20);
-		vboxBlue.getChildren().add(vboxPink);
-		vboxPink.getChildren().add(vboxGrey);
+
 		setTitle("Updating Statistics");
 		Image mainIcon = new Image(getClass().getResourceAsStream("/ECSC64.png"));
 		startYearTextField.setText(startYear + "");
@@ -87,6 +84,11 @@ public class Dialogue_StatisticsStatusBar extends Stage {
 		});
 
 		//////////////// ADD CONTENT ///////////////////
+		hboxYearChoose.getChildren().addAll(startYearTextField, new Label("-"), stopYearTextField);
+		vboxGrey.getChildren().addAll(new Label("Date Range:"),hboxYearChoose,pb,startButton);
+		vboxGrey.setSpacing(20);
+		vboxBlue.getChildren().add(vboxPink);
+		vboxPink.getChildren().add(vboxGrey);
 		getIcons().add(mainIcon);
 		setScene(scene);
 		show();

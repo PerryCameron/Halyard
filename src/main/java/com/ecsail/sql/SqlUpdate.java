@@ -13,6 +13,7 @@ import com.ecsail.structures.Object_Money;
 import com.ecsail.structures.Object_Person;
 import com.ecsail.structures.Object_Stats;
 import com.ecsail.structures.Object_WorkCredit;
+import com.ecsail.gui.dialogues.*;
 
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
@@ -39,7 +40,7 @@ public class SqlUpdate {
 			Main.edits.setBoatEdits(Main.edits.getBoatEdits() + 1);  // count number of edits.
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
 	}
 	
@@ -52,10 +53,10 @@ public class SqlUpdate {
 			Main.edits.setBoatEdits(Main.edits.getBoatEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
 	}
-	
+
 	public static final void updateBoat(int boat_id, String keel) {
 		Statement stmt;
 		try {
@@ -64,7 +65,7 @@ public class SqlUpdate {
 			Main.edits.setBoatEdits(Main.edits.getBoatEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
 	}
 	
@@ -76,7 +77,7 @@ public class SqlUpdate {
 			Main.edits.setMembershipEdits(Main.edits.getMembershipEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
 		membership.setAddress(address);
 	}
@@ -89,7 +90,7 @@ public class SqlUpdate {
 			Main.edits.setMembershipEdits(Main.edits.getMembershipEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
 		membership.setCity(city);
 	}
@@ -103,7 +104,7 @@ public class SqlUpdate {
 			Main.edits.setMembershipEdits(Main.edits.getMembershipEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
 		
 	}
@@ -116,7 +117,7 @@ public class SqlUpdate {
 			Main.edits.setMembershipEdits(Main.edits.getMembershipEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
 		membership.setZip(zip);
 	}
@@ -129,7 +130,7 @@ public class SqlUpdate {
 			Main.edits.setMembershipEdits(Main.edits.getMembershipEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
 	}
 	
@@ -149,7 +150,7 @@ public class SqlUpdate {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			noError = false;
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
 		return noError;
 	}
@@ -164,7 +165,7 @@ public class SqlUpdate {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			noError = false;
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
 		return noError;
 	}
@@ -179,22 +180,10 @@ public class SqlUpdate {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			noError = false;
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
 		return noError;
 	}
-	
-//	public static void updateMembership(Boolean boolean_value, int msid) {
-//		try {
-//			Statement stmt = ConnectDatabase.connection.createStatement();
-//			stmt.execute(Main.console.setRegexColor("UPDATE membership SET ACTIVE_MEMBERSHIP=" + boolean_value.toString()
-//					+ " WHERE ms_id='" + msid + "';"));
-//			Main.edits.setMembershipEdits(Main.edits.getMembershipEdits() + 1);
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
 	
 	public static void updateListed(String field, int phone_id, Boolean attribute) {
 		Statement stmt;
@@ -205,7 +194,7 @@ public class SqlUpdate {
 			Main.edits.setPhoneEdits(Main.edits.getPhoneEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
 	}
 	
@@ -218,7 +207,7 @@ public class SqlUpdate {
 			Main.edits.setPhoneEdits(Main.edits.getPhoneEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
 	}
 	
@@ -231,7 +220,7 @@ public class SqlUpdate {
 			Main.edits.setPhoneEdits(Main.edits.getPhoneEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
 	}
 	
@@ -244,7 +233,7 @@ public class SqlUpdate {
 			Main.edits.setEmailEdits(Main.edits.getEmailEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
 	}
 	
@@ -255,7 +244,7 @@ public class SqlUpdate {
 			Main.edits.setEmailEdits(Main.edits.getEmailEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
 	}
 	
@@ -266,7 +255,7 @@ public class SqlUpdate {
 			Main.edits.setOfficersEdits(Main.edits.getOfficersEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			//e.printStackTrace();
+			//new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 			alert.setTitle("Error Dialog");
 			alert.setHeaderText("Duplicate");
 			alert.setContentText("Duplicate entry!");
@@ -281,7 +270,7 @@ public class SqlUpdate {
 			Main.edits.setOfficersEdits(Main.edits.getOfficersEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			//e.printStackTrace();
+			//new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 			alert.setTitle("Error Dialog");
 			alert.setHeaderText("Duplicate");
 			alert.setContentText("Duplicate entry!");
@@ -297,7 +286,7 @@ public class SqlUpdate {
 			Main.edits.setPeopleEdits(Main.edits.getPeopleEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
 	}
 	
@@ -309,7 +298,7 @@ public class SqlUpdate {
 			Main.edits.setPeopleEdits(Main.edits.getPeopleEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
 	}
 	
@@ -321,7 +310,7 @@ public class SqlUpdate {
 			Main.edits.setPeopleEdits(Main.edits.getPeopleEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
 	}
 	
@@ -333,7 +322,7 @@ public class SqlUpdate {
 			Main.edits.setPeopleEdits(Main.edits.getPeopleEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
 	}
 	
@@ -345,7 +334,7 @@ public class SqlUpdate {
 			Main.edits.setPeopleEdits(Main.edits.getPeopleEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
 	}
 	
@@ -356,7 +345,7 @@ public class SqlUpdate {
 			Main.edits.setPeopleEdits(Main.edits.getPeopleEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
 	}
 	
@@ -367,7 +356,7 @@ public class SqlUpdate {
 			Main.edits.setPeopleEdits(Main.edits.getPeopleEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
 	}
 	
@@ -379,7 +368,7 @@ public class SqlUpdate {
 			Main.edits.setSlipsEdits(Main.edits.getSlipsEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
 	}
 	
@@ -392,7 +381,7 @@ public class SqlUpdate {
 			Main.edits.setSlipsEdits(Main.edits.getSlipsEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
 	}
 	
@@ -406,7 +395,7 @@ public class SqlUpdate {
 			Main.edits.setSlipsEdits(Main.edits.getSlipsEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
 	}
 	
@@ -421,7 +410,7 @@ public class SqlUpdate {
 			Main.edits.setSlipsEdits(Main.edits.getSlipsEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
 	}
 	
@@ -434,7 +423,7 @@ public class SqlUpdate {
 			Main.edits.setMoniesEdits(Main.edits.getMoniesEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
 	}
 	
@@ -446,7 +435,7 @@ public class SqlUpdate {
 			Main.edits.setMoniesEdits(Main.edits.getMoniesEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
 	}
 	
@@ -477,7 +466,7 @@ public class SqlUpdate {
 			Main.edits.setMoniesEdits(Main.edits.getMoniesEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
 	}
 	
@@ -490,7 +479,7 @@ public class SqlUpdate {
 			Main.edits.setWorkCreditsEdits(Main.edits.getWorkCreditsEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
 	}
 	
@@ -502,7 +491,7 @@ public class SqlUpdate {
 			Main.edits.setMoniesEdits(Main.edits.getMoniesEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
 	}
 	
@@ -514,7 +503,7 @@ public class SqlUpdate {
 			Main.edits.setMoniesEdits(Main.edits.getMoniesEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
 	}
 	
@@ -525,7 +514,7 @@ public class SqlUpdate {
 			Main.edits.setMemosEdits(Main.edits.getMemosEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
 	}
 	
@@ -536,7 +525,7 @@ public class SqlUpdate {
 			Main.edits.setPaymentsEdits(Main.edits.getPaymentsEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
 		
 	}
@@ -549,7 +538,7 @@ public class SqlUpdate {
 			Main.edits.setIdEdits(Main.edits.getIdEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","The most likely cause is a duplicate entry.  The combination of 'year' and 'membership Id' can only occur once.");
 			noError = false;
 		}
 		return noError;
@@ -564,7 +553,7 @@ public class SqlUpdate {
 			Main.edits.setIdEdits(Main.edits.getIdEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 			noError = false;
 		}
 		return noError;
@@ -578,7 +567,7 @@ public class SqlUpdate {
 			Main.edits.setIdEdits(Main.edits.getIdEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 			noError = false;
 		}
 		return noError;
@@ -592,7 +581,7 @@ public class SqlUpdate {
 			Main.edits.setDefinedFeesEdits(Main.edits.getDefinedFeesEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
 		
 	}
@@ -620,7 +609,7 @@ public class SqlUpdate {
 			Main.edits.setMemosEdits(Main.edits.getMemosEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
 	}
 }
