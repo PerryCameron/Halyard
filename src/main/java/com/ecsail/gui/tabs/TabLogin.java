@@ -12,7 +12,6 @@ public class TabLogin extends Tab {
 
 	public TabLogin(String text) {
 		super(text);
-		double stageHeight = Main.getPrimaryStage().getHeight();
 		double titleBarHeight = Main.getPrimaryStage().getHeight() - Main.getPrimaryScene().getHeight();
 		VBox inner = new VBox();
 		HBox vboxGrey = new HBox();  // this is the vbox for organizing all the widgets
@@ -34,9 +33,6 @@ public class TabLogin extends Tab {
 		vboxBlue.getChildren().add(vboxPink);
 		vboxPink.getChildren().add(vboxGrey);
 		setContent(vboxBlue);
-		System.out.println("stage="+stageHeight+" titleBar="+ titleBarHeight+ " scene=" + Main.getPrimaryScene().getHeight());
-		System.out.println("vboxBlue="+vboxBlue.getHeight()+" vboxPink="+ vboxPink.getHeight()+ " vBoxGrey=" + vboxGrey.getHeight());
-
 	}
 	
 }
