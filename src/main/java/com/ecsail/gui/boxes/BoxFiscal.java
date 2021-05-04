@@ -598,7 +598,7 @@ public class BoxFiscal extends HBox {
 	private int getBalance() {
 		return fiscals.get(rowIndex).getTotal() - fiscals.get(rowIndex).getPaid() - fiscals.get(rowIndex).getCredit();
 	}
-	
+
 	private int countCredit(int workCredits) {
 		int credit = 0;
 		if(membershipHasOfficer()) {

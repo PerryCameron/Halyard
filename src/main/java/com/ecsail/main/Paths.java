@@ -34,6 +34,10 @@ public class Paths {
 		return new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 	}
 	
+	public static String printDate() {
+		return new SimpleDateFormat("MM-dd-yyyy").format(new Date());
+	}
+	
 	public static boolean isWindows() {
 		boolean result = false;
 		if(System.getProperty("os.name").equals("Windows 10")) {

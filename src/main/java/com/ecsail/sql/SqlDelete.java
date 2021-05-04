@@ -3,6 +3,7 @@ package com.ecsail.sql;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.Main;
 import com.ecsail.structures.Object_Award;
@@ -27,7 +28,7 @@ public class SqlDelete {
 			noError = true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to Delete","See below for details");
 		}
     return noError;
 	}
@@ -41,7 +42,7 @@ public class SqlDelete {
 				noError = true;
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				new Dialogue_ErrorSQL(e,"Unable to Delete","See below for details");
 			}
 	    return noError;
 	}
@@ -55,7 +56,7 @@ public class SqlDelete {
 				noError = true;
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				new Dialogue_ErrorSQL(e,"Unable to Delete","See below for details");
 			}
 	    return noError;
 	}
@@ -68,7 +69,7 @@ public class SqlDelete {
 				noError = true;
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				new Dialogue_ErrorSQL(e,"Unable to Delete","See below for details");
 			}
 	    return noError;
 	}
@@ -81,7 +82,7 @@ public class SqlDelete {
 				noError = true;
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				new Dialogue_ErrorSQL(e,"Unable to Delete","See below for details");
 			}
 	    return noError;
 	}
@@ -95,7 +96,7 @@ public class SqlDelete {
 			noError = true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to Delete","See below for details");
 		}
 		return noError;
 	}
@@ -109,7 +110,7 @@ public class SqlDelete {
 			noError = true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to Delete","See below for details");
 		}
 		return noError;
 	}
@@ -125,7 +126,7 @@ public class SqlDelete {
 				noError = true;
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				new Dialogue_ErrorSQL(e,"Unable to Delete","See below for details");
 			}
 			return noError;	
 	}
@@ -139,7 +140,7 @@ public class SqlDelete {
 			noError = true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to Delete","See below for details");
 		}
 		return noError;	
 	}
@@ -151,7 +152,7 @@ public class SqlDelete {
 			stmt.execute(Main.console.setRegexColor("delete from memo where memo_id='" + memo.getMemo_id() + "';"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to Delete","See below for details");
 		}	
 	}
 	
@@ -162,7 +163,7 @@ public class SqlDelete {
 			stmt.execute(Main.console.setRegexColor("delete from memo where ms_id='" + ms_id + "';"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to Delete","See below for details");
 		}	
 	}
 	
@@ -173,7 +174,7 @@ public class SqlDelete {
 			stmt.execute(Main.console.setRegexColor("delete from work_credit where ms_id='" + ms_id + "';"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to Delete","See below for details");
 		}	
 	}
 	
@@ -184,7 +185,7 @@ public class SqlDelete {
 			stmt.execute(Main.console.setRegexColor("delete from work_credit where money_id='" + money_id + "';"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to Delete","See below for details");
 		}	
 	}
 	
@@ -195,7 +196,7 @@ public class SqlDelete {
 			stmt.execute(Main.console.setRegexColor("delete from money where ms_id='" + ms_id + "';"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to Delete","See below for details");
 		}	
 	}
 	
@@ -206,7 +207,7 @@ public class SqlDelete {
 			stmt.execute(Main.console.setRegexColor("delete from money where money_id='" + money_id + "';"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to Delete","See below for details");
 		}	
 	}
 	
@@ -217,7 +218,7 @@ public class SqlDelete {
 			stmt.execute(Main.console.setRegexColor("delete from payment where money_id='" + money_id + "';"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to Delete","See below for details");
 		}	
 	}
 	
@@ -228,7 +229,7 @@ public class SqlDelete {
 			stmt.execute(Main.console.setRegexColor("delete from phone where p_id='" + p_id + "';"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to Delete","See below for details");
 		}	
 	}
 	
@@ -239,7 +240,7 @@ public class SqlDelete {
 			stmt.execute(Main.console.setRegexColor("delete from email where p_id='" + p_id + "';"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to Delete","See below for details");
 		}	
 	}
 	
@@ -250,7 +251,7 @@ public class SqlDelete {
 			stmt.execute(Main.console.setRegexColor("delete from officer where p_id='" + p_id + "';"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to Delete","See below for details");
 		}	
 	}
 	
@@ -261,7 +262,7 @@ public class SqlDelete {
 			stmt.execute(Main.console.setRegexColor("delete from person where p_id='" + p_id + "';"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to Delete","See below for details");
 		}	
 	}
 	
@@ -272,7 +273,7 @@ public class SqlDelete {
 			stmt.execute(Main.console.setRegexColor("delete from membership where ms_id='" + ms_id + "';"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to Delete","See below for details");
 		}	
 	}
 	
@@ -283,7 +284,7 @@ public class SqlDelete {
 			stmt.execute(Main.console.setRegexColor("delete from waitlist where ms_id='" + ms_id + "';"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to Delete","See below for details");
 		}	
 	}
 	
@@ -294,7 +295,7 @@ public class SqlDelete {
 			stmt.execute(Main.console.setRegexColor("delete from membership_id where ms_id='" + ms_id + "';"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to Delete","See below for details");
 		}	
 	}
 	
@@ -306,7 +307,7 @@ public class SqlDelete {
 			stmt.execute(Main.console.setRegexColor("delete from payment where pay_id='" + p.getPay_id() + "';"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to Delete","See below for details");
 		}	
 	}
 }

@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.Main;
 import com.ecsail.main.Paths;
@@ -49,7 +50,7 @@ public class Sql_SelectMembership {
 			stmt.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to select roster","See below for details");
 		}
 		System.out.println("Creating Roster list for " + year + "...");
 		return rosters;
@@ -88,7 +89,7 @@ public class Sql_SelectMembership {
 			stmt.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to select roster","See below for details");
 		}
 		System.out.println("Creating Roster list for " + year + "...");
 		return rosters;
@@ -126,7 +127,7 @@ public class Sql_SelectMembership {
 			stmt.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to select roster","See below for details");
 		}
 		System.out.println("Creating Roster list for " + year + "...");
 		return rosters;
@@ -164,7 +165,7 @@ public class Sql_SelectMembership {
 			stmt.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to select roster","See below for details");
 		}
 		System.out.println("Creating Roster list for " + year + "...");
 		return rosters;
@@ -202,7 +203,7 @@ public class Sql_SelectMembership {
 			stmt.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to select roster","See below for details");
 		}
 		System.out.println("Creating Roster list for " + year + "...");
 		return rosters;
@@ -240,7 +241,7 @@ public class Sql_SelectMembership {
 			stmt.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to select roster","See below for details");
 		}
 		System.out.println("Creating Roster list for " + year + "...");
 		return rosters;
@@ -277,7 +278,7 @@ public class Sql_SelectMembership {
 			stmt.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to select roster","See below for details");
 		}
 		return rosters;
 	}
@@ -311,7 +312,7 @@ public class Sql_SelectMembership {
 						rs.getString("FISCAL_YEAR"));
 				}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to select roster","See below for details");
 		}
 
 		System.out.println(thisMembership.toString());
@@ -347,7 +348,7 @@ public class Sql_SelectMembership {
 						rs.getString("FISCAL_YEAR"));
 				}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to select roster","See below for details");
 		}
 
 		System.out.println(thisMembership.toString());
@@ -381,7 +382,7 @@ public class Sql_SelectMembership {
 						);
 				}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to select roster","See below for details");
 		}
 
 		System.out.println(thisMembership.toString());
@@ -417,7 +418,7 @@ public class Sql_SelectMembership {
 			stmt.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to select roster","See below for details");
 		}
 		return rosters;
 	}
@@ -455,7 +456,7 @@ public class Sql_SelectMembership {
 			stmt.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to select roster","See below for details");
 		}
 		return rosters;
 	}
@@ -491,7 +492,7 @@ public class Sql_SelectMembership {
 			stmt.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to select roster","See below for details");
 		}
 		System.out.println("Creating Roster list for " + year + "...");
 		return rosters;
@@ -532,7 +533,7 @@ public class Sql_SelectMembership {
 			stmt.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to select roster","See below for details");
 		}
 		return rosters;
 	}
@@ -572,7 +573,7 @@ public class Sql_SelectMembership {
 			stmt.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to select roster","See below for details");
 		}
 		return rosters;
 	}
@@ -597,7 +598,7 @@ public class Sql_SelectMembership {
 			stmt.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to select roster","See below for details");
 		}
 		return memberships;
 	}

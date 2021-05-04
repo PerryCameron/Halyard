@@ -3,6 +3,7 @@ package com.ecsail.sql;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.Main;
 import com.ecsail.main.SqlScriptMaker;
@@ -32,7 +33,7 @@ public class SqlInsert {
 			noError = true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to create new row","See below for details");
 		}
 		return noError;  // return true if insert performed without error
 	}
@@ -45,7 +46,7 @@ public class SqlInsert {
 					+ primary + ",\"" + email + "\"," + listed + ");"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to create new row","See below for details");
 		}
 	}
 	
@@ -55,7 +56,7 @@ public class SqlInsert {
 			stmt.execute(Main.console.setRegexColor("INSERT into officer () VALUES (" + officer_id + "," + pid + "," + board_year + ",\"" + officer + "\"," + year + ");"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to create new row","See below for details");
 		}
 	}
 	
@@ -67,7 +68,7 @@ public class SqlInsert {
 					+ op.getPaymentDate() + "','" + op.getPaymentAmount() + "','" + op.getDeposit_id() + "');"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to create new row","See below for details");
 		}
 	}
 	
@@ -78,7 +79,7 @@ public class SqlInsert {
 					+ a.getPid() + ",'" + a.getAwardYear() + "','" + a.getAwardType() + "')"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to create new row","See below for details");
 		}
 	}
 	
@@ -91,7 +92,7 @@ public class SqlInsert {
 					Main.console.setRegexColor("INSERT into boat_owner () VALUES (" + msid + "," + boat_id + ");"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to create new row","See below for details");
 		}
 	}
 	
@@ -104,7 +105,7 @@ public class SqlInsert {
 	    	+ ",\"" + person.getOccupation() + "\",\"" + person.getBuisness() +"\",true,null);"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to create new row","See below for details");
 		}
 	}
 	
@@ -117,7 +118,7 @@ public class SqlInsert {
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to create new row","See below for details");
 		}
 	}
 	
@@ -136,7 +137,7 @@ public class SqlInsert {
 			+  "," + m.isCommitted() + "," + m.isClosed() + "," + m.getOther() + "," + m.getInitiation() + "," + m.isSupplemental() + ");"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to create new row","See below for details");
 		}
 	}
 	
@@ -153,7 +154,7 @@ public class SqlInsert {
 			 +");"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to create new row","See below for details");
 		}
 	}
 	
@@ -165,7 +166,7 @@ public class SqlInsert {
 			updateIsSucessful = true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to create new row","See below for details");
 		}
 		return updateIsSucessful;
 	}
@@ -176,7 +177,7 @@ public class SqlInsert {
 			stmt.execute(Main.console.setRegexColor("INSERT INTO memo () VALUES (" + m.getMemo_id() + "," + m.getMsid() + ",'" + m.getMemo_date() + "',\"" + m.getMemo() + "\"," + m.getMoney_id() + ",\"" + m.getCategory() + "\");"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to create new row","See below for details");
 		}
 	}
 	
@@ -186,7 +187,7 @@ public class SqlInsert {
 			stmt.execute(Main.console.setRegexColor("INSERT INTO deposit () VALUES (" + d.getDeposit_id() + ",'" + d.getDepositDate() + "','" + d.getFiscalYear() + "'," + d.getBatch() + ");"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to create new row","See below for details");
 		}
 	}
 	
@@ -197,7 +198,7 @@ public class SqlInsert {
 			+ "'," + id.getMembership_id() + "," + id.isRenew() + ",'" + id.getMem_type()+ "'," + id.isSelected() + "," + id.isLateRenew() + ")"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to create new row","See below for details");
 		}
 	}
 	
@@ -214,7 +215,7 @@ public class SqlInsert {
 			+ w.isWantSlipChange() + ");"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to create new row","See below for details");
 		}
 	}
 	
@@ -242,7 +243,7 @@ public class SqlInsert {
 			+ s.getInitiation() + ");"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to create new row","See below for details");
 		}
 	}
 }

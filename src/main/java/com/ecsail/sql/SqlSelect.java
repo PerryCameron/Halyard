@@ -6,6 +6,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.Main;
 import com.ecsail.main.Paths;
@@ -59,7 +60,7 @@ public class SqlSelect {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return theseOfficers;
 	}
@@ -79,7 +80,7 @@ public class SqlSelect {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return theseOfficers;
 	}
@@ -102,7 +103,7 @@ public class SqlSelect {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return thisWorkCredit;
 	}
@@ -126,7 +127,7 @@ public class SqlSelect {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return thisPayments;
 	}
@@ -150,7 +151,7 @@ public class SqlSelect {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return thisPayments;
 	}
@@ -174,7 +175,7 @@ public class SqlSelect {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return thisPayment;
 	}
@@ -209,7 +210,7 @@ public class SqlSelect {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return thisDefinedFee;
 	}
@@ -230,7 +231,7 @@ public class SqlSelect {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return thisDeposits;
 	}
@@ -251,7 +252,7 @@ public class SqlSelect {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return thisDeposit;
 	}
@@ -270,7 +271,7 @@ public class SqlSelect {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 	}
 	
@@ -305,7 +306,7 @@ public class SqlSelect {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return newDefinedFee;
 	}
@@ -326,7 +327,7 @@ public class SqlSelect {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return thisOfficer;
 	}
@@ -347,7 +348,7 @@ public class SqlSelect {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return officers;
 	}
@@ -368,7 +369,7 @@ public class SqlSelect {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return thisOfficer;
 	}
@@ -388,7 +389,7 @@ public class SqlSelect {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return thisAwards;
 	}
@@ -416,7 +417,7 @@ public class SqlSelect {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return thisEmailInfo;
 	}
@@ -442,7 +443,7 @@ public class SqlSelect {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return thisBoardMember;
 	}
@@ -468,7 +469,7 @@ public class SqlSelect {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return theseFiscals;
 	}
@@ -492,7 +493,7 @@ public class SqlSelect {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return thisFiscal;
 	}
@@ -522,7 +523,7 @@ public class SqlSelect {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return theseFiscals;
 	}
@@ -550,7 +551,7 @@ public class SqlSelect {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return theseFiscals;
 	}
@@ -576,7 +577,7 @@ public class SqlSelect {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return theseFiscals;
 	}
@@ -599,7 +600,7 @@ public class SqlSelect {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return email;
 	}	
@@ -621,7 +622,7 @@ public class SqlSelect {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		if(email.getEmail() != null) {
 			returnEmail = email.getEmail();
@@ -651,7 +652,7 @@ public class SqlSelect {
 			return theseMemos;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return theseMemos;
 	}
@@ -677,7 +678,7 @@ public class SqlSelect {
 			return theseMemos;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return theseMemos;
 	}
@@ -701,7 +702,7 @@ public class SqlSelect {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		//System.out.println(thisMemo);
 		return thisMemo;
@@ -720,7 +721,7 @@ public class SqlSelect {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return slips;
 	}
@@ -743,7 +744,7 @@ public class SqlSelect {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return ids;
 	}
@@ -766,7 +767,7 @@ public class SqlSelect {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return ids;
 	}
@@ -789,7 +790,7 @@ public class SqlSelect {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return id.getMembership_id();
 	}
@@ -809,7 +810,7 @@ public class SqlSelect {
 			stmt.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return thisBoatOwner;
 	}
@@ -838,7 +839,7 @@ public class SqlSelect {
 			stmt.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return thisBoat;
 	}
@@ -885,7 +886,7 @@ public class SqlSelect {
 		stmt.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return thisBoat;
 	}
@@ -909,7 +910,7 @@ public class SqlSelect {
 			stmt.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 
 		return thisBoat;
@@ -930,7 +931,7 @@ public class SqlSelect {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return thisPhone;
 	}
@@ -947,7 +948,7 @@ public class SqlSelect {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return thisPhone;
 	}
@@ -963,7 +964,7 @@ public class SqlSelect {
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return phone;
 	}
@@ -987,7 +988,7 @@ public class SqlSelect {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		// System.out.println(thisMembership.toString());
 		return definedFee;
@@ -1020,7 +1021,7 @@ public class SqlSelect {
 		stmt.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return thesepeople;
 	}
@@ -1049,7 +1050,7 @@ public class SqlSelect {
 		stmt.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return thesepeople;
 	}
@@ -1076,7 +1077,7 @@ public class SqlSelect {
 		stmt.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return thesepeople;
 	}
@@ -1101,7 +1102,7 @@ public class SqlSelect {
 		stmt.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return theseIds;
 	}
@@ -1136,7 +1137,7 @@ public class SqlSelect {
 		stmt.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return stats;
 	}
@@ -1156,7 +1157,7 @@ public class SqlSelect {
 			stmt.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		// System.out.println(thesepeople.toString());
 		return person;
@@ -1177,7 +1178,7 @@ public class SqlSelect {
 			stmt.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		// System.out.println(thesepeople.toString());
 		return person;
@@ -1194,7 +1195,7 @@ public class SqlSelect {
 			result =  rs.getInt(column);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return result;
 	}
@@ -1209,7 +1210,7 @@ public class SqlSelect {
 			result =  rs.getInt("Max(membership_id)");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return result;
 	}
@@ -1233,7 +1234,7 @@ public class SqlSelect {
 			};
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return thisId;
 	}
@@ -1249,7 +1250,7 @@ public class SqlSelect {
 				result = rs.getInt(type);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return result;
 	}
@@ -1268,7 +1269,7 @@ public class SqlSelect {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return thisSlip;
 	}
@@ -1287,7 +1288,7 @@ public class SqlSelect {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return thisSlip;
 	}
@@ -1303,7 +1304,7 @@ public class SqlSelect {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return result;
 	}
@@ -1319,7 +1320,7 @@ public class SqlSelect {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return result;
 	}
@@ -1338,7 +1339,7 @@ public class SqlSelect {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return thisOfficer;
 	}
@@ -1357,7 +1358,7 @@ public class SqlSelect {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		// System.out.println(thisMembership.toString());
 		return workCredits;
@@ -1374,7 +1375,7 @@ public class SqlSelect {
 		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return number;
 	}
@@ -1391,7 +1392,7 @@ public class SqlSelect {
 			number = rs.getInt("count(*)");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return number;
 	}
@@ -1410,7 +1411,7 @@ public class SqlSelect {
 		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return number;
 	}
@@ -1426,7 +1427,7 @@ public class SqlSelect {
 		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return number;
 	}
@@ -1442,7 +1443,7 @@ public class SqlSelect {
 		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return number;
 	}
@@ -1457,7 +1458,7 @@ public class SqlSelect {
 			committed = rs.getBoolean("commited");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}	
 		return committed;
 	}
@@ -1473,7 +1474,7 @@ public class SqlSelect {
 		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return number;
 	}
@@ -1489,7 +1490,7 @@ public class SqlSelect {
 		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		
 		return date;
@@ -1507,7 +1508,7 @@ public class SqlSelect {
 		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return number;
 	}
@@ -1523,7 +1524,7 @@ public class SqlSelect {
 		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return number;
 	}
@@ -1538,7 +1539,7 @@ public class SqlSelect {
 			number = rs.getInt("P_ID");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return number;
 	}
@@ -1553,7 +1554,7 @@ public class SqlSelect {
 			number = rs.getInt("SUM(amount)");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return number;
 		
@@ -1575,7 +1576,7 @@ public class SqlSelect {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();		
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");		
 		}
 		//System.out.println("For year " + year +  " ms_id=" + ms_id + " they are " + id);
 		return id;
@@ -1593,7 +1594,7 @@ public class SqlSelect {
 			renew = rs.getBoolean("RENEW");
 		} catch (SQLException e) {
 			System.out.println("membership id record does not exist for ms_id " + ms_id + " for year " + year);
-			//e.printStackTrace();
+			//new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return renew;	
 	}
@@ -1609,7 +1610,7 @@ public class SqlSelect {
 		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return number;
 	}
@@ -1625,7 +1626,7 @@ public class SqlSelect {
 		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return number;
 	}
@@ -1642,7 +1643,7 @@ public class SqlSelect {
 		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return number;
 	}
@@ -1658,7 +1659,7 @@ public class SqlSelect {
 		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return number;
 	}
@@ -1674,7 +1675,7 @@ public class SqlSelect {
 		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return number;
 	}
@@ -1704,7 +1705,7 @@ public class SqlSelect {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return result;
 	}
@@ -1720,7 +1721,7 @@ public class SqlSelect {
 		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return number;
 	}
@@ -1736,7 +1737,7 @@ public class SqlSelect {
 		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		//System.out.println(number);
 		return number;
@@ -1753,7 +1754,7 @@ public class SqlSelect {
 		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		//System.out.println(number);
 		return number;
@@ -1772,7 +1773,7 @@ public class SqlSelect {
 			// TODO Auto-generated catch block
 			//System.out.println("The person is " + t.toString() );
 			errortuples.add("Failed to find " + t.toString());
-			//e.printStackTrace();
+			//new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return number;
 		
@@ -1797,7 +1798,7 @@ public class SqlSelect {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return thisWaitList;
 	}
@@ -1821,7 +1822,7 @@ public class SqlSelect {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return thisWaitList;
 	}
@@ -1845,7 +1846,7 @@ public class SqlSelect {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return thisSlipInfo;
 	}
@@ -1866,7 +1867,7 @@ public class SqlSelect {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return theseAwards;
 	}

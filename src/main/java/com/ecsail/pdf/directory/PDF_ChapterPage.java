@@ -1,5 +1,6 @@
 package com.ecsail.pdf.directory;
 
+import com.ecsail.main.Paths;
 import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.layout.borders.Border;
@@ -43,7 +44,7 @@ public class PDF_ChapterPage extends Table {
 		cell.setBorder(Border.NO_BORDER);
 		cell.setVerticalAlignment(VerticalAlignment.MIDDLE);
 		//cell.setHeight(set.getTitleBoxHeight() + 30);
-		p = new Paragraph("Includes paid members as of 4/12/2021");
+		p = new Paragraph("Includes paid members as of " + Paths.getDate());
 		p.setFontSize(set.getNormalFontSize());
 		//p.setFont(set.getColumnHead());
 		//p.setFontColor(set.getMainColor());

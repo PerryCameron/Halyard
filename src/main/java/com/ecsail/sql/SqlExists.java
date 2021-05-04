@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.Main;
 import com.ecsail.main.Paths;
@@ -28,7 +29,8 @@ public class SqlExists {
 		    		    + ms_id +"' AND person.MEMBER_TYPE='" + type + "')");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
+
 		}
 		return answer;
 	}
@@ -42,7 +44,7 @@ public class SqlExists {
 		    answer = rs.getBoolean("EXISTS(SELECT * FROM payment WHERE MONEY_ID=" + money_id + ")");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
 		}
 		return answer;
 	}
@@ -56,7 +58,7 @@ public class SqlExists {
 		    answer = rs.getBoolean("EXISTS(SELECT * FROM memo WHERE MONEY_ID=" + money_id + ")");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
 		}
 		return answer;
 	}
@@ -70,7 +72,7 @@ public class SqlExists {
 			recordExists = rs.getBoolean("EXISTS(SELECT * FROM stats WHERE FISCAL_YEAR='" + fiscal_year + "')");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
 		}
 		return recordExists;
 	}
@@ -85,7 +87,7 @@ public class SqlExists {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
 		}
 		return result;
 	}
@@ -100,7 +102,7 @@ public class SqlExists {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
 		}
 		return result;
 	}
@@ -115,7 +117,7 @@ public class SqlExists {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
 		}
 		return result;
 	}
@@ -130,7 +132,7 @@ public class SqlExists {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
 		}
 		return result;
 	}
@@ -145,7 +147,7 @@ public class SqlExists {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
 		}
 		return result;
 	}
@@ -160,7 +162,7 @@ public class SqlExists {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
 		}
 		return result;
 	}
@@ -175,7 +177,7 @@ public class SqlExists {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
 		}
 		return result;
 	}
@@ -190,7 +192,7 @@ public class SqlExists {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
 		}
 		return result;
 	}
@@ -209,7 +211,7 @@ public class SqlExists {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
 		}
 		return result;
 	}
@@ -226,7 +228,7 @@ public class SqlExists {
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
 		}
 		return result;
 	}
@@ -241,7 +243,7 @@ public class SqlExists {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
 		}
 		return result;
 	}
@@ -256,7 +258,7 @@ public class SqlExists {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
 		}
 		return result;
 	}
@@ -272,7 +274,7 @@ public class SqlExists {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
 		}
 		return result;
 	}
@@ -289,7 +291,7 @@ public class SqlExists {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
 		}
 		return result;
 	}
@@ -306,7 +308,7 @@ public class SqlExists {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
 		}
 		return result;
 	}
@@ -323,7 +325,7 @@ public class SqlExists {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
 		}
 		return result;
 	}
@@ -343,7 +345,7 @@ public class SqlExists {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
 		}
 		return result;
 	}
@@ -360,7 +362,7 @@ public class SqlExists {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
 		}
 		return result;
 	}
@@ -377,7 +379,7 @@ public class SqlExists {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
 		}
 		return result;
 	}
@@ -394,7 +396,7 @@ public class SqlExists {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
 		}
 		return result;
 	}
@@ -411,7 +413,7 @@ public class SqlExists {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
 		}
 		return result;
 	}
@@ -428,7 +430,7 @@ public class SqlExists {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
 		}
 		return result;
 	}
