@@ -61,6 +61,20 @@ public class SqlDelete {
 	    return noError;
 	}
 	
+	public static boolean deleteBlankMembershipIdRow() {
+	    boolean noError = false;
+	    	Statement stmt;
+			try {
+				stmt = ConnectDatabase.connection.createStatement();
+				stmt.execute(Main.console.setRegexColor("delete from membership_id where fiscal_year=0 and MEMBERSHIP_ID=0"));
+				noError = true;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				new Dialogue_ErrorSQL(e,"Unable to Delete Blank Membership ID Row","See below for details");
+			}
+	    return noError;
+	}
+	
 	public static boolean deleteEmail(Object_Email email) {
 		boolean noError = false;
 			try {

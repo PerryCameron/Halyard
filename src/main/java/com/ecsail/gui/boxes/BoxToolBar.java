@@ -8,10 +8,7 @@ import com.ecsail.gui.dialogues.Dialogue_StatisticsStatusBar;
 import com.ecsail.gui.dialogues.Dialogue_Stub;
 import com.ecsail.main.CreateMembership;
 import com.ecsail.main.SqlScriptMaker;
-import com.ecsail.main.Statistics;
 import com.ecsail.main.Launcher;
-import com.ecsail.pdf.directory.PDF_Directory;
-
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;

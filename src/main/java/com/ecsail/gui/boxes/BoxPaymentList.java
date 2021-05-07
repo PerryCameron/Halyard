@@ -61,7 +61,7 @@ public class BoxPaymentList extends HBox {
 		final Spinner<Integer> yearSpinner = new Spinner<Integer>();
 		SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 2100, Integer.parseInt(currentYear));
 		BoxPaymentList.fiscals = SqlSelect.getMonies(membership.getMsid());
-		Boolean currentFiscalRecordExists = SqlExists.moneyExists(currentYear,membership);
+		//Boolean currentFiscalRecordExists = SqlExists.moneyExists(currentYear,membership);
 		Object_DefinedFee definedFees = SqlSelect.selectDefinedFees(Integer.parseInt(currentYear));
 		
 		//if(!currentFiscalRecordExists) {
@@ -198,18 +198,19 @@ public class BoxPaymentList extends HBox {
 		return dues;
 	}
 	
-	private void createCurrentFiscalRecord(Object_DefinedFee definedFees) {  // creates a current fiscal record if none exists
-		System.out.println("Creating fiscal Record because it doesn't exist");
-		int addSlip = 0;
-		if(SqlExists.ownsSlip(membership.getMsid()) || SqlExists.subleasesSlip(membership.getMsid())) addSlip = 1;  // member has a slip for current year
-		int moneyId = SqlSelect.getCount("money_id") + 1;
-		if(!SqlExists.moneyExists(currentYear,membership)) {  // record doesn't exist
-			Object_Money newMoney = new Object_Money(moneyId,membership.getMsid(),Integer.parseInt(currentYear),0,getDues(definedFees),0,0,0,0,0,addSlip,0,0,0,0,0,0,0,0,0,0,getDues(definedFees),false,false,0,0,false);
-			SqlInsert.addRecord(newMoney);
-			SqlInsert.addRecord(moneyId,membership);
-			fiscals.add(newMoney);
-		} 
-	}
+// sweet method, perhaps I should set to static
+//	private void createCurrentFiscalRecord(Object_DefinedFee definedFees) {  // creates a current fiscal record if none exists
+//		System.out.println("Creating fiscal Record because it doesn't exist");
+//		int addSlip = 0;
+//		if(SqlExists.ownsSlip(membership.getMsid()) || SqlExists.subleasesSlip(membership.getMsid())) addSlip = 1;  // member has a slip for current year
+//		int moneyId = SqlSelect.getCount("money_id") + 1;
+//		if(!SqlExists.moneyExists(currentYear,membership)) {  // record doesn't exist
+//			Object_Money newMoney = new Object_Money(moneyId,membership.getMsid(),Integer.parseInt(currentYear),0,getDues(definedFees),0,0,0,0,0,addSlip,0,0,0,0,0,0,0,0,0,0,getDues(definedFees),false,false,0,0,false);
+//			SqlInsert.addRecord(newMoney);
+//			SqlInsert.addRecord(moneyId,membership);
+//			fiscals.add(newMoney);
+//		} 
+//	}
 	
 	private static void createTab(int rowIndex) {
 		parentTabPane.getTabs().add(new Tab(fiscals.get(rowIndex).getFiscal_year() + "", new BoxFiscal(membership, people, fiscals, rowIndex, note, duesText))); // current year tab

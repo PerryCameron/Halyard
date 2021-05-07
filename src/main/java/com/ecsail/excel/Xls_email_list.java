@@ -62,7 +62,6 @@ public class Xls_email_list {
         int rowNum = 1;
         for(Object_Email_Information e: email) {
             Row row = sheet.createRow(rowNum++);
-
             row.createCell(0).setCellValue(e.getMembershipId());
             row.createCell(1).setCellValue(e.getJoinDate());
             row.createCell(2).setCellValue(e.getLname());

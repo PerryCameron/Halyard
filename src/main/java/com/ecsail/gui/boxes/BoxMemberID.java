@@ -63,9 +63,10 @@ public class BoxMemberID extends HBox {
 		this.id.addAll(SqlSelect.getIds(m.getMsid()));
 		this.labels = l;
 		/////// OBJECT INSTANCE //////
-		HBox hboxControls = new HBox(); // holds phone buttons
+		
 		Button idAdd = new Button("Add");
 		Button idDelete = new Button("Delete");
+		HBox hboxControls = new HBox(); // holds phone buttons
 		VBox vboxGrey = new VBox(); // this is here for the grey background to make nice apperence
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
 		HBox hboxJoinDate = new HBox();
@@ -74,18 +75,22 @@ public class BoxMemberID extends HBox {
 		
 		//// OBJECT ATTRIBUTES /////
 		hboxJoinDate.setAlignment(Pos.CENTER_LEFT);
+		
 		hboxJoinDate.setSpacing(5);
 		hboxButtons.setSpacing(5);
+		vboxGrey.setSpacing(10); // spacing in between table and buttons
+		hboxControls.setSpacing(60); // spacing between buttons and joinDatePicker
+		
 		idAdd.setPrefWidth(60);
 		idDelete.setPrefWidth(60);
-		hboxControls.setSpacing(60); // spacing between buttons and joinDatePicker
 		vboxGrey.setPrefWidth(460);
-		vboxGrey.setSpacing(10); // spacing in between table and buttons
-		vboxGrey.setId("box-grey");
-		vboxPink.setId("box-pink");
+		
 		vboxGrey.setPadding(new Insets(5, 5, 5, 5)); // spacing around table and buttons
 		vboxPink.setPadding(new Insets(2, 2, 2, 2)); // spacing to make pink fram around table
 		setPadding(new Insets(5, 5, 5, 5));  // creates space for blue frame
+		
+		vboxGrey.setId("box-grey");
+		vboxPink.setId("box-pink");
 		setId("box-blue");
 		
 		Collections.sort(id, Comparator.comparing(Object_MembershipId::getFiscal_Year).reversed());
@@ -246,6 +251,13 @@ public class BoxMemberID extends HBox {
 		
 		idAdd.setOnAction((event) -> {
 			int mid = SqlSelect.getCount("membership_id", "mid") + 1; // get last mid number add 1
+			// make sure any blank unused rows are removed before creating another
+			// no need to specify a year, just remove any of them.
+			if(SqlExists.membershipIdBlankRowExists()) {
+				System.out.println("Found unused blank row: Deleted");
+				SqlDelete.deleteBlankMembershipIdRow();	
+			}
+			
 			Object_MembershipId newIdTuple = null;
 			if (SqlExists.memberShipIdExists(m.getMsid())) {
 				newIdTuple = new Object_MembershipId(mid, 0 + "", m.getMsid(), "0", true, m.getMemType(), false, false);
@@ -254,6 +266,7 @@ public class BoxMemberID extends HBox {
 						false, false);
 			}
 			SqlInsert.addMembershipId(newIdTuple);
+			System.out.println("Added new row for MS_ID " + newIdTuple.getMs_id());
 			id.add(newIdTuple);
 		});
 
