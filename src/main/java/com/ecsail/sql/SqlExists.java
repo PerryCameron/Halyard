@@ -44,7 +44,21 @@ public class SqlExists {
 		    answer = rs.getBoolean("EXISTS(SELECT * FROM payment WHERE MONEY_ID=" + money_id + ")");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
+			new Dialogue_ErrorSQL(e,"Unable to check if money record exists","See below for details");
+		}
+		return answer;
+	}
+	
+	public static Boolean paymentsExistForMembership(int ms_id) {
+		Boolean answer = false;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT EXISTS(SELECT * FROM payment WHERE MS_ID=" + ms_id + ");"));
+			rs.next();
+		    answer = rs.getBoolean("EXISTS(SELECT * FROM payment WHERE MS_ID=" + ms_id + ")");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			new Dialogue_ErrorSQL(e,"Unable to check if money record exists","See below for details");
 		}
 		return answer;
 	}
@@ -87,7 +101,7 @@ public class SqlExists {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
+			new Dialogue_ErrorSQL(e,"Unable to verify if a membership exists","See below for details");
 		}
 		return result;
 	}
@@ -102,7 +116,7 @@ public class SqlExists {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
+			new Dialogue_ErrorSQL(e,"Unable to verify if a history record exists","See below for details");
 		}
 		return result;
 	}

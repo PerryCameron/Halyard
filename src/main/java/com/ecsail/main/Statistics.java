@@ -36,7 +36,7 @@ public class Statistics {
 				stats.setStatId(statId);
 				stats.refreshStatsForYear();  // built in function for the object to update itself.
 				SqlInsert.addStatRecord(stats);
-				System.out.println("Adding " + selectedYear);
+				System.out.println("Calculating statistics for " + selectedYear);
 				selectedYear++;
 				statId++;
 			}

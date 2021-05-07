@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import com.ecsail.main.Launcher;
 import com.ecsail.sql.SqlDelete;
+import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.SqlSelect;
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Person;
@@ -95,21 +96,30 @@ public class BoxProperties extends HBox {
 	}
 	
 	private void deleteMembership(int ms_id) {
-		SqlDelete.deleteBoatOwner(ms_id);
-		SqlDelete.deleteMemos(ms_id);
-		SqlDelete.deleteWorkCredits(ms_id);
-		SqlDelete.deleteMonies(ms_id);
-		SqlDelete.deleteWaitList(ms_id);
-		SqlDelete.deleteMembershipId(ms_id);  // removes all entries
-		ObservableList<Object_Person> people = SqlSelect.getPeople(ms_id);
-		for(Object_Person p: people) {
-			SqlDelete.deletePhones(p.getP_id());
-			SqlDelete.deleteEmail(p.getP_id());
-			SqlDelete.deleteOfficer(p.getP_id());
-			SqlDelete.deletePerson(p.getP_id());
+		if (SqlExists.paymentsExistForMembership(ms_id)) {
+			// do not delete the membership
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("There is a problem");
+			alert.setHeaderText("This membership contains payment entries");
+			alert.setContentText("Before deleting this membership you need to manually remove the payment entries.");
+			alert.showAndWait();
+		} else {
+			SqlDelete.deleteBoatOwner(ms_id);
+			SqlDelete.deleteMemos(ms_id);
+			SqlDelete.deleteWorkCredits(ms_id);
+			SqlDelete.deleteMonies(ms_id);
+			SqlDelete.deleteWaitList(ms_id);
+			SqlDelete.deleteMembershipId(ms_id); // removes all entries
+			ObservableList<Object_Person> people = SqlSelect.getPeople(ms_id);
+			for (Object_Person p : people) {
+				SqlDelete.deletePhones(p.getP_id());
+				SqlDelete.deleteEmail(p.getP_id());
+				SqlDelete.deleteOfficer(p.getP_id());
+				SqlDelete.deletePerson(p.getP_id());
+			}
+			SqlDelete.deleteMembership(ms_id);
+			Launcher.removeMembershipRow(ms_id);
+			Launcher.closeActiveTab();
 		}
-		SqlDelete.deleteMembership(ms_id);
-		Launcher.removeMembershipRow(ms_id);
-		Launcher.closeActiveTab();
 	}
 }

@@ -106,7 +106,7 @@ public class Dialogue_StatisticsStatusBar extends Stage {
 			stats.setStatId(statId);
 			stats.refreshStatsForYear(); // built in function for the object to update itself.
 			SqlInsert.addStatRecord(stats);
-			System.out.println("Adding " + startYear);
+			System.out.println("Calculating statistics for " + startYear);
 			startYear++;
 			statId++;
 			System.out.println(statId);
@@ -119,7 +119,7 @@ public class Dialogue_StatisticsStatusBar extends Stage {
 	    task.setOnSucceeded(e -> { 
 	    	//textArea.setText((String) e.getSource().getValue()); 
 	    	System.out.println("Finished updating Statistics");});
-	    task.setOnFailed(e -> { System.out.println("This failed"); });
+	    task.setOnFailed(e -> { System.out.println("Was unable to compile stats"); });
 	    exec.execute(task);
 	    
 
