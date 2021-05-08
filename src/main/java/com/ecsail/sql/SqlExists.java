@@ -53,9 +53,9 @@ public class SqlExists {
 		Boolean answer = false;
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
-			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT EXISTS(SELECT * FROM payment WHERE MS_ID=" + ms_id + ");"));
+			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT EXISTS(SELECT * FROM money WHERE MS_ID=" + ms_id + ");"));
 			rs.next();
-		    answer = rs.getBoolean("EXISTS(SELECT * FROM payment WHERE MS_ID=" + ms_id + ")");
+		    answer = rs.getBoolean("EXISTS(SELECT * FROM money WHERE MS_ID=" + ms_id + ")");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"Unable to check if money record exists","See below for details");
