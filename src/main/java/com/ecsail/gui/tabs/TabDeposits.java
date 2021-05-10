@@ -56,8 +56,7 @@ public class TabDeposits extends Tab {
 														// dues for a selected deposit
 	private Object_DefinedFee currentDefinedFee; // containes all the defined fees for a given year
 	private Object_Deposit currentDeposit; // contains deposit number, date, year for a selected deposit
-	private Object_DepositSummaryText summaryText = new Object_DepositSummaryText(); // object of text objects for
-																						// display
+	private Object_DepositSummaryText summaryText = new Object_DepositSummaryText(); // object of text objects for																				// display
 	private Object_DepositSummary summaryTotals = new Object_DepositSummary(); // will hold the totals of all at first
 																				// and then for a selected deposit
 	Text numberOfRecords = new Text("0");
@@ -99,10 +98,10 @@ public class TabDeposits extends Tab {
 		HBox numberOfRecordsHBox = new HBox();
 		HBox comboBoxHBox = new HBox();
 		Text nonRenewed = new Text("0");
-
+		TableView<Object_PaidDues> paidDuesTableView = new TableView<Object_PaidDues>();
+		
 		final ComboBox<String> comboBox = new ComboBox<String>(options);
 		GridPane gridPane = new GridPane();
-		TableView<Object_PaidDues> paidDuesTableView;
 		Button refreshButton = new Button("Refresh");
 		Button printPdfButton = new Button("Print PDF");
 		DatePicker depositDatePicker = new DatePicker();
@@ -112,38 +111,44 @@ public class TabDeposits extends Tab {
 		numberOfRecords.setStyle("-fx-font-weight: bold;");
 		vboxBlue.setId("box-blue");
 		controlsHBox.setId("box-blue");
-		controlsHBox.setPadding(new Insets(5, 5, 5, 5));
-		controlsVBox.setPrefWidth(342);
-		controlsVBox.setSpacing(10);
-		controlsVBox.setPadding(new Insets(15, 5, 5, 5));
 		controlsVBox.setId("box-grey");
-		mainHBox.setSpacing(5);
+		vboxPink.setId("box-pink");
+		
+		controlsHBox.setPadding(new Insets(5, 5, 5, 5));
+		controlsVBox.setPadding(new Insets(15, 5, 5, 5));
 		vboxBlue.setPadding(new Insets(10, 10, 10, 10));
 		vboxPink.setPadding(new Insets(3, 3, 3, 3)); // spacing to make pink fram around table
-		vboxPink.setId("box-pink");
-		batchNumberHBox.setSpacing(5);
-		selectionHBox.setSpacing(30);
-		depositDatePicker.setPrefWidth(123);
-		yearBatchHBox.setAlignment(Pos.CENTER);
 		selectionHBox.setPadding(new Insets(0, 0, 0, 37));
 		comboBoxHBox.setPadding(new Insets(0, 0, 0, 37));
-		batchNumberHBox.setAlignment(Pos.CENTER);
-		gridHBox.setAlignment(Pos.CENTER);
+		
+		controlsVBox.setPrefWidth(342);
+		depositDatePicker.setPrefWidth(123);
+		paidDuesTableView.setPrefWidth(645);
+		
+		vboxGrey.setPrefHeight(688);
+		paidDuesTableView.setPrefHeight(688);
+		
+		controlsVBox.setSpacing(10);
+		mainHBox.setSpacing(5);
+		batchNumberHBox.setSpacing(5);
 		buttonHBox.setSpacing(10);
 		numberOfRecordsHBox.setSpacing(5);
+		selectionHBox.setSpacing(30);
+		yearBatchHBox.setSpacing(15);
+		
+		
+		batchNumberHBox.setAlignment(Pos.CENTER);
+		yearBatchHBox.setAlignment(Pos.CENTER);
+		gridHBox.setAlignment(Pos.CENTER);
 		buttonHBox.setAlignment(Pos.CENTER);
 		remaindingRenewalHBox.setAlignment(Pos.CENTER);
-		vboxGrey.setPrefHeight(688);
+		
 		gridPane.setVgap(5);
 		gridPane.setHgap(50);
-		// gridPane.setPadding(new Insets(10, 10, 10, 30));
-		paidDuesTableView = new TableView<Object_PaidDues>();
 		paidDuesTableView.setItems(paidDues);
-		paidDuesTableView.setPrefWidth(645);
-		paidDuesTableView.setPrefHeight(688);
 		paidDuesTableView.setFixedCellSize(30);
 		paidDuesTableView.setEditable(true);
-		yearBatchHBox.setSpacing(15);
+		
 		comboBox.setValue("Show All");
 
 		final Spinner<Integer> yearSpinner = new Spinner<Integer>();
@@ -441,13 +446,7 @@ public class TabDeposits extends Tab {
 		int deposit_id = 0;
 		if (SqlExists.ifDepositRecordExists(thisPaidDues.getFiscal_year() + "", summaryTotals.getDepositNumber())) { // does
 																														// a
-																														// deposit
-																														// exist
-																														// for
-																														// selected
-																														// year
-																														// and
-																														// batch?
+																							// batch?
 			System.out.println("deposit exists");
 			deposit_id = SqlSelect.getDeposit(selectedYear + "", summaryTotals.getDepositNumber()).getDeposit_id();
 		} else { // record does not exist
