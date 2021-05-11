@@ -96,6 +96,8 @@ public class Dialogue_StatisticsStatusBar extends Stage {
 
 	public void updateStats() {
 		SqlDelete.deleteStatistics();
+		System.out.println("Deleted old statistics");
+		System.out.println("Calculating new statistics...");
 		int numberOfYears = stopYear - startYear + 1;
 		int statNumber = numberOfYears;
 	    Task<String> task = new Task<String>(){
@@ -106,10 +108,10 @@ public class Dialogue_StatisticsStatusBar extends Stage {
 			stats.setStatId(statId);
 			stats.refreshStatsForYear(); // built in function for the object to update itself.
 			SqlInsert.addStatRecord(stats);
-			System.out.println("Calculating statistics for " + startYear);
+			System.out.print(startYear + " ");
 			startYear++;
 			statId++;
-			System.out.println(statId);
+			if(statId % 10 == 0) System.out.println();
 			pb.setProgress((double)statId/statNumber);
 		}
 			return null;
