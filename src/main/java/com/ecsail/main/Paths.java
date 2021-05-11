@@ -15,6 +15,7 @@ public class Paths {
 	public static final String SCRIPTS = System.getProperty("user.home") + "/.ecsc/scripts";
 	public static final String TUPLECOUNTS = System.getProperty("user.home") + "/.ecsc/tuples.ecs";
 	public static final String SLIPCHART = System.getProperty("user.home") + "/Documents/ECSC/SlipCharts";
+	public static final String DEFAULTPHOTO = "/personimg.png";
 	// "C:\\Users\\pcame\\Documents\\email.xlsx"
 	
 	public static void checkPath(String path) {
