@@ -497,14 +497,17 @@ public class Sql_SelectMembership {
 			Statement stmt = ConnectDatabase.connection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor(
-					"select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,id.FISCAL_YEAR,m.JOIN_DATE,id.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip "
-					+ "from membership_id id left join membership m on m.MS_ID=id.MS_ID "
-					+ "left join person p on p.P_ID=m.P_ID left join slip s on s.MS_ID=m.MS_ID "
-					+ "where id.FISCAL_YEAR='" + year + "' and id.MEMBERSHIP_ID > ("
-					+ "select membership_id from membership_id where FISCAL_YEAR='" + year + "' and MS_ID=("
-					+ "select MS_ID from membership_id where FISCAL_YEAR='" + lastYear + "' and membership_id=("
-					+ "select max(membership_id) from membership_id where FISCAL_YEAR='" + lastYear + "' and membership_id < 500 and id.renew=1))) "
-					+ " and id.LATE_RENEW=false and id.MEMBERSHIP_ID < 500;"));
+					"select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,id.FISCAL_YEAR,m.JOIN_DATE,id.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip\n"
+					+ "from membership_id id left join membership m on m.MS_ID=id.MS_ID\n"
+					+ "left join person p on p.P_ID=m.P_ID left join slip s on s.MS_ID=m.MS_ID\n"
+					+ "where id.FISCAL_YEAR='"+ year +"' \n"
+					+ "and YEAR(m.JOIN_DATE) < "+ year +" \n"
+					+ "and id.MEMBERSHIP_ID > (\n"
+					+ "select membership_id from membership_id id\n"
+					+ "where FISCAL_YEAR=' "+year+ "' \n"
+					+ "and MS_ID=(\n"
+					+ "select MS_ID from membership_id   where FISCAL_YEAR='" + lastYear + "' and membership_id=(\n"
+					+ "select max(membership_id) from membership_id where FISCAL_YEAR='" + lastYear + "' and membership_id < 500 and id.renew=1))); "));
 			while (rs.next()) {
 				rosters.add(new Object_MembershipList(
 						rs.getInt("MS_ID"), 

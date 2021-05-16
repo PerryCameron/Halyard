@@ -465,4 +465,21 @@ public class SqlExists {
 		return result;
 	}
 	
+	public static Boolean paidLate(Object_MembershipList r) {
+		boolean result = false;
+		try {  
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs = stmt
+					.executeQuery(Main.console.setRegexColor("select exists(select * from membership_id where fiscal_year='" + r.getSelectedYear() + "' and MS_ID=" + r.getMsid() + " and LATE_RENEW=true)"));
+			while (rs.next()) {
+				result = rs.getBoolean(
+						"exists(select * from membership_id where fiscal_year='" + r.getSelectedYear() + "' and MS_ID=" + r.getMsid() + " and LATE_RENEW=true)");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
+		}
+		return result;
+	}
+	
 }

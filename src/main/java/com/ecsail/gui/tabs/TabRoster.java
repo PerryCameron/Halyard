@@ -11,6 +11,7 @@ import com.ecsail.gui.tabs.roster.TabStandard;
 import com.ecsail.main.Main;
 import com.ecsail.main.Paths;
 import com.ecsail.main.Launcher;
+import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.Sql_SelectMembership;
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_RosterRadioButtons;
@@ -18,6 +19,7 @@ import com.ecsail.structures.Object_RosterSelect;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -328,12 +330,23 @@ public class TabRoster extends Tab {
 		rb.getRadioNewReturnMembers().selectedProperty().addListener((ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected,
 					Boolean isNowSelected) -> {
 				if (isNowSelected) {
+					ObservableList<Object_MembershipList> keepers = FXCollections.observableArrayList();
 					setListType("return");
 					rosters.clear();
-					rosters.addAll(Sql_SelectMembership.getNewMemberRoster(selectedYear));
-					for(Object_MembershipList r: rosters) {
-						System.out.println("" + r.getJoinDate());
+					rosters.addAll(Sql_SelectMembership.getFullNewMemberRoster(selectedYear));
+					for(int i = 0; i < rosters.size(); i++) {
+						// if they didn'ty pay late
+						if(!SqlExists.paidLate(rosters.get(i))) {
+							System.out.println("Keeping " +  rosters.get(i));
+							keepers.add(rosters.get(i));
+							
+						} 
 					}
+					rosters.clear();
+					for(Object_MembershipList k: keepers) {
+						rosters.add(k);
+					}
+					keepers.clear();
 					records.setText(rosters.size() + " Records");
 					//rosterTableView.sort();
 					Collections.sort(rosters, Comparator.comparing(Object_MembershipList::getMembershipId));
