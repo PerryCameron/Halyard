@@ -325,19 +325,19 @@ public class TabRoster extends Tab {
 			}
 		});
 
-		rb.getRadioNewReturnMembers().selectedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected,
-					Boolean isNowSelected) {
+		rb.getRadioNewReturnMembers().selectedProperty().addListener((ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected,
+					Boolean isNowSelected) -> {
 				if (isNowSelected) {
-					setListType("new-and-return");
+					setListType("return");
 					rosters.clear();
-					rosters.addAll(Sql_SelectMembership.getFullNewMemberRoster(selectedYear));
+					rosters.addAll(Sql_SelectMembership.getNewMemberRoster(selectedYear));
+					for(Object_MembershipList r: rosters) {
+						System.out.println("" + r.getJoinDate());
+					}
 					records.setText(rosters.size() + " Records");
 					//rosterTableView.sort();
 					Collections.sort(rosters, Comparator.comparing(Object_MembershipList::getMembershipId));
 				}
-			}
 		});
 
 		rb.getRadioSlipWaitList().selectedProperty().addListener(new ChangeListener<Boolean>() {
@@ -556,7 +556,7 @@ public class TabRoster extends Tab {
 			printChoices.setNewAndReturnd(false);
 			printChoices.setSlipwait(false);
 			break;
-		case "new-and-return":
+		case "return":
 			printChoices.setAll(false);
 			printChoices.setActive(false);
 			printChoices.setNonRenew(false);
