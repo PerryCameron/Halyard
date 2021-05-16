@@ -8,7 +8,7 @@ public class Object_RosterRadioButtons {
 	RadioButton radioActive = new RadioButton("Active"); 
     RadioButton radioNonRenew = new RadioButton("Non-Renew"); 
     RadioButton radioNewMembers = new RadioButton("New Members");
-    RadioButton radioNewReturnMembers = new RadioButton("New/Return Members");
+    RadioButton radioNewReturnMembers = new RadioButton("Return Members");
     RadioButton radioAllPeople = new RadioButton("All Active People");
     
     RadioButton radioSlipWaitList = new RadioButton("Slip Waitlist");
