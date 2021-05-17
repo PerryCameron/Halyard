@@ -185,7 +185,7 @@ public class TabPeople extends Tab {
 		Pattern p = Pattern.compile("^" +searchString, Pattern.MULTILINE);
 		boolean flag = true;
 		for (Object_Person o : personTableView.getItems()) {
-		Matcher m = p.matcher(o.getLname());
+		Matcher m = p.matcher(o.getLname().toLowerCase());
 		
 			while(m.find()) {
 				//System.out.println(m.group() + " found on row " + count);

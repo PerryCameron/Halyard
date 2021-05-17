@@ -37,7 +37,7 @@ public class BoxSearch extends HBox {
 		
 		searchRecords.setOnAction(new EventHandler<ActionEvent>() {
 	           @Override public void handle(ActionEvent e) {
-	        	   TabPeople.searchLastName(searchBox.getText());
+	        	   TabPeople.searchLastName(searchBox.getText().toLowerCase());
 	        	   //System.out.println("Text is" + searchBox.getText());
 	            }
 	        });
