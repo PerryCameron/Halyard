@@ -327,7 +327,7 @@ public class TabRoster extends Tab {
 			}
 		});
 
-		rb.getRadioNewReturnMembers().selectedProperty().addListener((ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected,
+		rb.getRadioReturnMembers().selectedProperty().addListener((ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected,
 					Boolean isNowSelected) -> {
 				if (isNowSelected) {
 					ObservableList<Object_MembershipList> keepers = FXCollections.observableArrayList();
@@ -337,7 +337,6 @@ public class TabRoster extends Tab {
 					for(int i = 0; i < rosters.size(); i++) {
 						// if they didn'ty pay late
 						if(!SqlExists.paidLate(rosters.get(i))) {
-							System.out.println("Keeping " +  rosters.get(i));
 							keepers.add(rosters.get(i));
 							
 						} 
@@ -473,21 +472,31 @@ public class TabRoster extends Tab {
 			}
 		});
 
-		rb.getRadioAllActiveMembers().selectedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected,
-					Boolean isNowSelected) {
-				if (isNowSelected) {
-					setListType("all-active-members");
-					rosters.clear();
-					rosters.addAll(Sql_SelectMembership.getRosterOfAllActiveMembers(Paths.getYear()));
-					records.setText(rosters.size() + " Records");
-					//rosterTableView.sort();
-					Collections.sort(rosters, Comparator.comparing(Object_MembershipList::getMembershipId));
+		rb.getRadioLatePaymentMembers().selectedProperty().addListener((ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected,
+				Boolean isNowSelected) -> {
+			if (isNowSelected) {
+				ObservableList<Object_MembershipList> keepers = FXCollections.observableArrayList();
+				setListType("return");
+				rosters.clear();
+				rosters.addAll(Sql_SelectMembership.getFullNewMemberRoster(selectedYear));
+				for(int i = 0; i < rosters.size(); i++) {
+					// if they didn'ty pay late
+					if(SqlExists.paidLate(rosters.get(i))) {
+						keepers.add(rosters.get(i));
+						
+					} 
 				}
+				rosters.clear();
+				for(Object_MembershipList k: keepers) {
+					rosters.add(k);
+				}
+				keepers.clear();
+				records.setText(rosters.size() + " Records");
+				//rosterTableView.sort();
+				Collections.sort(rosters, Comparator.comparing(Object_MembershipList::getMembershipId));
 			}
-		});
-
+	});
+		
 		titledPane.expandedProperty().addListener((obs, wasExpanded, isNowExpanded) -> {
 			if (isNowExpanded) {
 				// System.out.println("Title Pane Expanded");
@@ -526,7 +535,7 @@ public class TabRoster extends Tab {
 			rosters.addAll(Sql_SelectMembership.getRoster(selectedYear, false));
 		if (rb.getRadioNewMembers().isSelected())
 			rosters.addAll(Sql_SelectMembership.getNewMemberRoster(selectedYear));
-		if (rb.getRadioNewReturnMembers().isSelected())
+		if (rb.getRadioReturnMembers().isSelected())
 			rosters.addAll(Sql_SelectMembership.getFullNewMemberRoster(selectedYear));
 		if (rb.getRadioAll().isSelected())
 			rosters.addAll(Sql_SelectMembership.getRosterOfAll(selectedYear));

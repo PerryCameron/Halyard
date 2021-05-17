@@ -8,8 +8,8 @@ public class Object_RosterRadioButtons {
 	RadioButton radioActive = new RadioButton("Active"); 
     RadioButton radioNonRenew = new RadioButton("Non-Renew"); 
     RadioButton radioNewMembers = new RadioButton("New Members");
-    RadioButton radioNewReturnMembers = new RadioButton("Return Members");
-    RadioButton radioAllPeople = new RadioButton("All Active People");
+    RadioButton radioReturnMembers = new RadioButton("Return Members");
+    RadioButton radioLatePaymentMembers = new RadioButton("Late Dues");
     
     RadioButton radioSlipWaitList = new RadioButton("Slip Waitlist");
     RadioButton radioSlip = new RadioButton("Slip Owners");
@@ -33,8 +33,8 @@ public class Object_RosterRadioButtons {
 		this.radioActive = radioActive;
 		this.radioNonRenew = radioNonRenew;
 		this.radioNewMembers = radioNewMembers;
-		this.radioNewReturnMembers = radioNewReturnMembers;
-		this.radioAllPeople = radioAllActiveMembers;
+		this.radioReturnMembers = radioNewReturnMembers;
+		this.radioLatePaymentMembers = radioLatePaymentMembers;
 		this.radioSlipWaitList = radioSlipWaitList;
 		this.radioSlip = radioSlip;
 		this.radioWantsToSublease = radioWantsToSublease;
@@ -56,8 +56,8 @@ public class Object_RosterRadioButtons {
 		radioActive.setToggleGroup(tg1);
 		radioNonRenew.setToggleGroup(tg1);
 		radioNewMembers.setToggleGroup(tg1);
-		radioNewReturnMembers.setToggleGroup(tg1);
-		radioAllPeople.setToggleGroup(tg1);
+		radioReturnMembers.setToggleGroup(tg1);
+		radioLatePaymentMembers.setToggleGroup(tg1);
 		radioSlipWaitList.setToggleGroup(tg1);
 		radioSlip.setToggleGroup(tg1);
 		radioWantsToSublease.setToggleGroup(tg1);
@@ -102,12 +102,12 @@ public class Object_RosterRadioButtons {
 		this.radioNewMembers = radioNewMembers;
 	}
 
-	public RadioButton getRadioNewReturnMembers() {
-		return radioNewReturnMembers;
+	public RadioButton getRadioReturnMembers() {
+		return radioReturnMembers;
 	}
 
-	public void setRadioNewReturnMembers(RadioButton radioNewReturnMembers) {
-		this.radioNewReturnMembers = radioNewReturnMembers;
+	public void setRadioReturnMembers(RadioButton radioNewReturnMembers) {
+		this.radioReturnMembers = radioNewReturnMembers;
 	}
 
 	public RadioButton getRadioSlipWaitList() {
@@ -190,19 +190,19 @@ public class Object_RosterRadioButtons {
 		this.radioShedOwner = radioShedOwner;
 	}
 
-	public RadioButton getRadioAllActiveMembers() {
-		return radioAllPeople;
+	public RadioButton getRadioLatePaymentMembers() {
+		return radioLatePaymentMembers;
 	}
 
-	public void setRadioAllActiveMembers(RadioButton radioAllActiveMembers) {
-		this.radioAllPeople = radioAllActiveMembers;
+	public void setRadioLatePaymentMembers(RadioButton radioAllActiveMembers) {
+		this.radioLatePaymentMembers = radioAllActiveMembers;
 	}
 
 	@Override
 	public String toString() {
 		return "Object_RosterRadioButtons [radioAll=" + radioAll + ", radioActive=" + radioActive + ", radioNonRenew="
 				+ radioNonRenew + ", radioNewMembers=" + radioNewMembers + ", radioNewReturnMembers="
-				+ radioNewReturnMembers + ", radioAllActiveMembers=" + radioAllPeople + ", radioSlipWaitList="
+				+ radioReturnMembers + ", radioAllActiveMembers=" + radioLatePaymentMembers + ", radioSlipWaitList="
 				+ radioSlipWaitList + "]";
 	}
 	
