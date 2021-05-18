@@ -4,6 +4,7 @@ import java.util.function.Function;
 
 import com.ecsail.enums.KeelType;
 import com.ecsail.main.EditCell;
+import com.ecsail.main.Launcher;
 import com.ecsail.sql.SqlDelete;
 import com.ecsail.sql.SqlInsert;
 import com.ecsail.sql.SqlSelect;
@@ -24,14 +25,18 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TablePosition;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.ComboBoxTableCell;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
@@ -59,6 +64,7 @@ private TableView<Object_Boat> boatTableView;
 	VBox buttonVBox = new VBox();
 	Button boatAdd = new Button("Add");
 	Button boatDelete = new Button("Delete");
+	Button boatView = new Button("view");
     
     /////////////////  ATTRIBUTES  /////////////////////
 	
@@ -66,6 +72,7 @@ private TableView<Object_Boat> boatTableView;
     setSpacing(10);
 	boatAdd.setPrefWidth(60);
 	boatDelete.setPrefWidth(60);
+	boatView.setPrefWidth(60);
 	hboxGrey.setSpacing(10);
 	hboxGrey.setPadding(new Insets(5, 5, 5, 5));
 	vboxPink.setPadding(new Insets(2,2,2,2)); // spacing to make pink fram around table
@@ -275,27 +282,38 @@ private TableView<Object_Boat> boatTableView;
 	
 	/////////////// LISTENERS ////////////////////
     
-    boatAdd.setOnAction(new EventHandler<ActionEvent>() {
-        @Override public void handle(ActionEvent e) {
+    boatAdd.setOnAction((event) -> {
         	int boat_id = SqlSelect.getCount("boat", "boat_id") + 1; // gets last memo_id number and add one
         	boats.add(new Object_Boat(boat_id,membership.getMsid(),"","","","","","",true,"","","","")); // lets add it to our list
 			SqlInsert.addRecord(boat_id,membership.getMsid()); // lets add it to our database
-        }
     });
     
-    boatDelete.setOnAction(new EventHandler<ActionEvent>() {
-        @Override public void handle(ActionEvent e) {
+    boatDelete.setOnAction((event) -> {
         	int selectedIndex = boatTableView.getSelectionModel().getSelectedIndex();
         		if(selectedIndex >= 0) // is a row selected?
         			if(SqlDelete.deleteBoat(boats.get(selectedIndex), membership)) // if we successfully delete from DB
         				boatTableView.getItems().remove(selectedIndex); // remove from GUI
-        }
     });
+    
+    boatView.setOnAction((event) -> {
+    	int selectedIndex = boatTableView.getSelectionModel().getSelectedIndex();
+    	Launcher.openBoatViewTab(boats.get(selectedIndex));
+    });
+    
+	boatTableView.setRowFactory(tv -> {
+		TableRow<Object_Boat> row = new TableRow<>();
+		row.setOnMouseClicked(event -> {
+			if (!row.isEmpty() && event.getButton() == MouseButton.SECONDARY && event.getClickCount() == 1) {
+				System.out.println("We want to do something with " + row.getItem().toString());
+			}
+		});
+		return row;
+	});
     
     /////////////////// SET CONTENT ///////////////////
 
 	boatTableView.getColumns().addAll(Col1,Col2,Col3,Col4,Col5,Col6,Col6b,Col7,Col8,Col9,Col10);
-	buttonVBox.getChildren().addAll(boatAdd,boatDelete);
+	buttonVBox.getChildren().addAll(boatAdd,boatDelete,boatView);
 	vboxPink.getChildren().add(boatTableView);
 	hboxGrey.getChildren().addAll(vboxPink,buttonVBox);
 	getChildren().addAll(hboxGrey);

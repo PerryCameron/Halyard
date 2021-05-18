@@ -9,6 +9,7 @@ import com.ecsail.gui.tabs.TabRoster;
 import com.ecsail.gui.tabs.TabDeposits;
 import com.ecsail.gui.tabs.TabLogin;
 import com.ecsail.gui.tabs.TabBoardMembers;
+import com.ecsail.gui.tabs.TabBoatView;
 import com.ecsail.gui.tabs.TabBoats;
 import com.ecsail.gui.tabs.TabDefinedFee;
 import com.ecsail.gui.tabs.TabMembership;
@@ -20,6 +21,7 @@ import com.ecsail.gui.tabs.TabStub;
 import com.ecsail.gui.tabs.TabWelcome;
 import com.ecsail.sql.Sql_SelectMembership;
 import com.ecsail.sql.SqlSelect;
+import com.ecsail.structures.Object_Boat;
 import com.ecsail.structures.Object_MembershipList;
 
 import javafx.scene.control.Tab;
@@ -102,6 +104,12 @@ static TabPane tabPane;
 		if(!tabOpen("Roster")) // is the tab already open??
 		tabPane.getTabs().add(new TabRoster(Main.activememberships, Main.selectedYear));
 		tabPane.getSelectionModel().select(getTabIndex("Roster"));
+	}
+	
+	public static void openBoatViewTab(Object_Boat b) {
+		if(!tabOpen("Boat"))
+			tabPane.getTabs().add(new TabBoatView("Boat " + b.getBoat_id(), b));
+			tabPane.getSelectionModel().select(getTabIndex("Boat " + b.getBoat_id()));
 	}
 	
 	public static void openWelcomeTab(BoxWelcome boxWelcome) {
