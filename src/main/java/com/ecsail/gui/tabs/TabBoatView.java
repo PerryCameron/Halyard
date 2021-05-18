@@ -1,7 +1,10 @@
 package com.ecsail.gui.tabs;
 
+import com.ecsail.sql.Sql_SelectMembership;
 import com.ecsail.structures.Object_Boat;
+import com.ecsail.structures.Object_MembershipList;
 
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Tab;
@@ -12,9 +15,13 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 
 public class TabBoatView extends Tab {
-
+	private ObservableList<Object_MembershipList> boatOwners;
+	/// need to add history to boat_owner table
+	
+	
 	public TabBoatView(String text, Object_Boat b) {
 		super(text);
+		this.boatOwners = Sql_SelectMembership.getBoatOwners(b.getBoat_id());
 		
 		VBox vboxGrey = new VBox();  // this is the vbox for organizing all the widgets
 		VBox vboxBlue = new VBox();
@@ -57,7 +64,6 @@ public class TabBoatView extends Tab {
 		VBox vboxtrailerBox = new VBox();
 		VBox vboxkeelBox = new VBox();
 		
-		
 		TextField bnameTextField = new TextField();
 		TextField manufacturerTextField = new TextField();
 		TextField yearTextField = new TextField();
@@ -89,6 +95,17 @@ public class TabBoatView extends Tab {
 		weightTextField.setPrefSize(150, 10);
 		keelTextField.setPrefSize(150, 10);
 		
+		bnameTextField.setText(b.getBoat_name());
+		manufacturerTextField.setText(b.getManufacturer());
+		yearTextField.setText(b.getManufacture_year());
+		modelTextField.setText(b.getModel());
+		registrationTextField.setText(b.getRegistration_num());
+		sailNumberTextField.setText(b.getSail_number());
+		phrfTextField.setText(b.getPhrf());
+		lengthTextField.setText(b.getLength());
+		weightTextField.setText(b.getWeight());
+		keelTextField.setText(b.getKeel());
+		
 		vboxBnameLabel.setPrefWidth(90);
 		vboxManufacturerLabel.setPrefWidth(90);
 		vboxYearLabel.setPrefWidth(90);
@@ -101,17 +118,17 @@ public class TabBoatView extends Tab {
 		vboxtrailerLabel.setPrefWidth(90);
 		vboxkeelLabel.setPrefWidth(90);
 		
-		hbox1.setAlignment(Pos.CENTER_LEFT);
-		hbox2.setAlignment(Pos.CENTER_LEFT);
-		hbox3.setAlignment(Pos.CENTER_LEFT);
-		hbox4.setAlignment(Pos.CENTER_LEFT);
-		hbox5.setAlignment(Pos.CENTER_LEFT);
-		hbox6.setAlignment(Pos.CENTER_LEFT);
-		hbox7.setAlignment(Pos.CENTER_LEFT);
-		hbox8.setAlignment(Pos.CENTER_LEFT);
-		hbox9.setAlignment(Pos.CENTER_LEFT);
-		hbox10.setAlignment(Pos.CENTER_LEFT);
-		hbox11.setAlignment(Pos.CENTER_LEFT);
+		vboxBnameLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxManufacturerLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxYearLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxModelLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxRegistrationLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxSailNumbeLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxphrfLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxlengthLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxweightLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxtrailerLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxkeelLabel.setAlignment(Pos.CENTER_LEFT);
 		
 		hbox1.setPadding(new Insets(10, 5, 5, 15));
 		hbox2.setPadding(new Insets(0, 5, 5, 15));
@@ -124,7 +141,6 @@ public class TabBoatView extends Tab {
 		hbox9.setPadding(new Insets(0, 5, 5, 15)); 
 		hbox10.setPadding(new Insets(0, 5, 5, 15));
 		hbox11.setPadding(new Insets(0, 5, 5, 15));
-		
 		
 		/////////////// SET CONTENT //////////////////
 		vboxBnameLabel.getChildren().add(new Label("Boat Name"));
@@ -168,7 +184,5 @@ public class TabBoatView extends Tab {
 		vboxBlue.getChildren().add(vboxPink);
 		vboxPink.getChildren().add(vboxGrey);
 		setContent(vboxBlue);
-		
 	}
-	
 }
