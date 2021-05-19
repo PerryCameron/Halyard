@@ -43,11 +43,10 @@ public class TabMembership extends Tab {
 	public TabMembership(Object_MembershipList me) { 
 		super();
 		this.membership = me;
-		this.setText(setTabLabel());
         this.memos = SqlSelect.getMemos(membership.getMsid());
         this.labels = new Object_MemLabels();
         this.people = SqlSelect.getPeople(membership.getMsid());
-		
+		this.setText(setTabLabel());
 		////////// OBJECTS /////////////
         Note note = new Note(memos,membership.getMsid());
 		VBox windowSizeVBox = new VBox(); // provides a container for the scroll pane, so it can respect a size
@@ -191,6 +190,8 @@ public class TabMembership extends Tab {
 		String tabLabel;
 		if(membership.getMembershipId() == 0) {
 			tabLabel = "MSID " + membership.getMsid();
+		} else if (isNewMembership()) { 
+		    tabLabel = "New Membership";
 		} else {
 			tabLabel= "Membership " + membership.getMembershipId();
 		}

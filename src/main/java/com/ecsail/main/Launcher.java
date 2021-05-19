@@ -132,11 +132,12 @@ static TabPane tabPane;
 	
 	// used for TabRoster and CreateMembership
 	public static void createMembershipTabForRoster(int membershipID, int ms_id)  {
-		String tabLabel= "Membership " + membershipID;
+		String tabLabel= "New Membership";
 		if(!tabOpen(tabLabel)) // is the tab already open??
-			tabPane.getTabs().add(new TabMembership(getMembership(ms_id)));
+		tabPane.getTabs().add(new TabMembership(getMembership(ms_id)));
 		tabPane.getSelectionModel().select(getTabIndex(tabLabel)); // focus on tab we are wanting
 	}
+	
 	
 	// used in BoxSlip
 	public static void createTabForBoxSlip(int ms_id) {  // overload
