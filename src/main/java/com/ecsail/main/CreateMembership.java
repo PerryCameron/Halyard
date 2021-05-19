@@ -14,7 +14,6 @@ import com.ecsail.structures.Object_Person;
 
 public class CreateMembership {
 
-	
 	public static Object_Person createUser(int msid) {
 		// create a main person for the membership
 		int pid = SqlSelect.getCount() + 1;
