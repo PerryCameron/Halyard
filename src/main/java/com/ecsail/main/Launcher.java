@@ -60,6 +60,7 @@ static TabPane tabPane;
 	}
 	
 	public static int getTabIndex(String tabName) {
+		System.out.println("Tab name is '" + tabName + "'");
 		int result = 0;
 		int count = 0;
 		for(Tab tab: tabPane.getTabs()) {
@@ -132,9 +133,11 @@ static TabPane tabPane;
 	
 	// used for TabRoster and CreateMembership
 	public static void createMembershipTabForRoster(int membershipID, int ms_id)  {
-		String tabLabel= "New Membership";
+		Object_MembershipList membership;
+		membership = getMembership(ms_id);
+		String tabLabel= "Membership " + membership.getMembershipId();
 		if(!tabOpen(tabLabel)) // is the tab already open??
-		tabPane.getTabs().add(new TabMembership(getMembership(ms_id)));
+		tabPane.getTabs().add(new TabMembership(membership));
 		tabPane.getSelectionModel().select(getTabIndex(tabLabel)); // focus on tab we are wanting
 	}
 	
@@ -166,6 +169,7 @@ static TabPane tabPane;
 		String tabLabel= "Membership " + membership.getMembershipId();
 		if(!tabOpen(tabLabel)) // is the tab already open??
 		tabPane.getTabs().add(new TabMembership(membership));
+		tabPane.getSelectionModel().select(getTabIndex(tabLabel)); // focus on tab we are wanting
 	}
 	
 	// fills incomplete object with latest information and opens tab.
