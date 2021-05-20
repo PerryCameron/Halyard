@@ -129,8 +129,6 @@ static TabPane tabPane;
 		new Dialogue_EnvelopePDF();
 	}
 	
-	
-	
 	// used for TabRoster and CreateMembership
 	public static void createMembershipTabForRoster(int membershipID, int ms_id)  {
 		Object_MembershipList membership;
