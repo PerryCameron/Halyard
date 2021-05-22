@@ -223,6 +223,15 @@ public class BoxPerson extends HBox {
 	            }
 	    });
 		
+		nnameTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            //focus out
+            if (oldValue) {  // we have focused and unfocused
+            		SqlUpdate.updateNickName(nnameTextField.getText(), person);
+            		if(people != null)  // this updates the people list if in people mode
+            			people.get(TabPeople.getIndexByPid(person.getP_id())).setBuisness(businessTextField.getText());
+            }
+		});
+		
 		photo.setOnMouseClicked((e) -> {
 			if (e.getClickCount() == 1) {
 				new Dialogue_ChoosePicture();
@@ -259,6 +268,7 @@ public class BoxPerson extends HBox {
 		lnameTextField.setText(person.getLname());
 		businessTextField.setText(person.getBuisness());
 		occupationTextField.setText(person.getOccupation());
+		nnameTextField.setText(person.getNname());
 		infoTabPane.getTabs().add(new Tab("Phone", hbox6));
 		infoTabPane.getTabs().add(new Tab("Email", hbox7));
 		infoTabPane.getTabs().add(new Tab("Officer", hbox8));

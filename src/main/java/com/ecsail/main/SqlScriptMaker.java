@@ -436,8 +436,7 @@ public class SqlScriptMaker {
 				+ getCorrectString(peo.getOccupation()) + ","
 				+ getCorrectString(peo.getBuisness()) + ","
 				+ peo.isActive() + ","
-				+ "null);\n";  // this will be a picture or link to eventually
-		
+				+ "null," + getCorrectString(peo.getNname()) + ";\n";  // this will be a picture or link to eventually
 	}
 	
 	public static String getMembershipString(Object_Membership mem) {  // change back once done

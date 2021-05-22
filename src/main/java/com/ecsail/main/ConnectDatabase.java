@@ -291,11 +291,15 @@ public class ConnectDatabase {
         		String user = userName.getText();
         		String pass = passWord.getText();
         		String host = hostName.getValue();
+        		System.out.println("Host is " + host);
         		String sUser = sshUser.getText();
         		String sPass = sshPass.getText();
         		String loopback = "127.0.0.1";
         		// create ssh tunnel
-        		new PortForwardingL(host,loopback,3306,3306,sUser,sPass); 
+        		if(currentLogon.isSshForward()) {
+        			System.out.println("SSH tunnel enabled");
+        			new PortForwardingL(host,loopback,3306,3306,sUser,sPass); 
+        		}
         		// create mysql login
         		if(createConnection(user, pass, loopback, port)) {
         		Main.activememberships = Sql_SelectMembership.getRoster(Main.selectedYear, true);

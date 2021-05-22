@@ -290,6 +290,18 @@ public class SqlUpdate {
 		}
 	}
 	
+	public static void updateNickName(String nname, Object_Person person) {
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			stmt.execute(Main.console.setRegexColor("UPDATE person SET NICK_NAME=\"" + nname
+					+ "\" WHERE p_id='" + person.getP_id() + "';"));
+			Main.edits.setPeopleEdits(Main.edits.getPeopleEdits() + 1);  // update edits tracking
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			new Dialogue_ErrorSQL(e,"Unable to save nickname","");
+		}
+	}
+	
 	public static void updateBuisness(String buisness, Object_Person person ) {
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();

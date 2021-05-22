@@ -1015,7 +1015,8 @@ public class SqlSelect {
 					rs.getString("BIRTHDAY"),
 					rs.getString("OCCUPATION"),
 					rs.getString("BUISNESS"),
-					rs.getBoolean("IS_ACTIVE")));
+					rs.getBoolean("IS_ACTIVE"),
+					rs.getString("NICK_NAME")));
 			}
 		}
 		stmt.close();
@@ -1044,7 +1045,8 @@ public class SqlSelect {
 					rs.getString("BIRTHDAY"),
 					rs.getString("OCCUPATION"),
 					rs.getString("BUISNESS"),
-					rs.getBoolean("IS_ACTIVE")));
+					rs.getBoolean("IS_ACTIVE"),
+					rs.getString("NICK_NAME")));
 			}
 		}
 		stmt.close();
@@ -1072,7 +1074,8 @@ public class SqlSelect {
 					rs.getString("BIRTHDAY"),
 					rs.getString("OCCUPATION"),
 					rs.getString("BUISNESS"),
-					rs.getBoolean("IS_ACTIVE")));
+					rs.getBoolean("IS_ACTIVE"),
+					rs.getString("NICK_NAME")));
 		}
 		stmt.close();
 		} catch (SQLException e) {
@@ -1152,7 +1155,7 @@ public class SqlSelect {
 			while (rs.next()) {
 				person = (new Object_Person(rs.getInt("P_ID"), rs.getInt("MS_ID"), rs.getInt("MEMBER_TYPE"),
 						rs.getString("F_NAME"), rs.getString("L_NAME"), rs.getString("BIRTHDAY"),
-						rs.getString("OCCUPATION"), rs.getString("BUISNESS"), rs.getBoolean("IS_ACTIVE")));
+						rs.getString("OCCUPATION"), rs.getString("BUISNESS"), rs.getBoolean("IS_ACTIVE"),rs.getString("NICK_NAME")));
 			}
 			stmt.close();
 		} catch (SQLException e) {
@@ -1173,7 +1176,7 @@ public class SqlSelect {
 			while (rs.next()) {
 				person = (new Object_Person(rs.getInt("P_ID"), rs.getInt("MS_ID"), rs.getInt("MEMBER_TYPE"),
 						rs.getString("F_NAME"), rs.getString("L_NAME"), rs.getString("BIRTHDAY"),
-						rs.getString("OCCUPATION"), rs.getString("BUISNESS"), rs.getBoolean("IS_ACTIVE")));
+						rs.getString("OCCUPATION"), rs.getString("BUISNESS"), rs.getBoolean("IS_ACTIVE"),rs.getString("NICK_NAME")));
 			}
 			stmt.close();
 		} catch (SQLException e) {

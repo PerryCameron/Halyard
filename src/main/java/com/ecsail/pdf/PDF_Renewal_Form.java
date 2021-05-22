@@ -208,7 +208,7 @@ public class PDF_Renewal_Form {
 			secondaryPhone = SqlSelect.getPhone(secondary);
 			shortenDate(secondary);
 			} else {
-				secondary = new Object_Person(0, 0, 0, "", "", "", "", "", false);
+				secondary = new Object_Person(0, 0, 0, "", "", "", "", "", false,null);
 			}
 	}
 		

@@ -161,7 +161,7 @@ public class BoxAddPerson extends VBox {
 			int pid = SqlSelect.getCount("person", "p_id") + 1;
 			person = new Object_Person(pid, ms_id, memberType.getValue().getCode(), fnameTextField.getText(),
 					lnameTextField.getText(), getBirthday(birthdayDatePicker.getValue()), occupationTextField.getText(),
-					businessTextField.getText(), true);
+					businessTextField.getText(), true, null);
 
 			// if adding member succeeds, clear the form
 			if (!setNewMember(person)) {
