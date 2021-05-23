@@ -129,6 +129,13 @@ static TabPane tabPane;
 		new Dialogue_EnvelopePDF();
 	}
 	
+	public static void createMembershipTabFromPeopleList(int msid)  {
+		Object_MembershipList membership = Sql_SelectMembership.getMembershipFromListWithoutMembershipId(msid);
+		 if(!SqlSelect.isRenewed(msid, Paths.getYear()))
+		 Launcher.createInactiveMemberTab(membership);
+		 else
+		 Launcher.createActiveMembershipTab(membership);
+	}
 	// used for TabRoster and CreateMembership
 	public static void createMembershipTabForRoster(int membershipID, int ms_id)  {
 		Object_MembershipList membership;
@@ -141,7 +148,7 @@ static TabPane tabPane;
 	
 	
 	// used in BoxSlip
-	public static void createTabForBoxSlip(int ms_id) {  // overload
+	public static void createTabForBoxSlip(int ms_id) { 
 		Object_MembershipList membership;
 		if(SqlSelect.isRenewed(ms_id, Paths.getYear())) { // membership is active and in our object tree
 		membership = getMembership(ms_id);
@@ -172,7 +179,6 @@ static TabPane tabPane;
 	
 	// fills incomplete object with latest information and opens tab.
 	public static void createActiveMembershipTab(Object_MembershipList membership) {
-		System.out.print("Found active member");
 		membership = Sql_SelectMembership.getMembershipFromList(membership.getMsid(), Paths.getYear());
 		String tabLabel= "Membership " + membership.getMembershipId();
 		if(!tabOpen(tabLabel)) 
@@ -181,8 +187,15 @@ static TabPane tabPane;
 	}
 	
 	public static void createInactiveMemberTab(Object_MembershipList membership) {
-		System.out.println("Found inactive member");
 		String tabLabel= "MSID " + membership.getMsid();
+		if(!tabOpen(tabLabel)) 
+		tabPane.getTabs().add(new TabMembership(membership));
+		tabPane.getSelectionModel().select(getTabIndex(tabLabel)); // focus on tab we are wanting
+	}
+	
+	public static void createMembershipTabForBOD(int msid, String selectedYear) {
+		Object_MembershipList membership = Sql_SelectMembership.getMembershipList(msid, selectedYear);
+		String tabLabel= "Membership " + membership.getMembershipId();
 		if(!tabOpen(tabLabel)) 
 		tabPane.getTabs().add(new TabMembership(membership));
 		tabPane.getSelectionModel().select(getTabIndex(tabLabel)); // focus on tab we are wanting
@@ -244,5 +257,7 @@ static TabPane tabPane;
 		}
 		return membership;  // returns membership of subleaser
 	 }
+
+
 
 }

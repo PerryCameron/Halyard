@@ -263,7 +263,8 @@ public class TabBoardMembers extends Tab {
 
 		text.setOnMouseClicked(e -> {
 			if (e.getClickCount() == 2)  {
-				createTab(msid);
+				Launcher.createMembershipTabForBOD(msid, selectedYear);
+				//createTab(msid);
 			}
 		});
 		return text;
@@ -300,12 +301,6 @@ public class TabBoardMembers extends Tab {
 			});
 		}
 		return text;
-	}
-	
-	private static void createTab(int ms_id)  {
-		Object_MembershipList membership;
-		membership = Sql_SelectMembership.getMembershipFromListWithoutMembershipId(ms_id);
-		Launcher.createActiveMembershipTab(membership);
 	}
 	
 }
