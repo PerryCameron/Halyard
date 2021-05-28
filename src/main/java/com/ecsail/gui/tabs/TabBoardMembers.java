@@ -5,11 +5,8 @@ import java.util.Date;
 
 import com.ecsail.enums.Officer;
 import com.ecsail.main.Launcher;
-import com.ecsail.sql.Sql_SelectMembership;
 import com.ecsail.sql.SqlSelect;
 import com.ecsail.structures.Object_Board;
-import com.ecsail.structures.Object_MembershipList;
-
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
@@ -193,7 +190,6 @@ public class TabBoardMembers extends Tab {
 		}
 	}
 	
-	
 	private void addChairmen(VBox committeeVBox1, VBox committeeVBox2) {
 		Boolean start = false;
 		for (Officer off : Officer.values()) {
@@ -264,7 +260,6 @@ public class TabBoardMembers extends Tab {
 		text.setOnMouseClicked(e -> {
 			if (e.getClickCount() == 2)  {
 				Launcher.createMembershipTabForBOD(msid, selectedYear);
-				//createTab(msid);
 			}
 		});
 		return text;
@@ -285,7 +280,6 @@ public class TabBoardMembers extends Tab {
 			text.setOnMouseEntered(en -> {
 				text.setFill(Color.RED);
 			});
-
 			text.setOnMouseClicked(e -> {
 				if (e.getClickCount() == 1) {
 
@@ -297,10 +291,8 @@ public class TabBoardMembers extends Tab {
 					addChairmen(committeeVBox1, committeeVBox2);
 					addBoard(boardMembersVBox1, boardMembersVBox2, boardMembersVBox3);
 				}
-
 			});
 		}
 		return text;
 	}
-	
 }

@@ -8,6 +8,7 @@ import com.ecsail.main.Statistics;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 // this is the contents inside tabWelcome() launched from ConnectDatabase() about line 229
 public class BoxWelcome extends HBox {
@@ -35,7 +36,9 @@ public class BoxWelcome extends HBox {
 		Button notesButton = new Button("Notes");
 		
 		////////////////  ATTRIBUTES //////////////////////////////
-		
+		/////////////vboxLeft.setStyle("-fx-background-color: #c5c7c1;");
+		/////////////vboxRight.setStyle("-fx-background-color: #feffab;");  // yellow
+		vboxRight.setPrefWidth(width);
 		vboxLeft.setPrefWidth(570);
 		notesButton.setId("bigbuttontext");
 		boatsButton.setId("bigbuttontext");
@@ -47,18 +50,29 @@ public class BoxWelcome extends HBox {
 		rosterButton.setId("bigbuttontext");
 		vboxRight.setSpacing(10);
 		vboxRight.setPadding(new Insets(30,0,0,0));
-		notesButton.setPrefSize(width, height);
-		boatsButton.setPrefSize(width, height);
-		peopleListButton.setPrefSize(width, height);
-		slipListButton.setPrefSize(width, height);
-		bodButton.setPrefSize(width, height);
-		newButton.setPrefSize(width, height);
-		batchesButton.setPrefSize(width, height);
-		rosterButton.setPrefSize(width, height);
+		VBox.setVgrow(vboxRight, Priority.ALWAYS);
+		VBox.setVgrow(vboxLeft, Priority.ALWAYS);
+		
+		notesButton.setMaxWidth(Double.MAX_VALUE);
+		boatsButton.setMaxWidth(Double.MAX_VALUE);
+		peopleListButton.setMaxWidth(Double.MAX_VALUE);
+		slipListButton.setMaxWidth(Double.MAX_VALUE);
+		bodButton.setMaxWidth(Double.MAX_VALUE);
+		newButton.setMaxWidth(Double.MAX_VALUE);
+		batchesButton.setMaxWidth(Double.MAX_VALUE);
+		rosterButton.setMaxWidth(Double.MAX_VALUE);
+		
+		notesButton.setPrefHeight(height);
+		boatsButton.setPrefHeight(height);
+		peopleListButton.setPrefHeight(height);
+		slipListButton.setPrefHeight(height);
+		bodButton.setPrefHeight(height);
+		newButton.setPrefHeight(height);
+		batchesButton.setPrefHeight(height);
+		rosterButton.setPrefHeight(height);
 		
 		///////////////// LISTENERS  /////////////////////////
 
-		
 		boatsButton.setOnAction((event) -> Launcher.openBoatsTab());
 		notesButton.setOnAction((event) -> Launcher.openNotesTab());
 		rosterButton.setOnAction((event) -> Launcher.openRosterTab());
@@ -68,10 +82,10 @@ public class BoxWelcome extends HBox {
 		newButton.setOnAction((event) -> CreateMembership.Create());
 		batchesButton.setOnAction((event) -> Launcher.openTabBatchedPaidDues());
 
-
 		////////////////  SET CONTENT ////////////////////////
 		vboxRight.getChildren().addAll(rosterButton,peopleListButton,slipListButton,bodButton,newButton,batchesButton,boatsButton,notesButton);
 		vboxLeft.getChildren().addAll(new MembershipStackedBarChart(dbStats.getStats()),new MembershipLineChart(dbStats.getStats()));
+
 		//vboxLeft.getChildren().addAll(Charts.getLineChart());
 		getChildren().addAll(vboxLeft,vboxRight);
 	}
@@ -80,7 +94,6 @@ public class BoxWelcome extends HBox {
 		return vboxLeft;
 	}
 
-
 	public void setVboxLeft(VBox vboxLeft) {
 		this.vboxLeft = vboxLeft;
 	}
@@ -88,6 +101,5 @@ public class BoxWelcome extends HBox {
 	public Statistics getDbStats() {
 		return dbStats;
 	}
-	
 }
 

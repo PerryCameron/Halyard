@@ -21,7 +21,6 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 
-
 public class Main extends Application {
 static ConnectDatabase connect;  // mysql connection
 public static Object_TupleCount edits = new Object_TupleCount();
@@ -48,49 +47,54 @@ public static void main(String[] args) throws SQLException {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		
+		//////////////////  OBJECTS  //////////////////////
 		Group root = new Group();
 		mainPane = new BorderPane();
 		mainViewPane = new Launcher();  // This one is for a single membership
 		pStage = primaryStage;
 		Pane topPane = new Pane();
-		//VBox toolbar = new BoxToolBar();
+		Image mainIcon = new Image(getClass().getResourceAsStream("/ECSC64.png"));
+		Main.mainScene = new Scene(root, 1028, 768, Color.GREEN);
 		
-		//////////////////  OBJECTS  //////////////////////
-		Main.mainScene = new Scene(root, 1028, 768, Color.WHITE);
-
+		/////////////////  LISTENERS ///////////////////////
+		
 		primaryStage.setOnHiding(new EventHandler<WindowEvent>() {
-
 			@Override
 			public void handle(WindowEvent event) {
 				Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
 						System.out.println("Application Closed by click to Close Button(X)");
-						//close MySql connection
+						// close MySql connection
 						connect.close();
 						// close ssh Tunnel connection
-
-						
 						System.exit(0);
 					}
 				});
 			}
 		});
+				
+		mainScene.heightProperty().addListener((obs, oldVal, newVal) -> {
+			System.out.println("Scene height=" + newVal);
+			System.out.println("TabPane height=" + Launcher.getTabPane().getHeight());
+		});  /// 545 start height
 		
-
 		/////////////////   ATTRIBUTES /////////////////////
+		
 		mainScene.getStylesheets().add("stylesheet.css");
-
-		////////////////   SET CONTENT ////////////////////
-		Image mainIcon = new Image(getClass().getResourceAsStream("/ECSC64.png"));
-		primaryStage.setTitle("ECSC Membership Database (not connected)");
-		primaryStage.getIcons().add(mainIcon);
+		mainPane.setPrefWidth(Double.MAX_VALUE);
+		//toolbar.setPrefWidth(Double.MAX_VALUE);
 		toolbar.setId("toolbar-box");
-		toolbar.setPrefSize(1028, 10);
+		toolbar.setPrefHeight(10);
+		primaryStage.setTitle("ECSC Membership Database (not connected)");
+		
+		////////////////   SET CONTENT ////////////////////
+		
+		primaryStage.getIcons().add(mainIcon);
+		mainPane.setCenter(mainViewPane);
 		topPane.getChildren().add(toolbar);
 		mainPane.setTop(topPane);
-		mainPane.setCenter(mainViewPane);
-		mainPane.setPrefWidth(Double.MAX_VALUE);
 		root.getChildren().addAll(mainPane);
 		primaryStage.setScene(mainScene);
 		primaryStage.show();

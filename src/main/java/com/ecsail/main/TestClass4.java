@@ -14,6 +14,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Bounds;
+import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -27,7 +28,10 @@ import javafx.scene.effect.Light.Point;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -37,7 +41,7 @@ import javafx.stage.Stage;
 public class TestClass4 extends Application {
 	private Stage primaryStage;
 	private ImageView imageView;
-	private ImageView croppedImageView;
+	private ImageView croppedImageView = new ImageView();;
 	private double startWidth = 400;
 	private double croppedWidth = 191; // gives a picture width of 192
 	private double croppedHeight = 221; // gives a picture height of 122
@@ -49,16 +53,34 @@ public class TestClass4 extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+    	
+		VBox vboxGrey = new VBox(); // this is the vbox for organizing all the widgets
+		VBox vboxBlue = new VBox();
+		VBox vboxPink = new VBox(); // this creates a pink border around the table
+    	VBox vboxMain = new VBox();
+    	VBox vboxSideControls = new VBox();
+    	
+    	
     	this.primaryStage = primaryStage;
         Pane root = new Pane();
-
+		Image memberPhoto = new Image(getClass().getResourceAsStream(Paths.DEFAULTPHOTO));
         ScrollPane scrollPane = new ScrollPane();
         final Rectangle selection = new Rectangle();
         final Point anchor = new Point();
         Button browseButton = new Button("Browse");
         FileChooser fileChooser = new FileChooser();
         
+        BorderPane borderPane = new BorderPane();
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem cropMenuItem = new MenuItem("Crop");
+
+
         Slider slider = new Slider();
+        Group imageGroup = new Group();
+        scene = new Scene(vboxBlue, 800, 800);
+        /////////////////// ATTRIBUTES //////////////////
+        croppedImageView.setImage(memberPhoto);
+        
         slider.setMin(0);
         slider.setMax(1024);
         slider.setValue(500);
@@ -67,22 +89,20 @@ public class TestClass4 extends Application {
         slider.setMajorTickUnit(50);
         slider.setMinorTickCount(5);
         slider.setBlockIncrement(10);
+        slider.setMaxWidth(400);
         startWidth = slider.getValue();
-         
+        vboxSideControls.setPrefSize(192, 222);
+        vboxSideControls.setStyle("-fx-background-color: #201ac9;");  // blue
         //Image image = new Image(localUrl);
         imageView = new ImageView();
         imageView.setFitWidth(startWidth);
         imageView.setPreserveRatio(true);
-        //imageView.setRotate(180);
-        double width = imageView.getFitWidth();
-        double height = imageView.getFitHeight();
-        System.out.println(height);
-        Group imageGroup = new Group();
-        imageGroup.getChildren().add( imageView);
-        scrollPane.setContent(imageGroup);
-        ContextMenu contextMenu = new ContextMenu();
-        MenuItem cropMenuItem = new MenuItem("Crop");
-        VBox vboxMain = new VBox();
+        
+		/////////////////// ATTRIBUTES ///////////////////
+		vboxBlue.setStyle("-fx-background-color: #9fc0c7;");  // gray///.setId("box-blue");
+		vboxBlue.setPadding(new Insets(10, 10, 10, 10));
+		vboxPink.setPadding(new Insets(3, 3, 3, 3)); // spacing to make pink from around table
+		vboxPink.setStyle("-fx-background-color: #dbd5d5;");  //.setId("box-pink");
         
         browseButton.setOnAction((event) -> {
         	File file = fileChooser.showOpenDialog(Main.getPrimaryStage());
@@ -150,14 +170,33 @@ public class TestClass4 extends Application {
         });
         
         imageView.fitWidthProperty().addListener((obs, oldVal, newVal) -> {
-	    	 primaryStage.setWidth((double) newVal);
+	    	 primaryStage.setWidth((double) newVal + 232);
 	    });
         
-        contextMenu.getItems().add( cropMenuItem);
+        //borderPane.heightProperty().addListener((obs, oldVal, newVal) -> {
+	    //	 primaryStage.setHeight((double) newVal);
+	    //});
         
-        vboxMain.getChildren().addAll(slider,browseButton,scrollPane);
+        
+        
+        //////////////////  SET CONTENT ////////////////////////
+        imageGroup.getChildren().add(imageView);
+        scrollPane.setContent(imageGroup);
+        contextMenu.getItems().add( cropMenuItem);
+        vboxSideControls.getChildren().addAll(browseButton,croppedImageView);
+        vboxMain.getChildren().addAll(scrollPane);
+
         root.getChildren().addAll(vboxMain);
-        scene = new Scene(root, width, height);
+        borderPane.setCenter(root);
+        borderPane.setLeft(vboxSideControls);
+        borderPane.setTop(slider);
+        
+		vboxGrey.getChildren().add(borderPane);
+		vboxPink.getChildren().add(vboxGrey);
+		vboxBlue.getChildren().add(vboxPink);
+		VBox.setVgrow(vboxGrey, Priority.ALWAYS);
+		VBox.setVgrow(vboxPink, Priority.ALWAYS);
+		VBox.setVgrow(vboxBlue, Priority.ALWAYS);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Primary Stage");
         primaryStage.show();
@@ -165,12 +204,12 @@ public class TestClass4 extends Application {
     
     private void crop( Bounds bounds) {
 
-     //   FileChooser fileChooser = new FileChooser();
-     //   fileChooser.setTitle("Save Image");
-     //   File file = fileChooser.showSaveDialog( primaryStage);
+        //FileChooser fileChooser = new FileChooser();
+        //fileChooser.setTitle("Save Image");
+        //File file = fileChooser.showSaveDialog( primaryStage);
         
-     //   if (file == null)
-     //       return;
+       // if (file == null)
+       //     return;
 
         int width = (int) bounds.getWidth();
         int height = (int) bounds.getHeight();
@@ -181,31 +220,23 @@ public class TestClass4 extends Application {
 
         WritableImage wi = new WritableImage( width, height);
         
-        Platform.runLater(new Runnable() {
-            public void run() {
-              imageView.snapshot(parameters, wi);  
-            }
-        });
-        
-
-
+        croppedImageView.setImage(imageView.snapshot(parameters, wi));  
 
        // save image (without alpha)
        // --------------------------------
-       // BufferedImage bufImageARGB = SwingFXUtils.fromFXImage(wi, null);
-       // BufferedImage bufImageRGB = new BufferedImage(bufImageARGB.getWidth(), bufImageARGB.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
+       //BufferedImage bufImageARGB = SwingFXUtils.fromFXImage(wi, null);
+       //BufferedImage bufImageRGB = new BufferedImage(bufImageARGB.getWidth(), bufImageARGB.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
 
-       // Graphics2D graphics = bufImageRGB.createGraphics();
-      //  graphics.drawImage(bufImageARGB, 0, 0, null);
+      // Graphics2D graphics = bufImageRGB.createGraphics();
+       //graphics.drawImage(bufImageARGB, 0, 0, null);
 
-   //     try {
-   //         ImageIO.write(bufImageRGB, "jpg", file); 
-   //         System.out.println( "Image saved to " + file.getAbsolutePath());
-   //     } catch (IOException e) {
-   //         e.printStackTrace();
-   //     }
-   //     graphics.dispose();
-
+      // try {
+      //    ImageIO.write(bufImageRGB, "jpg", file); 
+      //    System.out.println( "Image saved to " + file.getAbsolutePath());
+       //   } catch (IOException e) {
+       //   e.printStackTrace();
+      //    }
+      //    graphics.dispose();
     }
      
 }

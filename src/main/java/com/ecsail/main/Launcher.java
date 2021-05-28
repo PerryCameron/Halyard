@@ -23,7 +23,6 @@ import com.ecsail.sql.Sql_SelectMembership;
 import com.ecsail.sql.SqlSelect;
 import com.ecsail.structures.Object_Boat;
 import com.ecsail.structures.Object_MembershipList;
-
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.Pane;
@@ -31,12 +30,12 @@ import javafx.scene.layout.Pane;
 public class Launcher extends Pane {
 static TabPane tabPane;
 
-//private ObservableList<Object_MembershipList> activememberships;
-
 	public Launcher() { 
 		tabPane = new TabPane();
 		tabPane.setId("toolbar-box");
 		getChildren().add(tabPane);
+		tabPane.setPrefHeight(744);
+		tabPane.setMaxHeight(744);
 	}
 	
 	public static boolean tabOpen(String tabName) {
@@ -225,7 +224,6 @@ static TabPane tabPane;
 	}
 	
 	// gets a row with ms_id
-	
 	public static void removeMembershipRow(int ms_id) {
 		int count = 0;
 		int element = 0;
@@ -236,7 +234,6 @@ static TabPane tabPane;
 		Main.activememberships.remove(element);
 	}
 
-	
 	// gets a specific membership with and ms_id
 	public static Object_MembershipList getMembership(int ms_id) {
 		Object_MembershipList membership = null;
@@ -258,6 +255,11 @@ static TabPane tabPane;
 		return membership;  // returns membership of subleaser
 	 }
 
+	public static TabPane getTabPane() {
+		return tabPane;
+	}
 
-
+	public static void setTabPane(TabPane tabPane) {
+		Launcher.tabPane = tabPane;
+	}
 }
