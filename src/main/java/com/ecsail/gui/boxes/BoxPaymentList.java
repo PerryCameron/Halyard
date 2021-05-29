@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Date;
 
 import com.ecsail.main.Note;
+import com.ecsail.main.Paths;
 import com.ecsail.sql.SqlDelete;
 import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.SqlInsert;
@@ -48,49 +49,44 @@ public class BoxPaymentList extends HBox {
 	public BoxPaymentList(Object_Membership membership, TabPane t, ObservableList<Object_Person> p, Note n, TextField dt) {
 		super();
 		BoxPaymentList.membership = membership;
-		this.currentYear = new SimpleDateFormat("yyyy").format(new Date());
+		this.currentYear = Paths.getYear();
 		BoxPaymentList.duesText = dt;
 		BoxPaymentList.note = n;
 		BoxPaymentList.parentTabPane = t;
 		BoxPaymentList.people = p;
+		
+		////////////////////////  OBJECTS   ///////////////////////////////
 		VBox vboxGrey = new VBox();  // this is the vbox for organizing all the widgets
         HBox hbox1 = new HBox();  // holds membershipID, Type and Active
+        VBox vboxPink = new VBox(); // this creates a pink border around the table
         HBox deleteButtonHBox = new HBox();
 		Button addFiscalRecord = new Button("Add");
 		Button deleteFiscalRecord = new Button("Delete");
 		final Spinner<Integer> yearSpinner = new Spinner<Integer>();
 		SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 2100, Integer.parseInt(currentYear));
 		BoxPaymentList.fiscals = SqlSelect.getMonies(membership.getMsid());
-		//Boolean currentFiscalRecordExists = SqlExists.moneyExists(currentYear,membership);
 		Object_DefinedFee definedFees = SqlSelect.selectDefinedFees(Integer.parseInt(currentYear));
-		
-		//if(!currentFiscalRecordExists) {
-		//	createCurrentFiscalRecord(definedFees);  // if no money records exist, create one
-		//} 
-		
+		TableView<Object_Money> fiscalTableView = new TableView<Object_Money>();
+		TableColumn<Object_Money, Integer> Col1 = new TableColumn<Object_Money, Integer>("Year");
+		TableColumn<Object_Money, Integer> Col2 = new TableColumn<Object_Money, Integer>("Fees");
+		TableColumn<Object_Money, Integer> Col3 = new TableColumn<Object_Money, Integer>("Credit");
+		TableColumn<Object_Money, Integer> Col4 = new TableColumn<Object_Money, Integer>("Paid");
+		TableColumn<Object_Money, Integer> Col5 = new TableColumn<Object_Money, Integer>("Balance");
+				
+		///////////////////// SORT ///////////////////////////////////////////
 		Collections.sort(BoxPaymentList.fiscals, (p1,p2) -> Integer.compare(p2.getFiscal_year(), (p1.getFiscal_year())));
 		
-		VBox vboxPink = new VBox(); // this creates a pink border around the table
-		TableView<Object_Money> fiscalTableView = new TableView<Object_Money>();
+		///////////////////// ATTRIBUTES /////////////////////////////////////
+
 		fiscalTableView.setEditable(false);
-		//fiscalTableView.setPrefHeight(340);
 		fiscalTableView.setFixedCellSize(30);
 		fiscalTableView.minHeightProperty().bind(vboxGrey.prefHeightProperty());
 		fiscalTableView.maxHeightProperty().bind(vboxGrey.prefHeightProperty());
-		
-		TableColumn<Object_Money, Integer> Col1 = new TableColumn<Object_Money, Integer>("Year");
+
 		Col1.setCellValueFactory(new PropertyValueFactory<Object_Money, Integer>("fiscal_year"));
-		
-		TableColumn<Object_Money, Integer> Col2 = new TableColumn<Object_Money, Integer>("Fees");
 		Col2.setCellValueFactory(new PropertyValueFactory<Object_Money, Integer>("total"));
-		
-		TableColumn<Object_Money, Integer> Col3 = new TableColumn<Object_Money, Integer>("Credit");
 		Col3.setCellValueFactory(new PropertyValueFactory<Object_Money, Integer>("credit"));
-		
-		TableColumn<Object_Money, Integer> Col4 = new TableColumn<Object_Money, Integer>("Paid");
 		Col4.setCellValueFactory(new PropertyValueFactory<Object_Money, Integer>("paid"));
-		
-		TableColumn<Object_Money, Integer> Col5 = new TableColumn<Object_Money, Integer>("Balance");
 		Col5.setCellValueFactory(new PropertyValueFactory<Object_Money, Integer>("balance"));
 		
 		/////////////  ATTRIBUTES /////////////
@@ -103,24 +99,26 @@ public class BoxPaymentList extends HBox {
 		Col3.setPrefWidth(87);
 		Col4.setPrefWidth(87);
 		Col5.setPrefWidth(87);
+		vboxGrey.setPrefWidth(460);
+		yearSpinner.setPrefWidth(80);
+		
 		vboxPink.setPadding(new Insets(2,2,2,2)); // spacing to make pink frame around table
-		vboxPink.setId("box-pink");
-		yearSpinner.setValueFactory(valueFactory);
-		setPadding(new Insets(5, 5, 5, 5));  // creates space for blue frame
-		setId("box-blue");
-		vboxGrey.setId("box-grey");
 		vboxGrey.setPadding(new Insets(10, 10, 10, 10));
 		deleteButtonHBox.setPadding(new Insets(0,0,0,40));
-		vboxGrey.setPrefWidth(460);
-        hbox1.setSpacing(5);  // membership HBox
+		setPadding(new Insets(5, 5, 5, 5));  // creates space for blue frame
+		
+		hbox1.setSpacing(5);  // membership HBox
         vboxGrey.setSpacing(10);
         hbox1.setAlignment(Pos.CENTER_LEFT);
-        yearSpinner.setPrefWidth(80);
         
+		vboxPink.setId("box-pink");
+		vboxGrey.setId("box-grey");
+		setId("box-blue");
+		
+		yearSpinner.setValueFactory(valueFactory);
+
         ////////////////  LISTENERS ///////////////////
-		addFiscalRecord.setOnAction(new EventHandler<ActionEvent>() {  // need to check for existing record
-			@Override
-			public void handle(ActionEvent e) {
+		addFiscalRecord.setOnAction((event) -> {
 				int moneyId = SqlSelect.getCount("money_id") + 1;
 				Object_Money newMoney = new Object_Money(moneyId, membership.getMsid(),
 						Integer.parseInt(yearSpinner.getEditor().getText()), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -132,20 +130,15 @@ public class BoxPaymentList extends HBox {
 				SqlInsert.addRecord(newMoney);
 				SqlInsert.addRecord(moneyId, membership);
 				fiscals.add(newMoney);
-			}
 		});
         
-		deleteFiscalRecord.setOnAction(new EventHandler<ActionEvent>() {  // need to check for existing record
-			@Override
-			public void handle(ActionEvent e) {
+		deleteFiscalRecord.setOnAction((event) -> {
 				int selectedIndex = fiscalTableView.getSelectionModel().getSelectedIndex();
 				System.out.println("deleting fiscal record " + selectedIndex);
-
 				SqlDelete.deletePaymentByMoneyID(fiscals.get(selectedIndex).getMoney_id());
 				SqlDelete.deleteWorkCreditsByMoneyID(fiscals.get(selectedIndex).getMoney_id());
 				SqlDelete.deleteMoneyByMoneyID(fiscals.get(selectedIndex).getMoney_id());
 				fiscals.remove(selectedIndex);
-			}
 		});
 		
 		fiscalTableView.setRowFactory(tv -> {

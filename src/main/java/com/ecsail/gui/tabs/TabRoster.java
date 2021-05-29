@@ -8,7 +8,6 @@ import com.ecsail.excel.Xls_roster;
 import com.ecsail.gui.tabs.roster.TabKayakLists;
 import com.ecsail.gui.tabs.roster.TabSlipOptions;
 import com.ecsail.gui.tabs.roster.TabStandard;
-import com.ecsail.main.Main;
 import com.ecsail.main.Paths;
 import com.ecsail.main.Launcher;
 import com.ecsail.sql.SqlExists;
@@ -22,7 +21,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.geometry.Side;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -39,6 +37,7 @@ import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 public class TabRoster extends Tab {
@@ -57,11 +56,11 @@ public class TabRoster extends Tab {
 		this.rb = new Object_RosterRadioButtons();
 		this.printChoices = new Object_RosterSelect(sy, false, false, true, false, false, false, false, true, true, true, false,
 				false, false, false, false, false, false, false, false, false);
-		//System.out.println("size=" + rosters.size());
 
 		/////////////////// OBJECTS //////////////////////////
 		VBox vbox1 = new VBox();
 		VBox vbox2 = new VBox(); // inter vbox
+		VBox vboxTableBox = new VBox();
 		VBox vboxRadioButton1 = new VBox();
 		VBox vboxRadioButton2 = new VBox();
 		VBox vboxSpinnerLabel = new VBox();
@@ -76,7 +75,6 @@ public class TabRoster extends Tab {
 		TitledPane titledPane = new TitledPane();
 		TabPane tabPane = new TabPane();
 		Label records = new Label();
-		
 		CheckBox c1 = new CheckBox("Membership Id");
 		CheckBox c2 = new CheckBox("Last Name");
 		CheckBox c3 = new CheckBox("First Name");
@@ -89,92 +87,98 @@ public class TabRoster extends Tab {
 		CheckBox c10 = new CheckBox("Slip");
 		CheckBox c11 = new CheckBox("Phone");
 		CheckBox c12 = new CheckBox("Email");
-
 		CheckBox c13 = new CheckBox("Subleased To");
-
 		Button buttonXLS = new Button("Export XLS");
+		final Spinner<Integer> yearSpinner = new Spinner<Integer>();
+		TableColumn<Object_MembershipList, Integer> Col1 = new TableColumn<Object_MembershipList, Integer>("MEM");
+		TableColumn<Object_MembershipList, String> Col2 = new TableColumn<Object_MembershipList, String>("JOIN_DATE");
+		TableColumn<Object_MembershipList, String> Col3 = new TableColumn<Object_MembershipList, String>("Type");
+		TableColumn<Object_MembershipList, String> Col4 = new TableColumn<Object_MembershipList, String>("Slip");
+		TableColumn<Object_MembershipList, String> Col5 = new TableColumn<Object_MembershipList, String>("First Name");
+		TableColumn<Object_MembershipList, String> Col6 = new TableColumn<Object_MembershipList, String>("Last Name");
+		TableColumn<Object_MembershipList, String> Col7 = new TableColumn<Object_MembershipList, String>("Address");
+		TableColumn<Object_MembershipList, String> Col8 = new TableColumn<Object_MembershipList, String>("City");
+		TableColumn<Object_MembershipList, String> Col9 = new TableColumn<Object_MembershipList, String>("State");
+		TableColumn<Object_MembershipList, String> Col10 = new TableColumn<Object_MembershipList, String>("Zip");
+		TableColumn<Object_MembershipList, String> Col11 = new TableColumn<Object_MembershipList, String>("MSID");
 
 		tabPane.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
-		vboxSpinnerLabel.setSpacing(10);
 		titledPane.setText("Roster " + selectedYear);
 		controlsHbox.setStyle("-fx-background-color:#e2e3de");
 		records.setText(rosters.size() + " Records");
 		rb.setSameToggleGroup();
-		tabPane.setSide(Side.LEFT);
-		tabPane.setId("roster-tab-pane");
+		
 		rb.getRadioActive().setSelected(true);
 		c1.setSelected(true);
 		c2.setSelected(true);
 		c3.setSelected(true);
+		
+		tabPane.setId("roster-tab-pane");
 		vbox1.setId("box-blue");
 		vbox2.setId("box-pink");
 		hboxExportFrame.setId("box-blue");
 		hboxExport.setId("box-pink");
+		
 		hboxExport.setSpacing(10);
-		hboxExportFrame.setPadding(new Insets(2, 2, 2, 2));
-		hboxExport.setPadding(new Insets(5, 5, 5, 5));
 		vboxCheckBox4.setSpacing(5);
 		controlsHbox.setSpacing(10);
 		vboxRadioButton1.setSpacing(3);
 		vboxRadioButton2.setSpacing(3);
+		vboxSpinnerLabel.setSpacing(10);
+		
+		hboxExportFrame.setPadding(new Insets(2, 2, 2, 2));
+		hboxExport.setPadding(new Insets(5, 5, 5, 5));
 		vbox1.setPadding(new Insets(10, 10, 10, 10));
 		vbox2.setPadding(new Insets(3, 3, 5, 3));
 		vboxRadioButton1.setPadding(new Insets(5, 5, 5, 5));
 		vboxRadioButton2.setPadding(new Insets(5, 5, 5, 5));
-		vbox1.setAlignment(Pos.TOP_CENTER);
-		vbox1.setPrefHeight(900);
+		
+		tabPane.setSide(Side.LEFT);
+		//vbox1.setAlignment(Pos.TOP_CENTER);
+		VBox.setVgrow(vbox1, Priority.ALWAYS);
+		VBox.setVgrow(vbox2, Priority.ALWAYS);
+		VBox.setVgrow(vboxTableBox, Priority.ALWAYS);
+		vboxTableBox.setStyle("-fx-background-color: #4d6955;");  //green
 
 		setOnClosed(null);
 		rosterTableView.setItems(rosters);
-		// rosterTableView.setPrefWidth(1000); //Windows
-		rosterTableView.setMaxWidth(1000);
-		// rosterTableView.setPrefWidth(940);
 		rosterTableView.setFixedCellSize(30);
-		// rosterTableView.setPrefHeight(555); //Windows
-		rosterTableView.setPrefHeight(545);
+		rosterTableView.setPrefHeight(800);
+		rosterTableView.minWidthProperty().bind(vboxTableBox.prefWidthProperty());
+		rosterTableView.maxWidthProperty().bind(vboxTableBox.prefWidthProperty());
+		
+		/// why does below not work?  what is preventing the tableView from binding to the vbox
+		rosterTableView.minHeightProperty().bind(vboxTableBox.prefHeightProperty());
+		rosterTableView.maxHeightProperty().bind(vboxTableBox.prefHeightProperty());
+		rosterTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY );
 
-		TableColumn<Object_MembershipList, Integer> Col1 = new TableColumn<Object_MembershipList, Integer>("MEM");
 		Col1.setCellValueFactory(new PropertyValueFactory<Object_MembershipList, Integer>("membershipId"));
-
-		TableColumn<Object_MembershipList, String> Col2 = new TableColumn<Object_MembershipList, String>("JOIN_DATE");
 		Col2.setCellValueFactory(new PropertyValueFactory<Object_MembershipList, String>("joinDate"));
-		Col2.setPrefWidth(110);
-
-		TableColumn<Object_MembershipList, String> Col3 = new TableColumn<Object_MembershipList, String>("Type");
 		Col3.setCellValueFactory(new PropertyValueFactory<Object_MembershipList, String>("memType"));
-
-		TableColumn<Object_MembershipList, String> Col4 = new TableColumn<Object_MembershipList, String>("Slip");
 		Col4.setCellValueFactory(new PropertyValueFactory<Object_MembershipList, String>("slip"));
-
-		TableColumn<Object_MembershipList, String> Col5 = new TableColumn<Object_MembershipList, String>("First Name");
 		Col5.setCellValueFactory(new PropertyValueFactory<Object_MembershipList, String>("fname"));
-		Col5.setPrefWidth(120);
-
-		TableColumn<Object_MembershipList, String> Col6 = new TableColumn<Object_MembershipList, String>("Last Name");
 		Col6.setCellValueFactory(new PropertyValueFactory<Object_MembershipList, String>("lname"));
-		Col6.setPrefWidth(120);
-
-		TableColumn<Object_MembershipList, String> Col7 = new TableColumn<Object_MembershipList, String>("Address");
 		Col7.setCellValueFactory(new PropertyValueFactory<Object_MembershipList, String>("address"));
-		Col7.setPrefWidth(180);
-
-		TableColumn<Object_MembershipList, String> Col8 = new TableColumn<Object_MembershipList, String>("City");
 		Col8.setCellValueFactory(new PropertyValueFactory<Object_MembershipList, String>("city"));
-		Col8.setPrefWidth(120);
-
-		TableColumn<Object_MembershipList, String> Col9 = new TableColumn<Object_MembershipList, String>("State");
 		Col9.setCellValueFactory(new PropertyValueFactory<Object_MembershipList, String>("state"));
-
-		TableColumn<Object_MembershipList, String> Col10 = new TableColumn<Object_MembershipList, String>("Zip");
 		Col10.setCellValueFactory(new PropertyValueFactory<Object_MembershipList, String>("zip"));
-
-		TableColumn<Object_MembershipList, String> Col11 = new TableColumn<Object_MembershipList, String>("MSID");
 		Col11.setCellValueFactory(new PropertyValueFactory<Object_MembershipList, String>("msid"));
+		
+		/// sets width of columns by percentage
+		Col1.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );   // Mem 5%
+		Col2.setMaxWidth( 1f * Integer.MAX_VALUE * 15 );  // Join Date 15%
+		Col3.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );   // Type
+		Col4.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );   // Slip
+		Col5.setMaxWidth( 1f * Integer.MAX_VALUE * 10 );   // First Name
+		Col6.setMaxWidth( 1f * Integer.MAX_VALUE * 10 );  // Last Name
+		Col7.setMaxWidth( 1f * Integer.MAX_VALUE * 20 );  // Address
+		Col8.setMaxWidth( 1f * Integer.MAX_VALUE * 10 );  // City
+		Col9.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );  // State
+		Col10.setMaxWidth( 1f * Integer.MAX_VALUE * 10 ); // Zip
+		Col11.setMaxWidth( 1f * Integer.MAX_VALUE * 5 ); // MSID
 
 		rosterTableView.getColumns()
 				.addAll(Arrays.asList(Col1, Col2, Col3, Col4, Col5, Col6, Col7, Col8, Col9, Col10, Col11));
-
-		final Spinner<Integer> yearSpinner = new Spinner<Integer>();
 		
 		SpinnerValueFactory<Integer> wetSlipValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1970,
 				Integer.parseInt(selectedYear), Integer.parseInt(selectedYear));
@@ -194,9 +198,9 @@ public class TabRoster extends Tab {
 
 		//////////////////// LISTENERS //////////////////////////
 
-		Main.getPrimaryStage().heightProperty().addListener((obs, oldVal, newVal) -> {
-		    	 rosterTableView.setPrefHeight(545.0 + (double)newVal - 796.0);// 796 is start height of bottom of window
-		});  /// 545 start height of rosterTableView
+	//	Main.getPrimaryStage().heightProperty().addListener((obs, oldVal, newVal) -> {
+	//	    	 rosterTableView.setPrefHeight(545.0 + (double)newVal - 796.0);// 796 is start height of bottom of window
+	//	});  /// 545 start height of rosterTableView
 		
 		buttonXLS.setOnAction((event) -> new Xls_roster(rosters, printChoices));
 
@@ -259,7 +263,7 @@ public class TabRoster extends Tab {
 				if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
 					// int rowIndex = row.getIndex();
 					Object_MembershipList clickedRow = row.getItem();
-					createTab(clickedRow);
+					Launcher.createMembershipTabForRoster(clickedRow.getMembershipId(), clickedRow.getMsid());
 				}
 			});
 			return row;
@@ -286,7 +290,6 @@ public class TabRoster extends Tab {
 			public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected,
 					Boolean isNowSelected) {
 				if (isNowSelected) {
-					//System.out.println("you selected all");
 					setListType("all");
 					rosters.clear();
 					rosters.addAll(Sql_SelectMembership.getRosterOfAll(selectedYear));
@@ -338,7 +341,6 @@ public class TabRoster extends Tab {
 						// if they didn'ty pay late
 						if(!SqlExists.paidLate(rosters.get(i))) {
 							keepers.add(rosters.get(i));
-							
 						} 
 					}
 					rosters.clear();
@@ -492,21 +494,20 @@ public class TabRoster extends Tab {
 				}
 				keepers.clear();
 				records.setText(rosters.size() + " Records");
-				//rosterTableView.sort();
 				Collections.sort(rosters, Comparator.comparing(Object_MembershipList::getMembershipId));
 			}
 	});
 		
-		titledPane.expandedProperty().addListener((obs, wasExpanded, isNowExpanded) -> {
-			if (isNowExpanded) {
-				// System.out.println("Title Pane Expanded");
-				rosterTableView.setPrefHeight(555);
-			}
-			if (wasExpanded) {
-				// System.out.println("Title Pane collapsed");
-				rosterTableView.setPrefHeight(655);
-			}
-		});
+		//titledPane.expandedProperty().addListener((obs, wasExpanded, isNowExpanded) -> {
+		//	if (isNowExpanded) {
+		//		// System.out.println("Title Pane Expanded");
+		//		rosterTableView.setPrefHeight(555);
+		//	}
+		//	if (wasExpanded) {
+		//		// System.out.println("Title Pane collapsed");
+		//		rosterTableView.setPrefHeight(655);
+		//	}
+		//});
 
 		//////////////////// SET CONTENT //////////////////////
 		
@@ -518,11 +519,11 @@ public class TabRoster extends Tab {
 		hboxExport.getChildren().addAll(vboxCheckBox1, vboxCheckBox2, vboxCheckBox3, vboxCheckBox4, vboxCheckBox5);
 		tabPane.getTabs().addAll(new TabStandard(rb), new TabSlipOptions(rb), new TabKayakLists(rb));
 		vboxSpinnerLabel.getChildren().addAll(yearSpinner, records);
-
+		vboxTableBox.getChildren().add(rosterTableView);
 		controlsHbox.getChildren().addAll(vboxSpinnerLabel, tabPane, hboxExportFrame);
 		titledPane.setContent(controlsHbox);
+		vbox2.getChildren().addAll(titledPane,vboxTableBox);
 		vbox1.getChildren().add(vbox2);
-		vbox2.getChildren().addAll(titledPane,rosterTableView);
 		setContent(vbox1);
 	}
 
@@ -595,9 +596,5 @@ public class TabRoster extends Tab {
 			printChoices.setSlipwait(true);
 			break;
 		}
-	}
-
-	private static void createTab(Object_MembershipList clickedRow) {
-		Launcher.createMembershipTabForRoster(clickedRow.getMembershipId(), clickedRow.getMsid());
 	}
 }

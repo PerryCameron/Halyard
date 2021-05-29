@@ -42,7 +42,6 @@ import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
@@ -98,12 +97,10 @@ public class BoxMemberID extends HBox {
 
 		idTableView = new TableView<Object_MembershipId>();
 		idTableView.setItems(id);
-		//idTableView.setPrefHeight(360);
 		idTableView.setFixedCellSize(30);
 		idTableView.setEditable(true);
 		idTableView.minHeightProperty().bind(vboxGrey.prefHeightProperty());
 		idTableView.maxHeightProperty().bind(vboxGrey.prefHeightProperty());
-		
 		
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         if(membership.getJoinDate() != null) {
