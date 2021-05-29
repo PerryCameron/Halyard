@@ -60,7 +60,6 @@ public class TestClass4 extends Application {
     	VBox vboxMain = new VBox();
     	VBox vboxSideControls = new VBox();
     	
-    	
     	this.primaryStage = primaryStage;
         Pane root = new Pane();
 		Image memberPhoto = new Image(getClass().getResourceAsStream(Paths.DEFAULTPHOTO));

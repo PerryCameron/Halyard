@@ -39,7 +39,6 @@ public static void main(String[] args) throws SQLException {
 	Main.selectedYear = Paths.getYear();
 	Main.edits = FileIO.openTupleCountObject();
 	setUpForFirstTime();
-	
 	console = new BoxConsole();
 	// this is the tree trunk to the entire program
 	launch(args);
@@ -83,8 +82,8 @@ public static void main(String[] args) throws SQLException {
 		/////////////////   ATTRIBUTES /////////////////////
 		
 		mainScene.getStylesheets().add("stylesheet.css");
-		mainPane.setPrefWidth(Double.MAX_VALUE);
-		//toolbar.setPrefWidth(Double.MAX_VALUE);
+		//mainPane.setPrefWidth(Double.MAX_VALUE);
+		toolbar.setPrefWidth(1029);
 		toolbar.setId("toolbar-box");
 		toolbar.setPrefHeight(10);
 		primaryStage.setTitle("ECSC Membership Database (not connected)");
