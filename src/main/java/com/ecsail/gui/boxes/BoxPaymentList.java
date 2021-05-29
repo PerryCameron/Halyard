@@ -73,8 +73,10 @@ public class BoxPaymentList extends HBox {
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
 		TableView<Object_Money> fiscalTableView = new TableView<Object_Money>();
 		fiscalTableView.setEditable(false);
-		fiscalTableView.setPrefHeight(340);
+		//fiscalTableView.setPrefHeight(340);
 		fiscalTableView.setFixedCellSize(30);
+		fiscalTableView.minHeightProperty().bind(vboxGrey.prefHeightProperty());
+		fiscalTableView.maxHeightProperty().bind(vboxGrey.prefHeightProperty());
 		
 		TableColumn<Object_Money, Integer> Col1 = new TableColumn<Object_Money, Integer>("Year");
 		Col1.setCellValueFactory(new PropertyValueFactory<Object_Money, Integer>("fiscal_year"));

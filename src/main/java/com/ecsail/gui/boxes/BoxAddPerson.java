@@ -22,6 +22,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
@@ -100,46 +101,34 @@ public class BoxAddPerson extends VBox {
 		memberType.setValue(MemberType.getByCode(1)); // sets to primary
 		addButton.setPrefWidth(80);
 		populateButton.setPrefWidth(80);
-
-		hboxTitle.setPadding(new Insets(5, 15, 5, 15));  // first Name
+		vboxFnameLabel.setPrefWidth(80);
+		vboxLnameLabel.setPrefWidth(80);
+		vboxOccupLabel.setPrefWidth(80);
+		vboxBuisnLabel.setPrefWidth(80);
+		vboxBirthLabel.setPrefWidth(80);
+		VBox.setVgrow(vboxGrey, Priority.ALWAYS);
+		
 		hboxTitle.setAlignment(Pos.CENTER);
-		hboxTitle.setSpacing(13);
-		// Insets(double top, double right, double bottom, double left)
-		hbox1.setPadding(new Insets(5, 15, 5, 60));  // first Name
-		//hbox1.setAlignment(Pos.CENTER_LEFT);
-		//hbox1.setSpacing(13);
-
-		hbox2.setPadding(new Insets(5, 15, 5, 60));  // last name
-		//hbox2.setAlignment(Pos.CENTER_LEFT);
-		//hbox2.setSpacing(14.5);
-
-		hbox3.setPadding(new Insets(5, 15, 5, 60));  // occupation
-		//hbox3.setAlignment(Pos.CENTER_LEFT);
-		//hbox3.setSpacing(10);
-
-		hbox4.setPadding(new Insets(5, 15, 5, 60));  // business
-		//hbox4.setAlignment(Pos.CENTER_LEFT);
-		//hbox4.setSpacing(25);
-
-		hbox5.setPadding(new Insets(5, 15, 5, 60));  // birthday
-		//hbox5.setAlignment(Pos.CENTER_LEFT);
-		//hbox5.setSpacing(25);
-		
-		hbox6.setPadding(new Insets(5, 15, 5, 60));  // member type
 		hbox6.setAlignment(Pos.CENTER_LEFT);
-		hbox6.setSpacing(25);
-		
-		hbox7.setPadding(new Insets(5, 100, 5, 5));  // add button
 		hbox7.setAlignment(Pos.CENTER_RIGHT);
-		hbox7.setSpacing(25);
-		
-		hbox8.setPadding(new Insets(60, 5, 5, 5));  // Populate title
 		hbox8.setAlignment(Pos.CENTER);
-
-		hbox9.setPadding(new Insets(20, 15, 5, 5));  // populate field and button
 		hbox9.setAlignment(Pos.CENTER);
+		
+		hboxTitle.setSpacing(13);
+		hbox6.setSpacing(25);
+		hbox7.setSpacing(25);
 		hbox9.setSpacing(15);
 		
+		hboxTitle.setPadding(new Insets(5, 15, 5, 15));  // first Name
+		hbox1.setPadding(new Insets(5, 15, 5, 60));  // first Name
+		hbox2.setPadding(new Insets(5, 15, 5, 60));  // last name
+		hbox3.setPadding(new Insets(5, 15, 5, 60));  // occupation
+		hbox4.setPadding(new Insets(5, 15, 5, 60));  // business
+		hbox5.setPadding(new Insets(5, 15, 5, 60));  // birthday
+		hbox6.setPadding(new Insets(5, 15, 5, 60));  // member type
+		hbox7.setPadding(new Insets(5, 100, 5, 5));  // add button		
+		hbox8.setPadding(new Insets(60, 5, 5, 5));  // Populate title
+		hbox9.setPadding(new Insets(20, 15, 5, 5));  // populate field and button
 		setPadding(new Insets(5, 5, 5, 5));
 		setId("box-blue");
 		vboxGrey.setId("box-grey");
@@ -150,11 +139,7 @@ public class BoxAddPerson extends VBox {
 		vboxBuisnLabel.setAlignment(Pos.CENTER_LEFT);
 		vboxBirthLabel.setAlignment(Pos.CENTER_LEFT);
 		
-		vboxFnameLabel.setPrefWidth(80);
-		vboxLnameLabel.setPrefWidth(80);
-		vboxOccupLabel.setPrefWidth(80);
-		vboxBuisnLabel.setPrefWidth(80);
-		vboxBirthLabel.setPrefWidth(80);
+
 		
 		/////////////////  LISTENERS  /////////////////////
 		addButton.setOnAction((event) -> {
