@@ -58,8 +58,8 @@ public class TabRoster extends Tab {
 				false, false, false, false, false, false, false, false, false);
 
 		/////////////////// OBJECTS //////////////////////////
-		VBox vbox1 = new VBox();
-		VBox vbox2 = new VBox(); // inter vbox
+		VBox vboxGrey = new VBox();
+		VBox vboxPink = new VBox(); // inter vbox
 		VBox vboxTableBox = new VBox();
 		VBox vboxRadioButton1 = new VBox();
 		VBox vboxRadioButton2 = new VBox();
@@ -114,8 +114,8 @@ public class TabRoster extends Tab {
 		c3.setSelected(true);
 		
 		tabPane.setId("roster-tab-pane");
-		vbox1.setId("box-blue");
-		vbox2.setId("box-pink");
+		vboxGrey.setId("box-blue");
+		vboxPink.setId("box-pink");
 		hboxExportFrame.setId("box-blue");
 		hboxExport.setId("box-pink");
 		
@@ -128,22 +128,22 @@ public class TabRoster extends Tab {
 		
 		hboxExportFrame.setPadding(new Insets(2, 2, 2, 2));
 		hboxExport.setPadding(new Insets(5, 5, 5, 5));
-		vbox1.setPadding(new Insets(10, 10, 10, 10));
-		vbox2.setPadding(new Insets(3, 3, 5, 3));
+		vboxGrey.setPadding(new Insets(10, 10, 10, 10));
+		vboxPink.setPadding(new Insets(3, 3, 5, 3));
 		vboxRadioButton1.setPadding(new Insets(5, 5, 5, 5));
 		vboxRadioButton2.setPadding(new Insets(5, 5, 5, 5));
 		
 		tabPane.setSide(Side.LEFT);
 		//vbox1.setAlignment(Pos.TOP_CENTER);
-		VBox.setVgrow(vbox1, Priority.ALWAYS);
-		VBox.setVgrow(vbox2, Priority.ALWAYS);
+		VBox.setVgrow(vboxGrey, Priority.ALWAYS);
+		VBox.setVgrow(vboxPink, Priority.ALWAYS);
 		VBox.setVgrow(vboxTableBox, Priority.ALWAYS);
 		vboxTableBox.setStyle("-fx-background-color: #4d6955;");  //green
 
 		setOnClosed(null);
 		rosterTableView.setItems(rosters);
 		rosterTableView.setFixedCellSize(30);
-		rosterTableView.setPrefHeight(800);
+		rosterTableView.setPrefHeight(553);
 		rosterTableView.minWidthProperty().bind(vboxTableBox.prefWidthProperty());
 		rosterTableView.maxWidthProperty().bind(vboxTableBox.prefWidthProperty());
 		
@@ -522,9 +522,9 @@ public class TabRoster extends Tab {
 		vboxTableBox.getChildren().add(rosterTableView);
 		controlsHbox.getChildren().addAll(vboxSpinnerLabel, tabPane, hboxExportFrame);
 		titledPane.setContent(controlsHbox);
-		vbox2.getChildren().addAll(titledPane,vboxTableBox);
-		vbox1.getChildren().add(vbox2);
-		setContent(vbox1);
+		vboxPink.getChildren().addAll(titledPane,vboxTableBox);
+		vboxGrey.getChildren().add(vboxPink);
+		setContent(vboxGrey);
 	}
 
 	/// this only changes when the year spinner changes

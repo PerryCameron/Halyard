@@ -26,16 +26,18 @@ import com.ecsail.structures.Object_MembershipList;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 
-public class Launcher extends Pane {
+public class Launcher extends VBox {
 static TabPane tabPane;
 
 	public Launcher() { 
 		tabPane = new TabPane();
 		tabPane.setId("toolbar-box");
 		getChildren().add(tabPane);
-		tabPane.setPrefHeight(744);
-		tabPane.setMaxHeight(744);
+		//setPrefHeight(600);
+		//tabPane.setPrefHeight(800);
+		//tabPane.setMaxHeight(800);
 	}
 	
 	public static boolean tabOpen(String tabName) {

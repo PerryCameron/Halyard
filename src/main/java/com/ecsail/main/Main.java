@@ -27,7 +27,7 @@ public static Object_TupleCount edits = new Object_TupleCount();
 public static ObservableList<Object_MembershipList> activememberships;
 public static String selectedYear; 
 static BorderPane mainPane;
-static Launcher mainViewPane;
+static Launcher vboxMain;
 public static BoxConsole console;
 private static Stage pStage;
 private static Scene mainScene;
@@ -50,7 +50,7 @@ public static void main(String[] args) throws SQLException {
 		//////////////////  OBJECTS  //////////////////////
 		Group root = new Group();
 		mainPane = new BorderPane();
-		mainViewPane = new Launcher();  // This one is for a single membership
+		vboxMain = new Launcher();  // This one is for a single membership
 		pStage = primaryStage;
 		Pane topPane = new Pane();
 		Image mainIcon = new Image(getClass().getResourceAsStream("/ECSC64.png"));
@@ -80,7 +80,10 @@ public static void main(String[] args) throws SQLException {
 		});  /// 545 start height
 		
 		/////////////////   ATTRIBUTES /////////////////////
-		
+		//vboxMain.setPrefHeight(600);
+		vboxMain.minHeightProperty().bind(mainPane.prefHeightProperty());
+		vboxMain.maxHeightProperty().bind(mainPane.prefHeightProperty());
+		mainPane.setStyle("-fx-background-color: #feffab;");  // yellow
 		mainScene.getStylesheets().add("stylesheet.css");
 		//mainPane.setPrefWidth(Double.MAX_VALUE);
 		toolbar.setPrefWidth(1029);
@@ -91,7 +94,7 @@ public static void main(String[] args) throws SQLException {
 		////////////////   SET CONTENT ////////////////////
 		
 		primaryStage.getIcons().add(mainIcon);
-		mainPane.setCenter(mainViewPane);
+		mainPane.setCenter(vboxMain);
 		topPane.getChildren().add(toolbar);
 		mainPane.setTop(topPane);
 		root.getChildren().addAll(mainPane);

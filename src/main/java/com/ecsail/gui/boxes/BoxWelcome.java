@@ -51,7 +51,8 @@ public class BoxWelcome extends HBox {
 		vboxRight.setSpacing(10);
 		vboxRight.setPadding(new Insets(30,0,0,0));
 		VBox.setVgrow(vboxRight, Priority.ALWAYS);
-		VBox.setVgrow(vboxLeft, Priority.ALWAYS);
+		//VBox.setVgrow(vboxLeft, Priority.ALWAYS);
+		vboxLeft.setPrefHeight(550);
 		
 		notesButton.setMaxWidth(Double.MAX_VALUE);
 		boatsButton.setMaxWidth(Double.MAX_VALUE);
