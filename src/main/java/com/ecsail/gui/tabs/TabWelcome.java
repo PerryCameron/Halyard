@@ -22,23 +22,9 @@ public class TabWelcome extends Tab {
 		vboxBlue.setPadding(new Insets(10,10,10,10));
 		vboxPink.setPadding(new Insets(3,3,3,3)); // spacing to make pink from around table
 		vboxPink.setId("box-pink");
-		//boxWelcome.setPrefHeight(680);
 		VBox.setVgrow(boxWelcome, Priority.ALWAYS);
 		VBox.setVgrow(vboxPink, Priority.ALWAYS);
-		VBox.setVgrow(vboxBlue, Priority.ALWAYS);
-		////////////////////////////boxWelcome.setStyle("-fx-background-color: #4d6955;");  //green
-		
-		//if(Paths.isWindows())
-		//vboxBlue.setPrefHeight(Main.getPrimaryScene().getHeight() - titleBarHeight - Main.getToolBarHeight() -5);
-		//else
-		//vboxBlue.setPrefHeight(Main.getPrimaryScene().getHeight() - titleBarHeight - Main.getToolBarHeight() -24);
-		///vboxPink.setPrefHeight(695);
-		
-		//Main.getPrimaryStage().heightProperty().addListener((obs, oldVal, newVal) -> {
-			 //System.out.println((double)newVal);
-			// System.out.println(vboxPink.getHeight());
-			// vboxBlue.setPrefHeight(686 + (double)newVal - 796);// 570 is start height
-		//});
+		VBox.setVgrow(vboxBlue, Priority.ALWAYS);		
 		
 		/// this reloads the charts when welcome tab is selected
 		this.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
@@ -50,7 +36,6 @@ public class TabWelcome extends Tab {
 		    }
 		});
 
-		
 		vboxPink.getChildren().add(boxWelcome);
 		vboxBlue.getChildren().add(vboxPink);
 		setContent(vboxBlue);

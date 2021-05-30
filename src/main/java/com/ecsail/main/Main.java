@@ -38,7 +38,6 @@ public static void main(String[] args) throws SQLException {
 	Main.edits = FileIO.openTupleCountObject();
 	setUpForFirstTime();
 	console = new BoxConsole();
-	// this is the tree trunk to the entire program
 	launch(args);
 }
 
@@ -71,15 +70,12 @@ public static void main(String[] args) throws SQLException {
 			}
 		});
 				
-		mainScene.heightProperty().addListener((obs, oldVal, newVal) -> {
-			System.out.println("Scene height=" + newVal);
-			System.out.println("TabPane height=" + Launcher.getTabPane().getHeight());
-		});  /// 545 start height
+		//mainScene.heightProperty().addListener((obs, oldVal, newVal) -> {
+		//	System.out.println("Scene height=" + newVal);
+		//	System.out.println("TabPane height=" + Launcher.getTabPane().getHeight());
+		//});  /// 545 start height
 		
 		/////////////////   ATTRIBUTES /////////////////////
-		//vboxMain.setPrefHeight(600);
-		//vboxMain.minHeightProperty().bind(mainPane.prefHeightProperty());
-		//vboxMain.maxHeightProperty().bind(mainPane.prefHeightProperty());
 		vboxMain.setStyle("-fx-background-color: #e83115;");  // red
 		mainPane.setStyle("-fx-background-color: #feffab;");  // yellow
 		mainScene.getStylesheets().add("stylesheet.css");

@@ -34,9 +34,6 @@ static TabPane tabPane;
 		tabPane = new TabPane();
 		tabPane.setId("toolbar-box");
 		getChildren().add(tabPane);
-		//setPrefHeight(600);
-		//tabPane.setPrefHeight(800);
-		//tabPane.setMaxHeight(800);
 	}
 	
 	public static boolean tabOpen(String tabName) {
@@ -145,7 +142,6 @@ static TabPane tabPane;
 		tabPane.getTabs().add(new TabMembership(membership));
 		tabPane.getSelectionModel().select(getTabIndex(tabLabel)); // focus on tab we are wanting
 	}
-	
 	
 	// used in BoxSlip
 	public static void createTabForBoxSlip(int ms_id) { 

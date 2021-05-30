@@ -12,20 +12,17 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 // this is the contents inside tabWelcome() launched from ConnectDatabase() about line 229
 public class BoxWelcome extends HBox {
-	//public ArrayList<Object_Stats> stats;
 	private VBox vboxLeft;
 	private Statistics dbStats;
 	
 	public BoxWelcome() {
 		this.dbStats = new Statistics();
-		//this.stats = dbStats.populateStats();
 		this.vboxLeft = new VBox();
 		
 		int width = 400;
 		int height = 70;
 		
 		VBox vboxRight = new VBox();
-		//Pane mainPane = new Pane();
 		Button peopleListButton = new Button("People");
 		Button slipListButton = new Button("Slips");
 		Button bodButton = new Button("Board of Directors");
@@ -36,10 +33,10 @@ public class BoxWelcome extends HBox {
 		Button notesButton = new Button("Notes");
 		
 		////////////////  ATTRIBUTES //////////////////////////////
-		/////////////vboxLeft.setStyle("-fx-background-color: #c5c7c1;");
-		/////////////vboxRight.setStyle("-fx-background-color: #feffab;");  // yellow
+
 		vboxRight.setPrefWidth(width);
-		vboxLeft.setPrefWidth(570);
+		
+		vboxLeft.setPrefWidth(870);
 		notesButton.setId("bigbuttontext");
 		boatsButton.setId("bigbuttontext");
 		newButton.setId("bigbuttontext");
@@ -51,9 +48,7 @@ public class BoxWelcome extends HBox {
 		vboxRight.setSpacing(10);
 		vboxRight.setPadding(new Insets(30,0,0,0));
 		VBox.setVgrow(vboxRight, Priority.ALWAYS);
-		//VBox.setVgrow(vboxLeft, Priority.ALWAYS);
-		vboxLeft.setPrefHeight(550);
-		
+		VBox.setVgrow(vboxLeft, Priority.ALWAYS);
 		notesButton.setMaxWidth(Double.MAX_VALUE);
 		boatsButton.setMaxWidth(Double.MAX_VALUE);
 		peopleListButton.setMaxWidth(Double.MAX_VALUE);

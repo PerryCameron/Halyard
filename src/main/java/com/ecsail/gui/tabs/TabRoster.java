@@ -134,7 +134,6 @@ public class TabRoster extends Tab {
 		vboxRadioButton2.setPadding(new Insets(5, 5, 5, 5));
 		
 		tabPane.setSide(Side.LEFT);
-		//vbox1.setAlignment(Pos.TOP_CENTER);
 		VBox.setVgrow(vboxGrey, Priority.ALWAYS);
 		VBox.setVgrow(vboxPink, Priority.ALWAYS);
 		VBox.setVgrow(vboxTableBox, Priority.ALWAYS);
