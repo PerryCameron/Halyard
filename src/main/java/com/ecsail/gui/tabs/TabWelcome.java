@@ -18,10 +18,11 @@ public class TabWelcome extends Tab {
 		VBox vboxBlue = new VBox();
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
 		
-		vboxBlue.setId("box-blue");
+		
 		vboxBlue.setPadding(new Insets(10,10,10,10));
 		vboxPink.setPadding(new Insets(3,3,3,3)); // spacing to make pink from around table
 		vboxPink.setId("box-pink");
+		vboxBlue.setId("box-blue");
 		VBox.setVgrow(boxWelcome, Priority.ALWAYS);
 		VBox.setVgrow(vboxPink, Priority.ALWAYS);
 		VBox.setVgrow(vboxBlue, Priority.ALWAYS);		
@@ -39,6 +40,5 @@ public class TabWelcome extends Tab {
 		vboxPink.getChildren().add(boxWelcome);
 		vboxBlue.getChildren().add(vboxPink);
 		setContent(vboxBlue);
-		
 	}
 }

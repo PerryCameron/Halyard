@@ -31,12 +31,19 @@ public class BoxWelcome extends HBox {
 		Button rosterButton = new Button("Rosters");
 		Button boatsButton = new Button("Boats");
 		Button notesButton = new Button("Notes");
+		MembershipStackedBarChart membershipsByYearChart = new MembershipStackedBarChart(dbStats.getStats());
+		MembershipLineChart membershipStatisticsChart = new MembershipLineChart(dbStats.getStats());
 		
 		////////////////  ATTRIBUTES //////////////////////////////
-
+		//vboxLeft.setStyle("-fx-background-color: #e83115;");  // red
+		//vboxRight.setStyle("-fx-background-color: #feffab;");  // purble
 		vboxRight.setPrefWidth(width);
-		
-		vboxLeft.setPrefWidth(870);
+		vboxRight.setMinWidth(350);
+		vboxLeft.setMinWidth(350);
+		vboxLeft.setMaxWidth(1400);
+		vboxLeft.setPrefWidth(Double.MAX_VALUE);
+		vboxLeft.setPrefHeight(1200);
+		membershipsByYearChart.setMaxHeight(700);
 		notesButton.setId("bigbuttontext");
 		boatsButton.setId("bigbuttontext");
 		newButton.setId("bigbuttontext");
@@ -47,6 +54,8 @@ public class BoxWelcome extends HBox {
 		rosterButton.setId("bigbuttontext");
 		vboxRight.setSpacing(10);
 		vboxRight.setPadding(new Insets(30,0,0,0));
+		this.setPadding(new Insets(0,10,0,0));
+		this.setSpacing(10);
 		VBox.setVgrow(vboxRight, Priority.ALWAYS);
 		VBox.setVgrow(vboxLeft, Priority.ALWAYS);
 		notesButton.setMaxWidth(Double.MAX_VALUE);
@@ -80,7 +89,7 @@ public class BoxWelcome extends HBox {
 
 		////////////////  SET CONTENT ////////////////////////
 		vboxRight.getChildren().addAll(rosterButton,peopleListButton,slipListButton,bodButton,newButton,batchesButton,boatsButton,notesButton);
-		vboxLeft.getChildren().addAll(new MembershipStackedBarChart(dbStats.getStats()),new MembershipLineChart(dbStats.getStats()));
+		vboxLeft.getChildren().addAll(membershipsByYearChart,membershipStatisticsChart);
 
 		//vboxLeft.getChildren().addAll(Charts.getLineChart());
 		getChildren().addAll(vboxLeft,vboxRight);
