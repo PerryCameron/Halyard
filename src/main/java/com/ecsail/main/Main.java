@@ -10,11 +10,9 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -48,13 +46,12 @@ public static void main(String[] args) throws SQLException {
 	public void start(Stage primaryStage) throws Exception {
 		
 		//////////////////  OBJECTS  //////////////////////
-		Group root = new Group();
 		mainPane = new BorderPane();
 		vboxMain = new Launcher();  // This one is for a single membership
 		pStage = primaryStage;
-		Pane topPane = new Pane();
+		//Pane topPane = new Pane();
 		Image mainIcon = new Image(getClass().getResourceAsStream("/ECSC64.png"));
-		Main.mainScene = new Scene(root, 1028, 768, Color.GREEN);
+		Main.mainScene = new Scene(mainPane, 1028, 768, Color.GREEN);
 		
 		/////////////////  LISTENERS ///////////////////////
 		
@@ -81,11 +78,11 @@ public static void main(String[] args) throws SQLException {
 		
 		/////////////////   ATTRIBUTES /////////////////////
 		//vboxMain.setPrefHeight(600);
-		vboxMain.minHeightProperty().bind(mainPane.prefHeightProperty());
-		vboxMain.maxHeightProperty().bind(mainPane.prefHeightProperty());
+		//vboxMain.minHeightProperty().bind(mainPane.prefHeightProperty());
+		//vboxMain.maxHeightProperty().bind(mainPane.prefHeightProperty());
+		vboxMain.setStyle("-fx-background-color: #e83115;");  // red
 		mainPane.setStyle("-fx-background-color: #feffab;");  // yellow
 		mainScene.getStylesheets().add("stylesheet.css");
-		//mainPane.setPrefWidth(Double.MAX_VALUE);
 		toolbar.setPrefWidth(1029);
 		toolbar.setId("toolbar-box");
 		toolbar.setPrefHeight(10);
@@ -95,9 +92,7 @@ public static void main(String[] args) throws SQLException {
 		
 		primaryStage.getIcons().add(mainIcon);
 		mainPane.setCenter(vboxMain);
-		topPane.getChildren().add(toolbar);
-		mainPane.setTop(topPane);
-		root.getChildren().addAll(mainPane);
+		mainPane.setTop(toolbar);
 		primaryStage.setScene(mainScene);
 		primaryStage.show();
 		connect = new ConnectDatabase(primaryStage);

@@ -50,8 +50,9 @@ public class TabWelcome extends Tab {
 		    }
 		});
 
-		vboxBlue.getChildren().add(vboxPink);
+		
 		vboxPink.getChildren().add(boxWelcome);
+		vboxBlue.getChildren().add(vboxPink);
 		setContent(vboxBlue);
 		
 	}

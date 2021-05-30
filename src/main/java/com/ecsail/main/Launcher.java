@@ -25,7 +25,6 @@ import com.ecsail.structures.Object_Boat;
 import com.ecsail.structures.Object_MembershipList;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 public class Launcher extends VBox {
