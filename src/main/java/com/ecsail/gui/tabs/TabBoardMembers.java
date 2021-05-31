@@ -16,6 +16,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -88,7 +89,7 @@ public class TabBoardMembers extends Tab {
 	boardMembersVBox1.setPrefWidth(150);
 	boardMembersVBox2.setPrefWidth(150);
 	boardMembersVBox3.setPrefWidth(150);
-	
+	yearSpinner.setPrefWidth(145);
 	
 	boardMembersHBox.setPadding(new Insets(0,0,0,100));
 	offciersTitleHBox.setPadding(new Insets(0,0,0,320));
@@ -106,20 +107,23 @@ public class TabBoardMembers extends Tab {
 	board.getStyleClass().add("title");
 	
 	officersHBox.setSpacing(120);
-	//officersHBox.setStyle("-fx-background-color: blue");
 	committeeHBox.setSpacing(30);
-	//committeeHBox.setStyle("-fx-background-color: blue");
 	boardMembersHBox.setSpacing(40);
-	//boardMembersHBox.setStyle("-fx-background-color: blue");
-	vboxPink.setSpacing(10);
-	yearSpinner.setPrefWidth(145);
 	offciersTitleHBox.setSpacing(190);
+	
+	vboxPink.setSpacing(10);
+	
 	vboxBlue.setPadding(new Insets(10,10,10,10));
 	vboxPink.setPadding(new Insets(3,3,3,3)); // spacing to make pink fram around table
-	vboxPink.setPrefHeight(695);
+	
+	VBox.setVgrow(vboxPink, Priority.ALWAYS);
+
 	vboxPink.setId("box-pink");
 	vboxGrey.setId("slip-box");
-	
+
+	//boardMembersHBox.setStyle("-fx-background-color: blue");
+	//committeeHBox.setStyle("-fx-background-color: blue");
+	//officersHBox.setStyle("-fx-background-color: blue");
 	addOfficers(officerVBox1, officerVBox2);
 	addChairmen(committeeVBox1, committeeVBox2);
 	addBoard(boardMembersVBox1,boardMembersVBox2,boardMembersVBox3);
@@ -134,11 +138,11 @@ public class TabBoardMembers extends Tab {
 	committeeTitleHBox.getChildren().addAll(chairs);
 	boardMembersTitleBox.getChildren().addAll(board);
 	vboxPink.getChildren().addAll(offciersTitleHBox, officersHBox, committeeTitleHBox, committeeHBox, boardMembersTitleBox,boardMembersHBox);
-	Pane screenPane = new Pane();
+	//Pane screenPane = new Pane();
 	vboxBlue.setId("box-blue");
-	screenPane.setId("slip-fonts");
+	//screenPane.setId("slip-fonts");
 
-	vboxGrey.getChildren().add(screenPane);
+	//vboxGrey.getChildren().add(screenPane);
 	vboxBlue.getChildren().add(vboxPink);
 	vboxPink.getChildren().add(vboxGrey);
 	setContent(vboxBlue);

@@ -58,7 +58,7 @@ public class TabRoster extends Tab {
 				false, false, false, false, false, false, false, false, false);
 
 		/////////////////// OBJECTS //////////////////////////
-		VBox vboxGrey = new VBox();
+		VBox vboxBlue = new VBox();
 		VBox vboxPink = new VBox(); // inter vbox
 		VBox vboxTableBox = new VBox();
 		VBox vboxRadioButton1 = new VBox();
@@ -114,7 +114,7 @@ public class TabRoster extends Tab {
 		c3.setSelected(true);
 		
 		tabPane.setId("roster-tab-pane");
-		vboxGrey.setId("box-blue");
+		vboxBlue.setId("box-blue");
 		vboxPink.setId("box-pink");
 		hboxExportFrame.setId("box-blue");
 		hboxExport.setId("box-pink");
@@ -128,13 +128,13 @@ public class TabRoster extends Tab {
 		
 		hboxExportFrame.setPadding(new Insets(2, 2, 2, 2));
 		hboxExport.setPadding(new Insets(5, 5, 5, 5));
-		vboxGrey.setPadding(new Insets(10, 10, 10, 10));
+		vboxBlue.setPadding(new Insets(10, 10, 10, 10));
 		vboxPink.setPadding(new Insets(3, 3, 5, 3));
 		vboxRadioButton1.setPadding(new Insets(5, 5, 5, 5));
 		vboxRadioButton2.setPadding(new Insets(5, 5, 5, 5));
 		
 		tabPane.setSide(Side.LEFT);
-		VBox.setVgrow(vboxGrey, Priority.ALWAYS);
+		VBox.setVgrow(vboxBlue, Priority.ALWAYS);
 		VBox.setVgrow(vboxPink, Priority.ALWAYS);
 		VBox.setVgrow(vboxTableBox, Priority.ALWAYS);
 		vboxTableBox.setStyle("-fx-background-color: #4d6955;");  //green
@@ -142,13 +142,9 @@ public class TabRoster extends Tab {
 		setOnClosed(null);
 		rosterTableView.setItems(rosters);
 		rosterTableView.setFixedCellSize(30);
-		rosterTableView.setPrefHeight(553);
+		rosterTableView.setPrefHeight(1200);
 		rosterTableView.minWidthProperty().bind(vboxTableBox.prefWidthProperty());
 		rosterTableView.maxWidthProperty().bind(vboxTableBox.prefWidthProperty());
-		
-		/// why does below not work?  what is preventing the tableView from binding to the vbox
-		rosterTableView.minHeightProperty().bind(vboxTableBox.prefHeightProperty());
-		rosterTableView.maxHeightProperty().bind(vboxTableBox.prefHeightProperty());
 		rosterTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY );
 
 		Col1.setCellValueFactory(new PropertyValueFactory<Object_MembershipList, Integer>("membershipId"));
@@ -496,17 +492,6 @@ public class TabRoster extends Tab {
 				Collections.sort(rosters, Comparator.comparing(Object_MembershipList::getMembershipId));
 			}
 	});
-		
-		//titledPane.expandedProperty().addListener((obs, wasExpanded, isNowExpanded) -> {
-		//	if (isNowExpanded) {
-		//		// System.out.println("Title Pane Expanded");
-		//		rosterTableView.setPrefHeight(555);
-		//	}
-		//	if (wasExpanded) {
-		//		// System.out.println("Title Pane collapsed");
-		//		rosterTableView.setPrefHeight(655);
-		//	}
-		//});
 
 		//////////////////// SET CONTENT //////////////////////
 		
@@ -522,8 +507,8 @@ public class TabRoster extends Tab {
 		controlsHbox.getChildren().addAll(vboxSpinnerLabel, tabPane, hboxExportFrame);
 		titledPane.setContent(controlsHbox);
 		vboxPink.getChildren().addAll(titledPane,vboxTableBox);
-		vboxGrey.getChildren().add(vboxPink);
-		setContent(vboxGrey);
+		vboxBlue.getChildren().add(vboxPink);
+		setContent(vboxBlue);
 	}
 
 	/// this only changes when the year spinner changes

@@ -22,18 +22,17 @@ public class BoxAttachment extends HBox {
 		/////////////  ATTRIBUTES /////////////
 
 		hboxGrey.setPadding(new Insets(5, 5, 5, 5));
+		this.setPadding(new Insets(5, 5, 5, 5));  // creates space for blue frame
+		
 		hboxGrey.setPrefWidth(942);
 		mainVBox.setSpacing(5);
 		
 		//vboxPink.setPadding(new Insets(2,2,2,2)); // spacing to make pink fram around table
 		//yearSpinner.setPrefWidth(80);
-
+		this.setId("box-blue");
 		hboxGrey.setId("box-grey");
 		//vboxPink.setId("box-pink");
-		
 
-		setPadding(new Insets(5, 5, 5, 5));  // creates space for blue frame
-		setId("box-blue");
 		//hboxGrey.setPrefWidth(942);
 		
 		///////////// SET CONTENT ////////////////////

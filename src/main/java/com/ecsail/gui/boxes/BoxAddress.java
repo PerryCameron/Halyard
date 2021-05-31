@@ -70,6 +70,10 @@ public class BoxAddress extends HBox {
         shbox2.setSpacing(5);
         shbox3.setSpacing(5);
         shbox4.setSpacing(5);
+        mainVBox.setSpacing(10);
+        secondaryHBox.setSpacing(30);
+        primaryHBox.setSpacing(30);
+        
         hbox1.setAlignment(Pos.CENTER_LEFT);
         hbox2.setAlignment(Pos.CENTER_LEFT);
         hbox3.setAlignment(Pos.CENTER_LEFT);
@@ -79,37 +83,37 @@ public class BoxAddress extends HBox {
         shbox3.setAlignment(Pos.CENTER_LEFT);
         shbox4.setAlignment(Pos.CENTER_LEFT);
         mainVBox.setAlignment(Pos.CENTER);
-        mainVBox.setSpacing(10);
+        
         memZipcodeTextField.setPrefWidth(80);
         smemZipcodeTextField.setPrefWidth(80);
-        memAddressTextField.setText(membership.getAddress());
         memAddressTextField.setPrefWidth(300);
         smemAddressTextField.setPrefWidth(300);
-        memCityTextField.setText(membership.getCity());
         memCityTextField.setPrefWidth(180);
         smemCityTextField.setPrefWidth(180);
-        memZipcodeTextField.setText(membership.getZip());
+        titledPane1.setPrefWidth(940);
+		titledPane2.setPrefWidth(940);
+		hboxGrey.setPrefWidth(942);
+		
         primaryHBox.setPadding(new Insets(5,0,5,20));
         secondaryHBox.setPadding(new Insets(5,0,5,20));
-		hboxGrey.setPrefWidth(942);
-		secondaryHBox.setSpacing(30);
+        hboxGrey.setPadding(new Insets(5, 5, 5, 5));
+		this.setPadding(new Insets(5, 5, 5, 5));  // creates space for blue frame
+		
 		secondaryHBox.setId("box-pink");
-		primaryHBox.setSpacing(30);
 		primaryHBox.setId("box-pink");
-		titledPane1.setText("Primary Address");
-		titledPane2.setText("Secondary Address");
-		titledPane1.setPrefWidth(940);
-		titledPane2.setPrefWidth(940);
-		titledPane1.setCollapsible(false);
-		titledPane2.setCollapsible(false);
+		hboxGrey.setId("box-grey");
+		this.setId("box-blue");
 		titledPane1.setId("titled");
 		titledPane2.setId("titled");
-		hboxGrey.setPadding(new Insets(5, 5, 5, 5));
-        hboxGrey.setId("box-grey");
-        
-        setPadding(new Insets(5, 5, 5, 5));  // creates space for blue frame
-		setId("box-blue");
-           // hold address HBox
+		
+		memAddressTextField.setText(membership.getAddress());
+		memCityTextField.setText(membership.getCity());
+		memZipcodeTextField.setText(membership.getZip());
+		titledPane1.setText("Primary Address");
+		titledPane2.setText("Secondary Address");
+
+		titledPane1.setCollapsible(false);
+		titledPane2.setCollapsible(false);
 		
         /////////////////// LISTENERS /////////////////////////
         memAddressTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {

@@ -47,22 +47,27 @@ public class BoxProperties extends HBox {
 		/////////////  ATTRIBUTES /////////////
 
         hbox1.setSpacing(5);  // membership HBox
-        hbox1.setAlignment(Pos.CENTER_LEFT);
         hbox2.setSpacing(5);  // membership HBox
-        hbox2.setAlignment(Pos.CENTER_LEFT);
         hbox4.setSpacing(5);  // membership HBox
-        hbox4.setAlignment(Pos.CENTER_LEFT);
         hbox5.setSpacing(5);  // membership HBox
+        leftVBox.setSpacing(10);
+        this.setSpacing(10);
+        
+        hbox1.setAlignment(Pos.CENTER_LEFT);
+        
+        hbox2.setAlignment(Pos.CENTER_LEFT);
+        
+        hbox4.setAlignment(Pos.CENTER_LEFT);
+        
         hbox5.setAlignment(Pos.CENTER_LEFT);
 
 		hboxGrey.setPadding(new Insets(5, 5, 5, 10));
+		this.setPadding(new Insets(5, 5, 5, 5));  // creates space for blue frame
+		
 		hboxGrey.setPrefWidth(942);
-		leftVBox.setSpacing(10);
-		setPadding(new Insets(5, 5, 5, 5));  // creates space for blue frame
-		setId("box-blue");
-		setSpacing(10);
+		
+		this.setId("box-blue");
 		hboxGrey.setId("box-grey");
-		//combo_box.getItems().setAll(MemberType.values());
 		
 		///////////// LISTENERS ////////////
 
@@ -79,18 +84,10 @@ public class BoxProperties extends HBox {
             }
         });
 		
-      /*  combo_box.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
-
-        });
-		*/
 		///////////// SET CONTENT ////////////////////
 
-
-		//hbox4.getChildren().addAll(new Label("Membership Type"),combo_box);
 		hbox5.getChildren().addAll(new Label("Remove Membership"),removeMembershipButton);
 		leftVBox.getChildren().addAll(hbox2,hbox3,hbox5);
-		//centerVBox.getChildren().addAll(hbox5);
-		//rightVBox.getChildren().addAll(new BoxMemberID(membership));
 		hboxGrey.getChildren().addAll(leftVBox,rightVBox);
 		getChildren().add(hboxGrey);
 	}

@@ -28,6 +28,7 @@ import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
@@ -51,17 +52,19 @@ public class TabPeople extends Tab {
 		super(text);
 		TabPeople.people = SqlSelect.getPeople();
 		
-		VBox vbox1 = new VBox(); // main vbox
+		VBox vboxBlue = new VBox(); // main vbox
 		VBox vbox2 = new VBox(); // sepearates box search and box people
-		HBox hbox = new HBox();  // main hbox
+		HBox hboxPink = new HBox();  // main hbox
 
-		vbox1.setId("box-blue");
-		hbox.setId("box-pink");
-		vbox1.setPadding(new Insets(12,12,15,12));
-		hbox.setPadding(new Insets(3,3,5,3));
-		vbox1.setAlignment(Pos.TOP_CENTER);
-		vbox1.setPrefHeight(768);
-		hbox.setSpacing(10);
+		vboxBlue.setId("box-blue");
+		hboxPink.setId("box-pink");
+		vboxBlue.setPadding(new Insets(12,12,15,12));
+		hboxPink.setPadding(new Insets(3,3,5,3));
+		vboxBlue.setAlignment(Pos.TOP_CENTER);
+		//vbox1.setPrefHeight(768);
+		VBox.setVgrow(vboxBlue, Priority.ALWAYS);
+		VBox.setVgrow(hboxPink, Priority.ALWAYS);
+		hboxPink.setSpacing(10);
 		vbox2.setSpacing(5);
 		
 		personTableView = new TableView<>();
@@ -123,10 +126,10 @@ public class TabPeople extends Tab {
 	        return row ;
 	    });
 		
-		vbox1.getChildren().add(hbox);
+		vboxBlue.getChildren().add(hboxPink);
 		vbox2.getChildren().addAll(new BoxSearch(personTableView), personHBox);
-		hbox.getChildren().addAll(personTableView,vbox2);
-		setContent(vbox1);
+		hboxPink.getChildren().addAll(personTableView,vbox2);
+		setContent(vboxBlue);
 		
 	}
 	// creates array list of people objects populated from SQL database

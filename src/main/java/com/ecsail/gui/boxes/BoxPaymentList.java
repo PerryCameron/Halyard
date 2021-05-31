@@ -1,9 +1,6 @@
 package com.ecsail.gui.boxes;
 
-import java.text.SimpleDateFormat;
 import java.util.Collections;
-import java.util.Date;
-
 import com.ecsail.main.Note;
 import com.ecsail.main.Paths;
 import com.ecsail.sql.SqlDelete;
@@ -16,8 +13,6 @@ import com.ecsail.structures.Object_Money;
 import com.ecsail.structures.Object_Person;
 
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;

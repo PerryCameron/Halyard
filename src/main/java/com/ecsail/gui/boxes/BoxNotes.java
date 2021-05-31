@@ -34,27 +34,28 @@ public class BoxNotes extends HBox {
 		VBox buttonVBox = new VBox();
 		Button add = new Button("Add");
 		Button delete = new Button("Delete");
+		TableView<Object_Memo> memoTableView = new TableView<Object_Memo>();
 		
 		/////////////  ATTRIBUTES /////////////
 		add.setPrefWidth(60);
 		delete.setPrefWidth(60);
+		hboxGrey.setPrefWidth(942);
+		memoTableView.setPrefWidth(850);
+		
 		buttonVBox.setSpacing(5);
 		hboxGrey.setSpacing(10);
+		
 		hboxGrey.setPadding(new Insets(5, 5, 5, 5));
 		vboxPink.setPadding(new Insets(2,2,2,2)); // spacing to make pink fram around table
+		this.setPadding(new Insets(5, 5, 5, 5));  // creates space for blue frame
+		
 		hboxGrey.setId("box-grey");
 		vboxPink.setId("box-pink");
-		setPadding(new Insets(5, 5, 5, 5));  // creates space for blue frame
-		setId("box-blue");
-		hboxGrey.setPrefWidth(942);
+		this.setId("box-blue");
 		
-		
-		
-		
-		TableView<Object_Memo> memoTableView = new TableView<Object_Memo>();
 		memoTableView.setEditable(true);
 		memoTableView.setItems(note.getMemos());
-		memoTableView.setPrefWidth(850);
+		
 		memoTableView.setPrefHeight(140);
 		memoTableView.setFixedCellSize(30);
 

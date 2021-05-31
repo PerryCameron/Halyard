@@ -12,7 +12,6 @@ import com.ecsail.gui.boxes.BoxPerson;
 import com.ecsail.gui.boxes.BoxProperties;
 import com.ecsail.gui.boxes.BoxSlip;
 import com.ecsail.main.CreateMembership;
-import com.ecsail.main.Main;
 import com.ecsail.main.Note;
 import com.ecsail.sql.SqlSelect;
 import com.ecsail.structures.Object_MemLabels;
@@ -29,6 +28,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 public class TabMembership extends Tab {
@@ -47,14 +47,14 @@ public class TabMembership extends Tab {
         this.labels = new Object_MemLabels();
         this.people = SqlSelect.getPeople(membership.getMsid());
 		this.setText(setTabLabel());
+		
 		////////// OBJECTS /////////////
         Note note = new Note(memos,membership.getMsid());
-		VBox windowSizeVBox = new VBox(); // provides a container for the scroll pane, so it can respect a size
-		VBox containerVBox = new VBox();
 		ScrollPane mainScrollPane = new ScrollPane();
 		AnchorPane anchorPane = new AnchorPane();
 		TextField duesText = new TextField();
-        VBox mainVBox = new VBox();
+		VBox containerVBox = new VBox();
+        VBox vboxBlue = new VBox();
         HBox hbox1 = new BoxMembership(membership, labels);  // holds membershipID, Type and Active
         HBox hbox2 = new HBox();  // holds PersonVBoxes (2 instances require a genereic HBox
         HBox hbox3 = new HBox();
@@ -67,29 +67,50 @@ public class TabMembership extends Tab {
         fiscalTabPane.setTabClosingPolicy(TabClosingPolicy.SELECTED_TAB);
         peopleTabPane.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
         informationTabPane.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
-        mainVBox.setId("box-blue");
-        mainScrollPane.setId("box-blue");
-        mainScrollPane.setPrefViewportHeight(680);
+
         mainScrollPane.setFitToHeight(false);
-		windowSizeVBox.setPrefHeight(690);
 		
         hbox1.setSpacing(100);  // membership HBox
-        hbox1.setId("box-pink");
-        hbox1.setPadding(new Insets(15,15,0,15));
-        hbox1.setAlignment(Pos.TOP_CENTER);
-        hbox1.setPrefWidth(995);
-        
         hbox2.setSpacing(10);   // holds PersonVBox
-        hbox2.setId("box-pink");
-        hbox2.setPadding(new Insets(5,15,15,15));
-        hbox2.setAlignment(Pos.TOP_CENTER);
         
+        vboxBlue.setId("box-blue");
+        //mainScrollPane.setId("box-blue");
+        hbox1.setId("box-pink");
+        hbox2.setId("box-pink");
         hbox3.setId("box-pink");  // holds boats and notes
-        hbox3.setPadding(new Insets(0,15,10,15));
+        
+        hbox1.setAlignment(Pos.TOP_CENTER);
+        hbox2.setAlignment(Pos.TOP_CENTER);
         hbox3.setAlignment(Pos.TOP_CENTER);
         
-        mainVBox.setPrefWidth(1024);
-        mainVBox.setPadding(new Insets(10,10,10,10));
+		/*  // for testing
+		infoBox8.setStyle("-fx-background-color: #c5c7c1;");  // gray
+		infoBox1.setStyle("-fx-background-color: #4d6955;");  //green
+		infoBox2.setStyle("-fx-background-color: #feffab;");  // yellow
+		infoBox3.setStyle("-fx-background-color: #e83115;");  // red
+		infoBox4.setStyle("-fx-background-color: #201ac9;");  // blue
+		infoBox5.setStyle("-fx-background-color: #e83115;");  // purble
+		infoBox6.setStyle("-fx-background-color: #15e8e4;");  // light blue
+		infoBox7.setStyle("-fx-background-color: #e89715;");  // orange
+		*/
+        
+        hbox1.setPadding(new Insets(15,15,0,15));
+        hbox2.setPadding(new Insets(5,15,15,15));
+        hbox3.setPadding(new Insets(0,15,10,15));
+        vboxBlue.setPadding(new Insets(10,10,10,10));
+        
+        VBox.setVgrow(vboxBlue, Priority.ALWAYS);
+        VBox.setVgrow(hbox1, Priority.ALWAYS);
+        VBox.setVgrow(hbox2, Priority.ALWAYS);
+        VBox.setVgrow(hbox3, Priority.ALWAYS);
+        VBox.setVgrow(containerVBox, Priority.ALWAYS);
+        
+        containerVBox.setStyle("-fx-background-color: #4d6955;");  //green
+        anchorPane.setStyle("-fx-background-color: #e89715;");  // orange
+        mainScrollPane.setStyle("-fx-background-color: #e83115;");  // red
+        
+        anchorPane.setPrefHeight(1200);
+        vboxBlue.setPrefWidth(1024);
         peopleTabPane.setPrefWidth(472);
         
         AnchorPane.setTopAnchor(mainScrollPane, 0.0);
@@ -99,11 +120,11 @@ public class TabMembership extends Tab {
         
         ////////// LISTENERS ///////////////////////
         
-		Main.getPrimaryStage().heightProperty().addListener((obs, oldVal, newVal) -> {
+		//Main.getPrimaryStage().heightProperty().addListener((obs, oldVal, newVal) -> {
 			 //System.out.println(mainScrollPane.getHeight());
 			 //System.out.println(vboxPink.getHeight());
-			 mainScrollPane.setPrefHeight(680 + (double)newVal - 796);// 570 is start height
-		});
+		//	 mainScrollPane.setPrefHeight(680 + (double)newVal - 796);// 570 is start height
+		//});
 
         ////////// SETTING CONTENT /////////////////
         
@@ -126,9 +147,9 @@ public class TabMembership extends Tab {
 		containerVBox.getChildren().addAll(hbox1,hbox2,hbox3);
 		mainScrollPane.setContent(containerVBox);
 		anchorPane.getChildren().add(mainScrollPane);
-        mainVBox.getChildren().addAll(anchorPane);  // box blue
-        windowSizeVBox.getChildren().add(mainVBox);
-        setContent(windowSizeVBox);
+        vboxBlue.getChildren().addAll(anchorPane);  // box blue
+        //windowSizeVBox.getChildren().add(mainVBox);
+        setContent(vboxBlue);
 	}
 	
 	///////////////////////// 	CLASS METHODS //////////////////////////////

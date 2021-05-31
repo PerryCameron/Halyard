@@ -44,7 +44,7 @@ Object_MembershipList membership;
 private ObservableList<Object_Boat> boats;  // = FXCollections.observableArrayList();
 private TableView<Object_Boat> boatTableView;
 	
-	@SuppressWarnings("unchecked")
+	//@SuppressWarnings("unchecked")
 	public BoxBoat(Object_MembershipList m) {
 	this.membership = m;
 	this.boats = FXCollections.observableArrayList(new Callback<Object_Boat, Observable[]>() {
@@ -62,27 +62,31 @@ private TableView<Object_Boat> boatTableView;
 	Button boatAdd = new Button("Add");
 	Button boatDelete = new Button("Delete");
 	Button boatView = new Button("view");
+	boatTableView = new TableView<Object_Boat>();
     
     /////////////////  ATTRIBUTES  /////////////////////
 	
     buttonVBox.setSpacing(5);
-    setSpacing(10);
+    hboxGrey.setSpacing(10);
+    this.setSpacing(10);
+    
 	boatAdd.setPrefWidth(60);
 	boatDelete.setPrefWidth(60);
 	boatView.setPrefWidth(60);
-	hboxGrey.setSpacing(10);
+	hboxGrey.setPrefWidth(942);
+	boatTableView.setPrefWidth(850);
+	
 	hboxGrey.setPadding(new Insets(5, 5, 5, 5));
 	vboxPink.setPadding(new Insets(2,2,2,2)); // spacing to make pink fram around table
+	setPadding(new Insets(5, 5, 5, 5));  // creates space for blue frame
+	
 	hboxGrey.setId("box-grey");
 	vboxPink.setId("box-pink");
-	hboxGrey.setPrefWidth(942);
-	setPadding(new Insets(5, 5, 5, 5));  // creates space for blue frame
-	setId("box-blue");;
+	this.setId("box-blue");
 	
 	///////////////// TABLE VIEW ///////////////////////
-	boatTableView = new TableView<Object_Boat>();
+	
 	boatTableView.setItems(boats);
-	boatTableView.setPrefWidth(850);
 	boatTableView.setPrefHeight(140);
 	boatTableView.setFixedCellSize(30);
 	boatTableView.setEditable(true);
@@ -317,9 +321,7 @@ private TableView<Object_Boat> boatTableView;
 	}
 	
 	///////////////// CLASS METHODS /////////////////
-	
 
-	
     private <T> TableColumn<T, String> createColumn(String title, Function<T, StringProperty> property) {
         TableColumn<T, String> col = new TableColumn<>(title);
         col.setCellValueFactory(cellData -> property.apply(cellData.getValue()));
