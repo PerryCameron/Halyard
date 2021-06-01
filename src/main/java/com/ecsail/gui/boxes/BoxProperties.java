@@ -40,7 +40,6 @@ public class BoxProperties extends HBox {
         HBox hbox3 = new HBox();  // holds address, city, state, zip
         HBox hbox4 = new HBox();  // holds membership type
         HBox hbox5 = new HBox();  // holds delete membership
-
 		Button removeMembershipButton = new Button("Delete");
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 
@@ -54,11 +53,8 @@ public class BoxProperties extends HBox {
         this.setSpacing(10);
         
         hbox1.setAlignment(Pos.CENTER_LEFT);
-        
         hbox2.setAlignment(Pos.CENTER_LEFT);
-        
         hbox4.setAlignment(Pos.CENTER_LEFT);
-        
         hbox5.setAlignment(Pos.CENTER_LEFT);
 
 		hboxGrey.setPadding(new Insets(5, 5, 5, 10));
@@ -71,7 +67,6 @@ public class BoxProperties extends HBox {
 		
 		///////////// LISTENERS ////////////
 
-			
 		removeMembershipButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
         		alert.setTitle("Remove Membership");

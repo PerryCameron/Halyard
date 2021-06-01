@@ -1,5 +1,6 @@
 package com.ecsail.gui.boxes;
 
+import java.util.Arrays;
 import java.util.function.Function;
 
 import com.ecsail.enums.KeelType;
@@ -313,7 +314,7 @@ private TableView<Object_Boat> boatTableView;
     
     /////////////////// SET CONTENT ///////////////////
 
-	boatTableView.getColumns().addAll(Col1,Col2,Col3,Col4,Col5,Col6,Col6b,Col7,Col8,Col9,Col10);
+	boatTableView.getColumns().addAll(Arrays.asList(Col1,Col2,Col3,Col4,Col5,Col6,Col6b,Col7,Col8,Col9,Col10));
 	buttonVBox.getChildren().addAll(boatAdd,boatDelete,boatView);
 	vboxPink.getChildren().add(boatTableView);
 	hboxGrey.getChildren().addAll(vboxPink,buttonVBox);

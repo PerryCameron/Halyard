@@ -37,18 +37,13 @@ public class BoxAddress extends HBox {
         TextField memAddressTextField = new TextField();
         TextField memCityTextField = new TextField();
         TextField memZipcodeTextField = new TextField();
+        TextField smemAddressTextField = new TextField();
+        TextField smemCityTextField = new TextField();
+        TextField smemZipcodeTextField = new TextField();
         HBox hbox1 = new HBox();
         HBox hbox2 = new HBox();
         HBox hbox3 = new HBox();
         HBox hbox4 = new HBox();
-        final Label smemAddress = new Label("Street");
-        final Label smemCity = new Label("City");
-        //final Label secondaryLabel = new Label("Secondary Address");
-        final ComboBox<String> sstateComboBox = new ComboBox<String>(states);
-        final Label smemZipcode = new Label("Zipcode");
-        TextField smemAddressTextField = new TextField();
-        TextField smemCityTextField = new TextField();
-        TextField smemZipcodeTextField = new TextField();
         HBox shbox1 = new HBox();
         HBox shbox2 = new HBox();
         HBox shbox3 = new HBox();
@@ -57,6 +52,11 @@ public class BoxAddress extends HBox {
 		HBox primaryHBox = new HBox();  // contains viewable children
 		HBox secondaryHBox = new HBox();
 		VBox mainVBox = new VBox();
+        final Label smemAddress = new Label("Street");
+        final Label smemCity = new Label("City");
+        //final Label secondaryLabel = new Label("Secondary Address");
+        final ComboBox<String> sstateComboBox = new ComboBox<String>(states);
+        final Label smemZipcode = new Label("Zipcode");
 		TitledPane titledPane1 = new TitledPane();
 		TitledPane titledPane2 = new TitledPane();
 
@@ -111,7 +111,6 @@ public class BoxAddress extends HBox {
 		memZipcodeTextField.setText(membership.getZip());
 		titledPane1.setText("Primary Address");
 		titledPane2.setText("Secondary Address");
-
 		titledPane1.setCollapsible(false);
 		titledPane2.setCollapsible(false);
 		

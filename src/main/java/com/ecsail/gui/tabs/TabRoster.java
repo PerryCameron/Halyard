@@ -192,10 +192,6 @@ public class TabRoster extends Tab {
 		});
 
 		//////////////////// LISTENERS //////////////////////////
-
-	//	Main.getPrimaryStage().heightProperty().addListener((obs, oldVal, newVal) -> {
-	//	    	 rosterTableView.setPrefHeight(545.0 + (double)newVal - 796.0);// 796 is start height of bottom of window
-	//	});  /// 545 start height of rosterTableView
 		
 		buttonXLS.setOnAction((event) -> new Xls_roster(rosters, printChoices));
 

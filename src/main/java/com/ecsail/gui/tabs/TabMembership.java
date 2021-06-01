@@ -120,11 +120,6 @@ public class TabMembership extends Tab {
         
         ////////// LISTENERS ///////////////////////
         
-		//Main.getPrimaryStage().heightProperty().addListener((obs, oldVal, newVal) -> {
-			 //System.out.println(mainScrollPane.getHeight());
-			 //System.out.println(vboxPink.getHeight());
-		//	 mainScrollPane.setPrefHeight(680 + (double)newVal - 796);// 570 is start height
-		//});
 
         ////////// SETTING CONTENT /////////////////
         

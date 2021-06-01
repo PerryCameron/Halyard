@@ -2,6 +2,7 @@ package com.ecsail.gui.boxes;
 
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.function.Function;
 
@@ -24,7 +25,6 @@ import javafx.scene.layout.VBox;
 public class BoxNotes extends HBox {
 	private Note note;
 	
-	@SuppressWarnings("unchecked")
 	public BoxNotes(Note n) {
 		this.note = n;
 		
@@ -52,10 +52,8 @@ public class BoxNotes extends HBox {
 		hboxGrey.setId("box-grey");
 		vboxPink.setId("box-pink");
 		this.setId("box-blue");
-		
 		memoTableView.setEditable(true);
 		memoTableView.setItems(note.getMemos());
-		
 		memoTableView.setPrefHeight(140);
 		memoTableView.setFixedCellSize(30);
 
@@ -89,10 +87,7 @@ public class BoxNotes extends HBox {
                     }
                 }
             );
-        
-        memoTableView.getSortOrder().addAll(Col1);
-        memoTableView.sort();
-		
+
         ////////////////  LISTENERS ///////////////////
         
         add.setOnAction(new EventHandler<ActionEvent>() {
@@ -115,7 +110,7 @@ public class BoxNotes extends HBox {
         
         ///////////// SET CONTENT ////////////////////
         
-		memoTableView.getColumns().addAll(Col1,Col2,Col3);
+		memoTableView.getColumns().addAll(Arrays.asList(Col1,Col2,Col3));
 		buttonVBox.getChildren().addAll(add,delete);
 		vboxPink.getChildren().add(memoTableView);
 		hboxGrey.getChildren().addAll(vboxPink,buttonVBox);
