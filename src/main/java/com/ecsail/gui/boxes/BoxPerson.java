@@ -36,7 +36,6 @@ public class BoxPerson extends HBox {
 	private Object_MembershipList membership;
 	private ObservableList<Object_Person> people;  // this is only for updating people list when in people list mode
 	private ImageView photo;
-	//private ObservableList<Object_Email> email;
 	
 	public BoxPerson(Object_Person p, Object_MembershipList me, TabPane personTabPane) {
 		this.person = p;
@@ -72,7 +71,6 @@ public class BoxPerson extends HBox {
 		VBox vbOccupationLabel = new VBox();
 		VBox vbBuisnessLabel = new VBox();
 		VBox vbBirthdayLabel = new VBox();
-		
 		VBox vbLnameBox = new VBox();
 		VBox vbFnameBox = new VBox();
 		VBox vbNnameBox = new VBox();
@@ -109,44 +107,7 @@ public class BoxPerson extends HBox {
 		occupationTextField.setPrefSize(150, 10);
 		nnameTextField.setPrefSize(150, 10);
 		birthdayDatePicker.setPrefSize(150, 10);
-		
-		hbox1.setAlignment(Pos.CENTER_LEFT);
-		hbox2.setAlignment(Pos.CENTER_LEFT);
-		hbox2b.setAlignment(Pos.CENTER_LEFT);
-		hbox3.setAlignment(Pos.CENTER_LEFT);
-		hbox4.setAlignment(Pos.CENTER_LEFT);
-
-		hboxTitle.setAlignment(Pos.TOP_RIGHT);
-		hboxTitle.setPadding(new Insets(9, 5, 0, 0));
-		hbox1.setPadding(new Insets(7, 5, 5, 15));  // first Name
-		hbox2.setPadding(new Insets(7, 5, 5, 15));  // last name
-		hbox2b.setPadding(new Insets(7, 5, 5, 15)); // Nickname
-		hbox3.setPadding(new Insets(7, 5, 5, 15));  // occupation
-		hbox4.setPadding(new Insets(7, 5, 5, 15));  // business
-		hbox5.setPadding(new Insets(7, 5, 5, 15));
-		hboxPictureFrame.setPadding(new Insets(2, 2, 2, 2));
-		vboxPicture.setPadding(new Insets(12, 5, 0, 7));
-
-		hbox6.setPadding(new Insets(5, 5, 5, 5));
-		hbox6.setAlignment(Pos.CENTER);
-		hbox6.setSpacing(5);
-		hbox6.setId("box-blue");
-
-		hbox7.setPadding(new Insets(5, 5, 5, 5));
-		hbox7.setAlignment(Pos.CENTER);
-		hbox7.setSpacing(5);
-		hbox7.setId("box-blue");
-		
-		hbox8.setPadding(new Insets(5, 5, 5, 5));
-		hbox8.setAlignment(Pos.CENTER);
-		hbox8.setSpacing(5);
-		hbox8.setId("box-blue");
-		
-		hbox9.setPadding(new Insets(5, 5, 5, 5));
-		hbox9.setAlignment(Pos.CENTER);
-		hbox9.setSpacing(5);
-		hbox9.setId("box-blue");
-		
+		this.setPrefWidth(472);
 		vbLnameLabel.setPrefWidth(75);
 		vbFnameLabel.setPrefWidth(75);
 		vbNnameLabel.setPrefWidth(75);
@@ -155,6 +116,16 @@ public class BoxPerson extends HBox {
 		vbBirthdayLabel.setPrefWidth(75);
 		hboxPictureFrame.setPrefSize(196, 226);
 		
+		hbox1.setAlignment(Pos.CENTER_LEFT);
+		hbox2.setAlignment(Pos.CENTER_LEFT);
+		hbox2b.setAlignment(Pos.CENTER_LEFT);
+		hbox3.setAlignment(Pos.CENTER_LEFT);
+		hbox4.setAlignment(Pos.CENTER_LEFT);
+		hboxTitle.setAlignment(Pos.TOP_RIGHT);
+		hbox6.setAlignment(Pos.CENTER);
+		hbox7.setAlignment(Pos.CENTER);
+		hbox8.setAlignment(Pos.CENTER);
+		hbox9.setAlignment(Pos.CENTER);
 		vbLnameLabel.setAlignment(Pos.CENTER_LEFT);
 		vbFnameLabel.setAlignment(Pos.CENTER_LEFT);
 		vbNnameLabel.setAlignment(Pos.CENTER_LEFT);
@@ -163,15 +134,35 @@ public class BoxPerson extends HBox {
 		vbBirthdayLabel.setAlignment(Pos.CENTER_LEFT);
 		
 		
+		hboxTitle.setPadding(new Insets(9, 5, 0, 0));
+		hbox1.setPadding(new Insets(7, 5, 5, 15));  // first Name
+		hbox2.setPadding(new Insets(7, 5, 5, 15));  // last name
+		hbox2b.setPadding(new Insets(7, 5, 5, 15)); // Nickname
+		hbox3.setPadding(new Insets(7, 5, 5, 15));  // occupation
+		hbox4.setPadding(new Insets(7, 5, 5, 15));  // business
+		hbox5.setPadding(new Insets(7, 5, 5, 15));
+		hbox6.setPadding(new Insets(5, 5, 5, 5));
+		hbox7.setPadding(new Insets(5, 5, 5, 5));
+		hbox8.setPadding(new Insets(5, 5, 5, 5));
+		hbox9.setPadding(new Insets(5, 5, 5, 5));
+		hboxPictureFrame.setPadding(new Insets(2, 2, 2, 2));
+		vboxPicture.setPadding(new Insets(12, 5, 0, 7));
 		vboxInfoGrey.setPadding(new Insets(10, 5, 5, 5)); // creates space for inner tabpane
+		this.setPadding(new Insets(5, 5, 5, 5));  // creates space for blue frame
 		
-		setPrefWidth(472);
-		setPadding(new Insets(5, 5, 5, 5));  // creates space for blue frame
+		hbox6.setSpacing(5);
+		hbox7.setSpacing(5);
+		hbox8.setSpacing(5);
+		hbox9.setSpacing(5);
 		
+		hbox6.setId("box-blue");
+		hbox7.setId("box-blue");
+		hbox8.setId("box-blue");
+		hbox9.setId("box-blue");
 		hboxPictureFrame.setId("box-blue");
-		setId("box-blue");
+		this.setId("box-blue");
 		vboxGrey.setId("box-grey");
-		
+
 		if(person.getBirthday() == null) {
 			// do nothing because why not?
 		} else {
@@ -245,8 +236,7 @@ public class BoxPerson extends HBox {
 		photo.setOnMouseEntered(en -> {
 			hboxPictureFrame.setStyle("-fx-background-color: #201ac9;");
 		});
-		
-		
+
 		EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent e) {
 				// get the date picker value
@@ -263,7 +253,6 @@ public class BoxPerson extends HBox {
 		hboxMemberInfoAndPicture.getChildren().addAll(vboxMemberInfo,vboxPicture);
 		hboxPictureFrame.getChildren().add(photo);
 		vboxPicture.getChildren().add(hboxPictureFrame);
-		
 		fnameTextField.setText(person.getFname());
 		lnameTextField.setText(person.getLname());
 		businessTextField.setText(person.getBuisness());
@@ -275,21 +264,18 @@ public class BoxPerson extends HBox {
 		infoTabPane.getTabs().add(new TabPersonProperties(p, people, personTabPane));
 		infoTabPane.getTabs().add(new Tab("Awards", hbox9));
 		vboxInfoGrey.getChildren().add(infoTabPane);
-		
 		vbLnameLabel.getChildren().add(lnameLabel);
 		vbFnameLabel.getChildren().add(fnameLabel);
 		vbNnameLabel.getChildren().add(nnameLabel);
 		vbOccupationLabel.getChildren().add(occupationLabel);
 		vbBuisnessLabel.getChildren().add(businessLabel);
 		vbBirthdayLabel.getChildren().add(birthdayLabel);
-		
 		vbLnameBox.getChildren().add(lnameTextField);
 		vbFnameBox.getChildren().add(fnameTextField);
 		vbNnameBox.getChildren().add(nnameTextField);
 		vbOccupationBox.getChildren().add(occupationTextField);
 		vbBuisnessBox.getChildren().add(businessTextField);
 		vbBirthdayBox.getChildren().add(birthdayDatePicker);
-		
 		hbox1.getChildren().addAll(vbFnameLabel,vbFnameBox);
 		hbox2.getChildren().addAll(vbLnameLabel,vbLnameBox);
 		hbox2b.getChildren().addAll(vbNnameLabel, vbNnameBox);
@@ -297,7 +283,7 @@ public class BoxPerson extends HBox {
 		hbox4.getChildren().addAll(vbBuisnessLabel,vbBuisnessBox);
 		hbox5.getChildren().addAll(vbBirthdayLabel,vbBirthdayBox);
 		vboxGrey.getChildren().addAll(hboxMemberInfoAndPicture, vboxInfoGrey);
-		getChildren().add(vboxGrey);
+		this.getChildren().add(vboxGrey);
 	} // constructor end
 	
 	

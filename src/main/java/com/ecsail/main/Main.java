@@ -50,7 +50,7 @@ public static void main(String[] args) throws SQLException {
 		pStage = primaryStage;
 		//Pane topPane = new Pane();
 		Image mainIcon = new Image(getClass().getResourceAsStream("/ECSC64.png"));
-		Main.mainScene = new Scene(mainPane, 1028, 768, Color.GREEN);
+		Main.mainScene = new Scene(mainPane, 1028, 830, Color.GREEN);
 		
 		/////////////////  LISTENERS ///////////////////////
 		

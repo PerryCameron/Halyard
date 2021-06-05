@@ -75,33 +75,38 @@ public class BoxSlip extends HBox {
 		noSlipLabel.setTextFill(Color.DARKCYAN);
 
 		////////////  ATTRIBUTES //////////////////
-		vboxWaitFrame.setId("box-blue");
-		vboxWait.setId("box-grey");
-		vboxWait.setSpacing(10);
-		vboxWaitFrame.setPadding(new Insets(2,2,2,2));
-		vboxWait.setPadding(new Insets(5,5,5,5));
-		//vboxWaitFrame.setPrefWidth(50);
-		vboxWaitOuterFrame.setPadding(new Insets(60,15,0,0));
+
 		
+		vboxWait.setSpacing(10);
 		vboxWait.setSpacing(5);
-		errorHBox.setPadding(new Insets(5, 15, 5, 15));  // first Name
-		errorHBox.setAlignment(Pos.CENTER);
 		errorHBox.setSpacing(13);
 		hbox1.setSpacing(5);
-		hbox1.setPadding(new Insets(0,15,5,15));
-		hbox1.setAlignment(Pos.CENTER_LEFT);
-		assignVBox.setPadding(new Insets(30,15,5,15));
-		assignVBox.setPrefWidth(300);
-		assignVBox.setAlignment(Pos.CENTER_LEFT);
 		assignVBox.setSpacing(10);
+		
+		vboxWaitFrame.setPadding(new Insets(2,2,2,2));
+		vboxWait.setPadding(new Insets(5,5,5,5));
+		vboxWaitOuterFrame.setPadding(new Insets(60,15,0,0));
+		errorHBox.setPadding(new Insets(5, 15, 5, 15));  // first Name
+		hbox1.setPadding(new Insets(0,15,5,15));
+		assignVBox.setPadding(new Insets(30,15,5,15));
+		mainHBox.setPadding(new Insets(15,15,0,5));	
+		hbox2.setPadding(new Insets(5,15,5,15));
+		this.setPadding(new Insets(5, 5, 5, 5));  // creates space for blue frame	
+		
+		errorHBox.setAlignment(Pos.CENTER);
+		hbox1.setAlignment(Pos.CENTER_LEFT);
+		assignVBox.setAlignment(Pos.CENTER_LEFT);
+
+		assignVBox.setPrefWidth(300);
+		submitButton.setPrefWidth(60);
 		membershipIdTextField.setPrefWidth(40);
 		mainHBox.setPrefWidth(460);  ///////////// sets the width
 		mainVBox.setPrefWidth(200);
-		mainHBox.setPadding(new Insets(15,15,0,5));
+
 		hbox2.setSpacing(5);
 		hbox3.setSpacing(5);
-		hbox2.setPadding(new Insets(5,15,5,15));
-		setSpacing(5);
+		this.setSpacing(5);
+		
 		rb1.setToggleGroup(group); // sublease rb
 		rb1.setSelected(true);
 		rb2.setToggleGroup(group); // reassign rb
@@ -109,10 +114,11 @@ public class BoxSlip extends HBox {
 		rb1.setUserData("Sublease");
 		rb2.setUserData("Reassign");
 		rb3.setUserData("Release");
-		submitButton.setPrefWidth(60);
-		setPadding(new Insets(5, 5, 5, 5));  // creates space for blue frame
+
 		vboxGrey.setId("box-grey");
-		setId("box-blue");
+		this.setId("box-blue");
+		vboxWaitFrame.setId("box-blue");
+		vboxWait.setId("box-grey");
 		
 		////////////// LISTENERS //////////////////////////
 
@@ -148,9 +154,7 @@ public class BoxSlip extends HBox {
 		        }
 		});
 		
-		submitButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
+		submitButton.setOnAction((event) -> {
 				errorHBox.getChildren().clear();
 				if(selectedRadioButton("Release"))
 				releaseSlip();
@@ -159,7 +163,6 @@ public class BoxSlip extends HBox {
 				else if (selectedRadioButton("Reassign"))
 				reassignSlip(getMsidFromTextField());
 				refreshScreen();
-			}
 		});
 		
 		slipWaitCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
@@ -293,8 +296,6 @@ public class BoxSlip extends HBox {
 		hbox3.setVisible(false);
 	}
 	
-
-	
 	private void releaseSlip() {  // overloaded method
 		SqlUpdate.releaseSlip(membership);
 		r3.setVisible(false);
@@ -334,7 +335,6 @@ public class BoxSlip extends HBox {
 		r2.getChildren().add(rb2);
 		r3.getChildren().add(rb3);
 		mainHBox.getChildren().addAll(mainVBox, new BoxSlipImage(slip.getSlipNumber()));
-		
 	}
 	
 	private void clearControls() {
@@ -347,7 +347,6 @@ public class BoxSlip extends HBox {
 		mainHBox.getChildren().clear();
 	}
 	
-
 	public String getErrorMessage() {
 		return errorMessage;
 	}
@@ -461,6 +460,4 @@ public class BoxSlip extends HBox {
 		r2.setVisible(rb2);
 		r3.setVisible(rb3);
 	}
-	
-	
 }

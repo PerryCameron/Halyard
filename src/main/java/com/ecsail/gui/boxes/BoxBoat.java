@@ -55,6 +55,7 @@ private TableView<Object_Boat> boatTableView;
 		}
 	});
 	this.boats.addAll(SqlSelect.getBoats(membership.getMsid()));
+	this.boatTableView = new TableView<Object_Boat>();
 	///////////	 OBJECTS ///////////////
 
 	HBox hboxGrey = new HBox();  // this is the vbox for organizing all the widgets
@@ -63,7 +64,7 @@ private TableView<Object_Boat> boatTableView;
 	Button boatAdd = new Button("Add");
 	Button boatDelete = new Button("Delete");
 	Button boatView = new Button("view");
-	boatTableView = new TableView<Object_Boat>();
+	
     
     /////////////////  ATTRIBUTES  /////////////////////
 	
