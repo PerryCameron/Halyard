@@ -47,6 +47,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
@@ -76,7 +77,6 @@ public class TabDeposits extends Tab {
 		this.selectedYear = new SimpleDateFormat("yyyy").format(new Date()); // lets start at the current year
 		this.paidDues.addAll(SqlSelect.getPaidDues(selectedYear));
 		summaryTotals.setDepositNumber(SqlSelect.getBatchNumber(selectedYear));
-
 		this.currentDefinedFee = SqlSelect.getDefinedFee(selectedYear);
 		this.currentDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date(System.currentTimeMillis()));
 		////////////////////// OBJECT INSTANCE //////////////////////////
@@ -109,6 +109,7 @@ public class TabDeposits extends Tab {
 		//////////////////// OBJECT ATTRIBUTES ///////////////////////////
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		numberOfRecords.setStyle("-fx-font-weight: bold;");
+		paidDuesTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY );
 		vboxBlue.setId("box-blue");
 		controlsHBox.setId("box-blue");
 		controlsVBox.setId("box-grey");
@@ -123,10 +124,10 @@ public class TabDeposits extends Tab {
 		
 		controlsVBox.setPrefWidth(342);
 		depositDatePicker.setPrefWidth(123);
-		paidDuesTableView.setPrefWidth(645);
+		paidDuesTableView.setPrefWidth(1500);
 		
-		vboxGrey.setPrefHeight(688);
-		paidDuesTableView.setPrefHeight(688);
+		//vboxGrey.setPrefHeight(688);
+		paidDuesTableView.setPrefHeight(1200);
 		
 		controlsVBox.setSpacing(10);
 		mainHBox.setSpacing(5);
@@ -136,6 +137,9 @@ public class TabDeposits extends Tab {
 		selectionHBox.setSpacing(30);
 		yearBatchHBox.setSpacing(15);
 		
+		VBox.setVgrow(vboxBlue, Priority.ALWAYS);
+		VBox.setVgrow(vboxPink, Priority.ALWAYS);
+		VBox.setVgrow(vboxGrey, Priority.ALWAYS);
 		
 		batchNumberHBox.setAlignment(Pos.CENTER);
 		yearBatchHBox.setAlignment(Pos.CENTER);
@@ -160,9 +164,7 @@ public class TabDeposits extends Tab {
 		yearSpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
 			if (!newValue) {
 				selectedYear = yearSpinner.getEditor().getText();
-				batchSpinner.getValueFactory().setValue(SqlSelect.getBatchNumber(selectedYear)); // set batch to last
-																									// one for a given
-																									// year
+				batchSpinner.getValueFactory().setValue(SqlSelect.getBatchNumber(selectedYear)); // set batch to last																					// year
 				paidDues.clear();
 				paidDues.addAll(SqlSelect.getPaidDues(selectedYear));
 				currentDefinedFee.clear();
@@ -267,6 +269,18 @@ public class TabDeposits extends Tab {
 		TableColumn<Object_PaidDues, Integer> Col11 = new TableColumn<Object_PaidDues, Integer>("Cmit");
 		Col11.setCellValueFactory(new PropertyValueFactory<Object_PaidDues, Integer>("committed"));
 		Col11.setPrefWidth(50);
+		
+		Col1.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );   
+		Col2.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );  
+		Col3.setMaxWidth( 1f * Integer.MAX_VALUE * 15 );   
+		Col4.setMaxWidth( 1f * Integer.MAX_VALUE * 15 );   
+		Col5.setMaxWidth( 1f * Integer.MAX_VALUE * 10 );  
+		Col6.setMaxWidth( 1f * Integer.MAX_VALUE * 10 );  
+		Col7.setMaxWidth( 1f * Integer.MAX_VALUE * 10 );  
+		Col8.setMaxWidth( 1f * Integer.MAX_VALUE * 10 );  
+		Col9.setMaxWidth( 1f * Integer.MAX_VALUE * 5 ); 
+		Col10.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );
+		Col11.setMaxWidth( 1f * Integer.MAX_VALUE * 10 ); 
 
 		////////////////// LISTENERS //////////////////////
 
