@@ -102,7 +102,7 @@ public class SqlInsert {
 			stmt.execute(Main.console.setRegexColor("INSERT INTO person () VALUES (" 
 	    	+ person.getP_id() + "," + person.getMs_id() + ",'" + person.getMemberType() + "',\"" + person.getFname()
 	    	+ "\",\"" + person.getLname() + "\"," + SqlScriptMaker.getCorrectString(person.getBirthday()) 
-	    	+ ",\"" + person.getOccupation() + "\",\"" + person.getBuisness() +"\",true,"+person.getNname()+");"));
+	    	+ ",\"" + person.getOccupation() + "\",\"" + person.getBuisness() +"\",true,"+person.getNname()+",'"+person.getNname()+"');"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"Unable to create new row","See below for details");
