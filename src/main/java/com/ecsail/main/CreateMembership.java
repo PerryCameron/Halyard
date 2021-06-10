@@ -19,7 +19,7 @@ public class CreateMembership {
 		int pid = SqlSelect.getCount() + 1;
 		try {
 			Statement stmt = ConnectDatabase.connection.createStatement();
-			stmt.execute(Main.console.setRegexColor("INSERT INTO person () VALUES (" + pid  +"," + msid + ",1,'','',null,'','',true,null);"));
+			stmt.execute(Main.console.setRegexColor("INSERT INTO person () VALUES (" + pid  +"," + msid + ",1,'','',null,'','',true,null,null);"));
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
