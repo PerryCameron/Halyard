@@ -42,6 +42,7 @@ import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
@@ -54,6 +55,7 @@ public class BoxHistory extends HBox {
     
 	public BoxHistory(Object_MembershipList m, Object_MemLabels l) {
 		this.membership = m;
+		this.idTableView = new TableView<Object_MembershipId>();
 		this.id = FXCollections.observableArrayList(new Callback<Object_MembershipId, Observable[]>() {
 			@Override
 			public Observable[] call(Object_MembershipId param) {
@@ -91,11 +93,14 @@ public class BoxHistory extends HBox {
 		
 		vboxGrey.setId("box-grey");
 		vboxPink.setId("box-pink");
-		setId("box-blue");
+		this.setId("box-blue");
+		
+		VBox.setVgrow(idTableView, Priority.ALWAYS);
+		VBox.setVgrow(vboxPink, Priority.ALWAYS);
 		
 		Collections.sort(id, Comparator.comparing(Object_MembershipId::getFiscal_Year).reversed());
 
-		idTableView = new TableView<Object_MembershipId>();
+		
 		idTableView.setItems(id);
 		idTableView.setFixedCellSize(30);
 		idTableView.setEditable(true);

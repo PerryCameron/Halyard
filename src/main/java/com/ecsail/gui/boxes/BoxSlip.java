@@ -11,8 +11,6 @@ import com.ecsail.structures.Object_WaitList;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -24,6 +22,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -66,8 +65,9 @@ public class BoxSlip extends HBox {
 	    CheckBox wantsToSubleaseCheckBox = new CheckBox("Wants to Sublease");
 	    CheckBox wantsToReleaseCheckBox = new CheckBox("Wants to Release");
 	    CheckBox slipChangeCheckBox = new CheckBox("Slip Change");
-	    VBox vboxWait = new VBox();
-	    VBox vboxWaitFrame = new VBox();
+	    VBox vboxWaitA = new VBox();
+	    VBox vboxWaitB = new VBox();
+	    HBox vboxWaitFrame = new HBox();
 	    VBox vboxWaitOuterFrame = new VBox();
 		VBox vboxGrey = new VBox();  // this is the vbox for organizing all the widgets
 		//HBox imageHBox = new BoxSlipImage(slip.getSlipNumber());
@@ -77,14 +77,20 @@ public class BoxSlip extends HBox {
 		////////////  ATTRIBUTES //////////////////
 
 		
-		vboxWait.setSpacing(10);
-		vboxWait.setSpacing(5);
+		vboxWaitA.setSpacing(10);
+		vboxWaitA.setSpacing(5);
+		vboxWaitB.setSpacing(10);
+		vboxWaitB.setSpacing(5);
+		HBox.setHgrow(vboxWaitA, Priority.ALWAYS);
+		HBox.setHgrow(vboxWaitB, Priority.ALWAYS);
+		
 		errorHBox.setSpacing(13);
 		hbox1.setSpacing(5);
 		assignVBox.setSpacing(10);
 		
-		vboxWaitFrame.setPadding(new Insets(2,2,2,2));
-		vboxWait.setPadding(new Insets(5,5,5,5));
+		vboxWaitFrame.setPadding(new Insets(5,5,5,5));
+		vboxWaitA.setPadding(new Insets(5,5,5,5));
+		vboxWaitB.setPadding(new Insets(5,5,5,5));
 		vboxWaitOuterFrame.setPadding(new Insets(60,15,0,0));
 		errorHBox.setPadding(new Insets(5, 15, 5, 15));  // first Name
 		hbox1.setPadding(new Insets(0,15,5,15));
@@ -118,8 +124,8 @@ public class BoxSlip extends HBox {
 		vboxGrey.setId("box-grey");
 		this.setId("box-blue");
 		vboxWaitFrame.setId("box-blue");
-		vboxWait.setId("box-grey");
-		
+		vboxWaitA.setId("box-grey");
+		vboxWaitB.setId("box-grey");
 		////////////// LISTENERS //////////////////////////
 
 		/// this is for auto screen refreshing
@@ -216,19 +222,22 @@ public class BoxSlip extends HBox {
 		wantsToSubleaseCheckBox.setSelected(waitList.isWantToSublease());
 		slipChangeCheckBox.setSelected(waitList.isWantSlipChange());
 		wantsToReleaseCheckBox.setSelected(waitList.isWantsRelease());
-		/////////////  ASSIGN CHILDREN  /////////////////////
 		displaySlip();
 		addControls();
-		vboxWait.getChildren().addAll(slipWaitCheckBox,kayakWaitCheckBox
-				,shedWaitCheckBox,wantsToSubleaseCheckBox
+		
+		/////////////  ASSIGN CHILDREN  /////////////////////
+
+		vboxWaitA.getChildren().addAll(slipWaitCheckBox,kayakWaitCheckBox
+				,shedWaitCheckBox);
+		vboxWaitB.getChildren().addAll(wantsToSubleaseCheckBox
 				,wantsToReleaseCheckBox,slipChangeCheckBox);
-		vboxWaitFrame.getChildren().add(vboxWait);
+		vboxWaitFrame.getChildren().addAll(vboxWaitA,vboxWaitB);
 		vboxWaitOuterFrame.getChildren().add(vboxWaitFrame);
 		assignVBox.getChildren().addAll(r1,r2,r3,hbox3);
-		mainVBox.getChildren().addAll(hbox1,hbox2,assignVBox,vboxWaitOuterFrame); // add slip information
-		surroundVBox.getChildren().addAll(errorHBox,mainHBox);  // put this in for error messages
+		mainVBox.getChildren().addAll(hbox1,hbox2,assignVBox); // add slip information
+		surroundVBox.getChildren().addAll(errorHBox,mainHBox,vboxWaitOuterFrame);  // put this in for error messages
 		vboxGrey.getChildren().addAll(surroundVBox);
-		getChildren().addAll(vboxGrey);
+		this.getChildren().addAll(vboxGrey);
 	}
 	
 	////////////  CLASS METHODS ///////////////

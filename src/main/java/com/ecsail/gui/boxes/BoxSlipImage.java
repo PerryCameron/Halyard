@@ -18,8 +18,7 @@ public class BoxSlipImage extends HBox {
 	imageView.setPreserveRatio(true);
     imageView.setFitHeight(240);
     vboxPink.setId("box-pink");
-    vboxPink.setPadding(new Insets(4,4,4,4)); // spacing to make pink fram around table
-    //imageView.setFitWidth(200);
+    vboxPink.setPadding(new Insets(4,4,4,4)); // spacing to make pink frame around image
     setAlignment(Pos.TOP_CENTER);
     vboxPink.getChildren().add(imageView);
     vboxOuter.getChildren().add(vboxPink);

@@ -28,6 +28,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 public class BoxPaymentList extends HBox {
@@ -109,6 +110,8 @@ public class BoxPaymentList extends HBox {
 		vboxPink.setId("box-pink");
 		vboxGrey.setId("box-grey");
 		setId("box-blue");
+		VBox.setVgrow(vboxPink, Priority.ALWAYS);
+		VBox.setVgrow(fiscalTableView, Priority.ALWAYS);
 		
 		yearSpinner.setValueFactory(valueFactory);
 
