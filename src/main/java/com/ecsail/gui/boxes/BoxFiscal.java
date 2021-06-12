@@ -31,6 +31,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 public class BoxFiscal extends HBox {
@@ -48,8 +49,6 @@ public class BoxFiscal extends HBox {
 	private final TextField yscText = new TextField();
 	Object_BalanceText textFields = new Object_BalanceText();
 	
-	//private final TextField totalWorkCreditTextField = new TextField();
-	//private final TextField totalKeyTextField = new TextField();
 	private final TextField duesText;
 	private final TextField slipText = new TextField();
 	private final TextField otherText = new TextField();
@@ -136,10 +135,6 @@ public class BoxFiscal extends HBox {
 		VBox vboxYSCBox = new VBox();
 		VBox vboxInitiationBox = new VBox();
 		VBox vboxOtherBox = new VBox();
-
-		
-		
-		
 		Button addWetSlip = new Button();
 
 		//////////////// ATTRIBUTES ///////////////////
@@ -184,36 +179,35 @@ public class BoxFiscal extends HBox {
 		yscText.setPrefWidth(60);
 		otherText.setPrefWidth(60);
 		initiationText.setPrefWidth(60);
-		//totalWorkCreditTextField.setPrefWidth(60);
 		duesText.setPrefWidth(60);
 		beachSpinner.setPrefWidth(60);
 		kayakShedSpinner.setPrefWidth(60);
 		sailLoftSpinner.setPrefWidth(60);
 		sailSchoolLoftSpinner.setPrefWidth(60);
 		duesText.setStyle(disabledColor);		
-		//totalWorkCreditTextField.setStyle(disabledColor);
 		
 		vbox1.setAlignment(Pos.CENTER);
 		vbox2.setAlignment(Pos.CENTER);
+		
 		vbox1.setSpacing(5);
 		vbox2.setSpacing(5);
-		//totalWorkCreditTextField.setEditable(false);
-		//duesText.setEditable(false);
+		mainHbox.setSpacing(10);
+		
 		textFields.getPaidText().setEditable(false);
 		textFields.getCreditText().setEditable(false);
 		textFields.getTotalFeesText().setEditable(false);
 		
 		BalanceLabel.setPadding(new Insets(20, 0, 0, 0));
 		workCreditsLabel.setPadding(new Insets(20, 0, 0, 0));
-		setPadding(new Insets(5, 5, 5, 5));  // creates space for blue frame
+		this.setPadding(new Insets(5, 5, 5, 5));  // creates space for blue frame
+		vboxGrey.setPadding(new Insets(8, 5, 0, 15));
+		hboxButtonCommit.setPadding(new Insets(5, 0, 5, 170));	
 		
 		setId("box-blue");
 		vboxGrey.setId("box-grey");
-		mainHbox.setSpacing(10);
-		vboxGrey.setPadding(new Insets(8, 5, 0, 15));
-		hboxButtonCommit.setPadding(new Insets(5, 0, 5, 170));
-		vboxGrey.setPrefWidth(460);
-		
+
+		HBox.setHgrow(vboxGrey, Priority.ALWAYS);
+
 		//////////////// LISTENER //////////////////
 			
 		textFields.getBalanceText().textProperty().addListener((observable, oldValue, newValue) -> {
@@ -392,11 +386,8 @@ public class BoxFiscal extends HBox {
             	updateBalance();
             	SqlUpdate.updateMoney(fiscals.get(rowIndex));
             });
-
-        //totalWorkCredits
 		
 		//////////////// SETTING CONTENT //////////////
-		
 		
 		textFields.getCreditText().setText(fiscals.get(rowIndex).getCredit() + "");
 		textFields.getTotalFeesText().setText(fiscals.get(rowIndex).getTotal() + "");
@@ -406,8 +397,6 @@ public class BoxFiscal extends HBox {
 		yscText.setText(fiscals.get(rowIndex).getYsc_donation() + "");
 		otherText.setText(fiscals.get(rowIndex).getOther() + "");
 		initiationText.setText(fiscals.get(rowIndex).getInitiation() + "");
-		
-		//totalWorkCreditTextField.setText(countWorkCredits() + "");
 		
 		if (fiscals.get(rowIndex).isSupplemental()) {
 			duesText.setEditable(true);
@@ -513,8 +502,6 @@ public class BoxFiscal extends HBox {
 		changeState(duesText,isEditable,true);
 		changeState(otherText,isEditable,true);
 		changeState(initiationText,isEditable,true);
-		//changeState(totalWorkCreditTextField,isEditable,false);
-		//changeState(totalKeyTextField,isEditable,false);
 		changeState(slipText,isEditable,true);
 		changeState(addWetSlip,isEditable);
 		changeState(beachSpinner,isEditable);
@@ -584,12 +571,6 @@ public class BoxFiscal extends HBox {
 		int yscDonation = fiscals.get(rowIndex).getYsc_donation();
 		int other = fiscals.get(rowIndex).getOther();
 		int initiation = fiscals.get(rowIndex).getInitiation();
-		//int credit = fiscals.get(rowIndex).getCredit();  this will affect the balence on the screen
-		//System.out.println("--------------------");
-		//System.out.println(extraKey + " " + sailLoftKey + " " + kayakShedKey + " " + sailSchoolLoftKey + " " + beachSpot + " " + kayakRack
-		//		+ " " + kayakShed + " " + sailLoft + " " + sailSchoolLoft + " " + wetSlip + " " + winterStorage + " " + yscDonation 
-		//		+ " " + dues + " " + other + " " + initiation);
-		//System.out.println("--------------------");
 		return extraKey + sailLoftKey + kayakShedKey + sailSchoolLoftKey + beachSpot + kayakRack
 				+kayakShed + sailLoft + sailSchoolLoft + wetSlip + winterStorage + yscDonation 
 				+ dues + other + initiation;
