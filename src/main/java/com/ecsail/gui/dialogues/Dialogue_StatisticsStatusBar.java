@@ -27,6 +27,8 @@ public class Dialogue_StatisticsStatusBar extends Stage {
 	private int statId = 0;
 	private int startYear;
 	private int stopYear;
+	Button closeButton = new Button("Close");
+	HBox hboxButtonHold = new HBox();
 	
 	public Dialogue_StatisticsStatusBar() {
 		stopYear=Integer.parseInt(Paths.getYear());
@@ -35,8 +37,11 @@ public class Dialogue_StatisticsStatusBar extends Stage {
 		VBox vboxGrey = new VBox(); // this is the vbox for organizing all the widgets
 		VBox vboxBlue = new VBox();
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
+		
+		
 		Scene scene = new Scene(vboxBlue, 400, 200);
 		Button startButton = new Button("Start");
+		
 		
 		HBox hboxYearChoose = new HBox();
         TextField startYearTextField = new TextField();
@@ -45,16 +50,19 @@ public class Dialogue_StatisticsStatusBar extends Stage {
 
 		/////////////////// ATTRIBUTES ///////////////////
 		hboxYearChoose.setSpacing(10);
-		vboxBlue.setId("box-blue");
+		vboxGrey.setSpacing(20);
+		
 		vboxBlue.setPadding(new Insets(10, 10, 10, 10));
 		vboxPink.setPadding(new Insets(3, 3, 3, 3)); // spacing to make pink from around table
 		vboxPink.setId("box-pink");
+		vboxBlue.setId("box-blue");
 		// vboxGrey.setId("slip-box");
 		
 		pb.setPrefSize(300, 30);
 		startYearTextField.setPrefWidth(80);
 		stopYearTextField.setPrefWidth(80);
 		vboxGrey.setPrefHeight(688);
+		hboxButtonHold.setAlignment(Pos.CENTER);
 		vboxGrey.setAlignment(Pos.CENTER);
 		hboxYearChoose.setAlignment(Pos.CENTER);
 		scene.getStylesheets().add("stylesheet.css");
@@ -79,14 +87,19 @@ public class Dialogue_StatisticsStatusBar extends Stage {
             }
         });
 		
+		closeButton.setOnAction((event) -> {
+			this.close();
+		});
+		
 		startButton.setOnAction((event) -> {
 			updateStats();
 		});
 
 		//////////////// ADD CONTENT ///////////////////
+		hboxButtonHold.getChildren().add(startButton);
 		hboxYearChoose.getChildren().addAll(startYearTextField, new Label("-"), stopYearTextField);
-		vboxGrey.getChildren().addAll(new Label("Date Range:"),hboxYearChoose,pb,startButton);
-		vboxGrey.setSpacing(20);
+		vboxGrey.getChildren().addAll(new Label("Date Range:"),hboxYearChoose,pb,hboxButtonHold);
+
 		vboxBlue.getChildren().add(vboxPink);
 		vboxPink.getChildren().add(vboxGrey);
 		getIcons().add(mainIcon);
@@ -123,8 +136,8 @@ public class Dialogue_StatisticsStatusBar extends Stage {
 	    	System.out.println("Finished updating Statistics");});
 	    task.setOnFailed(e -> { System.out.println("Was unable to compile stats"); });
 	    exec.execute(task);
-	    
-
+		hboxButtonHold.getChildren().clear();
+		hboxButtonHold.getChildren().add(closeButton);
 	}
 	
 	private final Executor exec = Executors.newCachedThreadPool(runnable -> {
