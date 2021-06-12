@@ -49,7 +49,7 @@ public class BoxOfficer extends HBox {
 		///////////////// OBJECT INSTANCE ///////////////////
 		Button officerAdd = new Button("Add");
 		Button officerDelete = new Button("Delete");
-		VBox vbox1 = new VBox(); // holds officer buttons
+		VBox vboxButton = new VBox(); // holds officer buttons
 		HBox hboxGrey = new HBox(); // this is here for the grey background to make nice apperence
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
 		officerTableView = new TableView<Object_Officer>();
@@ -57,27 +57,31 @@ public class BoxOfficer extends HBox {
 		/////////////////  ATTRIBUTES  /////////////////////
 		officerAdd.setPrefWidth(60);
 		officerDelete.setPrefWidth(60);
-		hboxGrey.setPrefWidth(480);
+		vboxButton.setPrefWidth(80);
+		
+		HBox.setHgrow(hboxGrey, Priority.ALWAYS);
+		HBox.setHgrow(vboxPink, Priority.ALWAYS);
+		HBox.setHgrow(officerTableView, Priority.ALWAYS);
+		VBox.setVgrow(officerTableView, Priority.ALWAYS);
+		
 		hboxGrey.setSpacing(10);  // spacing in between table and buttons
-		vbox1.setSpacing(5);
+		vboxButton.setSpacing(5);
 		hboxGrey.setId("box-grey");
 		vboxPink.setId("box-pink");
 		hboxGrey.setPadding(new Insets(5,5,5,5));  // spacing around table and buttons
 		vboxPink.setPadding(new Insets(2,2,2,2)); // spacing to make pink fram around table
-		VBox.setVgrow(officerTableView, Priority.ALWAYS);
+		
 		this.setId("box-blue");
 		
 		///////////////// TABLE VIEW ///////////////////////
 			
 			officerTableView.setItems(officer);
-			officerTableView.setPrefWidth(320);
 			officerTableView.setFixedCellSize(30);
 			officerTableView.setEditable(true);
-			
+			officerTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY );
 			
 			TableColumn<Object_Officer, String> Col1 = createColumn("Year", Object_Officer::fiscal_yearProperty);
 			Col1.setSortType(TableColumn.SortType.DESCENDING);
-			Col1.setPrefWidth(60);
 	        Col1.setOnEditCommit(
 	                new EventHandler<CellEditEvent<Object_Officer, String>>() {
 	                    @Override
@@ -93,9 +97,7 @@ public class BoxOfficer extends HBox {
 	        
 	        ObservableList<Officer> officerList = FXCollections.observableArrayList(Officer.values());
 	    	final TableColumn<Object_Officer, Officer> Col2 = new TableColumn<Object_Officer, Officer>("Officers, Chairs and Board");
-	    	Col2.setPrefWidth(197);
 	        Col2.setCellValueFactory(new Callback<CellDataFeatures<Object_Officer, Officer>, ObservableValue<Officer>>() {
-	        	 
 	            @Override
 	            public ObservableValue<Officer> call(CellDataFeatures<Object_Officer, Officer> param) {
 	                Object_Officer thisofficer = param.getValue();
@@ -117,7 +119,6 @@ public class BoxOfficer extends HBox {
 	        });
 	        
 			TableColumn<Object_Officer, String> Col3 = createColumn("Exp", Object_Officer::board_yearProperty);
-			Col3.setPrefWidth(60);
 	        Col3.setOnEditCommit(
 	                new EventHandler<CellEditEvent<Object_Officer, String>>() {
 	                    @Override
@@ -130,6 +131,10 @@ public class BoxOfficer extends HBox {
 	                }
 	            );
 	        
+			/// sets width of columns by percentage
+			Col1.setMaxWidth( 1f * Integer.MAX_VALUE * 20);   // Phone
+			Col2.setMaxWidth( 1f * Integer.MAX_VALUE * 50 );  // Type
+			Col3.setMaxWidth( 1f * Integer.MAX_VALUE * 20 );  // Listed
 	        ////////////////////// LISTENERS /////////////////////////
 	    	    
 	        officerAdd.setOnAction(new EventHandler<ActionEvent>() {
@@ -152,12 +157,12 @@ public class BoxOfficer extends HBox {
 	        
 	        /////////////////// SET CONTENT //////////////////
 	        
-			vbox1.getChildren().addAll(officerAdd, officerDelete);
+			vboxButton.getChildren().addAll(officerAdd, officerDelete);
 			officerTableView.getColumns().addAll(Col1,Col2,Col3);
 			officerTableView.getSortOrder().addAll(Col1);
 			vboxPink.getChildren().add(officerTableView);
 			officerTableView.sort();
-			hboxGrey.getChildren().addAll(vboxPink,vbox1);
+			hboxGrey.getChildren().addAll(vboxPink,vboxButton);
 			getChildren().add(hboxGrey);
 		
 	} // CONSTRUCTOR END

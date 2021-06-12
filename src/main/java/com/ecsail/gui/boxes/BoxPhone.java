@@ -56,7 +56,7 @@ public class BoxPhone extends HBox {
 		this.phone.addAll(SqlSelect.getPhone(person.getP_id()));
 		
 		/////// OBJECT INSTANCE //////	
-		VBox vbox1 = new VBox(); // holds phone buttons
+		VBox vboxButtons = new VBox(); // holds phone buttons
 		Button phoneAdd = new Button("Add");
 		Button phoneDelete = new Button("Delete");
 		HBox hboxGrey = new HBox(); // this is here for the grey background to make nice apperence
@@ -66,8 +66,15 @@ public class BoxPhone extends HBox {
 		//// OBJECT ATTRIBUTES /////
 		phoneAdd.setPrefWidth(60);
 		phoneDelete.setPrefWidth(60);
-		vbox1.setSpacing(5); // spacing between buttons
-		hboxGrey.setPrefWidth(480);
+		vboxButtons.setPrefWidth(80);
+		vboxButtons.setSpacing(5); // spacing between buttons
+		//hboxGrey.setPrefWidth(480);
+		
+		HBox.setHgrow(hboxGrey, Priority.ALWAYS);
+		HBox.setHgrow(vboxPink, Priority.ALWAYS);
+		HBox.setHgrow(phoneTableView, Priority.ALWAYS);
+		VBox.setVgrow(phoneTableView, Priority.ALWAYS);
+		
 		hboxGrey.setSpacing(10);  // spacing in between table and buttons
 		hboxGrey.setId("box-grey");
 		vboxPink.setId("box-pink");
@@ -78,10 +85,9 @@ public class BoxPhone extends HBox {
 		///// TABLEVIE INSTANCE CREATION AND ATTRIBUTES /////
 		
 		phoneTableView.setItems(phone);
-		phoneTableView.setPrefWidth(320);
-		//phoneTableView.setPrefHeight(140);
 		phoneTableView.setFixedCellSize(30);
 		phoneTableView.setEditable(true);
+		phoneTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY );
 			
 		// example for this column found at https://gist.github.com/james-d/be5bbd6255a4640a5357#file-editcell-java-L109
 		TableColumn<Object_Phone, String> Col1 = createColumn("Phone", Object_Phone::phoneNumberProperty);
@@ -158,6 +164,12 @@ public class BoxPhone extends HBox {
 	            }
 	        });
 		
+		/// sets width of columns by percentage
+		Col1.setMaxWidth( 1f * Integer.MAX_VALUE * 50);   // Phone
+		Col2.setMaxWidth( 1f * Integer.MAX_VALUE * 30 );  // Type
+		Col3.setMaxWidth( 1f * Integer.MAX_VALUE * 20 );  // Listed
+
+		
 		/////////////////// LISTENERS //////////////////////////////
 		
 		phoneAdd.setOnAction(new EventHandler<ActionEvent>() {
@@ -183,8 +195,8 @@ public class BoxPhone extends HBox {
 		
 		phoneTableView.getColumns().addAll(Arrays.asList(Col1,Col2,Col3));
 		vboxPink.getChildren().add(phoneTableView);  // adds pink border around table
-		vbox1.getChildren().addAll(phoneAdd, phoneDelete); // lines buttons up vertically
-		hboxGrey.getChildren().addAll(vboxPink,vbox1);
+		vboxButtons.getChildren().addAll(phoneAdd, phoneDelete); // lines buttons up vertically
+		hboxGrey.getChildren().addAll(vboxPink,vboxButtons);
 		getChildren().add(hboxGrey);
 		
 	}  // end of constructor

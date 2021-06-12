@@ -29,6 +29,7 @@ import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TablePosition;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
@@ -48,34 +49,41 @@ public class BoxAward extends HBox {
 		///////////////// OBJECT INSTANCE ///////////////////
 		Button awardAdd = new Button("Add");
 		Button awardDelete = new Button("Delete");
-		VBox vbox1 = new VBox(); // holds officer buttons
+		VBox vboxButtons = new VBox(); // holds officer buttons
 		HBox hboxGrey = new HBox(); // this is here for the grey background to make nice apperence
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
+		awardTableView = new TableView<Object_Award>();
 
 		/////////////////  ATTRIBUTES  /////////////////////
 		awardAdd.setPrefWidth(60);
 		awardDelete.setPrefWidth(60);
-		hboxGrey.setPrefWidth(480);
+		vboxButtons.setPrefWidth(80);
+		
+		HBox.setHgrow(hboxGrey, Priority.ALWAYS);
+		HBox.setHgrow(vboxPink, Priority.ALWAYS);
+		HBox.setHgrow(awardTableView, Priority.ALWAYS);
+		VBox.setVgrow(awardTableView, Priority.ALWAYS);
+		
 		hboxGrey.setSpacing(10);  // spacing in between table and buttons
-		vbox1.setSpacing(5);
+		vboxButtons.setSpacing(5);
+		
 		hboxGrey.setId("box-grey");
 		vboxPink.setId("box-pink");
+		this.setId("box-blue");
+		
 		hboxGrey.setPadding(new Insets(5,5,5,5));  // spacing around table and buttons
 		vboxPink.setPadding(new Insets(2,2,2,2)); // spacing to make pink fram around table
-		setId("box-blue");
 		
 		///////////////// TABLE VIEW ///////////////////////
-			awardTableView = new TableView<Object_Award>();
+
 			awardTableView.setItems(award);
-			awardTableView.setPrefWidth(320);
-			awardTableView.setPrefHeight(140);
 			awardTableView.setFixedCellSize(30);
 			awardTableView.setEditable(true);
+			awardTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY );
 			
 			
 			TableColumn<Object_Award, String> Col1 = createColumn("Year", Object_Award::awardYearProperty);
 			Col1.setSortType(TableColumn.SortType.DESCENDING);
-			Col1.setPrefWidth(60);
 	        Col1.setOnEditCommit(
 	                new EventHandler<CellEditEvent<Object_Award, String>>() {
 	                    @Override
@@ -91,7 +99,6 @@ public class BoxAward extends HBox {
 	        
 	        ObservableList<Awards> awardsList = FXCollections.observableArrayList(Awards.values());
 	    	final TableColumn<Object_Award, Awards> Col2 = new TableColumn<Object_Award, Awards>("Award Type");
-	    	Col2.setPrefWidth(320 - 60);
 	        Col2.setCellValueFactory(new Callback<CellDataFeatures<Object_Award, Awards>, ObservableValue<Awards>>() {
 	        	 
 	            @Override
@@ -113,6 +120,10 @@ public class BoxAward extends HBox {
 	            SqlUpdate.updateAward("award_type",thisAward.getAwardId(), newAward.getCode());
 	            thisAward.setAwardType(newAward.getCode());
 	        });
+	        
+			/// sets width of columns by percentage
+			Col1.setMaxWidth( 1f * Integer.MAX_VALUE * 20);   // Phone
+			Col2.setMaxWidth( 1f * Integer.MAX_VALUE * 50 );  // Type
 	        
 	        
 	        ////////////////////// LISTENERS /////////////////////////
@@ -136,12 +147,12 @@ public class BoxAward extends HBox {
 	        
 	        /////////////////// SET CONTENT //////////////////
 	        
-			vbox1.getChildren().addAll(awardAdd, awardDelete);
+			vboxButtons.getChildren().addAll(awardAdd, awardDelete);
 			awardTableView.getColumns().addAll(Col1,Col2);
 			awardTableView.getSortOrder().addAll(Col1);
 			vboxPink.getChildren().add(awardTableView);
 			awardTableView.sort();
-			hboxGrey.getChildren().addAll(vboxPink,vbox1);
+			hboxGrey.getChildren().addAll(vboxPink,vboxButtons);
 			getChildren().add(hboxGrey);
 		
 	} // CONSTRUCTOR END

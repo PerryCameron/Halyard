@@ -54,7 +54,7 @@ public class BoxEmail extends HBox {
 		
 		Button emailAdd = new Button("Add");
 		Button emailDelete = new Button("Delete");
-		VBox vbox1 = new VBox(); // holds email buttons
+		VBox vboxButtons = new VBox(); // holds email buttons
 		HBox hboxGrey = new HBox(); // this is here for the grey background to make nice apperence
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
 		emailTableView = new TableView<Object_Email>();
@@ -62,24 +62,31 @@ public class BoxEmail extends HBox {
 		/////////////////  ATTRIBUTES  /////////////////////
 		emailAdd.setPrefWidth(60);
 		emailDelete.setPrefWidth(60);
-		hboxGrey.setPrefWidth(480);
+		vboxButtons.setPrefWidth(80);
+
+		HBox.setHgrow(hboxGrey, Priority.ALWAYS);
+		HBox.setHgrow(vboxPink, Priority.ALWAYS);
+		HBox.setHgrow(emailTableView, Priority.ALWAYS);
+		VBox.setVgrow(emailTableView, Priority.ALWAYS);
+		
 		hboxGrey.setSpacing(10);  // spacing in between table and buttons
-		vbox1.setSpacing(5);
+		vboxButtons.setSpacing(5);
+		
 		hboxGrey.setId("box-grey");
 		vboxPink.setId("box-pink");
+		this.setId("box-blue");		
+		
 		hboxGrey.setPadding(new Insets(5,5,5,5));  // spacing around table and buttons
 		vboxPink.setPadding(new Insets(2,2,2,2)); // spacing to make pink fram around table
-		VBox.setVgrow(emailTableView, Priority.ALWAYS);
-		this.setId("box-blue");
+
 		
 		///////////////// TABLE VIEW ///////////////////////
 		
 			
 			emailTableView.setItems(email);
-			emailTableView.setPrefWidth(320);
-			emailTableView.setPrefHeight(140);
 			emailTableView.setFixedCellSize(30);
 			emailTableView.setEditable(true);
+			emailTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY );
 			
 			TableColumn<Object_Email, String> Col1 = createColumn("Email", Object_Email::emailProperty);	
 			Col1.setPrefWidth(137);
@@ -96,7 +103,6 @@ public class BoxEmail extends HBox {
 			
 			// example for this column found at https://o7planning.org/en/11079/javafx-tableview-tutorial
 			TableColumn<Object_Email, Boolean> Col2 = new TableColumn<Object_Email, Boolean>("Primary");
-			Col2.setPrefWidth(90);
 			Col2.setCellValueFactory(new Callback<CellDataFeatures<Object_Email, Boolean>, ObservableValue<Boolean>>() {
 	            @Override
 	            public ObservableValue<Boolean> call(CellDataFeatures<Object_Email, Boolean> param) {
@@ -131,7 +137,6 @@ public class BoxEmail extends HBox {
 			
 			// example for this column found at https://o7planning.org/en/11079/javafx-tableview-tutorial
 			TableColumn<Object_Email, Boolean> Col3 = new TableColumn<Object_Email, Boolean>("Listed");
-			Col3.setPrefWidth(90);
 			Col3.setCellValueFactory(new Callback<CellDataFeatures<Object_Email, Boolean>, ObservableValue<Boolean>>() {
 	            @Override
 	            public ObservableValue<Boolean> call(CellDataFeatures<Object_Email, Boolean> param) {
@@ -164,6 +169,11 @@ public class BoxEmail extends HBox {
 	            }
 	        });
 			
+			/// sets width of columns by percentage
+			Col1.setMaxWidth( 1f * Integer.MAX_VALUE * 50);   // Phone
+			Col2.setMaxWidth( 1f * Integer.MAX_VALUE * 25 );  // Type
+			Col3.setMaxWidth( 1f * Integer.MAX_VALUE * 25 );  // Listed
+			
 			/////////////////  LISTENERS ////////////////////////
 
 	        emailAdd.setOnAction((event) -> {
@@ -182,10 +192,10 @@ public class BoxEmail extends HBox {
 	        
 	        ///////////////////  SET CONTENT ////////////////////
 	        
-			vbox1.getChildren().addAll(emailAdd, emailDelete);
+			vboxButtons.getChildren().addAll(emailAdd, emailDelete);
 			emailTableView.getColumns().addAll(Col1,Col2,Col3);
 			vboxPink.getChildren().add(emailTableView);
-			hboxGrey.getChildren().addAll(vboxPink,vbox1);
+			hboxGrey.getChildren().addAll(vboxPink,vboxButtons);
 			getChildren().add(hboxGrey);
 		
 	} // CONSTRUCTOR END

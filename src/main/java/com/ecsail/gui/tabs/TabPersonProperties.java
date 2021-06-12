@@ -20,6 +20,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 public class TabPersonProperties extends Tab {
@@ -73,7 +74,9 @@ public class TabPersonProperties extends Tab {
 		hboxMain.setSpacing(5);
 		hboxMain.setId("box-blue");
         activeCheckBox.setSelected(person.isActive());
-		hboxGrey.setPrefWidth(480);
+		
+        HBox.setHgrow(hboxGrey, Priority.ALWAYS);
+        
 		hboxGrey.setSpacing(10);  // spacing in between table and buttons
 		//hbox1.setSpacing(5);
 		//hbox1.setAlignment(Pos.CENTER_LEFT);
