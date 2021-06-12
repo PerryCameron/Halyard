@@ -91,7 +91,6 @@ public class BoxPhone extends HBox {
 			
 		// example for this column found at https://gist.github.com/james-d/be5bbd6255a4640a5357#file-editcell-java-L109
 		TableColumn<Object_Phone, String> Col1 = createColumn("Phone", Object_Phone::phoneNumberProperty);
-		Col1.setPrefWidth(137);
         Col1.setOnEditCommit(
                 new EventHandler<CellEditEvent<Object_Phone, String>>() {
                     @Override
@@ -108,7 +107,6 @@ public class BoxPhone extends HBox {
         // example for this column found at https://o7planning.org/en/11079/javafx-tableview-tutorial
         ObservableList<PhoneType> phoneTypeList = FXCollections.observableArrayList(PhoneType.values());
 		TableColumn<Object_Phone, PhoneType> Col2 = new TableColumn<Object_Phone, PhoneType>("Type");
-		Col2.setPrefWidth(90);
 		Col2.setCellValueFactory(new Callback<CellDataFeatures<Object_Phone, PhoneType>, ObservableValue<PhoneType>>() {
         	 
             @Override
@@ -133,7 +131,6 @@ public class BoxPhone extends HBox {
 		
 		// example for this column found at https://o7planning.org/en/11079/javafx-tableview-tutorial
 		TableColumn<Object_Phone, Boolean> Col3 = new TableColumn<Object_Phone, Boolean>("Listed");
-		Col3.setPrefWidth(90);
 		Col3.setCellValueFactory(new Callback<CellDataFeatures<Object_Phone, Boolean>, ObservableValue<Boolean>>() {
 	            @Override
 	            public ObservableValue<Boolean> call(CellDataFeatures<Object_Phone, Boolean> param) {

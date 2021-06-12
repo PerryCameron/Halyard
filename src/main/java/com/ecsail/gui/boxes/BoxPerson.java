@@ -59,12 +59,12 @@ public class BoxPerson extends HBox {
 		HBox hboxMemberInfoAndPicture = new HBox();
 		HBox hboxPictureFrame = new HBox();
 		
-		HBox hbox1 = new HBox(); // first name
-		HBox hbox2 = new HBox(); // last name
-		HBox hbox2b = new HBox();
-		HBox hbox3 = new HBox(); // Occupation
-		HBox hbox4 = new HBox(); // Business
-		HBox hbox5 = new HBox(); // Birthday
+		HBox hboxFirstName = new HBox(); // first name
+		HBox hboxLastName = new HBox(); // last name
+		HBox hboxNickName = new HBox(); // nick name
+		HBox hboxOccupation = new HBox(); // Occupation
+		HBox hboxBusiness = new HBox(); // Business
+		HBox hboxBirthday = new HBox(); // Birthday
 		
 		VBox vbLnameLabel = new VBox();
 		VBox vbFnameLabel = new VBox();
@@ -79,10 +79,10 @@ public class BoxPerson extends HBox {
 		VBox vbBuisnessBox = new VBox();
 		VBox vbBirthdayBox = new VBox();
 		
-		HBox hbox6 = new BoxPhone(person); // Phone
-		HBox hbox7 = new BoxEmail(person); // Email
-		HBox hbox8 = new BoxOfficer(person); // Officer
-		HBox hbox9 = new BoxAward(person);
+		HBox hboxPhone = new BoxPhone(person); // Phone
+		HBox hboxEmail = new BoxEmail(person); // Email
+		HBox hboxOfficer = new BoxOfficer(person); // Officer
+		HBox hboxAward = new BoxAward(person);
 
 		Label fnameLabel = new Label("First Name");
 		Label lnameLabel = new Label("Last Name");
@@ -100,7 +100,6 @@ public class BoxPerson extends HBox {
 		
 		///////////////  ATTRIBUTES ////////////////
 		
-		//vboxPicture.setStyle("-fx-background-color: #201ac9;");  // blue
 		infoTabPane.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
 		fnameTextField.setPrefSize(150, 10);
 		lnameTextField.setPrefSize(150, 10);
@@ -108,9 +107,7 @@ public class BoxPerson extends HBox {
 		occupationTextField.setPrefSize(150, 10);
 		nnameTextField.setPrefSize(150, 10);
 		birthdayDatePicker.setPrefSize(150, 10);
-		//this.setPrefWidth(472);
-		//this.setPrefHeight(600);
-		//this.setPrefHeight(620);
+
 		vbLnameLabel.setPrefWidth(75);
 		vbFnameLabel.setPrefWidth(75);
 		vbNnameLabel.setPrefWidth(75);
@@ -119,16 +116,16 @@ public class BoxPerson extends HBox {
 		vbBirthdayLabel.setPrefWidth(75);
 		hboxPictureFrame.setPrefSize(196, 226);
 		
-		hbox1.setAlignment(Pos.CENTER_LEFT);
-		hbox2.setAlignment(Pos.CENTER_LEFT);
-		hbox2b.setAlignment(Pos.CENTER_LEFT);
-		hbox3.setAlignment(Pos.CENTER_LEFT);
-		hbox4.setAlignment(Pos.CENTER_LEFT);
+		hboxFirstName.setAlignment(Pos.CENTER_LEFT);
+		hboxLastName.setAlignment(Pos.CENTER_LEFT);
+		hboxNickName.setAlignment(Pos.CENTER_LEFT);
+		hboxOccupation.setAlignment(Pos.CENTER_LEFT);
+		hboxBusiness.setAlignment(Pos.CENTER_LEFT);
 		hboxTitle.setAlignment(Pos.TOP_RIGHT);
-		hbox6.setAlignment(Pos.CENTER);
-		hbox7.setAlignment(Pos.CENTER);
-		hbox8.setAlignment(Pos.CENTER);
-		hbox9.setAlignment(Pos.CENTER);
+		hboxPhone.setAlignment(Pos.CENTER);
+		hboxEmail.setAlignment(Pos.CENTER);
+		hboxOfficer.setAlignment(Pos.CENTER);
+		hboxAward.setAlignment(Pos.CENTER);
 		vbLnameLabel.setAlignment(Pos.CENTER_LEFT);
 		vbFnameLabel.setAlignment(Pos.CENTER_LEFT);
 		vbNnameLabel.setAlignment(Pos.CENTER_LEFT);
@@ -138,31 +135,33 @@ public class BoxPerson extends HBox {
 		
 		
 		hboxTitle.setPadding(new Insets(9, 5, 0, 0));
-		hbox1.setPadding(new Insets(7, 5, 5, 15));  // first Name
-		hbox2.setPadding(new Insets(7, 5, 5, 15));  // last name
-		hbox2b.setPadding(new Insets(7, 5, 5, 15)); // Nickname
-		hbox3.setPadding(new Insets(7, 5, 5, 15));  // occupation
-		hbox4.setPadding(new Insets(7, 5, 5, 15));  // business
-		hbox5.setPadding(new Insets(7, 5, 5, 15));
-		hbox6.setPadding(new Insets(5, 5, 5, 5));
-		hbox7.setPadding(new Insets(5, 5, 5, 5));
-		hbox8.setPadding(new Insets(5, 5, 5, 5));
-		hbox9.setPadding(new Insets(5, 5, 5, 5));
+		hboxFirstName.setPadding(new Insets(7, 5, 5, 15));  // first Name
+		hboxLastName.setPadding(new Insets(7, 5, 5, 15));  // last name
+		hboxNickName.setPadding(new Insets(7, 5, 5, 15)); // Nickname
+		hboxOccupation.setPadding(new Insets(7, 5, 5, 15));  // occupation
+		hboxBusiness.setPadding(new Insets(7, 5, 5, 15));  // business
+		hboxBirthday.setPadding(new Insets(7, 5, 5, 15));
+		hboxPhone.setPadding(new Insets(5, 5, 5, 5));
+		hboxEmail.setPadding(new Insets(5, 5, 5, 5));
+		hboxOfficer.setPadding(new Insets(5, 5, 5, 5));
+		hboxAward.setPadding(new Insets(5, 5, 5, 5));
 		hboxPictureFrame.setPadding(new Insets(2, 2, 2, 2));
 		vboxPicture.setPadding(new Insets(12, 5, 0, 7));
 		vboxInfoGrey.setPadding(new Insets(10, 5, 5, 5)); // creates space for inner tabpane
 		this.setPadding(new Insets(5, 5, 5, 5));  // creates space for blue frame
+		
 		VBox.setVgrow(vboxInfoGrey, Priority.ALWAYS);
 		VBox.setVgrow(infoTabPane, Priority.ALWAYS);
-		hbox6.setSpacing(5);
-		hbox7.setSpacing(5);
-		hbox8.setSpacing(5);
-		hbox9.setSpacing(5);
 		
-		hbox6.setId("box-blue");
-		hbox7.setId("box-blue");
-		hbox8.setId("box-blue");
-		hbox9.setId("box-blue");
+		hboxPhone.setSpacing(5);
+		hboxEmail.setSpacing(5);
+		hboxOfficer.setSpacing(5);
+		hboxAward.setSpacing(5);
+		
+		hboxPhone.setId("box-blue");
+		hboxEmail.setId("box-blue");
+		hboxOfficer.setId("box-blue");
+		hboxAward.setId("box-blue");
 		hboxPictureFrame.setId("box-blue");
 		this.setId("box-blue");
 		vboxGrey.setId("box-grey");
@@ -253,7 +252,7 @@ public class BoxPerson extends HBox {
 		
 		/////////////// SETTING CONTENT /////////////////////
 		
-		vboxMemberInfo.getChildren().addAll(hboxTitle, hbox1, hbox2, hbox2b, hbox3, hbox4, hbox5);
+		vboxMemberInfo.getChildren().addAll(hboxTitle, hboxFirstName, hboxLastName, hboxNickName, hboxOccupation, hboxBusiness, hboxBirthday);
 		hboxMemberInfoAndPicture.getChildren().addAll(vboxMemberInfo,vboxPicture);
 		hboxPictureFrame.getChildren().add(photo);
 		vboxPicture.getChildren().add(hboxPictureFrame);
@@ -262,11 +261,11 @@ public class BoxPerson extends HBox {
 		businessTextField.setText(person.getBuisness());
 		occupationTextField.setText(person.getOccupation());
 		nnameTextField.setText(person.getNname());
-		infoTabPane.getTabs().add(new Tab("Phone", hbox6));
-		infoTabPane.getTabs().add(new Tab("Email", hbox7));
-		infoTabPane.getTabs().add(new Tab("Officer", hbox8));
+		infoTabPane.getTabs().add(new Tab("Phone", hboxPhone));
+		infoTabPane.getTabs().add(new Tab("Email", hboxEmail));
+		infoTabPane.getTabs().add(new Tab("Officer", hboxOfficer));
 		infoTabPane.getTabs().add(new TabPersonProperties(p, people, personTabPane));
-		infoTabPane.getTabs().add(new Tab("Awards", hbox9));
+		infoTabPane.getTabs().add(new Tab("Awards", hboxAward));
 		vboxInfoGrey.getChildren().add(infoTabPane);
 		vbLnameLabel.getChildren().add(lnameLabel);
 		vbFnameLabel.getChildren().add(fnameLabel);
@@ -280,12 +279,12 @@ public class BoxPerson extends HBox {
 		vbOccupationBox.getChildren().add(occupationTextField);
 		vbBuisnessBox.getChildren().add(businessTextField);
 		vbBirthdayBox.getChildren().add(birthdayDatePicker);
-		hbox1.getChildren().addAll(vbFnameLabel,vbFnameBox);
-		hbox2.getChildren().addAll(vbLnameLabel,vbLnameBox);
-		hbox2b.getChildren().addAll(vbNnameLabel, vbNnameBox);
-		hbox3.getChildren().addAll(vbOccupationLabel,vbOccupationBox);
-		hbox4.getChildren().addAll(vbBuisnessLabel,vbBuisnessBox);
-		hbox5.getChildren().addAll(vbBirthdayLabel,vbBirthdayBox);
+		hboxFirstName.getChildren().addAll(vbFnameLabel,vbFnameBox);
+		hboxLastName.getChildren().addAll(vbLnameLabel,vbLnameBox);
+		hboxNickName.getChildren().addAll(vbNnameLabel, vbNnameBox);
+		hboxOccupation.getChildren().addAll(vbOccupationLabel,vbOccupationBox);
+		hboxBusiness.getChildren().addAll(vbBuisnessLabel,vbBuisnessBox);
+		hboxBirthday.getChildren().addAll(vbBirthdayLabel,vbBirthdayBox);
 		vboxGrey.getChildren().addAll(hboxMemberInfoAndPicture, vboxInfoGrey);
 		this.getChildren().add(vboxGrey);
 	} // constructor end
