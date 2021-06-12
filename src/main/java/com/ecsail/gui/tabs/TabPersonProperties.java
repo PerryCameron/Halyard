@@ -32,16 +32,38 @@ public class TabPersonProperties extends Tab {
 		this.person = p;
 		this.people = pe;
 		this.isDeleted = new Object_Boolean(false);
+		
 		//////////// OBJECTS /////////////////
 		HBox hboxMain = new HBox();
 		VBox vbox1 = new VBox(); // holds all content
-		//HBox hbox1 = new HBox(); // holds remove member features
 		HBox hboxGrey = new HBox(); // this is here for the grey background to make nice apperence
 		HBox hboxMemberType = new HBox();
 		HBox hboxDelete = new HBox();
 		Button delButton = new Button("Delete");
 		CheckBox activeCheckBox = new CheckBox("Is Active");
 		ComboBox<MemberType> combo_box = new ComboBox<MemberType>();
+		
+		/////////////////  ATTRIBUTES  /////////////////////
+		
+        activeCheckBox.setSelected(person.isActive());
+		
+        HBox.setHgrow(hboxGrey, Priority.ALWAYS);
+		hboxMain.setId("box-blue");
+		hboxGrey.setId("box-grey");
+		combo_box.setValue(MemberType.getByCode(person.getMemberType()));
+		
+		hboxGrey.setPadding(new Insets(5,5,5,5));  // spacing around table and buttons
+		hboxMain.setPadding(new Insets(5, 5, 5, 5));
+		
+		hboxMain.setSpacing(5);
+		vbox1.setSpacing(5);
+		hboxDelete.setSpacing(5);
+		hboxMemberType.setSpacing(5);
+		hboxGrey.setSpacing(10);  // spacing in between table and buttons
+		
+		hboxMain.setAlignment(Pos.CENTER);
+		hboxDelete.setAlignment(Pos.CENTER_LEFT);
+		hboxMemberType.setAlignment(Pos.CENTER_LEFT);
 		
 		//////////  LISTENERS /////
 		
@@ -67,28 +89,6 @@ public class TabPersonProperties extends Tab {
         	if(people != null)  // this updates the people list if in people mode
     			people.remove(people.get(TabPeople.getIndexByPid(person.getP_id())));
 		});
-		
-		/////////////////  ATTRIBUTES  /////////////////////
-		hboxMain.setPadding(new Insets(5, 5, 5, 5));
-		hboxMain.setAlignment(Pos.CENTER);
-		hboxMain.setSpacing(5);
-		hboxMain.setId("box-blue");
-        activeCheckBox.setSelected(person.isActive());
-		
-        HBox.setHgrow(hboxGrey, Priority.ALWAYS);
-        
-		hboxGrey.setSpacing(10);  // spacing in between table and buttons
-		//hbox1.setSpacing(5);
-		//hbox1.setAlignment(Pos.CENTER_LEFT);
-		vbox1.setSpacing(5);
-		hboxGrey.setId("box-grey");
-		combo_box.setValue(MemberType.getByCode(person.getMemberType()));
-		hboxGrey.setPadding(new Insets(5,5,5,5));  // spacing around table and buttons
-		//hbox1.setPadding(new Insets(25, 0, 0, 15));
-		hboxDelete.setSpacing(5);
-		hboxDelete.setAlignment(Pos.CENTER_LEFT);
-		hboxMemberType.setSpacing(5);
-		hboxMemberType.setAlignment(Pos.CENTER_LEFT);
 		
 		//////////////// SET  CONTENT ////////////////
 		combo_box.getItems().setAll(MemberType.values());
