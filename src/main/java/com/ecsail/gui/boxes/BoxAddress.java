@@ -14,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 public class BoxAddress extends HBox {
@@ -90,9 +91,10 @@ public class BoxAddress extends HBox {
         smemAddressTextField.setPrefWidth(300);
         memCityTextField.setPrefWidth(180);
         smemCityTextField.setPrefWidth(180);
-        titledPane1.setPrefWidth(940);
-		titledPane2.setPrefWidth(940);
-		hboxGrey.setPrefWidth(942);
+	
+		HBox.setHgrow(hboxGrey, Priority.ALWAYS);
+		HBox.setHgrow(titledPane1, Priority.ALWAYS);
+		HBox.setHgrow(titledPane2, Priority.ALWAYS);
 		
         primaryHBox.setPadding(new Insets(5,0,5,20));
         secondaryHBox.setPadding(new Insets(5,0,5,20));

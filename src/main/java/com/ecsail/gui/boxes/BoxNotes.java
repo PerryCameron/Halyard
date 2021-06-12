@@ -41,8 +41,11 @@ public class BoxNotes extends HBox {
 		/////////////  ATTRIBUTES /////////////
 		add.setPrefWidth(60);
 		delete.setPrefWidth(60);
-		hboxGrey.setPrefWidth(942);
-		//memoTableView.setPrefWidth(850);
+
+		HBox.setHgrow(hboxGrey, Priority.ALWAYS);
+		HBox.setHgrow(vboxPink, Priority.ALWAYS);
+		HBox.setHgrow(memoTableView, Priority.ALWAYS);
+		VBox.setVgrow(memoTableView, Priority.ALWAYS);
 		
 		buttonVBox.setSpacing(5);
 		hboxGrey.setSpacing(10);
@@ -56,13 +59,8 @@ public class BoxNotes extends HBox {
 		this.setId("box-blue");
 		memoTableView.setEditable(true);
 		memoTableView.setItems(note.getMemos());
-		//memoTableView.setPrefHeight(140);
-		//memoTableView.setMaxHeight(500);
+		memoTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY );
 		memoTableView.setFixedCellSize(30);
-		memoTableView.minWidthProperty().bind(vboxPink.prefWidthProperty());
-		memoTableView.maxWidthProperty().bind(vboxPink.prefWidthProperty());
-		//memoTableView.prefHeightProperty().bind(vboxPink.heightProperty());
-		VBox.setVgrow(memoTableView, Priority.ALWAYS);
 
 		TableColumn<Object_Memo, String> Col1 = createColumn("Date", Object_Memo::memo_dateProperty);
         Col1.setOnEditCommit(
@@ -94,6 +92,11 @@ public class BoxNotes extends HBox {
                     }
                 }
             );
+        
+		/// sets width of columns by percentage
+		Col1.setMaxWidth( 1f * Integer.MAX_VALUE * 10 );   // Date
+		Col2.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );    // Type
+		Col3.setMaxWidth( 1f * Integer.MAX_VALUE * 85 );   // Note
 
         ////////////////  LISTENERS ///////////////////
         vboxPink.heightProperty().addListener((obs, oldVal, newVal) -> {

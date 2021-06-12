@@ -21,6 +21,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 ///  this class is for the properties tab in membership view
@@ -60,7 +61,7 @@ public class BoxProperties extends HBox {
 		hboxGrey.setPadding(new Insets(5, 5, 5, 10));
 		this.setPadding(new Insets(5, 5, 5, 5));  // creates space for blue frame
 		
-		hboxGrey.setPrefWidth(942);
+		HBox.setHgrow(hboxGrey, Priority.ALWAYS);
 		
 		this.setId("box-blue");
 		hboxGrey.setId("box-grey");

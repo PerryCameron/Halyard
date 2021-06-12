@@ -137,14 +137,12 @@ public class TabRoster extends Tab {
 		VBox.setVgrow(vboxBlue, Priority.ALWAYS);
 		VBox.setVgrow(vboxPink, Priority.ALWAYS);
 		VBox.setVgrow(vboxTableBox, Priority.ALWAYS);
-		vboxTableBox.setStyle("-fx-background-color: #4d6955;");  //green
+		VBox.setVgrow(rosterTableView, Priority.ALWAYS);
+		HBox.setHgrow(rosterTableView, Priority.ALWAYS);
 
 		setOnClosed(null);
 		rosterTableView.setItems(rosters);
 		rosterTableView.setFixedCellSize(30);
-		rosterTableView.setPrefHeight(1200);
-		rosterTableView.minWidthProperty().bind(vboxTableBox.prefWidthProperty());
-		rosterTableView.maxWidthProperty().bind(vboxTableBox.prefWidthProperty());
 		rosterTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY );
 
 		Col1.setCellValueFactory(new PropertyValueFactory<Object_MembershipList, Integer>("membershipId"));

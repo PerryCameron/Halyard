@@ -285,17 +285,17 @@ private TableView<Object_Boat> boatTableView;
     });
 	
 	/// sets width of columns by percentage
-	col1.setMaxWidth( 1f * Integer.MAX_VALUE * 15 );   // Mem 5%
-	col2.setMaxWidth( 1f * Integer.MAX_VALUE * 10 );  // Join Date 15%
-	col3.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );   // Type
-	col4.setMaxWidth( 1f * Integer.MAX_VALUE * 15 );   // Slip
-	col5.setMaxWidth( 1f * Integer.MAX_VALUE * 10 );   // First Name
-	col6.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );  // Last Name
-	col7.setMaxWidth( 1f * Integer.MAX_VALUE * 10 );  // Address
-	col8.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );  // City
-	col9.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );  // State
-	col10.setMaxWidth( 1f * Integer.MAX_VALUE * 10 ); // Zip
-	col11.setMaxWidth( 1f * Integer.MAX_VALUE * 10 ); // MSID
+	col1.setMaxWidth( 1f * Integer.MAX_VALUE * 15 );  // Boat Name
+	col2.setMaxWidth( 1f * Integer.MAX_VALUE * 10 );  // Manufacturer
+	col3.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );   // Year
+	col4.setMaxWidth( 1f * Integer.MAX_VALUE * 20 );  // Model
+	col5.setMaxWidth( 1f * Integer.MAX_VALUE * 10 );  // Registration
+	col6.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );   // Sail #
+	col7.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );  // PHRF
+	col8.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );   // Length
+	col9.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );   // Weight
+	col10.setMaxWidth( 1f * Integer.MAX_VALUE * 5 ); // Trailer
+	col11.setMaxWidth( 1f * Integer.MAX_VALUE * 15 ); // Keel
 	/////////////// LISTENERS ////////////////////
     
     boatAdd.setOnAction((event) -> {

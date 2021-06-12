@@ -5,6 +5,7 @@ import com.ecsail.structures.Object_Membership;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 public class BoxAttachment extends HBox {
@@ -24,7 +25,7 @@ public class BoxAttachment extends HBox {
 		hboxGrey.setPadding(new Insets(5, 5, 5, 5));
 		this.setPadding(new Insets(5, 5, 5, 5));  // creates space for blue frame
 		
-		hboxGrey.setPrefWidth(942);
+		HBox.setHgrow(hboxGrey, Priority.ALWAYS);
 		mainVBox.setSpacing(5);
 		
 		//vboxPink.setPadding(new Insets(2,2,2,2)); // spacing to make pink fram around table
