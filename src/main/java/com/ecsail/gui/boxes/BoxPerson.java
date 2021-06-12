@@ -27,6 +27,7 @@ import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 
@@ -108,6 +109,8 @@ public class BoxPerson extends HBox {
 		nnameTextField.setPrefSize(150, 10);
 		birthdayDatePicker.setPrefSize(150, 10);
 		this.setPrefWidth(472);
+		//this.setPrefHeight(600);
+		this.setPrefHeight(620);
 		vbLnameLabel.setPrefWidth(75);
 		vbFnameLabel.setPrefWidth(75);
 		vbNnameLabel.setPrefWidth(75);
@@ -149,7 +152,8 @@ public class BoxPerson extends HBox {
 		vboxPicture.setPadding(new Insets(12, 5, 0, 7));
 		vboxInfoGrey.setPadding(new Insets(10, 5, 5, 5)); // creates space for inner tabpane
 		this.setPadding(new Insets(5, 5, 5, 5));  // creates space for blue frame
-		
+		VBox.setVgrow(vboxInfoGrey, Priority.ALWAYS);
+		VBox.setVgrow(infoTabPane, Priority.ALWAYS);
 		hbox6.setSpacing(5);
 		hbox7.setSpacing(5);
 		hbox8.setSpacing(5);

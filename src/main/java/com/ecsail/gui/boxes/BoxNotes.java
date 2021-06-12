@@ -15,11 +15,13 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.Control;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 public class BoxNotes extends HBox {
@@ -40,7 +42,7 @@ public class BoxNotes extends HBox {
 		add.setPrefWidth(60);
 		delete.setPrefWidth(60);
 		hboxGrey.setPrefWidth(942);
-		memoTableView.setPrefWidth(850);
+		//memoTableView.setPrefWidth(850);
 		
 		buttonVBox.setSpacing(5);
 		hboxGrey.setSpacing(10);
@@ -54,8 +56,13 @@ public class BoxNotes extends HBox {
 		this.setId("box-blue");
 		memoTableView.setEditable(true);
 		memoTableView.setItems(note.getMemos());
-		memoTableView.setPrefHeight(140);
+		//memoTableView.setPrefHeight(140);
+		//memoTableView.setMaxHeight(500);
 		memoTableView.setFixedCellSize(30);
+		memoTableView.minWidthProperty().bind(vboxPink.prefWidthProperty());
+		memoTableView.maxWidthProperty().bind(vboxPink.prefWidthProperty());
+		//memoTableView.prefHeightProperty().bind(vboxPink.heightProperty());
+		VBox.setVgrow(memoTableView, Priority.ALWAYS);
 
 		TableColumn<Object_Memo, String> Col1 = createColumn("Date", Object_Memo::memo_dateProperty);
         Col1.setOnEditCommit(
@@ -89,6 +96,10 @@ public class BoxNotes extends HBox {
             );
 
         ////////////////  LISTENERS ///////////////////
+        vboxPink.heightProperty().addListener((obs, oldVal, newVal) -> {
+    		System.out.println("vboxPink height=" + newVal);
+    		//memoTableView.setPrefHeight(newVal.floatValue());
+    		});  /// 545 start height
         
         add.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {

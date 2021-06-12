@@ -36,6 +36,7 @@ import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
@@ -77,6 +78,7 @@ private TableView<Object_Boat> boatTableView;
 	boatView.setPrefWidth(60);
 	hboxGrey.setPrefWidth(942);
 	boatTableView.setPrefWidth(850);
+	VBox.setVgrow(boatTableView, Priority.ALWAYS);
 	
 	hboxGrey.setPadding(new Insets(5, 5, 5, 5));
 	vboxPink.setPadding(new Insets(2,2,2,2)); // spacing to make pink fram around table
@@ -89,7 +91,7 @@ private TableView<Object_Boat> boatTableView;
 	///////////////// TABLE VIEW ///////////////////////
 	
 	boatTableView.setItems(boats);
-	boatTableView.setPrefHeight(140);
+	//boatTableView.setPrefHeight(140);
 	boatTableView.setFixedCellSize(30);
 	boatTableView.setEditable(true);
 

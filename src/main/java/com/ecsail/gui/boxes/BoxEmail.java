@@ -28,6 +28,7 @@ import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
@@ -56,7 +57,7 @@ public class BoxEmail extends HBox {
 		VBox vbox1 = new VBox(); // holds email buttons
 		HBox hboxGrey = new HBox(); // this is here for the grey background to make nice apperence
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
-		
+		emailTableView = new TableView<Object_Email>();
 
 		/////////////////  ATTRIBUTES  /////////////////////
 		emailAdd.setPrefWidth(60);
@@ -68,11 +69,12 @@ public class BoxEmail extends HBox {
 		vboxPink.setId("box-pink");
 		hboxGrey.setPadding(new Insets(5,5,5,5));  // spacing around table and buttons
 		vboxPink.setPadding(new Insets(2,2,2,2)); // spacing to make pink fram around table
-		setId("box-blue");
+		VBox.setVgrow(emailTableView, Priority.ALWAYS);
+		this.setId("box-blue");
 		
 		///////////////// TABLE VIEW ///////////////////////
 		
-			emailTableView = new TableView<Object_Email>();
+			
 			emailTableView.setItems(email);
 			emailTableView.setPrefWidth(320);
 			emailTableView.setPrefHeight(140);

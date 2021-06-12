@@ -29,6 +29,7 @@ import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TablePosition;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
@@ -51,6 +52,7 @@ public class BoxOfficer extends HBox {
 		VBox vbox1 = new VBox(); // holds officer buttons
 		HBox hboxGrey = new HBox(); // this is here for the grey background to make nice apperence
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
+		officerTableView = new TableView<Object_Officer>();
 
 		/////////////////  ATTRIBUTES  /////////////////////
 		officerAdd.setPrefWidth(60);
@@ -62,13 +64,13 @@ public class BoxOfficer extends HBox {
 		vboxPink.setId("box-pink");
 		hboxGrey.setPadding(new Insets(5,5,5,5));  // spacing around table and buttons
 		vboxPink.setPadding(new Insets(2,2,2,2)); // spacing to make pink fram around table
-		setId("box-blue");
+		VBox.setVgrow(officerTableView, Priority.ALWAYS);
+		this.setId("box-blue");
 		
 		///////////////// TABLE VIEW ///////////////////////
-			officerTableView = new TableView<Object_Officer>();
+			
 			officerTableView.setItems(officer);
 			officerTableView.setPrefWidth(320);
-			officerTableView.setPrefHeight(140);
 			officerTableView.setFixedCellSize(30);
 			officerTableView.setEditable(true);
 			

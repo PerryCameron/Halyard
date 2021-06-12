@@ -34,6 +34,7 @@ import javafx.scene.control.TablePosition;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
@@ -60,6 +61,7 @@ public class BoxPhone extends HBox {
 		Button phoneDelete = new Button("Delete");
 		HBox hboxGrey = new HBox(); // this is here for the grey background to make nice apperence
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
+		phoneTableView = new TableView<Object_Phone>();
 
 		//// OBJECT ATTRIBUTES /////
 		phoneAdd.setPrefWidth(60);
@@ -71,12 +73,13 @@ public class BoxPhone extends HBox {
 		vboxPink.setId("box-pink");
 		hboxGrey.setPadding(new Insets(5,5,5,5));  // spacing around table and buttons
 		vboxPink.setPadding(new Insets(2,2,2,2)); // spacing to make pink fram around table
+		VBox.setVgrow(phoneTableView, Priority.ALWAYS);
 
 		///// TABLEVIE INSTANCE CREATION AND ATTRIBUTES /////
-		phoneTableView = new TableView<Object_Phone>();
+		
 		phoneTableView.setItems(phone);
 		phoneTableView.setPrefWidth(320);
-		phoneTableView.setPrefHeight(140);
+		//phoneTableView.setPrefHeight(140);
 		phoneTableView.setFixedCellSize(30);
 		phoneTableView.setEditable(true);
 			
