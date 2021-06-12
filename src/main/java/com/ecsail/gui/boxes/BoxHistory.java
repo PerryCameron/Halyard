@@ -45,14 +45,14 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
-public class BoxMemberID extends HBox {
+public class BoxHistory extends HBox {
 	Object_MembershipList membership;
 	private Object_MemLabels labels;
 	private TableView<Object_MembershipId> idTableView;
 	private ObservableList<Object_MembershipId> id;
     LocalDate date;
     
-	public BoxMemberID(Object_MembershipList m, Object_MemLabels l) {
+	public BoxHistory(Object_MembershipList m, Object_MemLabels l) {
 		this.membership = m;
 		this.id = FXCollections.observableArrayList(new Callback<Object_MembershipId, Observable[]>() {
 			@Override
