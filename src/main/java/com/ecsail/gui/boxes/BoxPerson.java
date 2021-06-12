@@ -108,9 +108,9 @@ public class BoxPerson extends HBox {
 		occupationTextField.setPrefSize(150, 10);
 		nnameTextField.setPrefSize(150, 10);
 		birthdayDatePicker.setPrefSize(150, 10);
-		this.setPrefWidth(472);
+		//this.setPrefWidth(472);
 		//this.setPrefHeight(600);
-		this.setPrefHeight(620);
+		//this.setPrefHeight(620);
 		vbLnameLabel.setPrefWidth(75);
 		vbFnameLabel.setPrefWidth(75);
 		vbNnameLabel.setPrefWidth(75);

@@ -76,9 +76,10 @@ public class BoxPaymentList extends HBox {
 
 		fiscalTableView.setEditable(false);
 		fiscalTableView.setFixedCellSize(30);
-		fiscalTableView.minHeightProperty().bind(vboxGrey.prefHeightProperty());
-		fiscalTableView.maxHeightProperty().bind(vboxGrey.prefHeightProperty());
-
+		//fiscalTableView.minHeightProperty().bind(vboxGrey.prefHeightProperty());
+		//fiscalTableView.maxHeightProperty().bind(vboxGrey.prefHeightProperty());
+		fiscalTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY );
+		
 		Col1.setCellValueFactory(new PropertyValueFactory<Object_Money, Integer>("fiscal_year"));
 		Col2.setCellValueFactory(new PropertyValueFactory<Object_Money, Integer>("total"));
 		Col3.setCellValueFactory(new PropertyValueFactory<Object_Money, Integer>("credit"));
@@ -90,11 +91,12 @@ public class BoxPaymentList extends HBox {
 		fiscalTableView.getSortOrder().add(Col1);  // start sorted by membershipID
 		fiscalTableView.sort();
 
-		Col1.setPrefWidth(86);
-		Col2.setPrefWidth(86);
-		Col3.setPrefWidth(87);
-		Col4.setPrefWidth(87);
-		Col5.setPrefWidth(87);
+		Col1.setMaxWidth( 1f * Integer.MAX_VALUE * 20 );   // Year
+		Col2.setMaxWidth( 1f * Integer.MAX_VALUE * 20 );  // Mem Id
+		Col3.setMaxWidth( 1f * Integer.MAX_VALUE * 20 );   // Mem Type
+		Col4.setMaxWidth( 1f * Integer.MAX_VALUE * 20 );   // Renewed
+		Col5.setMaxWidth( 1f * Integer.MAX_VALUE * 20 );   // Renew Late
+		
 		vboxGrey.setPrefWidth(460);
 		yearSpinner.setPrefWidth(80);
 		
@@ -112,6 +114,10 @@ public class BoxPaymentList extends HBox {
 		setId("box-blue");
 		VBox.setVgrow(vboxPink, Priority.ALWAYS);
 		VBox.setVgrow(fiscalTableView, Priority.ALWAYS);
+		HBox.setHgrow(fiscalTableView, Priority.ALWAYS);
+		HBox.setHgrow(vboxGrey, Priority.ALWAYS);
+		HBox.setHgrow(vboxPink, Priority.ALWAYS);
+		
 		
 		yearSpinner.setValueFactory(valueFactory);
 

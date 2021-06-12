@@ -76,9 +76,12 @@ private TableView<Object_Boat> boatTableView;
 	boatAdd.setPrefWidth(60);
 	boatDelete.setPrefWidth(60);
 	boatView.setPrefWidth(60);
-	hboxGrey.setPrefWidth(942);
 	boatTableView.setPrefWidth(850);
+	
 	VBox.setVgrow(boatTableView, Priority.ALWAYS);
+	HBox.setHgrow(boatTableView, Priority.ALWAYS);
+	HBox.setHgrow(hboxGrey, Priority.ALWAYS);
+	HBox.setHgrow(vboxPink, Priority.ALWAYS);
 	
 	hboxGrey.setPadding(new Insets(5, 5, 5, 5));
 	vboxPink.setPadding(new Insets(2,2,2,2)); // spacing to make pink fram around table
@@ -91,13 +94,13 @@ private TableView<Object_Boat> boatTableView;
 	///////////////// TABLE VIEW ///////////////////////
 	
 	boatTableView.setItems(boats);
-	//boatTableView.setPrefHeight(140);
 	boatTableView.setFixedCellSize(30);
 	boatTableView.setEditable(true);
+	boatTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY );
+	
 
-	final TableColumn<Object_Boat, String> Col1 = createColumn("Boat Name", Object_Boat::boat_nameProperty);
-	Col1.setPrefWidth(120);
-    Col1.setOnEditCommit(
+	final TableColumn<Object_Boat, String> col1 = createColumn("Boat Name", Object_Boat::boat_nameProperty);
+    col1.setOnEditCommit(
             new EventHandler<CellEditEvent<Object_Boat, String>>() {
                 @Override
                 public void handle(CellEditEvent<Object_Boat, String> t) {
@@ -110,9 +113,8 @@ private TableView<Object_Boat> boatTableView;
             }
         );
 	
-	final TableColumn<Object_Boat, String> Col2 = createColumn("Manufacturer", Object_Boat::manufacturerProperty);
-	Col2.setPrefWidth(100);
-    Col2.setOnEditCommit(
+	final TableColumn<Object_Boat, String> col2 = createColumn("Manufacturer", Object_Boat::manufacturerProperty);
+    col2.setOnEditCommit(
             new EventHandler<CellEditEvent<Object_Boat, String>>() {
                 @Override
                 public void handle(CellEditEvent<Object_Boat, String> t) {
@@ -125,8 +127,8 @@ private TableView<Object_Boat> boatTableView;
             }
         );
     
-    final TableColumn<Object_Boat, String> Col3 = createColumn("Year", Object_Boat::manufacture_yearProperty);
-    Col3.setOnEditCommit(
+    final TableColumn<Object_Boat, String> col3 = createColumn("Year", Object_Boat::manufacture_yearProperty);
+    col3.setOnEditCommit(
             new EventHandler<CellEditEvent<Object_Boat, String>>() {
                 @Override
                 public void handle(CellEditEvent<Object_Boat, String> t) {
@@ -139,9 +141,8 @@ private TableView<Object_Boat> boatTableView;
             }
         );
     
-	final TableColumn<Object_Boat, String> Col4 = createColumn("Model", Object_Boat::modelProperty);
-	Col4.setPrefWidth(120);
-    Col4.setOnEditCommit(
+	final TableColumn<Object_Boat, String> col4 = createColumn("Model", Object_Boat::modelProperty);
+    col4.setOnEditCommit(
             new EventHandler<CellEditEvent<Object_Boat, String>>() {
                 @Override
                 public void handle(CellEditEvent<Object_Boat, String> t) {
@@ -154,8 +155,8 @@ private TableView<Object_Boat> boatTableView;
             }
         );
     
-	final TableColumn<Object_Boat, String> Col5 = createColumn("Registration", Object_Boat::registration_numProperty);
-	Col5.setOnEditCommit(
+	final TableColumn<Object_Boat, String> col5 = createColumn("Registration", Object_Boat::registration_numProperty);
+	col5.setOnEditCommit(
             new EventHandler<CellEditEvent<Object_Boat, String>>() {
                 @Override
                 public void handle(CellEditEvent<Object_Boat, String> t) {
@@ -168,8 +169,8 @@ private TableView<Object_Boat> boatTableView;
             }
         );
     
-	final TableColumn<Object_Boat, String> Col6 = createColumn("Sail #", Object_Boat::sail_numberProperty);
-	Col6.setOnEditCommit(
+	final TableColumn<Object_Boat, String> col6 = createColumn("Sail #", Object_Boat::sail_numberProperty);
+	col6.setOnEditCommit(
             new EventHandler<CellEditEvent<Object_Boat, String>>() {
                 @Override
                 public void handle(CellEditEvent<Object_Boat, String> t) {
@@ -182,9 +183,8 @@ private TableView<Object_Boat> boatTableView;
             }
         );
 	
-	final TableColumn<Object_Boat, String> Col6b = createColumn("PHRF", Object_Boat::phrfProperty);
-	Col6b.setPrefWidth(50);
-	Col6b.setOnEditCommit(
+	final TableColumn<Object_Boat, String> col7 = createColumn("PHRF", Object_Boat::phrfProperty);
+	col7.setOnEditCommit(
             new EventHandler<CellEditEvent<Object_Boat, String>>() {
                 @Override
                 public void handle(CellEditEvent<Object_Boat, String> t) {
@@ -197,8 +197,8 @@ private TableView<Object_Boat> boatTableView;
             }
         );
 	
-	final TableColumn<Object_Boat, String> Col7 = createColumn("Length", Object_Boat::lengthProperty);
-	Col7.setOnEditCommit(
+	final TableColumn<Object_Boat, String> col8 = createColumn("Length", Object_Boat::lengthProperty);
+	col8.setOnEditCommit(
             new EventHandler<CellEditEvent<Object_Boat, String>>() {
                 @Override
                 public void handle(CellEditEvent<Object_Boat, String> t) {
@@ -211,8 +211,8 @@ private TableView<Object_Boat> boatTableView;
             }
         );
 	
-	final TableColumn<Object_Boat, String> Col8 = createColumn("Weight", Object_Boat::weightProperty);
-	Col8.setOnEditCommit(
+	final TableColumn<Object_Boat, String> col9 = createColumn("Weight", Object_Boat::weightProperty);
+	col9.setOnEditCommit(
             new EventHandler<CellEditEvent<Object_Boat, String>>() {
                 @Override
                 public void handle(CellEditEvent<Object_Boat, String> t) {
@@ -226,9 +226,8 @@ private TableView<Object_Boat> boatTableView;
         );
 	
 	// example for this column found at https://o7planning.org/en/11079/javafx-tableview-tutorial
-	final TableColumn<Object_Boat, Boolean> Col9 = new TableColumn<Object_Boat, Boolean>("Trailer");
-	Col9.setPrefWidth(65);
-	Col9.setCellValueFactory(new Callback<CellDataFeatures<Object_Boat, Boolean>, ObservableValue<Boolean>>() {
+	final TableColumn<Object_Boat, Boolean> col10 = new TableColumn<Object_Boat, Boolean>("Trailer");
+	col10.setCellValueFactory(new Callback<CellDataFeatures<Object_Boat, Boolean>, ObservableValue<Boolean>>() {
         @Override
         public ObservableValue<Boolean> call(CellDataFeatures<Object_Boat, Boolean> param) {
         	Object_Boat boat = param.getValue();
@@ -249,7 +248,7 @@ private TableView<Object_Boat> boatTableView;
         }
     });
 
-	Col9.setCellFactory(new Callback<TableColumn<Object_Boat, Boolean>, //
+	col10.setCellFactory(new Callback<TableColumn<Object_Boat, Boolean>, //
     TableCell<Object_Boat, Boolean>>() {
         @Override
         public TableCell<Object_Boat, Boolean> call(TableColumn<Object_Boat, Boolean> p) {
@@ -261,22 +260,22 @@ private TableView<Object_Boat> boatTableView;
 
 	//example for this column found at https://o7planning.org/en/11079/javafx-tableview-tutorial
     ObservableList<KeelType> keelList = FXCollections.observableArrayList(KeelType.values());
-	final TableColumn<Object_Boat, KeelType> Col10 = new TableColumn<Object_Boat, KeelType>("Keel");
-	Col10.setPrefWidth(100);
-	Col10.setCellValueFactory(new Callback<CellDataFeatures<Object_Boat, KeelType>, ObservableValue<KeelType>>() {
+	final TableColumn<Object_Boat, KeelType> col11 = new TableColumn<Object_Boat, KeelType>("Keel");
+	col11.setCellValueFactory(new Callback<CellDataFeatures<Object_Boat, KeelType>, ObservableValue<KeelType>>() {
 		 
         @Override
         public ObservableValue<KeelType> call(CellDataFeatures<Object_Boat, KeelType> param) {
         	Object_Boat boat = param.getValue();
             String keelCode = boat.getKeel();
+  
             KeelType keel = KeelType.getByCode(keelCode);
             return new SimpleObjectProperty<KeelType>(keel);
         }
     });
 
-	Col10.setCellFactory(ComboBoxTableCell.forTableColumn(keelList));
+	col11.setCellFactory(ComboBoxTableCell.forTableColumn(keelList));
 
-	Col10.setOnEditCommit((CellEditEvent<Object_Boat, KeelType> event) -> {
+	col11.setOnEditCommit((CellEditEvent<Object_Boat, KeelType> event) -> {
         TablePosition<Object_Boat, KeelType> pos = event.getTablePosition();
         KeelType newKeel = event.getNewValue();
         int row = pos.getRow();
@@ -285,6 +284,18 @@ private TableView<Object_Boat> boatTableView;
         boat.setKeel(newKeel.getCode());
     });
 	
+	/// sets width of columns by percentage
+	col1.setMaxWidth( 1f * Integer.MAX_VALUE * 15 );   // Mem 5%
+	col2.setMaxWidth( 1f * Integer.MAX_VALUE * 10 );  // Join Date 15%
+	col3.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );   // Type
+	col4.setMaxWidth( 1f * Integer.MAX_VALUE * 15 );   // Slip
+	col5.setMaxWidth( 1f * Integer.MAX_VALUE * 10 );   // First Name
+	col6.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );  // Last Name
+	col7.setMaxWidth( 1f * Integer.MAX_VALUE * 10 );  // Address
+	col8.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );  // City
+	col9.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );  // State
+	col10.setMaxWidth( 1f * Integer.MAX_VALUE * 10 ); // Zip
+	col11.setMaxWidth( 1f * Integer.MAX_VALUE * 10 ); // MSID
 	/////////////// LISTENERS ////////////////////
     
     boatAdd.setOnAction((event) -> {
@@ -317,7 +328,7 @@ private TableView<Object_Boat> boatTableView;
     
     /////////////////// SET CONTENT ///////////////////
 
-	boatTableView.getColumns().addAll(Arrays.asList(Col1,Col2,Col3,Col4,Col5,Col6,Col6b,Col7,Col8,Col9,Col10));
+	boatTableView.getColumns().addAll(Arrays.asList(col1,col2,col3,col4,col5,col6,col7,col8,col9,col10,col11));
 	buttonVBox.getChildren().addAll(boatAdd,boatDelete,boatView);
 	vboxPink.getChildren().add(boatTableView);
 	hboxGrey.getChildren().addAll(vboxPink,buttonVBox);

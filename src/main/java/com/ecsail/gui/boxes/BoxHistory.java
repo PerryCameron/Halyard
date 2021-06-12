@@ -85,7 +85,7 @@ public class BoxHistory extends HBox {
 		
 		idAdd.setPrefWidth(60);
 		idDelete.setPrefWidth(60);
-		vboxGrey.setPrefWidth(460);
+		//vboxGrey.setPrefWidth(460);
 		
 		vboxGrey.setPadding(new Insets(5, 5, 5, 5)); // spacing around table and buttons
 		vboxPink.setPadding(new Insets(2, 2, 2, 2)); // spacing to make pink fram around table
@@ -96,7 +96,11 @@ public class BoxHistory extends HBox {
 		this.setId("box-blue");
 		
 		VBox.setVgrow(idTableView, Priority.ALWAYS);
+		HBox.setHgrow(idTableView, Priority.ALWAYS);
 		VBox.setVgrow(vboxPink, Priority.ALWAYS);
+		HBox.setHgrow(this, Priority.ALWAYS);
+		HBox.setHgrow(vboxGrey, Priority.ALWAYS);
+		
 		
 		Collections.sort(id, Comparator.comparing(Object_MembershipId::getFiscal_Year).reversed());
 
@@ -104,8 +108,9 @@ public class BoxHistory extends HBox {
 		idTableView.setItems(id);
 		idTableView.setFixedCellSize(30);
 		idTableView.setEditable(true);
-		idTableView.minHeightProperty().bind(vboxGrey.prefHeightProperty());
-		idTableView.maxHeightProperty().bind(vboxGrey.prefHeightProperty());
+		//idTableView.minHeightProperty().bind(vboxGrey.prefHeightProperty());
+		//idTableView.maxHeightProperty().bind(vboxGrey.prefHeightProperty());
+		idTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY );
 		
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         if(membership.getJoinDate() != null) {
@@ -118,7 +123,6 @@ public class BoxHistory extends HBox {
 		// example for this column found at
 		// https://gist.github.com/james-d/be5bbd6255a4640a5357#file-editcell-java-L109
 		TableColumn<Object_MembershipId, String> Col1 = createColumn("Year", Object_MembershipId::fiscal_YearProperty);
-		Col1.setPrefWidth(70);
 		Col1.setOnEditCommit(new EventHandler<CellEditEvent<Object_MembershipId, String>>() {
 			@Override
 			public void handle(CellEditEvent<Object_MembershipId, String> t) {
@@ -133,7 +137,6 @@ public class BoxHistory extends HBox {
 
 		TableColumn<Object_MembershipId, String> Col2 = createColumn("Mem ID",
 				Object_MembershipId::membership_idProperty);
-		Col2.setPrefWidth(80);
 		Col2.setOnEditCommit(new EventHandler<CellEditEvent<Object_MembershipId, String>>() {
 			@Override
 			public void handle(CellEditEvent<Object_MembershipId, String> t) {
@@ -150,7 +153,6 @@ public class BoxHistory extends HBox {
 		ObservableList<MembershipType> MembershipTypeList = FXCollections.observableArrayList(MembershipType.values());
 		TableColumn<Object_MembershipId, MembershipType> Col3 = new TableColumn<Object_MembershipId, MembershipType>(
 				"Mem Type");
-		Col3.setPrefWidth(90);
 		Col3.setCellValueFactory(
 				new Callback<CellDataFeatures<Object_MembershipId, MembershipType>, ObservableValue<MembershipType>>() {
 
@@ -179,7 +181,6 @@ public class BoxHistory extends HBox {
 		// example for this column found at
 		// https://o7planning.org/en/11079/javafx-tableview-tutorial
 		TableColumn<Object_MembershipId, Boolean> Col4 = new TableColumn<Object_MembershipId, Boolean>("Renewed");
-		Col4.setPrefWidth(90);
 		Col4.setCellValueFactory(
 				new Callback<CellDataFeatures<Object_MembershipId, Boolean>, ObservableValue<Boolean>>() {
 					@Override
@@ -213,7 +214,6 @@ public class BoxHistory extends HBox {
 		});
 		
 		TableColumn<Object_MembershipId, Boolean> Col5 = new TableColumn<Object_MembershipId, Boolean>("Renew Late");
-		Col5.setPrefWidth(100);
 		Col5.setCellValueFactory(
 				new Callback<CellDataFeatures<Object_MembershipId, Boolean>, ObservableValue<Boolean>>() {
 					@Override
@@ -245,6 +245,13 @@ public class BoxHistory extends HBox {
 				return cell;
 			}
 		});
+		
+		/// sets width of columns by percentage
+		Col1.setMaxWidth( 1f * Integer.MAX_VALUE * 25 );   // Year
+		Col2.setMaxWidth( 1f * Integer.MAX_VALUE * 15 );  // Mem Id
+		Col3.setMaxWidth( 1f * Integer.MAX_VALUE * 30 );   // Mem Type
+		Col4.setMaxWidth( 1f * Integer.MAX_VALUE * 15 );   // Renewed
+		Col5.setMaxWidth( 1f * Integer.MAX_VALUE * 15 );   // Renew Late
 
 		/////////////////// LISTENERS //////////////////////////////
 

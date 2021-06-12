@@ -49,6 +49,7 @@ public class BoxSlip extends HBox {
 	private HBox hbox2 = new HBox();  // sublease or none
 	private HBox hbox3 = new HBox();  // Holds button and textfield
 	private VBox assignVBox = new VBox(); // contains radio buttons, textfield and submit button
+	
 	private Button submitButton = new Button("Submit");
 	private ToggleGroup group = new ToggleGroup();
 	
@@ -70,19 +71,34 @@ public class BoxSlip extends HBox {
 	    HBox vboxWaitFrame = new HBox();
 	    VBox vboxWaitOuterFrame = new VBox();
 		VBox vboxGrey = new VBox();  // this is the vbox for organizing all the widgets
+		VBox vboxSpacer = new VBox();
 		//HBox imageHBox = new BoxSlipImage(slip.getSlipNumber());
 		
 		noSlipLabel.setTextFill(Color.DARKCYAN);
 
 		////////////  ATTRIBUTES //////////////////
+		/*  // for testing
+		infoBox8.setStyle("-fx-background-color: #c5c7c1;");  // gray
+		infoBox1.setStyle("-fx-background-color: #4d6955;");  //green
+		infoBox2.setStyle("-fx-background-color: #feffab;");  // yellow
+		infoBox3.setStyle("-fx-background-color: #e83115;");  // red
+		infoBox4.setStyle("-fx-background-color: #201ac9;");  // blue
+		infoBox5.setStyle("-fx-background-color: #e83115;");  // purble
+		infoBox6.setStyle("-fx-background-color: #15e8e4;");  // light blue
+		infoBox7.setStyle("-fx-background-color: #e89715;");  // orange
+		*/
 
-		
 		vboxWaitA.setSpacing(10);
 		vboxWaitA.setSpacing(5);
 		vboxWaitB.setSpacing(10);
 		vboxWaitB.setSpacing(5);
+		
 		HBox.setHgrow(vboxWaitA, Priority.ALWAYS);
 		HBox.setHgrow(vboxWaitB, Priority.ALWAYS);
+		HBox.setHgrow(mainVBox, Priority.SOMETIMES);
+		HBox.setHgrow(mainHBox, Priority.ALWAYS);
+		HBox.setHgrow(vboxWaitOuterFrame, Priority.ALWAYS);
+		HBox.setHgrow(vboxWaitFrame, Priority.ALWAYS);
 		
 		errorHBox.setSpacing(13);
 		hbox1.setSpacing(5);
@@ -91,12 +107,13 @@ public class BoxSlip extends HBox {
 		vboxWaitFrame.setPadding(new Insets(5,5,5,5));
 		vboxWaitA.setPadding(new Insets(5,5,5,5));
 		vboxWaitB.setPadding(new Insets(5,5,5,5));
-		vboxWaitOuterFrame.setPadding(new Insets(60,15,0,0));
+		vboxWaitOuterFrame.setAlignment(Pos.BOTTOM_CENTER);
 		errorHBox.setPadding(new Insets(5, 15, 5, 15));  // first Name
 		hbox1.setPadding(new Insets(0,15,5,15));
 		assignVBox.setPadding(new Insets(30,15,5,15));
-		mainHBox.setPadding(new Insets(15,15,0,5));	
+		mainHBox.setPadding(new Insets(15,0,0,0));	
 		hbox2.setPadding(new Insets(5,15,5,15));
+		surroundVBox.setPadding(new Insets(0,5,5,5));
 		this.setPadding(new Insets(5, 5, 5, 5));  // creates space for blue frame	
 		
 		errorHBox.setAlignment(Pos.CENTER);
@@ -106,8 +123,7 @@ public class BoxSlip extends HBox {
 		assignVBox.setPrefWidth(300);
 		submitButton.setPrefWidth(60);
 		membershipIdTextField.setPrefWidth(40);
-		mainHBox.setPrefWidth(460);  ///////////// sets the width
-		mainVBox.setPrefWidth(200);
+		vboxSpacer.setPrefHeight(300);
 
 		hbox2.setSpacing(5);
 		hbox3.setSpacing(5);
@@ -235,7 +251,7 @@ public class BoxSlip extends HBox {
 		vboxWaitOuterFrame.getChildren().add(vboxWaitFrame);
 		assignVBox.getChildren().addAll(r1,r2,r3,hbox3);
 		mainVBox.getChildren().addAll(hbox1,hbox2,assignVBox); // add slip information
-		surroundVBox.getChildren().addAll(errorHBox,mainHBox,vboxWaitOuterFrame);  // put this in for error messages
+		surroundVBox.getChildren().addAll(errorHBox,mainHBox,vboxSpacer,vboxWaitOuterFrame);  // put this in for error messages
 		vboxGrey.getChildren().addAll(surroundVBox);
 		this.getChildren().addAll(vboxGrey);
 	}
