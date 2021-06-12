@@ -13,7 +13,9 @@ import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
@@ -139,8 +141,15 @@ public class TabSlips extends Tab {
 		vboxPink.setPadding(new Insets(3,3,3,3)); // spacing to make pink fram around table
 		vboxPink.setId("box-pink");
 		vboxGrey.setId("slip-box");
-		vboxGrey.setPrefHeight(688);
+		
+		//vboxGrey.setPrefHeight(688);
 		//rotatef1.setAngle(314);
+		
+		HBox.setHgrow(vboxGrey, Priority.ALWAYS);
+		VBox.setVgrow(vboxGrey, Priority.ALWAYS);
+		HBox.setHgrow(vboxPink, Priority.ALWAYS);
+		VBox.setVgrow(vboxPink, Priority.ALWAYS);
+		
 		rotatef2.setAngle(314);
 		rotatef3.setAngle(314);
 		rotatef4.setAngle(314);

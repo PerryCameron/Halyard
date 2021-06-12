@@ -32,6 +32,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 public class BoxFiscal extends HBox {
@@ -94,8 +95,8 @@ public class BoxFiscal extends HBox {
 		VBox vboxGrey = new VBox();  // this is the vbox for organizing all the widgets
 		VBox mainVbox = new VBox();
 		HBox mainHbox = new HBox();
-		VBox vbox1 = new VBox();
-		VBox vbox2 = new VBox();
+		VBox vboxTabPanes = new VBox();
+		VBox vboxSpinners = new VBox();
 		HBox hboxButtonCommit = new HBox();
 		HBox hboxSlip = new HBox();
 		
@@ -136,6 +137,7 @@ public class BoxFiscal extends HBox {
 		VBox vboxInitiationBox = new VBox();
 		VBox vboxOtherBox = new VBox();
 		Button addWetSlip = new Button();
+		Region spacer1 = new Region();
 
 		//////////////// ATTRIBUTES ///////////////////
 		MoneyTabPane.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
@@ -171,27 +173,31 @@ public class BoxFiscal extends HBox {
 		vboxInitiationLabel.setAlignment(Pos.CENTER_LEFT);
 		vboxOtherLabel.setAlignment(Pos.CENTER_LEFT);
 		
-		winterStorageSpinner.setPrefWidth(60);
-		kayakRackSpinner.setPrefWidth(60);
-		slipText.setPrefWidth(35);
+		winterStorageSpinner.setPrefWidth(65);
+		kayakRackSpinner.setPrefWidth(65);
+		slipText.setPrefWidth(40);
 		addWetSlip.setPrefWidth(25);
 		addWetSlip.setPrefHeight(25);
-		yscText.setPrefWidth(60);
-		otherText.setPrefWidth(60);
-		initiationText.setPrefWidth(60);
-		duesText.setPrefWidth(60);
-		beachSpinner.setPrefWidth(60);
-		kayakShedSpinner.setPrefWidth(60);
-		sailLoftSpinner.setPrefWidth(60);
-		sailSchoolLoftSpinner.setPrefWidth(60);
+		yscText.setPrefWidth(65);
+		otherText.setPrefWidth(65);
+		initiationText.setPrefWidth(65);
+		duesText.setPrefWidth(65);
+		beachSpinner.setPrefWidth(65);
+		kayakShedSpinner.setPrefWidth(65);
+		sailLoftSpinner.setPrefWidth(65);
+		sailSchoolLoftSpinner.setPrefWidth(65);
 		duesText.setStyle(disabledColor);		
+		spacer1.setPrefWidth(40);
 		
-		vbox1.setAlignment(Pos.CENTER);
-		vbox2.setAlignment(Pos.CENTER);
+		vboxTabPanes.setAlignment(Pos.CENTER);
+		vboxSpinners.setAlignment(Pos.CENTER);
 		
-		vbox1.setSpacing(5);
-		vbox2.setSpacing(5);
+		vboxTabPanes.setSpacing(5);
+		vboxSpinners.setSpacing(5);
 		mainHbox.setSpacing(10);
+		
+		
+		
 		
 		textFields.getPaidText().setEditable(false);
 		textFields.getCreditText().setEditable(false);
@@ -207,7 +213,7 @@ public class BoxFiscal extends HBox {
 		vboxGrey.setId("box-grey");
 
 		HBox.setHgrow(vboxGrey, Priority.ALWAYS);
-
+		HBox.setHgrow(spacer1, Priority.ALWAYS);
 		//////////////// LISTENER //////////////////
 			
 		textFields.getBalanceText().textProperty().addListener((observable, oldValue, newValue) -> {
@@ -459,9 +465,9 @@ public class BoxFiscal extends HBox {
 		hboxInitiation.getChildren().addAll(vboxInitiationLabel,vboxInitiationBox);
 		hboxOther.getChildren().addAll(vboxOtherLabel,vboxOtherBox);
 		
-		vbox1.getChildren().addAll(keysAndCreditsTabPane,MoneyTabPane);
-		vbox2.getChildren().addAll(feesLabel,hboxDues,hboxBeach,hboxKayac,hboxKayakShed,hboxSailLoft,hboxSailSchoolLoft,hboxWetSlip,hboxWinterStorage,hboxYSC,hboxInitiation, hboxOther);
-		mainHbox.getChildren().addAll(vbox2,vbox1);
+		vboxTabPanes.getChildren().addAll(keysAndCreditsTabPane,MoneyTabPane);
+		vboxSpinners.getChildren().addAll(feesLabel,hboxDues,hboxBeach,hboxKayac,hboxKayakShed,hboxSailLoft,hboxSailSchoolLoft,hboxWetSlip,hboxWinterStorage,hboxYSC,hboxInitiation, hboxOther);
+		mainHbox.getChildren().addAll(vboxSpinners,spacer1,vboxTabPanes);
 		mainVbox.getChildren().addAll(mainHbox);  // add error hbox in first
 		vboxGrey.getChildren().addAll(mainVbox);
 		getChildren().addAll(vboxGrey);
