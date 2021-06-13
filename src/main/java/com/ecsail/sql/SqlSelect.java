@@ -16,6 +16,7 @@ import com.ecsail.pdf.directory.PDF_Object_Officer;
 import com.ecsail.structures.Object_Award;
 import com.ecsail.structures.Object_Board;
 import com.ecsail.structures.Object_Boat;
+import com.ecsail.structures.Object_BoatList;
 import com.ecsail.structures.Object_BoatOwner;
 import com.ecsail.structures.Object_DefinedFee;
 import com.ecsail.structures.Object_Deposit;
@@ -824,7 +825,46 @@ public class SqlSelect {
 			while (rs.next()) {
 				thisBoat.add(new Object_Boat(
 						rs.getInt("BOAT_ID"), 0, // because Object_Boat has an ms-id variable but database does not
+						rs.getString("MANUFACTURER"), // might be the best note I have ever left ^^ lol
+						rs.getString("MANUFACTURE_YEAR"), 
+						rs.getString("REGISTRATION_NUM"), 
+						rs.getString("MODEL"),
+						rs.getString("BOAT_NAME"), 
+						rs.getString("SAIL_NUMBER"), 
+						rs.getBoolean("HAS_TRAILER"),
+						rs.getString("LENGTH"), 
+						rs.getString("WEIGHT"), 
+						rs.getString("KEEL"),
+						rs.getString("PHRF")));
+			}
+			stmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
+		}
+		return thisBoat;
+	}
+	
+	public static ObservableList<Object_BoatList> getBoatsWithOwners() {
+		ObservableList<Object_BoatList> thisBoat = FXCollections.observableArrayList();
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs;
+			rs = stmt.executeQuery(Main.console.setRegexColor(
+					"select id.MEMBERSHIP_ID,id.MS_ID, p.L_NAME, p.F_NAME, "
+					+ "b.* from boat b left join boat_owner bo on "
+					+ "b.BOAT_ID=bo.BOAT_ID left join membership_id id "
+					+ "on bo.MS_ID=id.MS_ID left join membership m on "
+					+ "id.MS_ID=m.MS_ID left join person p on m.P_ID=p.P_ID "
+					+ "where id.RENEW=true and id.FISCAL_YEAR='2021'"));
+			while (rs.next()) {
+				thisBoat.add(new Object_BoatList(
+						rs.getInt("BOAT_ID"), 
+						rs.getInt("MS_ID"),
 						rs.getString("MANUFACTURER"),
+						rs.getInt("MEMBERSHIP_ID"),
+						rs.getString("L_NAME"),
+						rs.getString("F_NAME"), 
 						rs.getString("MANUFACTURE_YEAR"), 
 						rs.getString("REGISTRATION_NUM"), 
 						rs.getString("MODEL"),
@@ -882,6 +922,37 @@ public class SqlSelect {
 					rs.getString("WEIGHT"),
 					rs.getString("KEEL"),
 					rs.getString("PHRF")));
+		}
+		stmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
+		}
+		return thisBoat;
+	}
+	
+	public static Object_Boat getBoatbyBoatId(int boat_id) { // overload but must be separate
+		Object_Boat thisBoat = null;
+		try {
+		Statement stmt = ConnectDatabase.connection.createStatement();
+		ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select b.BOAT_ID, bo.MS_ID, b.MANUFACTURER"
+				+ ", b.MANUFACTURE_YEAR, b.REGISTRATION_NUM, b.MODEL, b.BOAT_NAME, b.SAIL_NUMBER"
+				+ ", b.HAS_TRAILER, b.LENGTH, b.WEIGHT, b.KEEL, b.PHRF from boat b inner join boat_owner bo using (boat_id) where boat_id='" + boat_id + "';"));
+		while (rs.next()) {
+			thisBoat = new Object_Boat(
+					rs.getInt("BOAT_ID"),
+					rs.getInt("MS_ID"),
+					rs.getString("MANUFACTURER"),
+					rs.getString("MANUFACTURE_YEAR"),
+					rs.getString("REGISTRATION_NUM"),
+					rs.getString("MODEL"),
+					rs.getString("BOAT_NAME"),
+					rs.getString("SAIL_NUMBER"),
+					rs.getBoolean("HAS_TRAILER"),
+					rs.getString("LENGTH"),
+					rs.getString("WEIGHT"),
+					rs.getString("KEEL"),
+					rs.getString("PHRF"));
 		}
 		stmt.close();
 		} catch (SQLException e) {

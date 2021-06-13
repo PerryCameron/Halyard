@@ -10,6 +10,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -82,7 +83,9 @@ public class TabBoatView extends Tab {
 		vboxPink.setPadding(new Insets(3,3,3,3)); // spacing to make pink from around table
 		vboxPink.setId("box-pink");
 		//vboxGrey.setId("slip-box");
-		vboxGrey.setPrefHeight(688);
+		VBox.setVgrow(vboxGrey, Priority.ALWAYS);
+		HBox.setHgrow(vboxGrey, Priority.ALWAYS);
+		VBox.setVgrow(vboxPink, Priority.ALWAYS);
 		
 		bnameTextField.setPrefSize(150, 10);
 		manufacturerTextField.setPrefSize(150, 10);

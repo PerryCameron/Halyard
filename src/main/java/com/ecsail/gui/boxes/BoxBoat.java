@@ -291,10 +291,10 @@ private TableView<Object_Boat> boatTableView;
 	col4.setMaxWidth( 1f * Integer.MAX_VALUE * 20 );  // Model
 	col5.setMaxWidth( 1f * Integer.MAX_VALUE * 10 );  // Registration
 	col6.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );   // Sail #
-	col7.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );  // PHRF
+	col7.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );   // PHRF
 	col8.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );   // Length
 	col9.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );   // Weight
-	col10.setMaxWidth( 1f * Integer.MAX_VALUE * 5 ); // Trailer
+	col10.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );  // Trailer
 	col11.setMaxWidth( 1f * Integer.MAX_VALUE * 15 ); // Keel
 	/////////////// LISTENERS ////////////////////
     

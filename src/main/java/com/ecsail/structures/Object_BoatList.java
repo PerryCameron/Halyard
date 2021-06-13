@@ -7,11 +7,14 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class Object_Boat {
+public class Object_BoatList {
 	
 	private IntegerProperty boat_id;
 	private IntegerProperty ms_id;
 	private StringProperty manufacturer;
+	private IntegerProperty membership_id;
+	private StringProperty lname;
+	private StringProperty fname;
 	private StringProperty manufacture_year;
 	private StringProperty registration_num;
 	private StringProperty model;
@@ -23,13 +26,16 @@ public class Object_Boat {
 	private StringProperty keel;
 	private StringProperty phrf;
 	
-	public Object_Boat(Integer boat_id, Integer ms_id, String manufacturer, String manufacture_year,
+	public Object_BoatList(Integer boat_id, Integer ms_id, String manufacturer, Integer membership_id, String lname, String fname, String manufacture_year,
 			String registration_num, String model, String boat_name, String sail_number,
 			Boolean hasTrailer, String length, String weight, String keel, String phrf) {
 
 		this.boat_id = new SimpleIntegerProperty(boat_id);
 		this.ms_id = new SimpleIntegerProperty(ms_id);
 		this.manufacturer = new SimpleStringProperty(manufacturer);
+		this.membership_id = new SimpleIntegerProperty(membership_id);
+		this.lname = new SimpleStringProperty(lname);
+		this.fname = new SimpleStringProperty(fname);
 		this.manufacture_year = new SimpleStringProperty(manufacture_year);
 		this.registration_num = new SimpleStringProperty(registration_num);
 		this.model = new SimpleStringProperty(model);
@@ -42,10 +48,6 @@ public class Object_Boat {
 		this.phrf = new SimpleStringProperty(phrf);
 	}
 
-	public Object_Boat() {
-		// TODO Auto-generated constructor stub
-	}
-
 	public final IntegerProperty boat_idProperty() {
 		return this.boat_id;
 	}
@@ -55,18 +57,22 @@ public class Object_Boat {
 		return this.boat_idProperty().get();
 	}
 	
+
 	public final void setBoat_id(final int boat_id) {
 		this.boat_idProperty().set(boat_id);
 	}
 	
+
 	public final IntegerProperty ms_idProperty() {
 		return this.ms_id;
 	}
 	
+
 	public final int getMs_id() {
 		return this.ms_idProperty().get();
 	}
 	
+
 	public final void setMs_id(final int ms_id) {
 		this.ms_idProperty().set(ms_id);
 	}
@@ -84,6 +90,51 @@ public class Object_Boat {
 
 	public final void setManufacturer(final String manufacturer) {
 		this.manufacturerProperty().set(manufacturer);
+	}
+	
+
+	public final IntegerProperty membership_idProperty() {
+		return this.membership_id;
+	}
+	
+
+	public final int getMembership_id() {
+		return this.membership_idProperty().get();
+	}
+	
+
+	public final void setMembership_id(final int membership_id) {
+		this.membership_idProperty().set(membership_id);
+	}
+	
+
+	public final StringProperty lnameProperty() {
+		return this.lname;
+	}
+	
+
+	public final String getLname() {
+		return this.lnameProperty().get();
+	}
+	
+
+	public final void setLname(final String lname) {
+		this.lnameProperty().set(lname);
+	}
+	
+
+	public final StringProperty fnameProperty() {
+		return this.fname;
+	}
+	
+
+	public final String getFname() {
+		return this.fnameProperty().get();
+	}
+	
+
+	public final void setFname(final String fname) {
+		this.fnameProperty().set(fname);
 	}
 	
 
@@ -201,12 +252,10 @@ public class Object_Boat {
 		return this.weightProperty().get();
 	}
 	
-
 	public final void setWeight(final String weight) {
 		this.weightProperty().set(weight);
 	}
 	
-
 	public final StringProperty keelProperty() {
 		return this.keel;
 	}
@@ -220,26 +269,28 @@ public class Object_Boat {
 	public final void setKeel(final String keel) {
 		this.keelProperty().set(keel);
 	}
+	
 
 	public final StringProperty phrfProperty() {
 		return this.phrf;
 	}
+	
 
 	public final String getPhrf() {
 		return this.phrfProperty().get();
 	}
 	
+
 	public final void setPhrf(final String phrf) {
 		this.phrfProperty().set(phrf);
 	}
-	
-		@Override
+
+	@Override
 	public String toString() {
-		return "Object_Boat [boat_id=" + boat_id + ", ms_id=" + ms_id + ", manufacturer=" + manufacturer
-				+ ", manufacture_year=" + manufacture_year + ", registration_num=" + registration_num + ", model="
-				+ model + ", boat_name=" + boat_name + ", sail_number=" + sail_number + ", hasTrailer=" + hasTrailer
-				+ ", length=" + length + ", weight=" + weight + ", keel=" + keel + ", phrf=" + phrf + "]";
+		return "Object_BoatList [boat_id=" + boat_id + ", ms_id=" + ms_id + ", manufacturer=" + manufacturer
+				+ ", membership_id=" + membership_id + ", lname=" + lname + ", fname=" + fname + ", manufacture_year="
+				+ manufacture_year + ", registration_num=" + registration_num + ", model=" + model + ", boat_name="
+				+ boat_name + ", sail_number=" + sail_number + ", hasTrailer=" + hasTrailer + ", length=" + length
+				+ ", weight=" + weight + ", keel=" + keel + ", phrf=" + phrf + "]";
 	}
-	
-	
 }
