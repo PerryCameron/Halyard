@@ -1,9 +1,16 @@
 package com.ecsail.gui.tabs;
 
+import java.util.Collections;
+import java.util.Comparator;
+
+import com.ecsail.main.Paths;
+import com.ecsail.sql.SqlUpdate;
 import com.ecsail.sql.Sql_SelectMembership;
 import com.ecsail.structures.Object_Boat;
 import com.ecsail.structures.Object_MembershipList;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -144,6 +151,96 @@ public class TabBoatView extends Tab {
 		hbox9.setPadding(new Insets(0, 5, 5, 15)); 
 		hbox10.setPadding(new Insets(0, 5, 5, 15));
 		hbox11.setPadding(new Insets(0, 5, 5, 15));
+		
+		/////////////// LISTENERS ////////////////////
+		
+		bnameTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            //focus out
+            if (oldValue) {  // we have focused and unfocused
+            		//SqlUpdate.updateAddress(memAddressTextField.getText(),membership);
+            	SqlUpdate.updateBoat("BOAT_NAME", b.getBoat_id(), bnameTextField.getText());
+            }
+        });
+		
+		manufacturerTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            //focus out
+            if (oldValue) {  // we have focused and unfocused
+            		//SqlUpdate.updateAddress(memAddressTextField.getText(),membership);
+            	SqlUpdate.updateBoat("MANUFACTURER", b.getBoat_id(), manufacturerTextField.getText());
+            }
+        });
+		
+		yearTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            //focus out
+            if (oldValue) {  // we have focused and unfocused
+            		//SqlUpdate.updateAddress(memAddressTextField.getText(),membership);
+            	SqlUpdate.updateBoat("MANUFACTURE_YEAR", b.getBoat_id(), yearTextField.getText());
+            }
+        });
+
+		modelTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            //focus out
+            if (oldValue) {  // we have focused and unfocused
+            		//SqlUpdate.updateAddress(memAddressTextField.getText(),membership);
+            	SqlUpdate.updateBoat("MODEL", b.getBoat_id(), modelTextField.getText());
+            }
+        });
+		
+		registrationTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            //focus out
+            if (oldValue) {  // we have focused and unfocused
+            		//SqlUpdate.updateAddress(memAddressTextField.getText(),membership);
+            	SqlUpdate.updateBoat("REGISTRATION_NUM", b.getBoat_id(), registrationTextField.getText());
+            }
+        });
+		
+		sailNumberTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            //focus out
+            if (oldValue) {  // we have focused and unfocused
+            		//SqlUpdate.updateAddress(memAddressTextField.getText(),membership);
+            	SqlUpdate.updateBoat("SAIL_NUMBER", b.getBoat_id(), sailNumberTextField.getText());
+            }
+        });
+		
+		phrfTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            //focus out
+            if (oldValue) {  // we have focused and unfocused
+            		//SqlUpdate.updateAddress(memAddressTextField.getText(),membership);
+            	SqlUpdate.updateBoat("PHRF", b.getBoat_id(), phrfTextField.getText());
+            }
+        });
+		
+		lengthTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            //focus out
+            if (oldValue) {  // we have focused and unfocused
+            		//SqlUpdate.updateAddress(memAddressTextField.getText(),membership);
+            	SqlUpdate.updateBoat("LENGTH", b.getBoat_id(), lengthTextField.getText());
+            }
+        });
+		
+		weightTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            //focus out
+            if (oldValue) {  // we have focused and unfocused
+            		//SqlUpdate.updateAddress(memAddressTextField.getText(),membership);
+            	SqlUpdate.updateBoat("WEIGHT", b.getBoat_id(), weightTextField.getText());
+            }
+        });
+		
+		trailerCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected,
+					Boolean isNowSelected) {
+					SqlUpdate.updateBoat(b.getBoat_id(), isNowSelected);
+			}
+		});
+		
+		keelTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+            //focus out
+            if (oldValue) {  // we have focused and unfocused
+            		//SqlUpdate.updateAddress(memAddressTextField.getText(),membership);
+            	SqlUpdate.updateBoat("MODEL", b.getBoat_id(), keelTextField.getText());
+            }
+        });
 		
 		/////////////// SET CONTENT //////////////////
 		vboxBnameLabel.getChildren().add(new Label("Boat Name"));

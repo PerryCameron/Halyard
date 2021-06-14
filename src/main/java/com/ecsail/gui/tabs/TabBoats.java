@@ -6,8 +6,6 @@ import com.ecsail.main.Launcher;
 import com.ecsail.sql.SqlSelect;
 import com.ecsail.structures.Object_Boat;
 import com.ecsail.structures.Object_BoatList;
-import com.ecsail.structures.Object_MembershipList;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -20,7 +18,6 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.control.Label;
 
 public class TabBoats extends Tab {
 	ObservableList<Object_BoatList> boats = FXCollections.observableArrayList();
