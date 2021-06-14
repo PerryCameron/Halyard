@@ -1,9 +1,6 @@
 package com.ecsail.gui.tabs;
 
-import java.util.Collections;
-import java.util.Comparator;
-
-import com.ecsail.main.Paths;
+import com.ecsail.enums.KeelType;
 import com.ecsail.sql.SqlUpdate;
 import com.ecsail.sql.Sql_SelectMembership;
 import com.ecsail.structures.Object_Boat;
@@ -20,6 +17,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 
 public class TabBoatView extends Tab {
@@ -82,7 +80,7 @@ public class TabBoatView extends Tab {
 		TextField lengthTextField = new TextField();
 		TextField weightTextField = new TextField();
 		CheckBox  trailerCheckBox = new CheckBox("Has Trailer");
-		TextField keelTextField = new TextField();
+		ComboBox<KeelType>keelComboBox = new ComboBox<KeelType>();
 		///////////////  ATTRIBUTES ////////////////
 		
 		vboxBlue.setId("box-blue");
@@ -103,7 +101,7 @@ public class TabBoatView extends Tab {
 		phrfTextField.setPrefSize(150, 10);
 		lengthTextField.setPrefSize(150, 10);
 		weightTextField.setPrefSize(150, 10);
-		keelTextField.setPrefSize(150, 10);
+		keelComboBox.setPrefSize(150, 10);
 		
 		bnameTextField.setText(b.getBoat_name());
 		manufacturerTextField.setText(b.getManufacturer());
@@ -114,7 +112,9 @@ public class TabBoatView extends Tab {
 		phrfTextField.setText(b.getPhrf());
 		lengthTextField.setText(b.getLength());
 		weightTextField.setText(b.getWeight());
-		keelTextField.setText(b.getKeel());
+		trailerCheckBox.setSelected(b.isHasTrailer());
+		keelComboBox.getItems().setAll(KeelType.values());
+		keelComboBox.setValue(KeelType.getByCode(b.getKeel()));
 		
 		vboxBnameLabel.setPrefWidth(90);
 		vboxManufacturerLabel.setPrefWidth(90);
@@ -234,13 +234,10 @@ public class TabBoatView extends Tab {
 			}
 		});
 		
-		keelTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            //focus out
-            if (oldValue) {  // we have focused and unfocused
-            		//SqlUpdate.updateAddress(memAddressTextField.getText(),membership);
-            	SqlUpdate.updateBoat("MODEL", b.getBoat_id(), keelTextField.getText());
-            }
-        });
+		keelComboBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
+			SqlUpdate.updateBoat(b.getBoat_id(), newValue.getCode());
+			System.out.println("changed combo to " + newValue.getCode());
+        }); 
 		
 		/////////////// SET CONTENT //////////////////
 		vboxBnameLabel.getChildren().add(new Label("Boat Name"));
@@ -265,7 +262,7 @@ public class TabBoatView extends Tab {
 		vboxlengthBox.getChildren().add(lengthTextField);
 		vboxweightBox.getChildren().add(weightTextField);
 		vboxtrailerBox.getChildren().add(trailerCheckBox);
-		vboxkeelBox.getChildren().add(keelTextField);
+		vboxkeelBox.getChildren().add(keelComboBox);
 		
 		hbox1.getChildren().addAll(vboxBnameLabel,vboxBnameBox); // first name
 		hbox2.getChildren().addAll(vboxManufacturerLabel,vboxManufacturerBox);

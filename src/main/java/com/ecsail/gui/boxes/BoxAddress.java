@@ -138,12 +138,17 @@ public class BoxAddress extends HBox {
 	            }
 	        });
         
-        stateComboBox.valueProperty().addListener(new ChangeListener<String>() {
-            @Override 
-            public void changed(@SuppressWarnings("rawtypes") ObservableValue ov, String oldValue, String newValue) {
-                	SqlUpdate.updateState(newValue,membership);
-            }    
-        });
+        //stateComboBox.valueProperty().addListener(new ChangeListener<String>() {
+        //    @Override 
+        //    public void changed(ObservableValue ov, String oldValue, String newValue) {
+        //        	SqlUpdate.updateState(newValue,membership);
+        //    }    
+        //});
+        
+        stateComboBox.getSelectionModel().selectedItemProperty().addListener( (options, oldValue, newValue) -> {
+        	SqlUpdate.updateState(newValue,membership);
+            System.out.println(newValue);
+        }); 
         
 		///////////// SET CONTENT ////////////////////
         hbox1.getChildren().addAll(memAddress,memAddressTextField);
