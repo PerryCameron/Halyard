@@ -1,21 +1,27 @@
 package com.ecsail.gui.tabs;
 
+import java.util.Arrays;
+
 import com.ecsail.enums.KeelType;
 import com.ecsail.sql.SqlUpdate;
 import com.ecsail.sql.Sql_SelectMembership;
 import com.ecsail.structures.Object_Boat;
 import com.ecsail.structures.Object_MembershipList;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -24,15 +30,17 @@ public class TabBoatView extends Tab {
 	private ObservableList<Object_MembershipList> boatOwners;
 	/// need to add history to boat_owner table
 	
-	
 	public TabBoatView(String text, Object_Boat b) {
 		super(text);
-		this.boatOwners = Sql_SelectMembership.getBoatOwners(b.getBoat_id());
+		//this.boatOwners = Sql_SelectMembership.getBoatOwners(b.getBoat_id());
+		this.boatOwners = Sql_SelectMembership.getBoatOwnerRoster(b.getBoat_id());
+		TableView<Object_MembershipList> boatOwnerTableView = new TableView<>();
 		
 		VBox vboxGrey = new VBox();  // this is the vbox for organizing all the widgets
 		VBox vboxBlue = new VBox();
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
 		VBox vboxFieldsContainer = new VBox();
+		VBox vboxButtons = new VBox(); // holds phone buttons
 		
 		HBox hbox1 = new HBox(); // first name
 		HBox hbox2 = new HBox(); // last name
@@ -45,6 +53,8 @@ public class TabBoatView extends Tab {
 		HBox hbox9 = new HBox(); // Business
 		HBox hbox10 = new HBox(); // Birthday
 		HBox hbox11 = new HBox(); // Birthday
+		Region spacer = new Region();
+		HBox hboxTable = new HBox();
 		
 		VBox vboxBnameLabel = new VBox();
 		VBox vboxManufacturerLabel = new VBox();
@@ -81,7 +91,19 @@ public class TabBoatView extends Tab {
 		TextField weightTextField = new TextField();
 		CheckBox  trailerCheckBox = new CheckBox("Has Trailer");
 		ComboBox<KeelType>keelComboBox = new ComboBox<KeelType>();
+		
+		TableColumn<Object_MembershipList, Integer> col1 = new TableColumn<Object_MembershipList, Integer>("MEM");
+		TableColumn<Object_MembershipList, String> col2 = new TableColumn<Object_MembershipList, String>("Last Name");
+		TableColumn<Object_MembershipList, String> col3 = new TableColumn<Object_MembershipList, String>("First Name");
+		Button boatOwnerAdd = new Button("Add");
+		Button boatOwnerDelete = new Button("Delete");
+
 		///////////////  ATTRIBUTES ////////////////
+		boatOwnerAdd.setPrefWidth(60);
+		boatOwnerDelete.setPrefWidth(60);
+		vboxButtons.setPrefWidth(80);
+		vboxButtons.setSpacing(5); // spacing between buttons
+		
 		
 		vboxBlue.setId("box-blue");
 		vboxBlue.setPadding(new Insets(10,10,10,10));
@@ -91,6 +113,9 @@ public class TabBoatView extends Tab {
 		VBox.setVgrow(vboxGrey, Priority.ALWAYS);
 		HBox.setHgrow(vboxGrey, Priority.ALWAYS);
 		VBox.setVgrow(vboxPink, Priority.ALWAYS);
+		HBox.setHgrow(boatOwnerTableView, Priority.ALWAYS);
+		
+		spacer.setPrefHeight(50);
 		
 		bnameTextField.setPrefSize(150, 10);
 		manufacturerTextField.setPrefSize(150, 10);
@@ -152,7 +177,36 @@ public class TabBoatView extends Tab {
 		hbox10.setPadding(new Insets(0, 5, 5, 15));
 		hbox11.setPadding(new Insets(0, 5, 5, 15));
 		
+		boatOwnerTableView.setItems(boatOwners);
+		boatOwnerTableView.setFixedCellSize(30);
+		boatOwnerTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY );
+		
+		col1.setCellValueFactory(new PropertyValueFactory<Object_MembershipList, Integer>("membershipId"));
+		col2.setCellValueFactory(new PropertyValueFactory<Object_MembershipList, String>("lname"));
+		col3.setCellValueFactory(new PropertyValueFactory<Object_MembershipList, String>("fname"));
+		
+		/// sets width of columns by percentage
+		col1.setMaxWidth( 1f * Integer.MAX_VALUE * 10 );   // Mem 5%
+		col2.setMaxWidth( 1f * Integer.MAX_VALUE * 45 );  // Join Date 15%
+		col3.setMaxWidth( 1f * Integer.MAX_VALUE * 45 );   // Type
+
+		
 		/////////////// LISTENERS ////////////////////
+		
+		boatOwnerAdd.setOnAction((event) -> {
+			//	int phone_id = SqlSelect.getCount("phone", "phone_id"); // get last phone_id number
+			//	phone_id++; // increase to first available number
+			//	if (SqlInsert.addRecord(phone_id, person.getP_id(), true, "new phone", "")) // if added with no errors
+			//		phone.add(new Object_Phone(phone_id, person.getP_id(), true, "new phone", "")); // lets add it to our GUI
+			boatOwners.add(new Object_MembershipList());
+			});
+        
+        boatOwnerDelete.setOnAction((event) -> {
+            //	int selectedIndex = phoneTableView.getSelectionModel().getSelectedIndex();
+            //		if(selectedIndex >= 0)
+            //			if(SqlDelete.deletePhone(phone.get(selectedIndex)))  // if it is properly deleted in our database
+            //				phoneTableView.getItems().remove(selectedIndex); // remove it from our GUI
+        });
 		
 		bnameTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
             //focus out
@@ -240,6 +294,11 @@ public class TabBoatView extends Tab {
         }); 
 		
 		/////////////// SET CONTENT //////////////////
+		boatOwnerTableView.getColumns()
+		.addAll(Arrays.asList(col1, col2, col3));
+		vboxButtons.getChildren().addAll(boatOwnerAdd,boatOwnerDelete);
+		hboxTable.getChildren().addAll(boatOwnerTableView,vboxButtons);
+		
 		vboxBnameLabel.getChildren().add(new Label("Boat Name"));
 		vboxManufacturerLabel.getChildren().add(new Label("Manufacturer"));
 		vboxYearLabel.getChildren().add(new Label("Year"));
@@ -276,7 +335,7 @@ public class TabBoatView extends Tab {
 		hbox10.getChildren().addAll(vboxtrailerLabel,vboxtrailerBox);
 		hbox11.getChildren().addAll(vboxkeelLabel,vboxkeelBox);
 
-		vboxFieldsContainer.getChildren().addAll(hbox1,hbox2,hbox3,hbox4,hbox5,hbox6,hbox7,hbox8,hbox9,hbox10,hbox11);
+		vboxFieldsContainer.getChildren().addAll(hbox1,hbox2,hbox3,hbox4,hbox5,hbox6,hbox7,hbox8,hbox9,hbox10,hbox11,spacer,hboxTable);
 		vboxGrey.getChildren().add(vboxFieldsContainer);
 		vboxBlue.getChildren().add(vboxPink);
 		vboxPink.getChildren().add(vboxGrey);

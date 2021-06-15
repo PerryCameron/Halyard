@@ -632,4 +632,37 @@ public class Sql_SelectMembership {
 		}
 		return rosters;
 	}
+	
+	/// may be a duplicate from above
+	public static ObservableList<Object_MembershipList> getBoatOwnerRoster(int boat_id) {
+		ObservableList<Object_MembershipList> boatOwners = FXCollections.observableArrayList();
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
+					"select * from boat_owner bo left join membership m on "
+					+ "bo.MS_ID=m.MS_ID left join membership_id id on m.MS_ID=id.MS_ID "
+					+ "left join person p on m.P_ID=p.P_ID where BOAT_ID="+boat_id+" group by m.MS_ID"));
+			while (rs.next()) {
+				boatOwners.add(new Object_MembershipList(
+						rs.getInt("MS_ID"), 
+						rs.getInt("P_ID"),
+						rs.getInt("MEMBERSHIP_ID"), 
+						rs.getString("JOIN_DATE"), 
+						rs.getString("MEM_TYPE"), 
+						"", 
+						rs.getString("L_NAME"),
+						rs.getString("F_NAME"), 
+						0, 
+						rs.getString("ADDRESS"), 
+						rs.getString("CITY"), 
+						rs.getString("STATE"),
+						rs.getString("ZIP"),
+						rs.getString("FISCAL_YEAR")));
+			}
+			stmt.close();
+		} catch (SQLException e) {
+			new Dialogue_ErrorSQL(e,"Unable to select list of boat owners","See below for details");
+		}
+		return boatOwners;
+	}
 }

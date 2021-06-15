@@ -20,7 +20,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -169,23 +168,18 @@ public class BoxPhone extends HBox {
 		
 		/////////////////// LISTENERS //////////////////////////////
 		
-		phoneAdd.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
+		phoneAdd.setOnAction((event) -> {
 				int phone_id = SqlSelect.getCount("phone", "phone_id"); // get last phone_id number
 				phone_id++; // increase to first available number
 				if (SqlInsert.addRecord(phone_id, person.getP_id(), true, "new phone", "")) // if added with no errors
 					phone.add(new Object_Phone(phone_id, person.getP_id(), true, "new phone", "")); // lets add it to our GUI
-				}
 			});
         
-        phoneDelete.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
+        phoneDelete.setOnAction((event) -> {
             	int selectedIndex = phoneTableView.getSelectionModel().getSelectedIndex();
             		if(selectedIndex >= 0)
             			if(SqlDelete.deletePhone(phone.get(selectedIndex)))  // if it is properly deleted in our database
             				phoneTableView.getItems().remove(selectedIndex); // remove it from our GUI
-            }
         });
 		
 		///////////////////  SET CONTENT  ///////////////////////
