@@ -641,7 +641,7 @@ public class Sql_SelectMembership {
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
 					"select * from boat_owner bo left join membership m on "
 					+ "bo.MS_ID=m.MS_ID left join membership_id id on m.MS_ID=id.MS_ID "
-					+ "left join person p on m.P_ID=p.P_ID where BOAT_ID="+boat_id+" group by m.MS_ID"));
+					+ "left join person p on m.P_ID=p.P_ID where BOAT_ID="+boat_id+" and id.FISCAL_YEAR='" +Paths.getYear() + "'"));
 			while (rs.next()) {
 				boatOwners.add(new Object_MembershipList(
 						rs.getInt("MS_ID"), 
