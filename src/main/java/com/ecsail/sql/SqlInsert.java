@@ -246,4 +246,14 @@ public class SqlInsert {
 			new Dialogue_ErrorSQL(e,"Unable to create new row","See below for details");
 		}
 	}
+	
+	public static void addBoatOwner(int boat_id,int ms_id) {
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			stmt.execute(Main.console.setRegexColor("INSERT INTO boat_owner () VALUES (" + ms_id + "," + boat_id +")"));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			new Dialogue_ErrorSQL(e,"Unable to create new row","See below for details");
+		}
+	}
 }

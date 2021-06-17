@@ -3,6 +3,8 @@ package com.ecsail.gui.tabs;
 import java.util.Arrays;
 
 import com.ecsail.enums.KeelType;
+import com.ecsail.gui.dialogues.Dialogue_ChooseMember;
+import com.ecsail.sql.SqlDelete;
 import com.ecsail.sql.SqlUpdate;
 import com.ecsail.sql.Sql_SelectMembership;
 import com.ecsail.structures.Object_Boat;
@@ -198,14 +200,15 @@ public class TabBoatView extends Tab {
 			//	phone_id++; // increase to first available number
 			//	if (SqlInsert.addRecord(phone_id, person.getP_id(), true, "new phone", "")) // if added with no errors
 			//		phone.add(new Object_Phone(phone_id, person.getP_id(), true, "new phone", "")); // lets add it to our GUI
-			boatOwners.add(new Object_MembershipList());
+			new Dialogue_ChooseMember(boatOwners, b.getBoat_id());
+			//boatOwners.add(new Object_MembershipList());
 			});
         
         boatOwnerDelete.setOnAction((event) -> {
-            //	int selectedIndex = phoneTableView.getSelectionModel().getSelectedIndex();
-            //		if(selectedIndex >= 0)
-            //			if(SqlDelete.deletePhone(phone.get(selectedIndex)))  // if it is properly deleted in our database
-            //				phoneTableView.getItems().remove(selectedIndex); // remove it from our GUI
+            int selectedIndex = boatOwnerTableView.getSelectionModel().getSelectedIndex();
+            		if(selectedIndex >= 0)
+            			if(SqlDelete.deleteBoatOwner(b.getBoat_id(),boatOwners.get(selectedIndex).getMsid()))  // if it is properly deleted in our database
+            boatOwnerTableView.getItems().remove(selectedIndex); // remove it from our GUI
         });
 		
 		bnameTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {

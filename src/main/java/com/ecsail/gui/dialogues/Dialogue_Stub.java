@@ -4,6 +4,8 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -22,7 +24,9 @@ public class Dialogue_Stub extends Stage {
 		vboxPink.setPadding(new Insets(3, 3, 3, 3)); // spacing to make pink from around table
 		vboxPink.setId("box-pink");
 		// vboxGrey.setId("slip-box");
-		vboxGrey.setPrefHeight(688);
+		VBox.setVgrow(vboxGrey, Priority.ALWAYS);
+		VBox.setVgrow(vboxPink, Priority.ALWAYS);
+		HBox.setHgrow(vboxPink, Priority.ALWAYS);
 		scene.getStylesheets().add("stylesheet.css");
 		vboxGrey.getChildren().add(new Label("Stubbed in Window"));
 		vboxBlue.getChildren().add(vboxPink);

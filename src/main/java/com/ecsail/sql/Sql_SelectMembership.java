@@ -573,6 +573,40 @@ public class Sql_SelectMembership {
 		return rosters;
 	}
 	
+	public static Object_MembershipList getMembershipByMembershipId(String membership_id) {  /// for SQL Script Maker
+		Object_MembershipList membership = null;
+		try {
+			Statement stmt = ConnectDatabase.connection.createStatement();
+			ResultSet rs;
+			rs = stmt.executeQuery(Main.console.setRegexColor(
+					"select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,id.FISCAL_YEAR,m.JOIN_DATE,"
+					+ "id.MEM_TYPE,p.L_NAME,p.F_NAME,m.address,m.city,m.state,m.zip from "
+					+ "membership m left join person p on m.P_ID=p.P_ID left join membership_id "
+					+ "id on m.MS_ID=id.MS_ID where id.FISCAL_YEAR='2021' and membership_id='" + membership_id + "'"));
+			while (rs.next()) {
+				membership = new Object_MembershipList(
+						rs.getInt("MS_ID"), 
+						rs.getInt("P_ID"),
+						rs.getInt("MEMBERSHIP_ID"), 
+						rs.getString("JOIN_DATE"), 
+						rs.getString("MEM_TYPE"), 
+						"", 
+						rs.getString("L_NAME"),
+						rs.getString("F_NAME"), 
+						0, 
+						rs.getString("ADDRESS"), 
+						rs.getString("CITY"), 
+						rs.getString("STATE"),
+						rs.getString("ZIP"),
+						rs.getString("FISCAL_YEAR"));
+			}
+			stmt.close();
+		} catch (SQLException e) {
+			new Dialogue_ErrorSQL(e,"Unable to select roster","See below for details");
+		}
+		return membership;
+	}
+	
 	public static ObservableList<Object_Membership> getMemberships() {  /// for SQL Script Maker
 		ObservableList<Object_Membership> memberships = FXCollections.observableArrayList();
 		try {

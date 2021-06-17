@@ -321,7 +321,21 @@ public class SqlDelete {
 			stmt.execute(Main.console.setRegexColor("delete from payment where pay_id='" + p.getPay_id() + "';"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			new Dialogue_ErrorSQL(e,"Unable to Delete","See below for details");
+			new Dialogue_ErrorSQL(e,"Unable to Delete Payment","See below for details");
 		}	
+	}
+	
+	public static boolean deleteBoatOwner(int boat_id, int ms_id) {
+		boolean noError = false;
+		Statement stmt;
+		try {
+			stmt = ConnectDatabase.connection.createStatement();
+			stmt.execute(Main.console.setRegexColor("delete from boat_owner where boat_id=" + boat_id + " and ms_id=" + ms_id));
+			noError = true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			new Dialogue_ErrorSQL(e,"Unable to Delete Boat Owner","See below for details");
+		}
+		return noError;	
 	}
 }

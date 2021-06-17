@@ -307,7 +307,7 @@ private TableView<Object_Boat> boatTableView;
     boatDelete.setOnAction((event) -> {
         	int selectedIndex = boatTableView.getSelectionModel().getSelectedIndex();
         		if(selectedIndex >= 0) // is a row selected?
-        			if(SqlDelete.deleteBoat(boats.get(selectedIndex), membership)) // if we successfully delete from DB
+        			if(SqlDelete.deleteBoatOwner(boats.get(selectedIndex).getBoat_id(), membership.getMsid())) // if we successfully delete from DB
         				boatTableView.getItems().remove(selectedIndex); // remove from GUI
     });
     
