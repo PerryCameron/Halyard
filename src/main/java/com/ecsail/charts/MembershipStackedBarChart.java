@@ -16,6 +16,7 @@ public class MembershipStackedBarChart extends StackedBarChart<String,Number> {
 	public MembershipStackedBarChart(ArrayList<Object_Stats> stats) {
 		super(new CategoryAxis(), new NumberAxis());
 		this.stats = stats;
+		//this.setAnimated(true);
 	        setTitle("Active Memberships By Year");
 			XYChart.Series<String,Number> seriesFamily = new Series<String, Number>();
 			XYChart.Series<String,Number> seriesRegular = new Series<String, Number>();
@@ -34,6 +35,13 @@ public class MembershipStackedBarChart extends StackedBarChart<String,Number> {
 	    		seriesLakeAssociate.getData().add(new XYChart.Data<>(s.getFiscalYear() + "",s.getLakeAssociates()));
 	    		seriesLifeMember.getData().add(new XYChart.Data<>(s.getFiscalYear() + "",s.getLifeMembers()));
 	        }
+	        ////////////////  LISTENERS  ///////////////
+	        //seriesFamily.getNode().setOnMouseClicked(e -> 
+            //System.out.println(seriesFamily.getData()));
+	        //////////////// SET CONTENT /////////////
+	        
 	        getData().addAll(Arrays.asList(seriesFamily,seriesRegular,seriesSocial,seriesLakeAssociate,seriesLifeMember));
+
+	
 	}
 }

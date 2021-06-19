@@ -1,97 +1,27 @@
 package com.ecsail.structures;
 
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class Object_BoatList {
+public class Object_BoatList extends Object_Boat{
 	
-	private IntegerProperty boat_id;
-	private IntegerProperty ms_id;
-	private StringProperty manufacturer;
 	private IntegerProperty membership_id;
 	private StringProperty lname;
 	private StringProperty fname;
-	private StringProperty manufacture_year;
-	private StringProperty registration_num;
-	private StringProperty model;
-	private StringProperty boat_name;
-	private StringProperty sail_number;
-	private BooleanProperty hasTrailer;
-	private StringProperty length;
-	private StringProperty weight;
-	private StringProperty keel;
-	private StringProperty phrf;
 	
-	public Object_BoatList(Integer boat_id, Integer ms_id, String manufacturer, Integer membership_id, String lname, String fname, String manufacture_year,
+	public Object_BoatList(Integer boat_id, Integer ms_id, String manufacturer, String manufacture_year,
 			String registration_num, String model, String boat_name, String sail_number,
-			Boolean hasTrailer, String length, String weight, String keel, String phrf) {
-
-		this.boat_id = new SimpleIntegerProperty(boat_id);
-		this.ms_id = new SimpleIntegerProperty(ms_id);
-		this.manufacturer = new SimpleStringProperty(manufacturer);
+			Boolean hasTrailer, String length, String weight, String keel, String phrf,
+			String draft, String beam, String lwl, Integer membership_id, String lname, String fname) {
+		
+		super(boat_id, ms_id, manufacturer, manufacture_year, registration_num, model, boat_name,
+				sail_number, hasTrailer, length, weight, keel, phrf, draft, beam, lwl);
 		this.membership_id = new SimpleIntegerProperty(membership_id);
 		this.lname = new SimpleStringProperty(lname);
 		this.fname = new SimpleStringProperty(fname);
-		this.manufacture_year = new SimpleStringProperty(manufacture_year);
-		this.registration_num = new SimpleStringProperty(registration_num);
-		this.model = new SimpleStringProperty(model);
-		this.boat_name = new SimpleStringProperty(boat_name);
-		this.sail_number = new SimpleStringProperty(sail_number);
-		this.hasTrailer = new SimpleBooleanProperty(hasTrailer);
-		this.length = new SimpleStringProperty(length);
-		this.weight = new SimpleStringProperty(weight);
-		this.keel = new SimpleStringProperty(keel);
-		this.phrf = new SimpleStringProperty(phrf);
 	}
-
-	public final IntegerProperty boat_idProperty() {
-		return this.boat_id;
-	}
-	
-
-	public final int getBoat_id() {
-		return this.boat_idProperty().get();
-	}
-	
-
-	public final void setBoat_id(final int boat_id) {
-		this.boat_idProperty().set(boat_id);
-	}
-	
-
-	public final IntegerProperty ms_idProperty() {
-		return this.ms_id;
-	}
-	
-
-	public final int getMs_id() {
-		return this.ms_idProperty().get();
-	}
-	
-
-	public final void setMs_id(final int ms_id) {
-		this.ms_idProperty().set(ms_id);
-	}
-	
-
-	public final StringProperty manufacturerProperty() {
-		return this.manufacturer;
-	}
-	
-
-	public final String getManufacturer() {
-		return this.manufacturerProperty().get();
-	}
-	
-
-	public final void setManufacturer(final String manufacturer) {
-		this.manufacturerProperty().set(manufacturer);
-	}
-	
 
 	public final IntegerProperty membership_idProperty() {
 		return this.membership_id;
@@ -138,159 +68,5 @@ public class Object_BoatList {
 	}
 	
 
-	public final StringProperty manufacture_yearProperty() {
-		return this.manufacture_year;
-	}
-	
 
-	public final String getManufacture_year() {
-		return this.manufacture_yearProperty().get();
-	}
-	
-
-	public final void setManufacture_year(final String manufacture_year) {
-		this.manufacture_yearProperty().set(manufacture_year);
-	}
-	
-
-	public final StringProperty registration_numProperty() {
-		return this.registration_num;
-	}
-	
-
-	public final String getRegistration_num() {
-		return this.registration_numProperty().get();
-	}
-	
-
-	public final void setRegistration_num(final String registration_num) {
-		this.registration_numProperty().set(registration_num);
-	}
-	
-
-	public final StringProperty modelProperty() {
-		return this.model;
-	}
-	
-
-	public final String getModel() {
-		return this.modelProperty().get();
-	}
-	
-
-	public final void setModel(final String model) {
-		this.modelProperty().set(model);
-	}
-	
-
-	public final StringProperty boat_nameProperty() {
-		return this.boat_name;
-	}
-	
-
-	public final String getBoat_name() {
-		return this.boat_nameProperty().get();
-	}
-	
-
-	public final void setBoat_name(final String boat_name) {
-		this.boat_nameProperty().set(boat_name);
-	}
-	
-
-	public final StringProperty sail_numberProperty() {
-		return this.sail_number;
-	}
-	
-
-	public final String getSail_number() {
-		return this.sail_numberProperty().get();
-	}
-	
-
-	public final void setSail_number(final String sail_number) {
-		this.sail_numberProperty().set(sail_number);
-	}
-	
-
-	public final BooleanProperty hasTrailerProperty() {
-		return this.hasTrailer;
-	}
-	
-
-	public final boolean isHasTrailer() {
-		return this.hasTrailerProperty().get();
-	}
-	
-
-	public final void setHasTrailer(final boolean hasTrailer) {
-		this.hasTrailerProperty().set(hasTrailer);
-	}
-	
-
-	public final StringProperty lengthProperty() {
-		return this.length;
-	}
-	
-
-	public final String getLength() {
-		return this.lengthProperty().get();
-	}
-	
-
-	public final void setLength(final String length) {
-		this.lengthProperty().set(length);
-	}
-	
-
-	public final StringProperty weightProperty() {
-		return this.weight;
-	}
-	
-
-	public final String getWeight() {
-		return this.weightProperty().get();
-	}
-	
-	public final void setWeight(final String weight) {
-		this.weightProperty().set(weight);
-	}
-	
-	public final StringProperty keelProperty() {
-		return this.keel;
-	}
-	
-
-	public final String getKeel() {
-		return this.keelProperty().get();
-	}
-	
-
-	public final void setKeel(final String keel) {
-		this.keelProperty().set(keel);
-	}
-	
-
-	public final StringProperty phrfProperty() {
-		return this.phrf;
-	}
-	
-
-	public final String getPhrf() {
-		return this.phrfProperty().get();
-	}
-	
-
-	public final void setPhrf(final String phrf) {
-		this.phrfProperty().set(phrf);
-	}
-
-	@Override
-	public String toString() {
-		return "Object_BoatList [boat_id=" + boat_id + ", ms_id=" + ms_id + ", manufacturer=" + manufacturer
-				+ ", membership_id=" + membership_id + ", lname=" + lname + ", fname=" + fname + ", manufacture_year="
-				+ manufacture_year + ", registration_num=" + registration_num + ", model=" + model + ", boat_name="
-				+ boat_name + ", sail_number=" + sail_number + ", hasTrailer=" + hasTrailer + ", length=" + length
-				+ ", weight=" + weight + ", keel=" + keel + ", phrf=" + phrf + "]";
-	}
 }

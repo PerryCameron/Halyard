@@ -835,7 +835,11 @@ public class SqlSelect {
 						rs.getString("LENGTH"), 
 						rs.getString("WEIGHT"), 
 						rs.getString("KEEL"),
-						rs.getString("PHRF")));
+						rs.getString("PHRF"), 
+						rs.getString("DRAFT"), 
+						rs.getString("BEAM"),
+						rs.getString("LWL")));
+						
 			}
 			stmt.close();
 		} catch (SQLException e) {
@@ -861,10 +865,7 @@ public class SqlSelect {
 				thisBoat.add(new Object_BoatList(
 						rs.getInt("BOAT_ID"), 
 						rs.getInt("MS_ID"),
-						rs.getString("MANUFACTURER"),
-						rs.getInt("MEMBERSHIP_ID"),
-						rs.getString("L_NAME"),
-						rs.getString("F_NAME"), 
+						rs.getString("MANUFACTURER"), 
 						rs.getString("MANUFACTURE_YEAR"), 
 						rs.getString("REGISTRATION_NUM"), 
 						rs.getString("MODEL"),
@@ -874,7 +875,13 @@ public class SqlSelect {
 						rs.getString("LENGTH"), 
 						rs.getString("WEIGHT"), 
 						rs.getString("KEEL"),
-						rs.getString("PHRF")));
+						rs.getString("PHRF"), 
+						rs.getString("DRAFT"), 
+						rs.getString("BEAM"),
+						rs.getString("LWL"),
+						rs.getInt("MEMBERSHIP_ID"),
+						rs.getString("L_NAME"),
+						rs.getString("F_NAME")));
 			}
 			stmt.close();
 		} catch (SQLException e) {
@@ -906,7 +913,7 @@ public class SqlSelect {
 		Statement stmt = ConnectDatabase.connection.createStatement();
 		ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select b.BOAT_ID, bo.MS_ID, b.MANUFACTURER"
 				+ ", b.MANUFACTURE_YEAR, b.REGISTRATION_NUM, b.MODEL, b.BOAT_NAME, b.SAIL_NUMBER"
-				+ ", b.HAS_TRAILER, b.LENGTH, b.WEIGHT, b.KEEL, b.PHRF from boat b inner join boat_owner bo using (boat_id) where ms_id='" + ms_id + "';"));
+				+ ", b.HAS_TRAILER, b.LENGTH, b.WEIGHT, b.KEEL, b.PHRF, b.DRAFT, b.BEAM, b.LWL from boat b inner join boat_owner bo using (boat_id) where ms_id='" + ms_id + "';"));
 		while (rs.next()) {
 			thisBoat.add(new Object_Boat(
 					rs.getInt("BOAT_ID"),
@@ -921,7 +928,10 @@ public class SqlSelect {
 					rs.getString("LENGTH"),
 					rs.getString("WEIGHT"),
 					rs.getString("KEEL"),
-					rs.getString("PHRF")));
+					rs.getString("PHRF"), 
+					rs.getString("DRAFT"), 
+					rs.getString("BEAM"),
+					rs.getString("LWL")));
 		}
 		stmt.close();
 		} catch (SQLException e) {
@@ -937,7 +947,7 @@ public class SqlSelect {
 		Statement stmt = ConnectDatabase.connection.createStatement();
 		ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select b.BOAT_ID, bo.MS_ID, b.MANUFACTURER"
 				+ ", b.MANUFACTURE_YEAR, b.REGISTRATION_NUM, b.MODEL, b.BOAT_NAME, b.SAIL_NUMBER"
-				+ ", b.HAS_TRAILER, b.LENGTH, b.WEIGHT, b.KEEL, b.PHRF from boat b inner join boat_owner bo using (boat_id) where boat_id='" + boat_id + "';"));
+				+ ", b.HAS_TRAILER, b.LENGTH, b.WEIGHT, b.KEEL, b.PHRF, b.DRAFT, b.BEAM, b.LWL from boat b inner join boat_owner bo using (boat_id) where boat_id='" + boat_id + "';"));
 		while (rs.next()) {
 			thisBoat = new Object_Boat(
 					rs.getInt("BOAT_ID"),
@@ -952,7 +962,10 @@ public class SqlSelect {
 					rs.getString("LENGTH"),
 					rs.getString("WEIGHT"),
 					rs.getString("KEEL"),
-					rs.getString("PHRF"));
+					rs.getString("PHRF"), 
+					rs.getString("DRAFT"), 
+					rs.getString("BEAM"),
+					rs.getString("LWL"));
 		}
 		stmt.close();
 		} catch (SQLException e) {
@@ -976,7 +989,10 @@ public class SqlSelect {
 						rs.getString("MANUFACTURE_YEAR"), rs.getString("REGISTRATION_NUM"), rs.getString("MODEL"),
 						rs.getString("BOAT_NAME"), rs.getString("SAIL_NUMBER"), rs.getBoolean("HAS_TRAILER"),
 						rs.getString("LENGTH"), rs.getString("WEIGHT"), rs.getString("KEEL"),
-						rs.getString("PHRF")));
+						rs.getString("PHRF"), 
+						rs.getString("DRAFT"), 
+						rs.getString("BEAM"),
+						rs.getString("LWL")));
 			}
 			stmt.close();
 		} catch (SQLException e) {

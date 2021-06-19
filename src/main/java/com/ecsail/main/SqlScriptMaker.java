@@ -390,7 +390,10 @@ public class SqlScriptMaker {
 				+ getCorrectString(boa.getLength()) + ","
 				+ getCorrectString(boa.getWeight()) + ","
 				+ getCorrectString(boa.getKeel()) + ","
-				+ getCorrectString(boa.getPhrf())
+				+ getCorrectString(boa.getPhrf()) + ","
+				+ getCorrectString(boa.getDraft()) + ","
+				+ getCorrectString(boa.getBeam()) + ","
+				+ getCorrectString(boa.getLwl())
 				+ ");\n";
 	}
 	
