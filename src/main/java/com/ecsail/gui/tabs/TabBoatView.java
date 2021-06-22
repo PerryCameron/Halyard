@@ -1,5 +1,7 @@
 package com.ecsail.gui.tabs;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.Arrays;
 
 import com.ecsail.enums.KeelType;
@@ -20,9 +22,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -39,12 +42,13 @@ public class TabBoatView extends Tab {
 		this.boatOwners = Sql_SelectMembership.getBoatOwnerRoster(b.getBoat_id());
 		TableView<Object_MembershipList> boatOwnerTableView = new TableView<>();
 		
-		VBox vboxGrey = new VBox();  // this is the vbox for organizing all the widgets
-		VBox vboxBlue = new VBox();
+		HBox hboxGrey = new HBox();  // this is the hbox for holding all content
+		VBox vboxBlue = new VBox();  // creates blue boarder around content
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
-		VBox vboxFieldsContainer = new VBox();
+		VBox vboxLeftContainer = new VBox();  // contains boxes on left side
+		VBox vboxRightContainer = new VBox();  // contains boxes on left side
 		VBox vboxButtons = new VBox(); // holds phone buttons
-		VBox vboxTableFrame = new VBox();
+		VBox vboxTableFrame = new VBox(); // holds table
 		VBox vboxInformationBackgroundColor = new VBox();
 		VBox vboxTableBackgroundColor = new VBox();
 		
@@ -62,7 +66,7 @@ public class TabBoatView extends Tab {
 		HBox hbox12 = new HBox();     // Draft
 		HBox hbox13 = new HBox();     // Beam
 		HBox hbox14 = new HBox();     // lwl
-		//Region spacer = new Region(); 
+
 		HBox hboxTable = new HBox();
 		
 		VBox vboxBnameLabel = new VBox();
@@ -111,36 +115,58 @@ public class TabBoatView extends Tab {
 		TextField lwlTextField = new TextField();
 		TitledPane ownerTitlePane = new TitledPane();
 		TitledPane boatInfoTitlePane = new TitledPane();
-		
+		VBox vboxPicture = new VBox();
+        ImageView imageView = new ImageView();
+
 		TableColumn<Object_MembershipList, Integer> col1 = new TableColumn<Object_MembershipList, Integer>("MEM");
 		TableColumn<Object_MembershipList, String> col2 = new TableColumn<Object_MembershipList, String>("Last Name");
 		TableColumn<Object_MembershipList, String> col3 = new TableColumn<Object_MembershipList, String>("First Name");
 		Button boatOwnerAdd = new Button("Add");
 		Button boatOwnerDelete = new Button("Delete");
-
+		FileInputStream input = null;
+		try {
+			input = new FileInputStream("C:/Users/pcame/Documents/ECSC/Boats/msid100/IMG_1115.jpeg");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//String localUrl = "C:/Users/pcame/Documents/ECSC/Boats/msid100/IMG_1115.jpeg";
+		//localUrl = file.toURI().toURL().toString();
+		Image image = new Image(input);
 		///////////////  ATTRIBUTES ////////////////
+        //imageView.setFitWidth(startWidth);
+        imageView.setPreserveRatio(true);
+		
 		boatOwnerAdd.setPrefWidth(60);
 		boatOwnerDelete.setPrefWidth(60);
 		vboxButtons.setPrefWidth(80);
-		vboxButtons.setSpacing(5); // spacing between buttons
-		vboxFieldsContainer.setMaxWidth(350);
+		vboxLeftContainer.setMaxWidth(350);
 		
 		vboxBlue.setId("box-blue");
 		vboxPink.setId("box-pink");
 		vboxTableBackgroundColor.setId("box-grey");
 		vboxInformationBackgroundColor.setId("box-grey");
 		vboxTableFrame.setId("box-pink");
+		
+		imageView.maxWidth(630);
+		imageView.setFitWidth(630);
+		
 
 		//vboxGrey.setId("slip-box");
-		VBox.setVgrow(vboxGrey, Priority.ALWAYS);
-		HBox.setHgrow(vboxGrey, Priority.ALWAYS);
+		VBox.setVgrow(hboxGrey, Priority.ALWAYS);
+		HBox.setHgrow(hboxGrey, Priority.ALWAYS);
 		VBox.setVgrow(vboxPink, Priority.ALWAYS);
 		HBox.setHgrow(boatOwnerTableView, Priority.ALWAYS);
+		VBox.setVgrow(ownerTitlePane, Priority.ALWAYS);
+		HBox.setHgrow(vboxRightContainer, Priority.ALWAYS);
 		
 		//spacer.setPrefHeight(50);
-		vboxFieldsContainer.setSpacing(10);
+		vboxLeftContainer.setSpacing(10);
+		vboxButtons.setSpacing(5); // spacing between buttons
+		hboxGrey.setSpacing(10);
 		
-		ownerTitlePane.setPrefHeight(130);
+		// sets size of table
+		//ownerTitlePane.setPrefHeight(130);
 		bnameTextField.setPrefSize(150, 10);
 		manufacturerTextField.setPrefSize(150, 10);
 		yearTextField.setPrefSize(150, 10);
@@ -367,6 +393,8 @@ public class TabBoatView extends Tab {
         });
 		
 		/////////////// SET CONTENT //////////////////
+		
+		/////////////////////// LEFT CONTAINER /////////////////////
 		boatOwnerTableView.getColumns()
 		.addAll(Arrays.asList(col1, col2, col3));
 		vboxTableFrame.getChildren().add(boatOwnerTableView);
@@ -420,10 +448,17 @@ public class TabBoatView extends Tab {
 		hbox14.getChildren().addAll(vboxLwlLabel,vboxLwlBox);
 		vboxInformationBackgroundColor.getChildren().addAll(hbox1,hbox2,hbox3,hbox4,hbox5,hbox6,hbox7,hbox8,hbox9,hbox10,hbox11,hbox12,hbox13,hbox14);
 		boatInfoTitlePane.setContent(vboxInformationBackgroundColor);
-		vboxFieldsContainer.getChildren().addAll(boatInfoTitlePane,ownerTitlePane);
-		vboxGrey.getChildren().add(vboxFieldsContainer);
+		vboxLeftContainer.getChildren().addAll(boatInfoTitlePane,ownerTitlePane);
+		
+		/////////////////////// RIGHT CONTAINER /////////////////////
+		imageView.setImage(image);
+		vboxPicture.getChildren().add(imageView);
+		vboxRightContainer.getChildren().add(vboxPicture);
+		
+		
+		hboxGrey.getChildren().addAll(vboxLeftContainer,vboxRightContainer);
 		vboxBlue.getChildren().add(vboxPink);
-		vboxPink.getChildren().add(vboxGrey);
+		vboxPink.getChildren().add(hboxGrey);
 		setContent(vboxBlue);
 	}
 }
