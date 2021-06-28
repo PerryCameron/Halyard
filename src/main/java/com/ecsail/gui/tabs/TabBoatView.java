@@ -149,7 +149,7 @@ public class TabBoatView extends Tab {
 		boatOwnerDelete.setPrefWidth(60);
 		vboxButtons.setPrefWidth(80);
 		vboxLeftContainer.setMaxWidth(350);
-		hboxPictureControls.setPrefHeight(250);
+		hboxPictureControls.setPrefHeight(40);
 		
 		vboxBlue.setId("box-blue");
 		vboxPink.setId("box-pink");
@@ -173,8 +173,8 @@ public class TabBoatView extends Tab {
 		HBox.setHgrow(vboxRightContainer, Priority.ALWAYS);
 		HBox.setHgrow(vboxPicture, Priority.ALWAYS);
 		
-		vboxPicture.setStyle("-fx-background-color: #e83115;");
-		hboxPictureControls.setStyle("-fx-background-color: #201ac9;");  // blue
+		//vboxPicture.setStyle("-fx-background-color: #e83115;");
+		//hboxPictureControls.setStyle("-fx-background-color: #201ac9;");  // blue
 		
 		//spacer.setPrefHeight(50);
 		vboxLeftContainer.setSpacing(10);
