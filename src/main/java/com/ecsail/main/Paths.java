@@ -1,7 +1,12 @@
 package com.ecsail.main;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Paths {
@@ -15,8 +20,28 @@ public class Paths {
 	public static final String SCRIPTS = System.getProperty("user.home") + "/.ecsc/scripts";
 	public static final String TUPLECOUNTS = System.getProperty("user.home") + "/.ecsc/tuples.ecs";
 	public static final String SLIPCHART = System.getProperty("user.home") + "/Documents/ECSC/SlipCharts";
-	public static final String DEFAULTPHOTO = "/personimg.png";
+	public static final String BOATDIR = System.getProperty("user.home") + "/Documents/ECSC/Boats";
+ 	public static final String DEFAULTPHOTO = "/personimg.png";
 	// "C:\\Users\\pcame\\Documents\\email.xlsx"
+	
+ 	private static boolean isDirEmpty(final Path directory) throws IOException {
+ 	    try(DirectoryStream<Path> dirStream = Files.newDirectoryStream(directory)) {
+ 	        return !dirStream.iterator().hasNext();
+ 	    }
+ 	}
+ 	
+	public static ArrayList<String> listFilesForFolder(final File folder) {
+		ArrayList<String> imageFiles = new ArrayList<String>();
+	    for (final File fileEntry : folder.listFiles()) {
+	      //  if (fileEntry.isDirectory()) {
+	      //      listFilesForFolder(fileEntry);
+	      //  } else {
+	        	imageFiles.add(fileEntry.getName());
+	      //      System.out.println(fileEntry.getName());
+	      //  }
+	    }
+		return imageFiles;    
+	}
 	
 	public static void checkPath(String path) {
 		File recordsDir = new File(path);
