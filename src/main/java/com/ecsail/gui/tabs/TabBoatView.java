@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.ArrayList;
 import com.ecsail.enums.KeelType;
+import com.ecsail.gui.boxes.BoxBoatNotes;
 import com.ecsail.gui.dialogues.Dialogue_ChooseMember;
 import com.ecsail.main.ImageViewPane;
 import com.ecsail.main.Paths;
@@ -47,9 +48,10 @@ public class TabBoatView extends Tab {
 		this.boatOwners = Sql_SelectMembership.getBoatOwnerRoster(b.getBoat_id());
 		TableView<Object_MembershipList> boatOwnerTableView = new TableView<>();
 		
-		HBox hboxGrey = new HBox();  // this is the hbox for holding all content
+		VBox vboxGrey = new VBox();  // this is the hbox for holding all content
 		VBox vboxBlue = new VBox();  // creates blue boarder around content
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
+		HBox hboxContainer = new HBox();
 		VBox vboxLeftContainer = new VBox();  // contains boxes on left side
 		VBox vboxRightContainer = new VBox();  // contains boxes on left side
 		VBox vboxButtons = new VBox(); // holds phone buttons
@@ -165,21 +167,21 @@ public class TabBoatView extends Tab {
 		imageView.setCache(true);
 		
 		//vboxGrey.setId("slip-box");
-		VBox.setVgrow(hboxGrey, Priority.ALWAYS);
-		HBox.setHgrow(hboxGrey, Priority.ALWAYS);
+		VBox.setVgrow(vboxGrey, Priority.ALWAYS);
+		HBox.setHgrow(vboxGrey, Priority.ALWAYS);
 		VBox.setVgrow(vboxPink, Priority.ALWAYS);
 		HBox.setHgrow(boatOwnerTableView, Priority.ALWAYS);
 		VBox.setVgrow(ownerTitlePane, Priority.ALWAYS);
 		HBox.setHgrow(vboxRightContainer, Priority.ALWAYS);
 		HBox.setHgrow(vboxPicture, Priority.ALWAYS);
 		
-		//vboxPicture.setStyle("-fx-background-color: #e83115;");
-		//hboxPictureControls.setStyle("-fx-background-color: #201ac9;");  // blue
+		vboxPicture.setStyle("-fx-background-color: #e83115;");
+		hboxPictureControls.setStyle("-fx-background-color: #201ac9;");  // blue
 		
 		//spacer.setPrefHeight(50);
 		vboxLeftContainer.setSpacing(10);
 		vboxButtons.setSpacing(5); // spacing between buttons
-		hboxGrey.setSpacing(10);
+		vboxGrey.setSpacing(10);
 		
 		// sets size of table
 		//ownerTitlePane.setPrefHeight(130);
@@ -487,10 +489,10 @@ public class TabBoatView extends Tab {
 		hboxPictureControls.getChildren().addAll(buttonReverse,buttonForward);
 		vboxRightContainer.getChildren().addAll(hboxPictureControls,vboxPicture);
 		
-		
-		hboxGrey.getChildren().addAll(vboxLeftContainer,vboxRightContainer);
+		hboxContainer.getChildren().addAll(vboxLeftContainer,vboxRightContainer);
+		vboxGrey.getChildren().addAll(hboxContainer, new BoxBoatNotes(b));
 		vboxBlue.getChildren().add(vboxPink);
-		vboxPink.getChildren().add(hboxGrey);
+		vboxPink.getChildren().add(vboxGrey);
 		setContent(vboxBlue);
 	}
 	
