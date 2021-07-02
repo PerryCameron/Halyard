@@ -50,7 +50,8 @@ public class BoxBoatNotes extends HBox {
 		buttonVBox.setSpacing(5);
 		buttonVBox.setPrefWidth(80);
 		hboxGrey.setSpacing(10);
-		
+		this.setPrefHeight(200);
+
 		
 		hboxGrey.setPadding(new Insets(5, 5, 5, 5));
 		vboxPink.setPadding(new Insets(2,2,2,2)); // spacing to make pink fram around table

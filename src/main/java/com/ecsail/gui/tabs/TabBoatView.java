@@ -152,6 +152,8 @@ public class TabBoatView extends Tab {
 		vboxButtons.setPrefWidth(80);
 		vboxLeftContainer.setMaxWidth(350);
 		hboxPictureControls.setPrefHeight(40);
+		vboxPicture.setPrefWidth(630);
+		vboxPicture.setPrefHeight(489);
 		
 		vboxBlue.setId("box-blue");
 		vboxPink.setId("box-pink");
@@ -161,7 +163,7 @@ public class TabBoatView extends Tab {
 		
 		//imageView.maxWidth(630);
 		//imageView.setFitWidth(700);
-		vboxPicture.setPrefWidth(630);
+		
 		imageView.setSmooth(true);
 		imageView.setPreserveRatio(true);
 		imageView.setCache(true);
@@ -171,9 +173,11 @@ public class TabBoatView extends Tab {
 		HBox.setHgrow(vboxGrey, Priority.ALWAYS);
 		VBox.setVgrow(vboxPink, Priority.ALWAYS);
 		HBox.setHgrow(boatOwnerTableView, Priority.ALWAYS);
-		VBox.setVgrow(ownerTitlePane, Priority.ALWAYS);
+		//VBox.setVgrow(ownerTitlePane, Priority.ALWAYS);
 		HBox.setHgrow(vboxRightContainer, Priority.ALWAYS);
 		HBox.setHgrow(vboxPicture, Priority.ALWAYS);
+		VBox.setVgrow(vboxPicture, Priority.ALWAYS);
+
 		
 		vboxPicture.setStyle("-fx-background-color: #e83115;");
 		hboxPictureControls.setStyle("-fx-background-color: #201ac9;");  // blue
@@ -272,6 +276,7 @@ public class TabBoatView extends Tab {
 		boatOwnerTableView.setItems(boatOwners);
 		boatOwnerTableView.setFixedCellSize(30);
 		boatOwnerTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY );
+		boatOwnerTableView.setPrefHeight(90);
 		
 		col1.setCellValueFactory(new PropertyValueFactory<Object_MembershipList, Integer>("membershipId"));
 		col2.setCellValueFactory(new PropertyValueFactory<Object_MembershipList, String>("lname"));
@@ -397,7 +402,7 @@ public class TabBoatView extends Tab {
 		
 		keelComboBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
 			SqlUpdate.updateBoat(b.getBoat_id(), newValue.getCode());
-			System.out.println("changed combo to " + newValue.getCode());
+			//System.out.println("changed combo to " + newValue.getCode());
         });
 		
 		draftTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
@@ -427,8 +432,7 @@ public class TabBoatView extends Tab {
 		/////////////// SET CONTENT //////////////////
 		
 		/////////////////////// LEFT CONTAINER /////////////////////
-		boatOwnerTableView.getColumns()
-		.addAll(Arrays.asList(col1, col2, col3));
+		boatOwnerTableView.getColumns().addAll(Arrays.asList(col1, col2, col3));
 		vboxTableFrame.getChildren().add(boatOwnerTableView);
 		vboxButtons.getChildren().addAll(boatOwnerAdd,boatOwnerDelete);
 		hboxTable.getChildren().addAll(vboxTableFrame,vboxButtons);
