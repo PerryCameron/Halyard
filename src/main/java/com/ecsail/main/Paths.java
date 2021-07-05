@@ -30,6 +30,15 @@ public class Paths {
  	    }
  	}
  	
+ 	public static String getFileExtension(File file) {
+ 	    String name = file.getName();
+ 	    int lastIndexOf = name.lastIndexOf(".");
+ 	    if (lastIndexOf == -1) {
+ 	        return ""; // empty extension
+ 	    }
+ 	    return name.substring(lastIndexOf);
+ 	}
+ 	
 	public static ArrayList<String> listFilesForFolder(final File folder) {
 		ArrayList<String> imageFiles = new ArrayList<String>();
 	    for (final File fileEntry : folder.listFiles()) {

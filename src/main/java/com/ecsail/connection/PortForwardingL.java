@@ -6,13 +6,14 @@ import javax.swing.*;
 // https://dentrassi.de/2015/07/13/programmatically-adding-a-host-key-with-jsch/
 public class PortForwardingL {
 	static String passwd;
-	
+	static JSch jsch = new JSch();
+	static Session session;
   
   public PortForwardingL (String host, String rhost, int lport,int rport, String user, String password) {    //int lport;
 	  PortForwardingL.passwd = password;
 
 		try {
-			JSch jsch = new JSch();
+			//JSch jsch 
 			jsch.setKnownHosts("/Users/parrishcameron/.ssh/known_hosts");
 
 			HostKeyRepository hkr = jsch.getHostKeyRepository();
@@ -26,7 +27,7 @@ public class PortForwardingL {
 				System.out.println("");
 			}
       
-      Session session=jsch.getSession(user, host, 22);
+      session=jsch.getSession(user, host, 22);
       UserInfo ui=new MyUserInfo();
       session.setUserInfo(ui);
       session.connect();
@@ -63,7 +64,22 @@ public class PortForwardingL {
     public void showMessage(String message){
     	/// put in a JavaFX message display here.
     }
-
   }
+
+public static JSch getJsch() {
+	return jsch;
+}
+
+public static void setJsch(JSch jsch) {
+	PortForwardingL.jsch = jsch;
+}
+
+public static Session getSession() {
+	return session;
+}
+
+public static void setSession(Session session) {
+	PortForwardingL.session = session;
+}
   
 }

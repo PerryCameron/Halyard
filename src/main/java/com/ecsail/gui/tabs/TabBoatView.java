@@ -46,11 +46,12 @@ public class TabBoatView extends Tab {
 	private int pictureNumber = 0;
 	private File imagePath;
 	ArrayList<String> imageFiles = null;
+	Object_Boat b;
 	/// need to add history to boat_owner table
 	
 	public TabBoatView(String text, Object_Boat b) {
 		super(text);
-		//this.boatOwners = Sql_SelectMembership.getBoatOwners(b.getBoat_id());
+		this.b = b;
 		this.boatOwners = Sql_SelectMembership.getBoatOwnerRoster(b.getBoat_id());
 		TableView<Object_MembershipList> boatOwnerTableView = new TableView<>();
 		
@@ -153,8 +154,6 @@ public class TabBoatView extends Tab {
 
 		///////////////  ATTRIBUTES ////////////////
 
-
-		
 		boatOwnerAdd.setPrefWidth(60);
 		boatOwnerDelete.setPrefWidth(60);
 		vboxButtons.setPrefWidth(80);
@@ -302,11 +301,10 @@ public class TabBoatView extends Tab {
 		
 		buttonAddPicture.setOnAction((event) -> {
 			LoadFileChooser fc = new LoadFileChooser(System.getProperty("user.home"));
-			File newImage = new File(imagePath, fc.getFile().getName());
-			
+			//File newImage = new File(imagePath, fc.getFile().getName());
+			File newImage = new File(imagePath, getNewName(fc.getFile()));
 			copyFile(fc.getFile(),newImage);
 			imageFiles.add(newImage.getName().toString());
-			System.out.println(newImage);
 		});
 		
 		buttonForward.setOnAction((event) -> {			
@@ -518,7 +516,11 @@ public class TabBoatView extends Tab {
 		vboxPink.getChildren().add(vboxGrey);
 		setContent(vboxBlue);
 	}
-	
+
+	private String getNewName(File originalFile) {
+		return "B" + b.getBoat_id() + "_IMG_" + (imageFiles.size() + 1) + Paths.getFileExtension(originalFile);
+	}
+
 	public Image getImage(String file) {
 		FileInputStream input = null;
 		try {
