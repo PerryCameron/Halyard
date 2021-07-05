@@ -3,12 +3,17 @@ package com.ecsail.gui.tabs;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.ArrayList;
 import com.ecsail.enums.KeelType;
 import com.ecsail.gui.boxes.BoxBoatNotes;
 import com.ecsail.gui.dialogues.Dialogue_ChooseMember;
 import com.ecsail.main.ImageViewPane;
+import com.ecsail.main.LoadFileChooser;
 import com.ecsail.main.Paths;
 import com.ecsail.sql.SqlDelete;
 import com.ecsail.sql.SqlUpdate;
@@ -38,7 +43,8 @@ import javafx.scene.control.Label;
 
 public class TabBoatView extends Tab {
 	private ObservableList<Object_MembershipList> boatOwners;
-	int pictureNumber = 0;
+	private int pictureNumber = 0;
+	private File imagePath;
 	ArrayList<String> imageFiles = null;
 	/// need to add history to boat_owner table
 	
@@ -128,6 +134,7 @@ public class TabBoatView extends Tab {
         ImageViewPane viewPane = new ImageViewPane(imageView);
         Button buttonForward = new Button(">");
         Button buttonReverse = new Button("<");
+        Button buttonAddPicture = new Button("Add");
         Image image = null;
         
 		TableColumn<Object_MembershipList, Integer> col1 = new TableColumn<Object_MembershipList, Integer>("MEM");
@@ -135,10 +142,11 @@ public class TabBoatView extends Tab {
 		TableColumn<Object_MembershipList, String> col3 = new TableColumn<Object_MembershipList, String>("First Name");
 		Button boatOwnerAdd = new Button("Add");
 		Button boatOwnerDelete = new Button("Delete");
+
 		
 		// make sure directory exists, and create it if it does not
 		Paths.checkPath(Paths.BOATDIR + "/" + b.getBoat_id() + "/");
-		File imagePath = new File(Paths.BOATDIR + "/" + b.getBoat_id() + "/");
+		imagePath = new File(Paths.BOATDIR + "/" + b.getBoat_id() + "/");
 		imageFiles = Paths.listFilesForFolder(imagePath);
 		if(imageFiles.size() > 0)
 			image = getImage(Paths.BOATDIR + "/" + b.getBoat_id() + "/" +  imageFiles.get(pictureNumber));
@@ -173,20 +181,22 @@ public class TabBoatView extends Tab {
 		HBox.setHgrow(vboxGrey, Priority.ALWAYS);
 		VBox.setVgrow(vboxPink, Priority.ALWAYS);
 		HBox.setHgrow(boatOwnerTableView, Priority.ALWAYS);
-		//VBox.setVgrow(ownerTitlePane, Priority.ALWAYS);
+		VBox.setVgrow(ownerTitlePane, Priority.ALWAYS);
 		HBox.setHgrow(vboxRightContainer, Priority.ALWAYS);
 		HBox.setHgrow(vboxPicture, Priority.ALWAYS);
 		VBox.setVgrow(vboxPicture, Priority.ALWAYS);
 
 		
-		vboxPicture.setStyle("-fx-background-color: #e83115;");
-		hboxPictureControls.setStyle("-fx-background-color: #201ac9;");  // blue
+		//vboxPicture.setStyle("-fx-background-color: #e83115;");
+		//hboxPictureControls.setStyle("-fx-background-color: #201ac9;");  // blue
 		
 		//spacer.setPrefHeight(50);
 		vboxLeftContainer.setSpacing(10);
 		vboxButtons.setSpacing(5); // spacing between buttons
 		vboxGrey.setSpacing(10);
+		hboxPictureControls.setSpacing(10);
 		
+		hboxPictureControls.setAlignment(Pos.CENTER);
 		// sets size of table
 		//ownerTitlePane.setPrefHeight(130);
 		bnameTextField.setPrefSize(150, 10);
@@ -289,6 +299,15 @@ public class TabBoatView extends Tab {
 
 		
 		/////////////// LISTENERS ////////////////////
+		
+		buttonAddPicture.setOnAction((event) -> {
+			LoadFileChooser fc = new LoadFileChooser(System.getProperty("user.home"));
+			File newImage = new File(imagePath, fc.getFile().getName());
+			
+			copyFile(fc.getFile(),newImage);
+			imageFiles.add(newImage.getName().toString());
+			System.out.println(newImage);
+		});
 		
 		buttonForward.setOnAction((event) -> {			
 			pictureNumber++;
@@ -490,7 +509,7 @@ public class TabBoatView extends Tab {
 		imageView.setImage(image);
 		// imageView sent to viewPane through constructor of ImageViewPane
 		vboxPicture.getChildren().add(viewPane);
-		hboxPictureControls.getChildren().addAll(buttonReverse,buttonForward);
+		hboxPictureControls.getChildren().addAll(buttonReverse,buttonForward,buttonAddPicture);
 		vboxRightContainer.getChildren().addAll(hboxPictureControls,vboxPicture);
 		
 		hboxContainer.getChildren().addAll(vboxLeftContainer,vboxRightContainer);
@@ -503,7 +522,7 @@ public class TabBoatView extends Tab {
 	public Image getImage(String file) {
 		FileInputStream input = null;
 		try {
-			System.out.println("pictureNumber=" + pictureNumber);
+			//System.out.println("pictureNumber=" + pictureNumber);
 			input = new FileInputStream(file);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -511,5 +530,33 @@ public class TabBoatView extends Tab {
 		}
 		Image image = new Image(input);
 		return image;
+	}
+	
+	private void copyFile(File srcFile, File destFile) {
+        InputStream is = null;
+        OutputStream os = null;
+        try {
+            is = new FileInputStream(srcFile);
+            os = new FileOutputStream(destFile);
+            byte[] buffer = new byte[8192];
+            int length;
+            while ((length = is.read(buffer)) > 0) {
+                os.write(buffer, 0, length);
+            }
+        } catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+            try {
+				is.close();
+				os.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
 	}
 }
