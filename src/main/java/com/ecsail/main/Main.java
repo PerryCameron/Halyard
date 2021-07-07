@@ -20,7 +20,7 @@ import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 
 public class Main extends Application {
-static ConnectDatabase connect;  // mysql connection
+static ConnectDatabase connect;  // mysql and ssh connection
 public static Object_TupleCount edits = new Object_TupleCount();
 public static ObservableList<Object_MembershipList> activememberships;
 public static String selectedYear; 
@@ -110,6 +110,14 @@ public static void main(String[] args) throws SQLException {
 	
 	public static void setUpForFirstTime() {
 		Paths.checkPath(System.getProperty("user.home") + "/.ecsc/scripts");
+	}
+
+	public static ConnectDatabase getConnect() {
+		return connect;
+	}
+
+	public static void setConnect(ConnectDatabase connect) {
+		Main.connect = connect;
 	}
 
 }

@@ -23,18 +23,11 @@ public class ScpTo{
 	
 	
   public ScpTo() { 
-	this.session = PortForwardingL.getSession();
-	this.jsch = PortForwardingL.getJsch();
+	//this.session = PortForwardingL.getSession();
+	//this.jsch = PortForwardingL.getJsch();
 	
     FileInputStream fis=null;
     try{
-
-
-      //JSch jsch=new JSch();
-      //Session session=jsch.getSession(user, host, 22);
-
-      // username and password will be given via UserInfo interface.
-
 
       boolean ptimestamp = true;
 
@@ -52,7 +45,7 @@ public class ScpTo{
       channel.connect();
 
       if(checkAck(in)!=0){
-	System.exit(0);
+    	  System.exit(0);
       }
 
       File _lfile = new File(lfile);

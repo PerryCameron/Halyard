@@ -35,8 +35,9 @@ import javafx.stage.Stage;
 
 public class ConnectDatabase {
 
-	public static Connection connection;
+	public static Connection connection;  // do I need this?
 	//private int thisLogon = FileIO.getDefaultLogon();
+	private PortForwardingL forwardedConnection;
 	private double titleBarHeight;
 	private Object_Login currentLogon;
 	private String port; 
@@ -297,8 +298,8 @@ public class ConnectDatabase {
         		String loopback = "127.0.0.1";
         		// create ssh tunnel
         		if(currentLogon.isSshForward()) {
-        			System.out.println("SSH tunnel enabled");
-        			new PortForwardingL(host,loopback,3306,3306,sUser,sPass); 
+        			System.out.println("SSH tunnel enabled - test");
+        			this.forwardedConnection = new PortForwardingL(host,loopback,3306,3306,sUser,sPass); 
         		}
         		// create mysql login
         		if(createConnection(user, pass, loopback, port)) {
@@ -537,6 +538,14 @@ public class ConnectDatabase {
 
 	public static void setConnection(Connection connection) {
 		ConnectDatabase.connection = connection;
+	}
+
+	public PortForwardingL getForwardedConnection() {
+		return forwardedConnection;
+	}
+
+	public void setForwardedConnection(PortForwardingL forwardedConnection) {
+		this.forwardedConnection = forwardedConnection;
 	}
 	
 	

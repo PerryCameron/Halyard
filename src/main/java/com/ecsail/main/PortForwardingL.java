@@ -2,16 +2,19 @@ package com.ecsail.main;
 
 import com.jcraft.jsch.*;
 import javax.swing.*;
+
 // https://dentrassi.de/2015/07/13/programmatically-adding-a-host-key-with-jsch/
 public class PortForwardingL {
 	static String passwd;
-	
-  
-  public PortForwardingL (String host, String rhost, int lport,int rport, String user, String password) {    //int lport;
-	  PortForwardingL.passwd = password;
+	private Session session;
+	private JSch jsch = new JSch();
+
+	public PortForwardingL(String host, String rhost, int lport, int rport, String user, String password) { // int
+																											// lport;
+		PortForwardingL.passwd = password;
 
 		try {
-			JSch jsch = new JSch();
+
 			jsch.setKnownHosts(System.getProperty("user.home") + "/.ssh/known_hosts");
 
 			HostKeyRepository hkr = jsch.getHostKeyRepository();
@@ -24,45 +27,64 @@ public class PortForwardingL {
 				}
 				System.out.println("");
 			}
-      
-      Session session=jsch.getSession(user, host, 22);
-      UserInfo ui=new MyUserInfo();
-      session.setUserInfo(ui);
-      session.connect();
-      int assinged_port=session.setPortForwardingL(lport, rhost, rport);
-      System.out.println("localhost:"+assinged_port+" -> "+rhost+":"+rport);
-    }
-    catch(Exception e){
-      System.out.println(e);
-    }
-  }
-  
-  public static class MyUserInfo implements UserInfo {
-    
-	  public String getPassword(){ return passwd; }
-	  
-	  public boolean promptYesNo(String str){
-		  // change to java fx
-      Object[] options={ "yes", "no" };
-      int foo=JOptionPane.showOptionDialog(null, 
-             str,
-             "Warning", 
-             JOptionPane.DEFAULT_OPTION, 
-             JOptionPane.WARNING_MESSAGE,
-             null, options, options[0]);
-       return foo==0;
-    }
 
-    public String getPassphrase(){ return null; }
-    
-    public boolean promptPassphrase(String message){ return true; }
-    
-    public boolean promptPassword(String message){ return true; }
-    
-    public void showMessage(String message){
-    	/// put in a JavaFX message display here.
-    }
+			session = jsch.getSession(user, host, 22);
+			UserInfo ui = new MyUserInfo();
+			session.setUserInfo(ui);
+			session.connect();
+			int assinged_port = session.setPortForwardingL(lport, rhost, rport);
+			System.out.println("localhost:" + assinged_port + " -> " + rhost + ":" + rport);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}
 
-  }
-  
+	public static class MyUserInfo implements UserInfo {
+
+		public String getPassword() {
+			return passwd;
+		}
+
+		public boolean promptYesNo(String str) {
+			// change to java fx
+			Object[] options = { "yes", "no" };
+			int foo = JOptionPane.showOptionDialog(null, str, "Warning", JOptionPane.DEFAULT_OPTION,
+					JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+			return foo == 0;
+		}
+
+		public String getPassphrase() {
+			return null;
+		}
+
+		public boolean promptPassphrase(String message) {
+			return true;
+		}
+
+		public boolean promptPassword(String message) {
+			return true;
+		}
+
+		public void showMessage(String message) {
+			/// put in a JavaFX message display here.
+		}
+
+	}
+
+	public Session getSession() {
+		return session;
+	}
+
+	public void setSession(Session session) {
+		this.session = session;
+	}
+
+	public JSch getJsch() {
+		return jsch;
+	}
+
+	public void setJsch(JSch jsch) {
+		this.jsch = jsch;
+	}
+
 }

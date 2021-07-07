@@ -9,6 +9,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.ArrayList;
+
+import com.ecsail.connection.Sftp;
 import com.ecsail.enums.KeelType;
 import com.ecsail.gui.boxes.BoxBoatNotes;
 import com.ecsail.gui.dialogues.Dialogue_ChooseMember;
@@ -45,44 +47,56 @@ public class TabBoatView extends Tab {
 	private ObservableList<Object_MembershipList> boatOwners;
 	private int pictureNumber = 0;
 	private File imagePath;
-	ArrayList<String> imageFiles = null;
-	Object_Boat b;
+	private Sftp ftp;
+	private ArrayList<String> localImageFiles = null;
+	private ArrayList<String> remoteImageFiles = null;
+	private Object_Boat b;
 	/// need to add history to boat_owner table
-	
+
 	public TabBoatView(String text, Object_Boat b) {
 		super(text);
 		this.b = b;
 		this.boatOwners = Sql_SelectMembership.getBoatOwnerRoster(b.getBoat_id());
+		this.ftp = new Sftp();
+		checkRemoteFiles();
+		// make sure directory exists, and create it if it does not
+		Paths.checkPath(Paths.BOATDIR + "/" + b.getBoat_id() + "/");
+		this.imagePath = new File(Paths.BOATDIR + "/" + b.getBoat_id() + "/");
+		this.localImageFiles = Paths.listFilesForFolder(imagePath);
+		Image image = null;
+		if (localImageFiles.size() > 0)
+			image = getImage(Paths.BOATDIR + "/" + b.getBoat_id() + "/" + localImageFiles.get(pictureNumber));
+		checkIfLocalandRemoteDirectoriesMatch();
+
 		TableView<Object_MembershipList> boatOwnerTableView = new TableView<>();
-		
-		VBox vboxGrey = new VBox();  // this is the hbox for holding all content
-		VBox vboxBlue = new VBox();  // creates blue boarder around content
+		VBox vboxGrey = new VBox(); // this is the hbox for holding all content
+		VBox vboxBlue = new VBox(); // creates blue boarder around content
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
 		HBox hboxContainer = new HBox();
-		VBox vboxLeftContainer = new VBox();  // contains boxes on left side
-		VBox vboxRightContainer = new VBox();  // contains boxes on left side
+		VBox vboxLeftContainer = new VBox(); // contains boxes on left side
+		VBox vboxRightContainer = new VBox(); // contains boxes on left side
 		VBox vboxButtons = new VBox(); // holds phone buttons
 		VBox vboxTableFrame = new VBox(); // holds table
 		VBox vboxInformationBackgroundColor = new VBox();
 		VBox vboxTableBackgroundColor = new VBox();
-		
-		HBox hbox1 = new HBox();      // Boat Name
-		HBox hbox2 = new HBox();      // Manufacturer
-		HBox hbox3 = new HBox();      // Year
-		HBox hbox4 = new HBox();      // Model
-		HBox hbox5 = new HBox();      // Registration
-		HBox hbox6 = new HBox();      // Sail Number
-		HBox hbox7 = new HBox();      // PHRF
-		HBox hbox8 = new HBox();      // Length
-		HBox hbox9 = new HBox();      // Weight
-		HBox hbox10 = new HBox();     // Has Triler
-		HBox hbox11 = new HBox();     // Keel Type
-		HBox hbox12 = new HBox();     // Draft
-		HBox hbox13 = new HBox();     // Beam
-		HBox hbox14 = new HBox();     // lwl
+
+		HBox hbox1 = new HBox(); // Boat Name
+		HBox hbox2 = new HBox(); // Manufacturer
+		HBox hbox3 = new HBox(); // Year
+		HBox hbox4 = new HBox(); // Model
+		HBox hbox5 = new HBox(); // Registration
+		HBox hbox6 = new HBox(); // Sail Number
+		HBox hbox7 = new HBox(); // PHRF
+		HBox hbox8 = new HBox(); // Length
+		HBox hbox9 = new HBox(); // Weight
+		HBox hbox10 = new HBox(); // Has Triler
+		HBox hbox11 = new HBox(); // Keel Type
+		HBox hbox12 = new HBox(); // Draft
+		HBox hbox13 = new HBox(); // Beam
+		HBox hbox14 = new HBox(); // lwl
 
 		HBox hboxTable = new HBox();
-		
+
 		VBox vboxBnameLabel = new VBox();
 		VBox vboxManufacturerLabel = new VBox();
 		VBox vboxYearLabel = new VBox();
@@ -97,7 +111,7 @@ public class TabBoatView extends Tab {
 		VBox vboxDraftLabel = new VBox();
 		VBox vboxBeamLabel = new VBox();
 		VBox vboxLwlLabel = new VBox();
-		
+
 		VBox vboxBnameBox = new VBox();
 		VBox vboxManufacturerBox = new VBox();
 		VBox vboxYearBox = new VBox();
@@ -112,7 +126,7 @@ public class TabBoatView extends Tab {
 		VBox vboxDraftBox = new VBox();
 		VBox vboxBeamBox = new VBox();
 		VBox vboxLwlBox = new VBox();
-		
+
 		TextField bnameTextField = new TextField();
 		TextField manufacturerTextField = new TextField();
 		TextField yearTextField = new TextField();
@@ -122,8 +136,8 @@ public class TabBoatView extends Tab {
 		TextField phrfTextField = new TextField();
 		TextField lengthTextField = new TextField();
 		TextField weightTextField = new TextField();
-		CheckBox  trailerCheckBox = new CheckBox("Has Trailer");
-		ComboBox<KeelType>keelComboBox = new ComboBox<KeelType>();
+		CheckBox trailerCheckBox = new CheckBox("Has Trailer");
+		ComboBox<KeelType> keelComboBox = new ComboBox<KeelType>();
 		TextField draftTextField = new TextField();
 		TextField beamTextField = new TextField();
 		TextField lwlTextField = new TextField();
@@ -131,28 +145,20 @@ public class TabBoatView extends Tab {
 		TitledPane boatInfoTitlePane = new TitledPane();
 		VBox vboxPicture = new VBox();
 		HBox hboxPictureControls = new HBox();
-        ImageView imageView = new ImageView();
-        ImageViewPane viewPane = new ImageViewPane(imageView);
-        Button buttonForward = new Button(">");
-        Button buttonReverse = new Button("<");
-        Button buttonAddPicture = new Button("Add");
-        Image image = null;
-        
+		ImageView imageView = new ImageView();
+		ImageViewPane viewPane = new ImageViewPane(imageView);
+		Button buttonForward = new Button(">");
+		Button buttonReverse = new Button("<");
+		Button buttonAddPicture = new Button("Add");
+		
+
 		TableColumn<Object_MembershipList, Integer> col1 = new TableColumn<Object_MembershipList, Integer>("MEM");
 		TableColumn<Object_MembershipList, String> col2 = new TableColumn<Object_MembershipList, String>("Last Name");
 		TableColumn<Object_MembershipList, String> col3 = new TableColumn<Object_MembershipList, String>("First Name");
 		Button boatOwnerAdd = new Button("Add");
 		Button boatOwnerDelete = new Button("Delete");
 
-		
-		// make sure directory exists, and create it if it does not
-		Paths.checkPath(Paths.BOATDIR + "/" + b.getBoat_id() + "/");
-		imagePath = new File(Paths.BOATDIR + "/" + b.getBoat_id() + "/");
-		imageFiles = Paths.listFilesForFolder(imagePath);
-		if(imageFiles.size() > 0)
-			image = getImage(Paths.BOATDIR + "/" + b.getBoat_id() + "/" +  imageFiles.get(pictureNumber));
-
-		///////////////  ATTRIBUTES ////////////////
+		/////////////// ATTRIBUTES ////////////////
 
 		boatOwnerAdd.setPrefWidth(60);
 		boatOwnerDelete.setPrefWidth(60);
@@ -161,21 +167,21 @@ public class TabBoatView extends Tab {
 		hboxPictureControls.setPrefHeight(40);
 		vboxPicture.setPrefWidth(630);
 		vboxPicture.setPrefHeight(489);
-		
+
 		vboxBlue.setId("box-blue");
 		vboxPink.setId("box-pink");
 		vboxTableBackgroundColor.setId("box-grey");
 		vboxInformationBackgroundColor.setId("box-grey");
 		vboxTableFrame.setId("box-pink");
-		
-		//imageView.maxWidth(630);
-		//imageView.setFitWidth(700);
-		
+
+		// imageView.maxWidth(630);
+		// imageView.setFitWidth(700);
+
 		imageView.setSmooth(true);
 		imageView.setPreserveRatio(true);
 		imageView.setCache(true);
-		
-		//vboxGrey.setId("slip-box");
+
+		// vboxGrey.setId("slip-box");
 		VBox.setVgrow(vboxGrey, Priority.ALWAYS);
 		HBox.setHgrow(vboxGrey, Priority.ALWAYS);
 		VBox.setVgrow(vboxPink, Priority.ALWAYS);
@@ -185,19 +191,18 @@ public class TabBoatView extends Tab {
 		HBox.setHgrow(vboxPicture, Priority.ALWAYS);
 		VBox.setVgrow(vboxPicture, Priority.ALWAYS);
 
-		
-		//vboxPicture.setStyle("-fx-background-color: #e83115;");
-		//hboxPictureControls.setStyle("-fx-background-color: #201ac9;");  // blue
-		
-		//spacer.setPrefHeight(50);
+		// vboxPicture.setStyle("-fx-background-color: #e83115;");
+		// hboxPictureControls.setStyle("-fx-background-color: #201ac9;"); // blue
+
+		// spacer.setPrefHeight(50);
 		vboxLeftContainer.setSpacing(10);
 		vboxButtons.setSpacing(5); // spacing between buttons
 		vboxGrey.setSpacing(10);
 		hboxPictureControls.setSpacing(10);
-		
+
 		hboxPictureControls.setAlignment(Pos.CENTER);
 		// sets size of table
-		//ownerTitlePane.setPrefHeight(130);
+		// ownerTitlePane.setPrefHeight(130);
 		bnameTextField.setPrefSize(150, 10);
 		manufacturerTextField.setPrefSize(150, 10);
 		yearTextField.setPrefSize(150, 10);
@@ -211,7 +216,7 @@ public class TabBoatView extends Tab {
 		draftTextField.setPrefSize(150, 10);
 		beamTextField.setPrefSize(150, 10);
 		lwlTextField.setPrefSize(150, 10);
-		
+
 		bnameTextField.setText(b.getBoat_name());
 		manufacturerTextField.setText(b.getManufacturer());
 		yearTextField.setText(b.getManufacture_year());
@@ -244,7 +249,7 @@ public class TabBoatView extends Tab {
 		vboxDraftLabel.setPrefWidth(90);
 		vboxBeamLabel.setPrefWidth(90);
 		vboxLwlLabel.setPrefWidth(90);
-		
+
 		vboxBnameLabel.setAlignment(Pos.CENTER_LEFT);
 		vboxManufacturerLabel.setAlignment(Pos.CENTER_LEFT);
 		vboxYearLabel.setAlignment(Pos.CENTER_LEFT);
@@ -259,200 +264,217 @@ public class TabBoatView extends Tab {
 		vboxDraftLabel.setAlignment(Pos.CENTER_LEFT);
 		vboxBeamLabel.setAlignment(Pos.CENTER_LEFT);
 		vboxLwlLabel.setAlignment(Pos.CENTER_LEFT);
-		
-		//vboxFieldsContainer.setStyle("-fx-background-color: #201ac9;");  // blue
-		
+
+		// vboxFieldsContainer.setStyle("-fx-background-color: #201ac9;"); // blue
+
 		hbox1.setPadding(new Insets(10, 5, 5, 15));
 		hbox2.setPadding(new Insets(0, 5, 5, 15));
 		hbox3.setPadding(new Insets(0, 5, 5, 15));
-		hbox4.setPadding(new Insets(0, 5, 5, 15)); 
+		hbox4.setPadding(new Insets(0, 5, 5, 15));
 		hbox5.setPadding(new Insets(0, 5, 5, 15));
 		hbox6.setPadding(new Insets(0, 5, 5, 15));
 		hbox7.setPadding(new Insets(0, 5, 5, 15));
 		hbox8.setPadding(new Insets(0, 5, 5, 15));
-		hbox9.setPadding(new Insets(0, 5, 5, 15)); 
+		hbox9.setPadding(new Insets(0, 5, 5, 15));
 		hbox10.setPadding(new Insets(0, 5, 5, 15));
 		hbox11.setPadding(new Insets(0, 5, 5, 15));
-		hbox12.setPadding(new Insets(0, 5, 5, 15)); 
+		hbox12.setPadding(new Insets(0, 5, 5, 15));
 		hbox13.setPadding(new Insets(0, 5, 5, 15));
 		hbox14.setPadding(new Insets(0, 5, 5, 15));
 		vboxButtons.setPadding(new Insets(0, 0, 0, 5));
-		vboxBlue.setPadding(new Insets(10,10,10,10));
-		vboxPink.setPadding(new Insets(3,3,3,3)); // spacing to make pink from around table
-		vboxTableBackgroundColor.setPadding(new Insets(10,10,10,10));
-		vboxTableFrame.setPadding(new Insets(2,2,2,2));
-		
+		vboxBlue.setPadding(new Insets(10, 10, 10, 10));
+		vboxPink.setPadding(new Insets(3, 3, 3, 3)); // spacing to make pink from around table
+		vboxTableBackgroundColor.setPadding(new Insets(10, 10, 10, 10));
+		vboxTableFrame.setPadding(new Insets(2, 2, 2, 2));
+
 		boatOwnerTableView.setItems(boatOwners);
 		boatOwnerTableView.setFixedCellSize(30);
-		boatOwnerTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY );
+		boatOwnerTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		boatOwnerTableView.setPrefHeight(90);
-		
+
 		col1.setCellValueFactory(new PropertyValueFactory<Object_MembershipList, Integer>("membershipId"));
 		col2.setCellValueFactory(new PropertyValueFactory<Object_MembershipList, String>("lname"));
 		col3.setCellValueFactory(new PropertyValueFactory<Object_MembershipList, String>("fname"));
-		
-		/// sets width of columns by percentage
-		col1.setMaxWidth( 1f * Integer.MAX_VALUE * 20 );   // Mem 5%
-		col2.setMaxWidth( 1f * Integer.MAX_VALUE * 40 );  // Join Date 15%
-		col3.setMaxWidth( 1f * Integer.MAX_VALUE * 40 );   // Type
 
-		
+		/// sets width of columns by percentage
+		col1.setMaxWidth(1f * Integer.MAX_VALUE * 20); // Mem 5%
+		col2.setMaxWidth(1f * Integer.MAX_VALUE * 40); // Join Date 15%
+		col3.setMaxWidth(1f * Integer.MAX_VALUE * 40); // Type
+
 		/////////////// LISTENERS ////////////////////
-		
+
 		buttonAddPicture.setOnAction((event) -> {
 			LoadFileChooser fc = new LoadFileChooser(System.getProperty("user.home"));
-			//File newImage = new File(imagePath, fc.getFile().getName());
+			// File newImage = new File(imagePath, fc.getFile().getName());
 			File newImage = new File(imagePath, getNewName(fc.getFile()));
-			copyFile(fc.getFile(),newImage);
-			imageFiles.add(newImage.getName().toString());
+			copyFile(fc.getFile(), newImage);
+			localImageFiles.add(newImage.getName().toString());
 		});
-		
-		buttonForward.setOnAction((event) -> {			
-			pictureNumber++;
-			if(pictureNumber == imageFiles.size()) pictureNumber=0;
-			Image newImage = getImage(Paths.BOATDIR + "/" + b.getBoat_id() + "/" + imageFiles.get(pictureNumber));
-			imageView.setImage(newImage);
-			});
-		
-		buttonReverse.setOnAction((event) -> {			
-			pictureNumber--;
-			if(pictureNumber < 0) pictureNumber=imageFiles.size() - 1;
-			Image newImage = getImage("C:/Users/pcame/Documents/ECSC/Boats/" + b.getBoat_id() + "/" + imageFiles.get(pictureNumber));
-			imageView.setImage(newImage);
-			});
-		
-		boatOwnerAdd.setOnAction((event) -> {
-			//	int phone_id = SqlSelect.getCount("phone", "phone_id"); // get last phone_id number
-			//	phone_id++; // increase to first available number
-			//	if (SqlInsert.addRecord(phone_id, person.getP_id(), true, "new phone", "")) // if added with no errors
-			//		phone.add(new Object_Phone(phone_id, person.getP_id(), true, "new phone", "")); // lets add it to our GUI
-			new Dialogue_ChooseMember(boatOwners, b.getBoat_id());
-			//boatOwners.add(new Object_MembershipList());
-			});
-        
-        boatOwnerDelete.setOnAction((event) -> {
-            int selectedIndex = boatOwnerTableView.getSelectionModel().getSelectedIndex();
-            		if(selectedIndex >= 0)
-            			if(SqlDelete.deleteBoatOwner(b.getBoat_id(),boatOwners.get(selectedIndex).getMsid()))  // if it is properly deleted in our database
-            boatOwnerTableView.getItems().remove(selectedIndex); // remove it from our GUI
-        });
-		
-		bnameTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            //focus out
-            if (oldValue) {  // we have focused and unfocused
-            		//SqlUpdate.updateAddress(memAddressTextField.getText(),membership);
-            	SqlUpdate.updateBoat("BOAT_NAME", b.getBoat_id(), bnameTextField.getText());
-            }
-        });
-		
-		manufacturerTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            //focus out
-            if (oldValue) {  // we have focused and unfocused
-            		//SqlUpdate.updateAddress(memAddressTextField.getText(),membership);
-            	SqlUpdate.updateBoat("MANUFACTURER", b.getBoat_id(), manufacturerTextField.getText());
-            }
-        });
-		
-		yearTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            //focus out
-            if (oldValue) {  // we have focused and unfocused
-            		//SqlUpdate.updateAddress(memAddressTextField.getText(),membership);
-            	SqlUpdate.updateBoat("MANUFACTURE_YEAR", b.getBoat_id(), yearTextField.getText());
-            }
-        });
 
-		modelTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            //focus out
-            if (oldValue) {  // we have focused and unfocused
-            		//SqlUpdate.updateAddress(memAddressTextField.getText(),membership);
-            	SqlUpdate.updateBoat("MODEL", b.getBoat_id(), modelTextField.getText());
-            }
-        });
-		
-		registrationTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            //focus out
-            if (oldValue) {  // we have focused and unfocused
-            		//SqlUpdate.updateAddress(memAddressTextField.getText(),membership);
-            	SqlUpdate.updateBoat("REGISTRATION_NUM", b.getBoat_id(), registrationTextField.getText());
-            }
-        });
-		
-		sailNumberTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            //focus out
-            if (oldValue) {  // we have focused and unfocused
-            		//SqlUpdate.updateAddress(memAddressTextField.getText(),membership);
-            	SqlUpdate.updateBoat("SAIL_NUMBER", b.getBoat_id(), sailNumberTextField.getText());
-            }
-        });
-		
-		phrfTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            //focus out
-            if (oldValue) {  // we have focused and unfocused
-            		//SqlUpdate.updateAddress(memAddressTextField.getText(),membership);
-            	SqlUpdate.updateBoat("PHRF", b.getBoat_id(), phrfTextField.getText());
-            }
-        });
-		
-		lengthTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            //focus out
-            if (oldValue) {  // we have focused and unfocused
-            		//SqlUpdate.updateAddress(memAddressTextField.getText(),membership);
-            	SqlUpdate.updateBoat("LENGTH", b.getBoat_id(), lengthTextField.getText());
-            }
-        });
-		
-		weightTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            //focus out
-            if (oldValue) {  // we have focused and unfocused
-            		//SqlUpdate.updateAddress(memAddressTextField.getText(),membership);
-            	SqlUpdate.updateBoat("WEIGHT", b.getBoat_id(), weightTextField.getText());
-            }
-        });
-		
+		buttonForward.setOnAction((event) -> {
+			pictureNumber++;
+			if (pictureNumber == localImageFiles.size())
+				pictureNumber = 0;
+			Image newImage = getImage(Paths.BOATDIR + "/" + b.getBoat_id() + "/" + localImageFiles.get(pictureNumber));
+			imageView.setImage(newImage);
+		});
+
+		buttonReverse.setOnAction((event) -> {
+			pictureNumber--;
+			if (pictureNumber < 0)
+				pictureNumber = localImageFiles.size() - 1;
+			Image newImage = getImage(
+					"C:/Users/pcame/Documents/ECSC/Boats/" + b.getBoat_id() + "/" + localImageFiles.get(pictureNumber));
+			imageView.setImage(newImage);
+		});
+
+		boatOwnerAdd.setOnAction((event) -> {
+			// int phone_id = SqlSelect.getCount("phone", "phone_id"); // get last phone_id
+			// number
+			// phone_id++; // increase to first available number
+			// if (SqlInsert.addRecord(phone_id, person.getP_id(), true, "new phone", ""))
+			// // if added with no errors
+			// phone.add(new Object_Phone(phone_id, person.getP_id(), true, "new phone",
+			// "")); // lets add it to our GUI
+			new Dialogue_ChooseMember(boatOwners, b.getBoat_id());
+			// boatOwners.add(new Object_MembershipList());
+		});
+
+		boatOwnerDelete.setOnAction((event) -> {
+			int selectedIndex = boatOwnerTableView.getSelectionModel().getSelectedIndex();
+			if (selectedIndex >= 0)
+			if (SqlDelete.deleteBoatOwner(b.getBoat_id(), boatOwners.get(selectedIndex).getMsid())) // if it is																						// our database
+				boatOwnerTableView.getItems().remove(selectedIndex); // remove it from our GUI
+		});
+
+		bnameTextField.focusedProperty()
+				.addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+					// focus out
+					if (oldValue) { // we have focused and unfocused
+						// SqlUpdate.updateAddress(memAddressTextField.getText(),membership);
+						SqlUpdate.updateBoat("BOAT_NAME", b.getBoat_id(), bnameTextField.getText());
+					}
+				});
+
+		manufacturerTextField.focusedProperty()
+				.addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+					// focus out
+					if (oldValue) { // we have focused and unfocused
+						// SqlUpdate.updateAddress(memAddressTextField.getText(),membership);
+						SqlUpdate.updateBoat("MANUFACTURER", b.getBoat_id(), manufacturerTextField.getText());
+					}
+				});
+
+		yearTextField.focusedProperty()
+				.addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+					// focus out
+					if (oldValue) { // we have focused and unfocused
+						// SqlUpdate.updateAddress(memAddressTextField.getText(),membership);
+						SqlUpdate.updateBoat("MANUFACTURE_YEAR", b.getBoat_id(), yearTextField.getText());
+					}
+				});
+
+		modelTextField.focusedProperty()
+				.addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+					// focus out
+					if (oldValue) { // we have focused and unfocused
+						// SqlUpdate.updateAddress(memAddressTextField.getText(),membership);
+						SqlUpdate.updateBoat("MODEL", b.getBoat_id(), modelTextField.getText());
+					}
+				});
+
+		registrationTextField.focusedProperty()
+				.addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+					// focus out
+					if (oldValue) { // we have focused and unfocused
+						// SqlUpdate.updateAddress(memAddressTextField.getText(),membership);
+						SqlUpdate.updateBoat("REGISTRATION_NUM", b.getBoat_id(), registrationTextField.getText());
+					}
+				});
+
+		sailNumberTextField.focusedProperty()
+				.addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+					// focus out
+					if (oldValue) { // we have focused and unfocused
+						// SqlUpdate.updateAddress(memAddressTextField.getText(),membership);
+						SqlUpdate.updateBoat("SAIL_NUMBER", b.getBoat_id(), sailNumberTextField.getText());
+					}
+				});
+
+		phrfTextField.focusedProperty()
+				.addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+					// focus out
+					if (oldValue) { // we have focused and unfocused
+						// SqlUpdate.updateAddress(memAddressTextField.getText(),membership);
+						SqlUpdate.updateBoat("PHRF", b.getBoat_id(), phrfTextField.getText());
+					}
+				});
+
+		lengthTextField.focusedProperty()
+				.addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+					// focus out
+					if (oldValue) { // we have focused and unfocused
+						// SqlUpdate.updateAddress(memAddressTextField.getText(),membership);
+						SqlUpdate.updateBoat("LENGTH", b.getBoat_id(), lengthTextField.getText());
+					}
+				});
+
+		weightTextField.focusedProperty()
+				.addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+					// focus out
+					if (oldValue) { // we have focused and unfocused
+						// SqlUpdate.updateAddress(memAddressTextField.getText(),membership);
+						SqlUpdate.updateBoat("WEIGHT", b.getBoat_id(), weightTextField.getText());
+					}
+				});
+
 		trailerCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected,
 					Boolean isNowSelected) {
-					SqlUpdate.updateBoat(b.getBoat_id(), isNowSelected);
+				SqlUpdate.updateBoat(b.getBoat_id(), isNowSelected);
 			}
 		});
-		
+
 		keelComboBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
 			SqlUpdate.updateBoat(b.getBoat_id(), newValue.getCode());
-			//System.out.println("changed combo to " + newValue.getCode());
-        });
-		
-		draftTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            //focus out
-            if (oldValue) {  // we have focused and unfocused
-            		//SqlUpdate.updateAddress(memAddressTextField.getText(),membership);
-            	SqlUpdate.updateBoat("DRAFT", b.getBoat_id(), draftTextField.getText());
-            }
-        });
-		
-		beamTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            //focus out
-            if (oldValue) {  // we have focused and unfocused
-            		//SqlUpdate.updateAddress(memAddressTextField.getText(),membership);
-            	SqlUpdate.updateBoat("BEAM", b.getBoat_id(), beamTextField.getText());
-            }
-        });
-		
-		lwlTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            //focus out
-            if (oldValue) {  // we have focused and unfocused
-            		//SqlUpdate.updateAddress(memAddressTextField.getText(),membership);
-            	SqlUpdate.updateBoat("LWL", b.getBoat_id(), lwlTextField.getText());
-            }
-        });
-		
+			// System.out.println("changed combo to " + newValue.getCode());
+		});
+
+		draftTextField.focusedProperty()
+				.addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+					// focus out
+					if (oldValue) { // we have focused and unfocused
+						// SqlUpdate.updateAddress(memAddressTextField.getText(),membership);
+						SqlUpdate.updateBoat("DRAFT", b.getBoat_id(), draftTextField.getText());
+					}
+				});
+
+		beamTextField.focusedProperty()
+				.addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+					// focus out
+					if (oldValue) { // we have focused and unfocused
+						// SqlUpdate.updateAddress(memAddressTextField.getText(),membership);
+						SqlUpdate.updateBoat("BEAM", b.getBoat_id(), beamTextField.getText());
+					}
+				});
+
+		lwlTextField.focusedProperty()
+				.addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+					// focus out
+					if (oldValue) { // we have focused and unfocused
+						// SqlUpdate.updateAddress(memAddressTextField.getText(),membership);
+						SqlUpdate.updateBoat("LWL", b.getBoat_id(), lwlTextField.getText());
+					}
+				});
+
 		/////////////// SET CONTENT //////////////////
-		
+
 		/////////////////////// LEFT CONTAINER /////////////////////
 		boatOwnerTableView.getColumns().addAll(Arrays.asList(col1, col2, col3));
 		vboxTableFrame.getChildren().add(boatOwnerTableView);
-		vboxButtons.getChildren().addAll(boatOwnerAdd,boatOwnerDelete);
-		hboxTable.getChildren().addAll(vboxTableFrame,vboxButtons);
+		vboxButtons.getChildren().addAll(boatOwnerAdd, boatOwnerDelete);
+		hboxTable.getChildren().addAll(vboxTableFrame, vboxButtons);
 		vboxTableBackgroundColor.getChildren().add(hboxTable);
 		ownerTitlePane.setContent(vboxTableBackgroundColor);
 		vboxBnameLabel.getChildren().add(new Label("Boat Name"));
@@ -469,7 +491,7 @@ public class TabBoatView extends Tab {
 		vboxDraftLabel.getChildren().add(new Label("Draft"));
 		vboxBeamLabel.getChildren().add(new Label("Beam"));
 		vboxLwlLabel.getChildren().add(new Label("LWL"));
-		
+
 		vboxBnameBox.getChildren().add(bnameTextField);
 		vboxManufacturerBox.getChildren().add(manufacturerTextField);
 		vboxYearBox.getChildren().add(yearTextField);
@@ -484,47 +506,96 @@ public class TabBoatView extends Tab {
 		vboxDraftBox.getChildren().add(draftTextField);
 		vboxBeamBox.getChildren().add(beamTextField);
 		vboxLwlBox.getChildren().add(lwlTextField);
-		
-		hbox1.getChildren().addAll(vboxBnameLabel,vboxBnameBox); // first name
-		hbox2.getChildren().addAll(vboxManufacturerLabel,vboxManufacturerBox);
-		hbox3.getChildren().addAll(vboxYearLabel,vboxYearBox);
-		hbox4.getChildren().addAll(vboxModelLabel,vboxModelBox);
-		hbox5.getChildren().addAll(vboxRegistrationLabel,vboxRegistrationBox);
-		hbox6.getChildren().addAll(vboxSailNumbeLabel,vboxSailNumbeBox);
-		hbox7.getChildren().addAll(vboxphrfLabel,vboxphrfBox);
-		hbox8.getChildren().addAll(vboxlengthLabel,vboxlengthBox);
-		hbox9.getChildren().addAll(vboxweightLabel,vboxweightBox);
-		hbox10.getChildren().addAll(vboxtrailerLabel,vboxtrailerBox);
-		hbox11.getChildren().addAll(vboxkeelLabel,vboxkeelBox);
-		hbox12.getChildren().addAll(vboxDraftLabel,vboxDraftBox);
-		hbox13.getChildren().addAll(vboxBeamLabel,vboxBeamBox);
-		hbox14.getChildren().addAll(vboxLwlLabel,vboxLwlBox);
-		vboxInformationBackgroundColor.getChildren().addAll(hbox1,hbox2,hbox3,hbox4,hbox5,hbox6,hbox7,hbox8,hbox9,hbox10,hbox11,hbox12,hbox13,hbox14);
+
+		hbox1.getChildren().addAll(vboxBnameLabel, vboxBnameBox); // first name
+		hbox2.getChildren().addAll(vboxManufacturerLabel, vboxManufacturerBox);
+		hbox3.getChildren().addAll(vboxYearLabel, vboxYearBox);
+		hbox4.getChildren().addAll(vboxModelLabel, vboxModelBox);
+		hbox5.getChildren().addAll(vboxRegistrationLabel, vboxRegistrationBox);
+		hbox6.getChildren().addAll(vboxSailNumbeLabel, vboxSailNumbeBox);
+		hbox7.getChildren().addAll(vboxphrfLabel, vboxphrfBox);
+		hbox8.getChildren().addAll(vboxlengthLabel, vboxlengthBox);
+		hbox9.getChildren().addAll(vboxweightLabel, vboxweightBox);
+		hbox10.getChildren().addAll(vboxtrailerLabel, vboxtrailerBox);
+		hbox11.getChildren().addAll(vboxkeelLabel, vboxkeelBox);
+		hbox12.getChildren().addAll(vboxDraftLabel, vboxDraftBox);
+		hbox13.getChildren().addAll(vboxBeamLabel, vboxBeamBox);
+		hbox14.getChildren().addAll(vboxLwlLabel, vboxLwlBox);
+		vboxInformationBackgroundColor.getChildren().addAll(hbox1, hbox2, hbox3, hbox4, hbox5, hbox6, hbox7, hbox8,
+				hbox9, hbox10, hbox11, hbox12, hbox13, hbox14);
 		boatInfoTitlePane.setContent(vboxInformationBackgroundColor);
-		vboxLeftContainer.getChildren().addAll(boatInfoTitlePane,ownerTitlePane);
-		
+		vboxLeftContainer.getChildren().addAll(boatInfoTitlePane, ownerTitlePane);
+
 		/////////////////////// RIGHT CONTAINER /////////////////////
 		imageView.setImage(image);
 		// imageView sent to viewPane through constructor of ImageViewPane
 		vboxPicture.getChildren().add(viewPane);
-		hboxPictureControls.getChildren().addAll(buttonReverse,buttonForward,buttonAddPicture);
-		vboxRightContainer.getChildren().addAll(hboxPictureControls,vboxPicture);
-		
-		hboxContainer.getChildren().addAll(vboxLeftContainer,vboxRightContainer);
+		hboxPictureControls.getChildren().addAll(buttonReverse, buttonForward, buttonAddPicture);
+		vboxRightContainer.getChildren().addAll(hboxPictureControls, vboxPicture);
+
+		hboxContainer.getChildren().addAll(vboxLeftContainer, vboxRightContainer);
 		vboxGrey.getChildren().addAll(hboxContainer, new BoxBoatNotes(b));
 		vboxBlue.getChildren().add(vboxPink);
 		vboxPink.getChildren().add(vboxGrey);
 		setContent(vboxBlue);
 	}
 
+	private void checkIfLocalandRemoteDirectoriesMatch() {
+		ArrayList<String> remoteMissingImages = new ArrayList<String>();
+		ArrayList<String> localMissingImages = new ArrayList<String>();
+		for(String l: localImageFiles) {
+			boolean missing = true;
+			for(String r: remoteImageFiles) {		
+				if(l.equals(r)) missing = false;
+			}
+			if(missing) remoteMissingImages.add(l);
+		}
+		for(String r: remoteImageFiles) {
+			boolean missing = true;
+			for(String l: localImageFiles) {		
+				if(r.equals(l)) missing = false;
+			}
+			if(missing) localMissingImages.add(r);
+		}
+		System.out.println("Remote missing images:");
+		for(String rmm: remoteMissingImages) {
+			System.out.println("Sending: " + Paths.BOATDIR + "\\" + b.getBoat_id() + "\\" + rmm);
+			System.out.println("To: " + "/home/pcameron/Documents/ECSC/Boats/" + b.getBoat_id() + "/" + rmm);
+			ftp.sendFile(Paths.BOATDIR + "/" + b.getBoat_id() + "/" + rmm, "/home/pcameron/Documents/ECSC/Boats/" + b.getBoat_id() + "/" + rmm);
+			System.out.println(rmm);
+		}
+		System.out.println("Local missing images:");
+		for(String lmm: localMissingImages) {
+			System.out.println(lmm);
+		}
+	}
+
+	private void checkRemoteFiles() {
+		boolean hasDirectory = false;
+		ArrayList<String> remoteImageDirectories = ftp.ls("/home/pcameron/Documents/ECSC/Boats"); // prints files from directory
+		for(String fn: remoteImageDirectories) {
+			System.out.println(fn);
+			if(fn.equals(b.getBoat_id() + "")) {
+				hasDirectory = true;
+			}
+		}
+		if(!hasDirectory) {  // if the directory doesn't exist create it
+			ftp.mkdir("/home/pcameron/Documents/ECSC/Boats/" + b.getBoat_id());
+		} else {  // else put file names in that directory into a string array
+			remoteImageFiles = ftp.ls("/home/pcameron/Documents/ECSC/Boats/" + b.getBoat_id());
+		}
+		System.out.println("hasDirectory=" + hasDirectory);
+		//ftp.closeSession();
+	}
+
 	private String getNewName(File originalFile) {
-		return "B" + b.getBoat_id() + "_IMG_" + (imageFiles.size() + 1) + Paths.getFileExtension(originalFile);
+		return "B" + b.getBoat_id() + "_IMG_" + (localImageFiles.size() + 1) + Paths.getFileExtension(originalFile);
 	}
 
 	public Image getImage(String file) {
 		FileInputStream input = null;
 		try {
-			//System.out.println("pictureNumber=" + pictureNumber);
+			// System.out.println("pictureNumber=" + pictureNumber);
 			input = new FileInputStream(file);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -533,32 +604,32 @@ public class TabBoatView extends Tab {
 		Image image = new Image(input);
 		return image;
 	}
-	
+
 	private void copyFile(File srcFile, File destFile) {
-        InputStream is = null;
-        OutputStream os = null;
-        try {
-            is = new FileInputStream(srcFile);
-            os = new FileOutputStream(destFile);
-            byte[] buffer = new byte[8192];
-            int length;
-            while ((length = is.read(buffer)) > 0) {
-                os.write(buffer, 0, length);
-            }
-        } catch (FileNotFoundException e) {
+		InputStream is = null;
+		OutputStream os = null;
+		try {
+			is = new FileInputStream(srcFile);
+			os = new FileOutputStream(destFile);
+			byte[] buffer = new byte[8192];
+			int length;
+			while ((length = is.read(buffer)) > 0) {
+				os.write(buffer, 0, length);
+			}
+		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-            try {
+			try {
 				is.close();
 				os.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-        }
+		}
 	}
 }
