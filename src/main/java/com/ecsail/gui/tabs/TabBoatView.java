@@ -25,6 +25,7 @@ import com.ecsail.structures.Object_MembershipList;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Tab;
@@ -35,6 +36,9 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -302,6 +306,44 @@ public class TabBoatView extends Tab {
 		col3.setMaxWidth(1f * Integer.MAX_VALUE * 40); // Type
 
 		/////////////// LISTENERS ////////////////////
+		
+		imageView.setOnDragOver(new EventHandler<DragEvent>() {
+		    public void handle(DragEvent event) {
+		        /* data is dragged over the target */
+		        /* accept it only if it is not dragged from the same node 
+		         * and if it has a string data */
+		        if (event.getGestureSource() != imageView &&
+		                event.getDragboard().hasFiles()) {
+		            /* allow for both copying and moving, whatever user chooses */
+		            //event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+		        	event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+		        }
+		        
+		        event.consume();
+		    }
+		});
+		
+		imageView.setOnDragDropped(new EventHandler<DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+                if (db.hasFiles()) {
+                    //File fileName = db.getFiles().get(0);
+                    String filename = getNewName(db.getFiles().get(0));
+                    File newImage = new File(imagePath, filename);
+                    copyFile(db.getFiles().get(0), newImage);
+                    ftp.sendFile(imagePath + "\\" + filename, "/home/pcameron/Documents/ECSC/Boats/" + b.getBoat_id() + "/" + filename);
+        			localImageFiles.add(newImage.getName().toString());
+                    success = true;
+                }
+                /* let the source know whether the string was successfully 
+                 * transferred and used */
+                event.setDropCompleted(success);
+
+                event.consume();
+            }
+        });
 		
 		buttonDelete.setOnAction((event) -> {
 			
