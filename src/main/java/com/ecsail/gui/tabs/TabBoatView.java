@@ -150,8 +150,8 @@ public class TabBoatView extends Tab {
 		Button buttonForward = new Button(">");
 		Button buttonReverse = new Button("<");
 		Button buttonAddPicture = new Button("Add");
+		Button buttonDelete = new Button("Delete");
 		
-
 		TableColumn<Object_MembershipList, Integer> col1 = new TableColumn<Object_MembershipList, Integer>("MEM");
 		TableColumn<Object_MembershipList, String> col2 = new TableColumn<Object_MembershipList, String>("Last Name");
 		TableColumn<Object_MembershipList, String> col3 = new TableColumn<Object_MembershipList, String>("First Name");
@@ -302,12 +302,17 @@ public class TabBoatView extends Tab {
 		col3.setMaxWidth(1f * Integer.MAX_VALUE * 40); // Type
 
 		/////////////// LISTENERS ////////////////////
+		
+		buttonDelete.setOnAction((event) -> {
+			
+		});
 
 		buttonAddPicture.setOnAction((event) -> {
 			LoadFileChooser fc = new LoadFileChooser(System.getProperty("user.home"));
-			// File newImage = new File(imagePath, fc.getFile().getName());
-			File newImage = new File(imagePath, getNewName(fc.getFile()));
+			String filename = getNewName(fc.getFile());
+			File newImage = new File(imagePath, filename);
 			copyFile(fc.getFile(), newImage);
+			ftp.sendFile(imagePath + "\\" + filename, "/home/pcameron/Documents/ECSC/Boats/" + b.getBoat_id() + "/" + filename);
 			localImageFiles.add(newImage.getName().toString());
 		});
 
@@ -559,14 +564,12 @@ public class TabBoatView extends Tab {
 		}
 		System.out.println("Remote missing images:");
 		for(String rmm: remoteMissingImages) {
-			System.out.println("Sending: " + Paths.BOATDIR + "\\" + b.getBoat_id() + "\\" + rmm);
-			System.out.println("To: " + "/home/pcameron/Documents/ECSC/Boats/" + b.getBoat_id() + "/" + rmm);
 			ftp.sendFile(Paths.BOATDIR + "/" + b.getBoat_id() + "/" + rmm, "/home/pcameron/Documents/ECSC/Boats/" + b.getBoat_id() + "/" + rmm);
-			System.out.println(rmm);
 		}
 		System.out.println("Local missing images:");
 		for(String lmm: localMissingImages) {
-			System.out.println(lmm);
+			ftp.getFile("/home/pcameron/Documents/ECSC/Boats/" + b.getBoat_id() + "/" + lmm, Paths.BOATDIR + "/" + b.getBoat_id() + "/" + lmm);
+			localImageFiles.add(lmm);
 		}
 	}
 
@@ -584,8 +587,6 @@ public class TabBoatView extends Tab {
 		} else {  // else put file names in that directory into a string array
 			remoteImageFiles = ftp.ls("/home/pcameron/Documents/ECSC/Boats/" + b.getBoat_id());
 		}
-		System.out.println("hasDirectory=" + hasDirectory);
-		//ftp.closeSession();
 	}
 
 	private String getNewName(File originalFile) {

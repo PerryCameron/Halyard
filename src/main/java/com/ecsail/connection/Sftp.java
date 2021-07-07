@@ -63,13 +63,21 @@ public class Sftp{
 	}
 	
 	public void sendFile(String sendFrom, String sendTo) {
-		
-	      //(cmd.equals("put-resume")){ mode=ChannelSftp.RESUME; }
-	      //else if(cmd.equals("put-append")){ mode=ChannelSftp.APPEND; } 
 	      try {
 	    	SftpProgressMonitor monitor=new MyProgressMonitor();
 	    	int mode=ChannelSftp.OVERWRITE;  
 			c.put(sendFrom, sendTo, monitor, mode);
+		} catch (SftpException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void getFile(String getFrom, String getTo) {
+	      try {
+	    	SftpProgressMonitor monitor=new MyProgressMonitor();
+	    	int mode=ChannelSftp.OVERWRITE;  
+			c.get(getFrom, getTo, monitor, mode);
 		} catch (SftpException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
