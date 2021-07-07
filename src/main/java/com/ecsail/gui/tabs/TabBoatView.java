@@ -333,7 +333,7 @@ public class TabBoatView extends Tab {
                     String filename = getNewName(db.getFiles().get(0));
                     File newImage = new File(imagePath, filename);
                     copyFile(db.getFiles().get(0), newImage);
-                    ftp.sendFile(imagePath + "\\" + filename, "/home/pcameron/Documents/ECSC/Boats/" + b.getBoat_id() + "/" + filename);
+                    ftp.sendFile(imagePath + "/" + filename, "/home/pcameron/Documents/ECSC/Boats/" + b.getBoat_id() + "/" + filename);
         			localImageFiles.add(newImage.getName().toString());
                     success = true;
                 }
@@ -351,10 +351,11 @@ public class TabBoatView extends Tab {
 
 		buttonAddPicture.setOnAction((event) -> {
 			LoadFileChooser fc = new LoadFileChooser(System.getProperty("user.home"));
+			System.out.println(fc.getFile().toString());
 			String filename = getNewName(fc.getFile());
 			File newImage = new File(imagePath, filename);
 			copyFile(fc.getFile(), newImage);
-			ftp.sendFile(imagePath + "\\" + filename, "/home/pcameron/Documents/ECSC/Boats/" + b.getBoat_id() + "/" + filename);
+			ftp.sendFile(imagePath + "/" + filename, "/home/pcameron/Documents/ECSC/Boats/" + b.getBoat_id() + "/" + filename);
 			localImageFiles.add(newImage.getName().toString());
 		});
 
@@ -370,8 +371,7 @@ public class TabBoatView extends Tab {
 			pictureNumber--;
 			if (pictureNumber < 0)
 				pictureNumber = localImageFiles.size() - 1;
-			Image newImage = getImage(
-					"C:/Users/pcame/Documents/ECSC/Boats/" + b.getBoat_id() + "/" + localImageFiles.get(pictureNumber));
+			Image newImage = getImage(Paths.BOATDIR + "/" + b.getBoat_id() + "/" + localImageFiles.get(pictureNumber));
 			imageView.setImage(newImage);
 		});
 
