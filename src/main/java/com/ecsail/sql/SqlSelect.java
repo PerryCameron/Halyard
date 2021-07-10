@@ -49,7 +49,7 @@ public class SqlSelect {
 	public static ArrayList<Object_OfficerWithName> getOfficersWithNames(String type) {
 		ArrayList<Object_OfficerWithName> theseOfficers = new ArrayList<Object_OfficerWithName>();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor("select F_NAME,L_NAME,OFF_YEAR from officer o left join person p on o.P_ID=p.P_ID where OFF_TYPE='"+type+"'"));
 			while (rs.next()) {
@@ -69,7 +69,7 @@ public class SqlSelect {
 	public static ArrayList<Object_Sportsmen> getSportsManAwardNames() {
 		ArrayList<Object_Sportsmen> theseOfficers = new ArrayList<Object_Sportsmen>();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor("select AWARD_YEAR,F_NAME,L_Name from awards a left join person p on a.P_ID=p.P_ID"));
 			while (rs.next()) {
@@ -89,7 +89,7 @@ public class SqlSelect {
 	public static ObservableList<Object_WorkCredit> getWorkCredits() {
 		ObservableList<Object_WorkCredit> thisWorkCredit = FXCollections.observableArrayList();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor("select * from work_credit;"));
 			while (rs.next()) {
@@ -112,7 +112,7 @@ public class SqlSelect {
 	public static ObservableList<Object_Payment> getPayments() {
 		ObservableList<Object_Payment> thisPayments = FXCollections.observableArrayList();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor("select * from payment;"));
 			while (rs.next()) {
@@ -136,7 +136,7 @@ public class SqlSelect {
 	public static ObservableList<Object_Payment> getPayments(int money_id) {
 		ObservableList<Object_Payment> thisPayments = FXCollections.observableArrayList();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor("select * from payment where money_id=" + money_id));
 			while (rs.next()) {
@@ -160,7 +160,7 @@ public class SqlSelect {
 	public static Object_Payment getPayment(int money_id) {
 		Object_Payment thisPayment = null;
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor("select * from payment where money_id=" + money_id));
 			while (rs.next()) {
@@ -184,7 +184,7 @@ public class SqlSelect {
 	public static ObservableList<Object_DefinedFee> getDefinedFees() {
 		ObservableList<Object_DefinedFee> thisDefinedFee = FXCollections.observableArrayList();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor("select * from defined_fee;"));
 			while (rs.next()) {
@@ -219,7 +219,7 @@ public class SqlSelect {
 	public static ObservableList<Object_Deposit> getDeposits() {
 		ObservableList<Object_Deposit> thisDeposits = FXCollections.observableArrayList();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor("select * from deposit;"));
 			while (rs.next()) {
@@ -240,7 +240,7 @@ public class SqlSelect {
 	public static Object_Deposit getDeposit(String year, int batch) {
 		Object_Deposit thisDeposit = null;
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor("select * from deposit where fiscal_year=" + year + " and batch=" + batch));
 			while (rs.next()) {
@@ -261,7 +261,7 @@ public class SqlSelect {
 	// can do this with a regular object but not properties for some reason
 	public static void  updateDeposit(String year, int batch, Object_Deposit thisDeposit) {
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor("select * from deposit where fiscal_year=" + year + " and batch=" + batch));
 			while (rs.next()) {
@@ -280,7 +280,7 @@ public class SqlSelect {
 	public static Object_DefinedFee getDefinedFee(String year) {
 		Object_DefinedFee newDefinedFee = null;
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor("SELECT * FROM defined_fee WHERE fiscal_year='" + year + "';"));
 			while (rs.next()) {
@@ -315,7 +315,7 @@ public class SqlSelect {
 	public static ObservableList<Object_Officer> getOfficers() {
 		ObservableList<Object_Officer> thisOfficer = FXCollections.observableArrayList();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor("select * from officer;"));
 			while (rs.next()) {
@@ -336,7 +336,7 @@ public class SqlSelect {
 	public static ArrayList<PDF_Object_Officer> getOfficersByYear(String selectedYear) {
 		ArrayList<PDF_Object_Officer> officers = new ArrayList<PDF_Object_Officer>();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor("select * from officer o left join person p on o.P_ID=p.P_ID where OFF_YEAR=" + selectedYear));
 			while (rs.next()) {
@@ -357,7 +357,7 @@ public class SqlSelect {
 	public static ObservableList<Object_Officer> getOfficer(String field, int attribute) {  //p_id
 		ObservableList<Object_Officer> thisOfficer = FXCollections.observableArrayList();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt
 					.executeQuery(Main.console.setRegexColor("select * from officer WHERE " + field + "='" + attribute + "';"));
 			while (rs.next()) {
@@ -378,7 +378,7 @@ public class SqlSelect {
 	public static ObservableList<Object_Award> getAwards(Object_Person p) {  //p_id
 		ObservableList<Object_Award> thisAwards = FXCollections.observableArrayList();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt
 					.executeQuery(Main.console.setRegexColor("select * from awards where P_ID=" + p.getP_id()));
 			while (rs.next()) {
@@ -399,7 +399,7 @@ public class SqlSelect {
 		ObservableList<Object_Email_Information> thisEmailInfo = FXCollections.observableArrayList();
 
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
 					"select id.MEMBERSHIP_ID,m.JOIN_DATE,p.L_NAME,p.F_NAME,EMAIL,PRIMARY_USE "
 					+ "from email e "
@@ -427,7 +427,7 @@ public class SqlSelect {
 	public static ObservableList<Object_Board> getBoard(String currentYear) {  //p_id
 		ObservableList<Object_Board> thisBoardMember = FXCollections.observableArrayList();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt
 					.executeQuery(Main.console.setRegexColor("select p.P_ID, p.MS_ID, o.O_ID, p.F_NAME, p.L_NAME, o.OFF_YEAR, o.BOARD_YEAR, o.OFF_TYPE  from person p inner join officer o on p.p_id = o.p_id where o.off_year='" + currentYear + "';"));
 
@@ -455,7 +455,7 @@ public class SqlSelect {
 		query += " WHERE ms_id=" + ms_id;
 		ObservableList<Object_Money> theseFiscals = FXCollections.observableArrayList();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(query + ";"));
 			while (rs.next()) {
 				theseFiscals.add(new Object_Money(rs.getInt("MONEY_ID"), rs.getInt("MS_ID"),
@@ -479,7 +479,7 @@ public class SqlSelect {
 		String query = "SELECT * FROM money WHERE ms_id=" + ms_id + " and fiscal_year=" + fiscalYear;
 		Object_Money thisFiscal = null;
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(query + ";"));
 			while (rs.next()) {
 				thisFiscal = new Object_Money(rs.getInt("MONEY_ID"), rs.getInt("MS_ID"),
@@ -508,7 +508,7 @@ public class SqlSelect {
 				+ "ORDER BY id.MEMBERSHIP_ID";
 		ObservableList<Object_PaidDues> theseFiscals = FXCollections.observableArrayList();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(query + ";"));
 			while (rs.next()) {
 				theseFiscals.add(new Object_PaidDues(rs.getInt("MONEY_ID"), rs.getInt("MS_ID"),
@@ -536,7 +536,7 @@ public class SqlSelect {
 				+ "INNER JOIN person p ON me.P_ID=p.P_ID WHERE mo.FISCAL_YEAR='" + selectedYear + "' AND mo.COMMITED=true ORDER BY id.MEMBERSHIP_ID";
 		ObservableList<Object_PaidDues> theseFiscals = FXCollections.observableArrayList();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(query + ";"));
 			while (rs.next()) {
 				theseFiscals.add(new Object_PaidDues(rs.getInt("MONEY_ID"), rs.getInt("MS_ID"),
@@ -562,7 +562,7 @@ public class SqlSelect {
 		String query = "SELECT mo.*, id.MEMBERSHIP_ID, p.l_name, p.f_name FROM membership_id id INNER JOIN membership m ON m.MS_ID=id.MS_ID LEFT JOIN person p ON m.P_ID=p.P_ID INNER JOIN money mo ON mo.MS_ID=m.MS_ID WHERE id.FISCAL_YEAR=" + selectedYear + " AND mo.BATCH=" + batch + " AND mo.FISCAL_YEAR=" + selectedYear;
 		ObservableList<Object_PaidDues> theseFiscals = FXCollections.observableArrayList();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(query + ";"));
 			while (rs.next()) {
 				theseFiscals.add(new Object_PaidDues(rs.getInt("MONEY_ID"), rs.getInt("MS_ID"),
@@ -589,7 +589,7 @@ public class SqlSelect {
 			query += " WHERE p_id='" + p_id + "'";
 		ObservableList<Object_Email> email = FXCollections.observableArrayList();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery(query + ";");
 			while (rs.next()) {
 				email.add(new Object_Email(
@@ -611,7 +611,7 @@ public class SqlSelect {
 		Object_Email email = null;
 		String returnEmail = "";
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery("select * from email where P_ID=" + person.getP_id() +" and PRIMARY_USE=true");
 			while (rs.next()) {
 				email = new Object_Email(
@@ -638,7 +638,7 @@ public class SqlSelect {
 			query +=  " WHERE ms_id='" + ms_id + "'";
 		ObservableList<Object_Memo> theseMemos = FXCollections.observableArrayList();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(query + ";");
 			while (rs.next()) {
@@ -661,7 +661,7 @@ public class SqlSelect {
 	public static ObservableList<Object_Memo2> getAllMemosForTabNotes(String year) {
 		ObservableList<Object_Memo2> theseMemos = FXCollections.observableArrayList();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery("select * from memo \n"
 					+ "left join membership_id id on memo.ms_id=id.ms_id\n"
@@ -689,7 +689,7 @@ public class SqlSelect {
 		System.out.println("select * from memo where money_id=" + dues.getMoney_id());
 		Object_Memo thisMemo = null;
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(query + ";");
 			while (rs.next()) {
@@ -712,7 +712,7 @@ public class SqlSelect {
 	public static ObservableList<Object_Slip> getSlips() {
 		ObservableList<Object_Slip> slips = FXCollections.observableArrayList();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery("select * from slip;");
 			while (rs.next()) {
 				slips.add(new Object_Slip(rs.getInt("SLIP_ID")
@@ -730,7 +730,7 @@ public class SqlSelect {
 	public static ObservableList<Object_MembershipId> getIds() {
 		ObservableList<Object_MembershipId> ids = FXCollections.observableArrayList();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery("select * from membership_id;");
 			while (rs.next()) {
 				ids.add(new Object_MembershipId(
@@ -753,7 +753,7 @@ public class SqlSelect {
 	public static ObservableList<Object_MembershipId> getIds(int ms_id) {
 		ObservableList<Object_MembershipId> ids = FXCollections.observableArrayList();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery("select * from membership_id where ms_id=" +ms_id + ";");
 			while (rs.next()) {
 				ids.add(new Object_MembershipId(
@@ -776,7 +776,7 @@ public class SqlSelect {
 	public static String getId(int ms_id) {
 		Object_MembershipId id = null;
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery("select * from membership_id where ms_id=" +ms_id + ";");
 			while (rs.next()) {
 				id = new Object_MembershipId(
@@ -800,7 +800,7 @@ public class SqlSelect {
 	public static ObservableList<Object_BoatOwner> getBoatOwners() {
 		ObservableList<Object_BoatOwner> thisBoatOwner = FXCollections.observableArrayList();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor("select * from boat_owner;"));
 			while (rs.next()) {
@@ -819,7 +819,7 @@ public class SqlSelect {
 	public static ObservableList<Object_Boat> getBoats() {
 		ObservableList<Object_Boat> thisBoat = FXCollections.observableArrayList();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor("select * from boat;"));
 			while (rs.next()) {
@@ -852,7 +852,7 @@ public class SqlSelect {
 	public static ObservableList<Object_BoatList> getBoatsWithOwners() {
 		ObservableList<Object_BoatList> thisBoat = FXCollections.observableArrayList();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor(
 					"select id.MEMBERSHIP_ID,id.MS_ID, p.L_NAME, p.F_NAME, "
@@ -894,7 +894,7 @@ public class SqlSelect {
 	public static ArrayList<Integer> getBoatIds(int ms_id) {
 		ArrayList<Integer> boats = new ArrayList<Integer>();	
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor("select bo.BOAT_ID from boat_owner bo inner join boat b on bo.BOAT_ID=b.BOAT_ID where ms_id='" + ms_id + "';"));
 
@@ -910,7 +910,7 @@ public class SqlSelect {
 	public static List<Object_Boat> getBoats(int ms_id) { // overload but must be separate
 		List<Object_Boat> thisBoat = new ArrayList<Object_Boat>();
 		try {
-		Statement stmt = ConnectDatabase.connection.createStatement();
+		Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 		ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select b.BOAT_ID, bo.MS_ID, b.MANUFACTURER"
 				+ ", b.MANUFACTURE_YEAR, b.REGISTRATION_NUM, b.MODEL, b.BOAT_NAME, b.SAIL_NUMBER"
 				+ ", b.HAS_TRAILER, b.LENGTH, b.WEIGHT, b.KEEL, b.PHRF, b.DRAFT, b.BEAM, b.LWL from boat b inner join boat_owner bo using (boat_id) where ms_id='" + ms_id + "';"));
@@ -944,7 +944,7 @@ public class SqlSelect {
 	public static Object_Boat getBoatbyBoatId(int boat_id) { // overload but must be separate
 		Object_Boat thisBoat = null;
 		try {
-		Statement stmt = ConnectDatabase.connection.createStatement();
+		Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 		ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select b.BOAT_ID, bo.MS_ID, b.MANUFACTURER"
 				+ ", b.MANUFACTURE_YEAR, b.REGISTRATION_NUM, b.MODEL, b.BOAT_NAME, b.SAIL_NUMBER"
 				+ ", b.HAS_TRAILER, b.LENGTH, b.WEIGHT, b.KEEL, b.PHRF, b.DRAFT, b.BEAM, b.LWL from boat b inner join boat_owner bo using (boat_id) where boat_id='" + boat_id + "';"));
@@ -979,7 +979,7 @@ public class SqlSelect {
 		List<Object_Boat> thisBoat = new ArrayList<Object_Boat>();
 
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select b.BOAT_ID, bo.MS_ID, b.MANUFACTURER"
 					+ ", b.MANUFACTURE_YEAR, b.REGISTRATION_NUM, b.MODEL, b.BOAT_NAME, b.SAIL_NUMBER"
 					+ ", b.HAS_TRAILER, b.LENGTH, b.WEIGHT, b.KEEL, b.PHRF from boat b inner join boat_owner bo using (boat_id);"));
@@ -1009,7 +1009,7 @@ public class SqlSelect {
 			query += " WHERE p_id='" + p_id + "'";
 		ObservableList<Object_Phone> thisPhone = FXCollections.observableArrayList();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor(query + ";"));
 			while (rs.next()) {
@@ -1026,7 +1026,7 @@ public class SqlSelect {
 	public static ArrayList<Object_Phone> getPhone(Object_Person p) {  // if p_id = 0 then select all
 		ArrayList<Object_Phone> thisPhone = new ArrayList<Object_Phone>();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor("SELECT * from phone Where P_ID=" + p.getP_id() + ""));
 			while (rs.next()) {
@@ -1043,7 +1043,7 @@ public class SqlSelect {
 	public static String getPhone(Object_Person p, String type) {  // if p_id = 0 then select all
 		String phone = "";
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor("select * from phone where P_ID=" + p.getP_id() + " and PHONE_LISTED=true and PHONE_TYPE='" + type + "'"));
 			rs.next();
@@ -1060,7 +1060,7 @@ public class SqlSelect {
 		Statement stmt;
 		Object_DefinedFee definedFee = null;
 		try {
-			stmt = ConnectDatabase.connection.createStatement();
+			stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery(
 					Main.console.setRegexColor("select * from defined_fee WHERE fiscal_year='" + year + "';"));
 			// if(Main.consoleVerbose) ;
@@ -1088,7 +1088,7 @@ public class SqlSelect {
 		String query = "SELECT * FROM person WHERE ms_id= '" + ms_id + "'";
 		ObservableList<Object_Person> thesepeople = FXCollections.observableArrayList();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 		    ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor(query + ";"));
 		while (rs.next()) {
@@ -1118,7 +1118,7 @@ public class SqlSelect {
 		String query = "SELECT * FROM person WHERE ms_id= '" + m.getMsid() + "' and MEMBER_TYPE=3";
 		ArrayList<Object_Person> thesepeople = new ArrayList<Object_Person>();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 		    ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor(query + ";"));
 		while (rs.next()) {
@@ -1148,7 +1148,7 @@ public class SqlSelect {
 		String query = "SELECT * FROM person";
 		ObservableList<Object_Person> thesepeople = FXCollections.observableArrayList();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 		    ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor(query + ";"));
 		while (rs.next()) {
@@ -1175,7 +1175,7 @@ public class SqlSelect {
 	public static ObservableList<Object_MembershipId> getMembershipIds(String year) {
 		ObservableList<Object_MembershipId> theseIds = FXCollections.observableArrayList();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 		    ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor("select * from membership_id where fiscal_year=" + year));
 		while (rs.next()) {
@@ -1200,7 +1200,7 @@ public class SqlSelect {
 	public static ArrayList<Object_Stats> getStatistics() {
 		ArrayList<Object_Stats> stats = new ArrayList<Object_Stats>();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 		    ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor("select * from stats"));
 		while (rs.next()) {
@@ -1235,7 +1235,7 @@ public class SqlSelect {
 	public static Object_Person getPersonByPid(int pid) {  
 		Object_Person person = null;
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt
 					.executeQuery(Main.console.setRegexColor("select * from person WHERE p_id= '" + pid + "';"));
 
@@ -1256,7 +1256,7 @@ public class SqlSelect {
 	public static Object_Person getPerson(int ms_id, int member_type) {  
 		Object_Person person = null;
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt
 					.executeQuery(Main.console.setRegexColor("select * from person where MS_ID=" + ms_id + " and MEMBER_TYPE=" + member_type));
 			
@@ -1279,7 +1279,7 @@ public class SqlSelect {
 		int result = 0;
 		Statement stmt;
 		try {
-			stmt = ConnectDatabase.connection.createStatement();
+			stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery("select * from " + table + " ORDER BY " + column + " DESC LIMIT 1");
 			rs.next();
 			result =  rs.getInt(column);
@@ -1294,7 +1294,7 @@ public class SqlSelect {
 		int result = 0;
 		Statement stmt;
 		try {
-			stmt = ConnectDatabase.connection.createStatement();
+			stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery("select Max(membership_id) from membership_id where fiscal_year='" + year + "'");
 			rs.next();
 			result =  rs.getInt("Max(membership_id)");
@@ -1309,7 +1309,7 @@ public class SqlSelect {
 		Object_MembershipId thisId = null; // new Object_MembershipId();
 		Statement stmt;
 		try {
-			stmt = ConnectDatabase.connection.createStatement();
+			stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery("select MID, MIN(FISCAL_YEAR), MS_ID, MAX(MEMBERSHIP_ID), RENEW from membership_id where MS_ID=" + ms_id);
 			while (rs.next()) {
 				thisId = new Object_MembershipId(
@@ -1332,7 +1332,7 @@ public class SqlSelect {
 	public static int getCount(String type) { // gives the last memo_id number
 		int result = 0;
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery("select * from money ORDER BY " + type + " DESC LIMIT 1;");
 			boolean hasResult = rs.next();
@@ -1349,7 +1349,7 @@ public class SqlSelect {
 	public static Object_Slip getSlip(int ms_id) {
 		Object_Slip thisSlip = null;
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery("select * from slip WHERE ms_id='" + ms_id + "'");
 			while (rs.next()) {
 				thisSlip = new Object_Slip(rs.getInt("SLIP_ID")
@@ -1367,7 +1367,7 @@ public class SqlSelect {
 	public static Object_Slip getSubleasedSlip(int ms_id) {
 		Object_Slip thisSlip = null;
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery("select * from slip WHERE subleased_to='" + ms_id + "'");
 			while (rs.next()) {
 				thisSlip = new Object_Slip(
@@ -1387,7 +1387,7 @@ public class SqlSelect {
 		int result = 0;
 		Statement stmt;
 		try {
-			stmt = ConnectDatabase.connection.createStatement();
+			stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select membership_id from membership_id where ms_id='" + msid + "' and fiscal_year=" + Paths.getYear() +";"));
 			while(rs.next()) {
 			result = rs.getInt("MEMBERSHIP_ID");
@@ -1403,7 +1403,7 @@ public class SqlSelect {
 		int result = 0;
 		Statement stmt;
 		try {
-			stmt = ConnectDatabase.connection.createStatement();
+			stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select ms_id from membership_id where fiscal_year='" + Paths.getYear() + "' and membership_id='" + membership_id + "';"));
 			while(rs.next()) {
 			result = rs.getInt("ms_id");
@@ -1418,7 +1418,7 @@ public class SqlSelect {
 	public static Object_Officer getOfficer(int p_id, int i) {
 		Object_Officer thisOfficer = null;
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 
 			rs = stmt.executeQuery(Main.console
@@ -1438,7 +1438,7 @@ public class SqlSelect {
 		Statement stmt;
 		Object_WorkCredit workCredits = null;
 		try {
-			stmt = ConnectDatabase.connection.createStatement();
+			stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery(
 					Main.console.setRegexColor("select * from work_credit WHERE money_id='" + moneyID + "';"));
 			// if(Main.consoleVerbose) ;
@@ -1458,7 +1458,7 @@ public class SqlSelect {
 		int number = 0;
 		ResultSet rs;
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			rs = stmt.executeQuery("select count(*) from membership_id where fiscal_year='" + year + "' and renew=true;");
 			rs.next();
 			number = rs.getInt("count(*)");
@@ -1474,7 +1474,7 @@ public class SqlSelect {
 		int number = 0;
 		ResultSet rs;
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			rs = stmt.executeQuery("select count(*) from membership m "
 					+ "inner join membership_id id on m.ms_id=id.ms_id "
 					+ "where id.fiscal_year='" + Paths.getYear() + "' and id.mem_type='" + type + "' and id.renew=true;");
@@ -1491,7 +1491,7 @@ public class SqlSelect {
 		int number = 0;
 		ResultSet rs;
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			rs = stmt.executeQuery("select count(*) from person p "
 					+ "inner join membership m on m.ms_id=p.ms_id "
 					+ "left join membership_id id on id.ms_id=m.ms_id "
@@ -1510,7 +1510,7 @@ public class SqlSelect {
 		int number = 0;
 		ResultSet rs;
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			rs = stmt.executeQuery("SELECT COUNT(*) from membership WHERE JOIN_DATE >= '" + year + "-01-01' and MEMBERSHIP_ID is not NULL;");
 			rs.next();
 			number = rs.getInt("COUNT(*)");
@@ -1526,7 +1526,7 @@ public class SqlSelect {
 		int number = 0;
 		ResultSet rs;
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			rs = stmt.executeQuery("select PAY_ID from payment ORDER BY pay_id DESC LIMIT 1");
 			rs.next();
 			number = rs.getInt("PAY_ID");
@@ -1542,7 +1542,7 @@ public class SqlSelect {
 		boolean committed = false;
 		ResultSet rs;
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			rs = stmt.executeQuery("select commited from money where money_id=" + money_id + ";");
 			rs.next();
 			committed = rs.getBoolean("commited");
@@ -1557,7 +1557,7 @@ public class SqlSelect {
 		int number = 0;
 		ResultSet rs;
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			rs = stmt.executeQuery("SELECT MAX(batch) FROM money WHERE commited=true and fiscal_year='"+year+"'");
 			rs.next();
 			number = rs.getInt("MAX(batch)");
@@ -1573,7 +1573,7 @@ public class SqlSelect {
 		String date = "";
 		ResultSet rs;
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			rs = stmt.executeQuery("select payment_date from payment where money_id=" + moneyid);
 			rs.next();
 			date = rs.getString("payment_date");
@@ -1591,7 +1591,7 @@ public class SqlSelect {
 		int number = 0;
 		ResultSet rs;
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			rs = stmt.executeQuery("Select SUM(" + column + ") from money where commited=true AND batch=" + batch + ";");
 			rs.next();
 			number = rs.getInt("SUM(" + column + ")");
@@ -1607,7 +1607,7 @@ public class SqlSelect {
 		int number = 0;
 		ResultSet rs;
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			rs = stmt.executeQuery("Select SUM(" + column + ") from money where commited=true;");
 			rs.next();
 			number = rs.getInt("SUM(" + column + ")");
@@ -1623,7 +1623,7 @@ public class SqlSelect {
 		int number = 0;
 		Statement stmt;
 		try {
-			stmt = ConnectDatabase.connection.createStatement();
+			stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select * from person ORDER BY p_id DESC LIMIT 1"));
 			rs.next();
 			number = rs.getInt("P_ID");
@@ -1638,7 +1638,7 @@ public class SqlSelect {
 		int number = 0;
 		Statement stmt;
 		try {
-			stmt = ConnectDatabase.connection.createStatement();
+			stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select SUM(amount) from payment where money_id=" + money_id));
 			rs.next();
 			number = rs.getInt("SUM(amount)");
@@ -1655,7 +1655,7 @@ public class SqlSelect {
 		Statement stmt;
 		
 		try {
-			stmt = ConnectDatabase.connection.createStatement();
+			stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select membership_id from membership_id where fiscal_year='" + year + "' and ms_id='" + ms_id + "'"));
 			if (rs.next() == false) {
 				id = "none";
@@ -1678,7 +1678,7 @@ public class SqlSelect {
 		boolean renew = false;
 		Statement stmt;
 		try {
-			stmt = ConnectDatabase.connection.createStatement();
+			stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select RENEW from membership_id where fiscal_year='" + year + "' and ms_id=" + ms_id));
 			rs.next();
 			renew = rs.getBoolean("RENEW");
@@ -1693,7 +1693,7 @@ public class SqlSelect {
 		int number = 0;
 		ResultSet rs;
 		try { // select PAY_ID from payment ORDER BY pay_id DESC LIMIT 1
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			rs = stmt.executeQuery("select deposit_id from deposit ORDER BY deposit_id DESC LIMIT 1;");
 			rs.next();
 			number = rs.getInt("deposit_id");
@@ -1709,7 +1709,7 @@ public class SqlSelect {
 		int number = 0;
 		ResultSet rs;
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			rs = stmt.executeQuery("select max(batch) from deposit where FISCAL_YEAR=" + year);
 			rs.next();
 			number = rs.getInt("max(batch)");
@@ -1726,7 +1726,7 @@ public class SqlSelect {
 		int number = 0;
 		ResultSet rs;
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			rs = stmt.executeQuery("select count(*) from membership_id where fiscal_year=" + year + " and renew=true");
 			rs.next();
 			number = rs.getInt("count(*)");
@@ -1742,7 +1742,7 @@ public class SqlSelect {
 		int number = 0;
 		ResultSet rs;
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			rs = stmt.executeQuery("select count(*) from membership_id where fiscal_year=" + year + " and renew=false");
 			rs.next();
 			number = rs.getInt("count(*)");
@@ -1758,7 +1758,7 @@ public class SqlSelect {
 		int number = 0;
 		ResultSet rs;
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			rs = stmt.executeQuery("select count(*) from membership where year(join_date) =" + year);
 			rs.next();
 			number = rs.getInt("count(*)");
@@ -1788,7 +1788,7 @@ public class SqlSelect {
 	public static boolean isActive(int ms_id, String year) {
 		Boolean result = false;
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("Select renew from membership_id where FISCAL_YEAR='"+year+"' and MS_ID='"+ms_id+"'"));
 			while(rs.next()) {
 			result = rs.getBoolean("renew");
@@ -1804,7 +1804,7 @@ public class SqlSelect {
 		int number = 0;
 		ResultSet rs;
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			rs = stmt.executeQuery("select mid from membership_id where MS_ID=" + ms_id + " and FISCAL_YEAR=" + year);
 			rs.next();
 			number = rs.getInt("MID");
@@ -1820,7 +1820,7 @@ public class SqlSelect {
 		int number = 0;
 		ResultSet rs;
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			rs = stmt.executeQuery("select count(*) from membership_id where FISCAL_YEAR='" + year + "' and RENEW=false");
 			rs.next();
 			number = rs.getInt("count(*)");
@@ -1837,7 +1837,7 @@ public class SqlSelect {
 		int number = 0;
 		ResultSet rs;
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			rs = stmt.executeQuery("select count(*) from membership_id where MEM_TYPE='" + type + "' and FISCAL_YEAR='" + year + "';");
 			rs.next();
 			number = rs.getInt("count(*)");
@@ -1854,7 +1854,7 @@ public class SqlSelect {
 		int number = 0;
 		ResultSet rs;
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			rs = stmt.executeQuery("select ms_id from person where L_NAME='"+t.getLname()+"' and F_NAME='"+t.getFname()+"';");
 			rs.next();
 			number = rs.getInt("ms_id");
@@ -1872,7 +1872,7 @@ public class SqlSelect {
 	public static Object_WaitList getWaitList(int ms_id) {
 		Object_WaitList thisWaitList = null;
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor("select * from waitlist where ms_id=" + ms_id));
 			while (rs.next()) {
@@ -1896,7 +1896,7 @@ public class SqlSelect {
 	public static ArrayList<Object_WaitList> getWaitLists() {
 		ArrayList<Object_WaitList> thisWaitList = new ArrayList<Object_WaitList>();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor("select * from waitlist"));
 			while (rs.next()) {
@@ -1920,7 +1920,7 @@ public class SqlSelect {
 	public static ArrayList<Object_SlipInfo> getSlipsForDock(String dock) {
 		ArrayList<Object_SlipInfo> thisSlipInfo = new ArrayList<Object_SlipInfo>();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor("select SLIP_NUM,SUBLEASED_TO,F_NAME,L_NAME  from slip s \n"
 					+ "left join membership m on s.MS_ID=m.MS_ID \n"
@@ -1944,7 +1944,7 @@ public class SqlSelect {
 	public static ArrayList<Object_Award> getAwards() {
 		ArrayList<Object_Award> theseAwards = new ArrayList<Object_Award>();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor("select * from awards"));
 			while (rs.next()) {

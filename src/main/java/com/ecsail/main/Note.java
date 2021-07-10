@@ -39,7 +39,7 @@ public class Note {
 	protected int getCount() { // gives the last memo_id number
 		int count = 0;
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery("select * from memo ORDER BY memo_id DESC LIMIT 1");
 			rs.next();

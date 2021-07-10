@@ -20,7 +20,7 @@ public class Sql_SelectMembership {
 	public static ObservableList<Object_MembershipList> getRosterOfKayakRackOwners(String year) {
 		ObservableList<Object_MembershipList> rosters = FXCollections.observableArrayList();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor(
 					"Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,id.FISCAL_YEAR,id.FISCAL_YEAR,m.JOIN_DATE,id.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip \n"
@@ -59,7 +59,7 @@ public class Sql_SelectMembership {
 	public static ObservableList<Object_MembershipList> getRosterOfKayakShedOwners(String year) {
 		ObservableList<Object_MembershipList> rosters = FXCollections.observableArrayList();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor(
 					"Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,id.FISCAL_YEAR,id.FISCAL_YEAR,m.JOIN_DATE,id.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip \n"
@@ -98,7 +98,7 @@ public class Sql_SelectMembership {
 	public static ObservableList<Object_MembershipList> getRoster(String year, boolean isActive) {
 		ObservableList<Object_MembershipList> rosters = FXCollections.observableArrayList();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor(
 					"Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,id.FISCAL_YEAR,id.FISCAL_YEAR,m.JOIN_DATE,id.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip "
@@ -137,7 +137,7 @@ public class Sql_SelectMembership {
 	public static ObservableList<Object_MembershipList> getRosterOfAllActiveMembers(String year) {
 		ObservableList<Object_MembershipList> rosters = FXCollections.observableArrayList();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor(
 					"Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,id.FISCAL_YEAR,id.FISCAL_YEAR,m.JOIN_DATE,id.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip "
@@ -174,7 +174,7 @@ public class Sql_SelectMembership {
 	public static ObservableList<Object_MembershipList> getRosterOfAll(String year) {
 		ObservableList<Object_MembershipList> rosters = FXCollections.observableArrayList();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor(
 					"Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,id.FISCAL_YEAR,m.JOIN_DATE,id.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip "
@@ -211,7 +211,7 @@ public class Sql_SelectMembership {
 	public static ObservableList<Object_MembershipList> getRosterOfSlipOwners(String year) {
 		ObservableList<Object_MembershipList> rosters = FXCollections.observableArrayList();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor(
 					"Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,id.FISCAL_YEAR,m.JOIN_DATE,id.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip "
@@ -248,7 +248,7 @@ public class Sql_SelectMembership {
 	public static ObservableList<Object_MembershipList> getRosterOfSubleasedSlips() {
 		ObservableList<Object_MembershipList> rosters = FXCollections.observableArrayList();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor(
 					"Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,id.FISCAL_YEAR,m.JOIN_DATE,id.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip from slip s "
@@ -284,7 +284,7 @@ public class Sql_SelectMembership {
 		System.out.println("msid=" + ms_id);
 		Object_MembershipList thisMembership = null;
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
 					"Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,id.FISCAL_YEAR,m.JOIN_DATE,"
 					+ "id.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,"
@@ -320,7 +320,7 @@ public class Sql_SelectMembership {
 		System.out.println("Pulling membership for ms_id=" + ms_id + " for the year year");
 		Object_MembershipList thisMembership = null;
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
 					"Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,id.FISCAL_YEAR,m.JOIN_DATE,"
 					+ "id.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,"
@@ -355,7 +355,7 @@ public class Sql_SelectMembership {
 	public static Object_MembershipList getMembershipFromListWithoutMembershipId(int ms_id) {
 		Object_MembershipList thisMembership = null;
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
 					"Select m.MS_ID,m.P_ID,m.JOIN_DATE,s.SLIP_NUM,p.L_NAME,"
 					+ "p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip from slip s right join "
@@ -389,7 +389,7 @@ public class Sql_SelectMembership {
 	public static ObservableList<Object_MembershipList> getSlipRoster(String year) {
 		ObservableList<Object_MembershipList> rosters = FXCollections.observableArrayList();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor(
 					"Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,id.FISCAL_YEAR,m.JOIN_DATE,id.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip "
@@ -422,7 +422,7 @@ public class Sql_SelectMembership {
 	public static ObservableList<Object_MembershipList> getWaitListRoster(String waitlist) {
 		ObservableList<Object_MembershipList> rosters = FXCollections.observableArrayList();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor(
 					"Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,id.FISCAL_YEAR,m.JOIN_DATE,id.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip "
@@ -459,7 +459,7 @@ public class Sql_SelectMembership {
 	public static ObservableList<Object_MembershipList> getNewMemberRoster(String year) {
 		ObservableList<Object_MembershipList> rosters = FXCollections.observableArrayList();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor(
 					"select id.membership_id, id.FISCAL_YEAR, m.JOIN_DATE, id.MEM_TYPE, m.ADDRESS, "
@@ -496,7 +496,7 @@ public class Sql_SelectMembership {
 		int lastYear = Integer.parseInt(year) - 1;
 		ObservableList<Object_MembershipList> rosters = FXCollections.observableArrayList();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor(
 					"select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,id.FISCAL_YEAR,m.JOIN_DATE,id.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip\n"
@@ -538,7 +538,7 @@ public class Sql_SelectMembership {
 		int lastYear = fiscalYear - 1;
 		ObservableList<Object_MembershipList> rosters = FXCollections.observableArrayList();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor(
 					"select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,id.FISCAL_YEAR,m.JOIN_DATE,id.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip "
@@ -576,7 +576,7 @@ public class Sql_SelectMembership {
 	public static Object_MembershipList getMembershipByMembershipId(String membership_id) {  /// for SQL Script Maker
 		Object_MembershipList membership = null;
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor(
 					"select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,id.FISCAL_YEAR,m.JOIN_DATE,"
@@ -610,7 +610,7 @@ public class Sql_SelectMembership {
 	public static ObservableList<Object_Membership> getMemberships() {  /// for SQL Script Maker
 		ObservableList<Object_Membership> memberships = FXCollections.observableArrayList();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor("select * from membership;"));
 			while (rs.next()) {
@@ -634,7 +634,7 @@ public class Sql_SelectMembership {
 	public static ObservableList<Object_MembershipList> getBoatOwners(int boat_id) {
 		ObservableList<Object_MembershipList> rosters = FXCollections.observableArrayList();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor(
 					"Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,id.FISCAL_YEAR,id.FISCAL_YEAR,m.JOIN_DATE,id.MEM_TYPE,p.L_NAME,p.F_NAME,m.address,m.city,m.state,m.zip "
@@ -671,7 +671,7 @@ public class Sql_SelectMembership {
 	public static ObservableList<Object_MembershipList> getBoatOwnerRoster(int boat_id) {
 		ObservableList<Object_MembershipList> boatOwners = FXCollections.observableArrayList();
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
 					"select * from boat_owner bo left join membership m on "
 					+ "bo.MS_ID=m.MS_ID left join membership_id id on m.MS_ID=id.MS_ID "

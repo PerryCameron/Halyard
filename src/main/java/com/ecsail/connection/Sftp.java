@@ -5,7 +5,6 @@ import com.jcraft.jsch.*;
 import java.util.ArrayList;
 import java.util.Vector;
 
-import com.ecsail.main.*;
 import com.ecsail.main.TestSftp.MyProgressMonitor;
 
 public class Sftp{
@@ -13,9 +12,9 @@ public class Sftp{
 	Session session;
 	ChannelSftp c;
 	
-  public Sftp(){
-	  this.jsch = Main.getConnect().getForwardedConnection().getJsch();
-	  this.session = Main.getConnect().getForwardedConnection().getSession();
+  public Sftp(JSch jsch, Session session){
+	  this.jsch = jsch;
+	  this.session = session;
 	  connectSession();
 	  System.out.println("session=" + session);
   }

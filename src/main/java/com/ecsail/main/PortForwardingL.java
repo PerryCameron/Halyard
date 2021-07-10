@@ -1,5 +1,6 @@
 package com.ecsail.main;
 
+import com.ecsail.connection.Sftp;
 import com.jcraft.jsch.*;
 import javax.swing.*;
 
@@ -8,6 +9,7 @@ public class PortForwardingL {
 	static String passwd;
 	private Session session;
 	private JSch jsch = new JSch();
+	private Sftp ftp;
 
 	public PortForwardingL(String host, String rhost, int lport, int rport, String user, String password) { // int
 																											// lport;
@@ -34,6 +36,7 @@ public class PortForwardingL {
 			session.connect();
 			int assinged_port = session.setPortForwardingL(lport, rhost, rport);
 			System.out.println("localhost:" + assinged_port + " -> " + rhost + ":" + rport);
+			this.ftp = new Sftp(jsch, session);
 		} catch (Exception e) {
 			System.out.println(e);
 		}
@@ -71,6 +74,10 @@ public class PortForwardingL {
 
 	}
 
+	public void closeSession() {
+		session.disconnect();
+	}
+	
 	public Session getSession() {
 		return session;
 	}
@@ -85,6 +92,14 @@ public class PortForwardingL {
 
 	public void setJsch(JSch jsch) {
 		this.jsch = jsch;
+	}
+
+	public Sftp getFtp() {
+		return ftp;
+	}
+
+	public void setFtp(Sftp ftp) {
+		this.ftp = ftp;
 	}
 
 }

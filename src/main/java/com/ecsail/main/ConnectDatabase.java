@@ -35,9 +35,8 @@ import javafx.stage.Stage;
 
 public class ConnectDatabase {
 
-	public static Connection connection;  // do I need this?
-	//private int thisLogon = FileIO.getDefaultLogon();
-	private PortForwardingL forwardedConnection;
+	public static Connection sqlConnection;
+	public PortForwardingL sshConnection;
 	private double titleBarHeight;
 	private Object_Login currentLogon;
 	private String port; 
@@ -299,7 +298,7 @@ public class ConnectDatabase {
         		// create ssh tunnel
         		if(currentLogon.isSshForward()) {
         			System.out.println("SSH tunnel enabled - test");
-        			this.forwardedConnection = new PortForwardingL(host,loopback,3306,3306,sUser,sPass); 
+        			this.sshConnection = new PortForwardingL(host,loopback,3306,3306,sUser,sPass); 
         		}
         		// create mysql login
         		if(createConnection(user, pass, loopback, port)) {
@@ -469,7 +468,7 @@ public class ConnectDatabase {
 		String server = "jdbc:mysql://" + ip + ":" + port + "/ECSC_SQL?autoReconnect=true&useSSL=true";
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			connection = DriverManager.getConnection(server, user, password);
+			sqlConnection = DriverManager.getConnection(server, user, password);
 			Launcher.closeActiveTab();
 			//vboxGrey.getChildren().add();
 			Launcher.openWelcomeTab(new BoxWelcome());
@@ -499,7 +498,7 @@ public class ConnectDatabase {
 	private void showStatus() {
 		Statement stmt;
 		try {
-			stmt = connection.createStatement();
+			stmt = sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery("SHOW SESSION STATUS LIKE \'Ssl_cipher\'");
 		while (rs.next()) {
 			System.out.print("Using " + rs.getString(2) + " encryption");
@@ -515,8 +514,12 @@ public class ConnectDatabase {
 	
 	void close() {
 		try {
-			connection.close();
-			System.out.println("Connection to " + currentLogon.getHost() + " closed.");
+			sqlConnection.close();
+			System.out.println("SQL Connection to " + currentLogon.getHost() + " closed.");
+			sshConnection.getFtp().closeSession();
+			System.out.println("SFTP Connection closed");
+			sshConnection.getSession();
+			System.out.println("SSH Tunnel closed");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			System.out.println("Disconnection from " + currentLogon.getHost() + " Failed.");
@@ -533,19 +536,19 @@ public class ConnectDatabase {
 	}
 
 	public static Connection getConnection() {
-		return connection;
+		return sqlConnection;
 	}
 
 	public static void setConnection(Connection connection) {
-		ConnectDatabase.connection = connection;
+		ConnectDatabase.sqlConnection = connection;
 	}
 
 	public PortForwardingL getForwardedConnection() {
-		return forwardedConnection;
+		return sshConnection;
 	}
 
 	public void setForwardedConnection(PortForwardingL forwardedConnection) {
-		this.forwardedConnection = forwardedConnection;
+		this.sshConnection = forwardedConnection;
 	}
 	
 	

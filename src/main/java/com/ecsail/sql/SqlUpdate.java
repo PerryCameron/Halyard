@@ -26,7 +26,7 @@ public class SqlUpdate {
 	
 	public static final void updateBoat(String field, int boat_id, String attribute) {
 		try {			
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			if(attribute == null) 
 				stmt.execute(Main.console.setRegexColor(
 					"UPDATE boat SET " + field + "=null WHERE boat_id='" + boat_id + "';"));
@@ -47,7 +47,7 @@ public class SqlUpdate {
 	public static final void updateBoat(int boat_id, Boolean hasTrailer) {
 		Statement stmt;
 		try {
-			stmt = ConnectDatabase.connection.createStatement();
+			stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console
 					.setRegexColor("UPDATE boat SET has_trailer=" + hasTrailer + " WHERE boat_id='" + boat_id + "';"));
 			Main.edits.setBoatEdits(Main.edits.getBoatEdits() + 1);
@@ -60,7 +60,7 @@ public class SqlUpdate {
 	public static final void updateBoat(int boat_id, String keel) {
 		Statement stmt;
 		try {
-			stmt = ConnectDatabase.connection.createStatement();
+			stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE boat SET keel=\"" + keel + "\" WHERE boat_id='" + boat_id + "';"));
 			Main.edits.setBoatEdits(Main.edits.getBoatEdits() + 1);
 		} catch (SQLException e) {
@@ -71,7 +71,7 @@ public class SqlUpdate {
 	
 	public static void updateAddress(String address,Object_MembershipList membership) {
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE membership SET address=\"" + address
 					+ "\" WHERE ms_id='" + membership.getMsid() + "';"));
 			Main.edits.setMembershipEdits(Main.edits.getMembershipEdits() + 1);
@@ -84,7 +84,7 @@ public class SqlUpdate {
 	
 	public static void updateCity(String city,Object_MembershipList membership) {
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE membership SET city=\"" + city
 					+ "\" WHERE ms_id='" + membership.getMsid() + "';"));
 			Main.edits.setMembershipEdits(Main.edits.getMembershipEdits() + 1);
@@ -97,7 +97,7 @@ public class SqlUpdate {
 	
 	public static void updateState(String state,Object_MembershipList membership) {
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE membership SET state=\"" + state
 				+ "\" WHERE ms_id='" + membership.getMsid() + "';"));
 			membership.setState(state);
@@ -111,7 +111,7 @@ public class SqlUpdate {
 	
 	public static void updateZipcode(String zip,Object_MembershipList membership) {
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE membership SET zip=\"" + zip
 					+ "\" WHERE ms_id='" + membership.getMsid() + "';"));
 			Main.edits.setMembershipEdits(Main.edits.getMembershipEdits() + 1);
@@ -124,7 +124,7 @@ public class SqlUpdate {
 	
 	public static void updateMembershipPrimary(int ms_id, int pid) {
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE membership SET p_id=" + pid
 					+ " WHERE ms_id='" + ms_id + "';"));
 			Main.edits.setMembershipEdits(Main.edits.getMembershipEdits() + 1);
@@ -138,7 +138,7 @@ public class SqlUpdate {
 		Boolean noError = true;
 		Statement stmt;
 		try {
-			stmt = ConnectDatabase.connection.createStatement();
+			stmt = ConnectDatabase.sqlConnection.createStatement();
 			if(attribute.equals("")) {
 			stmt.execute(Main.console.setRegexColor(
 						"UPDATE membership SET " + field + "= null WHERE ms_id='" + ms_id + "';"));	
@@ -158,7 +158,7 @@ public class SqlUpdate {
 	public static Boolean updateMembership(int ms_id, String field, LocalDate date) {
 		Boolean noError = true;
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor(
 					"UPDATE membership SET " + field + "=\"" + date + "\" WHERE ms_id='" + ms_id + "';"));
 			Main.edits.setMembershipEdits(Main.edits.getMembershipEdits() + 1);
@@ -173,7 +173,7 @@ public class SqlUpdate {
 	public static Boolean updateDeposit(String field, int deposit_id, LocalDate date) {
 		Boolean noError = true;
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor(
 					"UPDATE deposit SET " + field + "=\"" + date + "\" WHERE deposit_id='" + deposit_id + "';"));
 			Main.edits.setDepositsEdits(Main.edits.getDepositsEdits() + 1);
@@ -188,7 +188,7 @@ public class SqlUpdate {
 	public static void updateListed(String field, int phone_id, Boolean attribute) {
 		Statement stmt;
 		try {
-			stmt = ConnectDatabase.connection.createStatement();
+			stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor(
 					"UPDATE phone SET " + field + "=" + attribute + " WHERE phone_id='" + phone_id + "';"));
 			Main.edits.setPhoneEdits(Main.edits.getPhoneEdits() + 1);
@@ -201,7 +201,7 @@ public class SqlUpdate {
 	public static void updateWaitList(int ms_id, String field, Boolean attribute) {
 		Statement stmt;
 		try {
-			stmt = ConnectDatabase.connection.createStatement();
+			stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor(
 					"UPDATE waitlist SET " + field + "=" + attribute + " WHERE ms_id='" + ms_id + "';"));
 			Main.edits.setPhoneEdits(Main.edits.getPhoneEdits() + 1);
@@ -214,7 +214,7 @@ public class SqlUpdate {
 	public static void updatePhone(String field, int phone_id, String attribute) {
 		Statement stmt;
 		try {
-			stmt = ConnectDatabase.connection.createStatement();
+			stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor(
 					"UPDATE phone SET " + field + "=\"" + attribute + "\" WHERE phone_id='" + phone_id + "';"));
 			Main.edits.setPhoneEdits(Main.edits.getPhoneEdits() + 1);
@@ -227,7 +227,7 @@ public class SqlUpdate {
 	public static void updateEmail(String field, int email_id, Boolean attribute) {  // overload so compact
 		Statement stmt;
 		try {
-			stmt = ConnectDatabase.connection.createStatement();
+			stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor(
 					"UPDATE email SET " + field + "=" + attribute + " WHERE email_id='" + email_id + "';"));
 			Main.edits.setEmailEdits(Main.edits.getEmailEdits() + 1);
@@ -239,7 +239,7 @@ public class SqlUpdate {
 	
 	public static final void updateEmail(int email_id, String email) {
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE email SET email=\"" + email + "\" WHERE email_id='" + email_id + "';"));
 			Main.edits.setEmailEdits(Main.edits.getEmailEdits() + 1);
 		} catch (SQLException e) {
@@ -250,7 +250,7 @@ public class SqlUpdate {
 	
 	public static void updateOfficer(String field, int officer_id, String attribute) {
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE officer SET " + field + "=\"" + attribute + "\" WHERE o_id='" + officer_id + "';"));
 			Main.edits.setOfficersEdits(Main.edits.getOfficersEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
@@ -265,7 +265,7 @@ public class SqlUpdate {
 	
 	public static void updateAward(String field, int awardId, String attribute) {
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE awards SET " + field + "=\"" + attribute + "\" WHERE award_id='" + awardId + "';"));
 			Main.edits.setOfficersEdits(Main.edits.getOfficersEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
@@ -280,7 +280,7 @@ public class SqlUpdate {
 	
 	public static void updateBirthday(LocalDate date, Object_Person person) {
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE person SET birthday=\"" + date
 					+ "\" WHERE p_id='" + person.getP_id() + "';"));
 			Main.edits.setPeopleEdits(Main.edits.getPeopleEdits() + 1);  // update edits tracking
@@ -292,7 +292,7 @@ public class SqlUpdate {
 	
 	public static void updateNickName(String nname, Object_Person person) {
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE person SET NICK_NAME=\"" + nname
 					+ "\" WHERE p_id='" + person.getP_id() + "';"));
 			Main.edits.setPeopleEdits(Main.edits.getPeopleEdits() + 1);  // update edits tracking
@@ -304,7 +304,7 @@ public class SqlUpdate {
 	
 	public static void updateBuisness(String buisness, Object_Person person ) {
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE person SET buisness=\"" + buisness
 					+ "\" WHERE p_id='" + person.getP_id() + "';"));
 			Main.edits.setPeopleEdits(Main.edits.getPeopleEdits() + 1);  // update edits tracking
@@ -316,7 +316,7 @@ public class SqlUpdate {
 	
 	public static void updateOccupation(String occupation, Object_Person person) {	
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE person SET occupation=\"" + occupation
 					+ "\" WHERE p_id='" + person.getP_id() + "';"));
 			Main.edits.setPeopleEdits(Main.edits.getPeopleEdits() + 1);  // update edits tracking
@@ -328,7 +328,7 @@ public class SqlUpdate {
 	
 	public static void updateLastName(String lname, Object_Person person)  { // Business
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE person SET l_name=\"" + lname
 					+ "\" WHERE p_id='" + person.getP_id() + "';"));
 			Main.edits.setPeopleEdits(Main.edits.getPeopleEdits() + 1);  // update edits tracking
@@ -340,7 +340,7 @@ public class SqlUpdate {
 	
 	public static void updateFirstName(String fname, Object_Person person) {
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE person SET f_name=\"" + fname
 					+ "\" WHERE p_id='" + person.getP_id() + "';"));
 			Main.edits.setPeopleEdits(Main.edits.getPeopleEdits() + 1);  // update edits tracking
@@ -352,7 +352,7 @@ public class SqlUpdate {
 	
 	public static void updatePerson(String field, int p_id, Boolean attribute) { // updates active/inactive
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE person SET " + field + "=" + attribute + " WHERE p_id='" + p_id + "';"));
 			Main.edits.setPeopleEdits(Main.edits.getPeopleEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
@@ -363,7 +363,7 @@ public class SqlUpdate {
 	
 	public static void updatePerson(int p_id, String field, int attribute) { // updates active/inactive
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE person SET " + field + "=" + attribute + " WHERE p_id='" + p_id + "';"));
 			Main.edits.setPeopleEdits(Main.edits.getPeopleEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
@@ -374,7 +374,7 @@ public class SqlUpdate {
 	
 	public static void updateSlip(int ms_id, Object_MembershipList membership) {  // ms_id in this case came from the text field and is converted from membership_id
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("update slip set subleased_to='" + ms_id + "' where ms_id='" + membership.getMsid() + "';"));
 			membership.setSubleaser(ms_id);
 			Main.edits.setSlipsEdits(Main.edits.getSlipsEdits() + 1);  // update edits tracking
@@ -386,7 +386,7 @@ public class SqlUpdate {
 	
 	public static void releaseSlip(Object_MembershipList membership) {  // this releases the slip using the slip owners ms_id
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("update slip set subleased_to=null where ms_id='" + membership.getMsid() + "';"));
 			BoxConsole.setInfoLine("Released sublease for slip owner " + membership.getMsid(), "orange");
 			membership.setSubleaser(0);
@@ -399,7 +399,7 @@ public class SqlUpdate {
 	
 	public static void subleaserReleaseSlip(int subleasee) {  // this releases the slip using the subleasee ms_id
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("update slip set subleased_to=null where subleased_to='" + subleasee + "';"));
 			BoxConsole.setInfoLine("Released sublease for subleaser " + subleasee, "orange");
 			Object_MembershipList ownerMembership = Sql_SelectMembership.getMembershipFromList(subleasee, Paths.getYear());
@@ -413,7 +413,7 @@ public class SqlUpdate {
 	
 	public static void reAssignSlip(int ms_id, Object_MembershipList membership) {  // this reassignes the slip using the subleasee ms_id (came from text field)
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("update slip set ms_id='" + ms_id + "' where ms_id='" + membership.getMsid() + "';"));
 			String slip = membership.getSlip();
 			membership.setSlip("0");
@@ -429,7 +429,7 @@ public class SqlUpdate {
 	public static final void commitFiscalRecord(int money_id, Boolean commit) {
 		Statement stmt;
 		try {
-			stmt = ConnectDatabase.connection.createStatement();
+			stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console
 					.setRegexColor("UPDATE money SET commited=" + commit + " WHERE money_id='" + money_id + "';"));
 			Main.edits.setMoniesEdits(Main.edits.getMoniesEdits() + 1);  // update edits tracking
@@ -441,7 +441,7 @@ public class SqlUpdate {
 	
 	public static final void updateField(int newValue, String table, String field, ObservableList<Object_Money> fiscals, int rowIndex)  {
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE " + table + " SET " + field + "=\"" + newValue
 					+ "\" WHERE money_id='" + fiscals.get(rowIndex).getMoney_id() + "';"));
 			Main.edits.setMoniesEdits(Main.edits.getMoniesEdits() + 1);  // update edits tracking
@@ -453,7 +453,7 @@ public class SqlUpdate {
 	
 	public static final void updateMoney(Object_Money money) {
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE money SET extra_key=" 
 					+ money.getExtra_key() 
 					+ ",kayak_shed_key=" + money.getKayac_shed_key() 
@@ -484,7 +484,7 @@ public class SqlUpdate {
 	
 	public static final void updateWorkCredit(Object_WorkCredit swcy)  {
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE work_credit SET racing=" + swcy.getRacing()
 					+ ",harbor=" + swcy.getHarbor() + ",social=" + swcy.getSocial() + ",other=" + swcy.getOther() 
 					+ " WHERE money_id=" + swcy.getMoney_id() + ";"));
@@ -497,7 +497,7 @@ public class SqlUpdate {
 	
 	public static final void updateMoneyBatch(int money_id, int batchNumber) {
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE money SET batch=\"" + batchNumber
 					+ "\" WHERE money_id='" + money_id + "';"));
 			Main.edits.setMoniesEdits(Main.edits.getMoniesEdits() + 1);  // update edits tracking
@@ -509,7 +509,7 @@ public class SqlUpdate {
 	
 	public static final void updateMoneyClosed(int money_id, Boolean closed) {
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE money SET closed=" + closed
 					+ " WHERE money_id='" + money_id + "';"));
 			Main.edits.setMoniesEdits(Main.edits.getMoniesEdits() + 1);  // update edits tracking
@@ -521,7 +521,7 @@ public class SqlUpdate {
 	
 	public static void updateMemo(int memo_id, String field, String attribute)  {
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE memo SET " + field + "=\"" + attribute + "\" WHERE memo_id='" + memo_id + "';"));
 			Main.edits.setMemosEdits(Main.edits.getMemosEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
@@ -532,7 +532,7 @@ public class SqlUpdate {
 	
 	public static void updatePayment(int pay_id, String field, String attribute) {
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE payment SET " + field + "=\"" + attribute + "\" WHERE pay_id='" + pay_id + "';"));
 			Main.edits.setPaymentsEdits(Main.edits.getPaymentsEdits() + 1);
 		} catch (SQLException e) {
@@ -545,7 +545,7 @@ public class SqlUpdate {
 	public static Boolean updateMembershipId(int mid, String field, String attribute) {
 		Boolean noError = true;
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE membership_id SET " + field + "=\"" + attribute + "\" WHERE mid=" + mid));
 			Main.edits.setIdEdits(Main.edits.getIdEdits() + 1);
 		} catch (SQLException e) {
@@ -560,7 +560,7 @@ public class SqlUpdate {
 	public static Boolean updateMembershipId(int ms_id, int year, boolean value) {
 		Boolean noError = true;
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("update membership_id set renew=" + value + " where fiscal_year='" + year + "' and ms_id='" + ms_id +"'"));
 			Main.edits.setIdEdits(Main.edits.getIdEdits() + 1);
 		} catch (SQLException e) {
@@ -574,7 +574,7 @@ public class SqlUpdate {
 	public static Boolean updateMembershipId(int mid, String field, Boolean attribute) {
 		Boolean noError = true;
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE membership_id SET " + field + "=" + attribute + " WHERE mid=" + mid));
 			Main.edits.setIdEdits(Main.edits.getIdEdits() + 1);
 		} catch (SQLException e) {
@@ -588,7 +588,7 @@ public class SqlUpdate {
 	
 	public static void updateDefinedFee(String year, String field, String attribute) {
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE defined_fee SET " + field + "=" + attribute + " WHERE fiscal_year=" + year + ";"));
 			Main.edits.setDefinedFeesEdits(Main.edits.getDefinedFeesEdits() + 1);
 		} catch (SQLException e) {
@@ -600,7 +600,7 @@ public class SqlUpdate {
 	
 	public static void updateStatRecord(Object_Stats s)  {
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE stats SET " +
 			"ACTIVE_MEMBERSHIPS=" + s.getActiveMemberships() + "," +
 			"NON_RENEW=" + s.getNonRenewMemberships() + "," +

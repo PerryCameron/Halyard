@@ -18,7 +18,7 @@ public class CreateMembership {
 		// create a main person for the membership
 		int pid = SqlSelect.getCount() + 1;
 		try {
-			Statement stmt = ConnectDatabase.connection.createStatement();
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("INSERT INTO person () VALUES (" + pid  +"," + msid + ",1,'','',null,'','',true,null,null);"));
 
 		} catch (SQLException e) {
