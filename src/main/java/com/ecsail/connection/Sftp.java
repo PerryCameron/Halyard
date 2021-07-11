@@ -71,10 +71,10 @@ public class Sftp{
 		}
 	}
 	
-	@SuppressWarnings("rawtypes")
+
 	public ArrayList<String> ls(String dir) {
 		ArrayList<String> fileNames = new ArrayList<String>();
-		Vector files = new Vector();
+		Vector<?> files = new Vector<>();
 		try {
 			files = c.ls(dir);
 		} catch (SftpException e) {
