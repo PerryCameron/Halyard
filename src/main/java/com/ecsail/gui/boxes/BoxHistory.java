@@ -263,6 +263,7 @@ public class BoxHistory extends HBox {
 		}));
 		
 		idAdd.setOnAction((event) -> {
+			Object_MembershipId newIdTuple = null;
 			int mid = SqlSelect.getCount("membership_id", "mid") + 1; // get last mid number add 1
 			// make sure any blank unused rows are removed before creating another
 			// no need to specify a year, just remove any of them.
@@ -270,17 +271,19 @@ public class BoxHistory extends HBox {
 				System.out.println("Found unused blank row: Deleted");
 				SqlDelete.deleteBlankMembershipIdRow();	
 			}
-			
-			Object_MembershipId newIdTuple = null;
-			if (SqlExists.memberShipIdExists(m.getMsid())) {
-				newIdTuple = new Object_MembershipId(mid, 0 + "", m.getMsid(), "0", true, m.getMemType(), false, false);
-			} else {
-				newIdTuple = new Object_MembershipId(mid, Paths.getYear(), m.getMsid(), "0", true, m.getMemType(),
-						false, false);
-			}
+
+			if (!tupleExistsInTableView()) {  // prevent creating duplicate new tuples
+				if (SqlExists.memberShipIdExists(m.getMsid())) {
+					newIdTuple = new Object_MembershipId(mid, 0 + "", m.getMsid(), "0", true, m.getMemType(), false,
+							false);
+				} else {
+					newIdTuple = new Object_MembershipId(mid, Paths.getYear(), m.getMsid(), "0", true, m.getMemType(),
+							false, false);
+				}
 			SqlInsert.addMembershipId(newIdTuple);
 			System.out.println("Added new row for MS_ID " + newIdTuple.getMs_id());
-			id.add(newIdTuple);
+			id.add(newIdTuple);	
+			} else { System.out.println("Duplicate new tuple: ignoring"); }
 		});
 
 		idDelete.setOnAction((event) -> {
@@ -301,6 +304,14 @@ public class BoxHistory extends HBox {
 		getChildren().add(vboxGrey);
 
 	} // end of constructor
+
+	private boolean tupleExistsInTableView() {
+		boolean tupleExists = false;
+		for(Object_MembershipId i: id) {
+			if(i.getFiscal_Year().equals("0") && i.getMembership_id().equals("0")) tupleExists=true;
+		}
+		return tupleExists;
+	}
 
 	//////////////////////// CLASS METHODS //////////////////////////
 	private <T> TableColumn<T, String> createColumn(String title, Function<T, StringProperty> property) {
