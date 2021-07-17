@@ -128,10 +128,12 @@ public class BoxHistory extends HBox {
 			public void handle(CellEditEvent<Object_MembershipId, String> t) {
 				((Object_MembershipId) t.getTableView().getItems().get(t.getTablePosition().getRow()))
 						.setFiscal_Year(t.getNewValue());
-				int mid = ((Object_MembershipId) t.getTableView().getItems().get(t.getTablePosition().getRow()))
-						.getMid();
-				// SqlUpdate.updatePhone("phone", phone_id, t.getNewValue());
-				SqlUpdate.updateMembershipId(mid, "fiscal_year", FixInput.changeEmptyStringToZero(t.getNewValue()));
+				Object_MembershipId thisId = ((Object_MembershipId) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+				if(!SqlUpdate.updateMembershipId(thisId, "fiscal_year", FixInput.changeEmptyStringToZero(t.getNewValue()))) {
+					// if it does not update correctly lets set tableview back to defaults
+					thisId.setFiscal_Year("0");
+					thisId.setMembership_id("0");
+				}
 			}
 		});
 
@@ -142,9 +144,12 @@ public class BoxHistory extends HBox {
 			public void handle(CellEditEvent<Object_MembershipId, String> t) {
 				((Object_MembershipId) t.getTableView().getItems().get(t.getTablePosition().getRow()))
 						.setMembership_id(t.getNewValue());
-				int mid = ((Object_MembershipId) t.getTableView().getItems().get(t.getTablePosition().getRow()))
-						.getMid();
-				SqlUpdate.updateMembershipId(mid, "membership_id", FixInput.changeEmptyStringToZero(t.getNewValue()));
+				Object_MembershipId thisId = ((Object_MembershipId) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+				if(!SqlUpdate.updateMembershipId(thisId, "membership_id", FixInput.changeEmptyStringToZero(t.getNewValue()))) {
+					// if it does not update correctly lets set tableview back to defaults
+					thisId.setFiscal_Year("0");
+					thisId.setMembership_id("0");
+				}
 			}
 		});
 
@@ -174,7 +179,7 @@ public class BoxHistory extends HBox {
 			MembershipType newMembershipType = event.getNewValue();
 			int row = pos.getRow();
 			Object_MembershipId thisId = event.getTableView().getItems().get(row);
-			SqlUpdate.updateMembershipId(thisId.getMid(), "mem_type", newMembershipType.getCode());
+			SqlUpdate.updateMembershipId(thisId, "mem_type", newMembershipType.getCode());
 			thisId.setMem_type(newMembershipType.getCode());
 		});
 

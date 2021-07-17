@@ -1274,6 +1274,27 @@ public class SqlSelect {
 		return person;
 	}
 	
+	public static Object_Person getPersonFromMembershipID(String membershipId, String year) {  
+		Object_Person person = null;
+		try {
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
+			ResultSet rs = stmt
+					.executeQuery(Main.console.setRegexColor("select * from person where MS_ID=(select ms_id from membership_id where MEMBERSHIP_ID="+membershipId+" and FISCAL_YEAR="+year+") and MEMBER_TYPE=1"));
+			
+			while (rs.next()) {
+				person = (new Object_Person(rs.getInt("P_ID"), rs.getInt("MS_ID"), rs.getInt("MEMBER_TYPE"),
+						rs.getString("F_NAME"), rs.getString("L_NAME"), rs.getString("BIRTHDAY"),
+						rs.getString("OCCUPATION"), rs.getString("BUISNESS"), rs.getBoolean("IS_ACTIVE"),rs.getString("NICK_NAME")));
+			}
+			stmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
+		}
+		// System.out.println(thesepeople.toString());
+		return person;
+	}
+	
 	
 	public static int getCount(String table, String column) {  // example-> "email","email_id"
 		int result = 0;

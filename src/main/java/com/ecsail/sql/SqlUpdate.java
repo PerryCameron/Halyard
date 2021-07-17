@@ -1,6 +1,7 @@
 package com.ecsail.sql;
 
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 import java.time.LocalDate;
 
@@ -8,6 +9,7 @@ import com.ecsail.main.BoxConsole;
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.Main;
 import com.ecsail.main.Paths;
+import com.ecsail.structures.Object_MembershipId;
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Money;
 import com.ecsail.structures.Object_Person;
@@ -542,16 +544,21 @@ public class SqlUpdate {
 		
 	}
 	
-	public static Boolean updateMembershipId(int mid, String field, String attribute) {
+	public static Boolean updateMembershipId(Object_MembershipId thisId, String field, String attribute) {
 		Boolean noError = true;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("UPDATE membership_id SET " + field + "=\"" + attribute + "\" WHERE mid=" + mid));
+			stmt.execute(Main.console.setRegexColor("UPDATE membership_id SET " + field + "=\"" + attribute + "\" WHERE mid=" + thisId.getMid()));
 			Main.edits.setIdEdits(Main.edits.getIdEdits() + 1);
+		} catch (SQLIntegrityConstraintViolationException IV) {
+			Object_Person accountHolder = SqlSelect.getPersonFromMembershipID(thisId.getMembership_id(), thisId.getFiscal_Year());
+			String errorMessage = "The entry for the year " + thisId.getFiscal_Year() + " with a membership ID of " + thisId.getMembership_id() 
+			+ " already exists for " + accountHolder.getFname() + " " + accountHolder.getLname();
+			new Dialogue_CustomErrorMessage(errorMessage);
+				noError = false;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			new Dialogue_ErrorSQL(e,"There was a problem with the Update","The most likely cause is a duplicate entry.  The combination of 'year' and 'membership Id' can only occur once.");
-			noError = false;
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
+				noError = false;
 		}
 		return noError;
 	}
