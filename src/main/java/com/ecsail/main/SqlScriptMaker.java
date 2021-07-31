@@ -82,7 +82,7 @@ public class SqlScriptMaker {
 		waitlist = SqlSelect.getWaitLists();
 		awards = SqlSelect.getAwards();
 		Paths.checkPath(Paths.SQLBACKUP + "/" + Paths.getYear());
-		readFromFile(Paths.SCRIPTS + "/ecsc_create.sql");
+		readFromFile(Paths.SQLBACKUP + "/ecsc_create.sql");
 		calculateSums();
 		new Dialogue_DatabaseBackup(newTupleCount);
 		writeToFile(Paths.SQLBACKUP + "/" + Paths.getYear() + "/ecsc_sql_" + stringDate + ".sql");
@@ -439,7 +439,7 @@ public class SqlScriptMaker {
 				+ getCorrectString(peo.getOccupation()) + ","
 				+ getCorrectString(peo.getBuisness()) + ","
 				+ peo.isActive() + ","
-				+ "null," + getCorrectString(peo.getNname()) + ");\n";  // this will be a picture or link to eventually
+				+ getCorrectString(peo.getNname()) + ");\n";  // this will be a picture or link to eventually
 	}
 	
 	public static String getMembershipString(Object_Membership mem) {  // change back once done
