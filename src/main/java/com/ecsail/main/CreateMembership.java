@@ -49,8 +49,8 @@ public class CreateMembership {
 			if (SqlInsert.addMembershipIsSucessful(newMembership)) {
 				newMemNote.addMemo(new Object_Memo(note_id, ms_id, date, "Created new membership record", 0, "N")); 
 				Main.activememberships.add(newMembership);
-				SqlInsert.addMembershipId(new Object_MembershipId(mid, Paths.getYear(), ms_id, membership_id + "", true,
-						"RM", false, false));
+				//SqlInsert.addMembershipId(new Object_MembershipId(mid, Paths.getYear(), ms_id, membership_id + "", true,
+				//		"RM", false, false));
 				Launcher.createMembershipTabForRoster(newMembership.getMembershipId(), newMembership.getMsid());
 			}
 		} else {
