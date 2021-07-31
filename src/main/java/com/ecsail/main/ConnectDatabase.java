@@ -299,7 +299,7 @@ public class ConnectDatabase {
         		if(currentLogon.isSshForward()) {
         			System.out.println("SSH tunnel enabled - test");
         			this.sshConnection = new PortForwardingL(host,loopback,3306,3306,sUser,sPass); 
-        		}
+        		} else System.out.println("SSH connection is not being used");
         		// create mysql login
         		if(createConnection(user, pass, loopback, port)) {
         		Main.activememberships = Sql_SelectMembership.getRoster(Main.selectedYear, true);
@@ -465,9 +465,12 @@ public class ConnectDatabase {
 
 	protected Boolean createConnection(String user, String password, String ip, String port) {
 		Boolean sucessful = false;
-		String server = "jdbc:mysql://" + ip + ":" + port + "/ECSC_SQL?autoReconnect=true&useSSL=true";
+		String server = "jdbc:mysql://" + ip + ":" + port + "/ECSC_SQL?autoReconnect=true&useSSL=true&serverTimezone=UTC";
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
+			System.out.println("Connection: " + server);
+			System.out.println("User: " + user);
+			System.out.println("Password: " + password);
 			sqlConnection = DriverManager.getConnection(server, user, password);
 			Launcher.closeActiveTab();
 			//vboxGrey.getChildren().add();
@@ -516,7 +519,7 @@ public class ConnectDatabase {
 		try {
 			sqlConnection.close();
 			System.out.println("SQL Connection to " + currentLogon.getHost() + " closed.");
-			sshConnection.getFtp().closeSession();
+			//sshConnection.getFtp().closeSession();
 			System.out.println("SFTP Connection closed");
 			sshConnection.getSession();
 			System.out.println("SSH Tunnel closed");

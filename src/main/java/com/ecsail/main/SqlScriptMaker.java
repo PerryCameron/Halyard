@@ -439,6 +439,7 @@ public class SqlScriptMaker {
 				+ getCorrectString(peo.getOccupation()) + ","
 				+ getCorrectString(peo.getBuisness()) + ","
 				+ peo.isActive() + ","
+				+ "null," 
 				+ getCorrectString(peo.getNname()) + ");\n";  // this will be a picture or link to eventually
 	}
 	
