@@ -19,8 +19,5 @@ Welcome Page
 * Keep notes for membership, people, and boats
 * Store/update annual fees for Storage, Access, Dues etc.. (for all years)
 
-<p>
-	<img src="https://raw.githubusercontent.com/PerryCameron/ECSC/master/src/main/resources/screenshots/Mock_Membership.png  />
-</p>
 
 
