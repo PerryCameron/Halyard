@@ -1,6 +1,7 @@
 # ECSC
 
-A (currently) customized Database application for the membership of a sailing club
+A Java FX Database application for the membership of a sailing club.  It makes the use of SSH to connect to the database.  The purpose of the app is to give
+the membership of a boat club a local Application as an alternative to SaaS.
 
 <b>Uses a tree leaf style organization for memberships</b>
 
