@@ -5,6 +5,11 @@ the membership of a boat club a local Application as an alternative to SaaS.
 
 Format: ![GitHub Logo] (https://raw.githubusercontent.com/PerryCameron/ECSC/master/src/main/resources/screenshots/Home_Screen_Shot_PM.png)
 
+<p>
+    <img src="https://raw.githubusercontent.com/PerryCameron/ECSC/master/src/main/resources/screenshots/Home_Screen_Shot_PM.png" width="220" height="240" />
+</p>
+
+
 <b>Main Features</b>
 * Create, view, edit memberships including people 
 * Handle deposit information and create PDF deposit reports. (for all years)
