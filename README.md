@@ -3,7 +3,8 @@
 A Java FX Database application for the membership of a sailing club.  It makes the use of SSH to connect to the database.  The purpose of the app is to give
 the membership of a boat club a local Application as an alternative to SaaS.
 
-Welcome Page
+
+## Welcome Page
 <p>
     <img src="https://raw.githubusercontent.com/PerryCameron/ECSC/master/src/main/resources/screenshots/Main_SS.png"  />
 </p>
@@ -19,7 +20,8 @@ Welcome Page
 * Keep notes for membership, people, and boats
 * Store/update annual fees for Storage, Access, Dues etc.. (for all years)
 
-Membership Page
+
+## Membership Page
 <p>
     <img src="https://raw.githubusercontent.com/PerryCameron/ECSC/master/src/main/resources/screenshots/Membership_SS.png"  />
 </p>
