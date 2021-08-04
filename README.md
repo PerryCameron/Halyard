@@ -3,6 +3,8 @@
 A Java FX Database application for the membership of a sailing club.  It makes the use of SSH to connect to the database.  The purpose of the app is to give
 the membership of a boat club a local Application as an alternative to SaaS.
 
+[Database creation SQL file] (https://github.com/PerryCameron/Halyard/blob/master/src/main/resources/database/ecsc_create.sql)
+
 
 ## Welcome Page
 <p>
