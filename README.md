@@ -5,7 +5,7 @@ the membership of a boat club a local Application as an alternative to SaaS.
 
 Welcome Page
 <p>
-    <img src="https://raw.githubusercontent.com/PerryCameron/ECSC/master/src/main/resources/screenshots/Home_Screen_Shot_PM.png"  />
+    <img src="https://raw.githubusercontent.com/PerryCameron/ECSC/master/src/main/resources/screenshots/Main_SS.png"  />
 </p>
 
 
