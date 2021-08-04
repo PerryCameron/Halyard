@@ -1,7 +1,7 @@
 # Halyard
 
-A Java FX Database application for the membership of a sailing club.  It makes the use of SSH to connect to the database.  The purpose of the app is to give
-the membership of a boat club a local Application as an alternative to SaaS.
+A Java FX Database application for the membership of a sailing club.  It makes the use of SSH to connect to the database securely.  The purpose of this application is to give
+the membership of a boat club a native app as an alternative to SaaS.  It runs on Windows, MacOS, and Linux.   
 
 ### Database creation SQL file 
 https://github.com/PerryCameron/Halyard/blob/master/src/main/resources/database/ecsc_create.sql
