@@ -29,3 +29,11 @@ https://github.com/PerryCameron/Halyard/blob/master/src/main/resources/database/
     <img src="https://raw.githubusercontent.com/PerryCameron/ECSC/master/src/main/resources/screenshots/Membership_SS.png"  />
 </p>
 
+Everything about a membership can be viewed and edited from this screen for ease!
+
+## Local or cloud based login
+<p>
+    <img src="https://raw.githubusercontent.com/PerryCameron/ECSC/master/src/main/resources/screenshots/Login_SS.png"  />
+</p>
+
+
