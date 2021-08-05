@@ -11,8 +11,6 @@ package com.ecsail.connection;
  *
  */
 import com.jcraft.jsch.*;
-import java.awt.*;
-import javax.swing.*;
 import java.io.*;
 
 public class ScpTo{
