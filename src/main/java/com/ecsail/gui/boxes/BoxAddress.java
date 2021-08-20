@@ -3,7 +3,6 @@ package com.ecsail.gui.boxes;
 import com.ecsail.sql.SqlUpdate;
 import com.ecsail.structures.Object_MembershipList;
 
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -100,6 +99,8 @@ public class BoxAddress extends HBox {
         secondaryHBox.setPadding(new Insets(5,0,5,20));
         hboxGrey.setPadding(new Insets(5, 5, 5, 5));
 		this.setPadding(new Insets(5, 5, 5, 5));  // creates space for blue frame
+
+        
 		
 		secondaryHBox.setId("box-pink");
 		primaryHBox.setId("box-pink");
@@ -115,6 +116,8 @@ public class BoxAddress extends HBox {
 		titledPane2.setText("Secondary Address");
 		titledPane1.setCollapsible(false);
 		titledPane2.setCollapsible(false);
+
+        stateComboBox.getSelectionModel().select(14);
 		
         /////////////////// LISTENERS /////////////////////////
         memAddressTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
