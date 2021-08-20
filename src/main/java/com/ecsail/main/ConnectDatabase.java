@@ -469,8 +469,6 @@ public class ConnectDatabase {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			System.out.println("Connection: " + server);
-			System.out.println("User: " + user);
-			System.out.println("Password: " + password);
 			sqlConnection = DriverManager.getConnection(server, user, password);
 			Launcher.closeActiveTab();
 			//vboxGrey.getChildren().add();
