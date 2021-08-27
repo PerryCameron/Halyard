@@ -21,7 +21,15 @@ https://github.com/PerryCameron/Halyard/blob/master/src/main/resources/database/
 * Print envelopes for mailing to members
 * Render a PDF version of a directory on the fly for annual printing
 * Keep notes for membership, people, and boats
+* Export XLS files of lists
 * Store/update annual fees for Storage, Access, Dues etc.. (for all years)
+
+## Roster Page
+<p>
+    <img src="https://raw.githubusercontent.com/PerryCameron/ECSC/master/src/main/resources/screenshots/Roster_SS.png"  />
+</p>
+
+A running list of memberships,which can be organized in many ways, this list can be used as navigation to each membership or exported as XLS files.
 
 
 ## Membership Page
