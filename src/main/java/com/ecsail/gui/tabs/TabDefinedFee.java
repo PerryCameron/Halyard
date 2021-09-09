@@ -13,6 +13,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
@@ -138,6 +139,8 @@ public class TabDefinedFee extends Tab {
 		//vboxGrey.setId("slip-box");
 		vboxGrey.setPrefHeight(688);
 		vboxGrey.setSpacing(15);
+
+		VBox.setVgrow(vboxPink, Priority.ALWAYS);
 		
         /////////////////// LISTENERS /////////////////////////
 		duesRegularTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
