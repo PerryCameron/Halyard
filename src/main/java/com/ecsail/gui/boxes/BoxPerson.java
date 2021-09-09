@@ -152,6 +152,7 @@ public class BoxPerson extends HBox {
 		
 		VBox.setVgrow(vboxInfoGrey, Priority.ALWAYS);
 		VBox.setVgrow(infoTabPane, Priority.ALWAYS);
+		HBox.setHgrow(vboxGrey, Priority.ALWAYS);
 		
 		hboxPhone.setSpacing(5);
 		hboxEmail.setSpacing(5);
