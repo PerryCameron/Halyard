@@ -30,14 +30,14 @@ public class TabNotes extends Tab {
 	private ObservableList<Object_Memo2> memos;
 	String selectedYear;
 	String options;
-	Boolean n;
-	Boolean o;
-	Boolean p;
+	Boolean n = true;
+	Boolean o = true;
+	Boolean p = true;
 	
 	public TabNotes(String text) {
 		super(text);
 		this.selectedYear = Paths.getYear();
-		this.memos = SqlSelect.getAllMemosForTabNotes(Paths.getYear());
+		this.memos = SqlSelect.getAllMemosForTabNotes(Paths.getYear(),setOptions());
 		VBox vboxGrey = new VBox();  // this is the vbox for organizing all the widgets
 		VBox vboxBlue = new VBox();
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
@@ -45,7 +45,7 @@ public class TabNotes extends Tab {
 		HBox controlsHbox = new HBox();
 
 		CheckBox oCheckBox = new CheckBox("Other");
-		CheckBox nCheckBox = new CheckBox("Regular");
+		CheckBox nCheckBox = new CheckBox("Normal");
 		CheckBox pCheckBox = new CheckBox("Payment");
 		controlsHbox.setSpacing(7);
 		vboxBlue.setId("box-blue");
@@ -58,6 +58,9 @@ public class TabNotes extends Tab {
 		VBox.setVgrow(vboxPink,Priority.ALWAYS);
 		VBox.setVgrow(notesTableView,Priority.ALWAYS);
 		HBox.setHgrow(notesTableView,Priority.ALWAYS);
+		oCheckBox.setSelected(true);
+		nCheckBox.setSelected(true);
+		pCheckBox.setSelected(true);
 		
 		final Spinner<Integer> yearSpinner = new Spinner<Integer>();
 		SpinnerValueFactory<Integer> wetSlipValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1970, Integer.parseInt(selectedYear), Integer.parseInt(selectedYear));
@@ -67,9 +70,8 @@ public class TabNotes extends Tab {
 		yearSpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
 			  if (!newValue) {
 				  selectedYear = yearSpinner.getEditor().getText();  /// kept this for clarity, could have used printChoices.getYear()
-				  System.out.println(selectedYear);
 				  memos.clear();
-				  memos.addAll(SqlSelect.getAllMemosForTabNotes(selectedYear));
+				  memos.addAll(SqlSelect.getAllMemosForTabNotes(selectedYear, setOptions()));
 			  }
 			});
 		
@@ -101,8 +103,8 @@ public class TabNotes extends Tab {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
             	o = newValue;
-				System.out.println(o);
-//            	setOptions();
+				memos.clear();
+				memos.addAll(SqlSelect.getAllMemosForTabNotes(selectedYear, setOptions()));
             }
         });
 		
@@ -110,7 +112,8 @@ public class TabNotes extends Tab {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
             	n = newValue;
-//            	setOptions();
+				memos.clear();
+				memos.addAll(SqlSelect.getAllMemosForTabNotes(selectedYear, setOptions()));
             }
         });
 		
@@ -118,7 +121,8 @@ public class TabNotes extends Tab {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
             	p = newValue;
-//            	setOptions();
+				memos.clear();
+				memos.addAll(SqlSelect.getAllMemosForTabNotes(selectedYear, setOptions()));
             }
         });
 		
@@ -132,14 +136,25 @@ public class TabNotes extends Tab {
 		
 	}
 	
-	private void setOptions() {
-		options = "";
-		System.out.print("The answer is" + p);
-		if(p) options+=" and category='P'";
-		if(o) options+=" and category='O'";
-		if(n) options+=" and category='N'";
-		
-		System.out.println("options");
+	private String setOptions() {
+		String result = "";
+		boolean oneb4 = false;
+		if(n) {
+			result = "'N'";
+			oneb4=true;
+		}
+		if(p) {
+			if(oneb4) result+=",";
+			oneb4=true;
+			result += "'P'";
+		}
+		if(o) {
+			if(oneb4) result+=",";
+			oneb4=true;
+			result += "'O'";
+		}
+		System.out.println(result);
+		return result;
 	}
 	
 }

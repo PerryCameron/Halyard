@@ -658,14 +658,14 @@ public class SqlSelect {
 		return theseMemos;
 	}
 	
-	public static ObservableList<Object_Memo2> getAllMemosForTabNotes(String year) {
+	public static ObservableList<Object_Memo2> getAllMemosForTabNotes(String year, String category) {
 		ObservableList<Object_Memo2> theseMemos = FXCollections.observableArrayList();
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 			rs = stmt.executeQuery("select * from memo \n"
 					+ "left join membership_id id on memo.ms_id=id.ms_id\n"
-					+ "where year(memo_date)='"+year+"' and id.fiscal_year='"+year+"';");
+					+ "where year(memo_date)='"+year+"' and id.fiscal_year='"+year+"' and memo.CATEGORY IN("+category+")");
 			while (rs.next()) {
 				theseMemos.add(new Object_Memo2( // why do I keep gettin a nullpointer exception here?
 						rs.getString("MEMBERSHIP_ID"),
