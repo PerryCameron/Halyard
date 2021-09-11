@@ -1,9 +1,12 @@
 package com.ecsail.gui.tabs;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 
 import com.ecsail.main.Paths;
 import com.ecsail.sql.SqlSelect;
+import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Memo2;
 
 import javafx.beans.value.ChangeListener;
@@ -88,11 +91,15 @@ public class TabNotes extends Tab {
 		Col2.setMaxWidth( 1f * Integer.MAX_VALUE * 10 );  // Join Date 15%
 		Col3.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );   // Type
 		Col4.setMaxWidth( 1f * Integer.MAX_VALUE * 80 );   // Slip
-		
+
+		Collections.sort(memos, Comparator.comparing(Object_Memo2::getMemo_date).reversed());
+
+
 		oCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
             	o = newValue;
+				System.out.println(o);
             	setOptions();
             }
         });
