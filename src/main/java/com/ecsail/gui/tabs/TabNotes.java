@@ -50,10 +50,11 @@ public class TabNotes extends Tab {
 		vboxPink.setPadding(new Insets(3,3,3,3)); // spacing to make pink from around table
 		vboxPink.setId("box-pink");
 		//vboxGrey.setId("slip-box");
-		vboxGrey.setPrefHeight(688);
+		//vboxGrey.setPrefHeight(688);
 		VBox.setVgrow(vboxGrey, Priority.ALWAYS);
 		VBox.setVgrow(vboxPink,Priority.ALWAYS);
 		VBox.setVgrow(notesTableView,Priority.ALWAYS);
+		HBox.setHgrow(notesTableView,Priority.ALWAYS);
 		
 		final Spinner<Integer> yearSpinner = new Spinner<Integer>();
 		SpinnerValueFactory<Integer> wetSlipValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1970, Integer.parseInt(selectedYear), Integer.parseInt(selectedYear));
@@ -68,9 +69,8 @@ public class TabNotes extends Tab {
 			});
 		
 		notesTableView.setItems(memos);
-		notesTableView.setPrefWidth(1000);
 		notesTableView.setFixedCellSize(30);
-		notesTableView.setPrefHeight(555);
+		notesTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY );
 		
 		TableColumn<Object_Memo2, String> Col1 = new TableColumn<Object_Memo2, String>("MEM");
 		Col1.setCellValueFactory(new PropertyValueFactory<Object_Memo2, String>("membershipId"));
@@ -83,6 +83,11 @@ public class TabNotes extends Tab {
 		
 		TableColumn<Object_Memo2, String> Col4 = new TableColumn<Object_Memo2, String>("NOTE");
 		Col4.setCellValueFactory(new PropertyValueFactory<Object_Memo2, String>("memo"));
+
+		Col1.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );   // Mem 5%
+		Col2.setMaxWidth( 1f * Integer.MAX_VALUE * 10 );  // Join Date 15%
+		Col3.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );   // Type
+		Col4.setMaxWidth( 1f * Integer.MAX_VALUE * 80 );   // Slip
 		
 		oCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
