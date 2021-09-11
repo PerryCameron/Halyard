@@ -67,7 +67,9 @@ public class TabNotes extends Tab {
 		yearSpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
 			  if (!newValue) {
 				  selectedYear = yearSpinner.getEditor().getText();  /// kept this for clarity, could have used printChoices.getYear()
-
+				  System.out.println(selectedYear);
+				  memos.clear();
+				  memos.addAll(SqlSelect.getAllMemosForTabNotes(selectedYear));
 			  }
 			});
 		
@@ -100,7 +102,7 @@ public class TabNotes extends Tab {
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
             	o = newValue;
 				System.out.println(o);
-            	setOptions();
+//            	setOptions();
             }
         });
 		
@@ -108,7 +110,7 @@ public class TabNotes extends Tab {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
             	n = newValue;
-            	setOptions();
+//            	setOptions();
             }
         });
 		
@@ -116,7 +118,7 @@ public class TabNotes extends Tab {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
             	p = newValue;
-            	setOptions();
+//            	setOptions();
             }
         });
 		
