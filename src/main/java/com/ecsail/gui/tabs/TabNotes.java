@@ -16,6 +16,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Spinner;
@@ -50,6 +51,9 @@ public class TabNotes extends Tab {
 		vboxPink.setId("box-pink");
 		//vboxGrey.setId("slip-box");
 		vboxGrey.setPrefHeight(688);
+		VBox.setVgrow(vboxGrey, Priority.ALWAYS);
+		VBox.setVgrow(vboxPink,Priority.ALWAYS);
+		VBox.setVgrow(notesTableView,Priority.ALWAYS);
 		
 		final Spinner<Integer> yearSpinner = new Spinner<Integer>();
 		SpinnerValueFactory<Integer> wetSlipValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1970, Integer.parseInt(selectedYear), Integer.parseInt(selectedYear));

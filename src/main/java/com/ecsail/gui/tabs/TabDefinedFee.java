@@ -53,7 +53,7 @@ public class TabDefinedFee extends Tab {
 		GridPane gridPane = new GridPane();
 
 		final Spinner<Integer> yearSpinner = new Spinner<Integer>();
-		SpinnerValueFactory<Integer> wetSlipValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1970, Integer.parseInt(selectedYear), Integer.parseInt(selectedYear));
+		SpinnerValueFactory<Integer> wetSlipValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1970, Integer.parseInt(selectedYear) + 1, Integer.parseInt(selectedYear));
 		yearSpinner.setValueFactory(wetSlipValueFactory);
 		yearSpinner.setPrefWidth(90);
 		yearSpinner.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_HORIZONTAL);
