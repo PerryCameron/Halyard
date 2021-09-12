@@ -177,9 +177,9 @@ public class TabSlips extends Tab {
 	    int dockHeight = 10;
 	    int stemWidth = 20;
 	    int gapDistance = 42;
+
 	    // draw left docks
 	    int y = 23;
-	    
 	    for(int i = 0; i < leftDock; i++) {
 	    rect = new Rectangle(start,y,dockWidth,dockHeight);  // y position always starts at 23
 	    rect.setFill(Color.BLACK);
@@ -187,6 +187,7 @@ public class TabSlips extends Tab {
 	    group.getChildren().add(rect);
 	    y+=gapDistance;
 	    }
+
 	    // draw right docks 
 	    y = 23;  // set back to default start point for right dock
 	    for(int i = 0; i < rightDock; i++) {
@@ -196,15 +197,19 @@ public class TabSlips extends Tab {
 	    group.getChildren().add(rect);
 	    y+=gapDistance;
 	    }
+
+		// draw angled right dock
+
 	    // draw stem
 	    rect = new Rectangle(start + dockWidth,23,stemWidth,y - 21);  // y position always starts at 23
 	    rect.setFill(Color.BLACK);
 	    rect.setStroke(Color.BLACK);
 	    group.getChildren().addAll(rect,getOctagon(110.0,470.0,42.0));
+
 	    // draw angled stem
-	    int x = 135;
-	    y = 510;
-	    rect = new Rectangle(x,y,stemWidth,220);  // y position always starts at 23
+	    int x = 130;
+	    y = 505;
+	    rect = new Rectangle(x,y,stemWidth,230);  // y position always starts at 23
 	    rect.setFill(Color.BLACK);
 	    rect.setStroke(Color.BLACK);
 	    rotate.setAngle(315);

@@ -175,6 +175,7 @@ public class TabRoster extends Tab {
 		SpinnerValueFactory<Integer> wetSlipValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1970,
 				Integer.parseInt(selectedYear), Integer.parseInt(selectedYear));
 		yearSpinner.setValueFactory(wetSlipValueFactory);
+		yearSpinner.setEditable(true);
 		yearSpinner.setPrefWidth(110);
 		yearSpinner.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_HORIZONTAL);
 		yearSpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
