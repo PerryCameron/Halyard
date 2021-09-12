@@ -115,7 +115,7 @@ public class TabSlips extends Tab {
 		    if (newValue) {  // focus Gained
 		    	screenPane.getChildren().clear();
 		    	fillSlips();
-		    	getStaticSlips();  // slips that don't change such as 48 hour docks
+		    	getStaticSlips(screenPane);  // slips that don't change such as 48 hour docks
 		    	screenPane.getChildren().add(addDocks(10,10,col1));
 		    	screenPane.getChildren().add(addDocks(7,11,col3));
 		    	screenPane.getChildren().add(addDocks(11,12,col5));
@@ -289,22 +289,28 @@ public class TabSlips extends Tab {
 		screenPane.getChildren().addAll(b48,b50);
 		//screenPane.getChildren().addAll(f1,f2,f3,f4,f5,f6);
 		screenPane.getChildren().addAll(f3,f4,f5,f6);
-		screenPane.getChildren().addAll(h482,h483,h484,h485);
+//		screenPane.getChildren().addAll(h482,h483,h484,h485);
 	}
 
-	private void getStaticSlips() {
+	private void getStaticSlips(Pane screenPane) {
 		b50 = new Text(col6,row23, "B50 Racing");
 		b48 = new Text(col6,row24, "B48 Racing");
-		h482 = new Text(252,576, "48 Hour dock");
-		h482.setRotate(-45);
-		h483 = new Text(271,596, "48 Hour dock");
-		h483.setRotate(-45);
-		h484 = new Text(281,605, "48 Hour dock");
-		h484.setRotate(-45);
-		h485 = new Text(299,624, "48 Hour dock");
-		h485.setRotate(-45);
+		Text staticDock;
+		createAngledText(screenPane, 220, 547);
+		createAngledText(screenPane, 240, 567);
 	}
-	
+
+	private void createAngledText(Pane screenPane, int x, int y) {
+		Text staticDock;
+		for(int i = 0; i < 3; i++) {
+			staticDock = new Text(x, y, "48 Hour dock");
+			staticDock.setRotate(-45);
+			screenPane.getChildren().add(staticDock);
+			x+=29;
+			y+=29;
+		}
+	}
+
 	private void fillSlips() {
 		for (Object_MembershipList mem : slipmemberships) {
 			if (mem.getSlip() != null) {
