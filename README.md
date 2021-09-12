@@ -39,6 +39,13 @@ A running list of memberships, which can be organized in many ways, this list ca
 
 Everything about a membership can be viewed and edited from this screen for ease!
 
+## Slips Page
+<p>
+    <img src="https://raw.githubusercontent.com/PerryCameron/ECSC/master/src/main/resources/screenshots/Slip_SS.png"  />
+</p>
+
+Slips can be easily viewed.  PDF creation of slips are also just a button click away.
+
 ## Local or cloud based login
 <p>
     <img src="https://raw.githubusercontent.com/PerryCameron/ECSC/master/src/main/resources/screenshots/Login_SS.png"  />
