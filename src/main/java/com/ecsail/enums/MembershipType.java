@@ -5,6 +5,7 @@ public enum MembershipType {
 	   REGULAR("RM", "Regular"),
 	   SOCIALM("SO", "Social"),
 	   LAKEASS("LA", "Lake Associate"),
+	   ACTASSO("AA", "Active Associate"),
 	   LIFEMEM("LM", "Life Member"),
 	   STUDENT("SM", "Student"),
 	   RACEFELLOW("RF", "Race Fellow"),
