@@ -1,6 +1,7 @@
 package com.ecsail.gui.dialogues;
 
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -14,7 +15,7 @@ import javafx.stage.Stage;
 
 public class Dialogue_CustomErrorMessage extends Stage {
 
-	public Dialogue_CustomErrorMessage(String message) {
+	public Dialogue_CustomErrorMessage(String message, String title) {
 
 		VBox vboxGrey = new VBox(); // this is the vbox for organizing all the widgets
 		VBox vboxBlue = new VBox();
@@ -31,6 +32,7 @@ public class Dialogue_CustomErrorMessage extends Stage {
 		// vboxGrey.setId("slip-box");
 		vboxGrey.setSpacing(15);
 		vboxGrey.setPadding(new Insets(5,5,0,5));
+		vboxGrey.setAlignment(Pos.CENTER);
 		textArea.setText(message);
 		textArea.setEditable(false);
 		VBox.setVgrow(vboxGrey, Priority.ALWAYS);
@@ -40,7 +42,7 @@ public class Dialogue_CustomErrorMessage extends Stage {
 		vboxGrey.getChildren().addAll(textArea, closeButton);
 		vboxBlue.getChildren().add(vboxPink);
 		vboxPink.getChildren().add(vboxGrey);
-		setTitle("Window Stub");
+		setTitle(title);
 		Image mainIcon = new Image(getClass().getResourceAsStream("/ECSC64.png"));
 
 		//////////////// LISTENERS ////////////////
