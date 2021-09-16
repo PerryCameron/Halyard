@@ -2,7 +2,9 @@ package com.ecsail.gui.dialogues;
 
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -18,6 +20,8 @@ public class Dialogue_CustomErrorMessage extends Stage {
 		VBox vboxBlue = new VBox();
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
 		Scene scene = new Scene(vboxBlue, 600, 300);
+		Button closeButton = new Button("Close");
+		TextArea textArea = new TextArea();
 		
 		/////////////////// ATTRIBUTES ///////////////////
 		vboxBlue.setId("box-blue");
@@ -25,15 +29,25 @@ public class Dialogue_CustomErrorMessage extends Stage {
 		vboxPink.setPadding(new Insets(3, 3, 3, 3)); // spacing to make pink from around table
 		vboxPink.setId("box-pink");
 		// vboxGrey.setId("slip-box");
+		vboxGrey.setSpacing(15);
+		vboxGrey.setPadding(new Insets(5,5,0,5));
+		textArea.setText(message);
+		textArea.setEditable(false);
 		VBox.setVgrow(vboxGrey, Priority.ALWAYS);
 		VBox.setVgrow(vboxPink, Priority.ALWAYS);
 		HBox.setHgrow(vboxPink, Priority.ALWAYS);
 		scene.getStylesheets().add("stylesheet.css");
-		vboxGrey.getChildren().add(new Text(message));
+		vboxGrey.getChildren().addAll(textArea, closeButton);
 		vboxBlue.getChildren().add(vboxPink);
 		vboxPink.getChildren().add(vboxGrey);
 		setTitle("Window Stub");
 		Image mainIcon = new Image(getClass().getResourceAsStream("/ECSC64.png"));
+
+		//////////////// LISTENERS ////////////////
+
+		closeButton.setOnAction((event) -> {
+			this.close();
+		});
 		
 		//////////////// ADD CONTENT ///////////////////
 		getIcons().add(mainIcon);

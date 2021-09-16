@@ -560,7 +560,7 @@ public class SqlUpdate {
 //				duplicateError = true;
 		} catch (SQLException e) {
 //			if(!duplicateError) {  // this is simple to prevent 2 dialogues
-//				new Dialogue_ErrorSQL(e, "There was a problem with the Update", "");
+				new Dialogue_ErrorSQL(e, "There was a problem with the Update", "");
 //				noError = false;
 //			}
 		}
