@@ -545,6 +545,7 @@ public class SqlUpdate {
 	}
 	
 	public static Boolean updateMembershipId(Object_MembershipId thisId, String field, String attribute) {
+//		Boolean duplicateError = false;
 		Boolean noError = true;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
@@ -553,12 +554,15 @@ public class SqlUpdate {
 		} catch (SQLIntegrityConstraintViolationException IV) {
 			Object_Person accountHolder = SqlSelect.getPersonFromMembershipID(thisId.getMembership_id(), thisId.getFiscal_Year());
 			String errorMessage = "The entry for the year " + thisId.getFiscal_Year() + " with a membership ID of " + thisId.getMembership_id() 
-			+ " already exists for " + accountHolder.getFname() + " " + accountHolder.getLname();
+			+ " already exists for another member: " + accountHolder.getFname() + " " + accountHolder.getLname();
 			new Dialogue_CustomErrorMessage(errorMessage);
 				noError = false;
+//				duplicateError = true;
 		} catch (SQLException e) {
-			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
-				noError = false;
+//			if(!duplicateError) {  // this is simple to prevent 2 dialogues
+//				new Dialogue_ErrorSQL(e, "There was a problem with the Update", "");
+//				noError = false;
+//			}
 		}
 		return noError;
 	}

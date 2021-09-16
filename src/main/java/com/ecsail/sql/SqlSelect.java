@@ -1694,27 +1694,27 @@ public class SqlSelect {
 		
 	}
 
-	public static Object_MembershipId getMembershipIdObject(String year, int ms_id) {
-			Object_MembershipId id = null;
-			try {
-				Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-				ResultSet rs = stmt.executeQuery("select membership_id from membership_id where fiscal_year='" + year + "' and ms_id='" + ms_id + "'");
-				while (rs.next()) {
-					id = new Object_MembershipId(
-							rs.getInt("MID")
-							, rs.getString("FISCAL_YEAR")
-							, rs.getInt("MS_ID")
-							, rs.getString("MEMBERSHIP_ID")
-							, rs.getBoolean("RENEW")
-							, rs.getString("MEM_TYPE")
-							, rs.getBoolean("SELECTED")
-							, rs.getBoolean("LATE_RENEW"));
-				}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
+	public static Object_MembershipId getMembershipIdObject(int mid) {
+		Object_MembershipId id = null;
+		try {
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
+			ResultSet rs = stmt.executeQuery("select * from membership_id where mid='"  + mid + "'");
+			while (rs.next()) {
+				id = new Object_MembershipId(
+						rs.getInt("MID")
+						, rs.getString("FISCAL_YEAR")
+						, rs.getInt("MS_ID")
+						, rs.getString("MEMBERSHIP_ID")
+						, rs.getBoolean("RENEW")
+						, rs.getString("MEM_TYPE")
+						, rs.getBoolean("SELECTED")
+						, rs.getBoolean("LATE_RENEW"));
 			}
-			return id;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
+		}
+		return id;
 	}
 	
 	public static boolean isRenewed(int ms_id, String year)  
