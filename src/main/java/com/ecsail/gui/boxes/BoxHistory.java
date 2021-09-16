@@ -131,9 +131,12 @@ public class BoxHistory extends HBox {
 				Object_MembershipId thisId = ((Object_MembershipId) t.getTableView().getItems().get(t.getTablePosition().getRow()));
 				if(!SqlUpdate.updateMembershipId(thisId, "fiscal_year", FixInput.changeEmptyStringToZero(t.getNewValue()))) {
 					// if it does not update correctly lets set tableview back to defaults
+					Object_MembershipId storedId = SqlSelect.getMembershipIdObject(thisId.getFiscal_Year(),thisId.getMs_id());
+					System.out.println("fiscal year=" + storedId.getFiscal_Year() + " memId=" + storedId.getMembership_id());
 					thisId.setFiscal_Year("0");
-					thisId.setMembership_id("0");
+					thisId.setMembership_id(storedId.getMembership_id());
 				}
+
 			}
 		});
 
@@ -147,7 +150,9 @@ public class BoxHistory extends HBox {
 				Object_MembershipId thisId = ((Object_MembershipId) t.getTableView().getItems().get(t.getTablePosition().getRow()));
 				if(!SqlUpdate.updateMembershipId(thisId, "membership_id", FixInput.changeEmptyStringToZero(t.getNewValue()))) {
 					// if it does not update correctly lets set tableview back to defaults
-					thisId.setFiscal_Year("0");
+					Object_MembershipId storedId = SqlSelect.getMembershipIdObject(thisId.getFiscal_Year(),thisId.getMs_id());
+					System.out.println("fiscal year=" + storedId.getFiscal_Year() + " memId=" + storedId.getMembership_id());
+					thisId.setFiscal_Year(storedId.getFiscal_Year());
 					thisId.setMembership_id("0");
 				}
 			}
