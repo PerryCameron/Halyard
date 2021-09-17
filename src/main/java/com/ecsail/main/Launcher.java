@@ -23,6 +23,8 @@ import com.ecsail.sql.Sql_SelectMembership;
 import com.ecsail.sql.SqlSelect;
 import com.ecsail.structures.Object_Boat;
 import com.ecsail.structures.Object_MembershipList;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.VBox;
@@ -34,16 +36,10 @@ static TabPane tabPane;
 		tabPane = new TabPane();
 		tabPane.setId("toolbar-box");
 		getChildren().add(tabPane);
+
 	}
 	
-	public static boolean tabOpen(String tabName) {
-		boolean thisTab = false;
-		for(Tab tab: tabPane.getTabs()) {
-			if(tab.getText().equals(tabName))
-				thisTab = true;
-		}
-		return thisTab;
-	}
+
 	
 	public static void closeTab(String tabName) {
 		for(Tab tab: tabPane.getTabs()) {
@@ -137,10 +133,7 @@ static TabPane tabPane;
 	public static void createMembershipTabForRoster(int membershipID, int ms_id)  {
 		Object_MembershipList membership;
 		membership = getMembership(ms_id);
-		String tabLabel= "Membership " + membership.getMembershipId();
-		if(!tabOpen(tabLabel)) // is the tab already open??
-		tabPane.getTabs().add(new TabMembership(membership));
-		tabPane.getSelectionModel().select(getTabIndex(tabLabel)); // focus on tab we are wanting
+		createOrOpenTab(membership, "Membership");
 	}
 	
 	// used in BoxSlip
@@ -150,51 +143,37 @@ static TabPane tabPane;
 		membership = getMembership(ms_id);
 		} else { // membership is not active and needs to be pulled from the SQL Database
 		membership = Sql_SelectMembership.getMembershipFromList(ms_id,Paths.getYear());
-		}	
-		tabPane.getTabs().add(new TabMembership(membership));
+		}
+		Tab membershipTab = new TabMembership(membership);
+		tabPane.getTabs().add(membershipTab);
+		tabPane.getSelectionModel().select(membershipTab); // focus on tab we are wanting
 	}
-	
+
 	// used for TabDeposits
 	public static void createTabForDeposits(int ms_id, String year) {  // overload
 		Object_MembershipList membership;
-		membership = Sql_SelectMembership.getMembershipFromList(ms_id,year);
-		String tabLabel= "Membership " + membership.getMembershipId();
-		//System.out.println("Launcher: membership=" + membership.toString());
-		if(!tabOpen(tabLabel)) // is the tab already open??
-		tabPane.getTabs().add(new TabMembership(membership));
-		tabPane.getSelectionModel().select(getTabIndex(tabLabel)); // focus on tab we are wanting
+		membership = Sql_SelectMembership.getMembershipFromList(ms_id, year);
+		createOrOpenTab(membership, "Membership");
 	}
-	
+
 	public static void launchTabFromSlips(int ms_id) {
 		Object_MembershipList membership = Sql_SelectMembership.getMembershipList(ms_id, Paths.getYear());
-		String tabLabel= "Membership " + membership.getMembershipId();
-		if(!tabOpen(tabLabel)) // is the tab already open??
-		tabPane.getTabs().add(new TabMembership(membership));
-		tabPane.getSelectionModel().select(getTabIndex(tabLabel)); // focus on tab we are wanting
+		createOrOpenTab(membership, "Membership");
 	}
 	
 	// fills incomplete object with latest information and opens tab.
 	public static void createActiveMembershipTab(Object_MembershipList membership) {
 		membership = Sql_SelectMembership.getMembershipFromList(membership.getMsid(), Paths.getYear());
-		String tabLabel= "Membership " + membership.getMembershipId();
-		if(!tabOpen(tabLabel)) 
-		tabPane.getTabs().add(new TabMembership(membership));
-		tabPane.getSelectionModel().select(getTabIndex(tabLabel)); // focus on tab we are wanting
+		createOrOpenTab(membership, "Membership");
 	}
 	
 	public static void createInactiveMemberTab(Object_MembershipList membership) {
-		String tabLabel= "MSID " + membership.getMsid();
-		if(!tabOpen(tabLabel)) 
-		tabPane.getTabs().add(new TabMembership(membership));
-		tabPane.getSelectionModel().select(getTabIndex(tabLabel)); // focus on tab we are wanting
+		createOrOpenTab(membership, "MSID");
 	}
 	
 	public static void createMembershipTabForBOD(int msid, String selectedYear) {
 		Object_MembershipList membership = Sql_SelectMembership.getMembershipList(msid, selectedYear);
-		String tabLabel= "Membership " + membership.getMembershipId();
-		if(!tabOpen(tabLabel)) 
-		tabPane.getTabs().add(new TabMembership(membership));
-		tabPane.getSelectionModel().select(getTabIndex(tabLabel)); // focus on tab we are wanting
+		createOrOpenTab(membership, "Membership");
 	}
 	
 	public static void openBoardTab() {
@@ -210,7 +189,35 @@ static TabPane tabPane;
 		tabPane.getTabs().add(new TabDeposits("Deposits"));
 		tabPane.getSelectionModel().select(getTabIndex("Deposits"));
 	}
-	
+
+	////////////////  UTILITY METHODS ///////////////////////
+
+	private static void createOrOpenTab(Object_MembershipList membership, String label) {
+		String tabLabel = "";
+		if(label.equals("Membership")) {
+			tabLabel = "Membership " + membership.getMembershipId();
+		} else if(label.equals("MSID")) {
+			tabLabel= "MSID " + membership.getMsid();
+		}
+
+		if (!tabOpen(tabLabel)) // is the tab already open??
+		{
+			Tab newTab = new TabMembership(membership);
+			tabPane.getTabs().add(newTab);
+			tabPane.getSelectionModel().select(newTab);
+		} else
+			tabPane.getSelectionModel().select(getTabIndex(tabLabel)); // focus on tab we are wanting
+	}
+
+	public static boolean tabOpen(String tabName) {
+		boolean thisTab = false;
+		for(Tab tab: tabPane.getTabs()) {
+			if(tab.getText().equals(tabName))
+				thisTab = true;
+		}
+		return thisTab;
+	}
+
 	public static void openTabNewYearGenerator() {
 		try {
 			TabNewYearGenerator.makeItSo();
@@ -259,4 +266,6 @@ static TabPane tabPane;
 	public static void setTabPane(TabPane tabPane) {
 		Launcher.tabPane = tabPane;
 	}
+
+
 }
