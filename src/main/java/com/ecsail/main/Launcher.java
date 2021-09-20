@@ -39,31 +39,6 @@ static TabPane tabPane;
 
 	}
 	
-
-	
-	public static void closeTab(String tabName) {
-		for(Tab tab: tabPane.getTabs()) {
-			if(tab.getText().equals(tabName))
-				tabPane.getTabs().remove(tab);
-		}
-	}
-	
-	public static void closeActiveTab() {
-		tabPane.getTabs().remove(tabPane.getSelectionModel().getSelectedIndex());
-	}
-	
-	public static int getTabIndex(String tabName) {
-		System.out.println("Tab name is '" + tabName + "'");
-		int result = 0;
-		int count = 0;
-		for(Tab tab: tabPane.getTabs()) {
-			if(tab.getText().equals(tabName))
-				result = count;
-			count++;	
-		}
-		return result;
-	}
-	
 	public static void openBoatsTab() {
 		if(!tabOpen("Boats"))
 		tabPane.getTabs().add(new TabBoats("Boats"));
@@ -267,5 +242,26 @@ static TabPane tabPane;
 		Launcher.tabPane = tabPane;
 	}
 
+	public static int getTabIndex(String tabName) {
+		System.out.println("Tab name is '" + tabName + "'");
+		int result = 0;
+		int count = 0;
+		for(Tab tab: tabPane.getTabs()) {
+			if(tab.getText().equals(tabName))
+				result = count;
+			count++;
+		}
+		return result;
+	}
 
+	public static void closeTab(String tabName) {
+		for(Tab tab: tabPane.getTabs()) {
+			if(tab.getText().equals(tabName))
+				tabPane.getTabs().remove(tab);
+		}
+	}
+
+	public static void closeActiveTab() {
+		tabPane.getTabs().remove(tabPane.getSelectionModel().getSelectedIndex());
+	}
 }
