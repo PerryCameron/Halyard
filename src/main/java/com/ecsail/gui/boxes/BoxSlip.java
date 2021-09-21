@@ -78,7 +78,7 @@ public class BoxSlip extends HBox {
 
 		////////////  ATTRIBUTES //////////////////
 		  // for testing
-		assignVBox.setStyle("-fx-background-color: #201ac9;");  // gray
+//		assignVBox.setStyle("-fx-background-color: #d3d3d3");  // gray
 //		infoBox1.setStyle("-fx-background-color: #4d6955;");  //green
 //		infoBox2.setStyle("-fx-background-color: #feffab;");  // yellow
 //		infoBox3.setStyle("-fx-background-color: #e83115;");  // red
@@ -121,7 +121,7 @@ public class BoxSlip extends HBox {
 		assignVBox.setAlignment(Pos.CENTER_LEFT);
 
 		assignVBox.setPrefWidth(300);
-		submitButton.setPrefWidth(60);
+		submitButton.setPrefWidth(70);
 		membershipIdTextField.setPrefWidth(40);
 		vboxSpacer.setPrefHeight(300);
 

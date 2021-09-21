@@ -277,3 +277,15 @@
     -fx-background:  -fx-selection-bar-non-focused;
     -fx-background-color:  -fx-background;
 }
+
+.menu-bar > .container > .menu-button:hover, .menu-bar > .container > .menu-button:focused, .menu-bar > .container > .menu-button:showing {
+    -fx-background: -fx-accent;
+    -fx-background-color: #61a2b1;
+    -fx-text-fill: -fx-selection-bar-text;
+}
+
+.menu-item:focused {
+    -fx-background: -fx-accent;
+    -fx-background-color: #61a2b1;
+    -fx-text-fill: -fx-selection-bar-text;
+}
