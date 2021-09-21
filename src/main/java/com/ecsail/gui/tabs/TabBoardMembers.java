@@ -91,6 +91,7 @@ public class TabBoardMembers extends Tab {
 	}
 
 		comboBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
+
 			  selectedYear = newValue.toString();
 			  refreshBoardList();
 			  clearBoard(officerVBox1, officerVBox2, committeeVBox1, committeeVBox2,boardMembersVBox1,boardMembersVBox2,boardMembersVBox3);
@@ -100,9 +101,10 @@ public class TabBoardMembers extends Tab {
 			  System.out.println("Creating image: " + selectedYear + ".png");
 			  Image newImage = new Image(getClass().getResourceAsStream("/Stickers/" + selectedYear + ".png"));
 			  imageView.setImage(newImage);
+
 		});
 
-		year.setEffect(new DropShadow(2, Color.BLACK));
+	year.setEffect(new DropShadow(2, Color.BLACK));
 	chairs.setEffect(new DropShadow(2, Color.BLACK));
 	board.setEffect(new DropShadow(2, Color.BLACK));
 	
@@ -162,9 +164,9 @@ public class TabBoardMembers extends Tab {
 //	committeeHBox.setStyle("-fx-background-color: blue");
 //	officersHBox.setStyle("-fx-background-color: blue");
 
-	addOfficers(officerVBox1, officerVBox2);
-	addChairmen(committeeVBox1, committeeVBox2);
-	addBoard(boardMembersVBox1,boardMembersVBox2,boardMembersVBox3);
+//	addOfficers(officerVBox1, officerVBox2);
+//	addChairmen(committeeVBox1, committeeVBox2);
+//	addBoard(boardMembersVBox1,boardMembersVBox2,boardMembersVBox3);
 	
 
 	

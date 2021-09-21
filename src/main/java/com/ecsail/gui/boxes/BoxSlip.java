@@ -77,16 +77,16 @@ public class BoxSlip extends HBox {
 		noSlipLabel.setTextFill(Color.DARKCYAN);
 
 		////////////  ATTRIBUTES //////////////////
-		/*  // for testing
-		infoBox8.setStyle("-fx-background-color: #c5c7c1;");  // gray
-		infoBox1.setStyle("-fx-background-color: #4d6955;");  //green
-		infoBox2.setStyle("-fx-background-color: #feffab;");  // yellow
-		infoBox3.setStyle("-fx-background-color: #e83115;");  // red
-		infoBox4.setStyle("-fx-background-color: #201ac9;");  // blue
-		infoBox5.setStyle("-fx-background-color: #e83115;");  // purble
-		infoBox6.setStyle("-fx-background-color: #15e8e4;");  // light blue
-		infoBox7.setStyle("-fx-background-color: #e89715;");  // orange
-		*/
+		  // for testing
+		assignVBox.setStyle("-fx-background-color: #201ac9;");  // gray
+//		infoBox1.setStyle("-fx-background-color: #4d6955;");  //green
+//		infoBox2.setStyle("-fx-background-color: #feffab;");  // yellow
+//		infoBox3.setStyle("-fx-background-color: #e83115;");  // red
+//		infoBox4.setStyle("-fx-background-color: #201ac9;");  // blue
+//		infoBox5.setStyle("-fx-background-color: #e83115;");  // purble
+//		infoBox6.setStyle("-fx-background-color: #15e8e4;");  // light blue
+//		infoBox7.setStyle("-fx-background-color: #e89715;");  // orange
+
 
 		vboxWaitA.setSpacing(10);
 		vboxWaitA.setSpacing(5);
@@ -193,6 +193,7 @@ public class BoxSlip extends HBox {
             	SqlUpdate.updateWaitList(membership.getMsid(),"SLIPWAIT",newValue);
             }
         });
+
 		kayakWaitCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {

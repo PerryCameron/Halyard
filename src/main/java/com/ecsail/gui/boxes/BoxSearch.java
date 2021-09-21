@@ -59,7 +59,4 @@ public class BoxSearch extends HBox {
 	    hboxGrey.getChildren().addAll(searchBox,searchRecords);
 		getChildren().addAll(hboxGrey);
 	}
-	
-
-	
 }
