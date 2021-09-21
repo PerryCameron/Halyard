@@ -1,6 +1,6 @@
 package com.ecsail.gui.tabs;
 
-import com.ecsail.main.Paths;
+import com.ecsail.main.HalyardPaths;
 import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.SqlInsert;
 import com.ecsail.sql.SqlSelect;
@@ -43,7 +43,7 @@ public class TabDefinedFee extends Tab {
 	
 	public TabDefinedFee(String text) {
 		super(text);
-		this.selectedYear = Paths.getYear();
+		this.selectedYear = HalyardPaths.getYear();
 		this.selectedFees = SqlSelect.selectDefinedFees(Integer.parseInt(selectedYear));
 		populateFields();
 		

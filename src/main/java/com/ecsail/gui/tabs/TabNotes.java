@@ -4,9 +4,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 
-import com.ecsail.main.Paths;
+import com.ecsail.main.HalyardPaths;
 import com.ecsail.sql.SqlSelect;
-import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Memo2;
 
 import javafx.beans.value.ChangeListener;
@@ -36,8 +35,8 @@ public class TabNotes extends Tab {
 	
 	public TabNotes(String text) {
 		super(text);
-		this.selectedYear = Paths.getYear();
-		this.memos = SqlSelect.getAllMemosForTabNotes(Paths.getYear(),setOptions());
+		this.selectedYear = HalyardPaths.getYear();
+		this.memos = SqlSelect.getAllMemosForTabNotes(HalyardPaths.getYear(),setOptions());
 		VBox vboxGrey = new VBox();  // this is the vbox for organizing all the widgets
 		VBox vboxBlue = new VBox();
 		VBox vboxPink = new VBox(); // this creates a pink border around the table

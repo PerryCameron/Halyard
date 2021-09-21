@@ -10,7 +10,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import com.ecsail.enums.KeelType;
-import com.ecsail.main.Paths;
+import com.ecsail.main.HalyardPaths;
 import com.ecsail.sql.Sql_SelectMembership;
 import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.SqlSelect;
@@ -62,7 +62,7 @@ public class PDF_Renewal_Form {
 		PDF_Renewal_Form.current_membership_id = membershipId;
 		this.definedFees = SqlSelect.selectDefinedFees(Integer.parseInt(year));
 		// Check if our path exists, if not create it
-		Paths.checkPath(Paths.RENEWALFORM + "/" + year);
+		HalyardPaths.checkPath(HalyardPaths.RENEWALFORM + "/" + year);
 
 		// add tables here
 		if (isOneMembership) { // we are only printing one membership
@@ -87,7 +87,7 @@ public class PDF_Renewal_Form {
 	}
 	
 	private void makeManyMembershipsIntoOnePDF() throws IOException {
-		filenm = Paths.RENEWALFORM + "/" + year + "/" + year + "_Renewal_Forms.pdf";
+		filenm = HalyardPaths.RENEWALFORM + "/" + year + "/" + year + "_Renewal_Forms.pdf";
 		Document document = createDocument(filenm);
 		ids = SqlSelect.getMembershipIds(year);
 		Collections.sort(ids, Comparator.comparing(Object_MembershipId::getMembership_id));
@@ -161,7 +161,7 @@ public class PDF_Renewal_Form {
 	private Document makeRenewPdf() throws IOException {
 		gatherMembershipInformation();  // gets all relevant info for membership obviously
 		// create a custom file name with gathered information
-		filenm = Paths.RENEWALFORM + "/" + year + "/" + year + "_Renewal_Form_"
+		filenm = HalyardPaths.RENEWALFORM + "/" + year + "/" + year + "_Renewal_Form_"
 				+ primary.getLname() + "_" + membership.getMembershipId() + ".pdf";
 		// create the document
 		Document document = createDocument(filenm);

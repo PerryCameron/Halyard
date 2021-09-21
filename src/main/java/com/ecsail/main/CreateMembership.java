@@ -7,7 +7,6 @@ import java.time.format.DateTimeFormatter;
 
 import com.ecsail.sql.SqlInsert;
 import com.ecsail.sql.SqlSelect;
-import com.ecsail.structures.Object_MembershipId;
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Memo;
 import com.ecsail.structures.Object_Person;
@@ -34,7 +33,7 @@ public class CreateMembership {
 			// int ms_id = SqlSelect.getMSIDCount() + 1;
 			int ms_id = SqlSelect.getCount("membership", "ms_id") + 1;
 			// int membership_id = SqlSelect.getMembershipIDCount() +1;
-			int membership_id = SqlSelect.getHighestMembershipId(Paths.getYear()) + 1;
+			int membership_id = SqlSelect.getHighestMembershipId(HalyardPaths.getYear()) + 1;
 			int mid = SqlSelect.getCount("membership_id", "mid") + 1;
 
 			int pid = SqlSelect.getCount() + 1;
@@ -45,7 +44,7 @@ public class CreateMembership {
 			LocalDateTime now = LocalDateTime.now();
 			String date = dtf.format(now);
 			Object_MembershipList newMembership = new Object_MembershipList(ms_id, pid, membership_id, date, "FM", "",
-					"", "", 0, "", "", "", "", Paths.getYear());
+					"", "", 0, "", "", "", "", HalyardPaths.getYear());
 			if (SqlInsert.addMembershipIsSucessful(newMembership)) {
 				newMemNote.addMemo(new Object_Memo(note_id, ms_id, date, "Created new membership record", 0, "N")); 
 				Main.activememberships.add(newMembership);

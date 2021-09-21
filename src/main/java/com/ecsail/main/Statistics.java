@@ -30,7 +30,7 @@ public class Statistics {
 			int selectedYear = 2000;
 			Object_Stats stats;
 			SqlDelete.deleteStatistics();
-			int numberOfYears = Integer.parseInt(Paths.getYear()) - selectedYear + 1;
+			int numberOfYears = Integer.parseInt(HalyardPaths.getYear()) - selectedYear + 1;
 			for (int i = 0; i < numberOfYears; i++) {
 				stats = new Object_Stats(selectedYear);
 				stats.setStatId(statId);

@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import com.ecsail.main.Paths;
+import com.ecsail.main.HalyardPaths;
 import com.ecsail.sql.Sql_SelectMembership;
 import com.ecsail.sql.SqlSelect;
 import com.ecsail.structures.Object_MembershipId;
@@ -45,8 +45,8 @@ public class PDF_Envelope {
 	private boolean isOneMembership;
 	
 	public PDF_Envelope(boolean iom, boolean size6x9, String membership_id) throws IOException {
-		this.year=Paths.getYear();
-		Paths.checkPath(Paths.ECSCHOME);
+		this.year= HalyardPaths.getYear();
+		HalyardPaths.checkPath(HalyardPaths.ECSCHOME);
 		this.current_membership_id = membership_id;
 		this.isOneMembership = iom;
 
@@ -75,8 +75,8 @@ public class PDF_Envelope {
 		
 		
 
-		System.out.println("destination=" + Paths.ECSCHOME + "_envelopes.pdf");
-		File file = new File(Paths.ECSCHOME + "_envelopes.pdf");
+		System.out.println("destination=" + HalyardPaths.ECSCHOME + "_envelopes.pdf");
+		File file = new File(HalyardPaths.ECSCHOME + "_envelopes.pdf");
 		Desktop desktop = Desktop.getDesktop(); // Gui_Main.class.getProtectionDomain().getCodeSource().getLocation().getPath()
 
 		// Open the document
@@ -92,7 +92,7 @@ public class PDF_Envelope {
 	// 9.5 x 72 points = 684 points (the width)
 	// 4.125 x 72 points = 297 points (the height)
 	public void create4x9 () throws FileNotFoundException {
-		PdfWriter writer = new PdfWriter(Paths.ECSCHOME + "_envelopes.pdf");
+		PdfWriter writer = new PdfWriter(HalyardPaths.ECSCHOME + "_envelopes.pdf");
 		// Initialize PDF document
 		PdfDocument pdf = new PdfDocument(writer);
 		Rectangle envelope = new Rectangle(684, 297);
@@ -127,7 +127,7 @@ public class PDF_Envelope {
 	// 9 x 72 points = 648 (the width)
 	// 6 x 72 points = 432 (the height)
 	public void create6x9 () throws FileNotFoundException {
-		PdfWriter writer = new PdfWriter(Paths.ECSCHOME + "_envelopes.pdf");
+		PdfWriter writer = new PdfWriter(HalyardPaths.ECSCHOME + "_envelopes.pdf");
 		// Initialize PDF document
 		PdfDocument pdf = new PdfDocument(writer);
 		Rectangle envelope = new Rectangle(648, 432);

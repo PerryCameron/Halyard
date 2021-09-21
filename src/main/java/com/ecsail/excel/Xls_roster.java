@@ -15,7 +15,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import com.ecsail.main.Paths;
+import com.ecsail.main.HalyardPaths;
 import com.ecsail.main.SaveFileChooser;
 import com.ecsail.sql.SqlSelect;
 import com.ecsail.structures.Object_Email;
@@ -76,7 +76,7 @@ public class Xls_roster {
 			sheet.autoSizeColumn(i);
 		}
 
-		File file = new SaveFileChooser(Paths.ROSTERS + "/", getFileName(), "Excel Files", "*.xlsx").getFile();
+		File file = new SaveFileChooser(HalyardPaths.ROSTERS + "/", getFileName(), "Excel Files", "*.xlsx").getFile();
 
 		if (file != null) {
 			FileOutputStream fileOut = getFileOutPutStream(file); 
@@ -129,7 +129,7 @@ public class Xls_roster {
 	}
 	
 	private String getFileName() {
-		Paths.checkPath(Paths.ROSTERS);
+		HalyardPaths.checkPath(HalyardPaths.ROSTERS);
 		String fileName = printChoices.getYear();
 		if(printChoices.isActive()) {
 			fileName += " Active";

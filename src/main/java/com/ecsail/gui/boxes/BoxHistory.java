@@ -9,7 +9,7 @@ import java.util.function.Function;
 import com.ecsail.enums.MembershipType;
 import com.ecsail.main.EditCell;
 import com.ecsail.main.FixInput;
-import com.ecsail.main.Paths;
+import com.ecsail.main.HalyardPaths;
 import com.ecsail.sql.SqlDelete;
 import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.SqlInsert;
@@ -289,7 +289,7 @@ public class BoxHistory extends HBox {
 					newIdTuple = new Object_MembershipId(mid, 0 + "", m.getMsid(), "0", true, m.getMemType(), false,
 							false);
 				} else {
-					newIdTuple = new Object_MembershipId(mid, Paths.getYear(), m.getMsid(), "0", true, m.getMemType(),
+					newIdTuple = new Object_MembershipId(mid, HalyardPaths.getYear(), m.getMsid(), "0", true, m.getMemType(),
 							false, false);
 				}
 			SqlInsert.addMembershipId(newIdTuple);

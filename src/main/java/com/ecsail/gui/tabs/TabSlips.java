@@ -1,6 +1,6 @@
 package com.ecsail.gui.tabs;
 
-import com.ecsail.main.Paths;
+import com.ecsail.main.HalyardPaths;
 import com.ecsail.pdf.PDF_SlipChart;
 import com.ecsail.main.Launcher;
 import com.ecsail.sql.Sql_SelectMembership;
@@ -98,7 +98,7 @@ public class TabSlips extends Tab {
 	
 	public TabSlips(String text) {
 		super(text);
-		this.slipmemberships = Sql_SelectMembership.getSlipRoster(Paths.getYear());
+		this.slipmemberships = Sql_SelectMembership.getSlipRoster(HalyardPaths.getYear());
 		this.subleaserMemberships = FXCollections.observableArrayList();
 		fillSlips(); // must be filled the first time.
 		Pane screenPane = new Pane();
@@ -129,7 +129,7 @@ public class TabSlips extends Tab {
 		});
 		
 		createPdfButton.setOnAction((event) -> {
-        	new PDF_SlipChart(Paths.getYear());
+        	new PDF_SlipChart(HalyardPaths.getYear());
         });
 				
 		///////////////// ATTRIBUTES /////////////////
@@ -1023,7 +1023,7 @@ public class TabSlips extends Tab {
 		Text returnText = null;
 		if(subleaser != 0) {  /// this slip is subleased
 			//System.out.println("Found subleaser " + subleaser);
-			subleaserMemberships.add(Sql_SelectMembership.getMembershipFromList(subleaser, Paths.getYear()));
+			subleaserMemberships.add(Sql_SelectMembership.getMembershipFromList(subleaser, HalyardPaths.getYear()));
 			// gets the name of the subleaser
 			returnText = new Text(col, row, slip + " " + subleaserMemberships.get(subleaserMemberships.size() - 1).getLname());
 			returnText.setFill(Color.CORNFLOWERBLUE);

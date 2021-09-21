@@ -4,7 +4,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 
 import com.ecsail.main.Main;
-import com.ecsail.main.Paths;
+import com.ecsail.main.HalyardPaths;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -46,7 +46,7 @@ public class Dialogue_ChoosePicture extends Stage {
 		Button browseButton = new Button("Browse");
 		/////////
 		Pane root = new Pane();
-		Image memberPhoto = new Image(getClass().getResourceAsStream(Paths.DEFAULTPHOTO));
+		Image memberPhoto = new Image(getClass().getResourceAsStream(HalyardPaths.DEFAULTPHOTO));
 		Image mainIcon = new Image(getClass().getResourceAsStream("/ECSC64.png"));
         ScrollPane scrollPane = new ScrollPane();
         final Rectangle selection = new Rectangle();

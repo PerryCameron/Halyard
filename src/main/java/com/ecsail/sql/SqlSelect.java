@@ -9,7 +9,7 @@ import java.util.List;
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.Main;
-import com.ecsail.main.Paths;
+import com.ecsail.main.HalyardPaths;
 import com.ecsail.pdf.directory.Object_SlipInfo;
 import com.ecsail.pdf.directory.Object_Sportsmen;
 import com.ecsail.pdf.directory.PDF_Object_Officer;
@@ -406,7 +406,7 @@ public class SqlSelect {
 					+ "inner join person p ON p.P_ID=e.P_ID "
 					+ "inner join membership m ON m.ms_id=p.ms_id "
 					+ "inner join membership_id id ON id.ms_id=m.ms_id "
-					+ "where id.fiscal_year='" + Paths.getYear() 
+					+ "where id.fiscal_year='" + HalyardPaths.getYear()
 					+ "' and id.renew=true"
 					
 					+ " order by id.MEMBERSHIP_ID"));
@@ -1409,7 +1409,7 @@ public class SqlSelect {
 		Statement stmt;
 		try {
 			stmt = ConnectDatabase.sqlConnection.createStatement();
-			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select membership_id from membership_id where ms_id='" + msid + "' and fiscal_year=" + Paths.getYear() +";"));
+			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select membership_id from membership_id where ms_id='" + msid + "' and fiscal_year=" + HalyardPaths.getYear() +";"));
 			while(rs.next()) {
 			result = rs.getInt("MEMBERSHIP_ID");
 			}
@@ -1425,7 +1425,7 @@ public class SqlSelect {
 		Statement stmt;
 		try {
 			stmt = ConnectDatabase.sqlConnection.createStatement();
-			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select ms_id from membership_id where fiscal_year='" + Paths.getYear() + "' and membership_id='" + membership_id + "';"));
+			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select ms_id from membership_id where fiscal_year='" + HalyardPaths.getYear() + "' and membership_id='" + membership_id + "';"));
 			while(rs.next()) {
 			result = rs.getInt("ms_id");
 			}
@@ -1498,7 +1498,7 @@ public class SqlSelect {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			rs = stmt.executeQuery("select count(*) from membership m "
 					+ "inner join membership_id id on m.ms_id=id.ms_id "
-					+ "where id.fiscal_year='" + Paths.getYear() + "' and id.mem_type='" + type + "' and id.renew=true;");
+					+ "where id.fiscal_year='" + HalyardPaths.getYear() + "' and id.mem_type='" + type + "' and id.renew=true;");
 			rs.next();
 			number = rs.getInt("count(*)");
 		} catch (SQLException e) {
@@ -1516,7 +1516,7 @@ public class SqlSelect {
 			rs = stmt.executeQuery("select count(*) from person p "
 					+ "inner join membership m on m.ms_id=p.ms_id "
 					+ "left join membership_id id on id.ms_id=m.ms_id "
-					+ "where id.fiscal_year='" + Paths.getYear() + "' and id.renew=true");
+					+ "where id.fiscal_year='" + HalyardPaths.getYear() + "' and id.renew=true");
 			rs.next();
 			number = rs.getInt("count(*)");
 		

@@ -5,16 +5,12 @@ import java.util.Date;
 
 import com.ecsail.enums.Officer;
 import com.ecsail.main.Launcher;
-import com.ecsail.main.Paths;
 import com.ecsail.sql.SqlSelect;
 import com.ecsail.structures.Object_Board;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Label;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.control.Tab;
+import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -71,38 +67,60 @@ public class TabBoardMembers extends Tab {
 	//image.getChildren().add(imageView);
 	//// experimental ///
 	
-	final Spinner<Integer> yearSpinner = new Spinner<Integer>();
-	SpinnerValueFactory<Integer> wetSlipValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1970, Integer.parseInt(selectedYear) + 1, Integer.parseInt(selectedYear));
-	yearSpinner.setValueFactory(wetSlipValueFactory);
-	yearSpinner.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_HORIZONTAL);
-	yearSpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
-		  if (!newValue) {
-			  selectedYear = yearSpinner.getEditor().getText();
+//	final Spinner<Integer> yearSpinner = new Spinner<Integer>();
+//	SpinnerValueFactory<Integer> wetSlipValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1970, Integer.parseInt(selectedYear) + 1, Integer.parseInt(selectedYear));
+//	yearSpinner.setValueFactory(wetSlipValueFactory);
+//	yearSpinner.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_HORIZONTAL);
+//	yearSpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
+//		  if (!newValue) {
+//			  selectedYear = yearSpinner.getEditor().getText();
+//			  refreshBoardList();
+//			  clearBoard(officerVBox1, officerVBox2, committeeVBox1, committeeVBox2,boardMembersVBox1,boardMembersVBox2,boardMembersVBox3);
+//			  addOfficers(officerVBox1, officerVBox2);
+//			  addChairmen(committeeVBox1, committeeVBox2);
+//			  addBoard(boardMembersVBox1,boardMembersVBox2,boardMembersVBox3);
+//			  System.out.println("Creating image: " + selectedYear + ".png");
+//			  Image newImage = new Image(getClass().getResourceAsStream("/Stickers/" + selectedYear + ".png"));
+//			  imageView.setImage(newImage);
+//		  }
+//		});
+
+	ComboBox comboBox = new ComboBox();
+	for(int i = Integer.parseInt(currentYear); i > 1969; i--) {
+		comboBox.getItems().add(i);
+	}
+
+		comboBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
+			  selectedYear = newValue.toString();
 			  refreshBoardList();
 			  clearBoard(officerVBox1, officerVBox2, committeeVBox1, committeeVBox2,boardMembersVBox1,boardMembersVBox2,boardMembersVBox3);
 			  addOfficers(officerVBox1, officerVBox2);
 			  addChairmen(committeeVBox1, committeeVBox2);
 			  addBoard(boardMembersVBox1,boardMembersVBox2,boardMembersVBox3);
+			  System.out.println("Creating image: " + selectedYear + ".png");
 			  Image newImage = new Image(getClass().getResourceAsStream("/Stickers/" + selectedYear + ".png"));
 			  imageView.setImage(newImage);
-		  }
 		});
-	
-	year.setEffect(new DropShadow(2, Color.BLACK));
+
+		year.setEffect(new DropShadow(2, Color.BLACK));
 	chairs.setEffect(new DropShadow(2, Color.BLACK));
 	board.setEffect(new DropShadow(2, Color.BLACK));
 	
 	boardMembersVBox1.setPrefWidth(150);
 	boardMembersVBox2.setPrefWidth(150);
 	boardMembersVBox3.setPrefWidth(150);
-	yearSpinner.setPrefWidth(145);
-	vboxLeft.setPadding(new Insets(15,0,0,40));
-	vboxLeft.setSpacing(40);
-	vboxLeft.setAlignment(Pos.TOP_CENTER);
+//	yearSpinner.setPrefWidth(145);
+	comboBox.setPrefWidth(150);
+	comboBox.setId("bigcombo-box");
+//	comboBox.setStyle("-fx-font-size : 15pt");
 
-	
-	boardMembersHBox.setPadding(new Insets(0,0,0,100));
+	vboxLeft.setAlignment(Pos.TOP_CENTER);
 	officersTitleHBox.setAlignment(Pos.CENTER);
+
+	vboxLeft.setPadding(new Insets(15,0,0,40));
+	boardMembersHBox.setPadding(new Insets(0,0,0,100));
+	vboxBlue.setPadding(new Insets(10,10,10,10));
+	vboxPink.setPadding(new Insets(3,3,3,3)); // spacing to make pink fram around table
 	
 	officerVBox1.getStyleClass().add("labels");
 	committeeVBox1.getStyleClass().add("labels");
@@ -115,22 +133,29 @@ public class TabBoardMembers extends Tab {
 	year.getStyleClass().add("title");
 	chairs.getStyleClass().add("title");
 	board.getStyleClass().add("title");
-	
+
+
+	vboxLeft.setSpacing(40);
 	officersHBox.setSpacing(120);
 	committeeHBox.setSpacing(30);
 	boardMembersHBox.setSpacing(40);
 	officersTitleHBox.setSpacing(190);
-	
+	officerVBox1.setSpacing(5);
+	officerVBox2.setSpacing(5);
+	committeeVBox1.setSpacing(5);
+	committeeVBox2.setSpacing(5);
+	boardMembersVBox1.setSpacing(5);
+	boardMembersVBox2.setSpacing(5);
+	boardMembersVBox3.setSpacing(5);
 	vboxPink.setSpacing(10);
-	
-	vboxBlue.setPadding(new Insets(10,10,10,10));
-	vboxPink.setPadding(new Insets(3,3,3,3)); // spacing to make pink fram around table
-	
+
 	VBox.setVgrow(vboxPink, Priority.ALWAYS);
 	HBox.setHgrow(vboxPink,Priority.ALWAYS);
 
 	vboxPink.setId("box-pink");
 	vboxLeft.setId("box-pink");
+
+	comboBox.getSelectionModel().selectFirst();
 //	vboxGrey.setId("slip-box");
 
 //	boardMembersHBox.setStyle("-fx-background-color: blue");
@@ -150,7 +175,7 @@ public class TabBoardMembers extends Tab {
 	officersTitleHBox.getChildren().addAll(year);
 	committeeTitleHBox.getChildren().addAll(chairs);
 	boardMembersTitleBox.getChildren().addAll(board);
-	vboxLeft.getChildren().addAll(yearSpinner, imageView);
+	vboxLeft.getChildren().addAll(comboBox, imageView);
 	vboxPink.getChildren().addAll(officersTitleHBox, officersHBox, committeeTitleHBox, committeeHBox, boardMembersTitleBox,boardMembersHBox);
 	//Pane screenPane = new Pane();
 	vboxBlue.setId("box-blue");

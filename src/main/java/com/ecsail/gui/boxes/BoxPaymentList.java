@@ -2,7 +2,7 @@ package com.ecsail.gui.boxes;
 
 import java.util.Collections;
 import com.ecsail.main.Note;
-import com.ecsail.main.Paths;
+import com.ecsail.main.HalyardPaths;
 import com.ecsail.sql.SqlDelete;
 import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.SqlInsert;
@@ -45,7 +45,7 @@ public class BoxPaymentList extends HBox {
 	public BoxPaymentList(Object_Membership membership, TabPane t, ObservableList<Object_Person> p, Note n, TextField dt) {
 		super();
 		BoxPaymentList.membership = membership;
-		this.currentYear = Paths.getYear();
+		this.currentYear = HalyardPaths.getYear();
 		BoxPaymentList.duesText = dt;
 		BoxPaymentList.note = n;
 		BoxPaymentList.parentTabPane = t;

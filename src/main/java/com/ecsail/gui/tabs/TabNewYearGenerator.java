@@ -13,7 +13,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import com.ecsail.main.Paths;
+import com.ecsail.main.HalyardPaths;
 import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.SqlSelect;
 import com.ecsail.structures.Object_Temp;
@@ -33,7 +33,7 @@ public class TabNewYearGenerator {
 	static ArrayList<String> existtuples = new ArrayList<String>();
 	public static void makeItSo() throws IOException {
 		// put memberships into a list
-		readFromExcel(Paths.ROSTERS + "/"+year+"_Roster.xlsx");
+		readFromExcel(HalyardPaths.ROSTERS + "/"+year+"_Roster.xlsx");
 		System.out.println("Size of memberships are " + memberships.size());
 		int mid = SqlSelect.getCount("membership_id", "mid") + 1; // get last mid number add 1
 	//	System.out.println(SqlExists.isThere(memberships.get(0), year));
@@ -51,7 +51,7 @@ public class TabNewYearGenerator {
 			
 		}
 		
-		writeToFile(Paths.ROSTERS + "/RosterTuples.txt");
+		writeToFile(HalyardPaths.ROSTERS + "/RosterTuples.txt");
 	}
 	
 	public static void writeToFile(String filename) {

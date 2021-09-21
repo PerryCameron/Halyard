@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 import com.ecsail.enums.MemberType;
 import com.ecsail.gui.boxes.BoxPerson;
 import com.ecsail.gui.boxes.BoxSearch;
-import com.ecsail.main.Paths;
+import com.ecsail.main.HalyardPaths;
 import com.ecsail.main.Launcher;
 import com.ecsail.sql.Sql_SelectMembership;
 import com.ecsail.sql.SqlExists;
@@ -137,7 +137,7 @@ public class TabPeople extends Tab {
 	private static void createPersonBox(Object_Person person)  {
 		Object_MembershipList membership = null;
 		if(SqlExists.currentMembershipIdExists(person.getMs_id())) {
-		membership = Sql_SelectMembership.getMembershipFromList(person.getMs_id(), Paths.getYear());
+		membership = Sql_SelectMembership.getMembershipFromList(person.getMs_id(), HalyardPaths.getYear());
 		} else {
 		membership = Sql_SelectMembership.getMembershipFromListWithoutMembershipId(person.getMs_id());
 		}

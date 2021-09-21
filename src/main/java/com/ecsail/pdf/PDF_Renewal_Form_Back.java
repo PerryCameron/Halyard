@@ -2,7 +2,7 @@ package com.ecsail.pdf;
 
 import java.io.IOException;
 
-import com.ecsail.main.Paths;
+import com.ecsail.main.HalyardPaths;
 import com.itextpdf.io.font.FontProgramFactory;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
@@ -21,7 +21,7 @@ import com.itextpdf.layout.property.TextAlignment;
 public class PDF_Renewal_Form_Back {
 	
 	public static void Create_Back_Side(Document document) throws IOException {
-		int year = Integer.parseInt(Paths.getYear());
+		int year = Integer.parseInt(HalyardPaths.getYear());
 		int nextYear = year + 1;
 		//PdfFont font = PdfFontFactory.createFont(FontConstants.TIMES_ROMAN);
 		

@@ -9,7 +9,7 @@ import java.util.Comparator;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import com.ecsail.main.Paths;
+import com.ecsail.main.HalyardPaths;
 import com.ecsail.sql.Sql_SelectMembership;
 import com.ecsail.structures.Object_MembershipList;
 import com.itextpdf.kernel.geom.PageSize;
@@ -37,12 +37,12 @@ public class PDF_Directory {
 		this.message = new String();
 
 		this.rosters = Sql_SelectMembership.getRoster(year, true);
-		Paths.checkPath(Paths.ECSCHOME);
+		HalyardPaths.checkPath(HalyardPaths.ECSCHOME);
 		textArea.setText("Creating " + year + " directory");
 		
 		PdfWriter writer = null;
 		try {
-			writer = new PdfWriter(Paths.ECSCHOME + "_directory.pdf");
+			writer = new PdfWriter(HalyardPaths.ECSCHOME + "_directory.pdf");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -108,8 +108,8 @@ public class PDF_Directory {
 	    		textArea.appendText("Created directory page\n");
 	    		doc.close();
 	    		
-	    		System.out.println("destination=" + Paths.ECSCHOME + "_directory.pdf");
-	    		File file = new File(Paths.ECSCHOME + "_directory.pdf");
+	    		System.out.println("destination=" + HalyardPaths.ECSCHOME + "_directory.pdf");
+	    		File file = new File(HalyardPaths.ECSCHOME + "_directory.pdf");
 	    		Desktop desktop = Desktop.getDesktop(); // Gui_Main.class.getProtectionDomain().getCodeSource().getLocation().getPath()
 
 	    		// Open the document

@@ -13,7 +13,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import com.ecsail.main.Paths;
+import com.ecsail.main.HalyardPaths;
 import com.ecsail.sql.SqlSelect;
 import com.ecsail.structures.Object_Email_Information;
 
@@ -73,9 +73,9 @@ public class Xls_email_list {
             sheet.autoSizeColumn(i);
         }
         FileOutputStream fileOut = null;
-        Paths.checkPath(Paths.ECSCHOME);
+        HalyardPaths.checkPath(HalyardPaths.ECSCHOME);
 		try {
-			fileOut = new FileOutputStream(Paths.ECSCHOME + "/Email_List.xlsx");
+			fileOut = new FileOutputStream(HalyardPaths.ECSCHOME + "/Email_List.xlsx");
 		} catch (FileNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();

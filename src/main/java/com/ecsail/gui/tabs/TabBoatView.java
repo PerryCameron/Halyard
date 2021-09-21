@@ -17,7 +17,7 @@ import com.ecsail.gui.dialogues.Dialogue_ChooseMember;
 import com.ecsail.main.ImageViewPane;
 import com.ecsail.main.LoadFileChooser;
 import com.ecsail.main.Main;
-import com.ecsail.main.Paths;
+import com.ecsail.main.HalyardPaths;
 import com.ecsail.sql.SqlDelete;
 import com.ecsail.sql.SqlUpdate;
 import com.ecsail.sql.Sql_SelectMembership;
@@ -65,12 +65,12 @@ public class TabBoatView extends Tab {
 		this.ftp = Main.getConnect().getForwardedConnection().getFtp();
 		checkRemoteFiles();
 		// make sure directory exists, and create it if it does not
-		Paths.checkPath(Paths.BOATDIR + "/" + b.getBoat_id() + "/");
-		this.imagePath = new File(Paths.BOATDIR + "/" + b.getBoat_id() + "/");
-		this.localImageFiles = Paths.listFilesForFolder(imagePath);
+		HalyardPaths.checkPath(HalyardPaths.BOATDIR + "/" + b.getBoat_id() + "/");
+		this.imagePath = new File(HalyardPaths.BOATDIR + "/" + b.getBoat_id() + "/");
+		this.localImageFiles = HalyardPaths.listFilesForFolder(imagePath);
 		Image image = null;
 		if (localImageFiles.size() > 0)
-			image = getImage(Paths.BOATDIR + "/" + b.getBoat_id() + "/" + localImageFiles.get(pictureNumber));
+			image = getImage(HalyardPaths.BOATDIR + "/" + b.getBoat_id() + "/" + localImageFiles.get(pictureNumber));
 		checkIfLocalandRemoteDirectoriesMatch();
 
 		TableView<Object_MembershipList> boatOwnerTableView = new TableView<>();
@@ -364,7 +364,7 @@ public class TabBoatView extends Tab {
 			pictureNumber++;
 			if (pictureNumber == localImageFiles.size())
 				pictureNumber = 0;
-			Image newImage = getImage(Paths.BOATDIR + "/" + b.getBoat_id() + "/" + localImageFiles.get(pictureNumber));
+			Image newImage = getImage(HalyardPaths.BOATDIR + "/" + b.getBoat_id() + "/" + localImageFiles.get(pictureNumber));
 			imageView.setImage(newImage);
 		});
 
@@ -372,7 +372,7 @@ public class TabBoatView extends Tab {
 			pictureNumber--;
 			if (pictureNumber < 0)
 				pictureNumber = localImageFiles.size() - 1;
-			Image newImage = getImage(Paths.BOATDIR + "/" + b.getBoat_id() + "/" + localImageFiles.get(pictureNumber));
+			Image newImage = getImage(HalyardPaths.BOATDIR + "/" + b.getBoat_id() + "/" + localImageFiles.get(pictureNumber));
 			imageView.setImage(newImage);
 		});
 
@@ -607,11 +607,11 @@ public class TabBoatView extends Tab {
 		}
 		System.out.println("Remote missing images:");
 		for(String rmm: remoteMissingImages) {
-			ftp.sendFile(Paths.BOATDIR + "/" + b.getBoat_id() + "/" + rmm, "/home/pcameron/Documents/ECSC/Boats/" + b.getBoat_id() + "/" + rmm);
+			ftp.sendFile(HalyardPaths.BOATDIR + "/" + b.getBoat_id() + "/" + rmm, "/home/pcameron/Documents/ECSC/Boats/" + b.getBoat_id() + "/" + rmm);
 		}
 		System.out.println("Local missing images:");
 		for(String lmm: localMissingImages) {
-			ftp.getFile("/home/pcameron/Documents/ECSC/Boats/" + b.getBoat_id() + "/" + lmm, Paths.BOATDIR + "/" + b.getBoat_id() + "/" + lmm);
+			ftp.getFile("/home/pcameron/Documents/ECSC/Boats/" + b.getBoat_id() + "/" + lmm, HalyardPaths.BOATDIR + "/" + b.getBoat_id() + "/" + lmm);
 			localImageFiles.add(lmm);
 		}
 	}
@@ -633,7 +633,7 @@ public class TabBoatView extends Tab {
 	}
 
 	private String getNewName(File originalFile) {
-		return "B" + b.getBoat_id() + "_IMG_" + (localImageFiles.size() + 1) + Paths.getFileExtension(originalFile);
+		return "B" + b.getBoat_id() + "_IMG_" + (localImageFiles.size() + 1) + HalyardPaths.getFileExtension(originalFile);
 	}
 
 	public Image getImage(String file) {

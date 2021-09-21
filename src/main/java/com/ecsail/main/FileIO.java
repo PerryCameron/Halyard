@@ -17,8 +17,8 @@ public class FileIO {
 public static List<Object_Login> logins = new ArrayList<Object_Login>();
 	
 	public static void saveLoginObjects() {  // saves user file to disk
-		File g = new File(Paths.HOSTS);
-		System.out.println("saving " + Paths.HOSTS);
+		File g = new File(HalyardPaths.HOSTS);
+		System.out.println("saving " + HalyardPaths.HOSTS);
 		try	{
 			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(g));
 			out.writeObject(logins); 
@@ -31,8 +31,8 @@ public static List<Object_Login> logins = new ArrayList<Object_Login>();
 	}
 	
 	public static void saveTupleCountObjects(List<Object_TupleCount> tuples) {  // saves user file to disk
-		File g = new File(Paths.TUPLECOUNTS);
-		System.out.println("saving " + Paths.TUPLECOUNTS);
+		File g = new File(HalyardPaths.TUPLECOUNTS);
+		System.out.println("saving " + HalyardPaths.TUPLECOUNTS);
 		try	{
 			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(g));
 			out.writeObject(tuples); 
@@ -47,7 +47,7 @@ public static List<Object_Login> logins = new ArrayList<Object_Login>();
 	public static ArrayList<Object_TupleCount> openTupleCountObjects() {
 		ArrayList<Object_TupleCount> tuples = new ArrayList<Object_TupleCount>();
 		System.out.println();
-		File g = new File(Paths.TUPLECOUNTS);
+		File g = new File(HalyardPaths.TUPLECOUNTS);
 		if (g.exists()) {
 			try {
 				ObjectInputStream in = new ObjectInputStream(new FileInputStream(g));
@@ -64,7 +64,7 @@ public static List<Object_Login> logins = new ArrayList<Object_Login>();
 				e.printStackTrace();
 			}			  
 		} else {
-			System.out.println("There is no file " + Paths.TUPLECOUNTS);
+			System.out.println("There is no file " + HalyardPaths.TUPLECOUNTS);
 		}
 		return tuples;
 	}
@@ -72,7 +72,7 @@ public static List<Object_Login> logins = new ArrayList<Object_Login>();
 	public static Object_TupleCount openTupleCountObject() {
 		ArrayList<Object_TupleCount> tuples = new ArrayList<Object_TupleCount>();
 		System.out.println();
-		File g = new File(Paths.TUPLECOUNTS);
+		File g = new File(HalyardPaths.TUPLECOUNTS);
 		if (g.exists()) {
 			try {
 				ObjectInputStream in = new ObjectInputStream(new FileInputStream(g));
@@ -89,8 +89,8 @@ public static List<Object_Login> logins = new ArrayList<Object_Login>();
 				e.printStackTrace();
 			}			  
 		} else {
-			System.out.println("There is no file " + Paths.TUPLECOUNTS);
-			System.out.println("Creating file " + Paths.TUPLECOUNTS);
+			System.out.println("There is no file " + HalyardPaths.TUPLECOUNTS);
+			System.out.println("Creating file " + HalyardPaths.TUPLECOUNTS);
 			List<Object_TupleCount> t = new ArrayList<Object_TupleCount>();
 			t.add(new Object_TupleCount());
 			saveTupleCountObjects(t);
@@ -115,7 +115,7 @@ public static List<Object_Login> logins = new ArrayList<Object_Login>();
 	
 	public static void openLoginObjects() {
 		System.out.println();
-		File g = new File(Paths.HOSTS);
+		File g = new File(HalyardPaths.HOSTS);
 		if (g.exists()) {
 			try {
 				ObjectInputStream in = new ObjectInputStream(new FileInputStream(g));
@@ -132,13 +132,13 @@ public static List<Object_Login> logins = new ArrayList<Object_Login>();
 				e.printStackTrace();
 			}			  
 		} else {
-			System.out.println("There is no file " + Paths.HOSTS);
+			System.out.println("There is no file " + HalyardPaths.HOSTS);
 		}
 	}
 	
 	public static boolean hostFileExists() {
 		boolean doesExist = false;
-		File g = new File(Paths.HOSTS);
+		File g = new File(HalyardPaths.HOSTS);
 		if(g.exists())
 			doesExist = true;
 		return doesExist;

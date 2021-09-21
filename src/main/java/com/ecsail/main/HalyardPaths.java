@@ -5,11 +5,12 @@ import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Paths {
+public class HalyardPaths {
 	public static final String DEPOSITREPORTPATH = System.getProperty("user.home") + "/Documents/ECSC/Depost_Reports";
 	public static final String RENEWALFORM = System.getProperty("user.home") + "/Documents/ECSC/Renewal_Forms";
 	public static final String SQLBACKUP = System.getProperty("user.home") + "/Documents/ECSC/SQL_Backup";
@@ -60,6 +61,7 @@ public class Paths {
 		    recordsDir.mkdirs();
 		}
 	}
+
 	
 	public static String getYear() {
 		return new SimpleDateFormat("yyyy").format(new Date());

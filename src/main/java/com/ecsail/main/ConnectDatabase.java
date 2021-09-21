@@ -73,7 +73,7 @@ public class ConnectDatabase {
 		int height = 200;
 		Stage logonStage = new Stage();
 		logonStage.setTitle("Login");
-		Image ecscLogo = new Image(getClass().getResourceAsStream(Paths.LOGO));
+		Image ecscLogo = new Image(getClass().getResourceAsStream(HalyardPaths.LOGO));
 		ImageView logo = new ImageView(ecscLogo);
 		VBox vboxBlue = new VBox();
 		VBox vboxLeft = new VBox(); // this creates a pink border around the table
@@ -207,7 +207,7 @@ public class ConnectDatabase {
 		if(currentLogon != null) {  // only true if starting for first time
 			populateFields();
 		}
-		secondScene.getStylesheets().add("stylesheet.css");
+		secondScene.getStylesheets().add("login.css");
 		mainHBox.setId("box-pink");
 		vboxBlue.setId("box-blue");
 		
@@ -399,11 +399,11 @@ public class ConnectDatabase {
 		logonStage.setScene(secondScene);
 		logonStage.show();
 		float windowsOffsetHeight = 0.0f;
-		if(Paths.isWindows()) {
+		if(HalyardPaths.isWindows()) {
 			windowsOffsetHeight = -10.0f;
 			vboxBlue.setPrefWidth(width - windowsOffsetHeight);
 		}
-		System.out.println(Paths.getOperatingSystem());
+		System.out.println(HalyardPaths.getOperatingSystem());
 		this.titleBarHeight = logonStage.getHeight() - secondScene.getHeight();
 		logonStage.setHeight(vboxBlue.getHeight() + titleBarHeight + windowsOffsetHeight);
 		logonStage.setResizable(false);

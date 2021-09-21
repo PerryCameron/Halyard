@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import com.ecsail.main.BoxConsole;
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.Main;
-import com.ecsail.main.Paths;
+import com.ecsail.main.HalyardPaths;
 import com.ecsail.structures.Object_MembershipId;
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Money;
@@ -404,7 +404,7 @@ public class SqlUpdate {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("update slip set subleased_to=null where subleased_to='" + subleasee + "';"));
 			BoxConsole.setInfoLine("Released sublease for subleaser " + subleasee, "orange");
-			Object_MembershipList ownerMembership = Sql_SelectMembership.getMembershipFromList(subleasee, Paths.getYear());
+			Object_MembershipList ownerMembership = Sql_SelectMembership.getMembershipFromList(subleasee, HalyardPaths.getYear());
 			ownerMembership.setSubleaser(0);
 			Main.edits.setSlipsEdits(Main.edits.getSlipsEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
@@ -419,7 +419,7 @@ public class SqlUpdate {
 			stmt.execute(Main.console.setRegexColor("update slip set ms_id='" + ms_id + "' where ms_id='" + membership.getMsid() + "';"));
 			String slip = membership.getSlip();
 			membership.setSlip("0");
-			Object_MembershipList newSlipOwnerMembership = Sql_SelectMembership.getMembershipFromList(ms_id, Paths.getYear());
+			Object_MembershipList newSlipOwnerMembership = Sql_SelectMembership.getMembershipFromList(ms_id, HalyardPaths.getYear());
 			newSlipOwnerMembership.setSlip(slip);
 			Main.edits.setSlipsEdits(Main.edits.getSlipsEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {

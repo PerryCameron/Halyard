@@ -3,7 +3,7 @@ package com.ecsail.gui.dialogues;
 import java.util.Collections;
 import java.util.Comparator;
 
-import com.ecsail.main.Paths;
+import com.ecsail.main.HalyardPaths;
 import com.ecsail.sql.Sql_SelectMembership;
 import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.SqlInsert;
@@ -37,7 +37,7 @@ public class Dialogue_NewYearGenerator extends Stage {
 	private Object_DefinedFee definedFee;
 	public Dialogue_NewYearGenerator() {
 		//this.selectedYear = returnNextRecordYear();
-		this.selectedYear = Paths.getYear();  // this will need to be able to change with a spinner
+		this.selectedYear = HalyardPaths.getYear();  // this will need to be able to change with a spinner
 		this.definedFee = SqlSelect.getDefinedFee(selectedYear); // this will have to update as well
 		Button generateButton = new Button("Yes");
 		Button cancelButton = new Button("Cancel");

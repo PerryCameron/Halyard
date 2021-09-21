@@ -1,0 +1,98 @@
+
+
+.button {
+    -fx-text-fill: white;
+    -fx-font-family: "Arial Narrow";
+    -fx-font-weight: bold;
+    -fx-background-color: linear-gradient(#9fc0c7, #a8bbbf);
+    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.6) , 2, 0.0 , 0 , 1 );
+    -fx-background-radius: 12px;
+}
+
+.button:hover {
+    -fx-background-color: linear-gradient(#2A5058, #61a2b1);
+}
+
+.labels {
+    -fx-font-weight: bold;
+    
+}
+
+.title {
+	-fx-alignment: CENTER;
+	-fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #9fc0c7;
+    -fx-font-family: "Helvetica";
+}
+
+.boardgeneral {
+	-fx-font-size: 14px;
+	-fx-alignment: CENTER;
+	
+}
+
+.text {
+	-fx-font-family:  "Helvetica";
+}
+
+#box-blue {
+	-fx-background-color: #9fc0c7;  /* blue selected tab background in person */
+}
+
+#box-grey {
+	-fx-background-color: #c6c6c6;
+}
+
+#box-pink {
+	-fx-background-color:  #dfdada; /* #dfdada*/ 
+}
+
+#box-lightgrey {
+	-fx-background-color: #c5c7c1;
+}
+
+#bold-label {
+  -fx-font-weight: bold;
+}
+
+#default-button {
+ -fx-background-color: -fx-shadow-highlight-color, -fx-outer-border, -fx-inner-border, -fx-body-color;
+    -fx-background-insets: 0 0 -1 0, 0, 1, 2;
+    -fx-background-radius: 5, 5, 4, 3;
+    -fx-padding: 0.166667em 0.833333em 0.25em 0.833333em; /* 2 10 3 10 */
+    -fx-text-fill: -fx-text-base-color;
+    -fx-alignment: CENTER;
+    -fx-content-display: LEFT;
+}
+
+#default-button:focused {
+	-fx-color: -fx-focused-base;
+    -fx-background-color: -fx-focus-color, -fx-outer-border, -fx-inner-border, -fx-body-color;
+    -fx-background-insets: -1.4, 0, 1, 2;
+    -fx-background-radius:  6.4, 5, 4, 3;
+}
+
+#default-button:hover {
+    -fx-color: -fx-hover-base;
+}
+
+#default-button:armed {
+    -fx-color: -fx-pressed-base;
+}
+ 
+#default-button:default {
+    -fx-base: -fx-accent;
+}
+
+#default-button:cancel {
+}
+
+#default-button:disabled {
+    -fx-opacity: -fx-disabled-opacity;
+}
+
+
+
+
+

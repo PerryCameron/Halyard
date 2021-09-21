@@ -8,7 +8,7 @@ import com.ecsail.excel.Xls_roster;
 import com.ecsail.gui.tabs.roster.TabKayakLists;
 import com.ecsail.gui.tabs.roster.TabSlipOptions;
 import com.ecsail.gui.tabs.roster.TabStandard;
-import com.ecsail.main.Paths;
+import com.ecsail.main.HalyardPaths;
 import com.ecsail.main.Launcher;
 import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.Sql_SelectMembership;
@@ -380,7 +380,7 @@ public class TabRoster extends Tab {
 				if (isNowSelected) {
 					setListType("slipOwners");
 					rosters.clear();
-					rosters.addAll(Sql_SelectMembership.getRosterOfSlipOwners(Paths.getYear()));
+					rosters.addAll(Sql_SelectMembership.getRosterOfSlipOwners(HalyardPaths.getYear()));
 					records.setText(rosters.size() + " Records");
 					//rosterTableView.sort();
 					Collections.sort(rosters, Comparator.comparing(Object_MembershipList::getMembershipId));
@@ -440,7 +440,7 @@ public class TabRoster extends Tab {
 				if (isNowSelected) {
 					setListType("shedowners");
 					rosters.clear();
-					rosters.addAll(Sql_SelectMembership.getRosterOfKayakShedOwners(Paths.getYear()));
+					rosters.addAll(Sql_SelectMembership.getRosterOfKayakShedOwners(HalyardPaths.getYear()));
 					records.setText(rosters.size() + " Records");
 					//rosterTableView.sort();
 					Collections.sort(rosters, Comparator.comparing(Object_MembershipList::getMembershipId));
@@ -455,7 +455,7 @@ public class TabRoster extends Tab {
 				if (isNowSelected) {
 					setListType("rackowners");
 					rosters.clear();
-					rosters.addAll(Sql_SelectMembership.getRosterOfKayakRackOwners(Paths.getYear()));
+					rosters.addAll(Sql_SelectMembership.getRosterOfKayakRackOwners(HalyardPaths.getYear()));
 					records.setText(rosters.size() + " Records");
 					//rosterTableView.sort();
 					Collections.sort(rosters, Comparator.comparing(Object_MembershipList::getMembershipId));

@@ -23,8 +23,6 @@ import com.ecsail.sql.Sql_SelectMembership;
 import com.ecsail.sql.SqlSelect;
 import com.ecsail.structures.Object_Boat;
 import com.ecsail.structures.Object_MembershipList;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.VBox;
@@ -99,7 +97,7 @@ static TabPane tabPane;
 	
 	public static void createMembershipTabFromPeopleList(int msid)  {
 		Object_MembershipList membership = Sql_SelectMembership.getMembershipFromListWithoutMembershipId(msid);
-		 if(!SqlSelect.isRenewed(msid, Paths.getYear()))
+		 if(!SqlSelect.isRenewed(msid, HalyardPaths.getYear()))
 		 Launcher.createInactiveMemberTab(membership);
 		 else
 		 Launcher.createActiveMembershipTab(membership);
@@ -114,10 +112,10 @@ static TabPane tabPane;
 	// used in BoxSlip
 	public static void createTabForBoxSlip(int ms_id) { 
 		Object_MembershipList membership;
-		if(SqlSelect.isRenewed(ms_id, Paths.getYear())) { // membership is active and in our object tree
+		if(SqlSelect.isRenewed(ms_id, HalyardPaths.getYear())) { // membership is active and in our object tree
 		membership = getMembership(ms_id);
 		} else { // membership is not active and needs to be pulled from the SQL Database
-		membership = Sql_SelectMembership.getMembershipFromList(ms_id,Paths.getYear());
+		membership = Sql_SelectMembership.getMembershipFromList(ms_id, HalyardPaths.getYear());
 		}
 		Tab membershipTab = new TabMembership(membership);
 		tabPane.getTabs().add(membershipTab);
@@ -132,13 +130,13 @@ static TabPane tabPane;
 	}
 
 	public static void launchTabFromSlips(int ms_id) {
-		Object_MembershipList membership = Sql_SelectMembership.getMembershipList(ms_id, Paths.getYear());
+		Object_MembershipList membership = Sql_SelectMembership.getMembershipList(ms_id, HalyardPaths.getYear());
 		createOrOpenTab(membership, "Membership");
 	}
 	
 	// fills incomplete object with latest information and opens tab.
 	public static void createActiveMembershipTab(Object_MembershipList membership) {
-		membership = Sql_SelectMembership.getMembershipFromList(membership.getMsid(), Paths.getYear());
+		membership = Sql_SelectMembership.getMembershipFromList(membership.getMsid(), HalyardPaths.getYear());
 		createOrOpenTab(membership, "Membership");
 	}
 	

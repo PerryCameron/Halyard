@@ -4,7 +4,7 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import com.ecsail.main.Paths;
+import com.ecsail.main.HalyardPaths;
 import com.ecsail.main.SaveFileChooser;
 import com.ecsail.pdf.directory.PDF_Dock;
 import com.ecsail.pdf.directory.PDF_Object_Settings;
@@ -41,8 +41,8 @@ public class PDF_SlipChart {
 	}
 
 	public File createChart() {
-		Paths.checkPath(Paths.SLIPCHART);
-		File file = new SaveFileChooser(Paths.SLIPCHART + "/", "SlipChart_" + Paths.getDate() + ".pdf", "PDF files",
+		HalyardPaths.checkPath(HalyardPaths.SLIPCHART);
+		File file = new SaveFileChooser(HalyardPaths.SLIPCHART + "/", "SlipChart_" + HalyardPaths.getDate() + ".pdf", "PDF files",
 				"*.pdf").getFile();
 		if (file != null) {
 			PdfWriter writer = null;

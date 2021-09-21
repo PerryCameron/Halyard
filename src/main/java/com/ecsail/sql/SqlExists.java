@@ -8,7 +8,7 @@ import java.sql.Statement;
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.Main;
-import com.ecsail.main.Paths;
+import com.ecsail.main.HalyardPaths;
 import com.ecsail.structures.Object_Membership;
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Person;
@@ -419,10 +419,10 @@ public class SqlExists {
 		try {  
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt
-					.executeQuery(Main.console.setRegexColor("select exists(select * from membership_id where fiscal_year='" + Paths.getYear() + "' and ms_id=" + ms_id + ")"));
+					.executeQuery(Main.console.setRegexColor("select exists(select * from membership_id where fiscal_year='" + HalyardPaths.getYear() + "' and ms_id=" + ms_id + ")"));
 			while (rs.next()) {
 				result = rs.getBoolean(
-						"exists(select * from membership_id where fiscal_year='" + Paths.getYear() + "' and ms_id=" + ms_id + ")");
+						"exists(select * from membership_id where fiscal_year='" + HalyardPaths.getYear() + "' and ms_id=" + ms_id + ")");
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

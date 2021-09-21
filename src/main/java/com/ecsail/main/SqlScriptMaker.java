@@ -81,11 +81,11 @@ public class SqlScriptMaker {
 		deposits = SqlSelect.getDeposits();
 		waitlist = SqlSelect.getWaitLists();
 		awards = SqlSelect.getAwards();
-		Paths.checkPath(Paths.SQLBACKUP + "/" + Paths.getYear());
-		readFromFile(Paths.SQLBACKUP + "/ecsc_create.sql");
+		HalyardPaths.checkPath(HalyardPaths.SQLBACKUP + "/" + HalyardPaths.getYear());
+		readFromFile(HalyardPaths.SQLBACKUP + "/ecsc_create.sql");
 		calculateSums();
 		new Dialogue_DatabaseBackup(newTupleCount);
-		writeToFile(Paths.SQLBACKUP + "/" + Paths.getYear() + "/ecsc_sql_" + stringDate + ".sql");
+		writeToFile(HalyardPaths.SQLBACKUP + "/" + HalyardPaths.getYear() + "/ecsc_sql_" + stringDate + ".sql");
 	}
 	
 	public static void writeToFile(String filename) {

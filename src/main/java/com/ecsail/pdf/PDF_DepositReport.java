@@ -9,7 +9,7 @@ import java.io.InputStream;
 import java.util.Collections;
 import java.util.Comparator;
 
-import com.ecsail.main.Paths;
+import com.ecsail.main.HalyardPaths;
 import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.SqlSelect;
 import com.ecsail.structures.Object_DefinedFee;
@@ -89,11 +89,11 @@ public class PDF_DepositReport {
 		// Initialize PDF writer
 		PdfWriter writer = null;
 		// Check to make sure directory exists and if not create it
-		Paths.checkPath(Paths.DEPOSITREPORTPATH + "/" + currentDeposit.getFiscalYear());
+		HalyardPaths.checkPath(HalyardPaths.DEPOSITREPORTPATH + "/" + currentDeposit.getFiscalYear());
 		if (pdfOptions.isSingleDeposit()) { // are we only creating a report of a single deposit
-			dest = Paths.DEPOSITREPORTPATH + "/" + currentDeposit.getFiscalYear() + "/Deposit_Report_" + currentDeposit.getBatch() + "_" + currentDeposit.getFiscalYear() + ".pdf";
+			dest = HalyardPaths.DEPOSITREPORTPATH + "/" + currentDeposit.getFiscalYear() + "/Deposit_Report_" + currentDeposit.getBatch() + "_" + currentDeposit.getFiscalYear() + ".pdf";
 		} else { // we are creating a report for the entire year
-			dest = Paths.DEPOSITREPORTPATH + "/" + currentDeposit.getFiscalYear() + "/Deposit_Report_Fiscal_Year_" + currentDeposit.getFiscalYear() + ".pdf";
+			dest = HalyardPaths.DEPOSITREPORTPATH + "/" + currentDeposit.getFiscalYear() + "/Deposit_Report_Fiscal_Year_" + currentDeposit.getFiscalYear() + ".pdf";
 		}
 
 		try {

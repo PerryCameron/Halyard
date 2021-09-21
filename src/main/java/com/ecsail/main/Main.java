@@ -34,7 +34,7 @@ VBox toolbar = new BoxToolBar();
 
 public static void main(String[] args) throws SQLException {
 	System.out.println("Starting application...");
-	Main.selectedYear = Paths.getYear();
+	Main.selectedYear = HalyardPaths.getYear();
 	Main.edits = FileIO.openTupleCountObject();
 	setUpForFirstTime();
 	console = new BoxConsole();
@@ -109,7 +109,7 @@ public static void main(String[] args) throws SQLException {
 	}
 	
 	public static void setUpForFirstTime() {
-		Paths.checkPath(System.getProperty("user.home") + "/.ecsc/scripts");
+		HalyardPaths.checkPath(System.getProperty("user.home") + "/.ecsc/scripts");
 	}
 
 	public static ConnectDatabase getConnect() {

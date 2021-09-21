@@ -2,7 +2,7 @@ package com.ecsail.gui.dialogues;
 
 import java.io.IOException;
 
-import com.ecsail.main.Paths;
+import com.ecsail.main.HalyardPaths;
 import com.ecsail.pdf.PDF_Renewal_Form;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -26,7 +26,7 @@ public class Dialogue_RenewalForm extends Stage {
 	private String selectedYear;
 	
 	public Dialogue_RenewalForm() {
-		this.selectedYear=Paths.getYear();
+		this.selectedYear= HalyardPaths.getYear();
 		
 		Button createPDFbutton = new Button("Create PDF");
 		ToggleGroup tg1 = new ToggleGroup();  

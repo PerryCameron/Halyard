@@ -7,7 +7,7 @@ import com.ecsail.gui.dialogues.Dialogue_ChoosePicture;
 import com.ecsail.gui.tabs.TabPeople;
 import com.ecsail.gui.tabs.TabPersonProperties;
 import com.ecsail.main.Launcher;
-import com.ecsail.main.Paths;
+import com.ecsail.main.HalyardPaths;
 import com.ecsail.sql.SqlUpdate;
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Person;
@@ -292,7 +292,7 @@ public class BoxPerson extends HBox {
 	
 	
 	private ImageView getMemberPhoto() {
-		Image memberPhoto = new Image(getClass().getResourceAsStream(Paths.DEFAULTPHOTO));
+		Image memberPhoto = new Image(getClass().getResourceAsStream(HalyardPaths.DEFAULTPHOTO));
 		ImageView photo = new ImageView(memberPhoto);
 		return photo;
 	}

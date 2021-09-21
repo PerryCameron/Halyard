@@ -3,7 +3,7 @@ package com.ecsail.gui.dialogues;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import com.ecsail.main.Paths;
+import com.ecsail.main.HalyardPaths;
 import com.ecsail.sql.SqlDelete;
 import com.ecsail.sql.SqlInsert;
 import com.ecsail.structures.Object_Stats;
@@ -31,7 +31,7 @@ public class Dialogue_StatisticsStatusBar extends Stage {
 	HBox hboxButtonHold = new HBox();
 	
 	public Dialogue_StatisticsStatusBar() {
-		stopYear=Integer.parseInt(Paths.getYear());
+		stopYear=Integer.parseInt(HalyardPaths.getYear());
 		startYear=2000;
 		
 		VBox vboxGrey = new VBox(); // this is the vbox for organizing all the widgets
