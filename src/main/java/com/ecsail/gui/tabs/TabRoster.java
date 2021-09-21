@@ -21,6 +21,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.geometry.Side;
 import javafx.scene.control.*;
 import javafx.scene.control.TabPane.TabClosingPolicy;
@@ -130,6 +131,8 @@ public class TabRoster extends Tab {
 		VBox.setVgrow(vboxTableBox, Priority.ALWAYS);
 		VBox.setVgrow(rosterTableView, Priority.ALWAYS);
 		HBox.setHgrow(rosterTableView, Priority.ALWAYS);
+
+		vboxSpinnerLabel.setAlignment(Pos.CENTER);
 
 		setOnClosed(null);
 		rosterTableView.setItems(rosters);
