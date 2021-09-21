@@ -4,6 +4,8 @@ import com.ecsail.structures.Object_RosterRadioButtons;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Tab;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -14,8 +16,11 @@ public class TabKayakLists extends Tab {
 		HBox hboxMain = new HBox();
 		VBox vboxRadioButton1 = new VBox();
 		VBox vboxRadioButton2 = new VBox();
-		
+		Image mainIcon = new Image(getClass().getResourceAsStream("/icons/baseline_anchor_black_18dp.png"));
+		ImageView imageView = new ImageView();
 		////////////////// ATTRIBUTES ////////////////////////
+		imageView.setImage(mainIcon);
+		this.setGraphic(imageView);
 		hboxFrame.setId("box-blue");
 		hboxFrame.setPadding(new Insets(2,2,2,5));
 		hboxMain.setId("box-pink");
