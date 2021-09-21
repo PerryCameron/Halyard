@@ -12,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 public class BoxSearch extends HBox {
@@ -34,6 +35,7 @@ public class BoxSearch extends HBox {
 		vboxPink.setPadding(new Insets(2,2,2,2)); // spacing to make pink fram around table
 		setId("box-blue");
 		setPadding(new Insets(5, 5, 5, 5));
+		HBox.setHgrow(hboxGrey, Priority.ALWAYS);
 		
 		searchRecords.setOnAction(new EventHandler<ActionEvent>() {
 	           @Override public void handle(ActionEvent e) {
