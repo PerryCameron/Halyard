@@ -22,19 +22,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Side;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TitledPane;
+import javafx.scene.control.*;
 import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -89,7 +80,7 @@ public class TabRoster extends Tab {
 		CheckBox c12 = new CheckBox("Email");
 		CheckBox c13 = new CheckBox("Subleased To");
 		Button buttonXLS = new Button("Export XLS");
-		final Spinner<Integer> yearSpinner = new Spinner<Integer>();
+//		final Spinner<Integer> yearSpinner = new Spinner<Integer>();
 		TableColumn<Object_MembershipList, Integer> Col1 = new TableColumn<Object_MembershipList, Integer>("MEM");
 		TableColumn<Object_MembershipList, String> Col2 = new TableColumn<Object_MembershipList, String>("JOIN_DATE");
 		TableColumn<Object_MembershipList, String> Col3 = new TableColumn<Object_MembershipList, String>("Type");
@@ -172,24 +163,38 @@ public class TabRoster extends Tab {
 
 		rosterTableView.getColumns()
 				.addAll(Arrays.asList(Col1, Col2, Col3, Col4, Col5, Col6, Col7, Col8, Col9, Col10, Col11));
-		SpinnerValueFactory<Integer> wetSlipValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1970,
-				Integer.parseInt(selectedYear), Integer.parseInt(selectedYear));
-		yearSpinner.setValueFactory(wetSlipValueFactory);
-		yearSpinner.setEditable(true);
-		yearSpinner.setPrefWidth(110);
-		yearSpinner.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_HORIZONTAL);
-		yearSpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
-			if (!newValue) {
-				printChoices.setYear(yearSpinner.getEditor().getText());
-				selectedYear = yearSpinner.getEditor().getText(); /// kept this for clarity, could have used printChoices.getYear()
+//		SpinnerValueFactory<Integer> wetSlipValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1970,
+//				Integer.parseInt(selectedYear), Integer.parseInt(selectedYear));
+//		yearSpinner.setValueFactory(wetSlipValueFactory);
+//		yearSpinner.setEditable(true);
+//		yearSpinner.setPrefWidth(110);
+//		yearSpinner.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_HORIZONTAL);
+//		yearSpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
+//			if (!newValue) {
+//				printChoices.setYear(yearSpinner.getEditor().getText());
+//				selectedYear = yearSpinner.getEditor().getText(); /// kept this for clarity, could have used printChoices.getYear()
+//				changeSelectedRoster();
+//				titledPane.setText("Roster " + selectedYear);
+//				records.setText(rosters.size() + " Records");
+//				rosterTableView.sort();
+//			}
+//		});
+
+		ComboBox comboBox = new ComboBox();
+		for(int i = Integer.parseInt(HalyardPaths.getYear()); i > 1969; i--) {
+			comboBox.getItems().add(i);
+		}
+		comboBox.getSelectionModel().selectFirst();
+		//////////////////// LISTENERS //////////////////////////
+
+		comboBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
+				selectedYear = newValue.toString();
+				printChoices.setYear(selectedYear);
 				changeSelectedRoster();
 				titledPane.setText("Roster " + selectedYear);
 				records.setText(rosters.size() + " Records");
 				rosterTableView.sort();
-			}
 		});
-
-		//////////////////// LISTENERS //////////////////////////
 		
 		buttonXLS.setOnAction((event) -> new Xls_roster(rosters, printChoices));
 
@@ -496,7 +501,7 @@ public class TabRoster extends Tab {
 		hboxExportFrame.getChildren().add(hboxExport);
 		hboxExport.getChildren().addAll(vboxCheckBox1, vboxCheckBox2, vboxCheckBox3, vboxCheckBox4, vboxCheckBox5);
 		tabPane.getTabs().addAll(new TabStandard(rb), new TabSlipOptions(rb), new TabKayakLists(rb));
-		vboxSpinnerLabel.getChildren().addAll(yearSpinner, records);
+		vboxSpinnerLabel.getChildren().addAll(comboBox, records);
 		vboxTableBox.getChildren().add(rosterTableView);
 		controlsHbox.getChildren().addAll(vboxSpinnerLabel, tabPane, hboxExportFrame);
 		titledPane.setContent(controlsHbox);
