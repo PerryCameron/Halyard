@@ -16,7 +16,7 @@ public class TabStandard extends Tab {
 		HBox hboxMain = new HBox();
 		VBox vboxRadioButton1 = new VBox();
 		VBox vboxRadioButton2 = new VBox();
-		Image mainIcon = new Image(getClass().getResourceAsStream("/icons/baseline_language_black_18dp.png"));
+		Image mainIcon = new Image(getClass().getResourceAsStream("/icons/baseline_change_history_black_18dp.png"));
 		ImageView imageView = new ImageView();
 		////////////////// ATTRIBUTES ////////////////////////
 		hboxFrame.setId("box-blue");

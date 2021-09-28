@@ -188,6 +188,8 @@ public class TabRoster extends Tab {
 			comboBox.getItems().add(i);
 		}
 		comboBox.getSelectionModel().selectFirst();
+		comboBox.getStyleClass().add("bigbox");
+		comboBox.getStyleClass().add("anotherbox");
 		//////////////////// LISTENERS //////////////////////////
 
 		comboBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
