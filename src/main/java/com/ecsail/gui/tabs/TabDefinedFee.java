@@ -10,14 +10,10 @@ import com.ecsail.structures.Object_DefinedFee;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
 
 public class TabDefinedFee extends Tab {
 	int fieldWidth = 60;
@@ -52,25 +48,33 @@ public class TabDefinedFee extends Tab {
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
 		GridPane gridPane = new GridPane();
 
-		final Spinner<Integer> yearSpinner = new Spinner<Integer>();
-		SpinnerValueFactory<Integer> wetSlipValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1970, Integer.parseInt(selectedYear) + 1, Integer.parseInt(selectedYear));
-		yearSpinner.setValueFactory(wetSlipValueFactory);
-		yearSpinner.setPrefWidth(90);
-		yearSpinner.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_HORIZONTAL);
-		yearSpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
-			if (!newValue) {
-				selectedYear = yearSpinner.getEditor().getText();
-				selectedFees.clear();
-				if (SqlExists.definedFeeExists(selectedYear)) {
-					selectedFees = SqlSelect.selectDefinedFees(Integer.parseInt(selectedYear));
-				} else {
-					Object_DefinedFee newFee = new Object_DefinedFee(Integer.parseInt(selectedYear),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
-					SqlInsert.addRecord(newFee);
-					selectedFees = SqlSelect.selectDefinedFees(Integer.parseInt(selectedYear));
-				}
-				populateFields();
-			}
-		});
+		ComboBox comboBox = new ComboBox();
+		for(int i = Integer.parseInt(HalyardPaths.getYear()); i > 1969; i--) {
+			comboBox.getItems().add(i);
+		}
+		comboBox.getSelectionModel().selectFirst();
+		comboBox.getStyleClass().add("bigbox");
+
+
+//		final Spinner<Integer> yearSpinner = new Spinner<Integer>();
+//		SpinnerValueFactory<Integer> wetSlipValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1970, Integer.parseInt(selectedYear) + 1, Integer.parseInt(selectedYear));
+//		yearSpinner.setValueFactory(wetSlipValueFactory);
+//		yearSpinner.setPrefWidth(90);
+//		yearSpinner.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_HORIZONTAL);
+//		yearSpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
+//			if (!newValue) {
+//				selectedYear = yearSpinner.getEditor().getText();
+//				selectedFees.clear();
+//				if (SqlExists.definedFeeExists(selectedYear)) {
+//					selectedFees = SqlSelect.selectDefinedFees(Integer.parseInt(selectedYear));
+//				} else {
+//					Object_DefinedFee newFee = new Object_DefinedFee(Integer.parseInt(selectedYear),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+//					SqlInsert.addRecord(newFee);
+//					selectedFees = SqlSelect.selectDefinedFees(Integer.parseInt(selectedYear));
+//				}
+//				populateFields();
+//			}
+//		});
 
         gridPane.add(duesRegularTextField, 0, 0, 1, 1);
         gridPane.add(duesFamilyTextField, 0, 1, 1, 1);
@@ -143,6 +147,20 @@ public class TabDefinedFee extends Tab {
 		VBox.setVgrow(vboxPink, Priority.ALWAYS);
 		
         /////////////////// LISTENERS /////////////////////////
+
+		comboBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
+			selectedYear = newValue.toString();
+			selectedFees.clear();
+			if (SqlExists.definedFeeExists(selectedYear)) {
+				selectedFees = SqlSelect.selectDefinedFees(Integer.parseInt(selectedYear));
+			} else {
+				Object_DefinedFee newFee = new Object_DefinedFee(Integer.parseInt(selectedYear),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+				SqlInsert.addRecord(newFee);
+				selectedFees = SqlSelect.selectDefinedFees(Integer.parseInt(selectedYear));
+			}
+			populateFields();
+		});
+
 		duesRegularTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
 	        @Override
 	        public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
@@ -314,7 +332,7 @@ public class TabDefinedFee extends Tab {
 	    });
 		
 		
-		vboxGrey.getChildren().addAll(yearSpinner,gridPane);
+		vboxGrey.getChildren().addAll(comboBox,gridPane);
 		vboxBlue.getChildren().add(vboxPink);
 		vboxPink.getChildren().add(vboxGrey);
 		setContent(vboxBlue);
