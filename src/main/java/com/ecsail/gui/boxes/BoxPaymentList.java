@@ -15,16 +15,7 @@ import com.ecsail.structures.Object_Person;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
@@ -58,8 +49,8 @@ public class BoxPaymentList extends HBox {
         HBox deleteButtonHBox = new HBox();
 		Button addFiscalRecord = new Button("Add");
 		Button deleteFiscalRecord = new Button("Delete");
-		final Spinner<Integer> yearSpinner = new Spinner<Integer>();
-		SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 2100, Integer.parseInt(currentYear));
+//		final Spinner<Integer> yearSpinner = new Spinner<Integer>();
+//		SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 2100, Integer.parseInt(currentYear));
 		BoxPaymentList.fiscals = SqlSelect.getMonies(membership.getMsid());
 		Object_DefinedFee definedFees = SqlSelect.selectDefinedFees(Integer.parseInt(currentYear));
 		TableView<Object_Money> fiscalTableView = new TableView<Object_Money>();
@@ -68,7 +59,11 @@ public class BoxPaymentList extends HBox {
 		TableColumn<Object_Money, Integer> Col3 = new TableColumn<Object_Money, Integer>("Credit");
 		TableColumn<Object_Money, Integer> Col4 = new TableColumn<Object_Money, Integer>("Paid");
 		TableColumn<Object_Money, Integer> Col5 = new TableColumn<Object_Money, Integer>("Balance");
-				
+		ComboBox<Integer> comboBox = new ComboBox();
+		for(int i = Integer.parseInt(HalyardPaths.getYear()); i > 1969; i--) {
+			comboBox.getItems().add(i);
+		}
+		comboBox.getSelectionModel().selectFirst();
 		///////////////////// SORT ///////////////////////////////////////////
 		Collections.sort(BoxPaymentList.fiscals, (p1,p2) -> Integer.compare(p2.getFiscal_year(), (p1.getFiscal_year())));
 		
@@ -98,7 +93,7 @@ public class BoxPaymentList extends HBox {
 		Col5.setMaxWidth( 1f * Integer.MAX_VALUE * 20 );   // Renew Late
 		
 		vboxGrey.setPrefWidth(460);
-		yearSpinner.setPrefWidth(80);
+		comboBox.setPrefWidth(80);
 		
 		vboxPink.setPadding(new Insets(2,2,2,2)); // spacing to make pink frame around table
 		vboxGrey.setPadding(new Insets(10, 10, 10, 10));
@@ -119,15 +114,15 @@ public class BoxPaymentList extends HBox {
 		HBox.setHgrow(vboxPink, Priority.ALWAYS);
 		
 		
-		yearSpinner.setValueFactory(valueFactory);
+//		yearSpinner.setValueFactory(valueFactory);
 
         ////////////////  LISTENERS ///////////////////
 		addFiscalRecord.setOnAction((event) -> {
 				int moneyId = SqlSelect.getCount("money_id") + 1;
 				Object_Money newMoney = new Object_Money(moneyId, membership.getMsid(),
-						Integer.parseInt(yearSpinner.getEditor().getText()), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+						comboBox.getValue(), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 						0, 0, 0, 0, 0, getDues(definedFees), false, false, 0, 0, false);
-				if (SqlExists.moneyExists(yearSpinner.getEditor().getText(), membership)) {
+				if (SqlExists.moneyExists(String.valueOf(comboBox.getValue()), membership)) {
 					newMoney.setSupplemental(true);
 					newMoney.setDues(0);
 				}
@@ -160,7 +155,7 @@ public class BoxPaymentList extends HBox {
         fiscalTableView.setItems(fiscals);
         deleteButtonHBox.getChildren().add(deleteFiscalRecord);
         vboxPink.getChildren().add(fiscalTableView);
-		hbox1.getChildren().addAll(new Label("Create new Fiscal Year Record:"),yearSpinner,addFiscalRecord,deleteButtonHBox);
+		hbox1.getChildren().addAll(new Label("Create new Fiscal Year Record:"),comboBox,addFiscalRecord,deleteButtonHBox);
 		vboxGrey.getChildren().addAll(hbox1,vboxPink);
 		getChildren().addAll(vboxGrey);	
 	}

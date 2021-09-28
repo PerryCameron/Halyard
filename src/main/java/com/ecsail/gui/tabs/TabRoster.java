@@ -183,7 +183,7 @@ public class TabRoster extends Tab {
 //			}
 //		});
 
-		ComboBox comboBox = new ComboBox();
+		ComboBox<Integer> comboBox = new ComboBox();
 		for(int i = Integer.parseInt(HalyardPaths.getYear()); i > 1969; i--) {
 			comboBox.getItems().add(i);
 		}
