@@ -89,6 +89,7 @@ public class TabBoardMembers extends Tab {
 	for(int i = Integer.parseInt(currentYear); i > 1969; i--) {
 		comboBox.getItems().add(i);
 	}
+	comboBox.getStyleClass().add("bigbox");
 
 		comboBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
 
