@@ -17,15 +17,15 @@ public class Object_PaidDues extends Object_Money {
 	private StringProperty l_name;
 	private IntegerProperty membershipId;  // Member ID used in real life
 	
-	public Object_PaidDues(Integer money_id, Integer ms_id, Integer fiscal_year, Integer batch, Integer officer_credit,
-			Integer extra_key, Integer kayac_shed_key, Integer sail_loft_key, Integer sail_school_loft_key,
-			Integer beach, Integer wet_slip, Integer kayac_rack, Integer kayac_shed, Integer sail_loft,
-			Integer sail_school_laser_loft, Integer winter_storage, Integer ysc_donation, Integer paid, Integer total,
-			Integer credit, Integer balance, Integer dues, Boolean committed, Boolean closed, Integer other, Integer initiation, 
+	public Object_PaidDues(Integer money_id, Integer ms_id, Integer fiscal_year, Integer batch, String officer_credit,
+						   String extra_key, String kayak_shed_key, String sail_loft_key, String sail_school_loft_key,
+						   String beach, String wet_slip, String kayak_rack, String kayac_shed, String sail_loft,
+						   String sail_school_laser_loft, String winter_storage, String ysc_donation, String paid, String total,
+						   String credit, String balance, String dues, Boolean committed, Boolean closed, String other, String initiation,
 			Boolean supplemental, String f_name, String l_name, Integer membershipId) {
 		
-		super(money_id, ms_id, fiscal_year, batch, officer_credit, extra_key, kayac_shed_key, sail_loft_key,
-				sail_school_loft_key, beach, wet_slip, kayac_rack, kayac_shed, sail_loft, sail_school_laser_loft,
+		super(money_id, ms_id, fiscal_year, batch, officer_credit, extra_key, kayak_shed_key, sail_loft_key,
+				sail_school_loft_key, beach, wet_slip, kayak_rack, kayac_shed, sail_loft, sail_school_laser_loft,
 				winter_storage, ysc_donation, paid, total, credit, balance, dues, committed, closed, other, initiation, supplemental);
 		
 		this.membershipId = new SimpleIntegerProperty(membershipId);
@@ -76,8 +76,5 @@ public class Object_PaidDues extends Object_Money {
 	public final void setL_name(final String l_name) {
 		this.l_nameProperty().set(l_name);
 	}
-	
 
-
-	
 }

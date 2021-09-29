@@ -1,332 +1,202 @@
 package com.ecsail.structures;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+
+import java.math.BigDecimal;
 
 public class Object_DefinedFee {
 
-	private IntegerProperty fiscal_year;
-	private IntegerProperty dues_regular;
-	private IntegerProperty dues_family;
-	private IntegerProperty dues_lake_associate;
-	private IntegerProperty dues_social;
-	private IntegerProperty initiation;
-	private IntegerProperty wet_slip;
-	private IntegerProperty beach;
-	private IntegerProperty winter_storage;
-	private IntegerProperty main_gate_key;
-	private IntegerProperty sail_loft;
-	private IntegerProperty sail_loft_key;
-	private IntegerProperty sail_school_laser_loft;
-	private IntegerProperty sail_school_loft_key;
-	private IntegerProperty kayak_rack;
-	private IntegerProperty kayak_shed;
-	private IntegerProperty kayak_shed_key;
-	private IntegerProperty work_credit;
-	
-	public Object_DefinedFee(Integer fiscal_year, Integer dues_regular, Integer dues_family,
-			Integer dues_lake_associate, Integer dues_social, Integer initiation,
-			Integer wet_slip, Integer beach, Integer winter_storage,
-			Integer main_gate_key, Integer sail_loft, Integer sail_loft_key,
-			Integer sail_school_laser_loft, Integer sail_school_loft_key, Integer kayak_rack,
-			Integer kayak_shed, Integer kayak_shed_key, Integer work_credit) {
+	private Integer fiscal_year;
+	private BigDecimal dues_regular;
+	private BigDecimal dues_family;
+	private BigDecimal dues_lake_associate;
+	private BigDecimal dues_social;
+	private BigDecimal initiation;
+	private BigDecimal wet_slip;
+	private BigDecimal beach;
+	private BigDecimal winter_storage;
+	private BigDecimal main_gate_key;
+	private BigDecimal sail_loft;
+	private BigDecimal sail_loft_key;
+	private BigDecimal sail_school_laser_loft;
+	private BigDecimal sail_school_loft_key;
+	private BigDecimal kayak_rack;
+	private BigDecimal kayak_shed;
+	private BigDecimal kayak_shed_key;
+	private BigDecimal work_credit;
 
-		this.fiscal_year = new SimpleIntegerProperty(fiscal_year);
-		this.dues_regular = new SimpleIntegerProperty(dues_regular);
-		this.dues_family = new SimpleIntegerProperty(dues_family);
-		this.dues_lake_associate = new SimpleIntegerProperty(dues_lake_associate);
-		this.dues_social = new SimpleIntegerProperty(dues_social);
-		this.initiation = new SimpleIntegerProperty(initiation);
-		this.wet_slip = new SimpleIntegerProperty(wet_slip);
-		this.beach = new SimpleIntegerProperty(beach);
-		this.winter_storage = new SimpleIntegerProperty(winter_storage);
-		this.main_gate_key = new SimpleIntegerProperty(main_gate_key);
-		this.sail_loft = new SimpleIntegerProperty(sail_loft);
-		this.sail_loft_key = new SimpleIntegerProperty(sail_loft_key);
-		this.sail_school_laser_loft = new SimpleIntegerProperty(sail_school_laser_loft);
-		this.sail_school_loft_key = new SimpleIntegerProperty(sail_school_loft_key);
-		this.kayak_rack = new SimpleIntegerProperty(kayak_rack);
-		this.kayak_shed = new SimpleIntegerProperty(kayak_shed);
-		this.kayak_shed_key = new SimpleIntegerProperty(kayak_shed_key);
-		this.work_credit = new SimpleIntegerProperty(work_credit);
+	public Object_DefinedFee(Integer fiscal_year, BigDecimal dues_regular, BigDecimal dues_family, BigDecimal dues_lake_associate, BigDecimal dues_social, BigDecimal initiation, BigDecimal wet_slip, BigDecimal beach, BigDecimal winter_storage, BigDecimal main_gate_key, BigDecimal sail_loft, BigDecimal sail_loft_key, BigDecimal sail_school_laser_loft, BigDecimal sail_school_loft_key, BigDecimal kayak_rack, BigDecimal kayak_shed, BigDecimal kayak_shed_key, BigDecimal work_credit) {
+		this.fiscal_year = fiscal_year;
+		this.dues_regular = dues_regular;
+		this.dues_family = dues_family;
+		this.dues_lake_associate = dues_lake_associate;
+		this.dues_social = dues_social;
+		this.initiation = initiation;
+		this.wet_slip = wet_slip;
+		this.beach = beach;
+		this.winter_storage = winter_storage;
+		this.main_gate_key = main_gate_key;
+		this.sail_loft = sail_loft;
+		this.sail_loft_key = sail_loft_key;
+		this.sail_school_laser_loft = sail_school_laser_loft;
+		this.sail_school_loft_key = sail_school_loft_key;
+		this.kayak_rack = kayak_rack;
+		this.kayak_shed = kayak_shed;
+		this.kayak_shed_key = kayak_shed_key;
+		this.work_credit = work_credit;
 	}
-	
+
 	public Object_DefinedFee() {
 		// default constructor
 	}
 
-	public final IntegerProperty fiscal_yearProperty() {
-		return this.fiscal_year;
+	public Integer getFiscal_year() {
+		return fiscal_year;
 	}
-	
 
-	public final int getFiscal_year() {
-		return this.fiscal_yearProperty().get();
+	public void setFiscal_year(Integer fiscal_year) {
+		this.fiscal_year = fiscal_year;
 	}
-	
 
-	public final void setFiscal_year(final int fiscal_year) {
-		this.fiscal_yearProperty().set(fiscal_year);
+	public BigDecimal getDues_regular() {
+		return dues_regular;
 	}
-	
 
-	public final IntegerProperty dues_regularProperty() {
-		return this.dues_regular;
+	public void setDues_regular(BigDecimal dues_regular) {
+		this.dues_regular = dues_regular;
 	}
-	
 
-	public final int getDues_regular() {
-		return this.dues_regularProperty().get();
+	public BigDecimal getDues_family() {
+		return dues_family;
 	}
-	
 
-	public final void setDues_regular(final int dues_regular) {
-		this.dues_regularProperty().set(dues_regular);
+	public void setDues_family(BigDecimal dues_family) {
+		this.dues_family = dues_family;
 	}
-	
 
-	public final IntegerProperty dues_familyProperty() {
-		return this.dues_family;
+	public BigDecimal getDues_lake_associate() {
+		return dues_lake_associate;
 	}
-	
 
-	public final int getDues_family() {
-		return this.dues_familyProperty().get();
+	public void setDues_lake_associate(BigDecimal dues_lake_associate) {
+		this.dues_lake_associate = dues_lake_associate;
 	}
-	
 
-	public final void setDues_family(final int dues_family) {
-		this.dues_familyProperty().set(dues_family);
+	public BigDecimal getDues_social() {
+		return dues_social;
 	}
-	
 
-	public final IntegerProperty dues_lake_associateProperty() {
-		return this.dues_lake_associate;
+	public void setDues_social(BigDecimal dues_social) {
+		this.dues_social = dues_social;
 	}
-	
 
-	public final int getDues_lake_associate() {
-		return this.dues_lake_associateProperty().get();
+	public BigDecimal getInitiation() {
+		return initiation;
 	}
-	
 
-	public final void setDues_lake_associate(final int dues_lake_associate) {
-		this.dues_lake_associateProperty().set(dues_lake_associate);
+	public void setInitiation(BigDecimal initiation) {
+		this.initiation = initiation;
 	}
-	
 
-	public final IntegerProperty dues_socialProperty() {
-		return this.dues_social;
+	public BigDecimal getWet_slip() {
+		return wet_slip;
 	}
-	
 
-	public final int getDues_social() {
-		return this.dues_socialProperty().get();
+	public void setWet_slip(BigDecimal wet_slip) {
+		this.wet_slip = wet_slip;
 	}
-	
 
-	public final void setDues_social(final int dues_social) {
-		this.dues_socialProperty().set(dues_social);
+	public BigDecimal getBeach() {
+		return beach;
 	}
-	
 
-	public final IntegerProperty initiationProperty() {
-		return this.initiation;
+	public void setBeach(BigDecimal beach) {
+		this.beach = beach;
 	}
-	
 
-	public final int getInitiation() {
-		return this.initiationProperty().get();
+	public BigDecimal getWinter_storage() {
+		return winter_storage;
 	}
-	
 
-	public final void setInitiation(final int initiation) {
-		this.initiationProperty().set(initiation);
+	public void setWinter_storage(BigDecimal winter_storage) {
+		this.winter_storage = winter_storage;
 	}
-	
 
-	public final IntegerProperty wet_slipProperty() {
-		return this.wet_slip;
+	public BigDecimal getMain_gate_key() {
+		return main_gate_key;
 	}
-	
 
-	public final int getWet_slip() {
-		return this.wet_slipProperty().get();
+	public void setMain_gate_key(BigDecimal main_gate_key) {
+		this.main_gate_key = main_gate_key;
 	}
-	
 
-	public final void setWet_slip(final int wet_slip) {
-		this.wet_slipProperty().set(wet_slip);
+	public BigDecimal getSail_loft() {
+		return sail_loft;
 	}
-	
 
-	public final IntegerProperty beachProperty() {
-		return this.beach;
+	public void setSail_loft(BigDecimal sail_loft) {
+		this.sail_loft = sail_loft;
 	}
-	
 
-	public final int getBeach() {
-		return this.beachProperty().get();
+	public BigDecimal getSail_loft_key() {
+		return sail_loft_key;
 	}
-	
 
-	public final void setBeach(final int beach) {
-		this.beachProperty().set(beach);
+	public void setSail_loft_key(BigDecimal sail_loft_key) {
+		this.sail_loft_key = sail_loft_key;
 	}
-	
 
-	public final IntegerProperty winter_storageProperty() {
-		return this.winter_storage;
+	public BigDecimal getSail_school_laser_loft() {
+		return sail_school_laser_loft;
 	}
-	
 
-	public final int getWinter_storage() {
-		return this.winter_storageProperty().get();
+	public void setSail_school_laser_loft(BigDecimal sail_school_laser_loft) {
+		this.sail_school_laser_loft = sail_school_laser_loft;
 	}
-	
 
-	public final void setWinter_storage(final int winter_storage) {
-		this.winter_storageProperty().set(winter_storage);
+	public BigDecimal getSail_school_loft_key() {
+		return sail_school_loft_key;
 	}
-	
 
-	public final IntegerProperty main_gate_keyProperty() {
-		return this.main_gate_key;
+	public void setSail_school_loft_key(BigDecimal sail_school_loft_key) {
+		this.sail_school_loft_key = sail_school_loft_key;
 	}
-	
 
-	public final int getMain_gate_key() {
-		return this.main_gate_keyProperty().get();
+	public BigDecimal getKayak_rack() {
+		return kayak_rack;
 	}
-	
 
-	public final void setMain_gate_key(final int main_gate_key) {
-		this.main_gate_keyProperty().set(main_gate_key);
+	public void setKayak_rack(BigDecimal kayak_rack) {
+		this.kayak_rack = kayak_rack;
 	}
-	
 
-	public final IntegerProperty sail_loftProperty() {
-		return this.sail_loft;
+	public BigDecimal getKayak_shed() {
+		return kayak_shed;
 	}
-	
 
-	public final int getSail_loft() {
-		return this.sail_loftProperty().get();
+	public void setKayak_shed(BigDecimal kayak_shed) {
+		this.kayak_shed = kayak_shed;
 	}
-	
 
-	public final void setSail_loft(final int sail_loft) {
-		this.sail_loftProperty().set(sail_loft);
+	public BigDecimal getKayak_shed_key() {
+		return kayak_shed_key;
 	}
-	
 
-	public final IntegerProperty sail_loft_keyProperty() {
-		return this.sail_loft_key;
+	public void setKayak_shed_key(BigDecimal kayak_shed_key) {
+		this.kayak_shed_key = kayak_shed_key;
 	}
-	
 
-	public final int getSail_loft_key() {
-		return this.sail_loft_keyProperty().get();
+	public BigDecimal getWork_credit() {
+		return work_credit;
 	}
-	
 
-	public final void setSail_loft_key(final int sail_loft_key) {
-		this.sail_loft_keyProperty().set(sail_loft_key);
+	public void setWork_credit(BigDecimal work_credit) {
+		this.work_credit = work_credit;
 	}
-	
 
-	public final IntegerProperty sail_school_laser_loftProperty() {
-		return this.sail_school_laser_loft;
-	}
-	
-
-	public final int getSail_school_laser_loft() {
-		return this.sail_school_laser_loftProperty().get();
-	}
-	
-
-	public final void setSail_school_laser_loft(final int sail_school_laser_loft) {
-		this.sail_school_laser_loftProperty().set(sail_school_laser_loft);
-	}
-	
-
-	public final IntegerProperty sail_school_loft_keyProperty() {
-		return this.sail_school_loft_key;
-	}
-	
-
-	public final int getSail_school_loft_key() {
-		return this.sail_school_loft_keyProperty().get();
-	}
-	
-
-	public final void setSail_school_loft_key(final int sail_school_loft_key) {
-		this.sail_school_loft_keyProperty().set(sail_school_loft_key);
-	}
-	
-
-	public final IntegerProperty kayak_rackProperty() {
-		return this.kayak_rack;
-	}
-	
-
-	public final int getKayak_rack() {
-		return this.kayak_rackProperty().get();
-	}
-	
-
-	public final void setKayak_rack(final int kayak_rack) {
-		this.kayak_rackProperty().set(kayak_rack);
-	}
-	
-
-	public final IntegerProperty kayak_shedProperty() {
-		return this.kayak_shed;
-	}
-	
-
-	public final int getKayak_shed() {
-		return this.kayak_shedProperty().get();
-	}
-	
-
-	public final void setKayak_shed(final int kayak_shed) {
-		this.kayak_shedProperty().set(kayak_shed);
-	}
-	
-
-	public final IntegerProperty kayak_shed_keyProperty() {
-		return this.kayak_shed_key;
-	}
-	
-
-	public final int getKayak_shed_key() {
-		return this.kayak_shed_keyProperty().get();
-	}
-	
-
-	public final void setKayak_shed_key(final int kayak_shed_key) {
-		this.kayak_shed_keyProperty().set(kayak_shed_key);
-	}
-	
-	public final IntegerProperty work_creditProperty() {
-		return this.work_credit;
-	}
-	
-
-	public final int getWork_credit() {
-		return this.work_creditProperty().get();
-	}
-	
-
-	public final void setWork_credit(final int work_credit) {
-		this.work_creditProperty().set(work_credit);
-	}
-	
-	public final void set(int fiscal_year,int dues_regular,int dues_family,
-			int dues_lake_associate,int dues_social,int initiation,int wet_slip,int beach,
-			int winter_storage,int main_gate_key,int sail_loft,int sail_loft_key,int sail_school_laser_loft,
-			int sail_school_loft_key,int kayak_rack,int kayak_shed,int kayak_shed_key, int work_credit) {
+	public final void set(Integer fiscal_year, BigDecimal dues_regular, BigDecimal dues_family,
+						  BigDecimal dues_lake_associate, BigDecimal dues_social, BigDecimal initiation, BigDecimal wet_slip, BigDecimal beach,
+						  BigDecimal winter_storage, BigDecimal main_gate_key, BigDecimal sail_loft, BigDecimal sail_loft_key, BigDecimal sail_school_laser_loft,
+						  BigDecimal sail_school_loft_key, BigDecimal kayak_rack, BigDecimal kayak_shed, BigDecimal kayak_shed_key, BigDecimal work_credit) {
 		
 		setFiscal_year(fiscal_year);
 		setDues_regular(dues_regular);
@@ -350,36 +220,46 @@ public class Object_DefinedFee {
 	
 	public final void clear() {
 		setFiscal_year(0);
-		setDues_regular(0);
-		setDues_family(0);
-		setDues_lake_associate(0);
-		setDues_social(0);
-		setInitiation(0);
-		setWet_slip(0);
-		setBeach(0);
-		setWinter_storage(0);
-		setMain_gate_key(0);
-		setSail_loft(0);
-		setSail_loft_key(0);
-		setSail_school_laser_loft(0);
-		setSail_school_loft_key(0);
-		setKayak_rack(0);
-		setKayak_shed(0);
-		setKayak_shed_key(0);
-		setWork_credit(0);
+		setDues_regular(BigDecimal.valueOf(0.00));
+		setDues_family(BigDecimal.valueOf(0.00));
+		setDues_lake_associate(BigDecimal.valueOf(0.00));
+		setDues_social(BigDecimal.valueOf(0.00));
+		setInitiation(BigDecimal.valueOf(0.00));
+		setWet_slip(BigDecimal.valueOf(0.00));
+		setBeach(BigDecimal.valueOf(0.00));
+		setWinter_storage(BigDecimal.valueOf(0.00));
+		setMain_gate_key(BigDecimal.valueOf(0.00));
+		setSail_loft(BigDecimal.valueOf(0.00));
+		setSail_loft_key(BigDecimal.valueOf(0.00));
+		setSail_school_laser_loft(BigDecimal.valueOf(0.00));
+		setSail_school_loft_key(BigDecimal.valueOf(0.00));
+		setKayak_rack(BigDecimal.valueOf(0.00));
+		setKayak_shed(BigDecimal.valueOf(0.00));
+		setKayak_shed_key(BigDecimal.valueOf(0.00));
+		setWork_credit(BigDecimal.valueOf(0.00));
 	}
 
 	@Override
 	public String toString() {
-		return "Object_DefinedFee [fiscal_year=" + fiscal_year + ", dues_regular=" + dues_regular + ", dues_family="
-				+ dues_family + ", dues_lake_associate=" + dues_lake_associate + ", dues_social=" + dues_social
-				+ ", initiation=" + initiation + ", wet_slip=" + wet_slip + ", beach=" + beach + ", winter_storage="
-				+ winter_storage + ", main_gate_key=" + main_gate_key + ", sail_loft=" + sail_loft + ", sail_loft_key="
-				+ sail_loft_key + ", sail_school_laser_loft=" + sail_school_laser_loft + ", sail_school_loft_key="
-				+ sail_school_loft_key + ", kayak_rack=" + kayak_rack + ", kayak_shed=" + kayak_shed
-				+ ", kayak_shed_key=" + kayak_shed_key + ", work_credit=" + work_credit + "]";
+		return "Object_DefinedFee{" +
+				"fiscal_year=" + fiscal_year +
+				", dues_regular=" + dues_regular +
+				", dues_family=" + dues_family +
+				", dues_lake_associate=" + dues_lake_associate +
+				", dues_social=" + dues_social +
+				", initiation=" + initiation +
+				", wet_slip=" + wet_slip +
+				", beach=" + beach +
+				", winter_storage=" + winter_storage +
+				", main_gate_key=" + main_gate_key +
+				", sail_loft=" + sail_loft +
+				", sail_loft_key=" + sail_loft_key +
+				", sail_school_laser_loft=" + sail_school_laser_loft +
+				", sail_school_loft_key=" + sail_school_loft_key +
+				", kayak_rack=" + kayak_rack +
+				", kayak_shed=" + kayak_shed +
+				", kayak_shed_key=" + kayak_shed_key +
+				", work_credit=" + work_credit +
+				'}';
 	}
-	
-	
-
 }

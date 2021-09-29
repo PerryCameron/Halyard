@@ -1,5 +1,6 @@
 package com.ecsail.gui.tabs;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -70,7 +71,7 @@ public class TabDeposits extends Tab {
 		this.paidDues = FXCollections.observableArrayList(new Callback<Object_PaidDues, Observable[]>() {
 			@Override
 			public Observable[] call(Object_PaidDues param) {
-				return new Observable[] { param.isClosedProperty() };
+				return new Observable[] { param.closedProperty() };
 
 			}
 		});
@@ -522,10 +523,10 @@ public class TabDeposits extends Tab {
 		summaryText.getBeachSpotMoneyText().setText("$" + summaryTotals.getBeach());
 
 		summaryText.getKayacRackNumberText().setText(summaryTotals.getKayac_rackNumber() + "");
-		summaryText.getKayacRackMoneyText().setText("$" + summaryTotals.getKayac_rack());
+		summaryText.getKayacRackMoneyText().setText("$" + summaryTotals.getKayak_rack());
 
 		summaryText.getKayacShedNumberText().setText(summaryTotals.getKayac_shedNumber() + "");
-		summaryText.getKayacShedMoneyText().setText("$" + summaryTotals.getKayac_shed());
+		summaryText.getKayacShedMoneyText().setText("$" + summaryTotals.getKayak_shed());
 
 		summaryText.getSailLoftNumberText().setText(summaryTotals.getSail_loftNumber() + "");
 		summaryText.getSailLoftMoneyText().setText("$" + summaryTotals.getSail_loft());
@@ -560,15 +561,18 @@ public class TabDeposits extends Tab {
 
 	private void updateSummaryTotals() {
 		int numberOfRecordsCounted = 0; // number of records counted
+
 		for (Object_PaidDues d : paidDues) {
-			if (d.getBeach() != 0) { ///////// BEACH
-				summaryTotals.setBeachNumber(d.getBeach() + summaryTotals.getBeachNumber());
-				int totalBeachDollars = currentDefinedFee.getBeach() * d.getBeach();
-				summaryTotals.setBeach(totalBeachDollars + summaryTotals.getBeach());
+			BigDecimal beach = new BigDecimal(d.getBeach());  // make d.getbeach into bigDecimal
+			if (beach.compareTo(BigDecimal.ZERO) != 0) { ///////// BEACH
+				summaryTotals.setBeachNumber(Integer.parseInt(d.getBeach()) + summaryTotals.getBeachNumber()); // Integer
+				BigDecimal totalBeachDollars = currentDefinedFee.getBeach().multiply(beach); // Bigdecimal
+				summaryTotals.setBeach(totalBeachDollars.multiply(summaryTotals.getBeach())); // Bigdecimal
 			}
-			if (d.getCredit() != 0) { //////// CREDIT
-				summaryTotals.setCreditNumber(1 + summaryTotals.getCreditNumber());
-				summaryTotals.setCredit(d.getCredit() + summaryTotals.getCredit());
+			BigDecimal credit = new BigDecimal(d.getCredit()); //
+			if (credit.compareTo(BigDecimal.ZERO) != 0) { //////// CREDIT
+				summaryTotals.setCreditNumber(1 + summaryTotals.getCreditNumber()); // Integer
+				summaryTotals.setCredit(credit.add(summaryTotals.getCredit())); // Bigdecimal
 			}
 			if (d.getDues() != 0) { //////// DUES
 				summaryTotals.setDuesNumber(1 + summaryTotals.getDuesNumber());
@@ -587,12 +591,12 @@ public class TabDeposits extends Tab {
 			if (d.getKayac_rack() != 0) { ///// KAYACK RACK FEE
 				summaryTotals.setKayac_rackNumber(d.getKayac_rack() + summaryTotals.getKayac_rackNumber());
 				int totalKayakRackDollars = currentDefinedFee.getKayak_rack() * d.getKayac_rack();
-				summaryTotals.setKayac_rack(totalKayakRackDollars + summaryTotals.getKayac_rack());
+				summaryTotals.setKayak_rack(totalKayakRackDollars + summaryTotals.getKayak_rack());
 			}
 			if (d.getKayac_shed() != 0) { //////// KAYAK SHED ACCESS
 				summaryTotals.setKayac_shedNumber(d.getKayac_shed() + summaryTotals.getKayac_shed_keyNumber());
 				int totalKayakShedDollars = currentDefinedFee.getKayak_shed() * d.getKayac_shed();
-				summaryTotals.setKayac_shed(totalKayakShedDollars + summaryTotals.getKayac_shed());
+				summaryTotals.setKayak_shed(totalKayakShedDollars + summaryTotals.getKayak_shed());
 			}
 			if (d.getKayac_shed_key() != 0) { ///// KAYAK SHED KEY
 				summaryTotals.setKayac_shed_keyNumber(d.getKayac_shed_key() + summaryTotals.getKayac_shed_keyNumber());

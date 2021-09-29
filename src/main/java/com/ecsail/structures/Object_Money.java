@@ -1,9 +1,6 @@
 package com.ecsail.structures;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.*;
 
 public class Object_Money {
 	
@@ -11,64 +8,64 @@ public class Object_Money {
 	private IntegerProperty ms_id;
 	private IntegerProperty fiscal_year;
 	private IntegerProperty batch;
-	private IntegerProperty officer_credit;
-	private IntegerProperty extra_key;
-	private IntegerProperty kayac_shed_key;
-	private IntegerProperty sail_loft_key;
-	private IntegerProperty sail_school_loft_key;
-	private IntegerProperty beach;
-	private IntegerProperty wet_slip;
-	private IntegerProperty kayac_rack;
-	private IntegerProperty kayac_shed;
-	private IntegerProperty sail_loft;
-	private IntegerProperty sail_school_laser_loft;
-	private IntegerProperty winter_storage;
-	private IntegerProperty ysc_donation;
-	private IntegerProperty paid;
-	private IntegerProperty total;
-	private IntegerProperty credit;
-	private IntegerProperty balance;
-	private IntegerProperty dues;
+	private StringProperty officer_credit;  // these will be big decimal values, but stored in the POJO as string so observable
+	private StringProperty extra_key;
+	private StringProperty kayac_shed_key;
+	private StringProperty sail_loft_key;
+	private StringProperty sail_school_loft_key;
+	private StringProperty beach;
+	private StringProperty wet_slip;
+	private StringProperty kayac_rack;
+	private StringProperty kayac_shed;
+	private StringProperty sail_loft;
+	private StringProperty sail_school_laser_loft;
+	private StringProperty winter_storage;
+	private StringProperty ysc_donation;
+	private StringProperty paid;
+	private StringProperty total;
+	private StringProperty credit;
+	private StringProperty balance;
+	private StringProperty dues;
 	private BooleanProperty committed;
 	private BooleanProperty closed;
-	private IntegerProperty other;
-	private IntegerProperty initiation;
+	private StringProperty other;
+	private StringProperty initiation;
 	private BooleanProperty supplemental;
-	
+
 	public Object_Money(Integer money_id, Integer ms_id, Integer fiscal_year, Integer batch,
-			Integer officer_credit, Integer extra_key, Integer kayac_shed_key,
-			Integer sail_loft_key, Integer sail_school_loft_key, Integer beach,
-			Integer wet_slip, Integer kayac_rack, Integer kayac_shed, Integer sail_loft,
-			Integer sail_school_laser_loft, Integer winter_storage, Integer ysc_donation,
-			Integer paid, Integer total, Integer credit, Integer balance, Integer dues, 
-			Boolean committed, Boolean closed, Integer other, Integer initiation, Boolean supplemental) {
+			String officer_credit, String extra_key, String kayac_shed_key,
+			String sail_loft_key, String sail_school_loft_key, String beach,
+						String wet_slip, String kayac_rack, String kayac_shed, String sail_loft,
+						String sail_school_laser_loft, String winter_storage, String ysc_donation,
+						String paid, String total, String credit, String balance, String dues,
+			Boolean committed, Boolean closed, String other, String initiation, Boolean supplemental) {
 
 		this.money_id = new SimpleIntegerProperty(money_id);
 		this.ms_id = new SimpleIntegerProperty(ms_id);
 		this.fiscal_year = new SimpleIntegerProperty(fiscal_year);
 		this.batch = new SimpleIntegerProperty(batch);
-		this.officer_credit = new SimpleIntegerProperty(officer_credit);
-		this.extra_key = new SimpleIntegerProperty(extra_key);
-		this.kayac_shed_key = new SimpleIntegerProperty(kayac_shed_key);
-		this.sail_loft_key = new SimpleIntegerProperty(sail_loft_key);
-		this.sail_school_loft_key = new SimpleIntegerProperty(sail_school_loft_key);
-		this.beach = new SimpleIntegerProperty(beach);
-		this.wet_slip = new SimpleIntegerProperty(wet_slip);
-		this.kayac_rack = new SimpleIntegerProperty(kayac_rack);
-		this.kayac_shed = new SimpleIntegerProperty(kayac_shed);
-		this.sail_loft = new SimpleIntegerProperty(sail_loft);
-		this.sail_school_laser_loft = new SimpleIntegerProperty(sail_school_laser_loft);
-		this.winter_storage = new SimpleIntegerProperty(winter_storage);
-		this.ysc_donation = new SimpleIntegerProperty(ysc_donation);
-		this.paid = new SimpleIntegerProperty(paid);
-		this.total = new SimpleIntegerProperty(total);
-		this.credit = new SimpleIntegerProperty(credit);
-		this.balance = new SimpleIntegerProperty(balance);
-		this.dues = new SimpleIntegerProperty(dues);
+		this.officer_credit = new SimpleStringProperty(officer_credit);
+		this.extra_key = new SimpleStringProperty(extra_key);
+		this.kayac_shed_key = new SimpleStringProperty(kayac_shed_key);
+		this.sail_loft_key = new SimpleStringProperty(sail_loft_key);
+		this.sail_school_loft_key = new SimpleStringProperty(sail_school_loft_key);
+		this.beach = new SimpleStringProperty(beach);
+		this.wet_slip = new SimpleStringProperty(wet_slip);
+		this.kayac_rack = new SimpleStringProperty(kayac_rack);
+		this.kayac_shed = new SimpleStringProperty(kayac_shed);
+		this.sail_loft = new SimpleStringProperty(sail_loft);
+		this.sail_school_laser_loft = new SimpleStringProperty(sail_school_laser_loft);
+		this.winter_storage = new SimpleStringProperty(winter_storage);
+		this.ysc_donation = new SimpleStringProperty(ysc_donation);
+		this.paid = new SimpleStringProperty(paid);
+		this.total = new SimpleStringProperty(total);
+		this.credit = new SimpleStringProperty(credit);
+		this.balance = new SimpleStringProperty(balance);
+		this.dues = new SimpleStringProperty(dues);
 		this.committed = new SimpleBooleanProperty(committed);
 		this.closed = new SimpleBooleanProperty(closed);
-		this.other = new SimpleIntegerProperty(other);
-		this.initiation = new SimpleIntegerProperty(initiation);
+		this.other = new SimpleStringProperty(other);
+		this.initiation = new SimpleStringProperty(initiation);
 		this.supplemental = new SimpleBooleanProperty(supplemental);
 	}
 
@@ -77,456 +74,382 @@ public class Object_Money {
 		this.ms_id = new SimpleIntegerProperty(0);
 		this.fiscal_year = new SimpleIntegerProperty(0);
 		this.batch = new SimpleIntegerProperty(0);
-		this.officer_credit = new SimpleIntegerProperty(0);
-		this.extra_key = new SimpleIntegerProperty(0);
-		this.kayac_shed_key = new SimpleIntegerProperty(0);
-		this.sail_loft_key = new SimpleIntegerProperty(0);
-		this.sail_school_loft_key = new SimpleIntegerProperty(0);
-		this.beach = new SimpleIntegerProperty(0);
-		this.wet_slip = new SimpleIntegerProperty(0);
-		this.kayac_rack = new SimpleIntegerProperty(0);
-		this.kayac_shed = new SimpleIntegerProperty(0);
-		this.sail_loft = new SimpleIntegerProperty(0);
-		this.sail_school_laser_loft = new SimpleIntegerProperty(0);
-		this.winter_storage = new SimpleIntegerProperty(0);
-		this.ysc_donation = new SimpleIntegerProperty(0);
-		this.paid = new SimpleIntegerProperty(0);
-		this.total = new SimpleIntegerProperty(0);
-		this.credit = new SimpleIntegerProperty(0);
-		this.balance = new SimpleIntegerProperty(0);
-		this.dues = new SimpleIntegerProperty(0);
+		this.officer_credit = new SimpleStringProperty("0");
+		this.extra_key = new SimpleStringProperty("0");
+		this.kayac_shed_key = new SimpleStringProperty("0");
+		this.sail_loft_key = new SimpleStringProperty("0");
+		this.sail_school_loft_key = new SimpleStringProperty("0");
+		this.beach = new SimpleStringProperty("0");
+		this.wet_slip = new SimpleStringProperty("0");
+		this.kayac_rack = new SimpleStringProperty("0");
+		this.kayac_shed = new SimpleStringProperty("0");
+		this.sail_loft = new SimpleStringProperty("0");
+		this.sail_school_laser_loft = new SimpleStringProperty("0");
+		this.winter_storage = new SimpleStringProperty("0");
+		this.ysc_donation = new SimpleStringProperty("0");
+		this.paid = new SimpleStringProperty("0");
+		this.total = new SimpleStringProperty("0");
+		this.credit = new SimpleStringProperty("0");
+		this.balance = new SimpleStringProperty("0");
+		this.dues = new SimpleStringProperty("0");
 		this.committed = new SimpleBooleanProperty(false);
 		this.closed = new SimpleBooleanProperty(false);
-		this.other = new SimpleIntegerProperty(0);
-		this.initiation = new SimpleIntegerProperty(0);
+		this.other = new SimpleStringProperty("0");
+		this.initiation = new SimpleStringProperty("0");
 		this.supplemental = new SimpleBooleanProperty(false);
 	}
 
-	public final IntegerProperty money_idProperty() {
-		return this.money_id;
+	public int getMoney_id() {
+		return money_id.get();
 	}
-	
 
-	public final int getMoney_id() {
-		return this.money_idProperty().get();
+	public IntegerProperty money_idProperty() {
+		return money_id;
 	}
-	
 
-	public final void setMoney_id(final int money_id) {
-		this.money_idProperty().set(money_id);
+	public void setMoney_id(int money_id) {
+		this.money_id.set(money_id);
 	}
-	
 
-	public final IntegerProperty ms_idProperty() {
-		return this.ms_id;
+	public int getMs_id() {
+		return ms_id.get();
 	}
-	
 
-	public final int getMs_id() {
-		return this.ms_idProperty().get();
+	public IntegerProperty ms_idProperty() {
+		return ms_id;
 	}
-	
 
-	public final void setMs_id(final int ms_id) {
-		this.ms_idProperty().set(ms_id);
+	public void setMs_id(int ms_id) {
+		this.ms_id.set(ms_id);
 	}
-	
 
-	public final IntegerProperty fiscal_yearProperty() {
-		return this.fiscal_year;
+	public int getFiscal_year() {
+		return fiscal_year.get();
 	}
-	
 
-	public final int getFiscal_year() {
-		return this.fiscal_yearProperty().get();
+	public IntegerProperty fiscal_yearProperty() {
+		return fiscal_year;
 	}
-	
 
-	public final void setFiscal_year(final int fiscal_year) {
-		this.fiscal_yearProperty().set(fiscal_year);
+	public void setFiscal_year(int fiscal_year) {
+		this.fiscal_year.set(fiscal_year);
 	}
-	
 
-	public final IntegerProperty extra_keyProperty() {
-		return this.extra_key;
+	public int getBatch() {
+		return batch.get();
 	}
-	
 
-	public final int getExtra_key() {
-		return this.extra_keyProperty().get();
+	public IntegerProperty batchProperty() {
+		return batch;
 	}
-	
 
-	public final void setExtra_key(final int extra_key) {
-		this.extra_keyProperty().set(extra_key);
+	public void setBatch(int batch) {
+		this.batch.set(batch);
 	}
-	
 
-	public final IntegerProperty kayac_shed_keyProperty() {
-		return this.kayac_shed_key;
+	public String getOfficer_credit() {
+		return officer_credit.get();
 	}
-	
 
-	public final int getKayac_shed_key() {
-		return this.kayac_shed_keyProperty().get();
+	public StringProperty officer_creditProperty() {
+		return officer_credit;
 	}
-	
 
-	public final void setKayac_shed_key(final int kayac_shed_key) {
-		this.kayac_shed_keyProperty().set(kayac_shed_key);
+	public void setOfficer_credit(String officer_credit) {
+		this.officer_credit.set(officer_credit);
 	}
-	
 
-	public final IntegerProperty sail_loft_keyProperty() {
-		return this.sail_loft_key;
+	public String getExtra_key() {
+		return extra_key.get();
 	}
-	
 
-	public final int getSail_loft_key() {
-		return this.sail_loft_keyProperty().get();
+	public StringProperty extra_keyProperty() {
+		return extra_key;
 	}
-	
 
-	public final void setSail_loft_key(final int sail_loft_key) {
-		this.sail_loft_keyProperty().set(sail_loft_key);
+	public void setExtra_key(String extra_key) {
+		this.extra_key.set(extra_key);
 	}
-	
 
-	public final IntegerProperty sail_school_loft_keyProperty() {
-		return this.sail_school_loft_key;
+	public String getKayac_shed_key() {
+		return kayac_shed_key.get();
 	}
-	
 
-	public final int getSail_school_loft_key() {
-		return this.sail_school_loft_keyProperty().get();
+	public StringProperty kayac_shed_keyProperty() {
+		return kayac_shed_key;
 	}
-	
 
-	public final void setSail_school_loft_key(final int sail_school_loft_key) {
-		this.sail_school_loft_keyProperty().set(sail_school_loft_key);
+	public void setKayac_shed_key(String kayac_shed_key) {
+		this.kayac_shed_key.set(kayac_shed_key);
 	}
-	
 
-	public final IntegerProperty beachProperty() {
-		return this.beach;
+	public String getSail_loft_key() {
+		return sail_loft_key.get();
 	}
-	
 
-	public final int getBeach() {
-		return this.beachProperty().get();
+	public StringProperty sail_loft_keyProperty() {
+		return sail_loft_key;
 	}
-	
 
-	public final void setBeach(final int beach) {
-		this.beachProperty().set(beach);
+	public void setSail_loft_key(String sail_loft_key) {
+		this.sail_loft_key.set(sail_loft_key);
 	}
-	
 
-	public final IntegerProperty wet_slipProperty() {
-		return this.wet_slip;
+	public String getSail_school_loft_key() {
+		return sail_school_loft_key.get();
 	}
-	
 
-	public final int getWet_slip() {
-		return this.wet_slipProperty().get();
+	public StringProperty sail_school_loft_keyProperty() {
+		return sail_school_loft_key;
 	}
-	
 
-	public final void setWet_slip(final int wet_slip) {
-		this.wet_slipProperty().set(wet_slip);
+	public void setSail_school_loft_key(String sail_school_loft_key) {
+		this.sail_school_loft_key.set(sail_school_loft_key);
 	}
-	
 
-	public final IntegerProperty kayac_rackProperty() {
-		return this.kayac_rack;
+	public String getBeach() {
+		return beach.get();
 	}
-	
 
-	public final int getKayac_rack() {
-		return this.kayac_rackProperty().get();
+	public StringProperty beachProperty() {
+		return beach;
 	}
-	
 
-	public final void setKayac_rack(final int kayac_rack) {
-		this.kayac_rackProperty().set(kayac_rack);
+	public void setBeach(String beach) {
+		this.beach.set(beach);
 	}
-	
 
-	public final IntegerProperty kayac_shedProperty() {
-		return this.kayac_shed;
+	public String getWet_slip() {
+		return wet_slip.get();
 	}
-	
 
-	public final int getKayac_shed() {
-		return this.kayac_shedProperty().get();
+	public StringProperty wet_slipProperty() {
+		return wet_slip;
 	}
-	
 
-	public final void setKayac_shed(final int kayac_shed) {
-		this.kayac_shedProperty().set(kayac_shed);
+	public void setWet_slip(String wet_slip) {
+		this.wet_slip.set(wet_slip);
 	}
-	
 
-	public final IntegerProperty sail_loftProperty() {
-		return this.sail_loft;
+	public String getKayac_rack() {
+		return kayac_rack.get();
 	}
-	
 
-	public final int getSail_loft() {
-		return this.sail_loftProperty().get();
+	public StringProperty kayac_rackProperty() {
+		return kayac_rack;
 	}
-	
 
-	public final void setSail_loft(final int sail_loft) {
-		this.sail_loftProperty().set(sail_loft);
+	public void setKayac_rack(String kayac_rack) {
+		this.kayac_rack.set(kayac_rack);
 	}
-	
 
-	public final IntegerProperty sail_school_laser_loftProperty() {
-		return this.sail_school_laser_loft;
+	public String getKayac_shed() {
+		return kayac_shed.get();
 	}
-	
 
-	public final int getSail_school_laser_loft() {
-		return this.sail_school_laser_loftProperty().get();
+	public StringProperty kayac_shedProperty() {
+		return kayac_shed;
 	}
-	
 
-	public final void setSail_school_laser_loft(final int sail_school_laser_loft) {
-		this.sail_school_laser_loftProperty().set(sail_school_laser_loft);
+	public void setKayac_shed(String kayac_shed) {
+		this.kayac_shed.set(kayac_shed);
 	}
-	
 
-	public final IntegerProperty winter_storageProperty() {
-		return this.winter_storage;
+	public String getSail_loft() {
+		return sail_loft.get();
 	}
-	
 
-	public final int getWinter_storage() {
-		return this.winter_storageProperty().get();
+	public StringProperty sail_loftProperty() {
+		return sail_loft;
 	}
-	
 
-	public final void setWinter_storage(final int winter_storage) {
-		this.winter_storageProperty().set(winter_storage);
+	public void setSail_loft(String sail_loft) {
+		this.sail_loft.set(sail_loft);
 	}
-	
 
-	public final IntegerProperty ysc_donationProperty() {
-		return this.ysc_donation;
+	public String getSail_school_laser_loft() {
+		return sail_school_laser_loft.get();
 	}
-	
 
-	public final int getYsc_donation() {
-		return this.ysc_donationProperty().get();
+	public StringProperty sail_school_laser_loftProperty() {
+		return sail_school_laser_loft;
 	}
-	
 
-	public final void setYsc_donation(final int ysc_donation) {
-		this.ysc_donationProperty().set(ysc_donation);
+	public void setSail_school_laser_loft(String sail_school_laser_loft) {
+		this.sail_school_laser_loft.set(sail_school_laser_loft);
 	}
-	
 
-	public final IntegerProperty paidProperty() {
-		return this.paid;
+	public String getWinter_storage() {
+		return winter_storage.get();
 	}
-	
 
-	public final int getPaid() {
-		return this.paidProperty().get();
+	public StringProperty winter_storageProperty() {
+		return winter_storage;
 	}
-	
 
-	public final void setPaid(final int paid) {
-		this.paidProperty().set(paid);
+	public void setWinter_storage(String winter_storage) {
+		this.winter_storage.set(winter_storage);
 	}
-	
 
-	public final IntegerProperty totalProperty() {
-		return this.total;
+	public String getYsc_donation() {
+		return ysc_donation.get();
 	}
-	
 
-	public final int getTotal() {
-		return this.totalProperty().get();
+	public StringProperty ysc_donationProperty() {
+		return ysc_donation;
 	}
-	
 
-	public final void setTotal(final int total) {
-		this.totalProperty().set(total);
+	public void setYsc_donation(String ysc_donation) {
+		this.ysc_donation.set(ysc_donation);
 	}
-	
 
-	public final IntegerProperty creditProperty() {
-		return this.credit;
+	public String getPaid() {
+		return paid.get();
 	}
-	
 
-	public final int getCredit() {
-		return this.creditProperty().get();
+	public StringProperty paidProperty() {
+		return paid;
 	}
-	
 
-	public final void setCredit(final int credit) {
-		this.creditProperty().set(credit);
+	public void setPaid(String paid) {
+		this.paid.set(paid);
 	}
-	
 
-	public final IntegerProperty balanceProperty() {
-		return this.balance;
+	public String getTotal() {
+		return total.get();
 	}
-	
 
-	public final int getBalance() {
-		return this.balanceProperty().get();
+	public StringProperty totalProperty() {
+		return total;
 	}
-	
 
-	public final void setBalance(final int balance) {
-		this.balanceProperty().set(balance);
+	public void setTotal(String total) {
+		this.total.set(total);
 	}
-	
 
-	public final IntegerProperty duesProperty() {
-		return this.dues;
+	public String getCredit() {
+		return credit.get();
 	}
-	
 
-	public final int getDues() {
-		return this.duesProperty().get();
+	public StringProperty creditProperty() {
+		return credit;
 	}
-	
 
-	public final void setDues(final int dues) {
-		this.duesProperty().set(dues);
+	public void setCredit(String credit) {
+		this.credit.set(credit);
 	}
 
-	public final BooleanProperty committedProperty() {
-		return this.committed;
+	public String getBalance() {
+		return balance.get();
 	}
-	
 
-	public final boolean isCommitted() {
-		return this.committedProperty().get();
+	public StringProperty balanceProperty() {
+		return balance;
 	}
-	
 
-	public final void setCommitted(final boolean committed) {
-		this.committedProperty().set(committed);
+	public void setBalance(String balance) {
+		this.balance.set(balance);
 	}
-	
 
-	public final BooleanProperty isClosedProperty() {
-		return this.closed;
+	public String getDues() {
+		return dues.get();
 	}
-	
 
-	public final boolean isClosed() {
-		return this.isClosedProperty().get();
+	public StringProperty duesProperty() {
+		return dues;
 	}
-	
 
-	public final void setClosed(final boolean closed) {
-		this.isClosedProperty().set(closed);
+	public void setDues(String dues) {
+		this.dues.set(dues);
 	}
 
-	public final IntegerProperty officer_creditProperty() {
-		return this.officer_credit;
+	public boolean isCommitted() {
+		return committed.get();
 	}
-	
 
-	public final int getOfficer_credit() {
-		return this.officer_creditProperty().get();
+	public BooleanProperty committedProperty() {
+		return committed;
 	}
-	
 
-	public final void setOfficer_credit(final int officer_credit) {
-		this.officer_creditProperty().set(officer_credit);
+	public void setCommitted(boolean committed) {
+		this.committed.set(committed);
 	}
-	
 
-	public final IntegerProperty batchProperty() {
-		return this.batch;
+	public boolean isClosed() {
+		return closed.get();
 	}
 
-	public final int getBatch() {
-		return this.batchProperty().get();
+	public BooleanProperty closedProperty() {
+		return closed;
 	}
 
-	public final void setBatch(final int batch) {
-		this.batchProperty().set(batch);
+	public void setClosed(boolean closed) {
+		this.closed.set(closed);
 	}
-	
-	public final IntegerProperty otherProperty() {
-		return this.other;
+
+	public String getOther() {
+		return other.get();
 	}
-	
 
-	public final int getOther() {
-		return this.otherProperty().get();
+	public StringProperty otherProperty() {
+		return other;
 	}
-	
 
-	public final void setOther(final int other) {
-		this.otherProperty().set(other);
+	public void setOther(String other) {
+		this.other.set(other);
 	}
 
-	public final IntegerProperty initiationProperty() {
-		return this.initiation;
+	public String getInitiation() {
+		return initiation.get();
 	}
-	
 
-	public final int getInitiation() {
-		return this.initiationProperty().get();
+	public StringProperty initiationProperty() {
+		return initiation;
 	}
-	
 
-	public final void setInitiation(final int initiation) {
-		this.initiationProperty().set(initiation);
+	public void setInitiation(String initiation) {
+		this.initiation.set(initiation);
 	}
-	
 
-	public final BooleanProperty supplementalProperty() {
-		return this.supplemental;
+	public boolean isSupplemental() {
+		return supplemental.get();
 	}
-	
 
-	public final boolean isSupplemental() {
-		return this.supplementalProperty().get();
+	public BooleanProperty supplementalProperty() {
+		return supplemental;
 	}
-	
 
-	public final void setSupplemental(final boolean supplemental) {
-		this.supplementalProperty().set(supplemental);
+	public void setSupplemental(boolean supplemental) {
+		this.supplemental.set(supplemental);
 	}
-	
+
 	public final void clear() {
 		setMoney_id(0);
 		setMs_id(0);
 		setFiscal_year(0);
 		setBatch(0);
-		setOfficer_credit(0);
-		setExtra_key(0);
-		setKayac_shed_key(0);
-		setSail_loft_key(0);
-		setSail_school_loft_key(0);
-		setBeach(0);
-		setWet_slip(0);
-		setKayac_rack(0);
-		setKayac_shed(0);
-		setSail_loft(0);
-		setSail_school_laser_loft(0);
-		setWinter_storage(0);
-		setYsc_donation(0);
-		setPaid(0);
-		setTotal(0);
-		setCredit(0);
-		setBalance(0);
-		setDues(0);
+		setOfficer_credit("0");
+		setExtra_key("0");
+		setKayac_shed_key("0");
+		setSail_loft_key("0");
+		setSail_school_loft_key("0");
+		setBeach("0");
+		setWet_slip("0");
+		setKayac_rack("0");
+		setKayac_shed("0");
+		setSail_loft("0");
+		setSail_school_laser_loft("0");
+		setWinter_storage("0");
+		setYsc_donation("0");
+		setPaid("0");
+		setTotal("0");
+		setCredit("0");
+		setBalance("0");
+		setDues("0");
 		setCommitted(false);
 		setClosed(false);
-		setOther(0);
-		setInitiation(0);
+		setOther("0");
+		setInitiation("0");
 		setSupplemental(false);
 	}
 
