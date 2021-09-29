@@ -18,6 +18,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public class TabBoardMembers extends Tab {
@@ -32,14 +33,14 @@ public class TabBoardMembers extends Tab {
 	private ObservableList<Object_Board> board;
 	String selectedYear;
 	String currentYear;
-	Label year;
+	Text year;
 	
 	public TabBoardMembers(String text) {
 		super(text);
 		this.selectedYear = new SimpleDateFormat("yyyy").format(new Date());  // lets start at the current year
 		this.board =  SqlSelect.getBoard(selectedYear);
 		this.currentYear = selectedYear;  // save the current year for later
-		this.year = new Label(selectedYear + " Officers");
+		this.year = new Text(selectedYear + " Officers");
 		
 	VBox vboxLeft = new VBox();  // this is the vbox for organizing all the widgets
 	HBox vboxBlue = new HBox();
@@ -50,13 +51,17 @@ public class TabBoardMembers extends Tab {
 	HBox committeeHBox = new HBox();
 	HBox boardMembersTitleBox = new HBox();
 	HBox boardMembersHBox = new HBox();
-	
-	//Label year = new Label(selectedYear + " Officers");
-	Label chairs = new Label("Committee Chairs");
-	Label board = new Label("Board of Directors");
+
+		//Label year = new Label(selectedYear + " Officers");
+	Text chairs = new Text("Committee Chairs");
+	Text board = new Text("Board of Directors");
 	
 	/// experimental ///
 //	String filename = "2020";
+//	chairs.setId("bigtext");
+//	board.setId("bigtext");
+//	year.setId("bigtext");
+		chairs.setFont(Font.loadFont("file:/resources/fonts/Fredoka_One", 28));
 	Image slipImage = new Image(getClass().getResourceAsStream("/Stickers/" + selectedYear + ".png"));
 	//Image slipImage = new Image(getClass().getResourceAsStream("/Stickers/" + filename + ".png"), 600, 600, false, false);
 	ImageView imageView = new ImageView(slipImage);
@@ -105,9 +110,9 @@ public class TabBoardMembers extends Tab {
 
 		});
 
-	year.setEffect(new DropShadow(2, Color.BLACK));
-	chairs.setEffect(new DropShadow(2, Color.BLACK));
-	board.setEffect(new DropShadow(2, Color.BLACK));
+//	year.setEffect(new DropShadow(1, Color.BLACK));
+//	chairs.setEffect(new DropShadow(1, Color.BLACK));
+//	board.setEffect(new DropShadow(1, Color.BLACK));
 	
 	boardMembersVBox1.setPrefWidth(150);
 	boardMembersVBox2.setPrefWidth(150);
@@ -133,9 +138,9 @@ public class TabBoardMembers extends Tab {
 	officersTitleHBox.getStyleClass().add("title");
 	committeeTitleHBox.getStyleClass().add("title");
 	boardMembersTitleBox.getStyleClass().add("title");
-	year.getStyleClass().add("title");
-	chairs.getStyleClass().add("title");
-	board.getStyleClass().add("title");
+//	year.getStyleClass().add("title");
+//	chairs.getStyleClass().add("title");
+//	board.getStyleClass().add("title");
 
 
 	vboxLeft.setSpacing(40);
@@ -143,13 +148,13 @@ public class TabBoardMembers extends Tab {
 	committeeHBox.setSpacing(30);
 	boardMembersHBox.setSpacing(40);
 	officersTitleHBox.setSpacing(190);
-	officerVBox1.setSpacing(5);
-	officerVBox2.setSpacing(5);
-	committeeVBox1.setSpacing(5);
-	committeeVBox2.setSpacing(5);
-	boardMembersVBox1.setSpacing(5);
-	boardMembersVBox2.setSpacing(5);
-	boardMembersVBox3.setSpacing(5);
+	officerVBox1.setSpacing(4);
+	officerVBox2.setSpacing(4);
+	committeeVBox1.setSpacing(4);
+	committeeVBox2.setSpacing(4);
+	boardMembersVBox1.setSpacing(4);
+	boardMembersVBox2.setSpacing(4);
+	boardMembersVBox3.setSpacing(4);
 	vboxPink.setSpacing(10);
 
 	VBox.setVgrow(vboxPink, Priority.ALWAYS);

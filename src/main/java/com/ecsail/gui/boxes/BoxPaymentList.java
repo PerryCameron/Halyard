@@ -32,7 +32,7 @@ public class BoxPaymentList extends HBox {
 	private static TextField duesText;
 	
 	String currentYear;
-	@SuppressWarnings("unchecked")
+
 	public BoxPaymentList(Object_Membership membership, TabPane t, ObservableList<Object_Person> p, Note n, TextField dt) {
 		super();
 		BoxPaymentList.membership = membership;
