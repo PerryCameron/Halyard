@@ -81,6 +81,12 @@ public class BoxPaymentList extends HBox {
 		Col3.setCellValueFactory(new PropertyValueFactory<Object_Money, Integer>("credit"));
 		Col4.setCellValueFactory(new PropertyValueFactory<Object_Money, Integer>("paid"));
 		Col5.setCellValueFactory(new PropertyValueFactory<Object_Money, Integer>("balance"));
+
+		Col2.setStyle( "-fx-alignment: CENTER;");
+		Col2.setStyle( "-fx-alignment: CENTER-RIGHT;");
+		Col3.setStyle( "-fx-alignment: CENTER-RIGHT;");
+		Col4.setStyle( "-fx-alignment: CENTER-RIGHT;");
+		Col5.setStyle( "-fx-alignment: CENTER-RIGHT;");
 		
 		/////////////  ATTRIBUTES /////////////
 		fiscalTableView.getColumns().addAll(Col1, Col2, Col3, Col4, Col5);

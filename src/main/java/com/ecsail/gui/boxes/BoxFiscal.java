@@ -243,7 +243,7 @@ public class BoxFiscal extends HBox {
 	            		duesText.setText("0");
 	            	}
 	            	//updateBalance();
-	            	updateItem(Integer.parseInt(duesText.getText()),"dues");
+	            	updateItem(new BigDecimal(duesText.getText()),"dues");
 	            	updateBalance();
 	            }
 	        });
@@ -319,7 +319,7 @@ public class BoxFiscal extends HBox {
 		
 		textFields.getPaidText().textProperty().addListener((obd, oldValue, newValue) -> {
         	if(!isNumeric(textFields.getPaidText().getText())) {  // we should move this to amount in TabPayment
-        		textFields.getPaidText().setText("0");
+        		textFields.getPaidText().setText("0.00");
         	}
         	int newTotalValue = Integer.parseInt(textFields.getPaidText().getText());
         	fiscals.get(rowIndex).setPaid(textFields.getPaidText().getText());
@@ -334,9 +334,9 @@ public class BoxFiscal extends HBox {
 	            //focus out
 	            if (oldValue) {  // we have focused and unfocused
 	            	if(!isNumeric(yscText.getText())) {
-	            		yscText.setText("0");
+	            		yscText.setText("0.00");
 	            	}
-	            	updateItem(Integer.parseInt(yscText.getText()), "ysc");
+	            	updateItem(new BigDecimal(yscText.getText()), "ysc");
 	            	updateBalance();
 	            }
 	        });
@@ -345,9 +345,9 @@ public class BoxFiscal extends HBox {
 	            //focus out
 	            if (oldValue) {  // we have focused and unfocused
 	            	if(!isNumeric(otherText.getText())) {
-	            		otherText.setText("0");
+	            		otherText.setText("0.00");
 	            	}
-	            	updateItem(Integer.parseInt(slipText.getText()),"wetslip");
+	            	updateItem(new BigDecimal(slipText.getText()),"wetslip");
 	            	updateBalance();
 	            }
 	        });
@@ -356,9 +356,9 @@ public class BoxFiscal extends HBox {
 	            //focus out
 	            if (oldValue) {  // we have focused and unfocused
 	            	if(!isNumeric(otherText.getText())) {
-	            		otherText.setText("0");
+	            		otherText.setText("0.00");
 	            	}
-	            	updateItem(Integer.parseInt(otherText.getText()),"other");
+	            	updateItem(new BigDecimal(otherText.getText()),"other");
 	            	updateBalance();
 	            }
 	        });
@@ -367,9 +367,9 @@ public class BoxFiscal extends HBox {
 	            //focus out
 	            if (oldValue) {  // we have focused and unfocused
 	            	if(!isNumeric(initiationText.getText())) {
-	            		otherText.setText("0");
+	            		otherText.setText("0.00");
 	            	}
-	            	updateItem(Integer.parseInt(initiationText.getText()), "initiation");
+	            	updateItem(new BigDecimal(initiationText.getText()), "initiation");
 	            	updateBalance();
 	            }
 	        });
@@ -390,7 +390,7 @@ public class BoxFiscal extends HBox {
         
         addWetSlip.setOnAction((event) -> {
             	slipText.setText(definedFees.getWet_slip() + "");
-            	updateItem(Integer.parseInt(slipText.getText()),"wetslip");
+            	updateItem(new BigDecimal(slipText.getText()),"wetslip");
             	updateBalance();
             	SqlUpdate.updateMoney(fiscals.get(rowIndex));
             });
@@ -476,7 +476,7 @@ public class BoxFiscal extends HBox {
 	}
 	
 	//////////////////////  CLASS METHODS ///////////////////////////
-	private void updateItem(int newTotalValue, String type) {
+	private void updateItem(BigDecimal newTotalValue, String type) {
 		switch(type) {
 		case "initiation":
 			fiscals.get(rowIndex).setInitiation(String.valueOf(newTotalValue));
@@ -614,24 +614,14 @@ public class BoxFiscal extends HBox {
 		}
 		return finalResult;
 	}
-	
-	public boolean isStringInt(String s) {
+
+	public static boolean isNumeric(String str) {
 		try {
-			Integer.parseInt(s);
-			return true;
-		} catch (NumberFormatException ex) {
+			new BigDecimal(str);
+		} catch (Exception e) {
 			return false;
 		}
-	}
-	
-	public static boolean isNumeric(String strNum) {
-	    if (strNum == null) return false;
-	    try {
-	        Integer.parseInt(strNum);
-	    } catch (NumberFormatException nfe) {
-	        return false;
-	    }
-	    return true;
+		return true;
 	}
 	
 } // updateKayakShed
