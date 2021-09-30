@@ -1,5 +1,6 @@
 package com.ecsail.gui.dialogues;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -179,7 +180,7 @@ public class Dialogue_NewYearGenerator extends Stage {
 		Object_Money oldMoney = null;
 		Object_Money newMoney = null;
 		int moneyId = SqlSelect.getCount("money_id") + 1;  // need next money_id for new record
-		oldMoney = new Object_Money(moneyId, ml.getMsid(),Integer.parseInt(selectedYear), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, false, false, 0, 0, false);
+		oldMoney = new Object_Money(moneyId, ml.getMsid(),Integer.parseInt(selectedYear), 0, "0.00", 0, 0, 0, 0, 0, "0.00", 0, 0, 0, 0, 0,"0.00", "0.00", "0.00", "0.00", "0.00", "0.00", false, false, "0.00", "0.00", false);
 		newMoney = setNewMoneyValues(oldMoney, currentMoney, ml);
 		System.out.print(" No money records for " + (newMoney.getFiscal_year() - 1));
 			SqlUpdate.updateMoney(newMoney);
@@ -224,9 +225,9 @@ public class Dialogue_NewYearGenerator extends Stage {
 			if(p.getMemberType() != 3) {  // if membership has a primary or secondary member
 				if(SqlExists.isOfficer(p,Integer.parseInt(selectedYear))) {  // person is an officer
 					if(membership.getMemType().equals("RM"))
-				    newMoney.setCredit(definedFee.getDues_regular());
+				    newMoney.setCredit(String.valueOf(definedFee.getDues_regular()));
 					else if(membership.getMemType().contentEquals("FM"))
-					newMoney.setCredit(definedFee.getDues_family());
+					newMoney.setCredit(String.valueOf(definedFee.getDues_family()));
 					else if(membership.getMemType().contentEquals("SO"))
 					System.out.println("Social members can't be officers");
 					else if(membership.getMemType().contentEquals("LA"))
@@ -237,23 +238,25 @@ public class Dialogue_NewYearGenerator extends Stage {
 		}
 		// set slip if owned
 		if(SqlExists.slipExists(membership.getMsid()))
-			newMoney.setWet_slip(definedFee.getWet_slip());
+			newMoney.setWet_slip(String.valueOf(definedFee.getWet_slip()));
 		
 		// set dues by membership type
 		if(membership.getMemType().equals("RM"))
-		    newMoney.setDues(definedFee.getDues_regular());
+		    newMoney.setDues(String.valueOf(definedFee.getDues_regular()));
 			else if(membership.getMemType().contentEquals("FM"))
-			newMoney.setDues(definedFee.getDues_family());
+			newMoney.setDues(String.valueOf(definedFee.getDues_family()));
 			else if(membership.getMemType().contentEquals("SO"))
-			newMoney.setDues(definedFee.getDues_social());
+			newMoney.setDues(String.valueOf(definedFee.getDues_social()));
 			else if(membership.getMemType().contentEquals("LA"))
-			newMoney.setDues(definedFee.getDues_lake_associate());
+			newMoney.setDues(String.valueOf(definedFee.getDues_lake_associate()));
 		
 		// calculate total
-		newMoney.setTotal(calculateFees(newMoney));
+		newMoney.setTotal(String.valueOf(calculateFees(newMoney)));
 
 		/// calculate balance
-		newMoney.setBalance(newMoney.getTotal() - newMoney.getCredit());
+		BigDecimal total = new BigDecimal(newMoney.getTotal());
+		BigDecimal credit = new BigDecimal(newMoney.getCredit());
+		newMoney.setBalance(String.valueOf(total.subtract(credit)));
 		
 		return newMoney;
 	}
@@ -273,15 +276,31 @@ public class Dialogue_NewYearGenerator extends Stage {
 		System.out.println("----------------------");
 	}
 	
-	private int calculateFees(Object_Money newMoney) {
-		int result = 0;
-		result += newMoney.getDues();
-		result += newMoney.getKayac_rack() * definedFee.getKayak_rack();
-		result += newMoney.getBeach() * definedFee.getBeach();
-		result += newMoney.getKayac_shed() * definedFee.getKayak_shed();
-		result += newMoney.getWet_slip();
-		result += newMoney.getSail_loft();
-		result += newMoney.getSail_school_laser_loft() * definedFee.getSail_school_laser_loft();	
+	private BigDecimal calculateFees(Object_Money newMoney) {
+		BigDecimal result = new BigDecimal("0.00");
+
+		BigDecimal dues = new BigDecimal(newMoney.getDues());
+		BigDecimal kayakRack = new BigDecimal(newMoney.getKayac_rack());
+		BigDecimal beach = new BigDecimal(newMoney.getBeach());
+		BigDecimal kayakShed = new BigDecimal(newMoney.getKayac_shed());
+		BigDecimal wetSlip = new BigDecimal(newMoney.getWet_slip());
+		BigDecimal sailLoft = new BigDecimal(newMoney.getSail_loft());
+		BigDecimal laserLoft = new BigDecimal(newMoney.getSail_school_laser_loft());
+
+		result = dues.add(kayakRack.multiply(definedFee.getKayak_rack()))
+				.add(beach.multiply(definedFee.getBeach()))
+				.add(kayakShed.multiply(definedFee.getKayak_shed()))
+				.add(wetSlip)
+				.add(sailLoft)
+				.add(laserLoft.multiply(definedFee.getSail_school_laser_loft()));
+
+//		result += newMoney.getDues();
+//		result += newMoney.getKayac_rack() * definedFee.getKayak_rack();
+//		result += newMoney.getBeach() * definedFee.getBeach();
+//		result += newMoney.getKayac_shed() * definedFee.getKayak_shed();
+//		result += newMoney.getWet_slip();
+//		result += newMoney.getSail_loft();
+//		result += newMoney.getSail_school_laser_loft() * definedFee.getSail_school_laser_loft();
 		return result;		
 	}
 	

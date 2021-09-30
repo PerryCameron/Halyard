@@ -1,5 +1,6 @@
 package com.ecsail.gui.boxes;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 import com.ecsail.main.Note;
 import com.ecsail.main.HalyardPaths;
@@ -120,11 +121,11 @@ public class BoxPaymentList extends HBox {
 		addFiscalRecord.setOnAction((event) -> {
 				int moneyId = SqlSelect.getCount("money_id") + 1;
 				Object_Money newMoney = new Object_Money(moneyId, membership.getMsid(),
-						comboBox.getValue(), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-						0, 0, 0, 0, 0, getDues(definedFees), false, false, 0, 0, false);
+						comboBox.getValue(), 0, "0.00", 0, 0, 0, 0, 0, "0.00", 0, 0, 0, 0, 0,
+						"0.00", "0.00", "0.00", "0.00", "0.00", String.valueOf(getDues(definedFees)), false, false, "0.00", "0.00", false);
 				if (SqlExists.moneyExists(String.valueOf(comboBox.getValue()), membership)) {
 					newMoney.setSupplemental(true);
-					newMoney.setDues(0);
+					newMoney.setDues("0.00");
 				}
 				SqlInsert.addRecord(newMoney);
 				SqlInsert.addRecord(moneyId, membership);
@@ -162,8 +163,8 @@ public class BoxPaymentList extends HBox {
 	
 	/////////////////////  CLASS METHODS /////////////////////////////
 	
-	private int getDues(Object_DefinedFee definedFees) {  // takes the membership type and gets the dues
-		int dues = 0;
+	private BigDecimal getDues(Object_DefinedFee definedFees) {  // takes the membership type and gets the dues
+		BigDecimal dues = BigDecimal.valueOf(0);
 		if(membership.getMemType() != null) {
 		  switch(membership.getMemType()) 
 	        { 
@@ -180,15 +181,15 @@ public class BoxPaymentList extends HBox {
 	            	dues = definedFees.getDues_lake_associate();  
 	                break; 
 	            case "LM": 
-	            	dues = 0;  // life members have no dues
+	            	dues = BigDecimal.valueOf(0);  // life members have no dues
 	                break; 
 	            case "SM": 
-	            	dues = 0;  // purdue sailing club dues
+	            	dues = BigDecimal.valueOf(0);  // purdue sailing club dues
 	                break; 
 	            default: 
-	            	dues = 0; 
+	            	dues = BigDecimal.valueOf(0);
 	        } 
-		} else dues = 0;
+		} else dues = BigDecimal.valueOf(0);
 		return dues;
 	}
 	

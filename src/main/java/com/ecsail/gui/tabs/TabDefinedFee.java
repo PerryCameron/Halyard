@@ -15,6 +15,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
+import java.math.BigDecimal;
+
 public class TabDefinedFee extends Tab {
 	int fieldWidth = 60;
 	String selectedYear;
@@ -154,7 +156,7 @@ public class TabDefinedFee extends Tab {
 			if (SqlExists.definedFeeExists(selectedYear)) {
 				selectedFees = SqlSelect.selectDefinedFees(Integer.parseInt(selectedYear));
 			} else {
-				Object_DefinedFee newFee = new Object_DefinedFee(Integer.parseInt(selectedYear),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+				Object_DefinedFee newFee = new Object_DefinedFee(Integer.parseInt(selectedYear), BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO);
 				SqlInsert.addRecord(newFee);
 				selectedFees = SqlSelect.selectDefinedFees(Integer.parseInt(selectedYear));
 			}

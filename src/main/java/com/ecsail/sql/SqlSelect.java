@@ -190,23 +190,23 @@ public class SqlSelect {
 			while (rs.next()) {
 				thisDefinedFee.add(new Object_DefinedFee(
 						rs.getInt("FISCAL_YEAR"), 
-						rs.getInt("DUES_REGULAR"),
-						rs.getInt("DUES_FAMILY"),
-						rs.getInt("DUES_LAKE_ASSOCIATE"),
-						rs.getInt("DUES_SOCIAL"),
-						rs.getInt("INITIATION"),
-						rs.getInt("WET_SLIP"),
-						rs.getInt("BEACH"),
-						rs.getInt("WINTER_STORAGE"),
-						rs.getInt("MAIN_GATE_KEY"),
-						rs.getInt("SAIL_LOFT"),
-						rs.getInt("SAIL_LOFT_KEY"),
-						rs.getInt("SAIL_SCHOOL_LASER_LOFT"),
-						rs.getInt("SAIL_SCHOOL_LOFT_KEY"),
-						rs.getInt("KAYAK_RACK"),
-						rs.getInt("KAYAK_SHED"),
-						rs.getInt("KAYAK_SHED_KEY"),
-						rs.getInt("WORK_CREDIT")
+						rs.getBigDecimal("DUES_REGULAR"),
+						rs.getBigDecimal("DUES_FAMILY"),
+						rs.getBigDecimal("DUES_LAKE_ASSOCIATE"),
+						rs.getBigDecimal("DUES_SOCIAL"),
+						rs.getBigDecimal("INITIATION"),
+						rs.getBigDecimal("WET_SLIP"),
+						rs.getBigDecimal("BEACH"),
+						rs.getBigDecimal("WINTER_STORAGE"),
+						rs.getBigDecimal("MAIN_GATE_KEY"),
+						rs.getBigDecimal("SAIL_LOFT"),
+						rs.getBigDecimal("SAIL_LOFT_KEY"),
+						rs.getBigDecimal("SAIL_SCHOOL_LASER_LOFT"),
+						rs.getBigDecimal("SAIL_SCHOOL_LOFT_KEY"),
+						rs.getBigDecimal("KAYAK_RACK"),
+						rs.getBigDecimal("KAYAK_SHED"),
+						rs.getBigDecimal("KAYAK_SHED_KEY"),
+						rs.getBigDecimal("WORK_CREDIT")
 						));
 			}
 		} catch (SQLException e) {
@@ -286,23 +286,23 @@ public class SqlSelect {
 			while (rs.next()) {
 				newDefinedFee = new Object_DefinedFee(
 						rs.getInt("FISCAL_YEAR"), 
-						rs.getInt("DUES_REGULAR"),
-						rs.getInt("DUES_FAMILY"),
-						rs.getInt("DUES_LAKE_ASSOCIATE"),
-						rs.getInt("DUES_SOCIAL"),
-						rs.getInt("INITIATION"),
-						rs.getInt("WET_SLIP"),
-						rs.getInt("BEACH"),
-						rs.getInt("WINTER_STORAGE"),
-						rs.getInt("MAIN_GATE_KEY"),
-						rs.getInt("SAIL_LOFT"),
-						rs.getInt("SAIL_LOFT_KEY"),
-						rs.getInt("SAIL_SCHOOL_LASER_LOFT"),
-						rs.getInt("SAIL_SCHOOL_LOFT_KEY"),
-						rs.getInt("KAYAK_RACK"),
-						rs.getInt("KAYAK_SHED"),
-						rs.getInt("KAYAK_SHED_KEY"),
-						rs.getInt("WORK_CREDIT")
+						rs.getBigDecimal("DUES_REGULAR"),
+						rs.getBigDecimal("DUES_FAMILY"),
+						rs.getBigDecimal("DUES_LAKE_ASSOCIATE"),
+						rs.getBigDecimal("DUES_SOCIAL"),
+						rs.getBigDecimal("INITIATION"),
+						rs.getBigDecimal("WET_SLIP"),
+						rs.getBigDecimal("BEACH"),
+						rs.getBigDecimal("WINTER_STORAGE"),
+						rs.getBigDecimal("MAIN_GATE_KEY"),
+						rs.getBigDecimal("SAIL_LOFT"),
+						rs.getBigDecimal("SAIL_LOFT_KEY"),
+						rs.getBigDecimal("SAIL_SCHOOL_LASER_LOFT"),
+						rs.getBigDecimal("SAIL_SCHOOL_LOFT_KEY"),
+						rs.getBigDecimal("KAYAK_RACK"),
+						rs.getBigDecimal("KAYAK_SHED"),
+						rs.getBigDecimal("KAYAK_SHED_KEY"),
+						rs.getBigDecimal("WORK_CREDIT")
 						);
 			}
 		} catch (SQLException e) {
@@ -459,14 +459,14 @@ public class SqlSelect {
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(query + ";"));
 			while (rs.next()) {
 				theseFiscals.add(new Object_Money(rs.getInt("MONEY_ID"), rs.getInt("MS_ID"),
-						rs.getInt("FISCAL_YEAR"), rs.getInt("BATCH"), rs.getInt("OFFICER_CREDIT"), rs.getInt("EXTRA_KEY"),
+						rs.getInt("FISCAL_YEAR"), rs.getInt("BATCH"), rs.getString("OFFICER_CREDIT"), rs.getInt("EXTRA_KEY"),
 						rs.getInt("KAYAK_SHED_KEY"), rs.getInt("SAIL_LOFT_KEY"), 
 						rs.getInt("SAIL_SCHOOL_LOFT_KEY"), rs.getInt("BEACH"), 
-						rs.getInt("WET_SLIP"), rs.getInt("KAYAK_RACK"), rs.getInt("KAYAK_SHED"), 
+						rs.getString("WET_SLIP"), rs.getInt("KAYAK_RACK"), rs.getInt("KAYAK_SHED"),
 						rs.getInt("SAIL_LOFT"), rs.getInt("SAIL_SCHOOL_LASER_LOFT"), rs.getInt("WINTER_STORAGE"),
-						rs.getInt("YSC_DONATION"),rs.getInt("PAID"),rs.getInt("TOTAL"),rs.getInt("CREDIT"),
-						rs.getInt("BALANCE"), rs.getInt("DUES"),rs.getBoolean("COMMITED"),rs.getBoolean("CLOSED"),
-						rs.getInt("OTHER"),rs.getInt("INITIATION"),rs.getBoolean("SUPPLEMENTAL")));
+						rs.getString("YSC_DONATION"),rs.getString("PAID"),rs.getString("TOTAL"),rs.getString("CREDIT"),
+						rs.getString("BALANCE"), rs.getString("DUES"),rs.getBoolean("COMMITED"),rs.getBoolean("CLOSED"),
+						rs.getString("OTHER"),rs.getString("INITIATION"),rs.getBoolean("SUPPLEMENTAL")));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -483,14 +483,14 @@ public class SqlSelect {
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(query + ";"));
 			while (rs.next()) {
 				thisFiscal = new Object_Money(rs.getInt("MONEY_ID"), rs.getInt("MS_ID"),
-						rs.getInt("FISCAL_YEAR"), rs.getInt("BATCH"), rs.getInt("OFFICER_CREDIT"), rs.getInt("EXTRA_KEY"),
+						rs.getInt("FISCAL_YEAR"), rs.getInt("BATCH"), rs.getString("OFFICER_CREDIT"), rs.getInt("EXTRA_KEY"),
 						rs.getInt("KAYAK_SHED_KEY"), rs.getInt("SAIL_LOFT_KEY"), 
 						rs.getInt("SAIL_SCHOOL_LOFT_KEY"), rs.getInt("BEACH"), 
-						rs.getInt("WET_SLIP"), rs.getInt("KAYAK_RACK"), rs.getInt("KAYAK_SHED"), 
+						rs.getString("WET_SLIP"), rs.getInt("KAYAK_RACK"), rs.getInt("KAYAK_SHED"),
 						rs.getInt("SAIL_LOFT"), rs.getInt("SAIL_SCHOOL_LASER_LOFT"), rs.getInt("WINTER_STORAGE"),
-						rs.getInt("YSC_DONATION"),rs.getInt("PAID"),rs.getInt("TOTAL"),rs.getInt("CREDIT"),
-						rs.getInt("BALANCE"), rs.getInt("DUES"),rs.getBoolean("COMMITED"),rs.getBoolean("CLOSED"),
-						rs.getInt("OTHER"),rs.getInt("INITIATION"),rs.getBoolean("SUPPLEMENTAL"));
+						rs.getString("YSC_DONATION"),rs.getString("PAID"),rs.getString("TOTAL"),rs.getString("CREDIT"),
+						rs.getString("BALANCE"), rs.getString("DUES"),rs.getBoolean("COMMITED"),rs.getBoolean("CLOSED"),
+						rs.getString("OTHER"),rs.getString("INITIATION"),rs.getBoolean("SUPPLEMENTAL"));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -512,14 +512,14 @@ public class SqlSelect {
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(query + ";"));
 			while (rs.next()) {
 				theseFiscals.add(new Object_PaidDues(rs.getInt("MONEY_ID"), rs.getInt("MS_ID"),
-						rs.getInt("FISCAL_YEAR"), rs.getInt("BATCH"), rs.getInt("OFFICER_CREDIT"), rs.getInt("EXTRA_KEY"),
+						rs.getInt("FISCAL_YEAR"), rs.getInt("BATCH"), rs.getString("OFFICER_CREDIT"), rs.getInt("EXTRA_KEY"),
 						rs.getInt("KAYAK_SHED_KEY"), rs.getInt("SAIL_LOFT_KEY"), 
 						rs.getInt("SAIL_SCHOOL_LOFT_KEY"), rs.getInt("BEACH"), 
-						rs.getInt("WET_SLIP"), rs.getInt("KAYAK_RACK"), rs.getInt("KAYAK_SHED"), 
+						rs.getString("WET_SLIP"), rs.getInt("KAYAK_RACK"), rs.getInt("KAYAK_SHED"),
 						rs.getInt("SAIL_LOFT"), rs.getInt("SAIL_SCHOOL_LASER_LOFT"), rs.getInt("WINTER_STORAGE"),
-						rs.getInt("YSC_DONATION"),rs.getInt("PAID"),rs.getInt("TOTAL"),rs.getInt("CREDIT"),
-						rs.getInt("BALANCE"), rs.getInt("DUES"), rs.getBoolean("COMMITED"),rs.getBoolean("CLOSED"),
-						rs.getInt("OTHER"),rs.getInt("INITIATION"),rs.getBoolean("SUPPLEMENTAL"), rs.getString("F_NAME"),
+						rs.getString("YSC_DONATION"),rs.getString("PAID"),rs.getString("TOTAL"),rs.getString("CREDIT"),
+						rs.getString("BALANCE"), rs.getString("DUES"), rs.getBoolean("COMMITED"),rs.getBoolean("CLOSED"),
+						rs.getString("OTHER"),rs.getString("INITIATION"),rs.getBoolean("SUPPLEMENTAL"), rs.getString("F_NAME"),
 						rs.getString("L_NAME"), rs.getInt("MEMBERSHIP_ID")));
 			}
 		} catch (SQLException e) {
@@ -540,14 +540,14 @@ public class SqlSelect {
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(query + ";"));
 			while (rs.next()) {
 				theseFiscals.add(new Object_PaidDues(rs.getInt("MONEY_ID"), rs.getInt("MS_ID"),
-						rs.getInt("FISCAL_YEAR"), rs.getInt("BATCH"), rs.getInt("OFFICER_CREDIT"), rs.getInt("EXTRA_KEY"),
+						rs.getInt("FISCAL_YEAR"), rs.getInt("BATCH"), rs.getString("OFFICER_CREDIT"), rs.getInt("EXTRA_KEY"),
 						rs.getInt("KAYAK_SHED_KEY"), rs.getInt("SAIL_LOFT_KEY"), 
 						rs.getInt("SAIL_SCHOOL_LOFT_KEY"), rs.getInt("BEACH"), 
-						rs.getInt("WET_SLIP"), rs.getInt("KAYAK_RACK"), rs.getInt("KAYAK_SHED"), 
+						rs.getString("WET_SLIP"), rs.getInt("KAYAK_RACK"), rs.getInt("KAYAK_SHED"),
 						rs.getInt("SAIL_LOFT"), rs.getInt("SAIL_SCHOOL_LASER_LOFT"), rs.getInt("WINTER_STORAGE"),
-						rs.getInt("YSC_DONATION"),rs.getInt("PAID"),rs.getInt("TOTAL"),rs.getInt("CREDIT"),
-						rs.getInt("BALANCE"), rs.getInt("DUES"), rs.getBoolean("COMMITED"),rs.getBoolean("CLOSED"),
-						rs.getInt("OTHER"),rs.getInt("INITIATION"),rs.getBoolean("SUPPLEMENTAL"), rs.getString("F_NAME"),
+						rs.getString("YSC_DONATION"),rs.getString("PAID"),rs.getString("TOTAL"),rs.getString("CREDIT"),
+						rs.getString("BALANCE"), rs.getString("DUES"), rs.getBoolean("COMMITED"),rs.getBoolean("CLOSED"),
+						rs.getString("OTHER"),rs.getString("INITIATION"),rs.getBoolean("SUPPLEMENTAL"), rs.getString("F_NAME"),
 						rs.getString("L_NAME"), rs.getInt("MEMBERSHIP_ID")));
 			}
 		} catch (SQLException e) {
@@ -566,14 +566,14 @@ public class SqlSelect {
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(query + ";"));
 			while (rs.next()) {
 				theseFiscals.add(new Object_PaidDues(rs.getInt("MONEY_ID"), rs.getInt("MS_ID"),
-						rs.getInt("FISCAL_YEAR"), rs.getInt("BATCH"), rs.getInt("OFFICER_CREDIT"), rs.getInt("EXTRA_KEY"),
+						rs.getInt("FISCAL_YEAR"), rs.getInt("BATCH"), rs.getString("OFFICER_CREDIT"), rs.getInt("EXTRA_KEY"),
 						rs.getInt("KAYAK_SHED_KEY"), rs.getInt("SAIL_LOFT_KEY"), 
 						rs.getInt("SAIL_SCHOOL_LOFT_KEY"), rs.getInt("BEACH"), 
-						rs.getInt("WET_SLIP"), rs.getInt("KAYAK_RACK"), rs.getInt("KAYAK_SHED"), 
+						rs.getString("WET_SLIP"), rs.getInt("KAYAK_RACK"), rs.getInt("KAYAK_SHED"),
 						rs.getInt("SAIL_LOFT"), rs.getInt("SAIL_SCHOOL_LASER_LOFT"), rs.getInt("WINTER_STORAGE"),
-						rs.getInt("YSC_DONATION"),rs.getInt("PAID"),rs.getInt("TOTAL"),rs.getInt("CREDIT"),
-						rs.getInt("BALANCE"), rs.getInt("DUES"), rs.getBoolean("COMMITED"),rs.getBoolean("CLOSED"),
-						rs.getInt("OTHER"),rs.getInt("INITIATION"),rs.getBoolean("SUPPLEMENTAL"), rs.getString("F_NAME"),
+						rs.getString("YSC_DONATION"),rs.getString("PAID"),rs.getString("TOTAL"),rs.getString("CREDIT"),
+						rs.getString("BALANCE"), rs.getString("DUES"), rs.getBoolean("COMMITED"),rs.getBoolean("CLOSED"),
+						rs.getString("OTHER"),rs.getString("INITIATION"),rs.getBoolean("SUPPLEMENTAL"), rs.getString("F_NAME"),
 						rs.getString("L_NAME"), rs.getInt("MEMBERSHIP_ID")));
 			}
 		} catch (SQLException e) {
@@ -1066,12 +1066,12 @@ public class SqlSelect {
 			// if(Main.consoleVerbose) ;
 			while (rs.next()) {
 				definedFee = new Object_DefinedFee(
-						rs.getInt("FISCAL_YEAR"), rs.getInt("DUES_REGULAR"),
-						rs.getInt("DUES_FAMILY"), rs.getInt("DUES_LAKE_ASSOCIATE"), rs.getInt("DUES_SOCIAL"),
-						rs.getInt("INITIATION"), rs.getInt("WET_SLIP"), rs.getInt("BEACH"), rs.getInt("WINTER_STORAGE"),
-						rs.getInt("MAIN_GATE_KEY"), rs.getInt("SAIL_LOFT"), rs.getInt("SAIL_LOFT_KEY"),
-						rs.getInt("SAIL_SCHOOL_LASER_LOFT"), rs.getInt("SAIL_SCHOOL_LOFT_KEY"), rs.getInt("KAYAK_RACK"),
-						rs.getInt("KAYAK_SHED"), rs.getInt("kAYAK_SHED_KEY"), rs.getInt("WORK_CREDIT"));
+						rs.getInt("FISCAL_YEAR"), rs.getBigDecimal("DUES_REGULAR"),
+						rs.getBigDecimal("DUES_FAMILY"), rs.getBigDecimal("DUES_LAKE_ASSOCIATE"), rs.getBigDecimal("DUES_SOCIAL"),
+						rs.getBigDecimal("INITIATION"), rs.getBigDecimal("WET_SLIP"), rs.getBigDecimal("BEACH"), rs.getBigDecimal("WINTER_STORAGE"),
+						rs.getBigDecimal("MAIN_GATE_KEY"), rs.getBigDecimal("SAIL_LOFT"), rs.getBigDecimal("SAIL_LOFT_KEY"),
+						rs.getBigDecimal("SAIL_SCHOOL_LASER_LOFT"), rs.getBigDecimal("SAIL_SCHOOL_LOFT_KEY"), rs.getBigDecimal("KAYAK_RACK"),
+						rs.getBigDecimal("KAYAK_SHED"), rs.getBigDecimal("kAYAK_SHED_KEY"), rs.getBigDecimal("WORK_CREDIT"));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

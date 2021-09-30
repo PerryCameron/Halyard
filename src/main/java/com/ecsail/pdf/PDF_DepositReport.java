@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -241,31 +242,34 @@ public class PDF_DepositReport {
 		cell.setWidth(100);
 		//cell.add(new Paragraph(dues.getL_name() + "")).setFontSize(10);
 		detailTable.addCell(cell);
-		
-		if(dues.getDues() != 0) addItemRow(detailTable, "Annual Dues", dues.getDues(),0);
-		if(dues.getWinter_storage() != 0) addItemRow(detailTable, "Winter Storage Fee", dues.getWinter_storage() * currentDefinedFee.getWinter_storage(), dues.getWinter_storage());
+
+		BigDecimal annualDues = new BigDecimal(dues.getDues());
+		if(annualDues.compareTo(BigDecimal.ZERO) != 0) addItemRow(detailTable, "Annual Dues", annualDues,0);
+		if(dues.getWinter_storage() != 0) addItemRow(detailTable, "Winter Storage Fee", BigDecimal.valueOf(dues.getWinter_storage()).multiply(currentDefinedFee.getWinter_storage()), dues.getWinter_storage());
 		//// access ////
-		if(dues.getWet_slip() != 0) addItemRow(detailTable, "Wet Slip Fee", dues.getWet_slip(),retrunWetSlipNumber(dues.getWet_slip()));
-		if(dues.getBeach() != 0) addItemRow(detailTable, "Beach Spot Fee", dues.getBeach() * currentDefinedFee.getBeach(), dues.getBeach());
-		if(dues.getKayac_rack() != 0) addItemRow(detailTable, "Kayak Rack Fee", dues.getKayac_rack() * currentDefinedFee.getKayak_rack(), dues.getKayac_rack());
-		if(dues.getKayac_shed() != 0) addItemRow(detailTable, "Kayak Inside Storage Fee", dues.getKayac_shed() * currentDefinedFee.getKayak_shed(), dues.getKayac_shed());
-		if(dues.getSail_loft() != 0) addItemRow(detailTable, "Sail Loft Access Fee", dues.getSail_loft()* currentDefinedFee.getSail_loft(), dues.getSail_loft());
-		if(dues.getSail_school_laser_loft() != 0) addItemRow(detailTable, "Sail School Loft Acess", dues.getSail_school_laser_loft() * currentDefinedFee.getSail_school_laser_loft(), dues.getSail_school_laser_loft());
+			BigDecimal wetSlip = new BigDecimal(dues.getWet_slip());
+		if(wetSlip.compareTo(BigDecimal.ZERO) != 0) addItemRow(detailTable, "Wet Slip Fee", wetSlip,returnWetSlipNumber(wetSlip));
+		if(dues.getBeach() != 0) addItemRow(detailTable, "Beach Spot Fee", BigDecimal.valueOf(dues.getBeach()).multiply(currentDefinedFee.getBeach()), dues.getBeach());
+		if(dues.getKayac_rack() != 0) addItemRow(detailTable, "Kayak Rack Fee", BigDecimal.valueOf(dues.getKayac_rack()).multiply(currentDefinedFee.getKayak_rack()), dues.getKayac_rack());
+		if(dues.getKayac_shed() != 0) addItemRow(detailTable, "Kayak Inside Storage Fee", BigDecimal.valueOf(dues.getKayac_shed()).multiply(currentDefinedFee.getKayak_shed()), dues.getKayac_shed());
+		if(dues.getSail_loft() != 0) addItemRow(detailTable, "Sail Loft Access Fee", BigDecimal.valueOf(dues.getSail_loft()).multiply(currentDefinedFee.getSail_loft()), dues.getSail_loft());
+		if(dues.getSail_school_laser_loft() != 0) addItemRow(detailTable, "Sail School Loft Acess", BigDecimal.valueOf(dues.getSail_school_laser_loft()).multiply(currentDefinedFee.getSail_school_laser_loft()), dues.getSail_school_laser_loft());
 
 		//// keys ////
-		if(dues.getExtra_key() != 0) addItemRow(detailTable, "Extra Gate Key Fee", dues.getExtra_key() * currentDefinedFee.getMain_gate_key(), dues.getExtra_key());
-		if(dues.getSail_school_loft_key() != 0) addItemRow(detailTable, "Extra Sail School Loft Key Fee", dues.getSail_school_loft_key() * currentDefinedFee.getSail_school_loft_key(), dues.getSail_school_loft_key());
-		if(dues.getKayac_shed_key() != 0) addItemRow(detailTable, "Extra Inside Storage Key", dues.getKayac_shed_key() * currentDefinedFee.getKayak_shed_key(), dues.getKayac_shed_key());
-		if(dues.getSail_loft_key() != 0) addItemRow(detailTable, "Extra Sail Loft Key Fee", dues.getSail_loft_key()* currentDefinedFee.getSail_loft_key(), dues.getSail_loft_key());
+		if(dues.getExtra_key() != 0) addItemRow(detailTable, "Extra Gate Key Fee", BigDecimal.valueOf(dues.getExtra_key()).multiply(currentDefinedFee.getMain_gate_key()), dues.getExtra_key());
+		if(dues.getSail_school_loft_key() != 0) addItemRow(detailTable, "Extra Sail School Loft Key Fee", BigDecimal.valueOf(dues.getSail_school_loft_key()).multiply(currentDefinedFee.getSail_school_loft_key()), dues.getSail_school_loft_key());
+		if(dues.getKayac_shed_key() != 0) addItemRow(detailTable, "Extra Inside Storage Key", BigDecimal.valueOf(dues.getKayac_shed_key()).multiply(currentDefinedFee.getKayak_shed_key()), dues.getKayac_shed_key());
+		if(dues.getSail_loft_key() != 0) addItemRow(detailTable, "Extra Sail Loft Key Fee", BigDecimal.valueOf(dues.getSail_loft_key()).multiply(currentDefinedFee.getSail_loft_key()), dues.getSail_loft_key());
 
-		if(dues.getInitiation() != 0) addItemRow(detailTable, "Initiation Fee", dues.getInitiation(), 0);
-		if(dues.getYsc_donation() != 0) addItemRow(detailTable, "Youth Sailing Club Donation", dues.getYsc_donation(), 0);
-		if(dues.getOther() != 0) addItemRow(detailTable, "Other: " + getOtherNote(dues) , dues.getOther(),0);
-		addItemRow(detailTable, "Total Fees", dues.getTotal(),0);
-		if(dues.getCredit() != 0) addCreditRow(detailTable, "Credit", dues.getCredit(),0);
-		addItemRow(detailTable, "Total Due", dues.getTotal() - dues.getCredit(),0);
-		addItemPaidRow(detailTable, dues.getPaid());
-		if(dues.getBalance() != 0) addBalanceRow(detailTable, "Balance", dues.getBalance(), 0);
+//		Fix all this
+//		if(dues.getInitiation() != 0) addItemRow(detailTable, "Initiation Fee", dues.getInitiation(), 0);
+//		if(dues.getYsc_donation() != 0) addItemRow(detailTable, "Youth Sailing Club Donation", dues.getYsc_donation(), 0);
+//		if(dues.getOther() != 0) addItemRow(detailTable, "Other: " + getOtherNote(dues) , dues.getOther(),0);
+//		addItemRow(detailTable, "Total Fees", dues.getTotal(),0);
+//		if(dues.getCredit() != 0) addCreditRow(detailTable, "Credit", dues.getCredit(),0);
+//		addItemRow(detailTable, "Total Due", dues.getTotal() - dues.getCredit(),0);
+//		addItemPaidRow(detailTable, dues.getPaid());
+//		if(dues.getBalance() != 0) addBalanceRow(detailTable, "Balance", dues.getBalance(), 0);
 		}
 		
 		return detailTable;
@@ -284,9 +288,9 @@ public class PDF_DepositReport {
 		return thisMemo;
 	}
 	
-	int retrunWetSlipNumber(int numberOf) {
+	int returnWetSlipNumber(BigDecimal numberOf) {
 		int result = 0;
-		if(numberOf != 0) result = 1;
+		if(numberOf.compareTo(BigDecimal.ZERO) != 0) result = 1;
 		return result;
 	}
 	
@@ -331,7 +335,7 @@ public class PDF_DepositReport {
 		detailTable.addCell(new Cell().setTextAlignment(TextAlignment.RIGHT).setBorder(Border.NO_BORDER).add(new Paragraph(addDollarSign() + String.format("%,d", money))).setFontSize(10));
 	}
 	
-	private void addItemRow(Table detailTable, String label, int money, int numberOf) {
+	private void addItemRow(Table detailTable, String label, BigDecimal money, int numberOf) {
 		detailTable.addCell(new Cell().setBorder(Border.NO_BORDER));
 		detailTable.addCell(new Cell().setBorder(Border.NO_BORDER));
 		detailTable.addCell(new Cell().setBorder(Border.NO_BORDER).add(new Paragraph(label)).setFontSize(10));
@@ -372,56 +376,57 @@ public class PDF_DepositReport {
 		mainTable.addCell(new Cell().setWidth(200));
 		mainTable.addCell(new Cell().setWidth(70));
 		mainTable.addCell(new Cell().setWidth(40));
-		if (totals.getDuesNumber() != 0) {
-			addSummaryRow(mainTable, "Annual Dues" , totals.getDuesNumber(), totals.getDues());
-		}
-		if (totals.getWinter_storageNumber() != 0) {
-			addSummaryRow(mainTable, "Winter Storage Fee" , totals.getWinter_storageNumber(), totals.getWinter_storage());
-		}
-		if (totals.getWet_slip() != 0) {
-			addSummaryRow(mainTable, "Wet slip Fee" , totals.getWet_slipNumber(), totals.getWet_slip());
-		}
-		if (totals.getBeach() != 0) {
-			addSummaryRow(mainTable, "Beach Spot Fee" , totals.getBeachNumber(), totals.getBeach());
-		}
-		if (totals.getKayak_rack() != 0) {
-			addSummaryRow(mainTable, "Outside Kayak Rack Fee" , totals.getKayak_rackNumber(), totals.getKayak_rack());
-		}
-		if (totals.getKayak_shed() != 0) {
-			addSummaryRow(mainTable, "Inside Kayak Storage Fee" , totals.getKayak_shedNumber(), totals.getKayak_shed());
-		}
-		if (totals.getSail_loft() != 0) {
-			addSummaryRow(mainTable, "Sail Loft Access Fee" , totals.getSail_loftNumber(), totals.getSail_loft());
-		}
-		if (totals.getSail_school_laser_loft() != 0) {
-			addSummaryRow(mainTable, "Sail School Loft Access Fee" , totals.getSail_school_laser_loftNumber(), totals.getSail_school_laser_loft());
-		}
-		if (totals.getInitiation() != 0) {
-			addSummaryRow(mainTable, "Initiation Fee" , totals.getInitiationNumber(), totals.getInitiation());
-		}
-		///////////////////  KEYS //////////////////////////////
-		if (totals.getGate_key() != 0) {
-			addSummaryRow(mainTable, "Extra Gate Key Fee" , totals.getGate_keyNumber(), totals.getGate_key());
-		}
-		if (totals.getSail_loft_key() != 0) {
-			addSummaryRow(mainTable, "Sail Loft Key Fee" , totals.getSail_loft_keyNumber(), totals.getSail_loft_key());
-		}
-		if (totals.getSail_school_loft_key() != 0) {
-			addSummaryRow(mainTable, "Sail School Loft Key Fee" , totals.getSail_school_loft_keyNumber(), totals.getSail_school_loft_key());
-		}
-		if (totals.getKayac_shed_key() != 0) {
-			addSummaryRow(mainTable, "Kayak Shed Key Fee" , totals.getKayac_shed_keyNumber(), totals.getKayac_shed_key());
-		}
-		if (totals.getYsc_donation() != 0) {
-			addSummaryRow(mainTable, "Youth Sailing Club Donation" , totals.getYsc_donationNumber(), totals.getYsc_donation());
-		}
-		if (totals.getOther() != 0) {
-			addSummaryRow(mainTable, "Other" , totals.getOtherNumber(), totals.getOther());
-		}
-		if (totals.getCredit() != 0) {
-			addSummaryRow(mainTable, "Credits" , totals.getCreditNumber(), totals.getCredit());
-		}
-		
+//		Fix all this
+//		if (totals.getDuesNumber() != 0) {
+//			addSummaryRow(mainTable, "Annual Dues" , totals.getDuesNumber(), totals.getDues());
+//		}
+//		if (totals.getWinter_storageNumber() != 0) {
+//			addSummaryRow(mainTable, "Winter Storage Fee" , totals.getWinter_storageNumber(), totals.getWinter_storage());
+//		}
+//		if (totals.getWet_slip() != 0) {
+//			addSummaryRow(mainTable, "Wet slip Fee" , totals.getWet_slipNumber(), totals.getWet_slip());
+//		}
+//		if (totals.getBeach() != 0) {
+//			addSummaryRow(mainTable, "Beach Spot Fee" , totals.getBeachNumber(), totals.getBeach());
+//		}
+//		if (totals.getKayak_rack() != 0) {
+//			addSummaryRow(mainTable, "Outside Kayak Rack Fee" , totals.getKayak_rackNumber(), totals.getKayak_rack());
+//		}
+//		if (totals.getKayak_shed() != 0) {
+//			addSummaryRow(mainTable, "Inside Kayak Storage Fee" , totals.getKayak_shedNumber(), totals.getKayak_shed());
+//		}
+//		if (totals.getSail_loft() != 0) {
+//			addSummaryRow(mainTable, "Sail Loft Access Fee" , totals.getSail_loftNumber(), totals.getSail_loft());
+//		}
+//		if (totals.getSail_school_laser_loft() != 0) {
+//			addSummaryRow(mainTable, "Sail School Loft Access Fee" , totals.getSail_school_laser_loftNumber(), totals.getSail_school_laser_loft());
+//		}
+//		if (totals.getInitiation() != 0) {
+//			addSummaryRow(mainTable, "Initiation Fee" , totals.getInitiationNumber(), totals.getInitiation());
+//		}
+//		///////////////////  KEYS //////////////////////////////
+//		if (totals.getGate_key() != 0) {
+//			addSummaryRow(mainTable, "Extra Gate Key Fee" , totals.getGate_keyNumber(), totals.getGate_key());
+//		}
+//		if (totals.getSail_loft_key() != 0) {
+//			addSummaryRow(mainTable, "Sail Loft Key Fee" , totals.getSail_loft_keyNumber(), totals.getSail_loft_key());
+//		}
+//		if (totals.getSail_school_loft_key() != 0) {
+//			addSummaryRow(mainTable, "Sail School Loft Key Fee" , totals.getSail_school_loft_keyNumber(), totals.getSail_school_loft_key());
+//		}
+//		if (totals.getKayac_shed_key() != 0) {
+//			addSummaryRow(mainTable, "Kayak Shed Key Fee" , totals.getKayac_shed_keyNumber(), totals.getKayac_shed_key());
+//		}
+//		if (totals.getYsc_donation() != 0) {
+//			addSummaryRow(mainTable, "Youth Sailing Club Donation" , totals.getYsc_donationNumber(), totals.getYsc_donation());
+//		}
+//		if (totals.getOther() != 0) {
+//			addSummaryRow(mainTable, "Other" , totals.getOtherNumber(), totals.getOther());
+//		}
+//		if (totals.getCredit() != 0) {
+//			addSummaryRow(mainTable, "Credits" , totals.getCreditNumber(), totals.getCredit());
+//		}
+//
 		
 		RemoveBorder(mainTable);
 		cell = new Cell();
@@ -465,83 +470,84 @@ public class PDF_DepositReport {
 		int numberOfRecordsCounted = 0; // number of records counted
 		Object_DepositSummary t = new Object_DepositSummary();
 		for (Object_PaidDues d : paidDuesForDeposit) {
-			if (d.getBeach() != 0) { ///////// BEACH
-				t.setBeachNumber(d.getBeach() + t.getBeachNumber());
-				int totalBeachDollars = currentDefinedFee.getBeach() * d.getBeach();
-				t.setBeach(totalBeachDollars + t.getBeach());
-			}
-			if (d.getCredit() != 0) {  ////////  CREDIT
-				t.setCreditNumber(1 + t.getCreditNumber());
-				t.setCredit(d.getCredit() + t.getCredit());
-			}
-			if (d.getDues() != 0) {  ////////  DUES
-				t.setDuesNumber(1 + t.getDuesNumber());
-				t.setDues(d.getDues() + t.getDues());
-			}
-			if (d.getExtra_key() != 0) { /////  EXTRA GATE KEY
-				t.setGate_keyNumber(d.getExtra_key() + t.getGate_keyNumber());
-				int totalGateKeyDollars = currentDefinedFee.getMain_gate_key() * d.getExtra_key();
-				t.setGate_key(t.getGate_key() + totalGateKeyDollars);
-			}
-			if (d.getInitiation() != 0) {  /////// INITIATION
-				t.setInitiationNumber(1 + t.getInitiationNumber());
-				t.setInitiation(d.getInitiation() + t.getInitiation());
-			}
-			if (d.getKayac_rack() != 0) {  ///// KAYACK RACK FEE
-				t.setKayak_rackNumber(d.getKayac_rack() + t.getKayak_rackNumber());
-				int totalKayakRackDollars = currentDefinedFee.getKayak_rack() * d.getKayac_rack();
-				t.setKayak_rack(totalKayakRackDollars + t.getKayak_rack());
-			}
-			if (d.getKayac_shed() != 0) {   //////// KAYAK SHED ACCESS
-				t.setKayak_shedNumber(d.getKayac_shed() + t.getKayac_shed_keyNumber());
-				int totalKayakShedDollars = currentDefinedFee.getKayak_shed() * d.getKayac_shed();
-				t.setKayak_shed(totalKayakShedDollars + t.getKayak_shed());
-			}
-			if (d.getKayac_shed_key() != 0) {   ///// KAYAK SHED KEY
-				t.setKayac_shed_keyNumber(d.getKayac_shed_key() + t.getKayac_shed_keyNumber());
-				int totalKayakShedKeyDollars = currentDefinedFee.getKayak_shed_key() * d.getKayac_shed_key();
-				t.setKayac_shed_key(totalKayakShedKeyDollars + t.getKayac_shed_key());
-			}
-			if (d.getOther() != 0) {  /////////  OTHER FEE ///////// IN DOLLARS
-				t.setOtherNumber(1 + t.getOtherNumber());
-				t.setOther(d.getOther() + t.getOther());
-			}
-			if (d.getSail_loft() != 0) {   ////////// SAIL LOFT ACCESS ///////// IN NUMBER OF
-				t.setSail_loftNumber(1 + t.getSail_loftNumber());
-				t.setSail_loft(currentDefinedFee.getSail_loft() + t.getSail_loft());
-			}
-			if (d.getSail_loft_key() != 0) {  ///////// SAIL LOFT KEY ///////// IN NUMBER OF
-				t.setSail_loft_keyNumber(d.getSail_loft_key() + t.getSail_loft_keyNumber());
-				int totalSailLoftKeyDollars = currentDefinedFee.getSail_loft_key() * d.getSail_loft_key();
-				t.setSail_loft_key(totalSailLoftKeyDollars + t.getSail_loft_key());
-			}
-			if (d.getSail_school_laser_loft() != 0) {  ///////// SAIL SCHOOL LOFT ACCESS ///////// IN NUMBER OF
-				t.setSail_school_laser_loftNumber(d.getSail_school_laser_loft() + t.getSail_school_laser_loftNumber());
-				int totalSailSchoolLoftDollars = currentDefinedFee.getSail_school_laser_loft() * d.getSail_school_laser_loft();
-				System.out.println("Sail school laser loft=" + totalSailSchoolLoftDollars);
-				t.setSail_school_laser_loft(totalSailSchoolLoftDollars + t.getSail_school_laser_loft());
-			}
-			if (d.getSail_school_loft_key() != 0) {  ////////// SAIL SCHOOL LOFT KEY ///////// IN NUMBER OF
-				t.setSail_school_loft_keyNumber(d.getSail_school_loft_key() + t.getSail_school_loft_keyNumber());
-				int totalSailSchoolLoftKeyDollars = currentDefinedFee.getSail_school_loft_key() * d.getSail_school_loft_key();
-				t.setSail_school_loft_key(totalSailSchoolLoftKeyDollars + t.getSail_school_loft_key());
-			}
-			if (d.getWet_slip() != 0) {  ////////// WET SLIP FEE ///////// IN DOLLARS 
-				t.setWet_slipNumber(1 + t.getWet_slipNumber());
-				t.setWet_slip(d.getWet_slip() + t.getWet_slip());
-			}
-			if (d.getWinter_storage() != 0) {  ////////  WINTER STORAGE FEE ///////// IN NUMBER OF
-				t.setWinter_storageNumber(d.getWinter_storage() + t.getWinter_storageNumber());
-				int totalWinterStorageDollars = currentDefinedFee.getWinter_storage() * d.getWinter_storage();
-				t.setWinter_storage(totalWinterStorageDollars + t.getWinter_storage());
-			}
-			if (d.getYsc_donation() != 0) {  //////// YSC DONATION ///////// IN DOLLARS
-				t.setYsc_donationNumber(1 + t.getYsc_donationNumber());
-				t.setYsc_donation(d.getYsc_donation() + t.getYsc_donation());
-			}
-			if (d.getPaid() != 0) {
-				t.setPaid(d.getPaid() + t.getPaid());
-			}
+//			Fix all this
+//			if (d.getBeach() != 0) { ///////// BEACH
+//				t.setBeachNumber(d.getBeach() + t.getBeachNumber());
+//				int totalBeachDollars = currentDefinedFee.getBeach() * d.getBeach();
+//				t.setBeach(totalBeachDollars + t.getBeach());
+//			}
+//			if (d.getCredit() != 0) {  ////////  CREDIT
+//				t.setCreditNumber(1 + t.getCreditNumber());
+//				t.setCredit(d.getCredit() + t.getCredit());
+//			}
+//			if (d.getDues() != 0) {  ////////  DUES
+//				t.setDuesNumber(1 + t.getDuesNumber());
+//				t.setDues(d.getDues() + t.getDues());
+//			}
+//			if (d.getExtra_key() != 0) { /////  EXTRA GATE KEY
+//				t.setGate_keyNumber(d.getExtra_key() + t.getGate_keyNumber());
+//				int totalGateKeyDollars = currentDefinedFee.getMain_gate_key() * d.getExtra_key();
+//				t.setGate_key(t.getGate_key() + totalGateKeyDollars);
+//			}
+//			if (d.getInitiation() != 0) {  /////// INITIATION
+//				t.setInitiationNumber(1 + t.getInitiationNumber());
+//				t.setInitiation(d.getInitiation() + t.getInitiation());
+//			}
+//			if (d.getKayac_rack() != 0) {  ///// KAYACK RACK FEE
+//				t.setKayak_rackNumber(d.getKayac_rack() + t.getKayak_rackNumber());
+//				int totalKayakRackDollars = currentDefinedFee.getKayak_rack() * d.getKayac_rack();
+//				t.setKayak_rack(totalKayakRackDollars + t.getKayak_rack());
+//			}
+//			if (d.getKayac_shed() != 0) {   //////// KAYAK SHED ACCESS
+//				t.setKayak_shedNumber(d.getKayac_shed() + t.getKayac_shed_keyNumber());
+//				int totalKayakShedDollars = currentDefinedFee.getKayak_shed() * d.getKayac_shed();
+//				t.setKayak_shed(totalKayakShedDollars + t.getKayak_shed());
+//			}
+//			if (d.getKayac_shed_key() != 0) {   ///// KAYAK SHED KEY
+//				t.setKayac_shed_keyNumber(d.getKayac_shed_key() + t.getKayac_shed_keyNumber());
+//				int totalKayakShedKeyDollars = currentDefinedFee.getKayak_shed_key() * d.getKayac_shed_key();
+//				t.setKayac_shed_key(totalKayakShedKeyDollars + t.getKayac_shed_key());
+//			}
+//			if (d.getOther() != 0) {  /////////  OTHER FEE ///////// IN DOLLARS
+//				t.setOtherNumber(1 + t.getOtherNumber());
+//				t.setOther(d.getOther() + t.getOther());
+//			}
+//			if (d.getSail_loft() != 0) {   ////////// SAIL LOFT ACCESS ///////// IN NUMBER OF
+//				t.setSail_loftNumber(1 + t.getSail_loftNumber());
+//				t.setSail_loft(currentDefinedFee.getSail_loft() + t.getSail_loft());
+//			}
+//			if (d.getSail_loft_key() != 0) {  ///////// SAIL LOFT KEY ///////// IN NUMBER OF
+//				t.setSail_loft_keyNumber(d.getSail_loft_key() + t.getSail_loft_keyNumber());
+//				int totalSailLoftKeyDollars = currentDefinedFee.getSail_loft_key() * d.getSail_loft_key();
+//				t.setSail_loft_key(totalSailLoftKeyDollars + t.getSail_loft_key());
+//			}
+//			if (d.getSail_school_laser_loft() != 0) {  ///////// SAIL SCHOOL LOFT ACCESS ///////// IN NUMBER OF
+//				t.setSail_school_laser_loftNumber(d.getSail_school_laser_loft() + t.getSail_school_laser_loftNumber());
+//				int totalSailSchoolLoftDollars = currentDefinedFee.getSail_school_laser_loft() * d.getSail_school_laser_loft();
+//				System.out.println("Sail school laser loft=" + totalSailSchoolLoftDollars);
+//				t.setSail_school_laser_loft(totalSailSchoolLoftDollars + t.getSail_school_laser_loft());
+//			}
+//			if (d.getSail_school_loft_key() != 0) {  ////////// SAIL SCHOOL LOFT KEY ///////// IN NUMBER OF
+//				t.setSail_school_loft_keyNumber(d.getSail_school_loft_key() + t.getSail_school_loft_keyNumber());
+//				int totalSailSchoolLoftKeyDollars = currentDefinedFee.getSail_school_loft_key() * d.getSail_school_loft_key();
+//				t.setSail_school_loft_key(totalSailSchoolLoftKeyDollars + t.getSail_school_loft_key());
+//			}
+//			if (d.getWet_slip() != 0) {  ////////// WET SLIP FEE ///////// IN DOLLARS
+//				t.setWet_slipNumber(1 + t.getWet_slipNumber());
+//				t.setWet_slip(d.getWet_slip() + t.getWet_slip());
+//			}
+//			if (d.getWinter_storage() != 0) {  ////////  WINTER STORAGE FEE ///////// IN NUMBER OF
+//				t.setWinter_storageNumber(d.getWinter_storage() + t.getWinter_storageNumber());
+//				int totalWinterStorageDollars = currentDefinedFee.getWinter_storage() * d.getWinter_storage();
+//				t.setWinter_storage(totalWinterStorageDollars + t.getWinter_storage());
+//			}
+//			if (d.getYsc_donation() != 0) {  //////// YSC DONATION ///////// IN DOLLARS
+//				t.setYsc_donationNumber(1 + t.getYsc_donationNumber());
+//				t.setYsc_donation(d.getYsc_donation() + t.getYsc_donation());
+//			}
+//			if (d.getPaid() != 0) {
+//				t.setPaid(d.getPaid() + t.getPaid());
+//			}
 			numberOfRecordsCounted++;
 		}
 

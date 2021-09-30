@@ -4,6 +4,7 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -406,8 +407,8 @@ public class PDF_Renewal_Form {
 		cell.setBorderBottom(new SolidBorder(0.5f));
 		//cell.setBorderLeft(new SolidBorder(borderSize));
 		cell.setWidth(10);
-		
-		if(dues.getWet_slip() > 0) 
+		BigDecimal wetslip = new BigDecimal(dues.getWet_slip());
+		if(wetslip.compareTo(BigDecimal.ZERO) > 0.00)
 			cell.add(new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/checked-checkbox9x9.png")))));
 		else
 		cell.add(new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/unchecked-checkbox9x9.png")))));  /// WET SLIP CHECKBOX
