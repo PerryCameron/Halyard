@@ -18,9 +18,9 @@ public class Object_PaidDues extends Object_Money {
 	private IntegerProperty membershipId;  // Member ID used in real life
 	
 	public Object_PaidDues(Integer money_id, Integer ms_id, Integer fiscal_year, Integer batch, String officer_credit,
-						   String extra_key, String kayak_shed_key, String sail_loft_key, String sail_school_loft_key,
-						   String beach, String wet_slip, String kayak_rack, String kayac_shed, String sail_loft,
-						   String sail_school_laser_loft, String winter_storage, String ysc_donation, String paid, String total,
+						   Integer extra_key, Integer kayak_shed_key, Integer sail_loft_key, Integer sail_school_loft_key,
+						   Integer beach, String wet_slip, Integer kayak_rack, Integer kayac_shed, Integer sail_loft,
+						   Integer sail_school_laser_loft, Integer winter_storage, String ysc_donation, String paid, String total,
 						   String credit, String balance, String dues, Boolean committed, Boolean closed, String other, String initiation,
 			Boolean supplemental, String f_name, String l_name, Integer membershipId) {
 		

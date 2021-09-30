@@ -29,8 +29,8 @@ public class Object_DepositSummary {
 	private int sail_school_loft_keyNumber; 
 	private int beachNumber;
 	private int wet_slipNumber;
-	private int kayac_rackNumber;
-	private int kayac_shedNumber;
+	private int kayak_rackNumber;
+	private int kayak_shedNumber;
 	private int sail_loftNumber; 
 	private int sail_school_laser_loftNumber;
 	private int winter_storageNumber;
@@ -244,20 +244,20 @@ public class Object_DepositSummary {
 		this.wet_slipNumber = wet_slipNumber;
 	}
 
-	public int getKayac_rackNumber() {
-		return kayac_rackNumber;
+	public int getKayak_rackNumber() {
+		return kayak_rackNumber;
 	}
 
-	public void setKayac_rackNumber(int kayac_rackNumber) {
-		this.kayac_rackNumber = kayac_rackNumber;
+	public void setKayak_rackNumber(int kayak_rackNumber) {
+		this.kayak_rackNumber = kayak_rackNumber;
 	}
 
-	public int getKayac_shedNumber() {
-		return kayac_shedNumber;
+	public int getKayak_shedNumber() {
+		return kayak_shedNumber;
 	}
 
-	public void setKayac_shedNumber(int kayac_shedNumber) {
-		this.kayac_shedNumber = kayac_shedNumber;
+	public void setKayak_shedNumber(int kayak_shedNumber) {
+		this.kayak_shedNumber = kayak_shedNumber;
 	}
 
 	public int getSail_loftNumber() {
@@ -389,8 +389,8 @@ public class Object_DepositSummary {
 		this.sail_school_loft_keyNumber = 0;
 		this.beachNumber = 0;
 		this.wet_slipNumber = 0;
-		this.kayac_rackNumber = 0;
-		this.kayac_shedNumber = 0;
+		this.kayak_rackNumber = 0;
+		this.kayak_shedNumber = 0;
 		this.sail_loftNumber = 0;
 		this.sail_school_laser_loftNumber = 0;
 		this.winter_storageNumber = 0;
@@ -418,8 +418,8 @@ public class Object_DepositSummary {
 				+ ", officer_creditNumber=" + officer_creditNumber + ", gate_keyNumber=" + gate_keyNumber
 				+ ", kayac_shed_keyNumber=" + kayac_shed_keyNumber + ", sail_loft_keyNumber=" + sail_loft_keyNumber
 				+ ", sail_school_loft_keyNumber=" + sail_school_loft_keyNumber + ", beachNumber=" + beachNumber
-				+ ", wet_slipNumber=" + wet_slipNumber + ", kayac_rackNumber=" + kayac_rackNumber
-				+ ", kayac_shedNumber=" + kayac_shedNumber + ", sail_loftNumber=" + sail_loftNumber
+				+ ", wet_slipNumber=" + wet_slipNumber + ", kayac_rackNumber=" + kayak_rackNumber
+				+ ", kayac_shedNumber=" + kayak_shedNumber + ", sail_loftNumber=" + sail_loftNumber
 				+ ", sail_school_laser_loftNumber=" + sail_school_laser_loftNumber + ", winter_storageNumber="
 				+ winter_storageNumber + ", ysc_donationNumber=" + ysc_donationNumber + ", creditNumber=" + creditNumber
 				+ ", duesNumber=" + duesNumber + ", otherNumber=" + otherNumber + ", initiationNumber="

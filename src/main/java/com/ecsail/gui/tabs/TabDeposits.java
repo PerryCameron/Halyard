@@ -522,10 +522,10 @@ public class TabDeposits extends Tab {
 		summaryText.getBeachSpotNumberText().setText(summaryTotals.getBeachNumber() + "");
 		summaryText.getBeachSpotMoneyText().setText("$" + summaryTotals.getBeach());
 
-		summaryText.getKayacRackNumberText().setText(summaryTotals.getKayac_rackNumber() + "");
+		summaryText.getKayacRackNumberText().setText(summaryTotals.getKayak_rackNumber() + "");
 		summaryText.getKayacRackMoneyText().setText("$" + summaryTotals.getKayak_rack());
 
-		summaryText.getKayacShedNumberText().setText(summaryTotals.getKayac_shedNumber() + "");
+		summaryText.getKayacShedNumberText().setText(summaryTotals.getKayak_shedNumber() + "");
 		summaryText.getKayacShedMoneyText().setText("$" + summaryTotals.getKayak_shed());
 
 		summaryText.getSailLoftNumberText().setText(summaryTotals.getSail_loftNumber() + "");
@@ -565,88 +565,100 @@ public class TabDeposits extends Tab {
 		for (Object_PaidDues d : paidDues) {
 			BigDecimal beach = new BigDecimal(d.getBeach());  // make d.getbeach into bigDecimal
 			if (beach.compareTo(BigDecimal.ZERO) != 0) { ///////// BEACH
-				summaryTotals.setBeachNumber(Integer.parseInt(d.getBeach()) + summaryTotals.getBeachNumber()); // Integer
-				BigDecimal totalBeachDollars = currentDefinedFee.getBeach().multiply(beach); // Bigdecimal
-				summaryTotals.setBeach(totalBeachDollars.multiply(summaryTotals.getBeach())); // Bigdecimal
+				summaryTotals.setBeachNumber(d.getBeach() + summaryTotals.getBeachNumber()); // Integer
+				BigDecimal totalBeachDollars = currentDefinedFee.getBeach().multiply(beach); // BigDecimal
+				summaryTotals.setBeach(totalBeachDollars.multiply(summaryTotals.getBeach())); // BigDecimal
 			}
 			BigDecimal credit = new BigDecimal(d.getCredit()); //
 			if (credit.compareTo(BigDecimal.ZERO) != 0) { //////// CREDIT
 				summaryTotals.setCreditNumber(1 + summaryTotals.getCreditNumber()); // Integer
-				summaryTotals.setCredit(credit.add(summaryTotals.getCredit())); // Bigdecimal
+				summaryTotals.setCredit(credit.add(summaryTotals.getCredit())); // BigDecimal
 			}
-			if (d.getDues() != 0) { //////// DUES
-				summaryTotals.setDuesNumber(1 + summaryTotals.getDuesNumber());
-				summaryTotals.setDues(d.getDues() + summaryTotals.getDues());
+			BigDecimal dues = new BigDecimal((d.getDues()));
+			if (dues.compareTo(BigDecimal.ZERO) != 0) { //////// DUES
+				summaryTotals.setDuesNumber(1 + summaryTotals.getDuesNumber()); // Integer
+				summaryTotals.setDues(dues.add(summaryTotals.getDues()));  // BigDecimal
 			}
+			BigDecimal extraKey = new BigDecimal(d.getExtra_key());
 			if (d.getExtra_key() != 0) { ///// EXTRA GATE KEY
 				System.out.println("d.getExtraKey()=" + d.getExtra_key());
 				summaryTotals.setGate_keyNumber(d.getExtra_key() + summaryTotals.getGate_keyNumber());
-				int totalGateKeyDollars = currentDefinedFee.getMain_gate_key() * d.getExtra_key();
-				summaryTotals.setGate_key(summaryTotals.getGate_key() + totalGateKeyDollars);
+				BigDecimal totalGateKeyDollars = currentDefinedFee.getMain_gate_key().multiply(extraKey); // Integer
+				summaryTotals.setGate_key(summaryTotals.getGate_key().add(totalGateKeyDollars)); // BigDecimal
 			}
-			if (d.getInitiation() != 0) { /////// INITIATION
+			BigDecimal initiation = new BigDecimal(d.getInitiation());
+			if (initiation.compareTo(BigDecimal.ZERO) != 0) { /////// INITIATION
 				summaryTotals.setInitiationNumber(1 + summaryTotals.getInitiationNumber());
-				summaryTotals.setInitiation(d.getInitiation() + summaryTotals.getInitiation());
+				summaryTotals.setInitiation(initiation.add(summaryTotals.getInitiation()));
 			}
+			BigDecimal kayakRack = new BigDecimal(d.getKayac_rack());
 			if (d.getKayac_rack() != 0) { ///// KAYACK RACK FEE
-				summaryTotals.setKayac_rackNumber(d.getKayac_rack() + summaryTotals.getKayac_rackNumber());
-				int totalKayakRackDollars = currentDefinedFee.getKayak_rack() * d.getKayac_rack();
-				summaryTotals.setKayak_rack(totalKayakRackDollars + summaryTotals.getKayak_rack());
+				summaryTotals.setKayak_rackNumber(d.getKayac_rack() + summaryTotals.getKayak_rackNumber());
+				BigDecimal totalKayakRackDollars = currentDefinedFee.getKayak_rack().multiply(kayakRack);
+				summaryTotals.setKayak_rack(totalKayakRackDollars.add(summaryTotals.getKayak_rack()));
 			}
+			BigDecimal kayakShed = new BigDecimal(d.getKayac_shed());
 			if (d.getKayac_shed() != 0) { //////// KAYAK SHED ACCESS
-				summaryTotals.setKayac_shedNumber(d.getKayac_shed() + summaryTotals.getKayac_shed_keyNumber());
-				int totalKayakShedDollars = currentDefinedFee.getKayak_shed() * d.getKayac_shed();
-				summaryTotals.setKayak_shed(totalKayakShedDollars + summaryTotals.getKayak_shed());
+				summaryTotals.setKayak_shedNumber(d.getKayac_shed() + summaryTotals.getKayac_shed_keyNumber());
+				BigDecimal totalKayakShedDollars = currentDefinedFee.getKayak_shed().multiply(kayakShed);
+				summaryTotals.setKayak_shed(totalKayakShedDollars.add(summaryTotals.getKayak_shed()));
 			}
+			BigDecimal kayakShedKey = new BigDecimal(d.getKayac_shed_key());
 			if (d.getKayac_shed_key() != 0) { ///// KAYAK SHED KEY
 				summaryTotals.setKayac_shed_keyNumber(d.getKayac_shed_key() + summaryTotals.getKayac_shed_keyNumber());
-				int totalKayakShedKeyDollars = currentDefinedFee.getKayak_shed_key() * d.getKayac_shed_key();
-				summaryTotals.setKayac_shed_key(totalKayakShedKeyDollars + summaryTotals.getKayac_shed_key());
+				BigDecimal totalKayakShedKeyDollars = currentDefinedFee.getKayak_shed_key().multiply(kayakShedKey);
+				summaryTotals.setKayac_shed_key(totalKayakShedKeyDollars.add(summaryTotals.getKayac_shed_key()));
 			}
-			if (d.getOther() != 0) { ///////// OTHER FEE ///////// IN DOLLARS
+
+			BigDecimal other = new BigDecimal(d.getOther());
+			if (other.compareTo(BigDecimal.ZERO) != 0) { ///////// OTHER FEE ///////// IN DOLLARS
 				summaryTotals.setOtherNumber(1 + summaryTotals.getOtherNumber());
-				summaryTotals.setOther(d.getOther() + summaryTotals.getOther());
+				summaryTotals.setOther(other.add(summaryTotals.getOther()));
 			}
+			BigDecimal sailLoft = new BigDecimal(d.getSail_loft());
 			if (d.getSail_loft() != 0) { ////////// SAIL LOFT ACCESS ///////// IN NUMBER OF
 				summaryTotals.setSail_loftNumber(1 + summaryTotals.getSail_loftNumber());
-				summaryTotals.setSail_loft(currentDefinedFee.getSail_loft() + summaryTotals.getSail_loft());
+				summaryTotals.setSail_loft(currentDefinedFee.getSail_loft().add(summaryTotals.getSail_loft()));
 			}
+			BigDecimal sailLoftKey = new BigDecimal(d.getSail_loft_key());
 			if (d.getSail_loft_key() != 0) { ///////// SAIL LOFT KEY ///////// IN NUMBER OF
 				summaryTotals.setSail_loft_keyNumber(d.getSail_loft_key() + summaryTotals.getSail_loft_keyNumber());
-				int totalSailLoftKeyDollars = currentDefinedFee.getSail_loft_key() * d.getSail_loft_key();
-				summaryTotals.setSail_loft_key(totalSailLoftKeyDollars + summaryTotals.getSail_loft_key());
+				BigDecimal totalSailLoftKeyDollars = currentDefinedFee.getSail_loft_key().multiply(sailLoftKey);
+				summaryTotals.setSail_loft_key(totalSailLoftKeyDollars.add(summaryTotals.getSail_loft_key()));
 			}
+			BigDecimal laserLoft = new BigDecimal(d.getSail_school_laser_loft());
 			if (d.getSail_school_laser_loft() != 0) { ///////// SAIL SCHOOL LOFT ACCESS ///////// IN NUMBER OF
 				summaryTotals.setSail_school_laser_loftNumber(
 						d.getSail_school_laser_loft() + summaryTotals.getSail_school_laser_loftNumber());
-				int totalSailSchoolLoftDollars = currentDefinedFee.getSail_school_laser_loft()
-						* d.getSail_school_laser_loft();
-				summaryTotals.setSail_school_laser_loft(
-						totalSailSchoolLoftDollars + summaryTotals.getSail_school_laser_loft());
+				BigDecimal totalSailSchoolLoftDollars = currentDefinedFee.getSail_school_laser_loft().multiply(laserLoft);
+				summaryTotals.setSail_school_laser_loft(totalSailSchoolLoftDollars.add(summaryTotals.getSail_school_laser_loft()));
 			}
+			BigDecimal loftKey = new BigDecimal(d.getSail_school_loft_key());
 			if (d.getSail_school_loft_key() != 0) { ////////// SAIL SCHOOL LOFT KEY ///////// IN NUMBER OF
-				summaryTotals.setSail_school_loft_keyNumber(
-						d.getSail_school_loft_key() + summaryTotals.getSail_school_loft_keyNumber());
-				int totalSailSchoolLoftKeyDollars = currentDefinedFee.getSail_school_loft_key()
-						* d.getSail_school_loft_key();
+				summaryTotals.setSail_school_loft_keyNumber(d.getSail_school_loft_key() + summaryTotals.getSail_school_loft_keyNumber());
+				BigDecimal totalSailSchoolLoftKeyDollars = currentDefinedFee.getSail_school_loft_key().multiply(loftKey);
 				summaryTotals.setSail_school_loft_key(
-						totalSailSchoolLoftKeyDollars + summaryTotals.getSail_school_loft_key());
+						totalSailSchoolLoftKeyDollars.add(summaryTotals.getSail_school_loft_key()));
 			}
-			if (d.getWet_slip() != 0) { ////////// WET SLIP FEE ///////// IN DOLLARS
+			BigDecimal wetSlip = new BigDecimal(d.getWet_slip());
+			if (wetSlip.compareTo(BigDecimal.ZERO) != 0) { ////////// WET SLIP FEE ///////// IN DOLLARS
 				summaryTotals.setWet_slipNumber(1 + summaryTotals.getWet_slipNumber());
-				summaryTotals.setWet_slip(d.getWet_slip() + summaryTotals.getWet_slip());
+				summaryTotals.setWet_slip(wetSlip.add(summaryTotals.getWet_slip()));
 			}
+			BigDecimal winterStorage = new BigDecimal(d.getWinter_storage());
 			if (d.getWinter_storage() != 0) { //////// WINTER STORAGE FEE ///////// IN NUMBER OF
 				summaryTotals.setWinter_storageNumber(d.getWinter_storage() + summaryTotals.getWinter_storageNumber());
-				int totalWinterStorageDollars = currentDefinedFee.getWinter_storage() * d.getWinter_storage();
-				summaryTotals.setWinter_storage(totalWinterStorageDollars + summaryTotals.getWinter_storage());
+				BigDecimal totalWinterStorageDollars = currentDefinedFee.getWinter_storage().multiply(winterStorage);
+				summaryTotals.setWinter_storage(totalWinterStorageDollars.add(summaryTotals.getWinter_storage()));
 			}
-			if (d.getYsc_donation() != 0) { //////// YSC DONATION ///////// IN DOLLARS
+			BigDecimal ysc = new BigDecimal(d.getYsc_donation());
+			if (ysc.compareTo(BigDecimal.ZERO) != 0) { //////// YSC DONATION ///////// IN DOLLARS
 				summaryTotals.setYsc_donationNumber(1 + summaryTotals.getYsc_donationNumber());
-				summaryTotals.setYsc_donation(d.getYsc_donation() + summaryTotals.getYsc_donation());
+				summaryTotals.setYsc_donation(ysc.add(summaryTotals.getYsc_donation()));
 			}
 			numberOfRecordsCounted++;
-			summaryTotals.setPaid(d.getPaid() + summaryTotals.getPaid());
+
+			summaryTotals.setPaid(new BigDecimal(d.getPaid()).add(summaryTotals.getPaid()));
 		}
 		summaryTotals.setNumberOfRecords(numberOfRecordsCounted);
 	}

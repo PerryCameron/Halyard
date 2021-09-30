@@ -385,10 +385,10 @@ public class PDF_DepositReport {
 			addSummaryRow(mainTable, "Beach Spot Fee" , totals.getBeachNumber(), totals.getBeach());
 		}
 		if (totals.getKayak_rack() != 0) {
-			addSummaryRow(mainTable, "Outside Kayak Rack Fee" , totals.getKayac_rackNumber(), totals.getKayak_rack());
+			addSummaryRow(mainTable, "Outside Kayak Rack Fee" , totals.getKayak_rackNumber(), totals.getKayak_rack());
 		}
 		if (totals.getKayak_shed() != 0) {
-			addSummaryRow(mainTable, "Inside Kayak Storage Fee" , totals.getKayac_shedNumber(), totals.getKayak_shed());
+			addSummaryRow(mainTable, "Inside Kayak Storage Fee" , totals.getKayak_shedNumber(), totals.getKayak_shed());
 		}
 		if (totals.getSail_loft() != 0) {
 			addSummaryRow(mainTable, "Sail Loft Access Fee" , totals.getSail_loftNumber(), totals.getSail_loft());
@@ -488,12 +488,12 @@ public class PDF_DepositReport {
 				t.setInitiation(d.getInitiation() + t.getInitiation());
 			}
 			if (d.getKayac_rack() != 0) {  ///// KAYACK RACK FEE
-				t.setKayac_rackNumber(d.getKayac_rack() + t.getKayac_rackNumber());
+				t.setKayak_rackNumber(d.getKayac_rack() + t.getKayak_rackNumber());
 				int totalKayakRackDollars = currentDefinedFee.getKayak_rack() * d.getKayac_rack();
 				t.setKayak_rack(totalKayakRackDollars + t.getKayak_rack());
 			}
 			if (d.getKayac_shed() != 0) {   //////// KAYAK SHED ACCESS
-				t.setKayac_shedNumber(d.getKayac_shed() + t.getKayac_shed_keyNumber());
+				t.setKayak_shedNumber(d.getKayac_shed() + t.getKayac_shed_keyNumber());
 				int totalKayakShedDollars = currentDefinedFee.getKayak_shed() * d.getKayac_shed();
 				t.setKayak_shed(totalKayakShedDollars + t.getKayak_shed());
 			}
