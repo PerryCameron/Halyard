@@ -35,6 +35,8 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
+import java.math.BigDecimal;
+
 public class BoxFiscal extends HBox {
 	private ObservableList<Object_Money> fiscals = null;
 	Object_Membership membership;
@@ -224,7 +226,7 @@ public class BoxFiscal extends HBox {
 		// this is only called if you changer membership type or open a record or manually type in
 		duesText.textProperty().addListener((observable, oldValue, newValue) -> {
 			if (!SqlSelect.isCommitted(fiscals.get(rowIndex).getMoney_id())) {
-				int newDues = Integer.parseInt(newValue);
+				String newDues = newValue;
 				System.out.println(" dues textfield set to " + newValue);
 				fiscals.get(rowIndex).setDues(newDues);
 				updateBalance();
@@ -259,7 +261,7 @@ public class BoxFiscal extends HBox {
             		fiscals.get(rowIndex).setCommitted(true);
             		addPaidNote(date);
             		// if we put an amount in other we need to make a note
-            		if(fiscals.get(rowIndex).getOther() != 0) {
+            		if(Integer.parseInt(fiscals.get(rowIndex).getOther()) != 0) {
             			// make sure the memo dosen't already exist
             			if(!SqlExists.memoExists(fiscals.get(rowIndex).getMoney_id())) 
             			note.add("Other expense: ",date,fiscals.get(rowIndex).getMoney_id(),"O");
@@ -320,12 +322,12 @@ public class BoxFiscal extends HBox {
         		textFields.getPaidText().setText("0");
         	}
         	int newTotalValue = Integer.parseInt(textFields.getPaidText().getText());
-        	fiscals.get(rowIndex).setPaid(newTotalValue);
-        	SqlUpdate.updateField(newTotalValue, "money", "paid",fiscals,rowIndex);
-        	int balance = getBalance();
+        	fiscals.get(rowIndex).setPaid(textFields.getPaidText().getText());
+        	SqlUpdate.updateField(BigDecimal.valueOf(newTotalValue), "money", "paid",fiscals,rowIndex);
+        	BigDecimal balance = getBalance();
         	textFields.getBalanceText().setText(balance + "");
         	SqlUpdate.updateField(getBalance(), "money", "balance",fiscals,rowIndex);
-        	fiscals.get(rowIndex).setBalance(getBalance());
+        	fiscals.get(rowIndex).setBalance(String.valueOf(getBalance()));
 		});
 		
 		yscText.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
@@ -378,10 +380,10 @@ public class BoxFiscal extends HBox {
 		    });
 		
 		workCredits.integerProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
-		    	fiscals.get(rowIndex).setCredit(countCredit((int)newValue));
+		    	fiscals.get(rowIndex).setCredit(String.valueOf(countCredit((int)newValue)));
 		    	textFields.getCreditText().setText(countCredit((int)newValue) + "");
 		    	textFields.getBalanceText().setText(getBalance() + "");  // sets balance textfield in balance tab
-				fiscals.get(rowIndex).setBalance(getBalance());  // sets focused object
+				fiscals.get(rowIndex).setBalance(String.valueOf(getBalance()));  // sets focused object
 		        updateBalance();
 		        SqlUpdate.updateMoney(fiscals.get(rowIndex));
 		    });
@@ -413,8 +415,8 @@ public class BoxFiscal extends HBox {
 					if(!SqlSelect.isCommitted(fiscals.get(rowIndex).getMoney_id()))	{	// is not committed	
 						// committed
 						textFields.getCreditText().setText(duesText.getText()); // gets the dues and gives that amount of credit for being an officer
-						SqlUpdate.updateField(Integer.parseInt(duesText.getText()), "money", "credit", fiscals, rowIndex); // updates SQL
-						fiscals.get(rowIndex).setCredit(Integer.parseInt(duesText.getText()));  // sets credit for what dues are
+						SqlUpdate.updateField(new BigDecimal(duesText.getText()), "money", "credit", fiscals, rowIndex); // updates SQL
+						fiscals.get(rowIndex).setCredit(duesText.getText());  // sets credit for what dues are
 						System.out.println("Record is not committed");
 					}
 			} else {
@@ -477,22 +479,22 @@ public class BoxFiscal extends HBox {
 	private void updateItem(int newTotalValue, String type) {
 		switch(type) {
 		case "initiation":
-			fiscals.get(rowIndex).setInitiation(newTotalValue);
+			fiscals.get(rowIndex).setInitiation(String.valueOf(newTotalValue));
 			break;
 		case "other":
-			fiscals.get(rowIndex).setOther(newTotalValue);
+			fiscals.get(rowIndex).setOther(String.valueOf(newTotalValue));
 			break;
 		case "ysc":
-			fiscals.get(rowIndex).setYsc_donation(newTotalValue);
+			fiscals.get(rowIndex).setYsc_donation(String.valueOf(newTotalValue));
 			break;
 		case "dues":
-			fiscals.get(rowIndex).setDues(newTotalValue);
+			fiscals.get(rowIndex).setDues(String.valueOf(newTotalValue));
 			break;
 		case "wetslip":
-			fiscals.get(rowIndex).setWet_slip(newTotalValue);
+			fiscals.get(rowIndex).setWet_slip(String.valueOf(newTotalValue));
 			break;
 		}
-		fiscals.get(rowIndex).setTotal(updateTotalFeeFields());
+		fiscals.get(rowIndex).setTotal(String.valueOf(updateTotalFeeFields()));
 		textFields.getTotalFeesText().setText(fiscals.get(rowIndex).getTotal() + "");
     	textFields.getBalanceText().setText(getBalance() + "");
 	}
@@ -554,45 +556,46 @@ public class BoxFiscal extends HBox {
 	}
 	
 	private void updateBalance() {
-		  fiscals.get(rowIndex).setTotal(updateTotalFeeFields());
+		  fiscals.get(rowIndex).setTotal(String.valueOf(updateTotalFeeFields()));
 		  System.out.println("total at update balance is " + fiscals.get(rowIndex).getTotal());
 		  textFields.getTotalFeesText().setText(fiscals.get(rowIndex).getTotal() + "");
 		  textFields.getBalanceText().setText(getBalance() + "");
-		  fiscals.get(rowIndex).setBalance(getBalance());
+		  fiscals.get(rowIndex).setBalance(String.valueOf(getBalance()));
 	}
 	
-	private int updateTotalFeeFields() {
-		int dues = fiscals.get(rowIndex).getDues();
-		int extraKey = fiscals.get(rowIndex).getExtra_key() * definedFees.getMain_gate_key();
-		int sailLoftKey = fiscals.get(rowIndex).getSail_loft_key() * definedFees.getSail_loft_key();
-		int kayakShedKey = fiscals.get(rowIndex).getKayac_shed_key() * definedFees.getKayak_shed_key();
-		int sailSchoolLoftKey = fiscals.get(rowIndex).getSail_school_loft_key() * definedFees.getSail_school_loft_key();
-		int beachSpot = fiscals.get(rowIndex).getBeach() * definedFees.getBeach();
-		int kayakRack = fiscals.get(rowIndex).getKayac_rack() * definedFees.getKayak_rack();
-		int kayakShed = fiscals.get(rowIndex).getKayac_shed() * definedFees.getKayak_shed();
-		int sailLoft = fiscals.get(rowIndex).getSail_loft() * definedFees.getSail_loft();
-		int sailSchoolLoft = fiscals.get(rowIndex).getSail_school_laser_loft() * definedFees.getSail_school_laser_loft();
-		int wetSlip = fiscals.get(rowIndex).getWet_slip();
-		int winterStorage = fiscals.get(rowIndex).getWinter_storage() * definedFees.getWinter_storage();
-		int yscDonation = fiscals.get(rowIndex).getYsc_donation();
-		int other = fiscals.get(rowIndex).getOther();
-		int initiation = fiscals.get(rowIndex).getInitiation();
-		return extraKey + sailLoftKey + kayakShedKey + sailSchoolLoftKey + beachSpot + kayakRack
-				+kayakShed + sailLoft + sailSchoolLoft + wetSlip + winterStorage + yscDonation 
-				+ dues + other + initiation;
-	}
-	
-	private int getBalance() {
-		return fiscals.get(rowIndex).getTotal() - fiscals.get(rowIndex).getPaid() - fiscals.get(rowIndex).getCredit();
+	private BigDecimal updateTotalFeeFields() {
+		BigDecimal dues = new BigDecimal(fiscals.get(rowIndex).getDues());
+		BigDecimal extraKey = new BigDecimal(fiscals.get(rowIndex).getExtra_key()).multiply(definedFees.getMain_gate_key());
+		BigDecimal sailLoftKey = new BigDecimal(fiscals.get(rowIndex).getSail_loft_key()).multiply(definedFees.getSail_loft_key());
+		BigDecimal kayakShedKey = new BigDecimal(fiscals.get(rowIndex).getKayac_shed_key()).multiply(definedFees.getKayak_shed_key());
+		BigDecimal sailSchoolLoftKey = new BigDecimal(fiscals.get(rowIndex).getSail_school_loft_key()).multiply(definedFees.getSail_school_loft_key());
+		BigDecimal beachSpot = new BigDecimal(fiscals.get(rowIndex).getBeach()).multiply(definedFees.getBeach());
+		BigDecimal kayakRack = new BigDecimal(fiscals.get(rowIndex).getKayac_rack()).multiply(definedFees.getKayak_rack());
+		BigDecimal kayakShed = new BigDecimal(fiscals.get(rowIndex).getKayac_shed()).multiply(definedFees.getKayak_shed());
+		BigDecimal sailLoft = new BigDecimal(fiscals.get(rowIndex).getSail_loft()).multiply(definedFees.getSail_loft());
+		BigDecimal sailSchoolLoft = new BigDecimal(fiscals.get(rowIndex).getSail_school_laser_loft()).multiply(definedFees.getSail_school_laser_loft());
+		BigDecimal wetSlip = new BigDecimal(fiscals.get(rowIndex).getWet_slip());
+		BigDecimal winterStorage = new BigDecimal(fiscals.get(rowIndex).getWinter_storage()).multiply(definedFees.getWinter_storage());
+		BigDecimal yscDonation = new BigDecimal(fiscals.get(rowIndex).getYsc_donation());
+		BigDecimal other = new BigDecimal(fiscals.get(rowIndex).getOther());
+		BigDecimal initiation = new BigDecimal(fiscals.get(rowIndex).getInitiation());
+		return extraKey.add(sailLoftKey).add(kayakShedKey).add(sailSchoolLoftKey).add(beachSpot).add(kayakRack).add(kayakShed).add(sailLoft).add(sailSchoolLoft).add(wetSlip).add(winterStorage).add(yscDonation).add(dues).add(other).add(initiation);
 	}
 
-	private int countCredit(int workCredits) {
-		int credit = 0;
+	private BigDecimal getBalance() {
+		BigDecimal total = new BigDecimal(fiscals.get(rowIndex).getTotal());
+		BigDecimal paid = new BigDecimal(fiscals.get(rowIndex).getPaid());
+		BigDecimal credit = new BigDecimal(fiscals.get(rowIndex).getCredit());
+		return total.subtract(paid).subtract(credit);
+	}
+
+	private BigDecimal countCredit(int workCredits) {
+		BigDecimal credit;
 		if(membershipHasOfficer()) {
-			credit = fiscals.get(rowIndex).getOfficer_credit();  // inserts credit for member type into fiscal
+			credit = new BigDecimal(fiscals.get(rowIndex).getOfficer_credit());  // inserts credit for member type into fiscal
 			//System.out.println("Has an officer credit changed to=" + credit);
 		} else {
-			credit = workCredits * definedFees.getWork_credit();  
+			credit = definedFees.getWork_credit().multiply(BigDecimal.valueOf(workCredits));
 		}
 		//System.out.println("Credit is " + credit);
 		return credit;

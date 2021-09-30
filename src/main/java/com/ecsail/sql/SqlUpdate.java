@@ -1,5 +1,6 @@
 package com.ecsail.sql;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
@@ -441,7 +442,7 @@ public class SqlUpdate {
 		}
 	}
 	
-	public static final void updateField(int newValue, String table, String field, ObservableList<Object_Money> fiscals, int rowIndex)  {
+	public static final void updateField(BigDecimal newValue, String table, String field, ObservableList<Object_Money> fiscals, int rowIndex)  {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE " + table + " SET " + field + "=\"" + newValue
