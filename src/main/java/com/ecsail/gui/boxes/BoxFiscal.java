@@ -242,8 +242,9 @@ public class BoxFiscal extends HBox {
 	            	if(!isNumeric(duesText.getText())) {
 	            		duesText.setText("0");
 	            	}
-	            	//updateBalance();
-	            	updateItem(new BigDecimal(duesText.getText()),"dues");
+	            	BigDecimal dues = new BigDecimal(duesText.getText());
+	            	updateItem(dues,"dues");
+					duesText.setText(String.valueOf(dues.setScale(2)));
 	            	updateBalance();
 	            }
 	        });
@@ -321,9 +322,9 @@ public class BoxFiscal extends HBox {
         	if(!isNumeric(textFields.getPaidText().getText())) {  // we should move this to amount in TabPayment
         		textFields.getPaidText().setText("0.00");
         	}
-        	int newTotalValue = Integer.parseInt(textFields.getPaidText().getText());
+        	BigDecimal newTotalValue = new BigDecimal(textFields.getPaidText().getText());
         	fiscals.get(rowIndex).setPaid(textFields.getPaidText().getText());
-        	SqlUpdate.updateField(BigDecimal.valueOf(newTotalValue), "money", "paid",fiscals,rowIndex);
+        	SqlUpdate.updateField(newTotalValue, "money", "paid",fiscals,rowIndex);
         	BigDecimal balance = getBalance();
         	textFields.getBalanceText().setText(balance + "");
         	SqlUpdate.updateField(getBalance(), "money", "balance",fiscals,rowIndex);
@@ -336,7 +337,9 @@ public class BoxFiscal extends HBox {
 	            	if(!isNumeric(yscText.getText())) {
 	            		yscText.setText("0.00");
 	            	}
-	            	updateItem(new BigDecimal(yscText.getText()), "ysc");
+					BigDecimal ysc = new BigDecimal(yscText.getText());
+	            	updateItem(ysc, "ysc");
+					yscText.setText(String.valueOf(ysc.setScale(2)));
 	            	updateBalance();
 	            }
 	        });
@@ -347,7 +350,10 @@ public class BoxFiscal extends HBox {
 	            	if(!isNumeric(otherText.getText())) {
 	            		otherText.setText("0.00");
 	            	}
-	            	updateItem(new BigDecimal(slipText.getText()),"wetslip");
+					BigDecimal slip = new BigDecimal(slipText.getText());
+					slip.setScale(2);
+	            	updateItem(slip,"wetslip");
+					slipText.setText(String.valueOf(slip.setScale(2)));
 	            	updateBalance();
 	            }
 	        });
@@ -358,7 +364,9 @@ public class BoxFiscal extends HBox {
 	            	if(!isNumeric(otherText.getText())) {
 	            		otherText.setText("0.00");
 	            	}
-	            	updateItem(new BigDecimal(otherText.getText()),"other");
+					BigDecimal other = new BigDecimal(otherText.getText());
+	            	updateItem(other,"other");
+					otherText.setText(String.valueOf(other.setScale(2)));
 	            	updateBalance();
 	            }
 	        });
@@ -367,9 +375,11 @@ public class BoxFiscal extends HBox {
 	            //focus out
 	            if (oldValue) {  // we have focused and unfocused
 	            	if(!isNumeric(initiationText.getText())) {
-	            		otherText.setText("0.00");
+	            		initiationText.setText("0.00");
 	            	}
-	            	updateItem(new BigDecimal(initiationText.getText()), "initiation");
+					BigDecimal initiation = new BigDecimal(initiationText.getText());
+	            	updateItem(initiation, "initiation");
+					initiationText.setText(String.valueOf(initiation.setScale(2)));
 	            	updateBalance();
 	            }
 	        });

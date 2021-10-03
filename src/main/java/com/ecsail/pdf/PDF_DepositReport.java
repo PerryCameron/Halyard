@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -47,6 +48,7 @@ public class PDF_DepositReport {
 	private Object_DepositSummary totals;
 	String fiscalYear;  // save this because I clear current Deposit
 	Boolean includeDollarSigns = false;
+	DecimalFormat df = new DecimalFormat("#,###.00");
 
 	static String[] TDRHeaders = {
 			"Date",
@@ -261,15 +263,22 @@ public class PDF_DepositReport {
 		if(dues.getKayac_shed_key() != 0) addItemRow(detailTable, "Extra Inside Storage Key", BigDecimal.valueOf(dues.getKayac_shed_key()).multiply(currentDefinedFee.getKayak_shed_key()), dues.getKayac_shed_key());
 		if(dues.getSail_loft_key() != 0) addItemRow(detailTable, "Extra Sail Loft Key Fee", BigDecimal.valueOf(dues.getSail_loft_key()).multiply(currentDefinedFee.getSail_loft_key()), dues.getSail_loft_key());
 
-//		Fix all this
-//		if(dues.getInitiation() != 0) addItemRow(detailTable, "Initiation Fee", dues.getInitiation(), 0);
-//		if(dues.getYsc_donation() != 0) addItemRow(detailTable, "Youth Sailing Club Donation", dues.getYsc_donation(), 0);
-//		if(dues.getOther() != 0) addItemRow(detailTable, "Other: " + getOtherNote(dues) , dues.getOther(),0);
-//		addItemRow(detailTable, "Total Fees", dues.getTotal(),0);
-//		if(dues.getCredit() != 0) addCreditRow(detailTable, "Credit", dues.getCredit(),0);
-//		addItemRow(detailTable, "Total Due", dues.getTotal() - dues.getCredit(),0);
-//		addItemPaidRow(detailTable, dues.getPaid());
-//		if(dues.getBalance() != 0) addBalanceRow(detailTable, "Balance", dues.getBalance(), 0);
+		BigDecimal initiation = new BigDecimal(dues.getInitiation());
+		BigDecimal ysc = new BigDecimal(dues.getYsc_donation());
+			BigDecimal other = new BigDecimal(dues.getOther());
+			BigDecimal total = new BigDecimal(dues.getTotal());
+			BigDecimal credit = new BigDecimal(dues.getCredit());
+			BigDecimal paid = new BigDecimal(dues.getPaid());
+			BigDecimal balance = new BigDecimal(dues.getBalance());
+
+		if(initiation.compareTo(BigDecimal.ZERO) != 0) addItemRow(detailTable, "Initiation Fee", initiation, 0);
+		if(ysc.compareTo(BigDecimal.ZERO) != 0) addItemRow(detailTable, "Youth Sailing Club Donation", ysc, 0);
+		if(other.compareTo(BigDecimal.ZERO) != 0) addItemRow(detailTable, "Other: " + getOtherNote(dues) , other,0);
+		addItemRow(detailTable, "Total Fees", total,0);
+		if(credit.compareTo(BigDecimal.ZERO) != 0) addCreditRow(detailTable, "Credit", credit,0);
+		addItemRow(detailTable, "Total Due", total.subtract(credit),0);
+		addItemPaidRow(detailTable, paid);
+		if(balance.compareTo(BigDecimal.ZERO) != 0) addBalanceRow(detailTable, "Balance", balance, 0);
 		}
 		
 		return detailTable;
@@ -294,7 +303,7 @@ public class PDF_DepositReport {
 		return result;
 	}
 	
-	private void addItemPaidRow(Table detailTable, int money) {
+	private void addItemPaidRow(Table detailTable, BigDecimal money) {
 		Cell cell;
 		cell = new Cell();
 		cell.setBorder(Border.NO_BORDER);
@@ -319,11 +328,11 @@ public class PDF_DepositReport {
 		cell.setBorder(Border.NO_BORDER);
 		cell.setBorderTop(new SolidBorder(ColorConstants.BLACK, 1));
 		cell.setTextAlignment(TextAlignment.RIGHT);
-		cell.add(new Paragraph(addDollarSign() + String.format("%,d", money))).setFontSize(10);
+		cell.add(new Paragraph(addDollarSign() + df.format(money))).setFontSize(10);
 		detailTable.addCell(cell);
 	}
 	
-	private void addBalanceRow(Table detailTable, String label, int money, int numberOf) {
+	private void addBalanceRow(Table detailTable, String label, BigDecimal money, int numberOf) {
 		detailTable.addCell(new Cell().setBorder(Border.NO_BORDER));
 		detailTable.addCell(new Cell().setBorder(Border.NO_BORDER));
 		detailTable.addCell(new Cell().setBorder(Border.NO_BORDER).add(new Paragraph(label)).setFontSize(10));
@@ -344,10 +353,10 @@ public class PDF_DepositReport {
 		} else {
 			detailTable.addCell(new Cell().setTextAlignment(TextAlignment.CENTER).setBorder(Border.NO_BORDER).add(new Paragraph("" + numberOf)).setFontSize(10));	
 		}
-		detailTable.addCell(new Cell().setTextAlignment(TextAlignment.RIGHT).setBorder(Border.NO_BORDER).add(new Paragraph(addDollarSign() + String.format("%,d", money))).setFontSize(10));
+		detailTable.addCell(new Cell().setTextAlignment(TextAlignment.RIGHT).setBorder(Border.NO_BORDER).add(new Paragraph(addDollarSign() + df.format(money))).setFontSize(10));
 	}
 	
-	private void addCreditRow(Table detailTable, String label, int money, int numberOf) {
+	private void addCreditRow(Table detailTable, String label, BigDecimal money, int numberOf) {
 		detailTable.addCell(new Cell().setBorder(Border.NO_BORDER));
 		detailTable.addCell(new Cell().setBorder(Border.NO_BORDER));
 		detailTable.addCell(new Cell().setBorder(Border.NO_BORDER).add(new Paragraph(label)).setFontSize(10));
@@ -376,57 +385,57 @@ public class PDF_DepositReport {
 		mainTable.addCell(new Cell().setWidth(200));
 		mainTable.addCell(new Cell().setWidth(70));
 		mainTable.addCell(new Cell().setWidth(40));
-//		Fix all this
-//		if (totals.getDuesNumber() != 0) {
-//			addSummaryRow(mainTable, "Annual Dues" , totals.getDuesNumber(), totals.getDues());
-//		}
-//		if (totals.getWinter_storageNumber() != 0) {
-//			addSummaryRow(mainTable, "Winter Storage Fee" , totals.getWinter_storageNumber(), totals.getWinter_storage());
-//		}
-//		if (totals.getWet_slip() != 0) {
-//			addSummaryRow(mainTable, "Wet slip Fee" , totals.getWet_slipNumber(), totals.getWet_slip());
-//		}
-//		if (totals.getBeach() != 0) {
-//			addSummaryRow(mainTable, "Beach Spot Fee" , totals.getBeachNumber(), totals.getBeach());
-//		}
-//		if (totals.getKayak_rack() != 0) {
-//			addSummaryRow(mainTable, "Outside Kayak Rack Fee" , totals.getKayak_rackNumber(), totals.getKayak_rack());
-//		}
-//		if (totals.getKayak_shed() != 0) {
-//			addSummaryRow(mainTable, "Inside Kayak Storage Fee" , totals.getKayak_shedNumber(), totals.getKayak_shed());
-//		}
-//		if (totals.getSail_loft() != 0) {
-//			addSummaryRow(mainTable, "Sail Loft Access Fee" , totals.getSail_loftNumber(), totals.getSail_loft());
-//		}
-//		if (totals.getSail_school_laser_loft() != 0) {
-//			addSummaryRow(mainTable, "Sail School Loft Access Fee" , totals.getSail_school_laser_loftNumber(), totals.getSail_school_laser_loft());
-//		}
-//		if (totals.getInitiation() != 0) {
-//			addSummaryRow(mainTable, "Initiation Fee" , totals.getInitiationNumber(), totals.getInitiation());
-//		}
-//		///////////////////  KEYS //////////////////////////////
-//		if (totals.getGate_key() != 0) {
-//			addSummaryRow(mainTable, "Extra Gate Key Fee" , totals.getGate_keyNumber(), totals.getGate_key());
-//		}
-//		if (totals.getSail_loft_key() != 0) {
-//			addSummaryRow(mainTable, "Sail Loft Key Fee" , totals.getSail_loft_keyNumber(), totals.getSail_loft_key());
-//		}
-//		if (totals.getSail_school_loft_key() != 0) {
-//			addSummaryRow(mainTable, "Sail School Loft Key Fee" , totals.getSail_school_loft_keyNumber(), totals.getSail_school_loft_key());
-//		}
-//		if (totals.getKayac_shed_key() != 0) {
-//			addSummaryRow(mainTable, "Kayak Shed Key Fee" , totals.getKayac_shed_keyNumber(), totals.getKayac_shed_key());
-//		}
-//		if (totals.getYsc_donation() != 0) {
-//			addSummaryRow(mainTable, "Youth Sailing Club Donation" , totals.getYsc_donationNumber(), totals.getYsc_donation());
-//		}
-//		if (totals.getOther() != 0) {
-//			addSummaryRow(mainTable, "Other" , totals.getOtherNumber(), totals.getOther());
-//		}
-//		if (totals.getCredit() != 0) {
-//			addSummaryRow(mainTable, "Credits" , totals.getCreditNumber(), totals.getCredit());
-//		}
-//
+
+		if (totals.getDuesNumber() != 0) {
+			addSummaryRow(mainTable, "Annual Dues" , totals.getDuesNumber(), totals.getDues());
+		}
+		if (totals.getWinter_storageNumber() != 0) {
+			addSummaryRow(mainTable, "Winter Storage Fee" , totals.getWinter_storageNumber(), totals.getWinter_storage());
+		}
+		if (totals.getWet_slip().compareTo(BigDecimal.ZERO) != 0) {
+			addSummaryRow(mainTable, "Wet slip Fee" , totals.getWet_slipNumber(), totals.getWet_slip());
+		}
+		if (totals.getBeach().compareTo(BigDecimal.ZERO) != 0) {
+			addSummaryRow(mainTable, "Beach Spot Fee" , totals.getBeachNumber(), totals.getBeach());
+		}
+		if (totals.getKayak_rack().compareTo(BigDecimal.ZERO) != 0) {
+			addSummaryRow(mainTable, "Outside Kayak Rack Fee" , totals.getKayak_rackNumber(), totals.getKayak_rack());
+		}
+		if (totals.getKayak_shed().compareTo(BigDecimal.ZERO) != 0) {
+			addSummaryRow(mainTable, "Inside Kayak Storage Fee" , totals.getKayak_shedNumber(), totals.getKayak_shed());
+		}
+		if (totals.getSail_loft().compareTo(BigDecimal.ZERO) != 0) {
+			addSummaryRow(mainTable, "Sail Loft Access Fee" , totals.getSail_loftNumber(), totals.getSail_loft());
+		}
+		if (totals.getSail_school_laser_loft().compareTo(BigDecimal.ZERO) != 0) {
+			addSummaryRow(mainTable, "Sail School Loft Access Fee" , totals.getSail_school_laser_loftNumber(), totals.getSail_school_laser_loft());
+		}
+		if (totals.getInitiation().compareTo(BigDecimal.ZERO) != 0) {
+			addSummaryRow(mainTable, "Initiation Fee" , totals.getInitiationNumber(), totals.getInitiation());
+		}
+		///////////////////  KEYS //////////////////////////////
+		if (totals.getGate_key().compareTo(BigDecimal.ZERO) != 0) {
+			addSummaryRow(mainTable, "Extra Gate Key Fee" , totals.getGate_keyNumber(), totals.getGate_key());
+		}
+		if (totals.getSail_loft_key().compareTo(BigDecimal.ZERO) != 0) {
+			addSummaryRow(mainTable, "Sail Loft Key Fee" , totals.getSail_loft_keyNumber(), totals.getSail_loft_key());
+		}
+		if (totals.getSail_school_loft_key().compareTo(BigDecimal.ZERO) != 0) {
+			addSummaryRow(mainTable, "Sail School Loft Key Fee" , totals.getSail_school_loft_keyNumber(), totals.getSail_school_loft_key());
+		}
+		if (totals.getKayac_shed_key().compareTo(BigDecimal.ZERO) != 0) {
+			addSummaryRow(mainTable, "Kayak Shed Key Fee" , totals.getKayac_shed_keyNumber(), totals.getKayac_shed_key());
+		}
+		if (totals.getYsc_donation().compareTo(BigDecimal.ZERO) != 0) {
+			addSummaryRow(mainTable, "Youth Sailing Club Donation" , totals.getYsc_donationNumber(), totals.getYsc_donation());
+		}
+		if (totals.getOther().compareTo(BigDecimal.ZERO) != 0) {
+			addSummaryRow(mainTable, "Other" , totals.getOtherNumber(), totals.getOther());
+		}
+		if (totals.getCredit().compareTo(BigDecimal.ZERO) != 0) {
+			addSummaryRow(mainTable, "Credits" , totals.getCreditNumber(), totals.getCredit());
+		}
+
 		
 		RemoveBorder(mainTable);
 		cell = new Cell();
@@ -460,7 +469,7 @@ public class PDF_DepositReport {
 		cell.setBorderTop(new SolidBorder(ColorConstants.BLACK, 1));
 		cell.setBorderBottom(new DoubleBorder(ColorConstants.BLACK, 2));
 		cell.setTextAlignment(TextAlignment.RIGHT);
-		cell.add(new Paragraph(addDollarSign() + String.format("%,d", totals.getTotal()))).setFontSize(10);
+		cell.add(new Paragraph(addDollarSign() + df.format(totals.getTotal()))).setFontSize(10);
 		mainTable.addCell(cell);
 		
 		return mainTable;
@@ -470,84 +479,101 @@ public class PDF_DepositReport {
 		int numberOfRecordsCounted = 0; // number of records counted
 		Object_DepositSummary t = new Object_DepositSummary();
 		for (Object_PaidDues d : paidDuesForDeposit) {
-//			Fix all this
-//			if (d.getBeach() != 0) { ///////// BEACH
-//				t.setBeachNumber(d.getBeach() + t.getBeachNumber());
-//				int totalBeachDollars = currentDefinedFee.getBeach() * d.getBeach();
-//				t.setBeach(totalBeachDollars + t.getBeach());
-//			}
-//			if (d.getCredit() != 0) {  ////////  CREDIT
-//				t.setCreditNumber(1 + t.getCreditNumber());
-//				t.setCredit(d.getCredit() + t.getCredit());
-//			}
-//			if (d.getDues() != 0) {  ////////  DUES
-//				t.setDuesNumber(1 + t.getDuesNumber());
-//				t.setDues(d.getDues() + t.getDues());
-//			}
-//			if (d.getExtra_key() != 0) { /////  EXTRA GATE KEY
-//				t.setGate_keyNumber(d.getExtra_key() + t.getGate_keyNumber());
-//				int totalGateKeyDollars = currentDefinedFee.getMain_gate_key() * d.getExtra_key();
-//				t.setGate_key(t.getGate_key() + totalGateKeyDollars);
-//			}
-//			if (d.getInitiation() != 0) {  /////// INITIATION
-//				t.setInitiationNumber(1 + t.getInitiationNumber());
-//				t.setInitiation(d.getInitiation() + t.getInitiation());
-//			}
-//			if (d.getKayac_rack() != 0) {  ///// KAYACK RACK FEE
-//				t.setKayak_rackNumber(d.getKayac_rack() + t.getKayak_rackNumber());
-//				int totalKayakRackDollars = currentDefinedFee.getKayak_rack() * d.getKayac_rack();
-//				t.setKayak_rack(totalKayakRackDollars + t.getKayak_rack());
-//			}
-//			if (d.getKayac_shed() != 0) {   //////// KAYAK SHED ACCESS
-//				t.setKayak_shedNumber(d.getKayac_shed() + t.getKayac_shed_keyNumber());
-//				int totalKayakShedDollars = currentDefinedFee.getKayak_shed() * d.getKayac_shed();
-//				t.setKayak_shed(totalKayakShedDollars + t.getKayak_shed());
-//			}
-//			if (d.getKayac_shed_key() != 0) {   ///// KAYAK SHED KEY
-//				t.setKayac_shed_keyNumber(d.getKayac_shed_key() + t.getKayac_shed_keyNumber());
-//				int totalKayakShedKeyDollars = currentDefinedFee.getKayak_shed_key() * d.getKayac_shed_key();
-//				t.setKayac_shed_key(totalKayakShedKeyDollars + t.getKayac_shed_key());
-//			}
-//			if (d.getOther() != 0) {  /////////  OTHER FEE ///////// IN DOLLARS
-//				t.setOtherNumber(1 + t.getOtherNumber());
-//				t.setOther(d.getOther() + t.getOther());
-//			}
-//			if (d.getSail_loft() != 0) {   ////////// SAIL LOFT ACCESS ///////// IN NUMBER OF
-//				t.setSail_loftNumber(1 + t.getSail_loftNumber());
-//				t.setSail_loft(currentDefinedFee.getSail_loft() + t.getSail_loft());
-//			}
-//			if (d.getSail_loft_key() != 0) {  ///////// SAIL LOFT KEY ///////// IN NUMBER OF
-//				t.setSail_loft_keyNumber(d.getSail_loft_key() + t.getSail_loft_keyNumber());
-//				int totalSailLoftKeyDollars = currentDefinedFee.getSail_loft_key() * d.getSail_loft_key();
-//				t.setSail_loft_key(totalSailLoftKeyDollars + t.getSail_loft_key());
-//			}
-//			if (d.getSail_school_laser_loft() != 0) {  ///////// SAIL SCHOOL LOFT ACCESS ///////// IN NUMBER OF
-//				t.setSail_school_laser_loftNumber(d.getSail_school_laser_loft() + t.getSail_school_laser_loftNumber());
-//				int totalSailSchoolLoftDollars = currentDefinedFee.getSail_school_laser_loft() * d.getSail_school_laser_loft();
-//				System.out.println("Sail school laser loft=" + totalSailSchoolLoftDollars);
-//				t.setSail_school_laser_loft(totalSailSchoolLoftDollars + t.getSail_school_laser_loft());
-//			}
-//			if (d.getSail_school_loft_key() != 0) {  ////////// SAIL SCHOOL LOFT KEY ///////// IN NUMBER OF
-//				t.setSail_school_loft_keyNumber(d.getSail_school_loft_key() + t.getSail_school_loft_keyNumber());
-//				int totalSailSchoolLoftKeyDollars = currentDefinedFee.getSail_school_loft_key() * d.getSail_school_loft_key();
-//				t.setSail_school_loft_key(totalSailSchoolLoftKeyDollars + t.getSail_school_loft_key());
-//			}
-//			if (d.getWet_slip() != 0) {  ////////// WET SLIP FEE ///////// IN DOLLARS
-//				t.setWet_slipNumber(1 + t.getWet_slipNumber());
-//				t.setWet_slip(d.getWet_slip() + t.getWet_slip());
-//			}
-//			if (d.getWinter_storage() != 0) {  ////////  WINTER STORAGE FEE ///////// IN NUMBER OF
-//				t.setWinter_storageNumber(d.getWinter_storage() + t.getWinter_storageNumber());
-//				int totalWinterStorageDollars = currentDefinedFee.getWinter_storage() * d.getWinter_storage();
-//				t.setWinter_storage(totalWinterStorageDollars + t.getWinter_storage());
-//			}
-//			if (d.getYsc_donation() != 0) {  //////// YSC DONATION ///////// IN DOLLARS
-//				t.setYsc_donationNumber(1 + t.getYsc_donationNumber());
-//				t.setYsc_donation(d.getYsc_donation() + t.getYsc_donation());
-//			}
-//			if (d.getPaid() != 0) {
-//				t.setPaid(d.getPaid() + t.getPaid());
-//			}
+
+			if (d.getBeach() != 0) { ///////// BEACH
+				t.setBeachNumber(d.getBeach() + t.getBeachNumber());
+				BigDecimal totalBeachDollars = currentDefinedFee.getBeach().multiply(BigDecimal.valueOf(d.getBeach()));
+				t.setBeach(totalBeachDollars.add(t.getBeach()));
+			}
+
+			BigDecimal credit = new BigDecimal(d.getCredit());
+			if (credit.compareTo(BigDecimal.ZERO) != 0) {  ////////  CREDIT
+				t.setCreditNumber(1 + t.getCreditNumber());
+				t.setCredit(credit.add(t.getCredit()));
+			}
+
+			BigDecimal dues = new BigDecimal(d.getDues());
+			if (dues.compareTo(BigDecimal.ZERO) != 0) {  ////////  DUES
+				t.setDuesNumber(1 + t.getDuesNumber());
+				t.setDues(dues.add(t.getDues()));
+			}
+
+			if (d.getExtra_key() != 0) { /////  EXTRA GATE KEY
+				t.setGate_keyNumber(d.getExtra_key() + t.getGate_keyNumber());
+				BigDecimal totalGateKeyDollars = currentDefinedFee.getMain_gate_key().multiply(BigDecimal.valueOf(d.getExtra_key()));
+				t.setGate_key(t.getGate_key().add(totalGateKeyDollars));
+			}
+
+			BigDecimal initiation = new BigDecimal(d.getInitiation());
+			if (initiation.compareTo(BigDecimal.ZERO) != 0) {  /////// INITIATION
+				t.setInitiationNumber(1 + t.getInitiationNumber());
+				t.setInitiation(initiation.add(t.getInitiation()));
+			}
+
+			if (d.getKayac_rack() != 0) {  ///// KAYACK RACK FEE
+				t.setKayak_rackNumber(d.getKayac_rack() + t.getKayak_rackNumber());
+				BigDecimal totalKayakRackDollars = currentDefinedFee.getKayak_rack().multiply(BigDecimal.valueOf(d.getKayac_rack()));
+				t.setKayak_rack(totalKayakRackDollars.add(t.getKayak_rack()));
+			}
+
+			if (d.getKayac_shed() != 0) {   //////// KAYAK SHED ACCESS
+				t.setKayak_shedNumber(d.getKayac_shed() + t.getKayac_shed_keyNumber());
+				BigDecimal totalKayakShedDollars = currentDefinedFee.getKayak_shed().multiply(BigDecimal.valueOf(d.getKayac_shed()));
+				t.setKayak_shed(totalKayakShedDollars.add(t.getKayak_shed()));
+			}
+			if (d.getKayac_shed_key() != 0) {   ///// KAYAK SHED KEY
+				t.setKayac_shed_keyNumber(d.getKayac_shed_key() + t.getKayac_shed_keyNumber());
+				BigDecimal totalKayakShedKeyDollars = currentDefinedFee.getKayak_shed_key().multiply(BigDecimal.valueOf(d.getKayac_shed_key()));
+				t.setKayac_shed_key(totalKayakShedKeyDollars.add(t.getKayac_shed_key()));
+			}
+
+			BigDecimal other = new BigDecimal(d.getOther());
+			if (other.compareTo(BigDecimal.ZERO) != 0) {  /////////  OTHER FEE ///////// IN DOLLARS
+				t.setOtherNumber(1 + t.getOtherNumber());
+				t.setOther(other.add(t.getOther()));
+			}
+			if (d.getSail_loft() != 0) {   ////////// SAIL LOFT ACCESS ///////// IN NUMBER OF
+				t.setSail_loftNumber(1 + t.getSail_loftNumber());
+				t.setSail_loft(currentDefinedFee.getSail_loft().add(t.getSail_loft()));
+			}
+			if (d.getSail_loft_key() != 0) {  ///////// SAIL LOFT KEY ///////// IN NUMBER OF
+				t.setSail_loft_keyNumber(d.getSail_loft_key() + t.getSail_loft_keyNumber());
+				BigDecimal totalSailLoftKeyDollars = currentDefinedFee.getSail_loft_key().multiply(BigDecimal.valueOf(d.getSail_loft_key()));
+				t.setSail_loft_key(totalSailLoftKeyDollars.add(t.getSail_loft_key()));
+			}
+			if (d.getSail_school_laser_loft() != 0) {  ///////// SAIL SCHOOL LOFT ACCESS ///////// IN NUMBER OF
+				t.setSail_school_laser_loftNumber(d.getSail_school_laser_loft() + t.getSail_school_laser_loftNumber());
+				BigDecimal totalSailSchoolLoftDollars = currentDefinedFee.getSail_school_laser_loft().multiply(BigDecimal.valueOf(d.getSail_school_laser_loft()));
+				System.out.println("Sail school laser loft=" + totalSailSchoolLoftDollars);
+				t.setSail_school_laser_loft(totalSailSchoolLoftDollars.add(t.getSail_school_laser_loft()));
+			}
+			if (d.getSail_school_loft_key() != 0) {  ////////// SAIL SCHOOL LOFT KEY ///////// IN NUMBER OF
+				t.setSail_school_loft_keyNumber(d.getSail_school_loft_key() + t.getSail_school_loft_keyNumber());
+				BigDecimal totalSailSchoolLoftKeyDollars = currentDefinedFee.getSail_school_loft_key().multiply(BigDecimal.valueOf(d.getSail_school_loft_key()));
+				t.setSail_school_loft_key(totalSailSchoolLoftKeyDollars.add(t.getSail_school_loft_key()));
+			}
+
+			BigDecimal wetSlip = new BigDecimal(d.getWet_slip());
+			if (wetSlip.compareTo(BigDecimal.ZERO) != 0) {  ////////// WET SLIP FEE ///////// IN DOLLARS
+				t.setWet_slipNumber(1 + t.getWet_slipNumber());
+				t.setWet_slip(new BigDecimal(d.getWet_slip()).add(t.getWet_slip()));
+			}
+			if (d.getWinter_storage() != 0) {  ////////  WINTER STORAGE FEE ///////// IN NUMBER OF
+				t.setWinter_storageNumber(d.getWinter_storage() + t.getWinter_storageNumber());
+				BigDecimal totalWinterStorageDollars = currentDefinedFee.getWinter_storage().multiply(BigDecimal.valueOf(d.getWinter_storage()));
+				t.setWinter_storage(totalWinterStorageDollars.add(t.getWinter_storage()));
+			}
+
+			BigDecimal ysc = new BigDecimal(d.getYsc_donation());
+			if (ysc.compareTo(BigDecimal.ZERO) != 0) {  //////// YSC DONATION ///////// IN DOLLARS
+				t.setYsc_donationNumber(1 + t.getYsc_donationNumber());
+				t.setYsc_donation(new BigDecimal(d.getYsc_donation()).add(t.getYsc_donation()));
+			}
+
+			BigDecimal paid = new BigDecimal(d.getPaid());
+			if (paid.compareTo(BigDecimal.ZERO) != 0) {
+				t.setPaid(new BigDecimal(d.getPaid()).add(t.getPaid()));
+			}
 			numberOfRecordsCounted++;
 		}
 
@@ -584,12 +610,12 @@ public class PDF_DepositReport {
 		return mainTable;
 	}
 	
-	private void addSummaryRow(Table mainTable, String label, int numberOf, int money) {
+	private void addSummaryRow(Table mainTable, String label, int numberOf, BigDecimal money) {
 		mainTable.addCell(new Cell());
 		mainTable.addCell(new Cell());
 		mainTable.addCell(new Cell().add(new Paragraph(label)).setFontSize(10));
 		mainTable.addCell(new Cell().add(new Paragraph(numberOf + "")).setFontSize(10));
-		mainTable.addCell(new Cell().add(new Paragraph(addDollarSign() + String.format("%,d", money)).setFontSize(10)).setTextAlignment(TextAlignment.RIGHT));
+		mainTable.addCell(new Cell().add(new Paragraph(addDollarSign() + df.format(money)).setFontSize(10)).setTextAlignment(TextAlignment.RIGHT));
 	}
 	
 	private static void RemoveBorder(Table table)
