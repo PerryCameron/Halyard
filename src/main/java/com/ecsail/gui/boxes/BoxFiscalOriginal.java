@@ -8,33 +8,23 @@ import com.ecsail.main.Note;
 import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.SqlSelect;
 import com.ecsail.sql.SqlUpdate;
-import com.ecsail.structures.Object_BalanceText;
-import com.ecsail.structures.Object_DefinedFee;
-import com.ecsail.structures.Object_Integer;
-import com.ecsail.structures.Object_Membership;
-import com.ecsail.structures.Object_Money;
-import com.ecsail.structures.Object_Officer;
-import com.ecsail.structures.Object_Person;
-import com.ecsail.structures.Object_WorkCredit;
-
+import com.ecsail.structures.*;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.control.TabPane.TabClosingPolicy;
-import javafx.scene.layout.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 
 import java.math.BigDecimal;
 
-public class BoxFiscal extends HBox {
+public class BoxFiscalOriginal extends HBox {
 	private ObservableList<Object_Money> fiscals = null;
 	Object_Membership membership;
 	Object_DefinedFee definedFees;
@@ -48,25 +38,22 @@ public class BoxFiscal extends HBox {
 	private Note note;
 	private final TextField yscText = new TextField();
 	Object_BalanceText textFields = new Object_BalanceText();
-	GridPane gridPane = new GridPane();
 
 	private final TextField duesText;
 	private final TextField slipText = new TextField();
 	private final TextField otherText = new TextField();
 	private final TextField initiationText = new TextField();
-	private final TextField wetSlipText = new TextField();
 	private final Spinner<Integer> beachSpinner = new Spinner<Integer>();
 	private final Spinner<Integer> kayakRackSpinner = new Spinner<Integer>();
 	private final Spinner<Integer> kayakShedSpinner = new Spinner<Integer>();
 	private final Spinner<Integer> sailLoftSpinner = new Spinner<Integer>();
 	private final Spinner<Integer> sailSchoolLoftSpinner = new Spinner<Integer>();
 	private final Spinner<Integer> winterStorageSpinner = new Spinner<Integer>();
-	private final Spinner<Integer> wetSlipSpinner = new Spinner<Integer>();
 	private final String disabledColor = "-fx-background-color: #d5dade";
 	boolean isCommited;
 	Button addWetSlip = new Button();
-	
-	public BoxFiscal(Object_Membership m, ObservableList<Object_Person> p, ObservableList<Object_Money> o, int r, Note n, TextField dt) {
+
+	public BoxFiscalOriginal(Object_Membership m, ObservableList<Object_Person> p, ObservableList<Object_Money> o, int r, Note n, TextField dt) {
 		this.membership = m;
 		this.people = p;
 		this.rowIndex = r;
@@ -115,17 +102,17 @@ public class BoxFiscal extends HBox {
 		HBox hboxInitiation = new HBox();
 		HBox hboxOther = new HBox();
 		
-//		VBox vboxDuesLabel = new VBox();
-//		VBox vboxBeachLabel = new VBox();
-//		VBox vboxKayacLabel = new VBox();
-//		VBox vboxKayakShedLabel = new VBox();
-//		VBox vboxSailLoftLabel = new VBox();
-//		VBox vboxSailSchoolLoftLabel = new VBox();
-//		VBox vboxWetSlipLabel = new VBox();
-//		VBox vboxWinterStorageLabel = new VBox();
-//		VBox vboxYSCLabel = new VBox();
-//		VBox vboxInitiationLabel = new VBox();
-//		VBox vboxOtherLabel = new VBox();
+		VBox vboxDuesLabel = new VBox();
+		VBox vboxBeachLabel = new VBox();
+		VBox vboxKayacLabel = new VBox();
+		VBox vboxKayakShedLabel = new VBox();
+		VBox vboxSailLoftLabel = new VBox();
+		VBox vboxSailSchoolLoftLabel = new VBox();
+		VBox vboxWetSlipLabel = new VBox();
+		VBox vboxWinterStorageLabel = new VBox();
+		VBox vboxYSCLabel = new VBox();
+		VBox vboxInitiationLabel = new VBox();
+		VBox vboxOtherLabel = new VBox();
 		
 		VBox vboxDuesBox = new VBox();
 		VBox vboxBeachBox = new VBox();
@@ -139,7 +126,7 @@ public class BoxFiscal extends HBox {
 		VBox vboxInitiationBox = new VBox();
 		VBox vboxOtherBox = new VBox();
 		Button addWetSlip = new Button();
-
+		Region spacer1 = new Region();
 
 		//////////////// ATTRIBUTES ///////////////////
 		MoneyTabPane.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
@@ -151,32 +138,31 @@ public class BoxFiscal extends HBox {
 		addWetSlip.setGraphic(new ImageView(image));
 		
 		int width = 100;
-//		vboxDuesLabel.setPrefWidth(width);
-//		vboxBeachLabel.setPrefWidth(width);
-//		vboxKayacLabel.setPrefWidth(width);
-//		vboxKayakShedLabel.setPrefWidth(width);
-//		vboxSailLoftLabel.setPrefWidth(width);
-//		vboxSailSchoolLoftLabel.setPrefWidth(width);
-//		vboxWetSlipLabel.setPrefWidth(width);
-//		vboxWinterStorageLabel.setPrefWidth(width);
-//		vboxYSCLabel.setPrefWidth(width);
-//		vboxInitiationLabel.setPrefWidth(width);
-//		vboxOtherLabel.setPrefWidth(width);
+		vboxDuesLabel.setPrefWidth(width);
+		vboxBeachLabel.setPrefWidth(width);
+		vboxKayacLabel.setPrefWidth(width);
+		vboxKayakShedLabel.setPrefWidth(width);
+		vboxSailLoftLabel.setPrefWidth(width);
+		vboxSailSchoolLoftLabel.setPrefWidth(width);
+		vboxWetSlipLabel.setPrefWidth(width);
+		vboxWinterStorageLabel.setPrefWidth(width);
+		vboxYSCLabel.setPrefWidth(width);
+		vboxInitiationLabel.setPrefWidth(width);
+		vboxOtherLabel.setPrefWidth(width);
 		
-//		vboxDuesLabel.setAlignment(Pos.CENTER_LEFT);
-//		vboxBeachLabel.setAlignment(Pos.CENTER_LEFT);
-//		vboxKayacLabel.setAlignment(Pos.CENTER_LEFT);
-//		vboxKayakShedLabel.setAlignment(Pos.CENTER_LEFT);
-//		vboxSailLoftLabel.setAlignment(Pos.CENTER_LEFT);
-//		vboxSailSchoolLoftLabel.setAlignment(Pos.CENTER_LEFT);
-//		vboxWetSlipLabel.setAlignment(Pos.CENTER_LEFT);
-//		vboxWinterStorageLabel.setAlignment(Pos.CENTER_LEFT);
-//		vboxYSCLabel.setAlignment(Pos.CENTER_LEFT);
-//		vboxInitiationLabel.setAlignment(Pos.CENTER_LEFT);
-//		vboxOtherLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxDuesLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxBeachLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxKayacLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxKayakShedLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxSailLoftLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxSailSchoolLoftLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxWetSlipLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxWinterStorageLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxYSCLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxInitiationLabel.setAlignment(Pos.CENTER_LEFT);
+		vboxOtherLabel.setAlignment(Pos.CENTER_LEFT);
 		
 		winterStorageSpinner.setPrefWidth(65);
-		wetSlipSpinner.setPrefWidth(65);
 		kayakRackSpinner.setPrefWidth(65);
 		slipText.setPrefWidth(40);
 		addWetSlip.setPrefWidth(25);
@@ -184,13 +170,13 @@ public class BoxFiscal extends HBox {
 		yscText.setPrefWidth(65);
 		otherText.setPrefWidth(65);
 		initiationText.setPrefWidth(65);
-		wetSlipText.setPrefWidth(65);
 		duesText.setPrefWidth(65);
 		beachSpinner.setPrefWidth(65);
 		kayakShedSpinner.setPrefWidth(65);
 		sailLoftSpinner.setPrefWidth(65);
 		sailSchoolLoftSpinner.setPrefWidth(65);
-		duesText.setStyle(disabledColor);
+		duesText.setStyle(disabledColor);		
+		spacer1.setPrefWidth(40);
 		
 		vboxTabPanes.setAlignment(Pos.CENTER);
 		vboxSpinners.setAlignment(Pos.CENTER);
@@ -216,7 +202,7 @@ public class BoxFiscal extends HBox {
 		vboxGrey.setId("box-grey");
 
 		HBox.setHgrow(vboxGrey, Priority.ALWAYS);
-
+		HBox.setHgrow(spacer1, Priority.ALWAYS);
 		//////////////// LISTENER //////////////////
 			
 		textFields.getBalanceText().textProperty().addListener((observable, oldValue, newValue) -> {
@@ -275,13 +261,6 @@ public class BoxFiscal extends HBox {
 				SqlUpdate.commitFiscalRecord(fiscals.get(rowIndex).getMoney_id(), false);
             	}
             });
-
-		SpinnerValueFactory<Integer> wetSlipValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1, 0);
-		wetSlipSpinner.setValueFactory(wetSlipValueFactory);
-		wetSlipSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
-			fiscals.get(rowIndex).setBeach(newValue);
-			updateBalance();
-		});
 
 		SpinnerValueFactory<Integer> beachValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 5, fiscals.get(rowIndex).getBeach());
 		beachSpinner.setValueFactory(beachValueFactory);
@@ -423,7 +402,6 @@ public class BoxFiscal extends HBox {
 		yscText.setText(fiscals.get(rowIndex).getYsc_donation() + "");
 		otherText.setText(fiscals.get(rowIndex).getOther() + "");
 		initiationText.setText(fiscals.get(rowIndex).getInitiation() + "");
-		wetSlipText.setText(String.valueOf(definedFees.getWet_slip()));
 		
 		if (fiscals.get(rowIndex).isSupplemental()) {
 			duesText.setEditable(true);
@@ -449,127 +427,47 @@ public class BoxFiscal extends HBox {
 		MoneyTabPane.getTabs().addAll(moneyTab,paymentTab);
 		keysAndCreditsTabPane.getTabs().addAll(keyTab, creditTab);
 		hboxSlip.getChildren().addAll(slipText,addWetSlip);
-
-		HBox.setHgrow(gridPane,Priority.ALWAYS);
-		gridPane.setHgap(40);
-		gridPane.setVgap(5);
-
-		/// Row 1
-		gridPane.add(new Label("Dues:"), 0, 0, 1, 1);
-		gridPane.add(new Label("-"), 1, 0, 1, 1);
-		gridPane.add(new Label("X"), 2, 0, 1, 1);
-		gridPane.add(duesText, 3, 0, 1, 1);
-		gridPane.add(new Label("total"), 4, 0, 1, 1);
-		/// Row 2
-		gridPane.add(new Label("Beach Spot:"), 0, 1, 1, 1);
-		gridPane.add(beachSpinner, 1, 1, 1, 1);
-		gridPane.add(new Label("X"), 2, 1, 1, 1);
-		gridPane.add(new Label(String.valueOf(definedFees.getBeach())), 3, 1, 1, 1);
-		gridPane.add(new Label("total"), 4, 1, 1, 1);
-		/// Row 3
-		gridPane.add(new Label("Kayak Rack:"), 0, 2, 1, 1);
-		gridPane.add(kayakRackSpinner, 1, 2, 1, 1);
-		gridPane.add(new Label("X"), 2, 2, 1, 1);
-		gridPane.add(new Label(String.valueOf(definedFees.getKayak_rack())), 3, 2, 1, 1);
-		gridPane.add(new Label("total"), 4, 2, 1, 1);
-		/// Row 5
-		gridPane.add(new Label("Kayak Shed:"), 0, 3, 1, 1);
-		gridPane.add(kayakShedSpinner, 1, 3, 1, 1);
-		gridPane.add(new Label("X"), 2, 3, 1, 1);
-		gridPane.add(new Label(String.valueOf(definedFees.getKayak_shed())), 3, 3, 1, 1);
-		gridPane.add(new Label("total"), 4, 3, 1, 1);
-		/// Row 6
-		gridPane.add(new Label("Sail Loft:"), 0, 4, 1, 1);
-		gridPane.add(sailLoftSpinner, 1, 4, 1, 1);
-		gridPane.add(new Label("X"), 2, 4, 1, 1);
-		gridPane.add(new Label(String.valueOf(definedFees.getSail_loft())), 3, 4, 1, 1);
-		gridPane.add(new Label("total"), 4, 4, 1, 1);
-		/// Row 7
-		gridPane.add(new Label("Sail School Loft:"), 0, 5, 1, 1);
-		gridPane.add(sailSchoolLoftSpinner, 1, 5, 1, 1);
-		gridPane.add(new Label("X"), 2, 5, 1, 1);
-		gridPane.add(new Label(String.valueOf(definedFees.getSail_school_laser_loft())), 3, 5, 1, 1);
-		gridPane.add(new Label("total"), 4, 5, 1, 1);
-		/// Row 8
-		gridPane.add(new Label("Wet Slip:"), 0, 6, 1, 1);
-		gridPane.add(wetSlipSpinner, 1, 6, 1, 1);
-		gridPane.add(new Label("X"), 2, 6, 1, 1);
-		gridPane.add(wetSlipText, 3, 6, 1, 1);
-		gridPane.add(new Label("total"), 4, 6, 1, 1);
-		/// Row 9
-		gridPane.add(new Label("Winter Storage:"), 0, 7, 1, 1);
-		gridPane.add(winterStorageSpinner, 1, 7, 1, 1);
-		gridPane.add(new Label("X"), 2, 7, 1, 1);
-		gridPane.add(new Label(String.valueOf(definedFees.getWinter_storage())), 3, 7, 1, 1);
-		gridPane.add(new Label("total"), 4, 7, 1, 1);
-		/// Row 10
-		gridPane.add(new Label("YSP Donation:"), 0, 8, 1, 1);
-		gridPane.add(new Label("-"), 1, 8, 1, 1);
-		gridPane.add(new Label("X"), 2, 8, 1, 1);
-		gridPane.add(yscText, 3, 8, 1, 1);
-		gridPane.add(new Label("total"), 4, 8, 1, 1);
-		/// Row 11
-		gridPane.add(new Label("Initiation:"), 0, 9, 1, 1);
-		gridPane.add(new Label("-"), 1, 9, 1, 1);
-		gridPane.add(new Label("X"), 2, 9, 1, 1);
-		gridPane.add(initiationText, 3, 9, 1, 1);
-		gridPane.add(new Label("total"), 4, 9, 1, 1);
-		/// Row 12
-		gridPane.add(new Label("Other Fee:"), 0, 10, 1, 1);
-		gridPane.add(new Label("-"), 1, 10, 1, 1);
-		gridPane.add(new Label("X"), 2, 10, 1, 1);
-		gridPane.add(otherText, 3, 10, 1, 1);
-		gridPane.add(new Label("total"), 4, 10, 1, 1);
-		/// Row 13
-		gridPane.add(new Label("Work Credits:"), 0, 11, 1, 1);
-		gridPane.add(new Label("-"), 1, 11, 1, 1);
-		gridPane.add(new Label("X"), 2, 11, 1, 1);
-		gridPane.add(new Label(String.valueOf(definedFees.getWork_credit())), 3, 11, 1, 1);
-		gridPane.add(new Label("total"), 4, 11, 1, 1);
-
-
-//		vboxDuesLabel.getChildren().add(new Label("Dues:"));
-//		vboxBeachLabel.getChildren().add(new Label("Beach Spot:"));
-//		vboxKayacLabel.getChildren().add(new Label("Kayak Rack:"));
-//		vboxKayakShedLabel.getChildren().add(new Label("Kayak Shed:"));
-//		vboxSailLoftLabel.getChildren().add(new Label("Sail Loft:"));
-//		vboxSailSchoolLoftLabel.getChildren().add(new Label("Sail School Loft:"));
-//		vboxWetSlipLabel.getChildren().add(new Label("Wet Slip:"));
-//		vboxWinterStorageLabel.getChildren().add(new Label("Winter Storage:"));
-//		vboxYSCLabel.getChildren().add(new Label("YSP Donation:"));
-//		vboxInitiationLabel.getChildren().add(new Label("Initiation:"));
-//		vboxOtherLabel.getChildren().add(new Label("Other:"));
 		
-//		vboxDuesBox.getChildren().add(duesText);
-//		vboxBeachBox.getChildren().add(beachSpinner);
-//		vboxKayacBox.getChildren().add(kayakRackSpinner);
-//		vboxKayakShedBox.getChildren().add(kayakShedSpinner);
-//		vboxSailLoftBox.getChildren().add(sailLoftSpinner);
-//		vboxSailSchoolLoftBox.getChildren().add(sailSchoolLoftSpinner);
-//		vboxWetSlipBox.getChildren().add(hboxSlip);
-//		vboxWinterStorageBox.getChildren().add(winterStorageSpinner);
-//		vboxYSCBox.getChildren().add(yscText);
-//		vboxInitiationBox.getChildren().add(initiationText);
-//		vboxOtherBox.getChildren().add(otherText);
+		vboxDuesLabel.getChildren().add(new Label("Dues:"));
+		vboxBeachLabel.getChildren().add(new Label("Beach Spot:"));
+		vboxKayacLabel.getChildren().add(new Label("Kayak Rack:"));
+		vboxKayakShedLabel.getChildren().add(new Label("Kayak Shed:"));
+		vboxSailLoftLabel.getChildren().add(new Label("Sail Loft:"));
+		vboxSailSchoolLoftLabel.getChildren().add(new Label("Sail School Loft:"));
+		vboxWetSlipLabel.getChildren().add(new Label("Wet Slip:"));
+		vboxWinterStorageLabel.getChildren().add(new Label("Winter Storage:"));
+		vboxYSCLabel.getChildren().add(new Label("YSP Donation:"));
+		vboxInitiationLabel.getChildren().add(new Label("Initiation:"));
+		vboxOtherLabel.getChildren().add(new Label("Other:"));
 		
-//		hboxDues.getChildren().addAll(vboxDuesLabel,vboxDuesBox);
-//		hboxBeach.getChildren().addAll(vboxBeachLabel,vboxBeachBox);
-//		hboxKayac.getChildren().addAll(vboxKayacLabel,vboxKayacBox);
-//		hboxKayakShed.getChildren().addAll(vboxKayakShedLabel,vboxKayakShedBox);
-//		hboxSailLoft.getChildren().addAll(vboxSailLoftLabel,vboxSailLoftBox);
-//		hboxSailSchoolLoft.getChildren().addAll(vboxSailSchoolLoftLabel,vboxSailSchoolLoftBox);
-//		hboxWetSlip.getChildren().addAll(vboxWetSlipLabel,vboxWetSlipBox);
-//		hboxWinterStorage.getChildren().addAll(vboxWinterStorageLabel,vboxWinterStorageBox);
-//		hboxYSC.getChildren().addAll(vboxYSCLabel,vboxYSCBox);
-//		hboxInitiation.getChildren().addAll(vboxInitiationLabel,vboxInitiationBox);
-//		hboxOther.getChildren().addAll(vboxOtherLabel,vboxOtherBox);
+		vboxDuesBox.getChildren().add(duesText);
+		vboxBeachBox.getChildren().add(beachSpinner);
+		vboxKayacBox.getChildren().add(kayakRackSpinner);
+		vboxKayakShedBox.getChildren().add(kayakShedSpinner);
+		vboxSailLoftBox.getChildren().add(sailLoftSpinner);
+		vboxSailSchoolLoftBox.getChildren().add(sailSchoolLoftSpinner);
+		vboxWetSlipBox.getChildren().add(hboxSlip);
+		vboxWinterStorageBox.getChildren().add(winterStorageSpinner);
+		vboxYSCBox.getChildren().add(yscText);
+		vboxInitiationBox.getChildren().add(initiationText);
+		vboxOtherBox.getChildren().add(otherText);
 		
-//		vboxTabPanes.getChildren().addAll(keysAndCreditsTabPane,MoneyTabPane);
-//		vboxSpinners.getChildren().addAll(feesLabel,hboxDues,hboxBeach,hboxKayac,hboxKayakShed,hboxSailLoft,hboxSailSchoolLoft,hboxWetSlip,hboxWinterStorage,hboxYSC,hboxInitiation, hboxOther);
-//		mainHbox.getChildren().addAll(vboxSpinners,spacer1,vboxTabPanes);
-//		mainHbox.getChildren().addAll(vboxSpinners,vboxTabPanes);
-
-		mainVbox.getChildren().addAll(gridPane);  // add error hbox in first
+		hboxDues.getChildren().addAll(vboxDuesLabel,vboxDuesBox);
+		hboxBeach.getChildren().addAll(vboxBeachLabel,vboxBeachBox);
+		hboxKayac.getChildren().addAll(vboxKayacLabel,vboxKayacBox);
+		hboxKayakShed.getChildren().addAll(vboxKayakShedLabel,vboxKayakShedBox);
+		hboxSailLoft.getChildren().addAll(vboxSailLoftLabel,vboxSailLoftBox);
+		hboxSailSchoolLoft.getChildren().addAll(vboxSailSchoolLoftLabel,vboxSailSchoolLoftBox);
+		hboxWetSlip.getChildren().addAll(vboxWetSlipLabel,vboxWetSlipBox);
+		hboxWinterStorage.getChildren().addAll(vboxWinterStorageLabel,vboxWinterStorageBox);
+		hboxYSC.getChildren().addAll(vboxYSCLabel,vboxYSCBox);
+		hboxInitiation.getChildren().addAll(vboxInitiationLabel,vboxInitiationBox);
+		hboxOther.getChildren().addAll(vboxOtherLabel,vboxOtherBox);
+		
+		vboxTabPanes.getChildren().addAll(keysAndCreditsTabPane,MoneyTabPane);
+		vboxSpinners.getChildren().addAll(feesLabel,hboxDues,hboxBeach,hboxKayac,hboxKayakShed,hboxSailLoft,hboxSailSchoolLoft,hboxWetSlip,hboxWinterStorage,hboxYSC,hboxInitiation, hboxOther);
+		mainHbox.getChildren().addAll(vboxSpinners,spacer1,vboxTabPanes);
+		mainVbox.getChildren().addAll(mainHbox);  // add error hbox in first
 		vboxGrey.getChildren().addAll(mainVbox);
 		getChildren().addAll(vboxGrey);
 	}
