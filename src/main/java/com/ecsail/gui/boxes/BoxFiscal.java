@@ -31,6 +31,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.layout.*;
+import javafx.scene.text.Text;
 
 import java.math.BigDecimal;
 
@@ -55,6 +56,7 @@ public class BoxFiscal extends HBox {
 	private final TextField otherText = new TextField();
 	private final TextField initiationText = new TextField();
 	private final TextField wetSlipText = new TextField();
+
 	private final Spinner<Integer> beachSpinner = new Spinner<Integer>();
 	private final Spinner<Integer> kayakRackSpinner = new Spinner<Integer>();
 	private final Spinner<Integer> kayakShedSpinner = new Spinner<Integer>();
@@ -62,6 +64,8 @@ public class BoxFiscal extends HBox {
 	private final Spinner<Integer> sailSchoolLoftSpinner = new Spinner<Integer>();
 	private final Spinner<Integer> winterStorageSpinner = new Spinner<Integer>();
 	private final Spinner<Integer> wetSlipSpinner = new Spinner<Integer>();
+	private final Spinner<Integer> workCreditSpinner = new Spinner<Integer>();
+
 	private final String disabledColor = "-fx-background-color: #d5dade";
 	boolean isCommited;
 	Button addWetSlip = new Button();
@@ -89,10 +93,20 @@ public class BoxFiscal extends HBox {
 		TabCredit creditTab = new TabCredit("Work Credits", selectedWorkCreditYear, workCredits);
 		
 		Image image = new Image(getClass().getResourceAsStream("/Arrow.png"));
-		Label workCreditsLabel = new Label("Work Credits");
-		Label feesLabel = new Label("Fees");
-		Label BalanceLabel = new Label("Balance");
-		Label keysLabel = new Label("Keys");
+
+		Text duesText = new Text();
+		Text beachText = new Text();
+		Text KayakRackText = new Text();
+		Text KayakShedText = new Text();
+		Text SailLoftText = new Text();
+		Text SailSchoolLoftText = new Text();
+		Text wetSlipText = new Text();
+		Text witherStorageText = new Text();
+		Text yspText = new Text();
+		Text initiationText = new Text();
+		Text otherFeeText = new Text();
+		Text workCreditsText = new Text();
+
 
 		VBox vboxGrey = new VBox();  // this is the vbox for organizing all the widgets
 		VBox mainVbox = new VBox();
@@ -114,18 +128,7 @@ public class BoxFiscal extends HBox {
 		HBox hboxYSC = new HBox();
 		HBox hboxInitiation = new HBox();
 		HBox hboxOther = new HBox();
-		
-//		VBox vboxDuesLabel = new VBox();
-//		VBox vboxBeachLabel = new VBox();
-//		VBox vboxKayacLabel = new VBox();
-//		VBox vboxKayakShedLabel = new VBox();
-//		VBox vboxSailLoftLabel = new VBox();
-//		VBox vboxSailSchoolLoftLabel = new VBox();
-//		VBox vboxWetSlipLabel = new VBox();
-//		VBox vboxWinterStorageLabel = new VBox();
-//		VBox vboxYSCLabel = new VBox();
-//		VBox vboxInitiationLabel = new VBox();
-//		VBox vboxOtherLabel = new VBox();
+
 		
 		VBox vboxDuesBox = new VBox();
 		VBox vboxBeachBox = new VBox();
@@ -143,40 +146,18 @@ public class BoxFiscal extends HBox {
 
 		//////////////// ATTRIBUTES ///////////////////
 		MoneyTabPane.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
-		workCreditsLabel.setId("bold-label");
-		feesLabel.setId("bold-label");
-		BalanceLabel.setId("bold-label");
-		keysLabel.setId("bold-label");
+//		workCreditsLabel.setId("bold-label");
+//		feesLabel.setId("bold-label");
+//		BalanceLabel.setId("bold-label");
+//		keysLabel.setId("bold-label");
 		addWetSlip.setId("default-button");
 		addWetSlip.setGraphic(new ImageView(image));
 		
 		int width = 100;
-//		vboxDuesLabel.setPrefWidth(width);
-//		vboxBeachLabel.setPrefWidth(width);
-//		vboxKayacLabel.setPrefWidth(width);
-//		vboxKayakShedLabel.setPrefWidth(width);
-//		vboxSailLoftLabel.setPrefWidth(width);
-//		vboxSailSchoolLoftLabel.setPrefWidth(width);
-//		vboxWetSlipLabel.setPrefWidth(width);
-//		vboxWinterStorageLabel.setPrefWidth(width);
-//		vboxYSCLabel.setPrefWidth(width);
-//		vboxInitiationLabel.setPrefWidth(width);
-//		vboxOtherLabel.setPrefWidth(width);
-		
-//		vboxDuesLabel.setAlignment(Pos.CENTER_LEFT);
-//		vboxBeachLabel.setAlignment(Pos.CENTER_LEFT);
-//		vboxKayacLabel.setAlignment(Pos.CENTER_LEFT);
-//		vboxKayakShedLabel.setAlignment(Pos.CENTER_LEFT);
-//		vboxSailLoftLabel.setAlignment(Pos.CENTER_LEFT);
-//		vboxSailSchoolLoftLabel.setAlignment(Pos.CENTER_LEFT);
-//		vboxWetSlipLabel.setAlignment(Pos.CENTER_LEFT);
-//		vboxWinterStorageLabel.setAlignment(Pos.CENTER_LEFT);
-//		vboxYSCLabel.setAlignment(Pos.CENTER_LEFT);
-//		vboxInitiationLabel.setAlignment(Pos.CENTER_LEFT);
-//		vboxOtherLabel.setAlignment(Pos.CENTER_LEFT);
 		
 		winterStorageSpinner.setPrefWidth(65);
 		wetSlipSpinner.setPrefWidth(65);
+		workCreditSpinner.setPrefWidth(65);
 		kayakRackSpinner.setPrefWidth(65);
 		slipText.setPrefWidth(40);
 		addWetSlip.setPrefWidth(25);
@@ -206,8 +187,8 @@ public class BoxFiscal extends HBox {
 		textFields.getCreditText().setEditable(false);
 		textFields.getTotalFeesText().setEditable(false);
 		
-		BalanceLabel.setPadding(new Insets(20, 0, 0, 0));
-		workCreditsLabel.setPadding(new Insets(20, 0, 0, 0));
+//		BalanceLabel.setPadding(new Insets(20, 0, 0, 0));
+//		workCreditsLabel.setPadding(new Insets(20, 0, 0, 0));
 		this.setPadding(new Insets(5, 5, 5, 5));  // creates space for blue frame
 		vboxGrey.setPadding(new Insets(8, 5, 0, 15));
 		hboxButtonCommit.setPadding(new Insets(5, 0, 5, 170));	
@@ -276,10 +257,17 @@ public class BoxFiscal extends HBox {
             	}
             });
 
+		SpinnerValueFactory<Integer> workCreditValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 40, 0);
+		workCreditSpinner.setValueFactory(workCreditValueFactory);
+		workCreditSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
+			fiscals.get(rowIndex).setBeach(newValue);
+			updateBalance();
+		});
+
 		SpinnerValueFactory<Integer> wetSlipValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1, 0);
 		wetSlipSpinner.setValueFactory(wetSlipValueFactory);
 		wetSlipSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
-			fiscals.get(rowIndex).setBeach(newValue);
+//			fiscals.get(rowIndex).setBeach(newValue);
 			updateBalance();
 		});
 
@@ -456,8 +444,8 @@ public class BoxFiscal extends HBox {
 
 		/// Row 1
 		gridPane.add(new Label("Dues:"), 0, 0, 1, 1);
-		gridPane.add(new Label("-"), 1, 0, 1, 1);
-		gridPane.add(new Label("X"), 2, 0, 1, 1);
+		gridPane.add(new Label(""), 1, 0, 1, 1);
+		gridPane.add(new Label(""), 2, 0, 1, 1);
 		gridPane.add(duesText, 3, 0, 1, 1);
 		gridPane.add(new Label("total"), 4, 0, 1, 1);
 		/// Row 2
@@ -504,25 +492,25 @@ public class BoxFiscal extends HBox {
 		gridPane.add(new Label("total"), 4, 7, 1, 1);
 		/// Row 10
 		gridPane.add(new Label("YSP Donation:"), 0, 8, 1, 1);
-		gridPane.add(new Label("-"), 1, 8, 1, 1);
-		gridPane.add(new Label("X"), 2, 8, 1, 1);
+		gridPane.add(new Label(""), 1, 8, 1, 1);
+		gridPane.add(new Label(""), 2, 8, 1, 1);
 		gridPane.add(yscText, 3, 8, 1, 1);
 		gridPane.add(new Label("total"), 4, 8, 1, 1);
 		/// Row 11
 		gridPane.add(new Label("Initiation:"), 0, 9, 1, 1);
-		gridPane.add(new Label("-"), 1, 9, 1, 1);
-		gridPane.add(new Label("X"), 2, 9, 1, 1);
+		gridPane.add(new Label(""), 1, 9, 1, 1);
+		gridPane.add(new Label(""), 2, 9, 1, 1);
 		gridPane.add(initiationText, 3, 9, 1, 1);
 		gridPane.add(new Label("total"), 4, 9, 1, 1);
 		/// Row 12
 		gridPane.add(new Label("Other Fee:"), 0, 10, 1, 1);
-		gridPane.add(new Label("-"), 1, 10, 1, 1);
-		gridPane.add(new Label("X"), 2, 10, 1, 1);
+		gridPane.add(new Label(""), 1, 10, 1, 1);
+		gridPane.add(new Label(""), 2, 10, 1, 1);
 		gridPane.add(otherText, 3, 10, 1, 1);
 		gridPane.add(new Label("total"), 4, 10, 1, 1);
 		/// Row 13
 		gridPane.add(new Label("Work Credits:"), 0, 11, 1, 1);
-		gridPane.add(new Label("-"), 1, 11, 1, 1);
+		gridPane.add(workCreditSpinner, 1, 11, 1, 1);
 		gridPane.add(new Label("X"), 2, 11, 1, 1);
 		gridPane.add(new Label(String.valueOf(definedFees.getWork_credit())), 3, 11, 1, 1);
 		gridPane.add(new Label("total"), 4, 11, 1, 1);
