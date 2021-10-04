@@ -290,6 +290,13 @@
     -fx-text-fill: -fx-selection-bar-text;
 }
 
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+}
 /*-fx-selection-bar-text@font-face {*/
 /*    font-family: 'fredoka';*/
 /*    src: url('FredokaOne-Regular.ttf');*/
