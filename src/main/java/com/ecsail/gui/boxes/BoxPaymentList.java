@@ -214,7 +214,7 @@ public class BoxPaymentList extends HBox {
 //	}
 	
 	private static void createTab(int rowIndex) {
-		parentTabPane.getTabs().add(new Tab(fiscals.get(rowIndex).getFiscal_year() + "", new BoxFiscal(membership, people, fiscals, rowIndex, note, duesText))); // current year tab
+		parentTabPane.getTabs().add(new Tab(fiscals.get(rowIndex).getFiscal_year() + "", new BoxInvoice(membership, people, fiscals, rowIndex, note, duesText))); // current year tab
 		for(Tab tab: parentTabPane.getTabs()) {
 			if(tab.getText().equals(fiscals.get(rowIndex).getFiscal_year() + ""))
 		parentTabPane.getSelectionModel().select(tab);
