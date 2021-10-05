@@ -55,7 +55,7 @@ public class BoxInvoice extends HBox {
 	private Note note;
 	String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date(System.currentTimeMillis()));
 
-	Object_BalanceText textFields = new Object_BalanceText();
+//	Object_BalanceText textFields = new Object_BalanceText();
 	GridPane gridPane = new GridPane();
 	private TableView<Object_Payment> paymentTableView = new TableView<Object_Payment>();
 	private final TextField yscTextField = new TextField();
@@ -133,6 +133,11 @@ public class BoxInvoice extends HBox {
 		Text sailLKeyText = new Text();
 		Text kayakSKeyText = new Text();
 		Text sailSSLKeyText = new Text();
+
+		Text totalFeesText = new Text();
+		Text totalCreditText = new Text();
+		Text totalPaymentText = new Text();
+		Text totalBalanceText = new Text();
 
 		duesText.setText(fiscals.get(rowIndex).getDues());
 		beachText.setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getBeach()).multiply(definedFees.getBeach())));
@@ -336,9 +341,7 @@ public class BoxInvoice extends HBox {
 		vboxSpinners.setSpacing(5);
 		mainHbox.setSpacing(10);
 
-		textFields.getPaidText().setEditable(false);
-		textFields.getCreditText().setEditable(false);
-		textFields.getTotalFeesText().setEditable(false);
+
 
 		this.setPadding(new Insets(5, 5, 5, 5));  // creates space for blue frame
 		vboxGrey.setPadding(new Insets(8, 5, 0, 15));
@@ -350,11 +353,7 @@ public class BoxInvoice extends HBox {
 		HBox.setHgrow(vboxGrey, Priority.ALWAYS);
 
 		//////////////// LISTENER //////////////////
-			
-		textFields.getBalanceText().textProperty().addListener((observable, oldValue, newValue) -> {
-			if(newValue.equals("0"))
-				textFields.getBalanceText().setStyle("-fx-background-color: #30e65a");
-		});
+
 		
 		// this is only called if you changer membership type or open a record or manually type in
 		duesTextField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -383,30 +382,30 @@ public class BoxInvoice extends HBox {
 	            }
 	        });
 
-        textFields.getCommitButton().setOnAction((event) -> {
-            	if (!fiscals.get(rowIndex).isCommitted()) { 
-            		if (!textFields.getBalanceText().getText().equals("0"))
-					textFields.getBalanceText().setStyle("-fx-background-color: #f23a50");
-            		System.out.println("total at commit is " + fiscals.get(rowIndex).getTotal());
-            		SqlUpdate.updateMoney(fiscals.get(rowIndex)); 
-            		SqlUpdate.commitFiscalRecord(fiscals.get(rowIndex).getMoney_id(), true);// this could be placed in line above
-            		String date = SqlSelect.getPaymentDate(fiscals.get(rowIndex).getMoney_id()); // dates note to check
-            		// update membership_id record to renew or non-renew
-            		SqlUpdate.updateMembershipId(fiscals.get(rowIndex).getMs_id(), fiscals.get(rowIndex).getFiscal_year(), textFields.getRenewCheckBox().isSelected());
-            		fiscals.get(rowIndex).setCommitted(true);
-            		addPaidNote(date);
-            		// if we put an amount in other we need to make a note
-            		if(Integer.parseInt(fiscals.get(rowIndex).getOther()) != 0) {
-            			// make sure the memo dosen't already exist
-            			if(!SqlExists.memoExists(fiscals.get(rowIndex).getMoney_id())) 
-            			note.add("Other expense: ",date,fiscals.get(rowIndex).getMoney_id(),"O");
-            		}
-            		setEditable(false);
-            	} else {
-				setEditable(true);
-				fiscals.get(rowIndex).setCommitted(false);
-				SqlUpdate.commitFiscalRecord(fiscals.get(rowIndex).getMoney_id(), false);
-            	}
+        commitButton.setOnAction((event) -> {
+//            	if (!fiscals.get(rowIndex).isCommitted()) {
+//            		if (!textFields.getBalanceText().getText().equals("0"))
+//					textFields.getBalanceText().setStyle("-fx-background-color: #f23a50");
+//            		System.out.println("total at commit is " + fiscals.get(rowIndex).getTotal());
+//            		SqlUpdate.updateMoney(fiscals.get(rowIndex));
+//            		SqlUpdate.commitFiscalRecord(fiscals.get(rowIndex).getMoney_id(), true);// this could be placed in line above
+//            		String date = SqlSelect.getPaymentDate(fiscals.get(rowIndex).getMoney_id()); // dates note to check
+//            		// update membership_id record to renew or non-renew
+//            		SqlUpdate.updateMembershipId(fiscals.get(rowIndex).getMs_id(), fiscals.get(rowIndex).getFiscal_year(), textFields.getRenewCheckBox().isSelected());
+//            		fiscals.get(rowIndex).setCommitted(true);
+//            		addPaidNote(date);
+//            		// if we put an amount in other we need to make a note
+//            		if(Integer.parseInt(fiscals.get(rowIndex).getOther()) != 0) {
+//            			// make sure the memo dosen't already exist
+//            			if(!SqlExists.memoExists(fiscals.get(rowIndex).getMoney_id()))
+//            			note.add("Other expense: ",date,fiscals.get(rowIndex).getMoney_id(),"O");
+//            		}
+//            		setEditable(false);
+//            	} else {
+//				setEditable(true);
+//				fiscals.get(rowIndex).setCommitted(false);
+//				SqlUpdate.commitFiscalRecord(fiscals.get(rowIndex).getMoney_id(), false);
+//            	}
             });
 
 		SpinnerValueFactory<Integer> workCreditValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 40, 0);
@@ -503,18 +502,18 @@ public class BoxInvoice extends HBox {
 //			countKeys();
 		});
 		
-		textFields.getPaidText().textProperty().addListener((obd, oldValue, newValue) -> {
-        	if(!isNumeric(textFields.getPaidText().getText())) {  // we should move this to amount in TabPayment
-        		textFields.getPaidText().setText("0.00");
-        	}
-        	BigDecimal newTotalValue = new BigDecimal(textFields.getPaidText().getText());
-        	fiscals.get(rowIndex).setPaid(textFields.getPaidText().getText());
-        	SqlUpdate.updateField(newTotalValue, "money", "paid",fiscals,rowIndex);
-        	BigDecimal balance = getBalance();
-        	textFields.getBalanceText().setText(balance + "");
-        	SqlUpdate.updateField(getBalance(), "money", "balance",fiscals,rowIndex);
-        	fiscals.get(rowIndex).setBalance(String.valueOf(getBalance()));
-		});
+//		textFields.getPaidText().textProperty().addListener((obd, oldValue, newValue) -> {
+//        	if(!isNumeric(textFields.getPaidText().getText())) {  // we should move this to amount in TabPayment
+//        		textFields.getPaidText().setText("0.00");
+//        	}
+//        	BigDecimal newTotalValue = new BigDecimal(textFields.getPaidText().getText());
+//        	fiscals.get(rowIndex).setPaid(textFields.getPaidText().getText());
+//        	SqlUpdate.updateField(newTotalValue, "money", "paid",fiscals,rowIndex);
+//        	BigDecimal balance = getBalance();
+//        	textFields.getBalanceText().setText(balance + "");
+//        	SqlUpdate.updateField(getBalance(), "money", "balance",fiscals,rowIndex);
+//        	fiscals.get(rowIndex).setBalance(String.valueOf(getBalance()));
+//		});
 		
 		yscTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
 	            //focus out
@@ -523,7 +522,7 @@ public class BoxInvoice extends HBox {
 	            		yscTextField.setText("0.00");
 	            	}
 					BigDecimal ysc = new BigDecimal(yscTextField.getText());
-					yspText.setText(String.valueOf(ysc));
+					yspText.setText(String.valueOf(ysc.setScale(2)));
 	            	updateItem(ysc, "ysc");
 					yscTextField.setText(String.valueOf(ysc.setScale(2)));
 	            	updateBalance();
@@ -552,7 +551,7 @@ public class BoxInvoice extends HBox {
 	            		otherTextField.setText("0.00");
 	            	}
 					BigDecimal other = new BigDecimal(otherTextField.getText());
-					otherFeeText.setText(String.valueOf(other));
+					otherFeeText.setText(String.valueOf(other.setScale(2)));
 	            	updateItem(other,"other");
 					otherTextField.setText(String.valueOf(other.setScale(2)));
 	            	updateBalance();
@@ -568,7 +567,7 @@ public class BoxInvoice extends HBox {
 					BigDecimal initiation = new BigDecimal(initiationTextField.getText());
 	            	updateItem(initiation, "initiation");
 					initiationTextField.setText(String.valueOf(initiation.setScale(2)));
-					initiationText.setText(String.valueOf(initiation));
+					initiationText.setText(String.valueOf(initiation.setScale(2)));
 	            	updateBalance();
 	            }
 	        });
@@ -580,8 +579,8 @@ public class BoxInvoice extends HBox {
 		
 		workCredits.integerProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
 		    	fiscals.get(rowIndex).setCredit(String.valueOf(countCredit((int)newValue)));
-		    	textFields.getCreditText().setText(countCredit((int)newValue) + "");
-		    	textFields.getBalanceText().setText(getBalance() + "");  // sets balance textfield in balance tab
+//		    	textFields.getCreditText().setText(countCredit((int)newValue) + "");
+//		    	textFields.getBalanceText().setText(getBalance() + "");  // sets balance textfield in balance tab
 				fiscals.get(rowIndex).setBalance(String.valueOf(getBalance()));  // sets focused object
 			workCreditsText.setText(String.valueOf(definedFees.getWork_credit().multiply(BigDecimal.valueOf((int)newValue))));
 		        updateBalance();
@@ -597,9 +596,9 @@ public class BoxInvoice extends HBox {
 		
 		//////////////// SETTING CONTENT //////////////
 		
-		textFields.getCreditText().setText(fiscals.get(rowIndex).getCredit() + "");
-		textFields.getTotalFeesText().setText(fiscals.get(rowIndex).getTotal() + "");
-		textFields.getPaidText().setText(fiscals.get(rowIndex).getPaid() + "");
+//		textFields.getCreditText().setText(fiscals.get(rowIndex).getCredit() + "");
+//		textFields.getTotalFeesText().setText(fiscals.get(rowIndex).getTotal() + "");
+//		textFields.getPaidText().setText(fiscals.get(rowIndex).getPaid() + "");
 		slipTextField.setText(fiscals.get(rowIndex).getWet_slip() +"");
 		duesTextField.setText(fiscals.get(rowIndex).getDues() + "");
 		yscTextField.setText(fiscals.get(rowIndex).getYsc_donation() + "");
@@ -615,7 +614,7 @@ public class BoxInvoice extends HBox {
 				System.out.println("Member is an officer");
 					if(!SqlSelect.isCommitted(fiscals.get(rowIndex).getMoney_id()))	{	// is not committed	
 						// committed
-						textFields.getCreditText().setText(duesTextField.getText()); // gets the dues and gives that amount of credit for being an officer
+//						textFields.getCreditText().setText(duesTextField.getText()); // gets the dues and gives that amount of credit for being an officer
 						SqlUpdate.updateField(new BigDecimal(duesTextField.getText()), "money", "credit", fiscals, rowIndex); // updates SQL
 						fiscals.get(rowIndex).setCredit(duesTextField.getText());  // sets credit for what dues are
 						System.out.println("Record is not committed");
@@ -627,7 +626,7 @@ public class BoxInvoice extends HBox {
 		if(fiscals.get(rowIndex).isCommitted()) setEditable(false);	
 
 		updateBalance();
-		textFields.getBalanceText().setText(getBalance() + "");	
+//		textFields.getBalanceText().setText(getBalance() + "");
 //		MoneyTabPane.getTabs().addAll(moneyTab,paymentTab);
 //		keysAndCreditsTabPane.getTabs().addAll(keyTab, creditTab);
 		hboxSlip.getChildren().addAll(slipTextField,addWetSlip);
@@ -827,14 +826,14 @@ public class BoxInvoice extends HBox {
 			break;
 		}
 		fiscals.get(rowIndex).setTotal(String.valueOf(updateTotalFeeFields()));
-		textFields.getTotalFeesText().setText(fiscals.get(rowIndex).getTotal() + "");
-    	textFields.getBalanceText().setText(getBalance() + "");
+//		textFields.getTotalFeesText().setText(fiscals.get(rowIndex).getTotal() + "");
+//    	textFields.getBalanceText().setText(getBalance() + "");
 	}
 	
 	
 	private void addPaidNote(String date) {
-		note.add("Paid $" + textFields.getPaidText().getText() + " leaving a balance of $" + textFields.getBalanceText().getText() + " for "
-				+ fiscals.get(rowIndex).getFiscal_year(), date,0,"P");
+//		note.add("Paid $" + textFields.getPaidText().getText() + " leaving a balance of $" + textFields.getBalanceText().getText() + " for "
+//				+ fiscals.get(rowIndex).getFiscal_year(), date,0,"P");
 	}
 	
 	private void setEditable(boolean isEditable) {
@@ -890,8 +889,8 @@ public class BoxInvoice extends HBox {
 	private void updateBalance() {
 		  fiscals.get(rowIndex).setTotal(String.valueOf(updateTotalFeeFields()));
 		  System.out.println("total at update balance is " + fiscals.get(rowIndex).getTotal());
-		  textFields.getTotalFeesText().setText(fiscals.get(rowIndex).getTotal() + "");
-		  textFields.getBalanceText().setText(getBalance() + "");
+//		  textFields.getTotalFeesText().setText(fiscals.get(rowIndex).getTotal() + "");
+//		  textFields.getBalanceText().setText(getBalance() + "");
 		  fiscals.get(rowIndex).setBalance(String.valueOf(getBalance()));
 	}
 	
