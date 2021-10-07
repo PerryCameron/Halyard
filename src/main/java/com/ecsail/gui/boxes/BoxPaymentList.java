@@ -128,7 +128,7 @@ public class BoxPaymentList extends HBox {
 				int moneyId = SqlSelect.getCount("money_id") + 1;
 				Object_Money newMoney = new Object_Money(moneyId, membership.getMsid(),
 						comboBox.getValue(), 0, "0.00", 0, 0, 0, 0, 0, "0.00", 0, 0, 0, 0, 0,
-						"0.00", "0.00", "0.00", "0.00", "0.00", String.valueOf(getDues(definedFees)), false, false, "0.00", "0.00", false);
+						"0.00", "0.00", "0.00", "0.00", "0.00", String.valueOf(getDues(definedFees)), false, false, "0.00", "0.00", false,0);
 				if (SqlExists.moneyExists(String.valueOf(comboBox.getValue()), membership)) {
 					newMoney.setSupplemental(true);
 					newMoney.setDues("0.00");

@@ -402,103 +402,87 @@ public class BoxInvoice extends HBox {
 	            }
 	        });
 
-        commitButton.setOnAction((event) -> {
-            	if (!fiscals.get(rowIndex).isCommitted()) {
-            		if (!totalBalanceText.getText().equals("0"))
-					totalBalanceText.setStyle("-fx-background-color: #f23a50");
-            		System.out.println("total at commit is " + fiscals.get(rowIndex).getTotal());
-            		SqlUpdate.updateMoney(fiscals.get(rowIndex));
-            		SqlUpdate.commitFiscalRecord(fiscals.get(rowIndex).getMoney_id(), true);// this could be placed in line above
-            		String date = SqlSelect.getPaymentDate(fiscals.get(rowIndex).getMoney_id()); // dates note to check
-            		// update membership_id record to renew or non-renew
-            		SqlUpdate.updateMembershipId(fiscals.get(rowIndex).getMs_id(), fiscals.get(rowIndex).getFiscal_year(), renewCheckBox.isSelected());
-            		fiscals.get(rowIndex).setCommitted(true);
-            		addPaidNote(date);
-            		// if we put an amount in other we need to make a note
-            		if(new BigDecimal(fiscals.get(rowIndex).getOther()).compareTo(BigDecimal.ZERO) != 0) {
-            			// make sure the memo dosen't already exist
-            			if(!SqlExists.memoExists(fiscals.get(rowIndex).getMoney_id()))
-            			note.add("Other expense: ",date,fiscals.get(rowIndex).getMoney_id(),"O");
-            		}
-            		setEditable(false);
-            	} else {
-				setEditable(true);
-				fiscals.get(rowIndex).setCommitted(false);
-				SqlUpdate.commitFiscalRecord(fiscals.get(rowIndex).getMoney_id(), false);
-            	}
-            });
 
-		SpinnerValueFactory<Integer> workCreditValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 40, 0);
-		workCreditSpinner.setValueFactory(workCreditValueFactory);
-		workCreditSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
+
+		SpinnerValueFactory<Integer> beachValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 5, fiscals.get(rowIndex).getBeach());
+		beachSpinner.setValueFactory(beachValueFactory);
+		beachSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
 			fiscals.get(rowIndex).setBeach(newValue);
-			String workCredits = String.valueOf(definedFees.getWork_credit().multiply(BigDecimal.valueOf(newValue)));
-			workCreditsText.setText(workCredits);
-			SqlUpdate.updateWorkCredit(selectedWorkCreditYear);
-			totalCreditText.setText(workCredits);
+			beachText.setText(String.valueOf(definedFees.getBeach().multiply(BigDecimal.valueOf(newValue))));
+			updateBalance();
+		});
+
+		SpinnerValueFactory<Integer> kayacRackValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 5, fiscals.get(rowIndex).getKayac_rack());
+		kayakRackSpinner.setValueFactory(kayacRackValueFactory);
+		kayakRackSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
+			fiscals.get(rowIndex).setKayac_rack(newValue);
+			kayakRackText.setText(String.valueOf(definedFees.getKayak_rack().multiply(BigDecimal.valueOf(newValue))));
+			updateBalance();
+		});
+
+		SpinnerValueFactory<Integer> kayakShedValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 5, fiscals.get(rowIndex).getKayac_shed());
+		kayakShedSpinner.setValueFactory(kayakShedValueFactory);
+		kayakShedSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
+			fiscals.get(rowIndex).setKayac_shed(newValue);
+			kayakShedText.setText(String.valueOf(definedFees.getKayak_shed().multiply(BigDecimal.valueOf(newValue))));
+			updateBalance();
+		});
+
+		SpinnerValueFactory<Integer> sailLoftValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1, fiscals.get(rowIndex).getSail_loft());
+		sailLoftSpinner.setValueFactory(sailLoftValueFactory);
+		sailLoftSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
+			fiscals.get(rowIndex).setSail_loft(newValue);
+			sailLoftText.setText(String.valueOf(definedFees.getSail_loft().multiply(BigDecimal.valueOf(newValue))));
+			updateBalance();
+		});
+
+		SpinnerValueFactory<Integer> sailSchoolLoftValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1, fiscals.get(rowIndex).getSail_school_laser_loft());
+		sailSchoolLoftSpinner.setValueFactory(sailSchoolLoftValueFactory);
+		sailSchoolLoftSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
+			fiscals.get(rowIndex).setSail_school_laser_loft(newValue);
+			sailSchoolLoftText.setText(String.valueOf(definedFees.getSail_school_laser_loft().multiply(BigDecimal.valueOf(newValue))));
 			updateBalance();
 		});
 
 		SpinnerValueFactory<Integer> wetSlipValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1, 0);
 		wetSlipSpinner.setValueFactory(wetSlipValueFactory);
 		wetSlipSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
-			wetSlipText.setText(String.valueOf(definedFees.getWet_slip().multiply(BigDecimal.valueOf(newValue))));
+			String wetSlip = String.valueOf(definedFees.getWet_slip().multiply(BigDecimal.valueOf(newValue)));
+			fiscals.get(rowIndex).setWet_slip(wetSlip);
+			wetSlipText.setText(wetSlip);
 			updateBalance();
 		});
 
-		SpinnerValueFactory<Integer> beachValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 5, fiscals.get(rowIndex).getBeach());
-		beachSpinner.setValueFactory(beachValueFactory);
-		beachSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
-				  fiscals.get(rowIndex).setBeach(newValue);
-				  beachText.setText(String.valueOf(definedFees.getBeach().multiply(BigDecimal.valueOf(newValue))));
-				  updateBalance();
-			});
-		
-		SpinnerValueFactory<Integer> kayacRackValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 5, fiscals.get(rowIndex).getKayac_rack());
-		kayakRackSpinner.setValueFactory(kayacRackValueFactory);
-		kayakRackSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
-				  fiscals.get(rowIndex).setKayac_rack(newValue);
-			      kayakRackText.setText(String.valueOf(definedFees.getKayak_rack().multiply(BigDecimal.valueOf(newValue))));
-				  updateBalance();
-			});
-		
-		SpinnerValueFactory<Integer> kayakShedValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 5, fiscals.get(rowIndex).getKayac_shed());
-		kayakShedSpinner.setValueFactory(kayakShedValueFactory);
-		kayakShedSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
-				  fiscals.get(rowIndex).setKayac_shed(newValue);
-				  kayakShedText.setText(String.valueOf(definedFees.getKayak_shed().multiply(BigDecimal.valueOf(newValue))));
-				  updateBalance();
-			});
-		
-		SpinnerValueFactory<Integer> sailLoftValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1, fiscals.get(rowIndex).getSail_loft());
-		sailLoftSpinner.setValueFactory(sailLoftValueFactory);
-		sailLoftSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
-				  fiscals.get(rowIndex).setSail_loft(newValue);
-			      sailLoftText.setText(String.valueOf(definedFees.getSail_loft().multiply(BigDecimal.valueOf(newValue))));
-				  updateBalance();
-			});
-		
-		SpinnerValueFactory<Integer> sailSchoolLoftValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1, fiscals.get(rowIndex).getSail_school_laser_loft());
-		sailSchoolLoftSpinner.setValueFactory(sailSchoolLoftValueFactory);
-		sailSchoolLoftSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
-				  fiscals.get(rowIndex).setSail_school_laser_loft(newValue);
-				  sailSchoolLoftText.setText(String.valueOf(definedFees.getSail_school_laser_loft().multiply(BigDecimal.valueOf(newValue))));
-				  updateBalance();
-			});
-		
+		slipTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+			//focus out
+			if (oldValue) {  // we have focused and unfocused
+				if(!isNumeric(otherTextField.getText())) {
+					otherTextField.setText("0.00");
+				}
+				BigDecimal slip = new BigDecimal(slipTextField.getText());
+				wetSlipText.setText(String.valueOf(slip.multiply(BigDecimal.valueOf(wetSlipSpinner.getValue()))));
+				slip.setScale(2);
+				updateItem(slip,"wetslip");
+				slipTextField.setText(String.valueOf(slip.setScale(2)));
+				updateBalance();
+			}
+		});
+
 		SpinnerValueFactory<Integer> winterStorageValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 5, fiscals.get(rowIndex).getWinter_storage());
 		winterStorageSpinner.setValueFactory(winterStorageValueFactory);
 		winterStorageSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
-				  fiscals.get(rowIndex).setWinter_storage(newValue);
-				  winterStorageText.setText(String.valueOf(definedFees.getWinter_storage().multiply(BigDecimal.valueOf(newValue))));
-				  updateBalance();
-				  SqlUpdate.updateMoney(fiscals.get(rowIndex));
-			});
+			fiscals.get(rowIndex).setWinter_storage(newValue);
+			winterStorageText.setText(String.valueOf(definedFees.getWinter_storage().multiply(BigDecimal.valueOf(newValue))));
+			updateBalance();
+//			SqlUpdate.updateMoney(fiscals.get(rowIndex));
+		});
 
 		SpinnerValueFactory<Integer> gateKeyValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 15, fiscals.get(rowIndex).getExtra_key());
 		gateKeySpinner.setValueFactory(gateKeyValueFactory);
 		gateKeySpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
 			gateKeyText.setText(String.valueOf(definedFees.getMain_gate_key().multiply(BigDecimal.valueOf(newValue))));
+			fiscals.get(rowIndex).setExtra_key(newValue);
+			updateBalance();
 		});
 
 		SpinnerValueFactory<Integer> sailLKeyValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 15, fiscals.get(rowIndex).getSail_loft_key());
@@ -506,7 +490,7 @@ public class BoxInvoice extends HBox {
 		sailLKeySpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
 			sailLKeyText.setText(String.valueOf(definedFees.getSail_loft_key().multiply(BigDecimal.valueOf(newValue))));
 			fiscals.get(rowIndex).setSail_loft_key(newValue);
-//			countKeys();
+			updateBalance();
 		});
 
 		SpinnerValueFactory<Integer> kayakSKeyValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 15, fiscals.get(rowIndex).getKayac_shed_key());
@@ -514,7 +498,7 @@ public class BoxInvoice extends HBox {
 		kayakSKeySpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
 			kayakSKeyText.setText(String.valueOf(definedFees.getKayak_shed_key().multiply(BigDecimal.valueOf(newValue))));
 			fiscals.get(rowIndex).setKayac_shed_key(newValue);
-//			countKeys();
+			updateBalance();
 		});
 
 		SpinnerValueFactory<Integer> sailSSLKeyValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 15, fiscals.get(rowIndex).getSail_school_loft_key());
@@ -522,9 +506,61 @@ public class BoxInvoice extends HBox {
 		sailSSLKeySpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
 			sailSSLKeyText.setText(String.valueOf(definedFees.getSail_school_loft_key().multiply(BigDecimal.valueOf(newValue))));
 			fiscals.get(rowIndex).setSail_school_loft_key(newValue);
-//			countKeys();
+			updateBalance();
 		});
-		
+
+		yscTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+			//focus out
+			if (oldValue) {  // we have focused and unfocused
+				if(!isNumeric(yscTextField.getText())) {
+					yscTextField.setText("0.00");
+				}
+				BigDecimal ysc = new BigDecimal(yscTextField.getText());
+				yspText.setText(String.valueOf(ysc.setScale(2)));
+				updateItem(ysc, "ysc");
+				yscTextField.setText(String.valueOf(ysc.setScale(2)));
+				updateBalance();
+			}
+		});
+
+		initiationTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+			//focus out
+			if (oldValue) {  // we have focused and unfocused
+				if(!isNumeric(initiationTextField.getText())) {
+					initiationTextField.setText("0.00");
+				}
+				BigDecimal initiation = new BigDecimal(initiationTextField.getText());
+				updateItem(initiation, "initiation");
+				initiationTextField.setText(String.valueOf(initiation.setScale(2)));
+				initiationText.setText(String.valueOf(initiation.setScale(2)));
+				updateBalance();
+			}
+		});
+
+		otherTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+			//focus out
+			if (oldValue) {  // we have focused and unfocused
+				if(!isNumeric(otherTextField.getText())) {
+					otherTextField.setText("0.00");
+				}
+				BigDecimal other = new BigDecimal(otherTextField.getText());
+				otherFeeText.setText(String.valueOf(other.setScale(2)));
+				updateItem(other,"other");
+				otherTextField.setText(String.valueOf(other.setScale(2)));
+				updateBalance();
+			}
+		});
+
+		SpinnerValueFactory<Integer> workCreditValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 40, 0);
+		workCreditSpinner.setValueFactory(workCreditValueFactory);
+		workCreditSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
+			fiscals.get(rowIndex).setWork_credit(newValue);
+			String workCredits = String.valueOf(definedFees.getWork_credit().multiply(BigDecimal.valueOf(newValue)));
+			workCreditsText.setText(workCredits);
+			totalCreditText.setText(workCredits);
+			updateBalance();
+		});
+
 		totalPaymentText.textProperty().addListener((obd, oldValue, newValue) -> {
         	if(!isNumeric(totalPaymentText.getText())) {  // we should move this to amount in TabPayment
 				totalPaymentText.setText("0.00");
@@ -537,63 +573,11 @@ public class BoxInvoice extends HBox {
         	SqlUpdate.updateField(getBalance(), "money", "balance",fiscals,rowIndex);
         	fiscals.get(rowIndex).setBalance(String.valueOf(getBalance()));
 		});
+
 		
-		yscTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-	            //focus out
-	            if (oldValue) {  // we have focused and unfocused
-	            	if(!isNumeric(yscTextField.getText())) {
-	            		yscTextField.setText("0.00");
-	            	}
-					BigDecimal ysc = new BigDecimal(yscTextField.getText());
-					yspText.setText(String.valueOf(ysc.setScale(2)));
-	            	updateItem(ysc, "ysc");
-					yscTextField.setText(String.valueOf(ysc.setScale(2)));
-	            	updateBalance();
-	            }
-	        });
+
 		
-		slipTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-	            //focus out
-	            if (oldValue) {  // we have focused and unfocused
-	            	if(!isNumeric(otherTextField.getText())) {
-	            		otherTextField.setText("0.00");
-	            	}
-					BigDecimal slip = new BigDecimal(slipTextField.getText());
-					wetSlipText.setText(String.valueOf(slip.multiply(BigDecimal.valueOf(wetSlipSpinner.getValue()))));
-					slip.setScale(2);
-	            	updateItem(slip,"wetslip");
-					slipTextField.setText(String.valueOf(slip.setScale(2)));
-	            	updateBalance();
-	            }
-	        });
-		
-		otherTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-	            //focus out
-	            if (oldValue) {  // we have focused and unfocused
-	            	if(!isNumeric(otherTextField.getText())) {
-	            		otherTextField.setText("0.00");
-	            	}
-					BigDecimal other = new BigDecimal(otherTextField.getText());
-					otherFeeText.setText(String.valueOf(other.setScale(2)));
-	            	updateItem(other,"other");
-					otherTextField.setText(String.valueOf(other.setScale(2)));
-	            	updateBalance();
-	            }
-	        });
-		
-		initiationTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-	            //focus out
-	            if (oldValue) {  // we have focused and unfocused
-	            	if(!isNumeric(initiationTextField.getText())) {
-	            		initiationTextField.setText("0.00");
-	            	}
-					BigDecimal initiation = new BigDecimal(initiationTextField.getText());
-	            	updateItem(initiation, "initiation");
-					initiationTextField.setText(String.valueOf(initiation.setScale(2)));
-					initiationText.setText(String.valueOf(initiation.setScale(2)));
-	            	updateBalance();
-	            }
-	        });
+
 		
 		numberOfKeys.integerProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
 		        updateBalance();
@@ -616,6 +600,32 @@ public class BoxInvoice extends HBox {
             	updateBalance();
             	SqlUpdate.updateMoney(fiscals.get(rowIndex));
             });
+
+		commitButton.setOnAction((event) -> {
+			if (!fiscals.get(rowIndex).isCommitted()) {
+				if (!totalBalanceText.getText().equals("0"))
+					totalBalanceText.setStyle("-fx-background-color: #f23a50");
+				System.out.println("total at commit is " + fiscals.get(rowIndex).getTotal());
+				SqlUpdate.updateMoney(fiscals.get(rowIndex));
+				SqlUpdate.commitFiscalRecord(fiscals.get(rowIndex).getMoney_id(), true);// this could be placed in line above
+				String date = SqlSelect.getPaymentDate(fiscals.get(rowIndex).getMoney_id()); // dates note to check
+				// update membership_id record to renew or non-renew
+				SqlUpdate.updateMembershipId(fiscals.get(rowIndex).getMs_id(), fiscals.get(rowIndex).getFiscal_year(), renewCheckBox.isSelected());
+				fiscals.get(rowIndex).setCommitted(true);
+				addPaidNote(date);
+				// if we put an amount in other we need to make a note
+				if(new BigDecimal(fiscals.get(rowIndex).getOther()).compareTo(BigDecimal.ZERO) != 0) {
+					// make sure the memo dosen't already exist
+					if(!SqlExists.memoExists(fiscals.get(rowIndex).getMoney_id()))
+						note.add("Other expense: ",date,fiscals.get(rowIndex).getMoney_id(),"O");
+				}
+				setEditable(false);
+			} else {
+				setEditable(true);
+				fiscals.get(rowIndex).setCommitted(false);
+				SqlUpdate.commitFiscalRecord(fiscals.get(rowIndex).getMoney_id(), false);
+			}
+		});
 		
 		//////////////// SETTING CONTENT //////////////
 
@@ -972,18 +982,15 @@ public class BoxInvoice extends HBox {
 	
 	private void updateBalance() {
 		  fiscals.get(rowIndex).setTotal(String.valueOf(updateTotalFeeFields()));
-		  System.out.println("total at update balance is " + fiscals.get(rowIndex).getTotal());
+//		  System.out.println("total at update balance is " + fiscals.get(rowIndex).getTotal());
 		  totalFeesText.setText(String.valueOf(fiscals.get(rowIndex).getTotal()));
 		  totalBalanceText.setText(String.valueOf(getBalance()));
 		  fiscals.get(rowIndex).setBalance(String.valueOf(getBalance()));
+		  SqlUpdate.updateMoney(fiscals.get(rowIndex));  // saves to database
 	}
 	
 	private BigDecimal updateTotalFeeFields() {
 		BigDecimal dues = new BigDecimal(fiscals.get(rowIndex).getDues());
-		BigDecimal extraKey = new BigDecimal(fiscals.get(rowIndex).getExtra_key()).multiply(definedFees.getMain_gate_key());
-		BigDecimal sailLoftKey = new BigDecimal(fiscals.get(rowIndex).getSail_loft_key()).multiply(definedFees.getSail_loft_key());
-		BigDecimal kayakShedKey = new BigDecimal(fiscals.get(rowIndex).getKayac_shed_key()).multiply(definedFees.getKayak_shed_key());
-		BigDecimal sailSchoolLoftKey = new BigDecimal(fiscals.get(rowIndex).getSail_school_loft_key()).multiply(definedFees.getSail_school_loft_key());
 		BigDecimal beachSpot = new BigDecimal(fiscals.get(rowIndex).getBeach()).multiply(definedFees.getBeach());
 		BigDecimal kayakRack = new BigDecimal(fiscals.get(rowIndex).getKayac_rack()).multiply(definedFees.getKayak_rack());
 		BigDecimal kayakShed = new BigDecimal(fiscals.get(rowIndex).getKayac_shed()).multiply(definedFees.getKayak_shed());
@@ -991,10 +998,30 @@ public class BoxInvoice extends HBox {
 		BigDecimal sailSchoolLoft = new BigDecimal(fiscals.get(rowIndex).getSail_school_laser_loft()).multiply(definedFees.getSail_school_laser_loft());
 		BigDecimal wetSlip = new BigDecimal(fiscals.get(rowIndex).getWet_slip());
 		BigDecimal winterStorage = new BigDecimal(fiscals.get(rowIndex).getWinter_storage()).multiply(definedFees.getWinter_storage());
+		BigDecimal extraKey = new BigDecimal(fiscals.get(rowIndex).getExtra_key()).multiply(definedFees.getMain_gate_key());
+		BigDecimal sailLoftKey = new BigDecimal(fiscals.get(rowIndex).getSail_loft_key()).multiply(definedFees.getSail_loft_key());
+		BigDecimal kayakShedKey = new BigDecimal(fiscals.get(rowIndex).getKayac_shed_key()).multiply(definedFees.getKayak_shed_key());
+		BigDecimal sailSchoolLoftKey = new BigDecimal(fiscals.get(rowIndex).getSail_school_loft_key()).multiply(definedFees.getSail_school_loft_key());
 		BigDecimal yscDonation = new BigDecimal(fiscals.get(rowIndex).getYsc_donation());
 		BigDecimal other = new BigDecimal(fiscals.get(rowIndex).getOther());
 		BigDecimal initiation = new BigDecimal(fiscals.get(rowIndex).getInitiation());
-		return extraKey.add(sailLoftKey).add(kayakShedKey).add(sailSchoolLoftKey).add(beachSpot).add(kayakRack).add(kayakShed).add(sailLoft).add(sailSchoolLoft).add(wetSlip).add(winterStorage).add(yscDonation).add(dues).add(other).add(initiation);
+		BigDecimal total = extraKey.add(sailLoftKey).add(kayakShedKey).add(sailSchoolLoftKey).add(beachSpot).add(kayakRack).add(kayakShed)
+				.add(sailLoft).add(sailSchoolLoft).add(wetSlip).add(winterStorage).add(yscDonation).add(dues).add(other).add(initiation);
+
+		System.out.println("sailloft=" + sailLoft +
+				" kayak shed key=" + kayakShedKey +
+				" sail school loft key=" + sailSchoolLoftKey +
+				" beach=" + beachSpot +
+				" kayak Rack=" + kayakRack +
+				" kayak Shed=" + kayakShed +
+				" sail loft=" + sailLoft +
+				" sail school loft=" + sailSchoolLoft +
+				" wet slip=" + wetSlip +
+				" winter storage=" + winterStorage +
+				" ysc Donation=" + yscDonation +
+				" dues=" + dues +
+				" other=" + other + " initiation=" + initiation + " total=" + total);
+		return total;
 	}
 
 	private BigDecimal getBalance() {
@@ -1012,8 +1039,9 @@ public class BoxInvoice extends HBox {
 		} else {
 			credit = definedFees.getWork_credit().multiply(BigDecimal.valueOf(workCredits));
 		}
-		//System.out.println("Credit is " + credit);
+		System.out.println("Total credit is " + credit);
 		return credit;
+
 	}
 	
 	private Boolean membershipHasOfficer() {

@@ -31,6 +31,7 @@ public class Object_Money {
 	private StringProperty other;
 	private StringProperty initiation;
 	private BooleanProperty supplemental;
+	private IntegerProperty work_credit;
 
 	public Object_Money(Integer money_id, Integer ms_id, Integer fiscal_year, Integer batch,
 			String officer_credit, Integer extra_key, Integer kayac_shed_key,
@@ -38,7 +39,7 @@ public class Object_Money {
 						String wet_slip, Integer kayac_rack, Integer kayac_shed, Integer sail_loft,
 						Integer sail_school_laser_loft, Integer winter_storage, String ysc_donation,
 						String paid, String total, String credit, String balance, String dues,
-			Boolean committed, Boolean closed, String other, String initiation, Boolean supplemental) {
+			Boolean committed, Boolean closed, String other, String initiation, Boolean supplemental, Integer work_credit) {
 
 		this.money_id = new SimpleIntegerProperty(money_id);
 		this.ms_id = new SimpleIntegerProperty(ms_id);
@@ -67,6 +68,7 @@ public class Object_Money {
 		this.other = new SimpleStringProperty(other);
 		this.initiation = new SimpleStringProperty(initiation);
 		this.supplemental = new SimpleBooleanProperty(supplemental);
+		this.work_credit = new SimpleIntegerProperty(work_credit);
 	}
 
 	public Object_Money() {
@@ -97,6 +99,7 @@ public class Object_Money {
 		this.other = new SimpleStringProperty("0.00");
 		this.initiation = new SimpleStringProperty("0.00");
 		this.supplemental = new SimpleBooleanProperty(false);
+		this.work_credit = new SimpleIntegerProperty(0);
 	}
 
 	public int getMoney_id() {
@@ -423,6 +426,18 @@ public class Object_Money {
 		this.supplemental.set(supplemental);
 	}
 
+	public int getWork_credit() {
+		return work_credit.get();
+	}
+
+	public IntegerProperty work_creditProperty() {
+		return work_credit;
+	}
+
+	public void setWork_credit(int work_credit) {
+		this.work_credit.set(work_credit);
+	}
+
 	public final void clear() {
 		setMoney_id(0);
 		setMs_id(0);
@@ -451,6 +466,7 @@ public class Object_Money {
 		setOther("0.00");
 		setInitiation("0.00");
 		setSupplemental(false);
+		setWork_credit(0);
 	}
 
 	@Override
