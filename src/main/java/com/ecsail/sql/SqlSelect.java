@@ -466,7 +466,7 @@ public class SqlSelect {
 						rs.getInt("SAIL_LOFT"), rs.getInt("SAIL_SCHOOL_LASER_LOFT"), rs.getInt("WINTER_STORAGE"),
 						rs.getString("YSC_DONATION"),rs.getString("PAID"),rs.getString("TOTAL"),rs.getString("CREDIT"),
 						rs.getString("BALANCE"), rs.getString("DUES"),rs.getBoolean("COMMITED"),rs.getBoolean("CLOSED"),
-						rs.getString("OTHER"),rs.getString("INITIATION"),rs.getBoolean("SUPPLEMENTAL"),rs.getInt("WORK_CREDIT")));
+						rs.getString("OTHER"),rs.getString("INITIATION"),rs.getBoolean("SUPPLEMENTAL"),rs.getInt("WORK_CREDIT"),rs.getString("OTHER_CREDIT")));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -490,7 +490,8 @@ public class SqlSelect {
 						rs.getInt("SAIL_LOFT"), rs.getInt("SAIL_SCHOOL_LASER_LOFT"), rs.getInt("WINTER_STORAGE"),
 						rs.getString("YSC_DONATION"),rs.getString("PAID"),rs.getString("TOTAL"),rs.getString("CREDIT"),
 						rs.getString("BALANCE"), rs.getString("DUES"),rs.getBoolean("COMMITED"),rs.getBoolean("CLOSED"),
-						rs.getString("OTHER"),rs.getString("INITIATION"),rs.getBoolean("SUPPLEMENTAL"), rs.getInt("WORK_CREDIT"));
+						rs.getString("OTHER"),rs.getString("INITIATION"),rs.getBoolean("SUPPLEMENTAL"), rs.getInt("WORK_CREDIT"),
+						rs.getString("OTHER_CREDIT"));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -519,7 +520,7 @@ public class SqlSelect {
 						rs.getInt("SAIL_LOFT"), rs.getInt("SAIL_SCHOOL_LASER_LOFT"), rs.getInt("WINTER_STORAGE"),
 						rs.getString("YSC_DONATION"),rs.getString("PAID"),rs.getString("TOTAL"),rs.getString("CREDIT"),
 						rs.getString("BALANCE"), rs.getString("DUES"), rs.getBoolean("COMMITED"),rs.getBoolean("CLOSED"),
-						rs.getString("OTHER"),rs.getString("INITIATION"),rs.getBoolean("SUPPLEMENTAL"), rs.getInt("WORK_CREDIT"), rs.getString("F_NAME"),
+						rs.getString("OTHER"),rs.getString("INITIATION"),rs.getBoolean("SUPPLEMENTAL"), rs.getInt("WORK_CREDIT"), rs.getString("OTHER_CREDIT"), rs.getString("F_NAME"),
 						rs.getString("L_NAME"), rs.getInt("MEMBERSHIP_ID")));
 			}
 		} catch (SQLException e) {
@@ -547,7 +548,8 @@ public class SqlSelect {
 						rs.getInt("SAIL_LOFT"), rs.getInt("SAIL_SCHOOL_LASER_LOFT"), rs.getInt("WINTER_STORAGE"),
 						rs.getString("YSC_DONATION"),rs.getString("PAID"),rs.getString("TOTAL"),rs.getString("CREDIT"),
 						rs.getString("BALANCE"), rs.getString("DUES"), rs.getBoolean("COMMITED"),rs.getBoolean("CLOSED"),
-						rs.getString("OTHER"),rs.getString("INITIATION"),rs.getBoolean("SUPPLEMENTAL"),rs.getInt("WORK_CREDIT"), rs.getString("F_NAME"),
+						rs.getString("OTHER"),rs.getString("INITIATION"),rs.getBoolean("SUPPLEMENTAL"),rs.getInt("WORK_CREDIT")
+						,rs.getString("OTHER_CREDIT"), rs.getString("F_NAME"),
 						rs.getString("L_NAME"), rs.getInt("MEMBERSHIP_ID")));
 			}
 		} catch (SQLException e) {
@@ -573,7 +575,8 @@ public class SqlSelect {
 						rs.getInt("SAIL_LOFT"), rs.getInt("SAIL_SCHOOL_LASER_LOFT"), rs.getInt("WINTER_STORAGE"),
 						rs.getString("YSC_DONATION"),rs.getString("PAID"),rs.getString("TOTAL"),rs.getString("CREDIT"),
 						rs.getString("BALANCE"), rs.getString("DUES"), rs.getBoolean("COMMITED"),rs.getBoolean("CLOSED"),
-						rs.getString("OTHER"),rs.getString("INITIATION"),rs.getBoolean("SUPPLEMENTAL"), rs.getInt("WORK_CREDIT"), rs.getString("F_NAME"),
+						rs.getString("OTHER"),rs.getString("INITIATION"),rs.getBoolean("SUPPLEMENTAL"), rs.getInt("WORK_CREDIT"),
+						rs.getString("OTHER_CREDIT"), rs.getString("F_NAME"),
 						rs.getString("L_NAME"), rs.getInt("MEMBERSHIP_ID")));
 			}
 		} catch (SQLException e) {

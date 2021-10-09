@@ -32,6 +32,7 @@ public class Object_Money {
 	private StringProperty initiation;
 	private BooleanProperty supplemental;
 	private IntegerProperty work_credit;
+	private StringProperty other_credit;
 
 	public Object_Money(Integer money_id, Integer ms_id, Integer fiscal_year, Integer batch,
 			String officer_credit, Integer extra_key, Integer kayac_shed_key,
@@ -39,7 +40,7 @@ public class Object_Money {
 						String wet_slip, Integer kayac_rack, Integer kayac_shed, Integer sail_loft,
 						Integer sail_school_laser_loft, Integer winter_storage, String ysc_donation,
 						String paid, String total, String credit, String balance, String dues,
-			Boolean committed, Boolean closed, String other, String initiation, Boolean supplemental, Integer work_credit) {
+			Boolean committed, Boolean closed, String other, String initiation, Boolean supplemental, Integer work_credit, String other_credit) {
 
 		this.money_id = new SimpleIntegerProperty(money_id);
 		this.ms_id = new SimpleIntegerProperty(ms_id);
@@ -69,6 +70,7 @@ public class Object_Money {
 		this.initiation = new SimpleStringProperty(initiation);
 		this.supplemental = new SimpleBooleanProperty(supplemental);
 		this.work_credit = new SimpleIntegerProperty(work_credit);
+		this.other_credit = new SimpleStringProperty(other_credit);
 	}
 
 	public Object_Money() {
@@ -100,6 +102,7 @@ public class Object_Money {
 		this.initiation = new SimpleStringProperty("0.00");
 		this.supplemental = new SimpleBooleanProperty(false);
 		this.work_credit = new SimpleIntegerProperty(0);
+		this.other_credit = new SimpleStringProperty("0.00");
 	}
 
 	public int getMoney_id() {
@@ -438,6 +441,18 @@ public class Object_Money {
 		this.work_credit.set(work_credit);
 	}
 
+	public String getOther_credit() {
+		return other_credit.get();
+	}
+
+	public StringProperty other_creditProperty() {
+		return other_credit;
+	}
+
+	public void setOther_credit(String other_credit) {
+		this.other_credit.set(other_credit);
+	}
+
 	public final void clear() {
 		setMoney_id(0);
 		setMs_id(0);
@@ -467,18 +482,41 @@ public class Object_Money {
 		setInitiation("0.00");
 		setSupplemental(false);
 		setWork_credit(0);
+		setOther_credit("0.00");
 	}
 
 	@Override
 	public String toString() {
-		return "Object_Money [money_id=" + money_id + ", ms_id=" + ms_id + ", fiscal_year=" + fiscal_year + ", batch="
-				+ batch + ", officer_credit=" + officer_credit + ", extra_key=" + extra_key + ", kayac_shed_key="
-				+ kayac_shed_key + ", sail_loft_key=" + sail_loft_key + ", sail_school_loft_key=" + sail_school_loft_key
-				+ ", beach=" + beach + ", wet_slip=" + wet_slip + ", kayac_rack=" + kayac_rack + ", kayac_shed="
-				+ kayac_shed + ", sail_loft=" + sail_loft + ", sail_school_laser_loft=" + sail_school_laser_loft
-				+ ", winter_storage=" + winter_storage + ", ysc_donation=" + ysc_donation + ", paid=" + paid
-				+ ", total=" + total + ", credit=" + credit + ", balance=" + balance + ", dues=" + dues + ", committed="
-				+ committed + ", closed=" + closed + ", other=" + other + ", initiation=" + initiation
-				+ ", supplemental=" + supplemental + "]";
+		return "Object_Money{" +
+				"money_id=" + money_id +
+				", ms_id=" + ms_id +
+				", fiscal_year=" + fiscal_year +
+				", batch=" + batch +
+				", officer_credit=" + officer_credit +
+				", extra_key=" + extra_key +
+				", kayac_shed_key=" + kayac_shed_key +
+				", sail_loft_key=" + sail_loft_key +
+				", sail_school_loft_key=" + sail_school_loft_key +
+				", beach=" + beach +
+				", wet_slip=" + wet_slip +
+				", kayac_rack=" + kayac_rack +
+				", kayac_shed=" + kayac_shed +
+				", sail_loft=" + sail_loft +
+				", sail_school_laser_loft=" + sail_school_laser_loft +
+				", winter_storage=" + winter_storage +
+				", ysc_donation=" + ysc_donation +
+				", paid=" + paid +
+				", total=" + total +
+				", credit=" + credit +
+				", balance=" + balance +
+				", dues=" + dues +
+				", committed=" + committed +
+				", closed=" + closed +
+				", other=" + other +
+				", initiation=" + initiation +
+				", supplemental=" + supplemental +
+				", work_credit=" + work_credit +
+				", other_credit=" + other_credit +
+				'}';
 	}
 }

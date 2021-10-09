@@ -101,5 +101,4 @@ public class TabBalance extends Tab {
 		setContent(vboxBlue);
 		
 	}
-	
 }

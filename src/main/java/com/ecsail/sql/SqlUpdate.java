@@ -477,6 +477,8 @@ public class SqlUpdate {
 					+ ",dues=" + money.getDues()
 					+ ",other=" + money.getOther()
 					+ ",initiation=" + money.getInitiation()
+					+ ",work_credit=" + money.getWork_credit()
+					+ ",other_credit=" + money.getOther_credit()
 					+ " WHERE money_id=" + money.getMoney_id() + ";"));
 			Main.edits.setMoniesEdits(Main.edits.getMoniesEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {

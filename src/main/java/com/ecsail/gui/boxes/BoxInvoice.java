@@ -1,10 +1,6 @@
 package com.ecsail.gui.boxes;
 
 import com.ecsail.enums.PaymentType;
-import com.ecsail.gui.tabs.TabBalance;
-import com.ecsail.gui.tabs.TabCredit;
-import com.ecsail.gui.tabs.TabKey;
-import com.ecsail.gui.tabs.TabPayment;
 import com.ecsail.main.EditCell;
 import com.ecsail.main.Note;
 import com.ecsail.sql.SqlExists;
@@ -19,15 +15,12 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.ComboBoxTableCell;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -38,6 +31,9 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.function.Function;
+
+
+// replaces tabCredit, tabBalance, tabPayment, BoxFiscal2
 
 public class BoxInvoice extends HBox {
 	private ObservableList<Object_Money> fiscals = null;
@@ -60,10 +56,12 @@ public class BoxInvoice extends HBox {
 	private TableView<Object_Payment> paymentTableView = new TableView<Object_Payment>();
 	private final TextField yscTextField = new TextField();
 	private final TextField duesTextField;
-	private final TextField slipTextField = new TextField();
+//	private final TextField slipTextField = new TextField();
 	private final TextField otherTextField = new TextField();
 	private final TextField initiationTextField = new TextField();
 	private final TextField wetslipTextField = new TextField();
+	private final TextField otherCreditTextField = new TextField();
+
 
 	private final Spinner<Integer> beachSpinner = new Spinner<Integer>();
 	private final Spinner<Integer> kayakRackSpinner = new Spinner<Integer>();
@@ -137,6 +135,9 @@ public class BoxInvoice extends HBox {
 		Text sailLKeyText = new Text();
 		Text kayakSKeyText = new Text();
 		Text sailSSLKeyText = new Text();
+		Text otherCreditText = new Text();
+		Text wetslipTextFee = new Text();
+
 
 		duesText.setText(fiscals.get(rowIndex).getDues());
 		beachText.setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getBeach()).multiply(definedFees.getBeach())));
@@ -152,13 +153,7 @@ public class BoxInvoice extends HBox {
 		kayakSKeyText.setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getKayac_shed_key()).multiply(definedFees.getKayak_shed_key())));
 		sailSSLKeyText.setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getSail_school_loft_key()).multiply(definedFees.getSail_school_loft_key())));
 
-		yspText.setText(fiscals.get(rowIndex).getYsc_donation());
-		initiationText.setText(fiscals.get(rowIndex).getInitiation());
-		otherFeeText.setText(fiscals.get(rowIndex).getOther());
-		workCreditsText.setText(fiscals.get(rowIndex).getCredit());
 
-		totalPaymentText.setText(fiscals.get(rowIndex).getPaid());
-		totalBalanceText.setText(fiscals.get(rowIndex).getCredit());
 
 		VBox vboxGrey = new VBox();  // this is the vbox for organizing all the widgets
 		VBox mainVbox = new VBox();
@@ -185,6 +180,7 @@ public class BoxInvoice extends HBox {
 		VBox vboxYSC = new VBox();
 		VBox vboxInitiation = new VBox();
 		VBox vboxOther = new VBox();
+		VBox vboxOtherCredit = new VBox();
 
 		// vboxes for multipliers
 		VBox vboxBeachFee = new VBox();
@@ -306,7 +302,6 @@ public class BoxInvoice extends HBox {
 		col3.setMaxWidth( 1f * Integer.MAX_VALUE * 25 );   // Year
 		col4.setMaxWidth( 1f * Integer.MAX_VALUE * 25 );  // Model
 
-
 		//////////////// ATTRIBUTES ///////////////////
 		vboxPink.setPadding(new Insets(2,2,2,2)); // spacing to make pink fram around table
 		vboxPink.setId("box-pink");
@@ -339,11 +334,11 @@ public class BoxInvoice extends HBox {
 		wetSlipSpinner.setPrefWidth(65);
 		workCreditSpinner.setPrefWidth(65);
 		kayakRackSpinner.setPrefWidth(65);
-		slipTextField.setPrefWidth(40);
 		addWetSlip.setPrefWidth(25);
 		addWetSlip.setPrefHeight(25);
 		yscTextField.setPrefWidth(65);
 		otherTextField.setPrefWidth(65);
+		otherCreditTextField.setPrefWidth(65);
 		initiationTextField.setPrefWidth(65);
 		wetslipTextField.setPrefWidth(65);
 		duesTextField.setPrefWidth(65);
@@ -402,8 +397,6 @@ public class BoxInvoice extends HBox {
 	            }
 	        });
 
-
-
 		SpinnerValueFactory<Integer> beachValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 5, fiscals.get(rowIndex).getBeach());
 		beachSpinner.setValueFactory(beachValueFactory);
 		beachSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
@@ -447,24 +440,30 @@ public class BoxInvoice extends HBox {
 		SpinnerValueFactory<Integer> wetSlipValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1, 0);
 		wetSlipSpinner.setValueFactory(wetSlipValueFactory);
 		wetSlipSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
-			String wetSlip = String.valueOf(definedFees.getWet_slip().multiply(BigDecimal.valueOf(newValue)));
+			String wetSlip = String.valueOf(new BigDecimal(wetslipTextFee.getText()).multiply(BigDecimal.valueOf(newValue)));
+			System.out.println("Wetslip=" + wetSlip);
 			fiscals.get(rowIndex).setWet_slip(wetSlip);
 			wetSlipText.setText(wetSlip);
 			updateBalance();
 		});
 
-		slipTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+		// this is for changing the value from default
+		wetslipTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
 			//focus out
 			if (oldValue) {  // we have focused and unfocused
 				if(!isNumeric(otherTextField.getText())) {
 					otherTextField.setText("0.00");
 				}
-				BigDecimal slip = new BigDecimal(slipTextField.getText());
+				BigDecimal slip = new BigDecimal(wetslipTextField.getText());
 				wetSlipText.setText(String.valueOf(slip.multiply(BigDecimal.valueOf(wetSlipSpinner.getValue()))));
 				slip.setScale(2);
 				updateItem(slip,"wetslip");
-				slipTextField.setText(String.valueOf(slip.setScale(2)));
+				wetslipTextField.setText(String.valueOf(slip.setScale(2)));
+				wetslipTextFee.setText(String.valueOf(slip.setScale(2)));
 				updateBalance();
+				vboxWetSlipFee.getChildren().clear();
+				vboxWetSlipFee.getChildren().add(wetslipTextFee);
+
 			}
 		});
 
@@ -551,7 +550,21 @@ public class BoxInvoice extends HBox {
 			}
 		});
 
-		SpinnerValueFactory<Integer> workCreditValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 40, 0);
+		otherCreditTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+			//focus out
+			if (oldValue) {  // we have focused and unfocused
+				if(!isNumeric(otherCreditTextField.getText())) {
+					otherCreditTextField.setText("0.00");
+				}
+				BigDecimal other = new BigDecimal(otherCreditTextField.getText());
+				otherCreditText.setText(String.valueOf(other.setScale(2)));
+				updateItem(other,"other_credit");
+				otherCreditTextField.setText(String.valueOf(other.setScale(2)));
+				updateBalance();
+			}
+		});
+
+		SpinnerValueFactory<Integer> workCreditValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 40, fiscals.get(rowIndex).getWork_credit());
 		workCreditSpinner.setValueFactory(workCreditValueFactory);
 		workCreditSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
 			fiscals.get(rowIndex).setWork_credit(newValue);
@@ -561,24 +574,19 @@ public class BoxInvoice extends HBox {
 			updateBalance();
 		});
 
-		totalPaymentText.textProperty().addListener((obd, oldValue, newValue) -> {
-        	if(!isNumeric(totalPaymentText.getText())) {  // we should move this to amount in TabPayment
-				totalPaymentText.setText("0.00");
-        	}
-        	BigDecimal newTotalValue = new BigDecimal(totalPaymentText.getText());
-        	fiscals.get(rowIndex).setPaid(totalPaymentText.getText());
-        	SqlUpdate.updateField(newTotalValue, "money", "paid",fiscals,rowIndex);
-        	BigDecimal balance = getBalance();
-			totalPaymentText.setText(balance + "");
-        	SqlUpdate.updateField(getBalance(), "money", "balance",fiscals,rowIndex);
-        	fiscals.get(rowIndex).setBalance(String.valueOf(getBalance()));
-		});
+//		totalPaymentText.textProperty().addListener((obd, oldValue, newValue) -> {
+//        	if(!isNumeric(totalPaymentText.getText())) {  // we should move this to amount in TabPayment
+//				totalPaymentText.setText("0.00");
+//        	}
+//        	BigDecimal newTotalValue = new BigDecimal(totalPaymentText.getText());
+//        	fiscals.get(rowIndex).setPaid(totalPaymentText.getText());
+//        	SqlUpdate.updateField(newTotalValue, "money", "paid",fiscals,rowIndex);
+//        	BigDecimal balance = getBalance();
+//			totalPaymentText.setText(balance + "");
+//        	SqlUpdate.updateField(getBalance(), "money", "balance",fiscals,rowIndex);
+//        	fiscals.get(rowIndex).setBalance(String.valueOf(getBalance()));
+//		});
 
-		
-
-		
-
-		
 		numberOfKeys.integerProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
 		        updateBalance();
 		        SqlUpdate.updateMoney(fiscals.get(rowIndex));
@@ -593,13 +601,6 @@ public class BoxInvoice extends HBox {
 		        updateBalance();
 		        SqlUpdate.updateMoney(fiscals.get(rowIndex));
 		    });
-        
-        addWetSlip.setOnAction((event) -> {
-            	slipTextField.setText(definedFees.getWet_slip() + "");
-            	updateItem(new BigDecimal(slipTextField.getText()),"wetslip");
-            	updateBalance();
-            	SqlUpdate.updateMoney(fiscals.get(rowIndex));
-            });
 
 		commitButton.setOnAction((event) -> {
 			if (!fiscals.get(rowIndex).isCommitted()) {
@@ -626,15 +627,41 @@ public class BoxInvoice extends HBox {
 				SqlUpdate.commitFiscalRecord(fiscals.get(rowIndex).getMoney_id(), false);
 			}
 		});
-		
+
+		wetslipTextFee.setOnMouseClicked(e -> {
+			System.out.println("you clicked on the text");
+			vboxWetSlipFee.getChildren().clear();
+			vboxWetSlipFee.getChildren().add(wetslipTextField);
+		});
+
+		wetslipTextFee.setFill(Color.BLUE);
+		wetslipTextFee.setOnMouseEntered(en -> {
+			wetslipTextFee.setFill(Color.RED);
+		});
+		wetslipTextFee.setOnMouseExited(ex -> {
+			wetslipTextFee.setFill(Color.BLUE);
+		});
 		//////////////// SETTING CONTENT //////////////
 
-		slipTextField.setText(fiscals.get(rowIndex).getWet_slip() +"");
-		duesTextField.setText(fiscals.get(rowIndex).getDues() + "");
-		yscTextField.setText(fiscals.get(rowIndex).getYsc_donation() + "");
-		otherTextField.setText(fiscals.get(rowIndex).getOther() + "");
-		initiationTextField.setText(fiscals.get(rowIndex).getInitiation() + "");
+//		slipTextField.setText(String.valueOf(fiscals.get(rowIndex).getWet_slip()));
+		duesTextField.setText(String.valueOf(fiscals.get(rowIndex).getDues()));
+		yscTextField.setText(String.valueOf(fiscals.get(rowIndex).getYsc_donation()));
+		otherTextField.setText(String.valueOf(fiscals.get(rowIndex).getOther()));
+		initiationTextField.setText(String.valueOf(fiscals.get(rowIndex).getInitiation()));
 		wetslipTextField.setText(String.valueOf(definedFees.getWet_slip()));
+		otherCreditTextField.setText(String.valueOf(fiscals.get(rowIndex).getOther_credit()));
+
+		yspText.setText(fiscals.get(rowIndex).getYsc_donation());
+		initiationText.setText(fiscals.get(rowIndex).getInitiation());
+		otherFeeText.setText(fiscals.get(rowIndex).getOther());
+		workCreditsText.setText(fiscals.get(rowIndex).getCredit());
+		otherCreditText.setText(fiscals.get(rowIndex).getOther_credit());
+		System.out.println("paid=" + fiscals.get(rowIndex).getPaid());
+		totalBalanceText.setText(fiscals.get(rowIndex).getCredit());
+		totalCreditText.setText(fiscals.get(rowIndex).getCredit());
+		totalPaymentText.setText(fiscals.get(rowIndex).getPaid());
+		wetslipTextFee.setText(String.valueOf(definedFees.getWet_slip()));
+
 		
 		if (fiscals.get(rowIndex).isSupplemental()) {
 			duesTextField.setEditable(true);
@@ -656,10 +683,7 @@ public class BoxInvoice extends HBox {
 		if(fiscals.get(rowIndex).isCommitted()) setEditable(false);	
 
 		updateBalance();
-//		textFields.getBalanceText().setText(getBalance() + "");
-//		MoneyTabPane.getTabs().addAll(moneyTab,paymentTab);
-//		keysAndCreditsTabPane.getTabs().addAll(keyTab, creditTab);
-		hboxSlip.getChildren().addAll(slipTextField,addWetSlip);
+//		hboxSlip.getChildren().addAll(slipTextField,addWetSlip);
 
 		HBox.setHgrow(gridPane,Priority.ALWAYS);
 		gridPane.setHgap(25);
@@ -698,44 +722,50 @@ public class BoxInvoice extends HBox {
 		vboxKayakShedKey.setAlignment(Pos.CENTER_RIGHT);
 		vboxSailSchoolLoftKey.getChildren().add(sailSSLKeyText);
 		vboxSailSchoolLoftKey.setAlignment(Pos.CENTER_RIGHT);
+
 		vboxWorkCredits.getChildren().add(workCreditsText);
 		vboxWorkCredits.setAlignment(Pos.CENTER_RIGHT);
+
 		vboxYSC.getChildren().add(yspText);
 		vboxYSC.setAlignment(Pos.CENTER_RIGHT);
 		vboxInitiation.getChildren().add(initiationText);
 		vboxInitiation.setAlignment(Pos.CENTER_RIGHT);
 		vboxOther.getChildren().add(otherFeeText);
 		vboxOther.setAlignment(Pos.CENTER_RIGHT);
+		vboxOtherCredit.getChildren().add(otherCreditText);
+		vboxOtherCredit.setAlignment(Pos.CENTER_RIGHT);
 
-		vboxBeachFee.getChildren().add(new Label(String.valueOf(definedFees.getBeach())));
+		vboxBeachFee.getChildren().add(new Text(String.valueOf(definedFees.getBeach())));
 		vboxBeachFee.setAlignment(Pos.CENTER_RIGHT);
-		vboxKayakFee.getChildren().add(new Label(String.valueOf(definedFees.getKayak_rack())));
+		vboxKayakFee.getChildren().add(new Text(String.valueOf(definedFees.getKayak_rack())));
 		vboxKayakFee.setAlignment(Pos.CENTER_RIGHT);
-		vboxKayakShedFee.getChildren().add(new Label(String.valueOf(definedFees.getKayak_shed())));
+		vboxKayakShedFee.getChildren().add(new Text(String.valueOf(definedFees.getKayak_shed())));
 		vboxKayakShedFee.setAlignment(Pos.CENTER_RIGHT);
-		vboxSailLoftFee.getChildren().add(new Label(String.valueOf(definedFees.getSail_loft())));
+		vboxSailLoftFee.getChildren().add(new Text(String.valueOf(definedFees.getSail_loft())));
 		vboxSailLoftFee.setAlignment(Pos.CENTER_RIGHT);
-		vboxSailSchoolLoftFee.getChildren().add(new Label(String.valueOf(definedFees.getSail_school_laser_loft())));
+		vboxSailSchoolLoftFee.getChildren().add(new Text(String.valueOf(definedFees.getSail_school_laser_loft())));
 		vboxSailSchoolLoftFee.setAlignment(Pos.CENTER_RIGHT);
-		vboxWetSlipFee.getChildren().add(new Label(String.valueOf(definedFees.getWet_slip())));
-		vboxWetSlipFee.setAlignment(Pos.CENTER_RIGHT);
-		vboxWinterStorageFee.getChildren().add(new Label(String.valueOf(definedFees.getWinter_storage())));
+		vboxWinterStorageFee.getChildren().add(new Text(String.valueOf(definedFees.getWinter_storage())));
 		vboxWinterStorageFee.setAlignment(Pos.CENTER_RIGHT);
-		vboxGateKeyFee.getChildren().add(new Label(String.valueOf(definedFees.getMain_gate_key())));
+		vboxGateKeyFee.getChildren().add(new Text(String.valueOf(definedFees.getMain_gate_key())));
 		vboxGateKeyFee.setAlignment(Pos.CENTER_RIGHT);
-		vboxSailLoftKeyFee.getChildren().add(new Label(String.valueOf(definedFees.getSail_loft_key())));
+		vboxSailLoftKeyFee.getChildren().add(new Text(String.valueOf(definedFees.getSail_loft_key())));
 		vboxSailLoftKeyFee.setAlignment(Pos.CENTER_RIGHT);
-		vboxKayakShedKeyFee.getChildren().add(new Label(String.valueOf(definedFees.getKayak_shed_key())));
+		vboxKayakShedKeyFee.getChildren().add(new Text(String.valueOf(definedFees.getKayak_shed_key())));
 		vboxKayakShedKeyFee.setAlignment(Pos.CENTER_RIGHT);
-		vboxSailSchoolLoftKeyFee.getChildren().add(new Label(String.valueOf(definedFees.getSail_school_loft_key())));
+		vboxSailSchoolLoftKeyFee.getChildren().add(new Text(String.valueOf(definedFees.getSail_school_loft_key())));
 		vboxSailSchoolLoftKeyFee.setAlignment(Pos.CENTER_RIGHT);
-		vboxWorkCreditsFee.getChildren().add(new Label(String.valueOf(definedFees.getWork_credit())));
+
+		vboxWorkCreditsFee.getChildren().add(new Text(String.valueOf(definedFees.getWork_credit())));
 		vboxWorkCreditsFee.setAlignment(Pos.CENTER_RIGHT);
+
 
 		vboxTitlePrice.getChildren().add(text2);
 		vboxTitlePrice.setAlignment(Pos.CENTER_RIGHT);
 		vboxTitleTotal.getChildren().add(text3);
 		vboxTitleTotal.setAlignment(Pos.CENTER_RIGHT);
+		vboxWetSlipFee.getChildren().add(wetslipTextFee);
+		vboxWetSlipFee.setAlignment(Pos.CENTER_RIGHT);
 
 
 		int row = 0;
@@ -794,7 +824,7 @@ public class BoxInvoice extends HBox {
 		gridPane.add(new Label("Wet Slip:"), 0, row, 1, 1);
 		gridPane.add(wetSlipSpinner, 1, row, 1, 1);
 		gridPane.add(new Label("X"), 2, row, 1, 1);
-		gridPane.add(wetslipTextField, 3, row, 1, 1);
+		gridPane.add(vboxWetSlipFee, 3, row, 1, 1);
 		gridPane.add(vboxWetSlip, 4, row, 1, 1);
 		/// Row 9
 		row++;
@@ -859,6 +889,12 @@ public class BoxInvoice extends HBox {
 		gridPane.add(new Label("X"), 2, row, 1, 1);
 		gridPane.add(vboxWorkCreditsFee, 3, row, 1, 1);
 		gridPane.add(vboxWorkCredits, 4, row, 1, 1);
+		row++;
+		gridPane.add(new Label("Other Credit:"), 0, row, 1, 1);
+		gridPane.add(otherCreditTextField, 1, row, 1, 1);
+		gridPane.add(new Label(""), 2, row, 1, 1);
+		gridPane.add(new Label(""), 3, row, 1, 1);
+		gridPane.add(vboxOtherCredit, 4, row, 1, 1);
 		// Spacer
 		row++;
 		gridPane.add(new Label(""), 0, row, 5, 1);
@@ -918,10 +954,12 @@ public class BoxInvoice extends HBox {
 		case "wetslip":
 			fiscals.get(rowIndex).setWet_slip(String.valueOf(newTotalValue));
 			break;
+		case "other_credit":
+			fiscals.get(rowIndex).setOther_credit(String.valueOf(newTotalValue));
+			break;
 		}
-		fiscals.get(rowIndex).setTotal(String.valueOf(updateTotalFeeFields()));
-//		textFields.getTotalFeesText().setText(fiscals.get(rowIndex).getTotal() + "");
-//    	textFields.getBalanceText().setText(getBalance() + "");
+
+		fiscals.get(rowIndex).setTotal(String.valueOf(updateTotalFeeField()));
 	}
 	
 	
@@ -935,7 +973,7 @@ public class BoxInvoice extends HBox {
 		changeState(duesTextField,isEditable,true);
 		changeState(otherTextField,isEditable,true);
 		changeState(initiationTextField,isEditable,true);
-		changeState(slipTextField,isEditable,true);
+//		changeState(slipTextField,isEditable,true);
 		changeState(addWetSlip,isEditable);
 		changeState(beachSpinner,isEditable);
 		changeState(kayakRackSpinner,isEditable);
@@ -981,15 +1019,16 @@ public class BoxInvoice extends HBox {
 	}
 	
 	private void updateBalance() {
-		  fiscals.get(rowIndex).setTotal(String.valueOf(updateTotalFeeFields()));
-//		  System.out.println("total at update balance is " + fiscals.get(rowIndex).getTotal());
+		  fiscals.get(rowIndex).setTotal(String.valueOf(updateTotalFeeField()));
+
+		  System.out.println(fiscals.get(rowIndex).toString());
 		  totalFeesText.setText(String.valueOf(fiscals.get(rowIndex).getTotal()));
 		  totalBalanceText.setText(String.valueOf(getBalance()));
 		  fiscals.get(rowIndex).setBalance(String.valueOf(getBalance()));
 		  SqlUpdate.updateMoney(fiscals.get(rowIndex));  // saves to database
 	}
 	
-	private BigDecimal updateTotalFeeFields() {
+	private BigDecimal updateTotalFeeField() {
 		BigDecimal dues = new BigDecimal(fiscals.get(rowIndex).getDues());
 		BigDecimal beachSpot = new BigDecimal(fiscals.get(rowIndex).getBeach()).multiply(definedFees.getBeach());
 		BigDecimal kayakRack = new BigDecimal(fiscals.get(rowIndex).getKayac_rack()).multiply(definedFees.getKayak_rack());
@@ -1007,20 +1046,6 @@ public class BoxInvoice extends HBox {
 		BigDecimal initiation = new BigDecimal(fiscals.get(rowIndex).getInitiation());
 		BigDecimal total = extraKey.add(sailLoftKey).add(kayakShedKey).add(sailSchoolLoftKey).add(beachSpot).add(kayakRack).add(kayakShed)
 				.add(sailLoft).add(sailSchoolLoft).add(wetSlip).add(winterStorage).add(yscDonation).add(dues).add(other).add(initiation);
-
-		System.out.println("sailloft=" + sailLoft +
-				" kayak shed key=" + kayakShedKey +
-				" sail school loft key=" + sailSchoolLoftKey +
-				" beach=" + beachSpot +
-				" kayak Rack=" + kayakRack +
-				" kayak Shed=" + kayakShed +
-				" sail loft=" + sailLoft +
-				" sail school loft=" + sailSchoolLoft +
-				" wet slip=" + wetSlip +
-				" winter storage=" + winterStorage +
-				" ysc Donation=" + yscDonation +
-				" dues=" + dues +
-				" other=" + other + " initiation=" + initiation + " total=" + total);
 		return total;
 	}
 
