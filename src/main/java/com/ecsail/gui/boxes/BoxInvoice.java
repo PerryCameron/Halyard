@@ -219,9 +219,11 @@ public class BoxInvoice extends HBox {
 						int pay_id = ((Object_Payment) t.getTableView().getItems().get(t.getTablePosition().getRow())).getPay_id();
 						BigDecimal amount = new BigDecimal(t.getNewValue());
 						SqlUpdate.updatePayment(pay_id, "amount", String.valueOf(amount.setScale(2)));
-						BigDecimal totalAmount = BigDecimal.valueOf(SqlSelect.getTotalAmount(fiscals.get(rowIndex).getMoney_id()));
-						totalPaymentText.setText(totalAmount.setScale(2) + "");
-						fiscals.get(rowIndex).setPaid(String.valueOf(totalAmount.setScale(2)));
+						// SQL Query getTotalAmount() adds all the payments for us
+						BigDecimal totalPaidAmount = BigDecimal.valueOf(SqlSelect.getTotalAmount(fiscals.get(rowIndex).getMoney_id()));
+						totalPaymentText.setText(String.valueOf(totalPaidAmount.setScale(2)));
+						fiscals.get(rowIndex).setPaid(String.valueOf(totalPaidAmount.setScale(2)));
+						updateBalance();
 					}
 				}
 		);
@@ -253,7 +255,6 @@ public class BoxInvoice extends HBox {
 			Object_Payment thisPayment = event.getTableView().getItems().get(row);
 			SqlUpdate.updatePayment(thisPayment.getPay_id(), "payment_type", newPaymentType.getCode());
 			// need to update paid from here
-			//SqlUpdate.updatePhone("phone_type", thisPhone.getPhone_ID(), newPhoneType.getCode());
 			thisPayment.setPaymentType(newPaymentType.getCode());
 		});
 
@@ -362,27 +363,23 @@ public class BoxInvoice extends HBox {
 		HBox.setHgrow(vboxGrey, Priority.ALWAYS);
 
 		//////////////// LISTENER //////////////////
-		buttonAdd.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				int pay_id = SqlSelect.getNumberOfPayments() + 1; // get last pay_id number
-				//if (SqlInsert.addRecord(phone_id, person.getP_id(), true, "new phone", "")) // if added with no errors
-				payments.add(new Object_Payment(pay_id,fiscals.get(rowIndex).getMoney_id(),null,"CH",date, "0",1)); // lets add it to our GUI
-				SqlInsert.addPaymentRecord(payments.get(payments.size() -1));
-				//System.out.println("Added new record with pay_id=" + pay_id + " money_id=" + fiscalRecord.getMoney_id());
-			}
+		buttonAdd.setOnAction(e -> {
+			int pay_id = SqlSelect.getNumberOfPayments() + 1; // get last pay_id number
+			payments.add(new Object_Payment(pay_id,fiscals.get(rowIndex).getMoney_id(),null,"CH",date, "0",1)); // lets add it to our GUI
+			SqlInsert.addPaymentRecord(payments.get(payments.size() -1));
 		});
 
-		buttonDelete.setOnAction(new EventHandler<ActionEvent>() {
-			@Override public void handle(ActionEvent e) {
-				int selectedIndex = paymentTableView.getSelectionModel().getSelectedIndex();
-				if(selectedIndex >= 0)
-					//		if(SqlDelete.deletePhone(phone.get(selectedIndex)))  // if it is properly deleted in our database
-					SqlDelete.deletePayment(payments.get(selectedIndex));
-				paymentTableView.getItems().remove(selectedIndex); // remove it from our GUI
-				int totalAmount = SqlSelect.getTotalAmount(fiscals.get(rowIndex).getMoney_id());
-				totalBalanceText.setText(totalAmount + "");
-			}
+		buttonDelete.setOnAction(e -> {
+			int selectedIndex = paymentTableView.getSelectionModel().getSelectedIndex();
+			if(selectedIndex >= 0) // is something selected?
+			SqlDelete.deletePayment(payments.get(selectedIndex));
+			paymentTableView.getItems().remove(selectedIndex); // remove it from our GUI
+			// SQL Query getTotalAmount() recalculates the payments for us
+			BigDecimal totalPaidAmount = BigDecimal.valueOf(SqlSelect.getTotalAmount(fiscals.get(rowIndex).getMoney_id()));
+			totalPaymentText.setText(String.valueOf(totalPaidAmount.setScale(2)));
+			fiscals.get(rowIndex).setPaid(String.valueOf(totalPaidAmount.setScale(2)));
+			updateBalance();
+			// don't we need to figure out the balance?
 		});
 
 		// this is only called if you changer membership type or open a record or manually type in
@@ -393,7 +390,6 @@ public class BoxInvoice extends HBox {
 				System.out.println(" dues textfield set to " + newValue);
 				fiscals.get(rowIndex).setDues(newDues);
 				updateBalance();
-				SqlUpdate.updateMoney(fiscals.get(rowIndex));
 			} else {
 				System.out.println("Record is commited, no changes made");
 			}
@@ -456,7 +452,6 @@ public class BoxInvoice extends HBox {
 		wetSlipSpinner.setValueFactory(wetSlipValueFactory);
 		wetSlipSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
 			String wetSlip = String.valueOf(new BigDecimal(wetslipTextFee.getText()).multiply(BigDecimal.valueOf(newValue)));
-			System.out.println("Wetslip=" + wetSlip);
 			fiscals.get(rowIndex).setWet_slip(wetSlip);
 			wetSlipText.setText(wetSlip);
 			updateBalance();
@@ -531,7 +526,7 @@ public class BoxInvoice extends HBox {
 				}
 				BigDecimal ysc = new BigDecimal(yscTextField.getText());
 				yspText.setText(String.valueOf(ysc.setScale(2)));
-				updateItem(ysc, "ysc");
+				updateItem(ysc.setScale(2), "ysc");
 				yscTextField.setText(String.valueOf(ysc.setScale(2)));
 				updateBalance();
 			}
@@ -544,7 +539,7 @@ public class BoxInvoice extends HBox {
 					initiationTextField.setText("0.00");
 				}
 				BigDecimal initiation = new BigDecimal(initiationTextField.getText());
-				updateItem(initiation, "initiation");
+				updateItem(initiation.setScale(2), "initiation");
 				initiationTextField.setText(String.valueOf(initiation.setScale(2)));
 				initiationText.setText(String.valueOf(initiation.setScale(2)));
 				updateBalance();
@@ -559,7 +554,7 @@ public class BoxInvoice extends HBox {
 				}
 				BigDecimal other = new BigDecimal(otherTextField.getText());
 				otherFeeText.setText(String.valueOf(other.setScale(2)));
-				updateItem(other,"other");
+				updateItem(other.setScale(2),"other");
 				otherTextField.setText(String.valueOf(other.setScale(2)));
 				updateBalance();
 			}
@@ -571,10 +566,10 @@ public class BoxInvoice extends HBox {
 				if(!isNumeric(otherCreditTextField.getText())) {
 					otherCreditTextField.setText("0.00");
 				}
-				BigDecimal other = new BigDecimal(otherCreditTextField.getText());
-				otherCreditText.setText(String.valueOf(other.setScale(2)));
-				updateItem(other,"other_credit");
-				otherCreditTextField.setText(String.valueOf(other.setScale(2)));
+				BigDecimal otherCredit = new BigDecimal(otherCreditTextField.getText());
+				otherCreditText.setText(String.valueOf(otherCredit.setScale(2)));
+				updateItem(otherCredit.setScale(2),"other_credit");
+				otherCreditTextField.setText(String.valueOf(otherCredit.setScale(2)));
 				updateBalance();
 			}
 		});
@@ -588,19 +583,6 @@ public class BoxInvoice extends HBox {
 			totalCreditText.setText(workCredits);
 			updateBalance();
 		});
-
-//		totalPaymentText.textProperty().addListener((obd, oldValue, newValue) -> {
-//        	if(!isNumeric(totalPaymentText.getText())) {  // we should move this to amount in TabPayment
-//				totalPaymentText.setText("0.00");
-//        	}
-//        	BigDecimal newTotalValue = new BigDecimal(totalPaymentText.getText());
-//        	fiscals.get(rowIndex).setPaid(totalPaymentText.getText());
-//        	SqlUpdate.updateField(newTotalValue, "money", "paid",fiscals,rowIndex);
-//        	BigDecimal balance = getBalance();
-//			totalPaymentText.setText(balance + "");
-//        	SqlUpdate.updateField(getBalance(), "money", "balance",fiscals,rowIndex);
-//        	fiscals.get(rowIndex).setBalance(String.valueOf(getBalance()));
-//		});
 
 		numberOfKeys.integerProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
 		        updateBalance();
@@ -1039,7 +1021,6 @@ public class BoxInvoice extends HBox {
 		  System.out.println(fiscals.get(rowIndex).toString());
 		  totalFeesText.setText(String.valueOf(fiscals.get(rowIndex).getTotal()));
 		  totalBalanceText.setText(String.valueOf(getBalance()));
-		  System.out.println("setting balance=" + getBalance());
 		  fiscals.get(rowIndex).setBalance(String.valueOf(getBalance()));
 		  SqlUpdate.updateMoney(fiscals.get(rowIndex));  // saves to database
 	}
