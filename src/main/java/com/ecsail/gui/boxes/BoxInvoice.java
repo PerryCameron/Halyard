@@ -217,17 +217,13 @@ public class BoxInvoice extends HBox {
 					public void handle(TableColumn.CellEditEvent<Object_Payment, String> t) {
 						((Object_Payment) t.getTableView().getItems().get(
 								t.getTablePosition().getRow())
-						).setPaymentAmount(t.getNewValue());
+						).setPaymentAmount(String.valueOf(new BigDecimal(t.getNewValue()).setScale(2)));
 						int pay_id = ((Object_Payment) t.getTableView().getItems().get(t.getTablePosition().getRow())).getPay_id();
-						//System.out.println("pay_id=" + pay_id);
-						//System.out.println("money_id=" + fiscalRecord.getMoney_id());
-						//System.out.println("payment amount=" + t.getNewValue());
-						SqlUpdate.updatePayment(pay_id, "amount", t.getNewValue());
-						int totalAmount = SqlSelect.getTotalAmount(fiscals.get(rowIndex).getMoney_id());
-						//System.out.println("Total Amount=" + totalAmount);
-						// used balanceTextfields.getPaid() to write to.
-						totalPaymentText.setText(totalAmount + "");
-						//	SqlUpdate.updatePhone("phone", phone_id, t.getNewValue());
+						BigDecimal amount = new BigDecimal(t.getNewValue());
+						SqlUpdate.updatePayment(pay_id, "amount", String.valueOf(amount.setScale(2)));
+						BigDecimal totalAmount = BigDecimal.valueOf(SqlSelect.getTotalAmount(fiscals.get(rowIndex).getMoney_id()));
+						totalPaymentText.setText(totalAmount.setScale(2) + "");
+						fiscals.get(rowIndex).setPaid(String.valueOf(totalAmount.setScale(2)));
 					}
 				}
 		);
@@ -1024,6 +1020,7 @@ public class BoxInvoice extends HBox {
 		  System.out.println(fiscals.get(rowIndex).toString());
 		  totalFeesText.setText(String.valueOf(fiscals.get(rowIndex).getTotal()));
 		  totalBalanceText.setText(String.valueOf(getBalance()));
+		  System.out.println("setting balance=" + getBalance());
 		  fiscals.get(rowIndex).setBalance(String.valueOf(getBalance()));
 		  SqlUpdate.updateMoney(fiscals.get(rowIndex));  // saves to database
 	}
