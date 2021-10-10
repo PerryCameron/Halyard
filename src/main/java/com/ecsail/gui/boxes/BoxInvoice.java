@@ -3,10 +3,7 @@ package com.ecsail.gui.boxes;
 import com.ecsail.enums.PaymentType;
 import com.ecsail.main.EditCell;
 import com.ecsail.main.Note;
-import com.ecsail.sql.SqlExists;
-import com.ecsail.sql.SqlInsert;
-import com.ecsail.sql.SqlSelect;
-import com.ecsail.sql.SqlUpdate;
+import com.ecsail.sql.*;
 import com.ecsail.structures.*;
 
 import javafx.beans.property.SimpleObjectProperty;
@@ -14,6 +11,7 @@ import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -364,8 +362,29 @@ public class BoxInvoice extends HBox {
 		HBox.setHgrow(vboxGrey, Priority.ALWAYS);
 
 		//////////////// LISTENER //////////////////
+		buttonAdd.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				int pay_id = SqlSelect.getNumberOfPayments() + 1; // get last pay_id number
+				//if (SqlInsert.addRecord(phone_id, person.getP_id(), true, "new phone", "")) // if added with no errors
+				payments.add(new Object_Payment(pay_id,fiscals.get(rowIndex).getMoney_id(),null,"CH",date, "0",1)); // lets add it to our GUI
+				SqlInsert.addPaymentRecord(payments.get(payments.size() -1));
+				//System.out.println("Added new record with pay_id=" + pay_id + " money_id=" + fiscalRecord.getMoney_id());
+			}
+		});
 
-		
+		buttonDelete.setOnAction(new EventHandler<ActionEvent>() {
+			@Override public void handle(ActionEvent e) {
+				int selectedIndex = paymentTableView.getSelectionModel().getSelectedIndex();
+				if(selectedIndex >= 0)
+					//		if(SqlDelete.deletePhone(phone.get(selectedIndex)))  // if it is properly deleted in our database
+					SqlDelete.deletePayment(payments.get(selectedIndex));
+				paymentTableView.getItems().remove(selectedIndex); // remove it from our GUI
+				int totalAmount = SqlSelect.getTotalAmount(fiscals.get(rowIndex).getMoney_id());
+				totalBalanceText.setText(totalAmount + "");
+			}
+		});
+
 		// this is only called if you changer membership type or open a record or manually type in
 		duesTextField.textProperty().addListener((observable, oldValue, newValue) -> {
 			if (!SqlSelect.isCommitted(fiscals.get(rowIndex).getMoney_id())) {
