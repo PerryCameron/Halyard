@@ -1,5 +1,5 @@
 package com.ecsail.gui.tabs;
-
+// This is obsolete
 import com.ecsail.structures.Object_BalanceText;
 
 import javafx.geometry.Insets;
