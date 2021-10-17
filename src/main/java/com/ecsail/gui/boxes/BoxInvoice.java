@@ -318,6 +318,16 @@ public class BoxInvoice extends HBox {
 
 		HBox.setHgrow(vboxGrey, Priority.ALWAYS);
 
+		if(fiscals.get(rowIndex).isCommitted()) {
+			paymentTableView.setEditable(false);
+//			paymentAdd.setDisable(true);
+//			paymentDelete.setDisable(true);
+		} else {
+			paymentTableView.setEditable(true);
+//			paymentAdd.setDisable(false);
+//			paymentDelete.setDisable(false);
+		}
+
 		//////////////// LISTENER //////////////////
 		buttonAdd.setOnAction(e -> {
 			int pay_id = SqlSelect.getNumberOfPayments() + 1; // get last pay_id number
@@ -868,7 +878,7 @@ public class BoxInvoice extends HBox {
 		// Spacer
 		row++;
 		Region spacer = new Region();
-		spacer.setPrefHeight(20);
+		spacer.setPrefHeight(25);
 		gridPane.add(new Label("Position Credit:"), 0, row, 1, 1);
 		gridPane.add(spacer, 1, row, 1, 1);
 		gridPane.add(new Label(""), 2, row, 1, 1);
