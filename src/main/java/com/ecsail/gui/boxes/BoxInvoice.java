@@ -15,6 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.layout.*;
@@ -49,12 +50,10 @@ public class BoxInvoice extends HBox {
 	private Note note;
 	String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date(System.currentTimeMillis()));
 
-//	Object_BalanceText textFields = new Object_BalanceText();
 	GridPane gridPane = new GridPane();
 	private TableView<Object_Payment> paymentTableView = new TableView<Object_Payment>();
 	private final TextField yscTextField = new TextField();
 	private final TextField duesTextField;
-//	private final TextField slipTextField = new TextField();
 	private final TextField otherTextField = new TextField();
 	private final TextField initiationTextField = new TextField();
 	private final TextField wetslipTextField = new TextField();
@@ -97,26 +96,10 @@ public class BoxInvoice extends HBox {
 		this.numberOfKeys = new Object_Integer(0);
 		this.workCredits = new Object_Integer(0);
 		///////////// ACTION ///////////////
-		if(SqlExists.paymentExists(fiscals.get(rowIndex).getMoney_id())) {
-			this.payments = SqlSelect.getPayments(fiscals.get(rowIndex).getMoney_id());
-			System.out.println("A record for money_id=" + fiscals.get(rowIndex).getMoney_id() + " exists. Opening Payment");
-			System.out.println("Payment has " + payments.size() + " entries");
-			// pull up payments from database
-		} else {  // if not create one
-			this.payments = FXCollections.observableArrayList();
-			System.out.println("Creating a new entry");
-			int pay_id = SqlSelect.getNumberOfPayments() + 1;
-			payments.add(new Object_Payment(pay_id,fiscals.get(rowIndex).getMoney_id(),"0","CH",date, "0",1));
-			SqlInsert.addPaymentRecord(payments.get(payments.size() - 1));
-			System.out.println(payments.get(0).toString());
-		}
-
+		getPayment();
 
 		////////////// OBJECTS /////////////////////
-
-
 		ScrollPane scrollPane = new ScrollPane();
-
 		Text duesText = new Text();
 		Text beachText = new Text();
 		Text kayakRackText = new Text();
@@ -134,24 +117,8 @@ public class BoxInvoice extends HBox {
 		Text kayakSKeyText = new Text();
 		Text sailSSLKeyText = new Text();
 		Text otherCreditText = new Text();
+		Text positionCreditText = new Text();
 		Text wetslipTextFee = new Text();
-
-
-		duesText.setText(fiscals.get(rowIndex).getDues());
-		beachText.setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getBeach()).multiply(definedFees.getBeach())));
-		kayakRackText.setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getKayac_rack()).multiply(definedFees.getKayak_rack())));
-		kayakShedText.setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getKayac_shed()).multiply(definedFees.getKayak_shed())));
-		sailLoftText.setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getSail_loft()).multiply(definedFees.getSail_loft())));
-		sailSchoolLoftText.setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getSail_school_laser_loft()).multiply(definedFees.getSail_school_laser_loft())));
-		wetSlipText.setText(fiscals.get(rowIndex).getWet_slip());
-		winterStorageText.setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getWinter_storage()).multiply(definedFees.getWinter_storage())));
-
-		gateKeyText.setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getExtra_key()).multiply(definedFees.getMain_gate_key())));
-		sailLKeyText.setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getSail_loft_key()).multiply(definedFees.getSail_loft_key())));
-		kayakSKeyText.setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getKayac_shed_key()).multiply(definedFees.getKayak_shed_key())));
-		sailSSLKeyText.setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getSail_school_loft_key()).multiply(definedFees.getSail_school_loft_key())));
-
-
 
 		VBox vboxGrey = new VBox();  // this is the vbox for organizing all the widgets
 		VBox mainVbox = new VBox();
@@ -179,6 +146,7 @@ public class BoxInvoice extends HBox {
 		VBox vboxInitiation = new VBox();
 		VBox vboxOther = new VBox();
 		VBox vboxOtherCredit = new VBox();
+		VBox vboxPositionCredit = new VBox();
 
 		// vboxes for multipliers
 		VBox vboxBeachFee = new VBox();
@@ -193,7 +161,6 @@ public class BoxInvoice extends HBox {
 		VBox vboxKayakShedKeyFee = new VBox();
 		VBox vboxSailSchoolLoftKeyFee = new VBox();
 		VBox vboxWorkCreditsFee = new VBox();
-
 		VBox vboxTitlePrice = new VBox();
 		VBox vboxTitleTotal = new VBox();
 
@@ -308,20 +275,9 @@ public class BoxInvoice extends HBox {
 
 		paymentTableView.setItems(payments);
 		HBox.setHgrow(paymentTableView,Priority.ALWAYS);
-		//paymentTableView.setPrefWidth(225);
 		paymentTableView.setPrefHeight(115);
 		paymentTableView.setFixedCellSize(30);
 		paymentTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY );
-
-		if(fiscals.get(rowIndex).isCommitted()) {
-			paymentTableView.setEditable(false);
-//			paymentAdd.setDisable(true);
-//			paymentDelete.setDisable(true);
-		} else {
-			paymentTableView.setEditable(true);
-//			paymentAdd.setDisable(false);
-//			paymentDelete.setDisable(false);
-		}
 
 		int width = 100;
 		
@@ -638,16 +594,35 @@ public class BoxInvoice extends HBox {
 		wetslipTextFee.setOnMouseExited(ex -> {
 			wetslipTextFee.setFill(Color.BLUE);
 		});
+
+		if (fiscals.get(rowIndex).isSupplemental()) { // have we already created a record for this year?
+			duesTextField.setEditable(true);
+			//duesTextField.setText("0");
+		} else {
+			if (hasOfficer) { // has officer and not
+				System.out.println("Member is an officer");
+				fiscals.get(rowIndex).setOfficer_credit(String.valueOf(definedFees.getDues_regular()));
+				if(!SqlSelect.isCommitted(fiscals.get(rowIndex).getMoney_id()))	{	// is not committed
+					// committed
+//						textFields.getCreditText().setText(duesTextField.getText()); // gets the dues and gives that amount of credit for being an officer
+//					SqlUpdate.updateField(new BigDecimal(duesTextField.getText()), "money", "credit", fiscals, rowIndex); // updates SQL
+//					fiscals.get(rowIndex).setCredit(duesTextField.getText());  // sets credit for what dues are
+					System.out.println("Record is not committed");
+				}
+			} else {
+				System.out.println("Member is not an officer of the club");
+				fiscals.get(rowIndex).setOfficer_credit("0.00");
+			}
+		}
+		updateBalance(); // updates and saves
 		//////////////// SETTING CONTENT //////////////
 
-//		slipTextField.setText(String.valueOf(fiscals.get(rowIndex).getWet_slip()));
 		duesTextField.setText(String.valueOf(fiscals.get(rowIndex).getDues()));
 		yscTextField.setText(String.valueOf(fiscals.get(rowIndex).getYsc_donation()));
 		otherTextField.setText(String.valueOf(fiscals.get(rowIndex).getOther()));
 		initiationTextField.setText(String.valueOf(fiscals.get(rowIndex).getInitiation()));
 		wetslipTextField.setText(String.valueOf(definedFees.getWet_slip()));
 		otherCreditTextField.setText(String.valueOf(fiscals.get(rowIndex).getOther_credit()));
-
 		yspText.setText(fiscals.get(rowIndex).getYsc_donation());
 		initiationText.setText(fiscals.get(rowIndex).getInitiation());
 		otherFeeText.setText(fiscals.get(rowIndex).getOther());
@@ -658,25 +633,21 @@ public class BoxInvoice extends HBox {
 		totalCreditText.setText(fiscals.get(rowIndex).getCredit());
 		totalPaymentText.setText(fiscals.get(rowIndex).getPaid());
 		wetslipTextFee.setText(String.valueOf(definedFees.getWet_slip()));
+		beachText.setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getBeach()).multiply(definedFees.getBeach())));
+		kayakRackText.setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getKayac_rack()).multiply(definedFees.getKayak_rack())));
+		kayakShedText.setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getKayac_shed()).multiply(definedFees.getKayak_shed())));
+		sailLoftText.setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getSail_loft()).multiply(definedFees.getSail_loft())));
+		sailSchoolLoftText.setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getSail_school_laser_loft()).multiply(definedFees.getSail_school_laser_loft())));
+		wetSlipText.setText(fiscals.get(rowIndex).getWet_slip());
+		winterStorageText.setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getWinter_storage()).multiply(definedFees.getWinter_storage())));
 
+		gateKeyText.setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getExtra_key()).multiply(definedFees.getMain_gate_key())));
+		sailLKeyText.setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getSail_loft_key()).multiply(definedFees.getSail_loft_key())));
+		kayakSKeyText.setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getKayac_shed_key()).multiply(definedFees.getKayak_shed_key())));
+		sailSSLKeyText.setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getSail_school_loft_key()).multiply(definedFees.getSail_school_loft_key())));
+		positionCreditText.setText(fiscals.get(rowIndex).getOfficer_credit());
 		
-		if (fiscals.get(rowIndex).isSupplemental()) {
-			duesTextField.setEditable(true);
-			//duesTextField.setText("0");
-		} else {
-			if (hasOfficer) { // has officer and not
-				System.out.println("Member is an officer");
-					if(!SqlSelect.isCommitted(fiscals.get(rowIndex).getMoney_id()))	{	// is not committed	
-						// committed
-//						textFields.getCreditText().setText(duesTextField.getText()); // gets the dues and gives that amount of credit for being an officer
-						SqlUpdate.updateField(new BigDecimal(duesTextField.getText()), "money", "credit", fiscals, rowIndex); // updates SQL
-						fiscals.get(rowIndex).setCredit(duesTextField.getText());  // sets credit for what dues are
-						System.out.println("Record is not committed");
-					}
-			} else {
-				System.out.println("Member is not an officer of the club");
-			}
-		}
+
 		if(fiscals.get(rowIndex).isCommitted()) setEditable(false);	
 
 		updateBalance();
@@ -719,6 +690,8 @@ public class BoxInvoice extends HBox {
 		vboxKayakShedKey.setAlignment(Pos.CENTER_RIGHT);
 		vboxSailSchoolLoftKey.getChildren().add(sailSSLKeyText);
 		vboxSailSchoolLoftKey.setAlignment(Pos.CENTER_RIGHT);
+		vboxPositionCredit.getChildren().add(positionCreditText);
+		vboxPositionCredit.setAlignment(Pos.CENTER_RIGHT);
 
 		vboxWorkCredits.getChildren().add(workCreditsText);
 		vboxWorkCredits.setAlignment(Pos.CENTER_RIGHT);
@@ -894,6 +867,14 @@ public class BoxInvoice extends HBox {
 		gridPane.add(vboxOtherCredit, 4, row, 1, 1);
 		// Spacer
 		row++;
+		Region spacer = new Region();
+		spacer.setPrefHeight(20);
+		gridPane.add(new Label("Position Credit:"), 0, row, 1, 1);
+		gridPane.add(spacer, 1, row, 1, 1);
+		gridPane.add(new Label(""), 2, row, 1, 1);
+		gridPane.add(new Label(""), 3, row, 1, 1);
+		gridPane.add(vboxPositionCredit, 4, row, 1, 1);
+		row++;
 		gridPane.add(new Label(""), 0, row, 5, 1);
 		// Table
 		row++;
@@ -932,8 +913,26 @@ public class BoxInvoice extends HBox {
 		vboxGrey.getChildren().addAll(mainVbox);
 		getChildren().addAll(vboxGrey);
 	}
-	
+
 	//////////////////////  CLASS METHODS ///////////////////////////
+
+	private void getPayment() {
+		if(SqlExists.paymentExists(fiscals.get(rowIndex).getMoney_id())) {
+			this.payments = SqlSelect.getPayments(fiscals.get(rowIndex).getMoney_id());
+			System.out.println("A record for money_id=" + fiscals.get(rowIndex).getMoney_id() + " exists. Opening Payment");
+			System.out.println("Payment has " + payments.size() + " entries");
+			// pull up payments from database
+		} else {  // if not create one
+			this.payments = FXCollections.observableArrayList();
+			System.out.println("Creating a new entry");
+			int pay_id = SqlSelect.getNumberOfPayments() + 1;
+			payments.add(new Object_Payment(pay_id,fiscals.get(rowIndex).getMoney_id(),"0","CH",date, "0",1));
+			SqlInsert.addPaymentRecord(payments.get(payments.size() - 1));
+			System.out.println(payments.get(0).toString());
+		}
+	}
+
+
 	private void updateItem(BigDecimal newTotalValue, String type) {
 		switch(type) {
 		case "initiation":
