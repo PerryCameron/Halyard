@@ -1,9 +1,5 @@
 package com.ecsail.gui.tabs;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-
 import com.ecsail.excel.Xls_roster;
 import com.ecsail.gui.tabs.roster.TabKayakLists;
 import com.ecsail.gui.tabs.roster.TabSlipOptions;
@@ -15,8 +11,6 @@ import com.ecsail.sql.Sql_SelectMembership;
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_RosterRadioButtons;
 import com.ecsail.structures.Object_RosterSelect;
-
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,18 +20,20 @@ import javafx.geometry.Side;
 import javafx.scene.control.*;
 import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
+import java.util.Arrays;
+import java.util.Comparator;
+
 public class TabRoster extends Tab {
 
-	private ObservableList<Object_MembershipList> rosters;
-	private TableView<Object_MembershipList> rosterTableView = new TableView<>();
-	private Object_RosterSelect printChoices;
-	private Object_RosterRadioButtons rb;
+	private final ObservableList<Object_MembershipList> rosters;
+	private final TableView<Object_MembershipList> rosterTableView = new TableView<>();
+	private final Object_RosterSelect printChoices;
+	private final Object_RosterRadioButtons rb;
 	String selectedYear;
 
 	public TabRoster(ObservableList<Object_MembershipList> a, String sy) {
@@ -82,17 +78,17 @@ public class TabRoster extends Tab {
 		CheckBox c13 = new CheckBox("Subleased To");
 		Button buttonXLS = new Button("Export XLS");
 //		final Spinner<Integer> yearSpinner = new Spinner<Integer>();
-		TableColumn<Object_MembershipList, Integer> Col1 = new TableColumn<Object_MembershipList, Integer>("MEM");
-		TableColumn<Object_MembershipList, String> Col2 = new TableColumn<Object_MembershipList, String>("JOIN_DATE");
-		TableColumn<Object_MembershipList, String> Col3 = new TableColumn<Object_MembershipList, String>("Type");
-		TableColumn<Object_MembershipList, String> Col4 = new TableColumn<Object_MembershipList, String>("Slip");
-		TableColumn<Object_MembershipList, String> Col5 = new TableColumn<Object_MembershipList, String>("First Name");
-		TableColumn<Object_MembershipList, String> Col6 = new TableColumn<Object_MembershipList, String>("Last Name");
-		TableColumn<Object_MembershipList, String> Col7 = new TableColumn<Object_MembershipList, String>("Address");
-		TableColumn<Object_MembershipList, String> Col8 = new TableColumn<Object_MembershipList, String>("City");
-		TableColumn<Object_MembershipList, String> Col9 = new TableColumn<Object_MembershipList, String>("State");
-		TableColumn<Object_MembershipList, String> Col10 = new TableColumn<Object_MembershipList, String>("Zip");
-		TableColumn<Object_MembershipList, String> Col11 = new TableColumn<Object_MembershipList, String>("MSID");
+		TableColumn<Object_MembershipList, Integer> Col1 = new TableColumn<>("MEM");
+		TableColumn<Object_MembershipList, String> Col2 = new TableColumn<>("JOIN_DATE");
+		TableColumn<Object_MembershipList, String> Col3 = new TableColumn<>("Type");
+		TableColumn<Object_MembershipList, String> Col4 = new TableColumn<>("Slip");
+		TableColumn<Object_MembershipList, String> Col5 = new TableColumn<>("First Name");
+		TableColumn<Object_MembershipList, String> Col6 = new TableColumn<>("Last Name");
+		TableColumn<Object_MembershipList, String> Col7 = new TableColumn<>("Address");
+		TableColumn<Object_MembershipList, String> Col8 = new TableColumn<>("City");
+		TableColumn<Object_MembershipList, String> Col9 = new TableColumn<>("State");
+		TableColumn<Object_MembershipList, String> Col10 = new TableColumn<>("Zip");
+		TableColumn<Object_MembershipList, String> Col11 = new TableColumn<>("MSID");
 
 		tabPane.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
 		titledPane.setText("Roster " + selectedYear);
@@ -139,17 +135,17 @@ public class TabRoster extends Tab {
 		rosterTableView.setFixedCellSize(30);
 		rosterTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY );
 
-		Col1.setCellValueFactory(new PropertyValueFactory<Object_MembershipList, Integer>("membershipId"));
-		Col2.setCellValueFactory(new PropertyValueFactory<Object_MembershipList, String>("joinDate"));
-		Col3.setCellValueFactory(new PropertyValueFactory<Object_MembershipList, String>("memType"));
-		Col4.setCellValueFactory(new PropertyValueFactory<Object_MembershipList, String>("slip"));
-		Col5.setCellValueFactory(new PropertyValueFactory<Object_MembershipList, String>("fname"));
-		Col6.setCellValueFactory(new PropertyValueFactory<Object_MembershipList, String>("lname"));
-		Col7.setCellValueFactory(new PropertyValueFactory<Object_MembershipList, String>("address"));
-		Col8.setCellValueFactory(new PropertyValueFactory<Object_MembershipList, String>("city"));
-		Col9.setCellValueFactory(new PropertyValueFactory<Object_MembershipList, String>("state"));
-		Col10.setCellValueFactory(new PropertyValueFactory<Object_MembershipList, String>("zip"));
-		Col11.setCellValueFactory(new PropertyValueFactory<Object_MembershipList, String>("msid"));
+		Col1.setCellValueFactory(new PropertyValueFactory<>("membershipId"));
+		Col2.setCellValueFactory(new PropertyValueFactory<>("joinDate"));
+		Col3.setCellValueFactory(new PropertyValueFactory<>("memType"));
+		Col4.setCellValueFactory(new PropertyValueFactory<>("slip"));
+		Col5.setCellValueFactory(new PropertyValueFactory<>("fname"));
+		Col6.setCellValueFactory(new PropertyValueFactory<>("lname"));
+		Col7.setCellValueFactory(new PropertyValueFactory<>("address"));
+		Col8.setCellValueFactory(new PropertyValueFactory<>("city"));
+		Col9.setCellValueFactory(new PropertyValueFactory<>("state"));
+		Col10.setCellValueFactory(new PropertyValueFactory<>("zip"));
+		Col11.setCellValueFactory(new PropertyValueFactory<>("msid"));
 		
 		/// sets width of columns by percentage
 		Col1.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );   // Mem 5%
@@ -166,24 +162,8 @@ public class TabRoster extends Tab {
 
 		rosterTableView.getColumns()
 				.addAll(Arrays.asList(Col1, Col2, Col3, Col4, Col5, Col6, Col7, Col8, Col9, Col10, Col11));
-//		SpinnerValueFactory<Integer> wetSlipValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1970,
-//				Integer.parseInt(selectedYear), Integer.parseInt(selectedYear));
-//		yearSpinner.setValueFactory(wetSlipValueFactory);
-//		yearSpinner.setEditable(true);
-//		yearSpinner.setPrefWidth(110);
-//		yearSpinner.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_HORIZONTAL);
-//		yearSpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
-//			if (!newValue) {
-//				printChoices.setYear(yearSpinner.getEditor().getText());
-//				selectedYear = yearSpinner.getEditor().getText(); /// kept this for clarity, could have used printChoices.getYear()
-//				changeSelectedRoster();
-//				titledPane.setText("Roster " + selectedYear);
-//				records.setText(rosters.size() + " Records");
-//				rosterTableView.sort();
-//			}
-//		});
 
-		ComboBox<Integer> comboBox = new ComboBox();
+		ComboBox<Integer> comboBox = new ComboBox<>();
 		for(int i = Integer.parseInt(HalyardPaths.getYear()); i > 1969; i--) {
 			comboBox.getItems().add(i);
 		}
@@ -267,64 +247,48 @@ public class TabRoster extends Tab {
 			return row;
 		});
 
-		rb.getRadioActive().selectedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected,
-					Boolean isNowSelected) {
-				if (isNowSelected) {
-					setListType("active");
-					rosters.clear();
-					rosters.addAll(Sql_SelectMembership.getRoster(selectedYear, true));
-					
-					records.setText(rosters.size() + " Records");
-					//rosterTableView.sort();
-					Collections.sort(rosters, Comparator.comparing(Object_MembershipList::getMembershipId));
-				}
+		rb.getRadioActive().selectedProperty().addListener((obs, wasPreviouslySelected, isNowSelected) -> {
+			if (isNowSelected) {
+				setListType("active");
+				rosters.clear();
+				rosters.addAll(Sql_SelectMembership.getRoster(selectedYear, true));
+
+				records.setText(rosters.size() + " Records");
+				//rosterTableView.sort();
+				rosters.sort(Comparator.comparing(Object_MembershipList::getMembershipId));
 			}
 		});
 
-		rb.getRadioAll().selectedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected,
-					Boolean isNowSelected) {
-				if (isNowSelected) {
-					setListType("all");
-					rosters.clear();
-					rosters.addAll(Sql_SelectMembership.getRosterOfAll(selectedYear));
-					records.setText(rosters.size() + " Records");
-					//rosterTableView.sort();
-					Collections.sort(rosters, Comparator.comparing(Object_MembershipList::getMembershipId));
-				} 
+		rb.getRadioAll().selectedProperty().addListener((obs, wasPreviouslySelected, isNowSelected) -> {
+			if (isNowSelected) {
+				setListType("all");
+				rosters.clear();
+				rosters.addAll(Sql_SelectMembership.getRosterOfAll(selectedYear));
+				records.setText(rosters.size() + " Records");
+				//rosterTableView.sort();
+				rosters.sort(Comparator.comparing(Object_MembershipList::getMembershipId));
 			}
 		});
 
-		rb.getRadioNonRenew().selectedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected,
-					Boolean isNowSelected) {
-				if (isNowSelected) {
-					setListType("non-renew");
-					rosters.clear();
-					rosters.addAll(Sql_SelectMembership.getRoster(selectedYear, false));
-					records.setText(rosters.size() + " Records");
-					//rosterTableView.sort();
-					Collections.sort(rosters, Comparator.comparing(Object_MembershipList::getMembershipId));
-				}
+		rb.getRadioNonRenew().selectedProperty().addListener((obs, wasPreviouslySelected, isNowSelected) -> {
+			if (isNowSelected) {
+				setListType("non-renew");
+				rosters.clear();
+				rosters.addAll(Sql_SelectMembership.getRoster(selectedYear, false));
+				records.setText(rosters.size() + " Records");
+				//rosterTableView.sort();
+				rosters.sort(Comparator.comparing(Object_MembershipList::getMembershipId));
 			}
 		});
 
-		rb.getRadioNewMembers().selectedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected,
-					Boolean isNowSelected) {
-				if (isNowSelected) {
-					setListType("new-members");
-					rosters.clear();
-					rosters.addAll(Sql_SelectMembership.getNewMemberRoster(selectedYear));
-					records.setText(rosters.size() + " Records");
-					//rosterTableView.sort();
-					Collections.sort(rosters, Comparator.comparing(Object_MembershipList::getMembershipId));
-				}
+		rb.getRadioNewMembers().selectedProperty().addListener((obs, wasPreviouslySelected, isNowSelected) -> {
+			if (isNowSelected) {
+				setListType("new-members");
+				rosters.clear();
+				rosters.addAll(Sql_SelectMembership.getNewMemberRoster(selectedYear));
+				records.setText(rosters.size() + " Records");
+				//rosterTableView.sort();
+				rosters.sort(Comparator.comparing(Object_MembershipList::getMembershipId));
 			}
 		});
 
@@ -335,140 +299,105 @@ public class TabRoster extends Tab {
 					setListType("return");
 					rosters.clear();
 					rosters.addAll(Sql_SelectMembership.getFullNewMemberRoster(selectedYear));
-					for(int i = 0; i < rosters.size(); i++) {
-						// if they didn'ty pay late
-						if(!SqlExists.paidLate(rosters.get(i))) {
-							keepers.add(rosters.get(i));
-						} 
+					for (Object_MembershipList roster : rosters) {
+						if (!SqlExists.paidLate(roster)) {
+							keepers.add(roster);
+						}
 					}
 					rosters.clear();
-					for(Object_MembershipList k: keepers) {
-						rosters.add(k);
-					}
+					rosters.addAll(keepers);
 					keepers.clear();
 					records.setText(rosters.size() + " Records");
 					//rosterTableView.sort();
-					Collections.sort(rosters, Comparator.comparing(Object_MembershipList::getMembershipId));
+					rosters.sort(Comparator.comparing(Object_MembershipList::getMembershipId));
 				}
 		});
 
-		rb.getRadioSlipWaitList().selectedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected,
-					Boolean isNowSelected) {
-				if (isNowSelected) {
-					setListType("slip-waitlist");
-					rosters.clear();
-					rosters.addAll(Sql_SelectMembership.getWaitListRoster("slipwait"));
-					records.setText(rosters.size() + " Records");
-					//rosterTableView.sort();
-					Collections.sort(rosters, Comparator.comparing(Object_MembershipList::getMembershipId));
-				}
+		rb.getRadioSlipWaitList().selectedProperty().addListener((obs, wasPreviouslySelected, isNowSelected) -> {
+			if (isNowSelected) {
+				setListType("slip-waitlist");
+				rosters.clear();
+				rosters.addAll(Sql_SelectMembership.getWaitListRoster("slipwait"));
+				records.setText(rosters.size() + " Records");
+				//rosterTableView.sort();
+				rosters.sort(Comparator.comparing(Object_MembershipList::getMembershipId));
 			}
 		});
 
-		rb.getRadioOpenSlips().selectedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected,
-					Boolean isNowSelected) {
-				if (isNowSelected) {
-					setListType("wantsrelease");
-					rosters.clear();
-					rosters.addAll(Sql_SelectMembership.getWaitListRoster("wantrelease"));
-					records.setText(rosters.size() + " Records");
-					//rosterTableView.sort();
-					Collections.sort(rosters, Comparator.comparing(Object_MembershipList::getMembershipId));
-				}
+		rb.getRadioOpenSlips().selectedProperty().addListener((obs, wasPreviouslySelected, isNowSelected) -> {
+			if (isNowSelected) {
+				setListType("wantsrelease");
+				rosters.clear();
+				rosters.addAll(Sql_SelectMembership.getWaitListRoster("wantrelease"));
+				records.setText(rosters.size() + " Records");
+				//rosterTableView.sort();
+				rosters.sort(Comparator.comparing(Object_MembershipList::getMembershipId));
 			}
 		});
 
-		rb.getRadioSlip().selectedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected,
-					Boolean isNowSelected) {
-				if (isNowSelected) {
-					setListType("slipOwners");
-					rosters.clear();
-					rosters.addAll(Sql_SelectMembership.getRosterOfSlipOwners(HalyardPaths.getYear()));
-					records.setText(rosters.size() + " Records");
-					//rosterTableView.sort();
-					Collections.sort(rosters, Comparator.comparing(Object_MembershipList::getMembershipId));
-				}
+		rb.getRadioSlip().selectedProperty().addListener((obs, wasPreviouslySelected, isNowSelected) -> {
+			if (isNowSelected) {
+				setListType("slipOwners");
+				rosters.clear();
+				rosters.addAll(Sql_SelectMembership.getRosterOfSlipOwners(HalyardPaths.getYear()));
+				records.setText(rosters.size() + " Records");
+				//rosterTableView.sort();
+				rosters.sort(Comparator.comparing(Object_MembershipList::getMembershipId));
 			}
 		});
 
-		rb.getRadioWantsToSublease().selectedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected,
-					Boolean isNowSelected) {
-				if (isNowSelected) {
-					setListType("wantsublease");
-					rosters.clear();
-					rosters.addAll(Sql_SelectMembership.getWaitListRoster("wantsublease"));
-					records.setText(rosters.size() + " Records");
-					//rosterTableView.sort();
-					Collections.sort(rosters, Comparator.comparing(Object_MembershipList::getMembershipId));
-				}
+		rb.getRadioWantsToSublease().selectedProperty().addListener((obs, wasPreviouslySelected, isNowSelected) -> {
+			if (isNowSelected) {
+				setListType("wantsublease");
+				rosters.clear();
+				rosters.addAll(Sql_SelectMembership.getWaitListRoster("wantsublease"));
+				records.setText(rosters.size() + " Records");
+				//rosterTableView.sort();
+				rosters.sort(Comparator.comparing(Object_MembershipList::getMembershipId));
 			}
 		});
 
-		rb.getRadioSlipChange().selectedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected,
-					Boolean isNowSelected) {
-				if (isNowSelected) {
-					setListType("wantsublease");
-					rosters.clear();
-					rosters.addAll(Sql_SelectMembership.getWaitListRoster("wantslipchange"));
-					records.setText(rosters.size() + " Records");
-					//rosterTableView.sort();
-					Collections.sort(rosters, Comparator.comparing(Object_MembershipList::getMembershipId));
-				}
+		rb.getRadioSlipChange().selectedProperty().addListener((obs, wasPreviouslySelected, isNowSelected) -> {
+			if (isNowSelected) {
+				setListType("wantsublease");
+				rosters.clear();
+				rosters.addAll(Sql_SelectMembership.getWaitListRoster("wantslipchange"));
+				records.setText(rosters.size() + " Records");
+				//rosterTableView.sort();
+				rosters.sort(Comparator.comparing(Object_MembershipList::getMembershipId));
 			}
 		});
 
-		rb.getRadioSubLeasedSlips().selectedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected,
-					Boolean isNowSelected) {
-				if (isNowSelected) {
-					setListType("subleasedslips");
-					rosters.clear();
-					rosters.addAll(Sql_SelectMembership.getRosterOfSubleasedSlips());
-					records.setText(rosters.size() + " Records");
-					//rosterTableView.sort();
-					Collections.sort(rosters, Comparator.comparing(Object_MembershipList::getMembershipId));
-				}
+		rb.getRadioSubLeasedSlips().selectedProperty().addListener((obs, wasPreviouslySelected, isNowSelected) -> {
+			if (isNowSelected) {
+				setListType("subleasedslips");
+				rosters.clear();
+				rosters.addAll(Sql_SelectMembership.getRosterOfSubleasedSlips());
+				records.setText(rosters.size() + " Records");
+				//rosterTableView.sort();
+				rosters.sort(Comparator.comparing(Object_MembershipList::getMembershipId));
 			}
 		});
 
-		rb.getRadioShedOwner().selectedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected,
-					Boolean isNowSelected) {
-				if (isNowSelected) {
-					setListType("shedowners");
-					rosters.clear();
-					rosters.addAll(Sql_SelectMembership.getRosterOfKayakShedOwners(HalyardPaths.getYear()));
-					records.setText(rosters.size() + " Records");
-					//rosterTableView.sort();
-					Collections.sort(rosters, Comparator.comparing(Object_MembershipList::getMembershipId));
-				}
+		rb.getRadioShedOwner().selectedProperty().addListener((obs, wasPreviouslySelected, isNowSelected) -> {
+			if (isNowSelected) {
+				setListType("shedowners");
+				rosters.clear();
+				rosters.addAll(Sql_SelectMembership.getRosterOfKayakShedOwners(HalyardPaths.getYear()));
+				records.setText(rosters.size() + " Records");
+				//rosterTableView.sort();
+				rosters.sort(Comparator.comparing(Object_MembershipList::getMembershipId));
 			}
 		});
 
-		rb.getRadioKayakRackOwners().selectedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected,
-					Boolean isNowSelected) {
-				if (isNowSelected) {
-					setListType("rackowners");
-					rosters.clear();
-					rosters.addAll(Sql_SelectMembership.getRosterOfKayakRackOwners(HalyardPaths.getYear()));
-					records.setText(rosters.size() + " Records");
-					//rosterTableView.sort();
-					Collections.sort(rosters, Comparator.comparing(Object_MembershipList::getMembershipId));
-				}
+		rb.getRadioKayakRackOwners().selectedProperty().addListener((obs, wasPreviouslySelected, isNowSelected) -> {
+			if (isNowSelected) {
+				setListType("rackowners");
+				rosters.clear();
+				rosters.addAll(Sql_SelectMembership.getRosterOfKayakRackOwners(HalyardPaths.getYear()));
+				records.setText(rosters.size() + " Records");
+				//rosterTableView.sort();
+				rosters.sort(Comparator.comparing(Object_MembershipList::getMembershipId));
 			}
 		});
 
@@ -479,20 +408,18 @@ public class TabRoster extends Tab {
 				setListType("return");
 				rosters.clear();
 				rosters.addAll(Sql_SelectMembership.getFullNewMemberRoster(selectedYear));
-				for(int i = 0; i < rosters.size(); i++) {
-					// if they didn'ty pay late
-					if(SqlExists.paidLate(rosters.get(i))) {
-						keepers.add(rosters.get(i));
-						
-					} 
+				for (Object_MembershipList roster : rosters) {
+					// if they didn't pay late
+					if (SqlExists.paidLate(roster)) {
+						keepers.add(roster);
+
+					}
 				}
 				rosters.clear();
-				for(Object_MembershipList k: keepers) {
-					rosters.add(k);
-				}
+				rosters.addAll(keepers);
 				keepers.clear();
 				records.setText(rosters.size() + " Records");
-				Collections.sort(rosters, Comparator.comparing(Object_MembershipList::getMembershipId));
+				rosters.sort(Comparator.comparing(Object_MembershipList::getMembershipId));
 			}
 	});
 
@@ -527,7 +454,7 @@ public class TabRoster extends Tab {
 			rosters.addAll(Sql_SelectMembership.getFullNewMemberRoster(selectedYear));
 		if (rb.getRadioAll().isSelected())
 			rosters.addAll(Sql_SelectMembership.getRosterOfAll(selectedYear));
-		Collections.sort(rosters, Comparator.comparing(Object_MembershipList::getMembershipId));
+		rosters.sort(Comparator.comparing(Object_MembershipList::getMembershipId));
 	}
 
 	//// Class Methods ////

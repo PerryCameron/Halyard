@@ -5,17 +5,13 @@ import com.ecsail.main.EditCell;
 import com.ecsail.main.Note;
 import com.ecsail.sql.*;
 import com.ecsail.structures.*;
-
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.layout.*;
@@ -23,9 +19,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.util.Callback;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -35,23 +31,23 @@ import java.util.function.Function;
 // replaces tabCredit, tabBalance, tabPayment, BoxFiscal2
 
 public class BoxInvoice extends HBox {
-	private ObservableList<Object_Money> fiscals = null;
+	private final ObservableList<Object_Money> fiscals;
 	private ObservableList<Object_Payment> payments;
 
 	Object_Membership membership;
 	Object_DefinedFee definedFees;
 	Object_WorkCredit selectedWorkCreditYear;
 	Object_Officer officer;
-	private ObservableList<Object_Person> people;
+	final private ObservableList<Object_Person> people;
 	boolean hasOfficer;
 	Object_Integer numberOfKeys;
 	Object_Integer workCredits;
-	private int rowIndex;
-	private Note note;
+	final private int rowIndex;
+	private final Note note;
 	String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date(System.currentTimeMillis()));
 
 	GridPane gridPane = new GridPane();
-	private TableView<Object_Payment> paymentTableView = new TableView<Object_Payment>();
+	private final TableView<Object_Payment> paymentTableView = new TableView<>();
 	private final TextField yscTextField = new TextField();
 	private final TextField duesTextField;
 	private final TextField otherTextField = new TextField();
@@ -60,18 +56,14 @@ public class BoxInvoice extends HBox {
 	private final TextField otherCreditTextField = new TextField();
 
 
-	private final Spinner<Integer> beachSpinner = new Spinner<Integer>();
-	private final Spinner<Integer> kayakRackSpinner = new Spinner<Integer>();
-	private final Spinner<Integer> kayakShedSpinner = new Spinner<Integer>();
-	private final Spinner<Integer> sailLoftSpinner = new Spinner<Integer>();
-	private final Spinner<Integer> sailSchoolLoftSpinner = new Spinner<Integer>();
-	private final Spinner<Integer> winterStorageSpinner = new Spinner<Integer>();
-	private final Spinner<Integer> wetSlipSpinner = new Spinner<Integer>();
-	private final Spinner<Integer> workCreditSpinner = new Spinner<Integer>();
-	private final Spinner<Integer> gateKeySpinner = new Spinner<Integer>();
-	private final Spinner<Integer> sailLKeySpinner = new Spinner<Integer>();
-	private final Spinner<Integer> kayakSKeySpinner = new Spinner<Integer>();
-	private final Spinner<Integer> sailSSLKeySpinner = new Spinner<Integer>();
+	private final Spinner<Integer> beachSpinner = new Spinner<>();
+	private final Spinner<Integer> kayakRackSpinner = new Spinner<>();
+	private final Spinner<Integer> kayakShedSpinner = new Spinner<>();
+	private final Spinner<Integer> sailLoftSpinner = new Spinner<>();
+	private final Spinner<Integer> sailSchoolLoftSpinner = new Spinner<>();
+	private final Spinner<Integer> winterStorageSpinner = new Spinner<>();
+	private final Spinner<Integer> wetSlipSpinner = new Spinner<>();
+
 
 	private final Text totalFeesText = new Text();
 	private final Text totalCreditText = new Text();
@@ -79,7 +71,7 @@ public class BoxInvoice extends HBox {
 	private final Text totalBalanceText = new Text();
 
 	private final String disabledColor = "-fx-background-color: #d5dade";
-	boolean isCommited;
+	boolean isCommitted;
 	Button addWetSlip = new Button();
 	
 	public BoxInvoice(Object_Membership m, ObservableList<Object_Person> p, ObservableList<Object_Money> o, int r, Note n, TextField dt) {
@@ -92,7 +84,7 @@ public class BoxInvoice extends HBox {
 		this.selectedWorkCreditYear = SqlSelect.getWorkCredit(fiscals.get(rowIndex).getMoney_id());
 		this.definedFees = SqlSelect.selectDefinedFees(fiscals.get(rowIndex).getFiscal_year());
 		this.hasOfficer = membershipHasOfficer();
-		this.isCommited = fiscals.get(rowIndex).isCommitted();
+		this.isCommitted = fiscals.get(rowIndex).isCommitted();
 		this.numberOfKeys = new Object_Integer(0);
 		this.workCredits = new Object_Integer(0);
 		///////////// ACTION ///////////////
@@ -126,9 +118,8 @@ public class BoxInvoice extends HBox {
 		VBox vboxTabPanes = new VBox();
 		VBox vboxSpinners = new VBox();
 		HBox hboxButtonCommit = new HBox();
-		HBox hboxSlip = new HBox();
 
-		// vboxes for totals
+		// VBoxes for totals
 		VBox vboxDues = new VBox();
 		VBox vboxBeach = new VBox();
 		VBox vboxKayak = new VBox();
@@ -148,7 +139,7 @@ public class BoxInvoice extends HBox {
 		VBox vboxOtherCredit = new VBox();
 		VBox vboxPositionCredit = new VBox();
 
-		// vboxes for multipliers
+		// VBoxes for multipliers
 		VBox vboxBeachFee = new VBox();
 		VBox vboxKayakFee = new VBox();
 		VBox vboxKayakShedFee = new VBox();
@@ -172,45 +163,42 @@ public class BoxInvoice extends HBox {
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
 		VBox vboxCommitButton = new VBox();
 
+		final Spinner<Integer> gateKeySpinner = new Spinner<>();
+		final Spinner<Integer> sailLKeySpinner = new Spinner<>();
+		final Spinner<Integer> kayakSKeySpinner = new Spinner<>();
+		final Spinner<Integer> sailSSLKeySpinner = new Spinner<>();
+
 		/////////////// TABLE ///////////////////
 		TableColumn<Object_Payment, String> col1 = createColumn("Amount", Object_Payment::PaymentAmountProperty);
 		col1.setPrefWidth(60);
 		col1.setStyle( "-fx-alignment: CENTER-RIGHT;");
 		col1.setOnEditCommit(
-				new EventHandler<TableColumn.CellEditEvent<Object_Payment, String>>() {
-					@Override
-					public void handle(TableColumn.CellEditEvent<Object_Payment, String> t) {
-						((Object_Payment) t.getTableView().getItems().get(
-								t.getTablePosition().getRow())
-						).setPaymentAmount(String.valueOf(new BigDecimal(t.getNewValue()).setScale(2)));
-						int pay_id = ((Object_Payment) t.getTableView().getItems().get(t.getTablePosition().getRow())).getPay_id();
-						BigDecimal amount = new BigDecimal(t.getNewValue());
-						SqlUpdate.updatePayment(pay_id, "amount", String.valueOf(amount.setScale(2)));
-						// SQL Query getTotalAmount() adds all the payments for us
-						BigDecimal totalPaidAmount = BigDecimal.valueOf(SqlSelect.getTotalAmount(fiscals.get(rowIndex).getMoney_id()));
-						totalPaymentText.setText(String.valueOf(totalPaidAmount.setScale(2)));
-						fiscals.get(rowIndex).setPaid(String.valueOf(totalPaidAmount.setScale(2)));
-						updateBalance();
-					}
+				t -> {
+					t.getTableView().getItems().get(
+							t.getTablePosition().getRow()).setPaymentAmount(String.valueOf(new BigDecimal(t.getNewValue()).setScale(2, RoundingMode.CEILING)));
+					int pay_id = t.getTableView().getItems().get(t.getTablePosition().getRow()).getPay_id();
+					BigDecimal amount = new BigDecimal(t.getNewValue());
+					SqlUpdate.updatePayment(pay_id, "amount", String.valueOf(amount.setScale(2, RoundingMode.HALF_UP)));
+					// SQL Query getTotalAmount() adds all the payments for us
+					BigDecimal totalPaidAmount = BigDecimal.valueOf(SqlSelect.getTotalAmount(fiscals.get(rowIndex).getMoney_id()));
+					totalPaymentText.setText(String.valueOf(totalPaidAmount.setScale(2, RoundingMode.HALF_UP)));
+					fiscals.get(rowIndex).setPaid(String.valueOf(totalPaidAmount.setScale(2, RoundingMode.HALF_UP)));
+					updateBalance();
 				}
 		);
 
 
 		// example for this column found at https://o7planning.org/en/11079/javafx-tableview-tutorial
 		ObservableList<PaymentType> paymentTypeList = FXCollections.observableArrayList(PaymentType.values());
-		TableColumn<Object_Payment, PaymentType> col2 = new TableColumn<Object_Payment, PaymentType>("Type");
+		TableColumn<Object_Payment, PaymentType> col2 = new TableColumn<>("Type");
 
 		col2.setPrefWidth(55);
 		col2.setStyle( "-fx-alignment: CENTER;");
-		col2.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Object_Payment, PaymentType>, ObservableValue<PaymentType>>() {
-
-			@Override
-			public ObservableValue<PaymentType> call(TableColumn.CellDataFeatures<Object_Payment, PaymentType> param) {
-				Object_Payment thisPayment = param.getValue();
-				String paymentCode = thisPayment.getPaymentType();
-				PaymentType paymentType = PaymentType.getByCode(paymentCode);
-				return new SimpleObjectProperty<PaymentType>(paymentType);
-			}
+		col2.setCellValueFactory(param -> {
+			Object_Payment thisPayment = param.getValue();
+			String paymentCode = thisPayment.getPaymentType();
+			PaymentType paymentType = PaymentType.getByCode(paymentCode);
+			return new SimpleObjectProperty<>(paymentType);
 		});
 
 		col2.setCellFactory(ComboBoxTableCell.forTableColumn(paymentTypeList));
@@ -229,16 +217,12 @@ public class BoxInvoice extends HBox {
 		col3.setPrefWidth(55);
 		col3.setStyle( "-fx-alignment: CENTER-LEFT;");
 		col3.setOnEditCommit(
-				new EventHandler<TableColumn.CellEditEvent<Object_Payment, String>>() {
-					@Override
-					public void handle(TableColumn.CellEditEvent<Object_Payment, String> t) {
-						((Object_Payment) t.getTableView().getItems().get(
-								t.getTablePosition().getRow())
-						).setCheckNumber(t.getNewValue());
-						int pay_id = ((Object_Payment) t.getTableView().getItems().get(t.getTablePosition().getRow())).getPay_id();
-						SqlUpdate.updatePayment(pay_id, "CHECKNUMBER", t.getNewValue());
-						//	SqlUpdate.updatePhone("phone", phone_id, t.getNewValue());
-					}
+				t -> {
+					t.getTableView().getItems().get(
+							t.getTablePosition().getRow()).setCheckNumber(t.getNewValue());
+					int pay_id = t.getTableView().getItems().get(t.getTablePosition().getRow()).getPay_id();
+					SqlUpdate.updatePayment(pay_id, "CHECKNUMBER", t.getNewValue());
+					//	SqlUpdate.updatePhone("phone", phone_id, t.getNewValue());
 				}
 		);
 
@@ -246,16 +230,12 @@ public class BoxInvoice extends HBox {
 		col4.setPrefWidth(70);
 		col4.setStyle( "-fx-alignment: CENTER-LEFT;");
 		col4.setOnEditCommit(
-				new EventHandler<TableColumn.CellEditEvent<Object_Payment, String>>() {
-					@Override
-					public void handle(TableColumn.CellEditEvent<Object_Payment, String> t) {
-						((Object_Payment) t.getTableView().getItems().get(
-								t.getTablePosition().getRow())
-						).setPaymentDate(t.getNewValue());
-						int pay_id = ((Object_Payment) t.getTableView().getItems().get(t.getTablePosition().getRow())).getPay_id();
-						SqlUpdate.updatePayment(pay_id, "payment_date", t.getNewValue());
-						//	SqlUpdate.updatePhone("phone", phone_id, t.getNewValue());
-					}
+				t -> {
+					t.getTableView().getItems().get(
+							t.getTablePosition().getRow()).setPaymentDate(t.getNewValue());
+					int pay_id = t.getTableView().getItems().get(t.getTablePosition().getRow()).getPay_id();
+					SqlUpdate.updatePayment(pay_id, "payment_date", t.getNewValue());
+					//	SqlUpdate.updatePhone("phone", phone_id, t.getNewValue());
 				}
 		);
 
@@ -279,10 +259,9 @@ public class BoxInvoice extends HBox {
 		paymentTableView.setFixedCellSize(30);
 		paymentTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY );
 
-		int width = 100;
-		
 		winterStorageSpinner.setPrefWidth(65);
 		wetSlipSpinner.setPrefWidth(65);
+		Spinner<Integer> workCreditSpinner = new Spinner<>();
 		workCreditSpinner.setPrefWidth(65);
 		kayakRackSpinner.setPrefWidth(65);
 		addWetSlip.setPrefWidth(25);
@@ -311,27 +290,19 @@ public class BoxInvoice extends HBox {
 
 		this.setPadding(new Insets(5, 5, 5, 5));  // creates space for blue frame
 		vboxGrey.setPadding(new Insets(8, 5, 0, 15));
-		hboxButtonCommit.setPadding(new Insets(5, 0, 5, 170));	
+		hboxButtonCommit.setPadding(new Insets(5, 0, 5, 170));
 		
 		setId("box-blue");
 		vboxGrey.setId("box-grey");
 
 		HBox.setHgrow(vboxGrey, Priority.ALWAYS);
 
-		if(fiscals.get(rowIndex).isCommitted()) {
-			paymentTableView.setEditable(false);
-//			paymentAdd.setDisable(true);
-//			paymentDelete.setDisable(true);
-		} else {
-			paymentTableView.setEditable(true);
-//			paymentAdd.setDisable(false);
-//			paymentDelete.setDisable(false);
-		}
+		paymentTableView.setEditable(!fiscals.get(rowIndex).isCommitted());
 
 		//////////////// LISTENER //////////////////
 		buttonAdd.setOnAction(e -> {
 			int pay_id = SqlSelect.getNumberOfPayments() + 1; // get last pay_id number
-			payments.add(new Object_Payment(pay_id,fiscals.get(rowIndex).getMoney_id(),null,"CH",date, "0",1)); // lets add it to our GUI
+			payments.add(new Object_Payment(pay_id,fiscals.get(rowIndex).getMoney_id(),null,"CH",date, "0",1)); // let's add it to our GUI
 			SqlInsert.addPaymentRecord(payments.get(payments.size() -1));
 		});
 
@@ -342,22 +313,21 @@ public class BoxInvoice extends HBox {
 			paymentTableView.getItems().remove(selectedIndex); // remove it from our GUI
 			// SQL Query getTotalAmount() recalculates the payments for us
 			BigDecimal totalPaidAmount = BigDecimal.valueOf(SqlSelect.getTotalAmount(fiscals.get(rowIndex).getMoney_id()));
-			totalPaymentText.setText(String.valueOf(totalPaidAmount.setScale(2)));
-			fiscals.get(rowIndex).setPaid(String.valueOf(totalPaidAmount.setScale(2)));
+			totalPaymentText.setText(String.valueOf(totalPaidAmount.setScale(2, RoundingMode.HALF_UP)));
+			fiscals.get(rowIndex).setPaid(String.valueOf(totalPaidAmount.setScale(2, RoundingMode.HALF_UP)));
 			updateBalance();
 			// don't we need to figure out the balance?
 		});
 
-		// this is only called if you changer membership type or open a record or manually type in
+		// this is only called if you change membership type or open a record or manually type in
 		duesTextField.textProperty().addListener((observable, oldValue, newValue) -> {
 			if (!SqlSelect.isCommitted(fiscals.get(rowIndex).getMoney_id())) {
-				String newDues = newValue;
-				duesText.setText(newDues);
-				System.out.println(" dues textfield set to " + newValue);
-				fiscals.get(rowIndex).setDues(newDues);
+				duesText.setText(newValue);
+				System.out.println(" dues text field set to " + newValue);
+				fiscals.get(rowIndex).setDues(newValue);
 				updateBalance();
 			} else {
-				System.out.println("Record is commited, no changes made");
+				System.out.println("Record is committed, no changes made");
 			}
 		});
 		
@@ -369,7 +339,7 @@ public class BoxInvoice extends HBox {
 	            	}
 	            	BigDecimal dues = new BigDecimal(duesTextField.getText());
 	            	updateItem(dues,"dues");
-					duesTextField.setText(String.valueOf(dues.setScale(2)));
+					duesTextField.setText(String.valueOf(dues.setScale(2, RoundingMode.HALF_UP)));
 	            	updateBalance();
 	            }
 	        });
@@ -382,8 +352,8 @@ public class BoxInvoice extends HBox {
 			updateBalance();
 		});
 
-		SpinnerValueFactory<Integer> kayacRackValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 5, fiscals.get(rowIndex).getKayac_rack());
-		kayakRackSpinner.setValueFactory(kayacRackValueFactory);
+		SpinnerValueFactory<Integer> kayakRackValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 5, fiscals.get(rowIndex).getKayac_rack());
+		kayakRackSpinner.setValueFactory(kayakRackValueFactory);
 		kayakRackSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
 			fiscals.get(rowIndex).setKayac_rack(newValue);
 			kayakRackText.setText(String.valueOf(definedFees.getKayak_rack().multiply(BigDecimal.valueOf(newValue))));
@@ -432,10 +402,10 @@ public class BoxInvoice extends HBox {
 				}
 				BigDecimal slip = new BigDecimal(wetslipTextField.getText());
 				wetSlipText.setText(String.valueOf(slip.multiply(BigDecimal.valueOf(wetSlipSpinner.getValue()))));
-				slip.setScale(2);
+//				slip.setScale(2, RoundingMode.HALF_UP);
 				updateItem(slip,"wetslip");
-				wetslipTextField.setText(String.valueOf(slip.setScale(2)));
-				wetslipTextFee.setText(String.valueOf(slip.setScale(2)));
+				wetslipTextField.setText(String.valueOf(slip.setScale(2, RoundingMode.HALF_UP)));
+				wetslipTextFee.setText(String.valueOf(slip.setScale(2, RoundingMode.HALF_UP)));
 				updateBalance();
 				vboxWetSlipFee.getChildren().clear();
 				vboxWetSlipFee.getChildren().add(wetslipTextFee);
@@ -491,9 +461,9 @@ public class BoxInvoice extends HBox {
 					yscTextField.setText("0.00");
 				}
 				BigDecimal ysc = new BigDecimal(yscTextField.getText());
-				yspText.setText(String.valueOf(ysc.setScale(2)));
-				updateItem(ysc.setScale(2), "ysc");
-				yscTextField.setText(String.valueOf(ysc.setScale(2)));
+				yspText.setText(String.valueOf(ysc.setScale(2, RoundingMode.HALF_UP)));
+				updateItem(ysc.setScale(2, RoundingMode.HALF_UP), "ysc");
+				yscTextField.setText(String.valueOf(ysc.setScale(2, RoundingMode.HALF_UP)));
 				updateBalance();
 			}
 		});
@@ -505,9 +475,9 @@ public class BoxInvoice extends HBox {
 					initiationTextField.setText("0.00");
 				}
 				BigDecimal initiation = new BigDecimal(initiationTextField.getText());
-				updateItem(initiation.setScale(2), "initiation");
-				initiationTextField.setText(String.valueOf(initiation.setScale(2)));
-				initiationText.setText(String.valueOf(initiation.setScale(2)));
+				updateItem(initiation.setScale(2, RoundingMode.HALF_UP), "initiation");
+				initiationTextField.setText(String.valueOf(initiation.setScale(2, RoundingMode.HALF_UP)));
+				initiationText.setText(String.valueOf(initiation.setScale(2, RoundingMode.HALF_UP)));
 				updateBalance();
 			}
 		});
@@ -519,9 +489,9 @@ public class BoxInvoice extends HBox {
 					otherTextField.setText("0.00");
 				}
 				BigDecimal other = new BigDecimal(otherTextField.getText());
-				otherFeeText.setText(String.valueOf(other.setScale(2)));
-				updateItem(other.setScale(2),"other");
-				otherTextField.setText(String.valueOf(other.setScale(2)));
+				otherFeeText.setText(String.valueOf(other.setScale(2, RoundingMode.HALF_UP)));
+				updateItem(other.setScale(2, RoundingMode.HALF_UP),"other");
+				otherTextField.setText(String.valueOf(other.setScale(2, RoundingMode.HALF_UP)));
 				updateBalance();
 			}
 		});
@@ -533,9 +503,9 @@ public class BoxInvoice extends HBox {
 					otherCreditTextField.setText("0.00");
 				}
 				BigDecimal otherCredit = new BigDecimal(otherCreditTextField.getText());
-				otherCreditText.setText(String.valueOf(otherCredit.setScale(2)));
-				updateItem(otherCredit.setScale(2),"other_credit");
-				otherCreditTextField.setText(String.valueOf(otherCredit.setScale(2)));
+				otherCreditText.setText(String.valueOf(otherCredit.setScale(2, RoundingMode.HALF_UP)));
+				updateItem(otherCredit.setScale(2, RoundingMode.HALF_UP),"other_credit");
+				otherCreditTextField.setText(String.valueOf(otherCredit.setScale(2, RoundingMode.HALF_UP)));
 				updateBalance();
 			}
 		});
@@ -579,7 +549,7 @@ public class BoxInvoice extends HBox {
 				addPaidNote(date);
 				// if we put an amount in other we need to make a note
 				if(new BigDecimal(fiscals.get(rowIndex).getOther()).compareTo(BigDecimal.ZERO) != 0) {
-					// make sure the memo dosen't already exist
+					// make sure the memo doesn't already exist
 					if(!SqlExists.memoExists(fiscals.get(rowIndex).getMoney_id()))
 						note.add("Other expense: ",date,fiscals.get(rowIndex).getMoney_id(),"O");
 				}
@@ -598,12 +568,8 @@ public class BoxInvoice extends HBox {
 		});
 
 		wetslipTextFee.setFill(Color.BLUE);
-		wetslipTextFee.setOnMouseEntered(en -> {
-			wetslipTextFee.setFill(Color.RED);
-		});
-		wetslipTextFee.setOnMouseExited(ex -> {
-			wetslipTextFee.setFill(Color.BLUE);
-		});
+		wetslipTextFee.setOnMouseEntered(en -> wetslipTextFee.setFill(Color.RED));
+		wetslipTextFee.setOnMouseExited(ex -> wetslipTextFee.setFill(Color.BLUE));
 
 		if (fiscals.get(rowIndex).isSupplemental()) { // have we already created a record for this year?
 			duesTextField.setEditable(true);
@@ -613,10 +579,6 @@ public class BoxInvoice extends HBox {
 				System.out.println("Member is an officer");
 				fiscals.get(rowIndex).setOfficer_credit(String.valueOf(definedFees.getDues_regular()));
 				if(!SqlSelect.isCommitted(fiscals.get(rowIndex).getMoney_id()))	{	// is not committed
-					// committed
-//						textFields.getCreditText().setText(duesTextField.getText()); // gets the dues and gives that amount of credit for being an officer
-//					SqlUpdate.updateField(new BigDecimal(duesTextField.getText()), "money", "credit", fiscals, rowIndex); // updates SQL
-//					fiscals.get(rowIndex).setCredit(duesTextField.getText());  // sets credit for what dues are
 					System.out.println("Record is not committed");
 				}
 			} else {
@@ -919,7 +881,7 @@ public class BoxInvoice extends HBox {
 		vboxButtons.getChildren().addAll(buttonAdd, buttonDelete);
 		paymentTableView.getColumns().addAll(Arrays.asList(col1,col2,col3,col4));
 		scrollPane.setContent(gridPane);
-		mainVbox.getChildren().addAll(scrollPane);  // add error hbox in first
+		mainVbox.getChildren().addAll(scrollPane);  // add error HBox in first
 		vboxGrey.getChildren().addAll(mainVbox);
 		getChildren().addAll(vboxGrey);
 	}
@@ -975,10 +937,10 @@ public class BoxInvoice extends HBox {
 	}
 	
 	private void setEditable(boolean isEditable) {
-		changeState(yscTextField,isEditable,true);
-		changeState(duesTextField,isEditable,true);
-		changeState(otherTextField,isEditable,true);
-		changeState(initiationTextField,isEditable,true);
+		changeState(yscTextField,isEditable);
+		changeState(duesTextField,isEditable);
+		changeState(otherTextField,isEditable);
+		changeState(initiationTextField,isEditable);
 //		changeState(slipTextField,isEditable,true);
 		changeState(addWetSlip,isEditable);
 		changeState(beachSpinner,isEditable);
@@ -1001,10 +963,9 @@ public class BoxInvoice extends HBox {
 	}
 	
 	
-	private void changeState(TextField textField, boolean isEditable, boolean normallyEditable) {
+	private void changeState(TextField textField, boolean isEditable) {
 		textField.setEditable(isEditable);
 		if(isEditable) {
-			if(normallyEditable)
 			textField.setStyle(null);
 			textField.setOpacity(1);
 		} else {
@@ -1050,9 +1011,8 @@ public class BoxInvoice extends HBox {
 		BigDecimal yscDonation = new BigDecimal(fiscals.get(rowIndex).getYsc_donation());
 		BigDecimal other = new BigDecimal(fiscals.get(rowIndex).getOther());
 		BigDecimal initiation = new BigDecimal(fiscals.get(rowIndex).getInitiation());
-		BigDecimal total = extraKey.add(sailLoftKey).add(kayakShedKey).add(sailSchoolLoftKey).add(beachSpot).add(kayakRack).add(kayakShed)
+		return extraKey.add(sailLoftKey).add(kayakShedKey).add(sailSchoolLoftKey).add(beachSpot).add(kayakRack).add(kayakShed)
 				.add(sailLoft).add(sailSchoolLoft).add(wetSlip).add(winterStorage).add(yscDonation).add(dues).add(other).add(initiation);
-		return total;
 	}
 
 	private BigDecimal getBalance() {
@@ -1076,13 +1036,13 @@ public class BoxInvoice extends HBox {
 	}
 	
 	private Boolean membershipHasOfficer() {
-		Boolean isOfficer = false;
-		Boolean finalResult = false;
+		Boolean isOfficer;
+		boolean finalResult = false;
 		for (Object_Person per : people) {
 			isOfficer = SqlExists.isOfficer(per, fiscals.get(rowIndex).getFiscal_year());
 			if(isOfficer) {  // we will add in pid here if need be
 				finalResult = true;
-				isOfficer = false;  // reset for next iteration
+//				isOfficer = false;  // reset for next iteration
 				this.officer = SqlSelect.getOfficer(per.getP_id(),fiscals.get(rowIndex).getFiscal_year());
 			}
 		}
@@ -1105,4 +1065,4 @@ public class BoxInvoice extends HBox {
 		return col ;
 	}
 	
-} // updateKayakShed
+}
