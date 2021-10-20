@@ -134,7 +134,7 @@ public class SqlInsert {
 			+ "," + m.getSail_loft() + "," + m.getSail_school_laser_loft() + "," + m.getWinter_storage() 
 			+ "," + m.getYsc_donation() + "," + m.getPaid() + "," + m.getTotal() 
 			+ "," + m.getCredit() + "," + m.getBalance() + "," + m.getDues() 
-			+  "," + m.isCommitted() + "," + m.isClosed() + "," + m.getOther() + "," + m.getInitiation() + "," + m.isSupplemental() + ");"));
+			+  "," + m.isCommitted() + "," + m.isClosed() + "," + m.getOther() + "," + m.getInitiation() + "," + m.isSupplemental() + "," + m.getWork_credit() + "," + m.getOther_credit() + ");"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"Unable to create new row","See below for details");

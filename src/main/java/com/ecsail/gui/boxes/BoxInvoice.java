@@ -14,11 +14,10 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.ComboBoxTableCell;
-import javafx.scene.layout.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -28,11 +27,13 @@ import java.util.Date;
 import java.util.function.Function;
 
 
-// replaces tabCredit, tabBalance, tabPayment, BoxFiscal2
+// replaces tabCredit, tabBalance, tabPayment, BoxFiscal2 also need to delete Object_Integer
+// this class is for buisness logic, Object_invoiceNodes handles most of the GUI
 
 public class BoxInvoice extends HBox {
 	private final ObservableList<Object_Money> fiscals;
 	private ObservableList<Object_Payment> payments;
+
 	private final Object_InvoiceNodes fnode;
 	Object_Membership membership;
 	Object_DefinedFee definedFees;
@@ -40,14 +41,9 @@ public class BoxInvoice extends HBox {
 	Object_Officer officer;
 	final private ObservableList<Object_Person> people;
 	boolean hasOfficer;
-	Object_Integer numberOfKeys;
-	Object_Integer workCredits;
 	final private int rowIndex;
-	private final Note note;
 	String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date(System.currentTimeMillis()));
-	GridPane gridPane = new GridPane();
 	private final TableView<Object_Payment> paymentTableView = new TableView<>();
-	private final String disabledColor = "-fx-background-color: #d5dade";
 	boolean isCommitted;
 	Button addWetSlip = new Button();
 	
@@ -56,40 +52,17 @@ public class BoxInvoice extends HBox {
 		this.people = p;
 		this.rowIndex = r;
 		this.fiscals = o;
-		this.note = note;
-		this.fnode = new Object_InvoiceNodes(dt);
-//		this.duesTextField = dt;
-		this.selectedWorkCreditYear = SqlSelect.getWorkCredit(fiscals.get(rowIndex).getMoney_id());
 		this.definedFees = SqlSelect.selectDefinedFees(fiscals.get(rowIndex).getFiscal_year());
+		this.fnode = new Object_InvoiceNodes(dt, definedFees, paymentTableView);
+		this.selectedWorkCreditYear = SqlSelect.getWorkCredit(fiscals.get(rowIndex).getMoney_id());
 		this.hasOfficer = membershipHasOfficer();
 		this.isCommitted = fiscals.get(rowIndex).isCommitted();
-		this.numberOfKeys = new Object_Integer(0);
-		this.workCredits = new Object_Integer(0);
+
 		///////////// ACTION ///////////////
 		getPayment();
 
 		////////////// OBJECTS /////////////////////
 		ScrollPane scrollPane = new ScrollPane();
-//		Text duesText = new Text();
-//		Text beachText = new Text();
-//		Text kayakRackText = new Text();
-//		Text kayakShedText = new Text();
-//		Text sailLoftText = new Text();
-//		Text sailSchoolLoftText = new Text();
-//		Text wetSlipText = new Text();
-//		Text winterStorageText = new Text();
-//		Text yspText = new Text();
-//		Text initiationText = new Text();
-//		Text otherFeeText = new Text();
-//		Text workCreditsText = new Text();
-//		Text gateKeyText = new Text();
-//		Text sailLKeyText = new Text();
-//		Text kayakSKeyText = new Text();
-//		Text sailSSLKeyText = new Text();
-//		Text otherCreditText = new Text();
-//		Text positionCreditText = new Text();
-//		Text wetslipTextFee = new Text();
-
 
 		VBox vboxGrey = new VBox();  // this is the vbox for organizing all the widgets
 		VBox mainVbox = new VBox();
@@ -97,52 +70,6 @@ public class BoxInvoice extends HBox {
 		VBox vboxTabPanes = new VBox();
 		VBox vboxSpinners = new VBox();
 		HBox hboxButtonCommit = new HBox();
-
-		// VBoxes for totals
-		VBox vboxDues = new VBox();
-		VBox vboxBeach = new VBox();
-		VBox vboxKayak = new VBox();
-		VBox vboxKayakShed = new VBox();
-		VBox vboxSailLoft = new VBox();
-		VBox vboxSailSchoolLoft = new VBox();
-		VBox vboxWetSlip = new VBox();
-		VBox vboxWinterStorage = new VBox();
-		VBox vboxGateKey = new VBox();
-		VBox vboxSailLoftKey = new VBox();
-		VBox vboxKayakShedKey = new VBox();
-		VBox vboxSailSchoolLoftKey = new VBox();
-		VBox vboxWorkCredits = new VBox();
-		VBox vboxYSC = new VBox();
-		VBox vboxInitiation = new VBox();
-		VBox vboxOther = new VBox();
-		VBox vboxOtherCredit = new VBox();
-		VBox vboxPositionCredit = new VBox();
-
-		// VBoxes for multipliers
-		VBox vboxBeachFee = new VBox();
-		VBox vboxKayakFee = new VBox();
-		VBox vboxKayakShedFee = new VBox();
-		VBox vboxSailLoftFee = new VBox();
-		VBox vboxSailSchoolLoftFee = new VBox();
-		VBox vboxWetSlipFee = new VBox();
-		VBox vboxWinterStorageFee = new VBox();
-		VBox vboxGateKeyFee = new VBox();
-		VBox vboxSailLoftKeyFee = new VBox();
-		VBox vboxKayakShedKeyFee = new VBox();
-		VBox vboxSailSchoolLoftKeyFee = new VBox();
-		VBox vboxWorkCreditsFee = new VBox();
-		VBox vboxTitlePrice = new VBox();
-		VBox vboxTitleTotal = new VBox();
-
-		Button buttonAdd = new Button("Add");
-		Button buttonDelete = new Button("Delete");
-		Button commitButton = new Button("Commit");
-		CheckBox renewCheckBox = new CheckBox("Renew");
-		VBox vboxButtons = new VBox();
-		VBox vboxPink = new VBox(); // this creates a pink border around the table
-		VBox vboxCommitButton = new VBox();
-
-
 
 		/////////////// TABLE ///////////////////
 		TableColumn<Object_Payment, String> col1 = createColumn("Amount", Object_Payment::PaymentAmountProperty);
@@ -221,31 +148,18 @@ public class BoxInvoice extends HBox {
 		col4.setMaxWidth( 1f * Integer.MAX_VALUE * 25 );  // Model
 
 		//////////////// ATTRIBUTES ///////////////////
-		vboxPink.setPadding(new Insets(2,2,2,2)); // spacing to make pink frame around table
-		vboxPink.setId("box-pink");
-		HBox.setHgrow(vboxPink, Priority.ALWAYS);
-		renewCheckBox.setSelected(true);
-		buttonAdd.setPrefWidth(60);
-		buttonDelete.setPrefWidth(60);
-		vboxButtons.setSpacing(5);
 
 		paymentTableView.setItems(payments);
 		HBox.setHgrow(paymentTableView,Priority.ALWAYS);
 		paymentTableView.setPrefHeight(115);
 		paymentTableView.setFixedCellSize(30);
 		paymentTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY );
-
-
-
-
-
 		addWetSlip.setPrefWidth(25);
 		addWetSlip.setPrefHeight(25);
 
 		vboxTabPanes.setAlignment(Pos.CENTER);
 		vboxSpinners.setAlignment(Pos.CENTER);
 
-		vboxCommitButton.setSpacing(10);
 		vboxSpinners.setSpacing(5);
 		mainHbox.setSpacing(10);
 
@@ -255,19 +169,18 @@ public class BoxInvoice extends HBox {
 		
 		setId("box-blue");
 		vboxGrey.setId("box-grey");
-
 		HBox.setHgrow(vboxGrey, Priority.ALWAYS);
 
 		paymentTableView.setEditable(!fiscals.get(rowIndex).isCommitted());
 
 		//////////////// LISTENER //////////////////
-		buttonAdd.setOnAction(e -> {
+		fnode.getButtonAdd().setOnAction(e -> {
 			int pay_id = SqlSelect.getNumberOfPayments() + 1; // get last pay_id number
 			payments.add(new Object_Payment(pay_id,fiscals.get(rowIndex).getMoney_id(),null,"CH",date, "0",1)); // let's add it to our GUI
 			SqlInsert.addPaymentRecord(payments.get(payments.size() -1));
 		});
 
-		buttonDelete.setOnAction(e -> {
+		fnode.getButtonDelete().setOnAction(e -> {
 			int selectedIndex = paymentTableView.getSelectionModel().getSelectedIndex();
 			if(selectedIndex >= 0) // is something selected?
 			SqlDelete.deletePayment(payments.get(selectedIndex));
@@ -366,8 +279,8 @@ public class BoxInvoice extends HBox {
 				fnode.getWetslipTextField().setText(String.valueOf(slip.setScale(2, RoundingMode.HALF_UP)));
 				fnode.getWetslipTextFee().setText(String.valueOf(slip.setScale(2, RoundingMode.HALF_UP)));
 				updateBalance();
-				vboxWetSlipFee.getChildren().clear();
-				vboxWetSlipFee.getChildren().add(fnode.getWetslipTextFee());
+				fnode.getVboxWetSlip().getChildren().clear();
+				fnode.getVboxWetSlipFee().getChildren().add(fnode.getWetslipTextFee());
 			}
 		});
 
@@ -377,7 +290,6 @@ public class BoxInvoice extends HBox {
 			fiscals.get(rowIndex).setWinter_storage(newValue);
 			fnode.getWinterStorageText().setText(String.valueOf(definedFees.getWinter_storage().multiply(BigDecimal.valueOf(newValue))));
 			updateBalance();
-//			SqlUpdate.updateMoney(fiscals.get(rowIndex));
 		});
 
 		SpinnerValueFactory<Integer> gateKeyValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 15, fiscals.get(rowIndex).getExtra_key());
@@ -459,7 +371,6 @@ public class BoxInvoice extends HBox {
 			fiscals.get(rowIndex).setWork_credit(newValue);
 			String workCredits = String.valueOf(definedFees.getWork_credit().multiply(BigDecimal.valueOf(newValue)));
 			fnode.getWorkCreditsText().setText(workCredits);
-//			totalCreditText.setText(workCredits);
 			updateBalance();
 		});
 
@@ -477,22 +388,6 @@ public class BoxInvoice extends HBox {
 			}
 		});
 
-
-
-		numberOfKeys.integerProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
-		        updateBalance();
-		        SqlUpdate.updateMoney(fiscals.get(rowIndex));
-		    });
-		
-		workCredits.integerProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
-		    	fiscals.get(rowIndex).setCredit(String.valueOf(countCredit((int)newValue)));
-				fnode.getTotalCreditText().setText(String.valueOf(countCredit((int)newValue)));
-//		    	totalBalanceText.setText(String.valueOf(getBalance()));  // sets balance TextField in balance tab
-				fiscals.get(rowIndex).setBalance(String.valueOf(getBalance()));  // sets focused object
-			fnode.getWorkCreditsText().setText(String.valueOf(definedFees.getWork_credit().multiply(BigDecimal.valueOf((int)newValue))));
-		        updateBalance();
-		    });
-
 		fnode.getOtherCreditTextField().focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
 			//focus out
 			if (oldValue) {  // we have focused and unfocused
@@ -507,7 +402,7 @@ public class BoxInvoice extends HBox {
 			}
 		});
 
-		commitButton.setOnAction((event) -> {
+		fnode.getCommitButton().setOnAction((event) -> {
 			if (!fiscals.get(rowIndex).isCommitted()) {
 				if (!fnode.getTotalBalanceText().getText().equals("0.00"))
 					fnode.getTotalBalanceText().setStyle("-fx-background-color: #f23a50");
@@ -516,7 +411,7 @@ public class BoxInvoice extends HBox {
 				SqlUpdate.commitFiscalRecord(fiscals.get(rowIndex).getMoney_id(), true);// this could be placed in line above
 				String date = SqlSelect.getPaymentDate(fiscals.get(rowIndex).getMoney_id()); // dates note to check
 				// update membership_id record to renew or non-renew
-				SqlUpdate.updateMembershipId(fiscals.get(rowIndex).getMs_id(), fiscals.get(rowIndex).getFiscal_year(), renewCheckBox.isSelected());
+				SqlUpdate.updateMembershipId(fiscals.get(rowIndex).getMs_id(), fiscals.get(rowIndex).getFiscal_year(), fnode.getRenewCheckBox().isSelected());
 				fiscals.get(rowIndex).setCommitted(true);
 				addPaidNote(date);
 				// if we put an amount in other we need to make a note
@@ -535,8 +430,8 @@ public class BoxInvoice extends HBox {
 
 		fnode.getWetslipTextFee().setOnMouseClicked(e -> {
 			System.out.println("you clicked on the text");
-			vboxWetSlipFee.getChildren().clear();
-			vboxWetSlipFee.getChildren().add(fnode.getWetslipTextField());
+			fnode.getVboxWetSlipFee().getChildren().clear();
+			fnode.getVboxWetSlipFee().getChildren().add(fnode.getWetslipTextField());
 		});
 
 		fnode.getWetslipTextFee().setFill(Color.BLUE);
@@ -590,276 +485,18 @@ public class BoxInvoice extends HBox {
 		fnode.getKayakSKeyText().setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getKayac_shed_key()).multiply(definedFees.getKayak_shed_key())));
 		fnode.getSailSSLKeyText().setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getSail_school_loft_key()).multiply(definedFees.getSail_school_loft_key())));
 		fnode.getPositionCreditText().setText(fiscals.get(rowIndex).getOfficer_credit());
-		
 
-		if(fiscals.get(rowIndex).isCommitted()) setEditable(false);
+
+		setEditable(!fiscals.get(rowIndex).isCommitted());
 
 		updateBalance();
-//		hboxSlip.getChildren().addAll(slipTextField,addWetSlip);
 
-		HBox.setHgrow(gridPane,Priority.ALWAYS);
-		gridPane.setHgap(25);
-		gridPane.setVgap(5);
-
-
-		Font font = Font.font("Verdana", FontWeight.BOLD, 16);
-		Text text1 = new Text("Fee");
-		Text text2 = new Text("Price");
-		Text text3 = new Text("Total");
-		text1.setFont(font);
-		text2.setFont(font);
-		text3.setFont(font);
-
-		vboxDues.getChildren().add(fnode.getDuesText());
-		vboxDues.setAlignment(Pos.CENTER_RIGHT);
-		vboxBeach.getChildren().add(fnode.getBeachText());
-		vboxBeach.setAlignment(Pos.CENTER_RIGHT);
-		vboxKayak.getChildren().add(fnode.getKayakRackText());
-		vboxKayak.setAlignment(Pos.CENTER_RIGHT);
-		vboxKayakShed.getChildren().add(fnode.getKayakShedText());
-		vboxKayakShed.setAlignment(Pos.CENTER_RIGHT);
-		vboxSailLoft.getChildren().add(fnode.getSailLoftText());
-		vboxSailLoft.setAlignment(Pos.CENTER_RIGHT);
-		vboxSailSchoolLoft.getChildren().add(fnode.getSailSchoolLoftText());
-		vboxSailSchoolLoft.setAlignment(Pos.CENTER_RIGHT);
-		vboxWetSlip.getChildren().add(fnode.getWetSlipText());
-		vboxWetSlip.setAlignment(Pos.CENTER_RIGHT);
-		vboxWinterStorage.getChildren().add(fnode.getWinterStorageText());
-		vboxWinterStorage.setAlignment(Pos.CENTER_RIGHT);
-		vboxGateKey.getChildren().add(fnode.getGateKeyText());
-		vboxGateKey.setAlignment(Pos.CENTER_RIGHT);
-		vboxSailLoftKey.getChildren().add(fnode.getSailLKeyText());
-		vboxSailLoftKey.setAlignment(Pos.CENTER_RIGHT);
-		vboxKayakShedKey.getChildren().add(fnode.getKayakSKeyText());
-		vboxKayakShedKey.setAlignment(Pos.CENTER_RIGHT);
-		vboxSailSchoolLoftKey.getChildren().add(fnode.getSailSSLKeyText());
-		vboxSailSchoolLoftKey.setAlignment(Pos.CENTER_RIGHT);
-		vboxPositionCredit.getChildren().add(fnode.getPositionCreditText());
-		vboxPositionCredit.setAlignment(Pos.CENTER_RIGHT);
-
-		vboxWorkCredits.getChildren().add(fnode.getWorkCreditsText());
-		vboxWorkCredits.setAlignment(Pos.CENTER_RIGHT);
-
-		vboxYSC.getChildren().add(fnode.getYspText());
-		vboxYSC.setAlignment(Pos.CENTER_RIGHT);
-		vboxInitiation.getChildren().add(fnode.getInitiationText());
-		vboxInitiation.setAlignment(Pos.CENTER_RIGHT);
-		vboxOther.getChildren().add(fnode.getOtherFeeText());
-		vboxOther.setAlignment(Pos.CENTER_RIGHT);
-		vboxOtherCredit.getChildren().add(fnode.getOtherCreditText());
-		vboxOtherCredit.setAlignment(Pos.CENTER_RIGHT);
-
-		vboxBeachFee.getChildren().add(new Text(String.valueOf(definedFees.getBeach())));
-		vboxBeachFee.setAlignment(Pos.CENTER_RIGHT);
-		vboxKayakFee.getChildren().add(new Text(String.valueOf(definedFees.getKayak_rack())));
-		vboxKayakFee.setAlignment(Pos.CENTER_RIGHT);
-		vboxKayakShedFee.getChildren().add(new Text(String.valueOf(definedFees.getKayak_shed())));
-		vboxKayakShedFee.setAlignment(Pos.CENTER_RIGHT);
-		vboxSailLoftFee.getChildren().add(new Text(String.valueOf(definedFees.getSail_loft())));
-		vboxSailLoftFee.setAlignment(Pos.CENTER_RIGHT);
-		vboxSailSchoolLoftFee.getChildren().add(new Text(String.valueOf(definedFees.getSail_school_laser_loft())));
-		vboxSailSchoolLoftFee.setAlignment(Pos.CENTER_RIGHT);
-		vboxWinterStorageFee.getChildren().add(new Text(String.valueOf(definedFees.getWinter_storage())));
-		vboxWinterStorageFee.setAlignment(Pos.CENTER_RIGHT);
-		vboxGateKeyFee.getChildren().add(new Text(String.valueOf(definedFees.getMain_gate_key())));
-		vboxGateKeyFee.setAlignment(Pos.CENTER_RIGHT);
-		vboxSailLoftKeyFee.getChildren().add(new Text(String.valueOf(definedFees.getSail_loft_key())));
-		vboxSailLoftKeyFee.setAlignment(Pos.CENTER_RIGHT);
-		vboxKayakShedKeyFee.getChildren().add(new Text(String.valueOf(definedFees.getKayak_shed_key())));
-		vboxKayakShedKeyFee.setAlignment(Pos.CENTER_RIGHT);
-		vboxSailSchoolLoftKeyFee.getChildren().add(new Text(String.valueOf(definedFees.getSail_school_loft_key())));
-		vboxSailSchoolLoftKeyFee.setAlignment(Pos.CENTER_RIGHT);
-
-		vboxWorkCreditsFee.getChildren().add(new Text(String.valueOf(definedFees.getWork_credit())));
-		vboxWorkCreditsFee.setAlignment(Pos.CENTER_RIGHT);
-
-
-		vboxTitlePrice.getChildren().add(text2);
-		vboxTitlePrice.setAlignment(Pos.CENTER_RIGHT);
-		vboxTitleTotal.getChildren().add(text3);
-		vboxTitleTotal.setAlignment(Pos.CENTER_RIGHT);
-		vboxWetSlipFee.getChildren().add(fnode.getWetslipTextFee());
-		vboxWetSlipFee.setAlignment(Pos.CENTER_RIGHT);
-
-
-		int row = 0;
-//		/// header
-		gridPane.add(text1 , 0, row, 1, 1);
-		gridPane.add(new Text(""), 1, row, 1, 1);
-		gridPane.add(new Text(""), 2, row, 1, 1);
-		gridPane.add(vboxTitlePrice, 3, row, 1, 1);
-		gridPane.add(vboxTitleTotal, 4, row, 1, 1);
-
-		/// Row 1
-		row++;
-		gridPane.add(new Label("Dues:"), 0, row, 1, 1);
-		gridPane.add(fnode.getDuesTextField(), 1, row, 1, 1);
-		gridPane.add(new Label(""), 2, row, 1, 1);
-		gridPane.add(new Label(""), 3, row, 1, 1);
-		gridPane.add(vboxDues, 4, row, 1, 1);
-
-		/// Row 2
-		row++;
-		gridPane.add(new Label("Beach Spot:"), 0, row, 1, 1);
-		gridPane.add(fnode.getBeachSpinner(), 1, row, 1, 1);
-		gridPane.add(new Label("X"), 2, row, 1, 1);
-		gridPane.add(vboxBeachFee, 3, row, 1, 1);
-		gridPane.add(vboxBeach, 4, row, 1, 1);
-		/// Row 3
-		row++;
-		gridPane.add(new Label("Kayak Rack:"), 0, row, 1, 1);
-		gridPane.add(fnode.getKayakRackSpinner(), 1, row, 1, 1);
-		gridPane.add(new Label("X"), 2, row, 1, 1);
-		gridPane.add(vboxKayakFee, 3, row, 1, 1);
-		gridPane.add(vboxKayak, 4, row, 1, 1);
-		/// Row 5
-		row++;
-		gridPane.add(new Label("Kayak Shed:"), 0, row, 1, 1);
-		gridPane.add(fnode.getKayakShedSpinner(), 1, row, 1, 1);
-		gridPane.add(new Label("X"), 2, row, 1, 1);
-		gridPane.add(vboxKayakShedFee, 3, row, 1, 1);
-		gridPane.add(vboxKayakShed, 4, row, 1, 1);
-		/// Row 6
-		row++;
-		gridPane.add(new Label("Sail Loft:"), 0, row, 1, 1);
-		gridPane.add(fnode.getSailLoftSpinner(), 1, row, 1, 1);
-		gridPane.add(new Label("X"), 2, row, 1, 1);
-		gridPane.add(vboxSailLoftFee, 3, row, 1, 1);
-		gridPane.add(vboxSailLoft, 4, row, 1, 1);
-		/// Row 7
-		row++;
-		gridPane.add(new Label("Sail School Loft:"), 0, row, 1, 1);
-		gridPane.add(fnode.getSailSchoolLoftSpinner(), 1, row, 1, 1);
-		gridPane.add(new Label("X"), 2, row, 1, 1);
-		gridPane.add(vboxSailSchoolLoftFee, 3, row, 1, 1);
-		gridPane.add(vboxSailSchoolLoft, 4, row, 1, 1);
-		/// Row 8
-		row++;
-		gridPane.add(new Label("Wet Slip:"), 0, row, 1, 1);
-		gridPane.add(fnode.getWetSlipSpinner(), 1, row, 1, 1);
-		gridPane.add(new Label("X"), 2, row, 1, 1);
-		gridPane.add(vboxWetSlipFee, 3, row, 1, 1);
-		gridPane.add(vboxWetSlip, 4, row, 1, 1);
-		/// Row 9
-		row++;
-		gridPane.add(new Label("Winter Storage:"), 0, row, 1, 1);
-		gridPane.add(fnode.getWinterStorageSpinner(), 1, row, 1, 1);
-		gridPane.add(new Label("X"), 2, row, 1, 1);
-		gridPane.add(vboxWinterStorageFee, 3, row, 1, 1);
-		gridPane.add(vboxWinterStorage, 4, row, 1, 1);
-		/// Row 10
-		row++;
-		gridPane.add(new Label("Gate Key:"), 0, row, 1, 1);
-		gridPane.add(fnode.getGateKeySpinner(), 1, row, 1, 1);
-		gridPane.add(new Label("X"), 2, row, 1, 1);
-		gridPane.add(vboxGateKeyFee, 3, row, 1, 1);
-		gridPane.add(vboxGateKey, 4, row, 1, 1);
-		/// Row 11
-		row++;
-		gridPane.add(new Label("Sail Loft Key:"), 0, row, 1, 1);
-		gridPane.add(fnode.getSailLKeySpinner(), 1, row, 1, 1);
-		gridPane.add(new Label("X"), 2, row, 1, 1);
-		gridPane.add(vboxSailLoftKeyFee, 3, row, 1, 1);
-		gridPane.add(vboxSailLoftKey, 4, row, 1, 1);
-		/// Row 12
-		row++;
-		gridPane.add(new Label("Kayak Shed Key:"), 0, row, 1, 1);
-		gridPane.add(fnode.getKayakSKeySpinner(), 1, row, 1, 1);
-		gridPane.add(new Label("X"), 2, row, 1, 1);
-		gridPane.add(vboxKayakShedKeyFee, 3, row, 1, 1);
-		gridPane.add(vboxKayakShedKey, 4, row, 1, 1);
-		/// Row 10
-		row++;
-		gridPane.add(new Label("Sail School Loft Key:"), 0, row, 1, 1);
-		gridPane.add(fnode.getSailSSLKeySpinner(), 1, row, 1, 1);
-		gridPane.add(new Label("X"), 2, row, 1, 1);
-		gridPane.add(vboxSailSchoolLoftKeyFee, 3, row, 1, 1);
-		gridPane.add(vboxSailSchoolLoftKey, 4, row, 1, 1);
-		/// Row 13
-		row++;
-		gridPane.add(new Label("YSP Donation:"), 0, row, 1, 1);
-		gridPane.add(fnode.getYscTextField(), 1, row, 1, 1);
-		gridPane.add(new Label(""), 2, row, 1, 1);
-		gridPane.add(new Label(""), 3, row, 1, 1);
-		gridPane.add(vboxYSC, 4, row, 1, 1);
-		/// Row 14
-		row++;
-		gridPane.add(new Label("Initiation:"), 0, row, 1, 1);
-		gridPane.add(fnode.getInitiationTextField(), 1, row, 1, 1);
-		gridPane.add(new Label(""), 2, row, 1, 1);
-		gridPane.add(new Label(""), 3, row, 1, 1);
-		gridPane.add(vboxInitiation, 4, row, 1, 1);
-		/// Row 15
-		row++;
-		gridPane.add(new Label("Other Fee:"), 0, row, 1, 1);
-		gridPane.add(fnode.getOtherTextField(), 1, row, 1, 1);
-		gridPane.add(new Label(""), 2, row, 1, 1);
-		gridPane.add(new Label(""), 3, row, 1, 1);
-		gridPane.add(vboxOther, 4, row, 1, 1);
-		/// Row 16
-		row++;
-		gridPane.add(new Label("Work Credits:"), 0, row, 1, 1);
-		gridPane.add(fnode.getWorkCreditSpinner(), 1, row, 1, 1);
-		gridPane.add(new Label("X"), 2, row, 1, 1);
-		gridPane.add(vboxWorkCreditsFee, 3, row, 1, 1);
-		gridPane.add(vboxWorkCredits, 4, row, 1, 1);
-		row++;
-		gridPane.add(new Label("Other Credit:"), 0, row, 1, 1);
-		gridPane.add(fnode.getOtherCreditTextField(), 1, row, 1, 1);
-		gridPane.add(new Label(""), 2, row, 1, 1);
-		gridPane.add(new Label(""), 3, row, 1, 1);
-		gridPane.add(vboxOtherCredit, 4, row, 1, 1);
-		// Spacer
-		row++;
-		Region spacer = new Region();
-		spacer.setPrefHeight(25);
-		gridPane.add(new Label("Position Credit:"), 0, row, 1, 1);
-		gridPane.add(spacer, 1, row, 1, 1);
-		gridPane.add(new Label(""), 2, row, 1, 1);
-		gridPane.add(new Label(""), 3, row, 1, 1);
-		gridPane.add(vboxPositionCredit, 4, row, 1, 1);
-		row++;
-		gridPane.add(new Label(""), 0, row, 5, 1);
-		// Table
-		row++;
-		gridPane.add(vboxPink, 0, row, 4, 1);
-		gridPane.add(vboxButtons, 4, row, 1, 1);
-		// spacer
-		row++;
-		gridPane.add(new Label(""), 0, row, 5, 1);
-		// final portion
-		row++;
-		gridPane.add(new Label("Total Fees:"), 0, row, 1, 1);
-		gridPane.add(fnode.getTotalFeesText(), 1, row, 3, 1);
-		gridPane.add(vboxCommitButton, 4, row, 1, 4);
-		row++;
-		gridPane.add(new Label("Total Credit:"), 0, row, 3, 1);
-		gridPane.add(fnode.getTotalCreditText(), 1, row, 3, 1);
-		row++;
-		gridPane.add(new Label("Payment:"), 0, row, 3, 1);
-		gridPane.add(fnode.getTotalPaymentText(), 1, row, 3, 1);
-		row++;
-		gridPane.add(new Label("Balance:"), 0, row, 3, 1);
-		gridPane.add(fnode.getTotalBalanceText(), 1, row, 3, 1);
-		row++;
-		gridPane.add(new Label(""), 0, row, 5, 1);
-		// final portion
-//		gridPane.setGridLinesVisible(true);
-
-
-
-		vboxCommitButton.getChildren().addAll(renewCheckBox,commitButton);
-		vboxPink.getChildren().add(paymentTableView);
-		vboxButtons.getChildren().addAll(buttonAdd, buttonDelete);
 		paymentTableView.getColumns().addAll(Arrays.asList(col1,col2,col3,col4));
-		scrollPane.setContent(gridPane);
+		scrollPane.setContent(fnode.getGridPane());
 		mainVbox.getChildren().addAll(scrollPane);  // add error HBox in first
 		vboxGrey.getChildren().addAll(mainVbox);
 		getChildren().addAll(vboxGrey);
 	}
-
-
-
 
 	//////////////////////  CLASS METHODS ///////////////////////////
 	private int getInitialWetSlipValue(String wet_slip) {
@@ -868,7 +505,6 @@ public class BoxInvoice extends HBox {
 		if(wetSlip.compareTo(BigDecimal.ZERO) == 0) startpoint = 0;
 		return startpoint;
 	}
-
 
 	private void getPayment() {
 		if(SqlExists.paymentExists(fiscals.get(rowIndex).getMoney_id())) {
@@ -919,53 +555,8 @@ public class BoxInvoice extends HBox {
 	}
 	
 	private void setEditable(boolean isEditable) {
-//		changeState(yscTextField,isEditable);
-//		changeState(duesTextField,isEditable);
-//		changeState(otherTextField,isEditable);
-//		changeState(initiationTextField,isEditable);
-////		changeState(slipTextField,isEditable,true);
-//		changeState(addWetSlip,isEditable);
-//		changeState(beachSpinner,isEditable);
-//		changeState(kayakRackSpinner,isEditable);
-//		changeState(kayakShedSpinner,isEditable);
-//		changeState(sailLoftSpinner,isEditable);
-//		changeState(sailSchoolLoftSpinner,isEditable);
-//		changeState(winterStorageSpinner,isEditable);
+		if(isEditable) fnode.populateUncommitted();
 		System.out.println("setting committed");
-	}
-	
-	private void changeState(Button button, boolean isEditable) {
-		button.setDisable(!isEditable);
-		if(isEditable) {
-			button.setStyle(null);
-			button.setOpacity(1);
-		} else {
-			button.setStyle(disabledColor);
-			button.setOpacity(0.5);
-		}
-	}
-	
-	
-	private void changeState(TextField textField, boolean isEditable) {
-		textField.setEditable(isEditable);
-		if(isEditable) {
-			textField.setStyle(null);
-			textField.setOpacity(1);
-		} else {
-			textField.setStyle(disabledColor);
-			textField.setOpacity(0.5);
-		}
-	}
-	
-	private void changeState(Spinner<Integer> spinner, boolean isEditable) {
-		spinner.setEditable(isEditable);
-		if(isEditable) {
-			spinner.setStyle(null);
-		    spinner.setDisable(false);
-		} else {
-			spinner.setDisable(true);
-			spinner.setStyle(disabledColor);
-		}
 	}
 	
 	private void updateBalance() {
@@ -1035,9 +626,7 @@ public class BoxInvoice extends HBox {
 	}
 
 	private boolean isNull(String testcase) {
-		boolean answer = false;
-		if(testcase == null) answer = true;
-		return answer;
+		return testcase == null;
 	}
 	
 	private Boolean membershipHasOfficer() {
