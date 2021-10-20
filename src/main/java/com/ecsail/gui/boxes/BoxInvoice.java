@@ -560,12 +560,17 @@ public class BoxInvoice extends HBox {
 	}
 	
 	private void updateBalance() {
+		  // writes total to money object, then displays on screen
 		  fiscals.get(rowIndex).setTotal(String.valueOf(updateTotalFeeField()));
-		  System.out.println(fiscals.get(rowIndex).toString());
 		  fnode.getTotalFeesText().setText(String.valueOf(fiscals.get(rowIndex).getTotal()));
-		  fnode.getTotalBalanceText().setText(String.valueOf(getBalance()));
-		  fnode.getTotalCreditText().setText(String.valueOf(countTotalCredit()));
+		  // writes credit to money object, then displays on screen
+		  fiscals.get(rowIndex).setCredit(String.valueOf(countTotalCredit()));
+		  fnode.getTotalCreditText().setText(fiscals.get(rowIndex).getCredit());
+		  // writes balance to money object, then displays on screen
 		  fiscals.get(rowIndex).setBalance(String.valueOf(getBalance()));
+		  fnode.getTotalBalanceText().setText(fiscals.get(rowIndex).getBalance());
+		  // prints money object to console and then updates to database
+		  System.out.println(fiscals.get(rowIndex).toString());
 		  SqlUpdate.updateMoney(fiscals.get(rowIndex));  // saves to database
 	}
 	
@@ -593,7 +598,9 @@ public class BoxInvoice extends HBox {
 		BigDecimal total = new BigDecimal(fiscals.get(rowIndex).getTotal());
 		BigDecimal paid = new BigDecimal(fiscals.get(rowIndex).getPaid());
 		BigDecimal credit = new BigDecimal(fiscals.get(rowIndex).getCredit());
-		return total.subtract(paid).subtract(credit);
+		BigDecimal balance = total.subtract(paid).subtract(credit);
+		System.out.println("total balance=" + balance);
+		return balance;
 	}
 
 	// counts work credit or position credit and adds it to other credit
@@ -605,7 +612,6 @@ public class BoxInvoice extends HBox {
 		} else {
 			credit = definedFees.getWork_credit().multiply(BigDecimal.valueOf(workCredits));
 		}
-
 		System.out.println("Work credit is " + credit);
 		return credit;
 	}
@@ -620,7 +626,6 @@ public class BoxInvoice extends HBox {
 			otherCredit = new BigDecimal(fiscals.get(rowIndex).getOther_credit());
 		}
 		BigDecimal totalCredit = normalCredit.add(otherCredit);
-		fiscals.get(rowIndex).setCredit(String.valueOf(totalCredit));
 		System.out.println("total credit=" + totalCredit);
 		return totalCredit;
 	}
