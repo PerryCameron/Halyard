@@ -63,6 +63,13 @@ public class BoxInvoice extends HBox {
 		///////////// ACTION ///////////////
 		getPayment();
 
+		/// this is to create compatability with older database versions, probably will set all other credit to 0.00 and then remove this
+		if(isNull(fiscals.get(rowIndex).getOther_credit())) {
+			BigDecimal otherCredit = new BigDecimal("0.00");
+			invoice.setOther_credit(String.valueOf(otherCredit));
+			updateBalance();
+		}
+
 		////////////// OBJECTS /////////////////////
 		ScrollPane scrollPane = new ScrollPane();
 
@@ -467,9 +474,7 @@ public class BoxInvoice extends HBox {
 		fnode.getYspText().setText(fiscals.get(rowIndex).getYsc_donation());
 		fnode.getInitiationText().setText(fiscals.get(rowIndex).getInitiation());
 		fnode.getOtherFeeText().setText(fiscals.get(rowIndex).getOther());
-
 		fnode.getWorkCreditsText().setText(String.valueOf(countWorkCredits()));
-
 		fnode.getOtherCreditText().setText(fiscals.get(rowIndex).getOther_credit());
 		fnode.getTotalBalanceText().setText(fiscals.get(rowIndex).getCredit());
 		fnode.getTotalCreditText().setText(fiscals.get(rowIndex).getCredit());
@@ -482,7 +487,6 @@ public class BoxInvoice extends HBox {
 		fnode.getSailSchoolLoftText().setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getSail_school_laser_loft()).multiply(definedFees.getSail_school_laser_loft())));
 		fnode.getWetSlipText().setText(fiscals.get(rowIndex).getWet_slip());
 		fnode.getWinterStorageText().setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getWinter_storage()).multiply(definedFees.getWinter_storage())));
-
 		fnode.getGateKeyText().setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getExtra_key()).multiply(definedFees.getMain_gate_key())));
 		fnode.getSailLKeyText().setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getSail_loft_key()).multiply(definedFees.getSail_loft_key())));
 		fnode.getKayakSKeyText().setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getKayac_shed_key()).multiply(definedFees.getKayak_shed_key())));
@@ -632,11 +636,7 @@ public class BoxInvoice extends HBox {
 		BigDecimal normalCredit = countCredit();
 		// this if then is to fix older records with a different format
 		BigDecimal otherCredit;
-		if(isNull(fiscals.get(rowIndex).getOther_credit())) {
-			otherCredit = new BigDecimal("0.00");
-		} else {
-			otherCredit = new BigDecimal(fiscals.get(rowIndex).getOther_credit());
-		}
+		otherCredit = new BigDecimal(fiscals.get(rowIndex).getOther_credit());
 		BigDecimal totalCredit = normalCredit.add(otherCredit);
 		System.out.println("total credit=" + totalCredit);
 		return totalCredit;
