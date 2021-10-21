@@ -1,7 +1,9 @@
 package com.ecsail.structures;
 
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
@@ -9,6 +11,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 public class Object_InvoiceNodes {
+    private Object_Money invoice;
     private GridPane gridPane;
     private TextField yscTextField;
     private TextField duesTextField;
@@ -88,8 +91,12 @@ public class Object_InvoiceNodes {
     private VBox vboxKayakShedKeyFee;
     private VBox vboxSailSchoolLoftKeyFee;
     private VBox vboxWorkCreditsFee;
+
     private VBox vboxTitlePrice;
     private VBox vboxTitleTotal;
+    private final VBox vboxTitleFee;
+    private VBox vboxTitleQty;
+
     private VBox vboxButtons;
     private VBox vboxPink; // this creates a pink border around the table
     private VBox vboxCommitButton;
@@ -99,10 +106,14 @@ public class Object_InvoiceNodes {
     private CheckBox renewCheckBox;
 
     private Object_DefinedFee definedFees;
+    Separator separator = new Separator(Orientation.HORIZONTAL);
 
-
-    public Object_InvoiceNodes(TextField duesTextField, Object_DefinedFee definedFees, TableView paymentTableView) {
-
+    public Object_InvoiceNodes(Object_Money invoice, Object_DefinedFee definedFees, TableView<Object_Payment> paymentTableView) {
+        Text text1 = new Text("Fee");
+        Text text2 = new Text("Price");
+        Text text3 = new Text("Total");
+        Text text4 = new Text("Qty");
+        this.invoice = invoice;
         this.buttonAdd = new Button("Add");
         this.buttonDelete = new Button("Delete");
         this.commitButton = new Button("Commit");
@@ -188,10 +199,12 @@ public class Object_InvoiceNodes {
         this.vboxWorkCreditsFee = new VBox();
         this.vboxTitlePrice = new VBox();
         this.vboxTitleTotal = new VBox();
+        this.vboxTitleFee = new VBox();
+        this.vboxTitleQty = new VBox();
         this.vboxButtons = new VBox();
         this.vboxPink = new VBox(); // this creates a pink border around the table
         this.vboxCommitButton = new VBox();
-
+        Font font = Font.font("Verdana", FontWeight.BOLD, 16);
         // ATTRIBUTES
 
         vboxPink.setPadding(new Insets(2,2,2,2)); // spacing to make pink frame around table
@@ -201,8 +214,13 @@ public class Object_InvoiceNodes {
         vboxCommitButton.setSpacing(10);
 
         HBox.setHgrow(gridPane,Priority.ALWAYS);
-        gridPane.setHgap(25);
+
         gridPane.setVgap(5);
+
+        text1.setFont(font);
+        text2.setFont(font);
+        text3.setFont(font);
+        text4.setFont(font);
 
         this.yscTextField.setPrefWidth(65);
         this.otherTextField.setPrefWidth(65);
@@ -294,6 +312,10 @@ public class Object_InvoiceNodes {
         vboxCommitButton.getChildren().addAll(renewCheckBox,commitButton);
         vboxPink.getChildren().add(paymentTableView);
         vboxButtons.getChildren().addAll(buttonAdd, buttonDelete);
+        vboxTitleFee.getChildren().add(text1);
+        vboxTitlePrice.getChildren().add(text2);
+        vboxTitleTotal.getChildren().add(text3);
+        vboxTitleQty.getChildren().add(text4);
     }
 
     public GridPane getGridPane() {
@@ -952,19 +974,75 @@ public class Object_InvoiceNodes {
         this.totalBalanceText = totalBalanceText;
     }
 
+    public void clearGridPane() {
+        gridPane.getChildren().clear();
+    }
 
+
+    public static <T, E, F> int addCommittedRow(int row, GridPane gridPane, T name, E quantity, F total ) {
+        gridPane.add((Node) name, 0, row, 1, 1);
+        gridPane.add((Node) quantity, 1, row, 1, 1);
+        gridPane.add((Node) total, 2, row, 1, 1);
+        row++;
+        return row;
+    }
+
+    public void populateCommitted() {
+        int row = 0;
+        gridPane.setHgap(100);
+        row = addCommittedRow(row,gridPane,vboxTitleFee, vboxTitleQty, vboxTitleTotal);
+        if(!invoice.getDues().equals("0.00"))
+            row = addCommittedRow(row,gridPane,new Label("Dues:"), new Text(""), vboxDues);
+        if(invoice.getBeach() != 0)
+            row = addCommittedRow(row,gridPane,new Label("Beach Spot:"), new Text(String.valueOf(invoice.getBeach())), vboxBeach);
+        if(invoice.getKayac_rack() != 0)
+            row = addCommittedRow(row,gridPane,new Label("Kayak Rack:"), new Text(String.valueOf(invoice.getKayac_rack())), vboxKayak);
+        if(invoice.getKayac_shed() != 0)
+            row = addCommittedRow(row,gridPane,new Label("Kayak Shed:"), new Text(String.valueOf(invoice.getKayac_shed())), vboxKayakShed);
+        if(invoice.getSail_loft() != 0)
+            row = addCommittedRow(row,gridPane,new Label("Sail Loft:"), new Text(String.valueOf(invoice.getSail_loft())), vboxSailLoft);
+        if(invoice.getSail_school_laser_loft() != 0)
+            row = addCommittedRow(row,gridPane,new Label("Sail School Loft:"), new Text(String.valueOf(invoice.getSail_school_laser_loft())), vboxSailSchoolLoft);
+        if(!invoice.getWet_slip().equals("0.00"))
+            row = addCommittedRow(row,gridPane,new Label("Wet Slip:"), new Text("1"), vboxWetSlip);
+        if(invoice.getWinter_storage() != 0)
+            row = addCommittedRow(row,gridPane,new Label("Winter Storage:"), new Text(String.valueOf(invoice.getWinter_storage())), vboxWinterStorage);
+        if(invoice.getExtra_key() != 0)
+            row = addCommittedRow(row,gridPane,new Label("Gate Key:"), new Text(String.valueOf(invoice.getExtra_key())), vboxGateKey);
+        if(invoice.getSail_loft_key() != 0)
+            row = addCommittedRow(row,gridPane,new Label("Sail Loft Key:"), new Text(String.valueOf(invoice.getSail_loft_key())), vboxSailLoftKey);
+        if(invoice.getKayac_shed_key() != 0)
+            row = addCommittedRow(row,gridPane,new Label("Kayak Shed Key:"), new Text(String.valueOf(invoice.getKayac_shed_key())), vboxKayakShedKey);
+        if(invoice.getSail_loft_key() != 0)
+            row = addCommittedRow(row,gridPane,new Label("Sail School Loft Key:"), new Text(String.valueOf(invoice.getSail_school_loft_key())), vboxSailSchoolLoftKey);
+        if(!invoice.getYsc_donation().equals("0.00"))
+            row = addCommittedRow(row,gridPane,new Label("YSP Donation:"), new Text(""), vboxYSC);
+        if(!invoice.getInitiation().equals("0.00"))
+            row = addCommittedRow(row,gridPane,new Label("Initiation:"), new Text(""), vboxInitiation);
+        if(!invoice.getOther().equals("0.00"))
+            row = addCommittedRow(row,gridPane,new Label("Other Fee:"), new Text(""), vboxOther);
+        if(invoice.getWork_credit() != 0)
+            row = addCommittedRow(row,gridPane,new Label("Work Credits:"), new Text(String.valueOf(invoice.getWork_credit())), vboxWorkCredits);
+        if(!invoice.getOther_credit().equals("0.00"))
+            row = addCommittedRow(row,gridPane,new Label("Other Credit:"), new Text(""), vboxOtherCredit);
+        if(!invoice.getOfficer_credit().equals("0.00"))
+            row = addCommittedRow(row,gridPane,new Label("Position Credit:"), new Text(""), vboxPositionCredit);
+        row++;
+        gridPane.add(separator, 0, row, 3, 1);
+        row++;
+            row = addCommittedRow(row,gridPane,new Label("Total Fees:"), new Text(""), totalFeesText);
+            row = addCommittedRow(row,gridPane,new Label("Total Credit:"), new Text(""), totalCreditText);
+            row = addCommittedRow(row,gridPane,new Label("Payment:"), new Text(""), totalPaymentText);
+            row = addCommittedRow(row,gridPane,new Label("Balance:"), new Text(""), totalBalanceText);
+        row++;
+        gridPane.add(vboxCommitButton , 0, row, 1, 1);
+    }
 
     public void populateUncommitted() {
-        Font font = Font.font("Verdana", FontWeight.BOLD, 16);
-        Text text1 = new Text("Fee");
-        Text text2 = new Text("Price");
-        Text text3 = new Text("Total");
-        text1.setFont(font);
-        text2.setFont(font);
-        text3.setFont(font);
         int row = 0;
+        gridPane.setHgap(25);
 //		/// header
-        gridPane.add(text1 , 0, row, 1, 1);
+        gridPane.add(vboxTitleFee , 0, row, 1, 1);
         gridPane.add(new Text(""), 1, row, 1, 1);
         gridPane.add(new Text(""), 2, row, 1, 1);
         gridPane.add(vboxTitlePrice, 3, row, 1, 1);
@@ -1123,9 +1201,6 @@ public class Object_InvoiceNodes {
         gridPane.add(totalBalanceText, 1, row, 3, 1);
         row++;
         gridPane.add(new Label(""), 0, row, 5, 1);
-
-        vboxTitlePrice.getChildren().add(text2);
-        vboxTitleTotal.getChildren().add(text3);
     }
 
 

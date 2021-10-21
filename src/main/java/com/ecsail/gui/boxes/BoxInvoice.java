@@ -33,7 +33,7 @@ import java.util.function.Function;
 public class BoxInvoice extends HBox {
 	private final ObservableList<Object_Money> fiscals;
 	private ObservableList<Object_Payment> payments;
-
+	private Object_Money invoice;
 	private final Object_InvoiceNodes fnode;
 	Object_Membership membership;
 	Object_DefinedFee definedFees;
@@ -53,9 +53,11 @@ public class BoxInvoice extends HBox {
 		this.rowIndex = r;
 		this.fiscals = o;
 		this.definedFees = SqlSelect.selectDefinedFees(fiscals.get(rowIndex).getFiscal_year());
-		this.fnode = new Object_InvoiceNodes(dt, definedFees, paymentTableView);
+		this.invoice = fiscals.get(rowIndex);
+		this.fnode = new Object_InvoiceNodes(invoice, definedFees, paymentTableView);
 		this.selectedWorkCreditYear = SqlSelect.getWorkCredit(fiscals.get(rowIndex).getMoney_id());
 		this.hasOfficer = membershipHasOfficer();
+
 		this.isCommitted = fiscals.get(rowIndex).isCommitted();
 
 		///////////// ACTION ///////////////
@@ -455,7 +457,7 @@ public class BoxInvoice extends HBox {
 		}
 		updateBalance(); // updates and saves
 		//////////////// SETTING CONTENT //////////////
-
+		fnode.getDuesText().setText(String.valueOf(fiscals.get(rowIndex).getDues()));
 		fnode.getDuesTextField().setText(String.valueOf(fiscals.get(rowIndex).getDues()));
 		fnode.getYscTextField().setText(String.valueOf(fiscals.get(rowIndex).getYsc_donation()));
 		fnode.getOtherTextField().setText(String.valueOf(fiscals.get(rowIndex).getOther()));
@@ -465,9 +467,10 @@ public class BoxInvoice extends HBox {
 		fnode.getYspText().setText(fiscals.get(rowIndex).getYsc_donation());
 		fnode.getInitiationText().setText(fiscals.get(rowIndex).getInitiation());
 		fnode.getOtherFeeText().setText(fiscals.get(rowIndex).getOther());
-		fnode.getWorkCreditsText().setText(fiscals.get(rowIndex).getCredit());
+
+		fnode.getWorkCreditsText().setText(String.valueOf(countWorkCredits()));
+
 		fnode.getOtherCreditText().setText(fiscals.get(rowIndex).getOther_credit());
-		System.out.println("paid=" + fiscals.get(rowIndex).getPaid());
 		fnode.getTotalBalanceText().setText(fiscals.get(rowIndex).getCredit());
 		fnode.getTotalCreditText().setText(fiscals.get(rowIndex).getCredit());
 		fnode.getTotalPaymentText().setText(fiscals.get(rowIndex).getPaid());
@@ -555,7 +558,12 @@ public class BoxInvoice extends HBox {
 	}
 	
 	private void setEditable(boolean isEditable) {
-		if(isEditable) fnode.populateUncommitted();
+		fnode.clearGridPane();
+		if(isEditable)  {
+			fnode.populateUncommitted();
+		} else {
+			fnode.populateCommitted();
+		}
 		System.out.println("setting committed");
 	}
 	
@@ -604,20 +612,24 @@ public class BoxInvoice extends HBox {
 	}
 
 	// counts work credit or position credit and adds it to other credit
-	private BigDecimal countCredit(int workCredits) {
+	private BigDecimal countCredit() {
 		BigDecimal credit;
 		if(membershipHasOfficer()) {
 			credit = new BigDecimal(fiscals.get(rowIndex).getOfficer_credit());  // inserts credit for member type into fiscal
 			//System.out.println("Has an officer credit changed to=" + credit);
 		} else {
-			credit = definedFees.getWork_credit().multiply(BigDecimal.valueOf(workCredits));
+			credit = countWorkCredits();
 		}
-		System.out.println("Work credit is " + credit);
+		return credit;
+	}
+
+	private BigDecimal countWorkCredits() {
+		BigDecimal credit = definedFees.getWork_credit().multiply(BigDecimal.valueOf(fiscals.get(rowIndex).getWork_credit()));
 		return credit;
 	}
 
 	private BigDecimal countTotalCredit() {
-		BigDecimal normalCredit = countCredit(fiscals.get(rowIndex).getWork_credit());
+		BigDecimal normalCredit = countCredit();
 		// this if then is to fix older records with a different format
 		BigDecimal otherCredit;
 		if(isNull(fiscals.get(rowIndex).getOther_credit())) {
