@@ -333,7 +333,9 @@ public class SqlScriptMaker {
 				+ mon.isClosed() + ","
 				+ mon.getOther() + ","
 				+ mon.getInitiation() + ","
-				+ mon.isSupplemental()
+				+ mon.isSupplemental() + ","
+				+ mon.getWork_credit() + ","
+				+ mon.getOther_credit()
 				+ ");\n";
 	}
 	

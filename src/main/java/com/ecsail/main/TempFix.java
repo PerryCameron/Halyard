@@ -30,6 +30,7 @@ public class TempFix {
         for (Object_Money m : invoiceList) {
             SqlUpdate.updateMoney(m);
         }
+        System.out.println("finished converting database");
     }
 
     public Object_Money getMoneyObject(int money_id) {
