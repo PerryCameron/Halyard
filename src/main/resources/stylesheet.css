@@ -297,6 +297,12 @@
 .scroll-pane {
     -fx-background-color: transparent;
 }
+
+.separator *.line {
+    -fx-border-style: solid;
+    -fx-border-width: 0 0 2 0; /* its make really one-pixel-border */
+    -fx-border-color: black;
+}
 /*-fx-selection-bar-text@font-face {*/
 /*    font-family: 'fredoka';*/
 /*    src: url('FredokaOne-Regular.ttf');*/

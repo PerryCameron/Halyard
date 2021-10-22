@@ -34,7 +34,7 @@ public class BoxInvoice extends HBox {
 	private final ObservableList<Object_Money> fiscals;
 	private ObservableList<Object_Payment> payments;
 	private Object_Money invoice;
-	private final Object_InvoiceNodes fnode;
+	private final Object_Invoice fnode;
 	Object_Membership membership;
 	Object_DefinedFee definedFees;
 	Object_WorkCredit selectedWorkCreditYear;
@@ -54,11 +54,11 @@ public class BoxInvoice extends HBox {
 		this.fiscals = o;
 		this.definedFees = SqlSelect.selectDefinedFees(fiscals.get(rowIndex).getFiscal_year());
 		this.invoice = fiscals.get(rowIndex);
-		this.fnode = new Object_InvoiceNodes(invoice, definedFees, paymentTableView);
+		this.fnode = new Object_Invoice(invoice, definedFees, paymentTableView);
 		this.selectedWorkCreditYear = SqlSelect.getWorkCredit(fiscals.get(rowIndex).getMoney_id());
 		this.hasOfficer = membershipHasOfficer();
-
 		this.isCommitted = fiscals.get(rowIndex).isCommitted();
+
 
 		///////////// ACTION ///////////////
 		getPayment();
@@ -415,10 +415,9 @@ public class BoxInvoice extends HBox {
 			if (!fiscals.get(rowIndex).isCommitted()) {
 				if (!fnode.getTotalBalanceText().getText().equals("0.00"))
 					fnode.getTotalBalanceText().setStyle("-fx-background-color: #f23a50");
-				System.out.println("total at commit is " + fiscals.get(rowIndex).getTotal());
-				SqlUpdate.updateMoney(fiscals.get(rowIndex));
+//				SqlUpdate.updateMoney(fiscals.get(rowIndex));
 				SqlUpdate.commitFiscalRecord(fiscals.get(rowIndex).getMoney_id(), true);// this could be placed in line above
-				String date = SqlSelect.getPaymentDate(fiscals.get(rowIndex).getMoney_id()); // dates note to check
+//				String date = SqlSelect.getPaymentDate(fiscals.get(rowIndex).getMoney_id()); // dates note to check
 				// update membership_id record to renew or non-renew
 				SqlUpdate.updateMembershipId(fiscals.get(rowIndex).getMs_id(), fiscals.get(rowIndex).getFiscal_year(), fnode.getRenewCheckBox().isSelected());
 				fiscals.get(rowIndex).setCommitted(true);
@@ -565,8 +564,14 @@ public class BoxInvoice extends HBox {
 		fnode.clearGridPane();
 		if(isEditable)  {
 			fnode.populateUncommitted();
+			fnode.getCommitButton().setText("Commit");
+			fnode.getVboxCommitButton().getChildren().clear();
+			fnode.getVboxCommitButton().getChildren().addAll(fnode.getRenewCheckBox(),fnode.getCommitButton());
 		} else {
 			fnode.populateCommitted();
+			fnode.getCommitButton().setText("Edit");
+			fnode.getVboxCommitButton().getChildren().clear();
+			fnode.getVboxCommitButton().getChildren().add(fnode.getCommitButton());
 		}
 		System.out.println("setting committed");
 	}

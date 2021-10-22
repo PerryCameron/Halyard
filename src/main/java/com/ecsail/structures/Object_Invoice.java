@@ -10,8 +10,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
-public class Object_InvoiceNodes {
-    private Object_Money invoice;
+public class Object_Invoice {
+    private final Object_Money invoice;
     private GridPane gridPane;
     private TextField yscTextField;
     private TextField duesTextField;
@@ -95,7 +95,12 @@ public class Object_InvoiceNodes {
     private VBox vboxTitlePrice;
     private VBox vboxTitleTotal;
     private final VBox vboxTitleFee;
-    private VBox vboxTitleQty;
+    private final VBox vboxTitleQty;
+
+    private VBox vboxTotalFee;
+    private VBox vboxTotalCredit;
+    private VBox vboxTotalPayment;
+    private VBox vboxTotalBalance;
 
     private VBox vboxButtons;
     private VBox vboxPink; // this creates a pink border around the table
@@ -108,7 +113,7 @@ public class Object_InvoiceNodes {
     private Object_DefinedFee definedFees;
     Separator separator = new Separator(Orientation.HORIZONTAL);
 
-    public Object_InvoiceNodes(Object_Money invoice, Object_DefinedFee definedFees, TableView<Object_Payment> paymentTableView) {
+    public Object_Invoice(Object_Money invoice, Object_DefinedFee definedFees, TableView<Object_Payment> paymentTableView) {
         Text text1 = new Text("Fee");
         Text text2 = new Text("Price");
         Text text3 = new Text("Total");
@@ -201,6 +206,10 @@ public class Object_InvoiceNodes {
         this.vboxTitleTotal = new VBox();
         this.vboxTitleFee = new VBox();
         this.vboxTitleQty = new VBox();
+        this.vboxTotalFee = new VBox();
+        this.vboxTotalCredit = new VBox();
+        this.vboxTotalPayment = new VBox();
+        this.vboxTotalBalance = new VBox();
         this.vboxButtons = new VBox();
         this.vboxPink = new VBox(); // this creates a pink border around the table
         this.vboxCommitButton = new VBox();
@@ -309,6 +318,17 @@ public class Object_InvoiceNodes {
         vboxTitleTotal.setAlignment(Pos.CENTER_RIGHT);
         vboxWetSlipFee.getChildren().add(wetslipTextFee);
         vboxWetSlipFee.setAlignment(Pos.CENTER_RIGHT);
+
+        vboxTotalFee.getChildren().add(totalFeesText);
+        vboxTotalCredit.getChildren().add(totalCreditText);
+        vboxTotalPayment.getChildren().add(totalPaymentText);
+        vboxTotalBalance.getChildren().add(totalBalanceText);
+
+        vboxTotalFee.setAlignment(Pos.CENTER_RIGHT);
+        vboxTotalCredit.setAlignment(Pos.CENTER_RIGHT);
+        vboxTotalPayment.setAlignment(Pos.CENTER_RIGHT);
+        vboxTotalBalance.setAlignment(Pos.CENTER_RIGHT);
+
         vboxCommitButton.getChildren().addAll(renewCheckBox,commitButton);
         vboxPink.getChildren().add(paymentTableView);
         vboxButtons.getChildren().addAll(buttonAdd, buttonDelete);
@@ -316,6 +336,50 @@ public class Object_InvoiceNodes {
         vboxTitlePrice.getChildren().add(text2);
         vboxTitleTotal.getChildren().add(text3);
         vboxTitleQty.getChildren().add(text4);
+    }
+
+    public Object_Money getInvoice() {
+        return invoice;
+    }
+
+    public VBox getVboxTitleFee() {
+        return vboxTitleFee;
+    }
+
+    public VBox getVboxTitleQty() {
+        return vboxTitleQty;
+    }
+
+    public VBox getVboxTotalFee() {
+        return vboxTotalFee;
+    }
+
+    public void setVboxTotalFee(VBox vboxTotalFee) {
+        this.vboxTotalFee = vboxTotalFee;
+    }
+
+    public VBox getVboxTotalCredit() {
+        return vboxTotalCredit;
+    }
+
+    public void setVboxTotalCredit(VBox vboxTotalCredit) {
+        this.vboxTotalCredit = vboxTotalCredit;
+    }
+
+    public VBox getVboxTotalPayment() {
+        return vboxTotalPayment;
+    }
+
+    public void setVboxTotalPayment(VBox vboxTotalPayment) {
+        this.vboxTotalPayment = vboxTotalPayment;
+    }
+
+    public VBox getVboxTotalBalance() {
+        return vboxTotalBalance;
+    }
+
+    public void setVboxTotalBalance(VBox vboxTotalBalance) {
+        this.vboxTotalBalance = vboxTotalBalance;
     }
 
     public GridPane getGridPane() {
@@ -1030,152 +1094,50 @@ public class Object_InvoiceNodes {
         row++;
         gridPane.add(separator, 0, row, 3, 1);
         row++;
-            row = addCommittedRow(row,gridPane,new Label("Total Fees:"), new Text(""), totalFeesText);
-            row = addCommittedRow(row,gridPane,new Label("Total Credit:"), new Text(""), totalCreditText);
-            row = addCommittedRow(row,gridPane,new Label("Payment:"), new Text(""), totalPaymentText);
-            row = addCommittedRow(row,gridPane,new Label("Balance:"), new Text(""), totalBalanceText);
+            row = addCommittedRow(row,gridPane,new Label("Total Fees:"), new Text(""), vboxTotalFee);
+            row = addCommittedRow(row,gridPane,new Label("Total Credit:"), new Text(""), vboxTotalCredit);
+            row = addCommittedRow(row,gridPane,new Label("Payment:"), new Text(""), vboxTotalPayment);
+            row = addCommittedRow(row,gridPane,new Label("Balance:"), new Text(""), vboxTotalBalance);
         row++;
-        gridPane.add(vboxCommitButton , 0, row, 1, 1);
+        gridPane.add(new Text("Deposit Number: " + invoice.getBatch()) , 0, row, 1, 2);
+        gridPane.add(vboxCommitButton , 2, row, 1, 1);
+    }
+
+    public static <T, E, F, G, H> int addUnCommittedRow(int row, GridPane gridPane, T col1, E col2, F col3, G col4, H col5) {
+        gridPane.add((Node) col1, 0, row, 1, 1);
+        gridPane.add((Node) col2, 1, row, 1, 1);
+        gridPane.add((Node) col3, 2, row, 1, 1);
+        gridPane.add((Node) col4, 3, row, 1, 1);
+        gridPane.add((Node) col5, 4, row, 1, 1);
+        row++;
+        return row;
     }
 
     public void populateUncommitted() {
         int row = 0;
         gridPane.setHgap(25);
-//		/// header
-        gridPane.add(vboxTitleFee , 0, row, 1, 1);
-        gridPane.add(new Text(""), 1, row, 1, 1);
-        gridPane.add(new Text(""), 2, row, 1, 1);
-        gridPane.add(vboxTitlePrice, 3, row, 1, 1);
-        gridPane.add(vboxTitleTotal, 4, row, 1, 1);
-
-        /// Row 1
-        row++;
-        gridPane.add(new Label("Dues:"), 0, row, 1, 1);
-        gridPane.add(duesTextField, 1, row, 1, 1);
-        gridPane.add(new Label(""), 2, row, 1, 1);
-        gridPane.add(new Label(""), 3, row, 1, 1);
-        gridPane.add(vboxDues, 4, row, 1, 1);
-
-        /// Row 2
-        row++;
-        gridPane.add(new Label("Beach Spot:"), 0, row, 1, 1);
-        gridPane.add(beachSpinner, 1, row, 1, 1);
-        gridPane.add(new Label("X"), 2, row, 1, 1);
-        gridPane.add(vboxBeachFee, 3, row, 1, 1);
-        gridPane.add(vboxBeach, 4, row, 1, 1);
-        /// Row 3
-        row++;
-        gridPane.add(new Label("Kayak Rack:"), 0, row, 1, 1);
-        gridPane.add(kayakRackSpinner, 1, row, 1, 1);
-        gridPane.add(new Label("X"), 2, row, 1, 1);
-        gridPane.add(vboxKayakFee, 3, row, 1, 1);
-        gridPane.add(vboxKayak, 4, row, 1, 1);
-        /// Row 5
-        row++;
-        gridPane.add(new Label("Kayak Shed:"), 0, row, 1, 1);
-        gridPane.add(kayakShedSpinner, 1, row, 1, 1);
-        gridPane.add(new Label("X"), 2, row, 1, 1);
-        gridPane.add(vboxKayakShedFee, 3, row, 1, 1);
-        gridPane.add(vboxKayakShed, 4, row, 1, 1);
-        /// Row 6
-        row++;
-        gridPane.add(new Label("Sail Loft:"), 0, row, 1, 1);
-        gridPane.add(sailLoftSpinner, 1, row, 1, 1);
-        gridPane.add(new Label("X"), 2, row, 1, 1);
-        gridPane.add(vboxSailLoftFee, 3, row, 1, 1);
-        gridPane.add(vboxSailLoft, 4, row, 1, 1);
-        /// Row 7
-        row++;
-        gridPane.add(new Label("Sail School Loft:"), 0, row, 1, 1);
-        gridPane.add(sailSchoolLoftSpinner, 1, row, 1, 1);
-        gridPane.add(new Label("X"), 2, row, 1, 1);
-        gridPane.add(vboxSailSchoolLoftFee, 3, row, 1, 1);
-        gridPane.add(vboxSailSchoolLoft, 4, row, 1, 1);
-        /// Row 8
-        row++;
-        gridPane.add(new Label("Wet Slip:"), 0, row, 1, 1);
-        gridPane.add(wetSlipSpinner, 1, row, 1, 1);
-        gridPane.add(new Label("X"), 2, row, 1, 1);
-        gridPane.add(vboxWetSlipFee, 3, row, 1, 1);
-        gridPane.add(vboxWetSlip, 4, row, 1, 1);
-        /// Row 9
-        row++;
-        gridPane.add(new Label("Winter Storage:"), 0, row, 1, 1);
-        gridPane.add(winterStorageSpinner, 1, row, 1, 1);
-        gridPane.add(new Label("X"), 2, row, 1, 1);
-        gridPane.add(vboxWinterStorageFee, 3, row, 1, 1);
-        gridPane.add(vboxWinterStorage, 4, row, 1, 1);
-        /// Row 10
-        row++;
-        gridPane.add(new Label("Gate Key:"), 0, row, 1, 1);
-        gridPane.add(gateKeySpinner, 1, row, 1, 1);
-        gridPane.add(new Label("X"), 2, row, 1, 1);
-        gridPane.add(vboxGateKeyFee, 3, row, 1, 1);
-        gridPane.add(vboxGateKey, 4, row, 1, 1);
-        /// Row 11
-        row++;
-        gridPane.add(new Label("Sail Loft Key:"), 0, row, 1, 1);
-        gridPane.add(sailLKeySpinner, 1, row, 1, 1);
-        gridPane.add(new Label("X"), 2, row, 1, 1);
-        gridPane.add(vboxSailLoftKeyFee, 3, row, 1, 1);
-        gridPane.add(vboxSailLoftKey, 4, row, 1, 1);
-        /// Row 12
-        row++;
-        gridPane.add(new Label("Kayak Shed Key:"), 0, row, 1, 1);
-        gridPane.add(kayakSKeySpinner, 1, row, 1, 1);
-        gridPane.add(new Label("X"), 2, row, 1, 1);
-        gridPane.add(vboxKayakShedKeyFee, 3, row, 1, 1);
-        gridPane.add(vboxKayakShedKey, 4, row, 1, 1);
-        /// Row 10
-        row++;
-        gridPane.add(new Label("Sail School Loft Key:"), 0, row, 1, 1);
-        gridPane.add(sailSSLKeySpinner, 1, row, 1, 1);
-        gridPane.add(new Label("X"), 2, row, 1, 1);
-        gridPane.add(vboxSailSchoolLoftKeyFee, 3, row, 1, 1);
-        gridPane.add(vboxSailSchoolLoftKey, 4, row, 1, 1);
-        /// Row 13
-        row++;
-        gridPane.add(new Label("YSP Donation:"), 0, row, 1, 1);
-        gridPane.add(yscTextField, 1, row, 1, 1);
-        gridPane.add(new Label(""), 2, row, 1, 1);
-        gridPane.add(new Label(""), 3, row, 1, 1);
-        gridPane.add(vboxYSC, 4, row, 1, 1);
-        /// Row 14
-        row++;
-        gridPane.add(new Label("Initiation:"), 0, row, 1, 1);
-        gridPane.add(initiationTextField, 1, row, 1, 1);
-        gridPane.add(new Label(""), 2, row, 1, 1);
-        gridPane.add(new Label(""), 3, row, 1, 1);
-        gridPane.add(vboxInitiation, 4, row, 1, 1);
-        /// Row 15
-        row++;
-        gridPane.add(new Label("Other Fee:"), 0, row, 1, 1);
-        gridPane.add(otherTextField, 1, row, 1, 1);
-        gridPane.add(new Label(""), 2, row, 1, 1);
-        gridPane.add(new Label(""), 3, row, 1, 1);
-        gridPane.add(vboxOther, 4, row, 1, 1);
-        /// Row 16
-        row++;
-        gridPane.add(new Label("Work Credits:"), 0, row, 1, 1);
-        gridPane.add(workCreditSpinner, 1, row, 1, 1);
-        gridPane.add(new Label("X"), 2, row, 1, 1);
-        gridPane.add(vboxWorkCreditsFee, 3, row, 1, 1);
-        gridPane.add(vboxWorkCredits, 4, row, 1, 1);
-        row++;
-        gridPane.add(new Label("Other Credit:"), 0, row, 1, 1);
-        gridPane.add(otherCreditTextField, 1, row, 1, 1);
-        gridPane.add(new Label(""), 2, row, 1, 1);
-        gridPane.add(new Label(""), 3, row, 1, 1);
-        gridPane.add(vboxOtherCredit, 4, row, 1, 1);
-        // Spacer
-        row++;
         Region spacer = new Region();
         spacer.setPrefHeight(25);
-        gridPane.add(new Label("Position Credit:"), 0, row, 1, 1);
-        gridPane.add(spacer, 1, row, 1, 1);
-        gridPane.add(new Label(""), 2, row, 1, 1);
-        gridPane.add(new Label(""), 3, row, 1, 1);
-        gridPane.add(vboxPositionCredit, 4, row, 1, 1);
+        row = addUnCommittedRow(row, gridPane, vboxTitleFee, new Text(""), new Text(""), vboxTitlePrice, vboxTitleTotal);
+        row = addUnCommittedRow(row, gridPane, new Label("Dues:"), duesTextField, new Text(""), new Label(""), vboxDues);
+        row = addUnCommittedRow(row, gridPane, new Label("Beach Spot:"), beachSpinner, new Label("X"), vboxBeachFee, vboxBeach);
+        row = addUnCommittedRow(row, gridPane, new Label("Kayak Rack:"), kayakRackSpinner, new Label("X"), vboxKayakFee, vboxKayak);
+        row = addUnCommittedRow(row, gridPane, new Label("Kayak Shed:"), kayakShedSpinner, new Label("X"), vboxKayakShedFee, vboxKayakShed);
+        row = addUnCommittedRow(row, gridPane, new Label("Sail Loft:"), sailLoftSpinner,new Label("X"), vboxSailLoftFee, vboxSailLoft);
+        row = addUnCommittedRow(row, gridPane, new Label("Sail School Loft:"), sailSchoolLoftSpinner, new Label("X"), vboxSailSchoolLoftFee, vboxSailSchoolLoft);
+        row = addUnCommittedRow(row, gridPane, new Label("Wet Slip:"), wetSlipSpinner, new Label("X"), vboxWetSlipFee, vboxWetSlip);
+        row = addUnCommittedRow(row, gridPane, new Label("Winter Storage:"), winterStorageSpinner, new Label("X"), vboxWinterStorageFee, vboxWinterStorage);
+        row = addUnCommittedRow(row, gridPane, new Label("Gate Key:"), gateKeySpinner, new Label("X"), vboxGateKeyFee, vboxGateKey);
+        row = addUnCommittedRow(row, gridPane, new Label("Sail Loft Key:"), sailLKeySpinner, new Label("X"), vboxSailLoftKeyFee, vboxSailLoftKey);
+        row = addUnCommittedRow(row, gridPane, new Label("Kayak Shed Key:"), kayakSKeySpinner, new Label("X"), vboxKayakShedKeyFee, vboxKayakShedKey);
+        row = addUnCommittedRow(row, gridPane, new Label("Sail School Loft Key:"), sailSSLKeySpinner, new Label("X"), vboxSailSchoolLoftKeyFee, vboxSailSchoolLoftKey);
+        row = addUnCommittedRow(row, gridPane, new Label("YSP Donation:"), yscTextField, new Label(""), new Label(""), vboxYSC);
+        row = addUnCommittedRow(row, gridPane, new Label("Initiation:"), initiationTextField, new Label(""), new Label(""), vboxInitiation);
+        row = addUnCommittedRow(row, gridPane, new Label("Other Fee:"), otherTextField, new Label(""), new Label(""), vboxOther);
+        row = addUnCommittedRow(row, gridPane, new Label("Work Credits:"), workCreditSpinner, new Label("X"), vboxWorkCreditsFee, vboxWorkCredits);
+        row = addUnCommittedRow(row, gridPane, new Label("Other Credit:"), otherCreditTextField, new Label(""), new Label(""), vboxOtherCredit);
+        row = addUnCommittedRow(row, gridPane, new Label("Position Credit:"), spacer, new Label(""), new Label(""), vboxPositionCredit);
+
         row++;
         gridPane.add(new Label(""), 0, row, 5, 1);
         // Table
@@ -1188,20 +1150,18 @@ public class Object_InvoiceNodes {
         // final portion
         row++;
         gridPane.add(new Label("Total Fees:"), 0, row, 1, 1);
-        gridPane.add(totalFeesText, 1, row, 3, 1);
+        gridPane.add(vboxTotalFee, 1, row, 3, 1);
         gridPane.add(vboxCommitButton, 4, row, 1, 4);
         row++;
         gridPane.add(new Label("Total Credit:"), 0, row, 3, 1);
-        gridPane.add(totalCreditText, 1, row, 3, 1);
+        gridPane.add(vboxTotalCredit, 1, row, 3, 1);
         row++;
         gridPane.add(new Label("Payment:"), 0, row, 3, 1);
-        gridPane.add(totalPaymentText, 1, row, 3, 1);
+        gridPane.add(vboxTotalPayment, 1, row, 3, 1);
         row++;
         gridPane.add(new Label("Balance:"), 0, row, 3, 1);
-        gridPane.add(totalBalanceText, 1, row, 3, 1);
+        gridPane.add(vboxTotalBalance, 1, row, 3, 1);
         row++;
         gridPane.add(new Label(""), 0, row, 5, 1);
     }
-
-
 }
