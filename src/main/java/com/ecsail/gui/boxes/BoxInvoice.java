@@ -2,6 +2,7 @@ package com.ecsail.gui.boxes;
 
 import com.ecsail.enums.PaymentType;
 import com.ecsail.main.EditCell;
+import com.ecsail.main.HalyardPaths;
 import com.ecsail.main.Note;
 import com.ecsail.sql.*;
 import com.ecsail.structures.*;
@@ -71,6 +72,7 @@ public class BoxInvoice extends HBox {
 		}
 
 		////////////// OBJECTS /////////////////////
+
 		ScrollPane scrollPane = new ScrollPane();
 
 		VBox vboxGrey = new VBox();  // this is the vbox for organizing all the widgets
@@ -374,14 +376,23 @@ public class BoxInvoice extends HBox {
 			}
 		});
 
-		SpinnerValueFactory<Integer> workCreditValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 40, fiscals.get(rowIndex).getWork_credit());
-		fnode.getWorkCreditSpinner().setValueFactory(workCreditValueFactory);
-		fnode.getWorkCreditSpinner().valueProperty().addListener((observable, oldValue, newValue) -> {
+//		SpinnerValueFactory<Integer> workCreditValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 40, fiscals.get(rowIndex).getWork_credit());
+//		fnode.getWorkCreditSpinner().setValueFactory(workCreditValueFactory);
+//		fnode.getWorkCreditSpinner().valueProperty().addListener((observable, oldValue, newValue) -> {
+//			fiscals.get(rowIndex).setWork_credit(newValue);
+//			String workCredits = String.valueOf(definedFees.getWork_credit().multiply(BigDecimal.valueOf(newValue)));
+//			fnode.getWorkCreditsText().setText(workCredits);
+//			updateBalance();
+//		});
+
+		fnode.getComboBox().getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
 			fiscals.get(rowIndex).setWork_credit(newValue);
 			String workCredits = String.valueOf(definedFees.getWork_credit().multiply(BigDecimal.valueOf(newValue)));
 			fnode.getWorkCreditsText().setText(workCredits);
 			updateBalance();
 		});
+
+
 
 		fnode.getOtherCreditTextField().focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
 			//focus out

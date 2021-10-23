@@ -27,7 +27,7 @@ public class Object_Invoice {
     private Spinner<Integer> sailSchoolLoftSpinner;
     private Spinner<Integer> winterStorageSpinner;
     private Spinner<Integer> wetSlipSpinner;
-    private Spinner<Integer> workCreditSpinner;
+//    private Spinner<Integer> workCreditSpinner;
     private Spinner<Integer> gateKeySpinner;
     private Spinner<Integer> sailLKeySpinner;
     private Spinner<Integer> kayakSKeySpinner;
@@ -109,6 +109,7 @@ public class Object_Invoice {
     private Button buttonDelete;
     private Button commitButton;
     private CheckBox renewCheckBox;
+    private ComboBox<Integer> comboBox;
 
     private Object_DefinedFee definedFees;
     Separator separator = new Separator(Orientation.HORIZONTAL);
@@ -118,6 +119,7 @@ public class Object_Invoice {
         Text text2 = new Text("Price");
         Text text3 = new Text("Total");
         Text text4 = new Text("Qty");
+        this.comboBox = new ComboBox();
         this.invoice = invoice;
         this.buttonAdd = new Button("Add");
         this.buttonDelete = new Button("Delete");
@@ -139,7 +141,7 @@ public class Object_Invoice {
         this.sailSchoolLoftSpinner = new Spinner<>();
         this.winterStorageSpinner = new Spinner<>();
         this.wetSlipSpinner = new Spinner<>();
-        this.workCreditSpinner = new Spinner<>();
+//        this.workCreditSpinner = new Spinner<>();
         this.gateKeySpinner = new Spinner<>();
         this.sailLKeySpinner = new Spinner<>();
         this.kayakSKeySpinner = new Spinner<>();
@@ -213,6 +215,14 @@ public class Object_Invoice {
         this.vboxButtons = new VBox();
         this.vboxPink = new VBox(); // this creates a pink border around the table
         this.vboxCommitButton = new VBox();
+
+        // fill comboBox
+        for(int i = 0; i < 50; i++) {
+            comboBox.getItems().add(i);
+        }
+        comboBox.getSelectionModel().selectFirst();
+
+
         Font font = Font.font("Verdana", FontWeight.BOLD, 16);
         // ATTRIBUTES
 
@@ -244,7 +254,8 @@ public class Object_Invoice {
         this.winterStorageSpinner.setPrefWidth(65);
         this.wetSlipSpinner.setPrefWidth(65);
         this.kayakRackSpinner.setPrefWidth(65);
-        this.workCreditSpinner.setPrefWidth(65);
+        this.comboBox.setPrefWidth(65);
+//        this.workCreditSpinner.setPrefWidth(65);
         this.gateKeySpinner.setPrefWidth(65);
         this.sailLKeySpinner.setPrefWidth(65);
         this.sailSSLKeySpinner.setPrefWidth(65);
@@ -336,6 +347,14 @@ public class Object_Invoice {
         vboxTitlePrice.getChildren().add(text2);
         vboxTitleTotal.getChildren().add(text3);
         vboxTitleQty.getChildren().add(text4);
+    }
+
+    public ComboBox<Integer> getComboBox() {
+        return comboBox;
+    }
+
+    public void setComboBox(ComboBox<Integer> comboBox) {
+        this.comboBox = comboBox;
     }
 
     public Object_Money getInvoice() {
@@ -814,13 +833,13 @@ public class Object_Invoice {
         this.wetSlipSpinner = wetSlipSpinner;
     }
 
-    public Spinner<Integer> getWorkCreditSpinner() {
-        return workCreditSpinner;
-    }
-
-    public void setWorkCreditSpinner(Spinner<Integer> workCreditSpinner) {
-        this.workCreditSpinner = workCreditSpinner;
-    }
+//    public Spinner<Integer> getWorkCreditSpinner() {
+//        return workCreditSpinner;
+//    }
+//
+//    public void setWorkCreditSpinner(Spinner<Integer> workCreditSpinner) {
+//        this.workCreditSpinner = workCreditSpinner;
+//    }
 
     public Spinner<Integer> getGateKeySpinner() {
         return gateKeySpinner;
@@ -1134,7 +1153,7 @@ public class Object_Invoice {
         row = addUnCommittedRow(row, gridPane, new Label("YSP Donation:"), yscTextField, new Label(""), new Label(""), vboxYSC);
         row = addUnCommittedRow(row, gridPane, new Label("Initiation:"), initiationTextField, new Label(""), new Label(""), vboxInitiation);
         row = addUnCommittedRow(row, gridPane, new Label("Other Fee:"), otherTextField, new Label(""), new Label(""), vboxOther);
-        row = addUnCommittedRow(row, gridPane, new Label("Work Credits:"), workCreditSpinner, new Label("X"), vboxWorkCreditsFee, vboxWorkCredits);
+        row = addUnCommittedRow(row, gridPane, new Label("Work Credits:"), comboBox, new Label("X"), vboxWorkCreditsFee, vboxWorkCredits);
         row = addUnCommittedRow(row, gridPane, new Label("Other Credit:"), otherCreditTextField, new Label(""), new Label(""), vboxOtherCredit);
         row = addUnCommittedRow(row, gridPane, new Label("Position Credit:"), spacer, new Label(""), new Label(""), vboxPositionCredit);
 
