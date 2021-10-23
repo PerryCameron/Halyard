@@ -286,11 +286,11 @@ public class BoxInvoice extends HBox {
 				}
 				BigDecimal slip = new BigDecimal(fnode.getWetslipTextField().getText());
 				fnode.getWetSlipText().setText(String.valueOf(slip.multiply(BigDecimal.valueOf(fnode.getWetSlipSpinner().getValue()))));
-				updateItem(slip,"wetslip");
+//				updateItem(slip,"wetslip");
 				fnode.getWetslipTextField().setText(String.valueOf(slip.setScale(2, RoundingMode.HALF_UP)));
 				fnode.getWetslipTextFee().setText(String.valueOf(slip.setScale(2, RoundingMode.HALF_UP)));
 				updateBalance();
-				fnode.getVboxWetSlip().getChildren().clear();
+				fnode.getVboxWetSlipFee().getChildren().clear();
 				fnode.getVboxWetSlipFee().getChildren().add(fnode.getWetslipTextFee());
 			}
 		});
@@ -375,15 +375,6 @@ public class BoxInvoice extends HBox {
 				updateBalance();
 			}
 		});
-
-//		SpinnerValueFactory<Integer> workCreditValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 40, fiscals.get(rowIndex).getWork_credit());
-//		fnode.getWorkCreditSpinner().setValueFactory(workCreditValueFactory);
-//		fnode.getWorkCreditSpinner().valueProperty().addListener((observable, oldValue, newValue) -> {
-//			fiscals.get(rowIndex).setWork_credit(newValue);
-//			String workCredits = String.valueOf(definedFees.getWork_credit().multiply(BigDecimal.valueOf(newValue)));
-//			fnode.getWorkCreditsText().setText(workCredits);
-//			updateBalance();
-//		});
 
 		fnode.getComboBox().getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
 			fiscals.get(rowIndex).setWork_credit(newValue);
