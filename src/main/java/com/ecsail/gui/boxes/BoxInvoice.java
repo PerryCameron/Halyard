@@ -289,6 +289,8 @@ public class BoxInvoice extends HBox {
 //				updateItem(slip,"wetslip");
 				fnode.getWetslipTextField().setText(String.valueOf(slip.setScale(2, RoundingMode.HALF_UP)));
 				fnode.getWetslipTextFee().setText(String.valueOf(slip.setScale(2, RoundingMode.HALF_UP)));
+				String wetSlip = String.valueOf(new BigDecimal(fnode.getWetslipTextFee().getText()).multiply(BigDecimal.valueOf(fnode.getWetSlipSpinner().getValue())));
+				invoice.setWet_slip(wetSlip);
 				updateBalance();
 				fnode.getVboxWetSlipFee().getChildren().clear();
 				fnode.getVboxWetSlipFee().getChildren().add(fnode.getWetslipTextFee());
