@@ -10,12 +10,7 @@ import com.ecsail.main.BoxConsole;
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.Main;
 import com.ecsail.main.HalyardPaths;
-import com.ecsail.structures.Object_MembershipId;
-import com.ecsail.structures.Object_MembershipList;
-import com.ecsail.structures.Object_Money;
-import com.ecsail.structures.Object_Person;
-import com.ecsail.structures.Object_Stats;
-import com.ecsail.structures.Object_WorkCredit;
+import com.ecsail.structures.*;
 import com.ecsail.gui.dialogues.*;
 
 import javafx.collections.ObservableList;
@@ -604,7 +599,38 @@ public class SqlUpdate {
 			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
-		
+	}
+
+	public static void updateDefinedFeeRecord(Object_DefinedFee d) {
+		String query = null;
+		try {
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
+			query = "UPDATE defined_fee SET " +
+					"DUES_REGULAR=" + d.getDues_regular() + "," +
+					"DUES_FAMILY=" + d.getDues_family() + "," +
+					"DUES_LAKE_ASSOCIATE=" + d.getDues_lake_associate() + "," +
+					"DUES_SOCIAL=" + d.getDues_social() + "," +
+					"INITIATION=" + d.getInitiation() + "," +
+					"WET_SLIP=" + d.getWet_slip() + "," +
+					"BEACH=" + d.getBeach() + "," +
+					"WINTER_STORAGE=" + d.getWinter_storage() + "," +
+					"MAIN_GATE_KEY=" + d.getMain_gate_key() + "," +
+					"SAIL_LOFT=" + d.getSail_loft() + "," +
+					"SAIL_LOFT_KEY=" + d.getSail_loft_key() + "," +
+					"SAIL_SCHOOL_LASER_LOFT=" + d.getSail_school_laser_loft() + "," +
+					"SAIL_SCHOOL_LOFT_KEY=" + d.getSail_school_loft_key() + "," +
+					"KAYAK_RACK=" + d.getKayak_rack()+ "," +
+					"KAYAK_SHED=" + d.getKayak_shed() + "," +
+					"KAYAK_SHED_KEY=" + d.getKayak_shed_key() + "," +
+					"WORK_CREDIT=" + d.getWork_credit() +
+					" WHERE fiscal_year=" + d.getFiscal_year() + ";";
+
+			stmt.execute(Main.console.setRegexColor(query));
+			Main.edits.setDefinedFeesEdits(Main.edits.getDefinedFeesEdits() + 1);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+//			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
+		}
 	}
 	
 	public static void updateStatRecord(Object_Stats s)  {

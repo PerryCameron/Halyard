@@ -29,7 +29,6 @@ import java.util.function.Function;
 
 
 // replaces tabCredit, tabBalance, tabPayment, BoxFiscal2 also need to delete Object_Integer
-// this class is for buisness logic, Object_invoiceNodes handles most of the GUI
 
 public class BoxInvoice extends HBox {
 	private final ObservableList<Object_Money> fiscals;
@@ -100,7 +99,6 @@ public class BoxInvoice extends HBox {
 					updateBalance();
 				}
 		);
-
 
 		// example for this column found at https://o7planning.org/en/11079/javafx-tableview-tutorial
 		ObservableList<PaymentType> paymentTypeList = FXCollections.observableArrayList(PaymentType.values());

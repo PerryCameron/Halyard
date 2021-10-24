@@ -1,15 +1,14 @@
 package com.ecsail.gui.tabs;
 
 import com.ecsail.charts.DuesLineChart;
+import com.ecsail.gui.boxes.BoxInvoice;
 import com.ecsail.main.HalyardPaths;
 import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.SqlInsert;
 import com.ecsail.sql.SqlSelect;
 import com.ecsail.sql.SqlUpdate;
 import com.ecsail.structures.Object_DefinedFee;
-
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
@@ -18,16 +17,18 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class TabDefinedFee extends Tab {
 	int fieldWidth = 60;
 	String selectedYear;
-	Object_DefinedFee selectedFees;
+	ObservableList<Object_DefinedFee> definedFees;
+	int selectedIndex;
 	TextField duesRegularTextField = new TextField();
 	TextField duesFamilyTextField = new TextField();
 	TextField duesLakeAssociateTextField = new TextField();
 	TextField duesSocialTextField = new TextField();
-	TextField iniationTextField = new TextField();
+	TextField initiationTextField = new TextField();
 	TextField wetSlipTextField = new TextField();
 	TextField beachTextField = new TextField();
 	TextField winterStorageTextField = new TextField();
@@ -40,93 +41,95 @@ public class TabDefinedFee extends Tab {
 	TextField kayakShedTextField = new TextField();
 	TextField kayakShedKeyTextField = new TextField();
 	TextField workCreditTextField = new TextField();
-	
+	DuesLineChart duesLineChart;
+
+	RadioButton duesRegularRadioButton = new RadioButton();
+	RadioButton duesFamilyRadioButton = new RadioButton();
+	RadioButton duesLakeAssociateRadioButton = new RadioButton();
+	RadioButton duesSocialRadioButton = new RadioButton();
+	RadioButton initiationRadioButton = new RadioButton();
+	RadioButton wetSlipRadioButton = new RadioButton();
+	RadioButton beachRadioButton = new RadioButton();
+	RadioButton winterStorageRadioButton = new RadioButton();
+	RadioButton gateKeyRadioButton = new RadioButton();
+	RadioButton sailLoftAccessRadioButton = new RadioButton();
+	RadioButton sailLoftKeyRadioButton = new RadioButton();
+	RadioButton sailSchoolLoftAccessRadioButton = new RadioButton();
+	RadioButton sailSchoolLoftKeyRadioButton = new RadioButton();
+	RadioButton kayakRackRadioButton = new RadioButton();
+	RadioButton kayakShedRadioButton = new RadioButton();
+	RadioButton kayakShedKeyRadioButton = new RadioButton();
+	RadioButton workCreditRadioButton = new RadioButton();
+
 	public TabDefinedFee(String text) {
 		super(text);
 		this.selectedYear = HalyardPaths.getYear();
-		this.selectedFees = SqlSelect.selectDefinedFees(Integer.parseInt(selectedYear));
-		populateFields();
+//		this.definedFees.get(selectedIndex)s = SqlSelect.selectDefinedFees(Integer.parseInt(selectedYear));
+		this.definedFees =  SqlSelect.getDefinedFees();
+		this.duesLineChart = new DuesLineChart(definedFees);
+		this.selectedIndex = getSelectedIndex(selectedYear);
+		copyObjectToFields();
 		
 		VBox vboxGrey = new VBox();  // this is the vbox for organizing all the widgets
 		HBox hboxGrey = new HBox();
 		VBox vboxBlue = new VBox();
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
 		GridPane gridPane = new GridPane();
+		ToggleGroup group = new ToggleGroup();
 
-		ComboBox comboBox = new ComboBox();
-		for(int i = Integer.parseInt(HalyardPaths.getYear()); i > 1969; i--) {
+		ComboBox<Integer> comboBox = new ComboBox<>();
+		for(int i = Integer.parseInt(HalyardPaths.getYear()) + 1; i > 1969; i--) {
 			comboBox.getItems().add(i);
 		}
 		comboBox.getSelectionModel().selectFirst();
 		comboBox.getStyleClass().add("bigbox");
 
+		int row = 0;
+		row = addRow(gridPane,row,duesRegularRadioButton, duesRegularTextField, "Regular Membership Dues");
+		row = addRow(gridPane,row,duesFamilyRadioButton, duesFamilyTextField, "Family Membership Dues");
+		row = addRow(gridPane,row,duesLakeAssociateRadioButton, duesLakeAssociateTextField, "Lake Associate Dues");
+		row = addRow(gridPane,row,duesSocialRadioButton, duesSocialTextField, "Social Membership Dues");
+		row = addRow(gridPane,row,initiationRadioButton, initiationTextField, "Initiation Fee");
+		row = addRow(gridPane,row,wetSlipRadioButton, wetSlipTextField, "Wet Slip Fee");
+		row = addRow(gridPane,row,beachRadioButton, beachTextField, "Beach Spot Fee");
+		row = addRow(gridPane,row,winterStorageRadioButton, winterStorageTextField, "Winter Storage Fee");
+		row = addRow(gridPane,row,gateKeyRadioButton, gateKeyTextField, "Gate Key Fee");
+		row = addRow(gridPane,row,sailLoftAccessRadioButton, sailLoftAccessTextField, "Sail Loft Access Fee");
+		row = addRow(gridPane,row,sailLoftKeyRadioButton, sailLoftKeyTextField, "Sail Loft Key Fee");
+		row = addRow(gridPane,row,sailSchoolLoftAccessRadioButton, sailSchoolLoftAccessTextField, "Sail School Loft Access Fee");
+		row = addRow(gridPane,row,sailSchoolLoftKeyRadioButton, sailSchoolLoftKeyTextField, "Sail School Loft Key Fee");
+		row = addRow(gridPane,row,kayakRackRadioButton, kayakRackTextField, "Kayak Rack Fee");
+		row = addRow(gridPane,row,kayakShedRadioButton, kayakShedTextField, "Kayak Inside Storage Fee");
+		row = addRow(gridPane,row,kayakShedKeyRadioButton, kayakShedKeyTextField, "Kayak Inside Storage Key Fee");
+		row = addRow(gridPane,row,workCreditRadioButton, workCreditTextField, "Work Credit Amount");
 
-//		final Spinner<Integer> yearSpinner = new Spinner<Integer>();
-//		SpinnerValueFactory<Integer> wetSlipValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1970, Integer.parseInt(selectedYear) + 1, Integer.parseInt(selectedYear));
-//		yearSpinner.setValueFactory(wetSlipValueFactory);
-//		yearSpinner.setPrefWidth(90);
-//		yearSpinner.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_HORIZONTAL);
-//		yearSpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
-//			if (!newValue) {
-//				selectedYear = yearSpinner.getEditor().getText();
-//				selectedFees.clear();
-//				if (SqlExists.definedFeeExists(selectedYear)) {
-//					selectedFees = SqlSelect.selectDefinedFees(Integer.parseInt(selectedYear));
-//				} else {
-//					Object_DefinedFee newFee = new Object_DefinedFee(Integer.parseInt(selectedYear),0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
-//					SqlInsert.addRecord(newFee);
-//					selectedFees = SqlSelect.selectDefinedFees(Integer.parseInt(selectedYear));
-//				}
-//				populateFields();
-//			}
-//		});
-
-        gridPane.add(duesRegularTextField, 0, 0, 1, 1);
-        gridPane.add(duesFamilyTextField, 0, 1, 1, 1);
-        gridPane.add(duesLakeAssociateTextField, 0, 2, 1, 1);
-        gridPane.add(duesSocialTextField, 0, 3, 1, 1);
-        gridPane.add(iniationTextField, 0, 4, 1, 1);
-        gridPane.add(wetSlipTextField, 0, 5, 1, 1);
-        gridPane.add(beachTextField, 0, 6, 1, 1);
-        gridPane.add(winterStorageTextField, 0, 7, 1, 1);
-        gridPane.add(gateKeyTextField, 0, 8, 1, 1);
-        gridPane.add(sailLoftAccessTextField, 0, 9, 1, 1);
-        gridPane.add(sailLoftKeyTextField, 0, 10, 1, 1);
-        gridPane.add(sailSchoolLoftAccessTextField, 0, 11, 1, 1);
-        gridPane.add(sailSchoolLoftKeyTextField, 0, 12, 1, 1);
-        gridPane.add(kayakRackTextField, 0, 13, 1, 1);
-        gridPane.add(kayakShedTextField, 0, 14, 1, 1);
-        gridPane.add(kayakShedKeyTextField, 0, 15, 1, 1);
-        gridPane.add(workCreditTextField, 0, 16, 1, 1);
-
-        gridPane.add(new Label("Regular Membership Dues"), 1, 0, 1, 1);
-        gridPane.add(new Label("Family Membership Dues"), 1, 1, 1, 1);
-        gridPane.add(new Label("Lake Associate Dues"), 1, 2, 1, 1);
-        gridPane.add(new Label("Social Membership Dues"), 1, 3, 1, 1);
-        gridPane.add(new Label("Initiation Fee"), 1, 4, 1, 1);
-        gridPane.add(new Label("Wet Slip Fee"), 1, 5, 1, 1);
-        gridPane.add(new Label("Beach Spot Fee"), 1, 6, 1, 1);
-        gridPane.add(new Label("Winter Storage Fee"), 1, 7, 1, 1);
-        gridPane.add(new Label("Gate Key Fee"), 1, 8, 1, 1);
-        gridPane.add(new Label("Sail Loft Access Fee"), 1, 9, 1, 1);
-        gridPane.add(new Label("Sail Loft Key Fee"), 1, 10, 1, 1);
-        gridPane.add(new Label("Sail School Loft Access Fee"), 1, 11, 1, 1);
-        gridPane.add(new Label("Sail School Loft Key Fee"), 1, 12, 1, 1);
-        gridPane.add(new Label("Kayak Rack Fee"), 1, 13, 1, 1);
-        gridPane.add(new Label("Kayak Inside Storage Fee"), 1, 14, 1, 1);
-        gridPane.add(new Label("Kayak Inside Storage Key Fee"), 1, 15, 1, 1);
-        gridPane.add(new Label("Work Credit Amount"), 1, 16, 1, 1);
-
-        
         /////// ATTRIBUTES //////////
         gridPane.setHgap(10);
         gridPane.setVgap(10);
-        
+
+		duesRegularRadioButton.setToggleGroup(group);
+		duesFamilyRadioButton.setToggleGroup(group);
+		duesLakeAssociateRadioButton.setToggleGroup(group);
+		duesSocialRadioButton.setToggleGroup(group);
+		initiationRadioButton.setToggleGroup(group);
+		wetSlipRadioButton.setToggleGroup(group);
+		beachRadioButton.setToggleGroup(group);
+		winterStorageRadioButton.setToggleGroup(group);
+		gateKeyRadioButton.setToggleGroup(group);
+		sailLoftAccessRadioButton.setToggleGroup(group);
+		sailLoftKeyRadioButton.setToggleGroup(group);
+		sailSchoolLoftAccessRadioButton.setToggleGroup(group);
+		sailSchoolLoftKeyRadioButton.setToggleGroup(group);
+		kayakRackRadioButton.setToggleGroup(group);
+		kayakShedRadioButton.setToggleGroup(group);
+		kayakShedKeyRadioButton.setToggleGroup(group);
+		workCreditRadioButton.setToggleGroup(group);
+
 		duesRegularTextField.setPrefWidth(fieldWidth);
 		duesFamilyTextField.setPrefWidth(fieldWidth);
 		duesLakeAssociateTextField.setPrefWidth(fieldWidth);
 		duesSocialTextField.setPrefWidth(fieldWidth);
-		iniationTextField.setPrefWidth(fieldWidth);
+		initiationTextField.setPrefWidth(fieldWidth);
 		wetSlipTextField.setPrefWidth(fieldWidth);
 		beachTextField.setPrefWidth(fieldWidth);
 		winterStorageTextField.setPrefWidth(fieldWidth);
@@ -155,218 +158,200 @@ public class TabDefinedFee extends Tab {
 
 		comboBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
 			selectedYear = newValue.toString();
-			selectedFees.clear();
-			if (SqlExists.definedFeeExists(selectedYear)) {
-				selectedFees = SqlSelect.selectDefinedFees(Integer.parseInt(selectedYear));
-			} else {
+			if (!SqlExists.definedFeeExists(selectedYear)) {
 				Object_DefinedFee newFee = new Object_DefinedFee(Integer.parseInt(selectedYear), BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO);
+				definedFees.add(newFee);
 				SqlInsert.addRecord(newFee);
-				selectedFees = SqlSelect.selectDefinedFees(Integer.parseInt(selectedYear));
 			}
-			populateFields();
+			selectedIndex = getSelectedIndex(selectedYear);
+			copyObjectToFields();
 		});
 
-		duesRegularTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-	        @Override
-	        public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-	            //focus out
-	            if (oldValue) {  // we have focused and unfocused
-	            	SqlUpdate.updateDefinedFee(selectedYear, "dues_regular", duesRegularTextField.getText());
-	            }
-	        }
-	    });
+		duesRegularTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+			System.out.println("observable=" + observable + " oldValue=" + oldValue + " newValue=" + newValue) ;
+			if (oldValue) updateTextField(duesRegularTextField);
+		});
 		
-		duesFamilyTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-	        @Override
-	        public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-	            //focus out
-	            if (oldValue) {  // we have focused and unfocused
-	            	SqlUpdate.updateDefinedFee(selectedYear, "dues_family", duesFamilyTextField.getText());
-	            }
-	        }
-	    });
+		duesFamilyTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+			if (oldValue) updateTextField(duesFamilyTextField);
+		});
 		
-		duesLakeAssociateTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-	        @Override
-	        public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-	            //focus out
-	            if (oldValue) {  // we have focused and unfocused
-	            	SqlUpdate.updateDefinedFee(selectedYear, "dues_lake_associate", duesLakeAssociateTextField.getText());
-	            }
-	        }
-	    });
+		duesLakeAssociateTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+			if (oldValue) updateTextField(duesLakeAssociateTextField);
+		});
 		
-		duesSocialTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-	        @Override
-	        public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-	            //focus out
-	            if (oldValue) {  // we have focused and unfocused
-	            	SqlUpdate.updateDefinedFee(selectedYear, "dues_social", duesSocialTextField.getText());
-	            }
-	        }
-	    });
+		duesSocialTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+			if (oldValue) updateTextField(duesSocialTextField);
+		});
 		
-		iniationTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-	        @Override
-	        public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-	            //focus out
-	            if (oldValue) {  // we have focused and unfocused
-	            	SqlUpdate.updateDefinedFee(selectedYear, "initiation", iniationTextField.getText());
-	            }
-	        }
-	    });
+		initiationTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+			if (oldValue) updateTextField(initiationTextField);
+		});
 		
-		wetSlipTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-	        @Override
-	        public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-	            //focus out
-	            if (oldValue) {  // we have focused and unfocused
-	            	SqlUpdate.updateDefinedFee(selectedYear, "wet_slip", wetSlipTextField.getText());
-	            }
-	        }
-	    });
+		wetSlipTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+			if (oldValue) if (oldValue) updateTextField(wetSlipTextField);
+		});
 		
-		beachTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-	        @Override
-	        public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-	            //focus out
-	            if (oldValue) {  // we have focused and unfocused
-	            	SqlUpdate.updateDefinedFee(selectedYear, "beach", beachTextField.getText());
-	            }
-	        }
-	    });
+		beachTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+			if (oldValue) if (oldValue) updateTextField(beachTextField);
+		});
 		
-		winterStorageTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-	        @Override
-	        public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-	            //focus out
-	            if (oldValue) {  // we have focused and unfocused
-	            	SqlUpdate.updateDefinedFee(selectedYear, "winter_storage", winterStorageTextField.getText());
-	            }
-	        }
-	    });
+		winterStorageTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+			if (oldValue) if (oldValue) updateTextField(winterStorageTextField);
+		});
 		
-		gateKeyTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-	        @Override
-	        public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-	            //focus out
-	            if (oldValue) {  // we have focused and unfocused
-	            	SqlUpdate.updateDefinedFee(selectedYear, "main_gate_key", gateKeyTextField.getText());
-	            }
-	        }
-	    });
+		gateKeyTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+			if (oldValue) if (oldValue) updateTextField(gateKeyTextField);
+		});
 		
-		sailLoftAccessTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-	        @Override
-	        public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-	            //focus out
-	            if (oldValue) {  // we have focused and unfocused
-	            	SqlUpdate.updateDefinedFee(selectedYear, "sail_loft", sailLoftAccessTextField.getText());
-	            }
-	        }
-	    });
+		sailLoftAccessTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+			if (oldValue) if (oldValue) updateTextField(sailLoftAccessTextField);
+		});
 		
-		sailLoftKeyTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-	        @Override
-	        public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-	            //focus out
-	            if (oldValue) {  // we have focused and unfocused
-	            	SqlUpdate.updateDefinedFee(selectedYear, "sail_loft_key", sailLoftKeyTextField.getText());
-	            }
-	        }
-	    });
+		sailLoftKeyTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+			if (oldValue) if (oldValue) updateTextField(sailLoftKeyTextField);
+		});
 		
-		sailSchoolLoftAccessTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-	        @Override
-	        public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-	            //focus out
-	            if (oldValue) {  // we have focused and unfocused
-	            	SqlUpdate.updateDefinedFee(selectedYear, "sail_school_laser_loft", sailSchoolLoftAccessTextField.getText());
-	            }
-	        }
-	    });
+		sailSchoolLoftAccessTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+			if (oldValue) if (oldValue) updateTextField(sailSchoolLoftAccessTextField);
+		});
 		
-		sailSchoolLoftKeyTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-	        @Override
-	        public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-	            //focus out
-	            if (oldValue) {  // we have focused and unfocused
-	            	SqlUpdate.updateDefinedFee(selectedYear, "sail_school_loft_key", sailSchoolLoftKeyTextField.getText());
-	            }
-	        }
-	    });
+		sailSchoolLoftKeyTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+			if (oldValue) if (oldValue) updateTextField(sailSchoolLoftKeyTextField);
+		});
 		
-		kayakRackTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-	        @Override
-	        public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-	            //focus out
-	            if (oldValue) {  // we have focused and unfocused
-	            	SqlUpdate.updateDefinedFee(selectedYear, "kayak_rack", kayakRackTextField.getText());
-	            }
-	        }
-	    });
+		kayakRackTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+			if (oldValue) if (oldValue) updateTextField(kayakRackTextField);
+		});
 		
-		kayakShedTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-	        @Override
-	        public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-	            //focus out
-	            if (oldValue) {  // we have focused and unfocused
-	            	SqlUpdate.updateDefinedFee(selectedYear, "kayak_shed", kayakShedTextField.getText());
-	            }
-	        }
-	    });
+		kayakShedTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+			if (oldValue) if (oldValue) updateTextField(kayakShedTextField);
+		});
 		
-		kayakShedKeyTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-	        @Override
-	        public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-	            //focus out
-	            if (oldValue) {  // we have focused and unfocused
-	            	SqlUpdate.updateDefinedFee(selectedYear, "kayak_shed_key", kayakShedKeyTextField.getText());
-	            }
-	        }
-	    });
+		kayakShedKeyTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+			if (oldValue) if (oldValue) updateTextField(kayakShedKeyTextField);
+		});
 		
-		workCreditTextField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-	        @Override
-	        public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-	            //focus out
-	            if (oldValue) {  // we have focused and unfocused
-	            	SqlUpdate.updateDefinedFee(selectedYear, "work_credit", workCreditTextField.getText());
-	            }
-	        }
-	    });
-		DuesLineChart duesLineChart = new DuesLineChart();
+		workCreditTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+			if (oldValue) if (oldValue) updateTextField(workCreditTextField);
+		});
+
+		group.selectedToggleProperty().addListener((ov, old_toggle, new_toggle) -> {
+//			System.out.println("ov=" + ov + " old_toggle=" + old_toggle + " new_toggle" + new_toggle) ;
+//			if(new_toggle == duesFamilyRadioButton) System.out.println("WE HAVE A MATCH");
+			updateChart();
+		});
+
+		//////////////// SET CONTENT /////////////////////////
+
 		HBox.setHgrow(hboxGrey, Priority.ALWAYS);
 		HBox.setHgrow(duesLineChart,Priority.ALWAYS);
-//		hboxGrey.setStyle("-fx-background-color: #4d6955;");  //green
 		vboxGrey.getChildren().addAll(comboBox,gridPane);
 		hboxGrey.getChildren().addAll(vboxGrey, duesLineChart);
 		vboxPink.getChildren().add(hboxGrey);
 		vboxBlue.getChildren().add(vboxPink);
 		setContent(vboxBlue);
-		
 	}
 	
 	////////////////////  CLASS METHODS ////////////////////
+
+	private int addRow(GridPane gridPane, int row, RadioButton rb, TextField textField, String label ) {
+		gridPane.add(rb,0,row,1,1);
+		gridPane.add(textField, 1, row, 1, 1);
+		gridPane.add(new Label(label), 2, row, 1, 1);
+		row++;
+		return row;
+	}
+
+	private void updateTextField(TextField textField) {
+		if(!BoxInvoice.isNumeric(textField.getText())) {
+			textField.setText("0.00");
+		}
+		BigDecimal field = new BigDecimal(textField.getText());
+		textField.setText(String.valueOf(field.setScale(2, RoundingMode.HALF_UP)));
+		copyFieldsToObject(textField);
+		SqlUpdate.updateDefinedFeeRecord(definedFees.get(selectedIndex));
+		updateChart();
+	}
 	
-	private void populateFields() {
-		duesRegularTextField.setText(selectedFees.getDues_regular() + "");
-		duesFamilyTextField.setText(selectedFees.getDues_family() + "");
-		duesLakeAssociateTextField.setText(selectedFees.getDues_lake_associate() + "");
-		duesSocialTextField.setText(selectedFees.getDues_social() + "");
-		iniationTextField.setText(selectedFees.getInitiation() + "");
-		wetSlipTextField.setText(selectedFees.getWet_slip() + "");
-		beachTextField.setText(selectedFees.getBeach() + "");
-		winterStorageTextField.setText(selectedFees.getWinter_storage() + "");
-		gateKeyTextField.setText(selectedFees.getMain_gate_key() + "");
-		sailLoftAccessTextField.setText(selectedFees.getSail_loft() + "");
-		sailLoftKeyTextField.setText(selectedFees.getSail_loft_key() + "");
-		sailSchoolLoftAccessTextField.setText(selectedFees.getSail_school_laser_loft() + "");
-		sailSchoolLoftKeyTextField.setText(selectedFees.getSail_school_loft_key() + "");
-		kayakRackTextField.setText(selectedFees.getKayak_rack() + "");
-		kayakShedTextField.setText(selectedFees.getKayak_shed() + "");
-		kayakShedKeyTextField.setText(selectedFees.getKayak_shed_key() + "");
-		workCreditTextField.setText(selectedFees.getWork_credit() + "");
+	private void updateChart() {
+		String update = "regular";
+		if(duesRegularRadioButton.isSelected()) {
+			update = "regular";
+		} else if (duesFamilyRadioButton.isSelected()) {
+			update = "family";
+		} else if (duesLakeAssociateRadioButton.isSelected()) {
+			update = "lakeassociate";
+		} else if (duesSocialRadioButton.isSelected()) {
+			update = "social";
+		} else if (initiationRadioButton.isSelected()) {
+			update = "initiation";
+    	} else if (initiationRadioButton.isSelected()) {
+		update = "wetslip";
+    	} else if (initiationRadioButton.isSelected()) {
+		update = "beachspot";
+		} else if (initiationRadioButton.isSelected()) {
+		update = "winter";
+		} else if (initiationRadioButton.isSelected()) {
+		update = "gatekey";
+		} else if (initiationRadioButton.isSelected()) {
+		update = "sailloftaccess";
+		}
+		duesLineChart.refreshChart(update);
+	}
+
+	private void copyFieldsToObject(TextField textField) {
+			definedFees.get(selectedIndex).setDues_regular(new BigDecimal(duesRegularTextField.getText()));
+			definedFees.get(selectedIndex).setDues_family(new BigDecimal(duesFamilyTextField.getText()));
+			definedFees.get(selectedIndex).setDues_lake_associate(new BigDecimal(duesLakeAssociateTextField.getText()));
+			definedFees.get(selectedIndex).setDues_social(new BigDecimal(duesSocialTextField.getText()));
+			definedFees.get(selectedIndex).setInitiation(new BigDecimal(initiationTextField.getText()));
+			definedFees.get(selectedIndex).setWet_slip(new BigDecimal(wetSlipTextField.getText()));
+			definedFees.get(selectedIndex).setBeach(new BigDecimal(beachTextField.getText()));
+			definedFees.get(selectedIndex).setWinter_storage(new BigDecimal(winterStorageTextField.getText()));
+			definedFees.get(selectedIndex).setMain_gate_key(new BigDecimal(gateKeyTextField.getText()));
+			definedFees.get(selectedIndex).setSail_loft(new BigDecimal(sailLoftAccessTextField.getText()));
+			definedFees.get(selectedIndex).setSail_loft_key(new BigDecimal(sailLoftKeyTextField.getText()));
+			definedFees.get(selectedIndex).setSail_school_laser_loft(new BigDecimal(sailSchoolLoftAccessTextField.getText()));
+			definedFees.get(selectedIndex).setSail_school_loft_key(new BigDecimal(sailSchoolLoftKeyTextField.getText()));
+			definedFees.get(selectedIndex).setKayak_rack(new BigDecimal(kayakRackTextField.getText()));
+			definedFees.get(selectedIndex).setKayak_shed(new BigDecimal(kayakShedTextField.getText()));
+			definedFees.get(selectedIndex).setKayak_shed_key(new BigDecimal(kayakShedKeyTextField.getText()));
+			definedFees.get(selectedIndex).setWork_credit(new BigDecimal(workCreditTextField.getText()));
+	}
+
+
+	private int getSelectedIndex(String selectedYear) {
+		int count = 0;
+		int index = 0;
+		for(Object_DefinedFee df: definedFees) {
+			if(df.getFiscal_year() == Integer.parseInt(selectedYear)) {
+				System.out.println("found match=" + count);
+				index = count;
+			}
+			count++;
+		}
+		return index;
+	}
+	
+	private void copyObjectToFields() {
+		duesRegularTextField.setText(definedFees.get(selectedIndex).getDues_regular() + "");
+		duesFamilyTextField.setText(definedFees.get(selectedIndex).getDues_family() + "");
+		duesLakeAssociateTextField.setText(definedFees.get(selectedIndex).getDues_lake_associate() + "");
+		duesSocialTextField.setText(definedFees.get(selectedIndex).getDues_social() + "");
+		initiationTextField.setText(definedFees.get(selectedIndex).getInitiation() + "");
+		wetSlipTextField.setText(definedFees.get(selectedIndex).getWet_slip() + "");
+		beachTextField.setText(definedFees.get(selectedIndex).getBeach() + "");
+		winterStorageTextField.setText(definedFees.get(selectedIndex).getWinter_storage() + "");
+		gateKeyTextField.setText(definedFees.get(selectedIndex).getMain_gate_key() + "");
+		sailLoftAccessTextField.setText(definedFees.get(selectedIndex).getSail_loft() + "");
+		sailLoftKeyTextField.setText(definedFees.get(selectedIndex).getSail_loft_key() + "");
+		sailSchoolLoftAccessTextField.setText(definedFees.get(selectedIndex).getSail_school_laser_loft() + "");
+		sailSchoolLoftKeyTextField.setText(definedFees.get(selectedIndex).getSail_school_loft_key() + "");
+		kayakRackTextField.setText(definedFees.get(selectedIndex).getKayak_rack() + "");
+		kayakShedTextField.setText(definedFees.get(selectedIndex).getKayak_shed() + "");
+		kayakShedKeyTextField.setText(definedFees.get(selectedIndex).getKayak_shed_key() + "");
+		workCreditTextField.setText(definedFees.get(selectedIndex).getWork_credit() + "");
 	}
 	
 }
