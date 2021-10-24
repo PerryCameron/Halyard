@@ -335,10 +335,12 @@ public class TabDefinedFee extends Tab {
 	            }
 	        }
 	    });
-		
+		DuesLineChart duesLineChart = new DuesLineChart();
 		HBox.setHgrow(hboxGrey, Priority.ALWAYS);
+		HBox.setHgrow(duesLineChart,Priority.ALWAYS);
+//		hboxGrey.setStyle("-fx-background-color: #4d6955;");  //green
 		vboxGrey.getChildren().addAll(comboBox,gridPane);
-		hboxGrey.getChildren().addAll(vboxGrey, new DuesLineChart());
+		hboxGrey.getChildren().addAll(vboxGrey, duesLineChart);
 		vboxPink.getChildren().add(hboxGrey);
 		vboxBlue.getChildren().add(vboxPink);
 		setContent(vboxBlue);
