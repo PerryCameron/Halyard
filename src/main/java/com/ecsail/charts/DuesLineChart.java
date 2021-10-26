@@ -10,52 +10,60 @@ import java.util.Arrays;
 
 public class DuesLineChart extends LineChart<String, Number> {
 	ObservableList<Object_DefinedFee> definedFees;
-	Series<String,Number> seriesDues = new Series<String, Number>();
+
 
 	public DuesLineChart(ObservableList<Object_DefinedFee> definedFees) {
 	super(new CategoryAxis(), new NumberAxis());
+	Series<String,Number> seriesDues = new Series<String, Number>();
 	this.definedFees = definedFees;
-		setTitle("Annual Dues by Year");
-		populateChart("regular");
-		getData().addAll(Arrays.asList(seriesDues));
+		populateChart("Initiation Fee", seriesDues);
+
 	}
 	
 	public void refreshChart(String type) {
-		seriesDues.getData().clear();
-		populateChart(type);
+//		seriesDues.getData().clear();
+		this.getData().clear();
+//		System.out.println("cleared size=" + seriesDues.getData().size());
+		Series<String,Number> series = new Series<String, Number>();
+		populateChart(type, series);
+
 	}
 	
-	public void populateChart(String type) {
+	public void populateChart(String type, Series<String, Number> seriesDues) {
 //		Series<String,Number> seriesDues = new Series<String, Number>();
 //		Series<String,Number> seriesNewMembers = new Series<String, Number>();
 //		Series<String,Number> seriesReturnMembers = new Series<String, Number>();
-		seriesDues.setName("Dues");
+
 //		seriesNewMembers.setName("New");
 //		seriesReturnMembers.setName("Return");
 		for (Object_DefinedFee d: definedFees) {
-			if(type.equals("regular"))
+			if(type.equals("Regular Dues"))
         	seriesDues.getData().add(new Data<String, Number>(d.getFiscal_year() + "", d.getDues_regular()));
-			if(type.equals("family"))
+			seriesDues.set
+			if(type.equals("Family Dues"))
 				seriesDues.getData().add(new Data<String, Number>(d.getFiscal_year() + "", d.getDues_family()));
-			if(type.equals("lakeassociate"))
+			if(type.equals("Lake Associate Dues"))
 				seriesDues.getData().add(new Data<String, Number>(d.getFiscal_year() + "", d.getDues_lake_associate()));
-			if(type.equals("social"))
+			if(type.equals("Social Membership Dues"))
 				seriesDues.getData().add(new Data<String, Number>(d.getFiscal_year() + "", d.getDues_social()));
-			if(type.equals("initiation"))
+			if(type.equals("Initiation Fee"))
 				seriesDues.getData().add(new Data<String, Number>(d.getFiscal_year() + "", d.getInitiation()));
-			if(type.equals("wetslip"))
+			System.out.println(d.getFiscal_year() + "," + d.getInitiation());
+			if(type.equals("Wetslip"))
 				seriesDues.getData().add(new Data<String, Number>(d.getFiscal_year() + "", d.getWet_slip()));
-			if(type.equals("beachspot"))
+			if(type.equals("Beach Parking"))
 				seriesDues.getData().add(new Data<String, Number>(d.getFiscal_year() + "", d.getBeach()));
-			if(type.equals("winter"))
+			if(type.equals("Winter Storage"))
 				seriesDues.getData().add(new Data<String, Number>(d.getFiscal_year() + "", d.getWinter_storage()));
-			if(type.equals("gatekey"))
+			if(type.equals("Extra Gate Key Fee"))
 				seriesDues.getData().add(new Data<String, Number>(d.getFiscal_year() + "", d.getMain_gate_key()));
-			if(type.equals("sailloftaccess"))
+			if(type.equals("Sail Loft Access"))
 				seriesDues.getData().add(new Data<String, Number>(d.getFiscal_year() + "", d.getSail_loft()));
 
 		}
-
+		seriesDues.setName(type);
+		setTitle(type + " by Year");
+		getData().addAll(Arrays.asList(seriesDues));
 	}
 
 //		update = "wetslip";

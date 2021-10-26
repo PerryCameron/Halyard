@@ -81,7 +81,7 @@ public class TabDefinedFee extends Tab {
 		for(int i = Integer.parseInt(HalyardPaths.getYear()) + 1; i > 1969; i--) {
 			comboBox.getItems().add(i);
 		}
-		comboBox.getSelectionModel().selectFirst();
+		comboBox.getSelectionModel().select(1);
 		comboBox.getStyleClass().add("bigbox");
 
 		int row = 0;
@@ -275,27 +275,27 @@ public class TabDefinedFee extends Tab {
 	}
 	
 	private void updateChart() {
-		String update = "regular";
+		String update = "Regular Dues";
 		if(duesRegularRadioButton.isSelected()) {
-			update = "regular";
+			update = "Regular Dues";
 		} else if (duesFamilyRadioButton.isSelected()) {
-			update = "family";
+			update = "Family Dues";
 		} else if (duesLakeAssociateRadioButton.isSelected()) {
-			update = "lakeassociate";
+			update = "Lake Associate Dues";
 		} else if (duesSocialRadioButton.isSelected()) {
-			update = "social";
-		} else if (initiationRadioButton.isSelected()) {
-			update = "initiation";
+			update = "Social Membership Dues";
+		} else if (duesSocialRadioButton.isSelected()) {
+			update = "Initiation Fee";
     	} else if (initiationRadioButton.isSelected()) {
-		update = "wetslip";
-    	} else if (initiationRadioButton.isSelected()) {
-		update = "beachspot";
-		} else if (initiationRadioButton.isSelected()) {
-		update = "winter";
-		} else if (initiationRadioButton.isSelected()) {
-		update = "gatekey";
-		} else if (initiationRadioButton.isSelected()) {
-		update = "sailloftaccess";
+		update = "Wetslip";
+    	} else if (wetSlipRadioButton.isSelected()) {
+		update = "Beach Parking";
+		} else if (beachRadioButton.isSelected()) {
+		update = "Winter Storage";
+		} else if (gateKeyRadioButton.isSelected()) {
+		update = "Extra Gate Key Fee";
+		} else if (sailLoftAccessRadioButton.isSelected()) {
+		update = "Sail Loft Access";
 		}
 		duesLineChart.refreshChart(update);
 	}
