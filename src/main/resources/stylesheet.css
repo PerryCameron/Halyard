@@ -313,3 +313,5 @@
 /*    -fx-font-weight: bold;*/
 /*    -fx-font-size : 28pt;*/
 /*}*/
+#dues .chart-series-line { -fx-stroke: blue }
+#init .chart-series-line { -fx-stroke: green }

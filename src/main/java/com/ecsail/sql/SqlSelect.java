@@ -1885,9 +1885,10 @@ public class SqlSelect {
 		ResultSet rs;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			rs = stmt.executeQuery("select count(*) from membership_id where MEM_TYPE='" + type + "' and FISCAL_YEAR='" + year + "';");
+			rs = stmt.executeQuery("select count(*) from membership_id where FISCAL_YEAR='" + year + "' and MEM_TYPE='" + type + "' and RENEW=true;");
 			rs.next();
 			number = rs.getInt("count(*)");
+			System.out.println(year + " " +type + "= " + number);
 		
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

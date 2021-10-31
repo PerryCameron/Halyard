@@ -1,6 +1,6 @@
 package com.ecsail.gui.tabs;
 
-import com.ecsail.charts.DuesLineChart;
+import com.ecsail.charts.FeesLineChart;
 import com.ecsail.gui.boxes.BoxInvoice;
 import com.ecsail.main.HalyardPaths;
 import com.ecsail.sql.SqlExists;
@@ -41,7 +41,7 @@ public class TabDefinedFee extends Tab {
 	TextField kayakShedTextField = new TextField();
 	TextField kayakShedKeyTextField = new TextField();
 	TextField workCreditTextField = new TextField();
-	DuesLineChart duesLineChart;
+	FeesLineChart duesLineChart;
 
 	RadioButton duesRegularRadioButton = new RadioButton();
 	RadioButton duesFamilyRadioButton = new RadioButton();
@@ -66,7 +66,7 @@ public class TabDefinedFee extends Tab {
 		this.selectedYear = HalyardPaths.getYear();
 //		this.definedFees.get(selectedIndex)s = SqlSelect.selectDefinedFees(Integer.parseInt(selectedYear));
 		this.definedFees =  SqlSelect.getDefinedFees();
-		this.duesLineChart = new DuesLineChart(definedFees);
+		this.duesLineChart = new FeesLineChart(definedFees);
 		this.selectedIndex = getSelectedIndex(selectedYear);
 		copyObjectToFields();
 		
@@ -284,19 +284,35 @@ public class TabDefinedFee extends Tab {
 			update = "Lake Associate Dues";
 		} else if (duesSocialRadioButton.isSelected()) {
 			update = "Social Membership Dues";
-		} else if (duesSocialRadioButton.isSelected()) {
+		} else if (initiationRadioButton.isSelected()) {
 			update = "Initiation Fee";
-    	} else if (initiationRadioButton.isSelected()) {
-		update = "Wetslip";
-    	} else if (wetSlipRadioButton.isSelected()) {
-		update = "Beach Parking";
+		} else if (wetSlipRadioButton.isSelected()) {
+			update = "Wetslip";
 		} else if (beachRadioButton.isSelected()) {
-		update = "Winter Storage";
+			update = "Beach Parking";
+		} else if (winterStorageRadioButton.isSelected()) {
+			update = "Winter Storage";
 		} else if (gateKeyRadioButton.isSelected()) {
-		update = "Extra Gate Key Fee";
+			update = "Extra Gate Key Fee";
 		} else if (sailLoftAccessRadioButton.isSelected()) {
-		update = "Sail Loft Access";
+			update = "Sail Loft Access";
+		} else if (sailLoftKeyRadioButton.isSelected()) {
+			update = "Sail Loft Key";
+		} else if (sailSchoolLoftAccessRadioButton.isSelected()) {
+			update = "Sail School Loft Access";
+		} else if (sailSchoolLoftKeyRadioButton.isSelected()) {
+			update = "Sail School Loft Key";
+		} else if (kayakRackRadioButton.isSelected()) {
+			update = "Kayak Rack Fee";
+		} else if (kayakShedRadioButton.isSelected()) {
+			update = "Kayak Inside Storage";
+		} else if (kayakShedKeyRadioButton.isSelected()) {
+			update = "Kayak Inside Storage Key";
+		} else if (workCreditRadioButton.isSelected()) {
+			update = "Work Credit Amount";
+
 		}
+
 		duesLineChart.refreshChart(update);
 	}
 
