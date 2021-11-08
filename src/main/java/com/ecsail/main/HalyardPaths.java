@@ -18,11 +18,11 @@ public class HalyardPaths {
     public static final String ECSCHOME = System.getProperty("user.home") + "/Documents/ECSC";
 	public static final String LOGO = "/ECSClogo4.png";
 	public static final String HOSTS = System.getProperty("user.home") + "/.ecsc/hosts.ecs";
-	public static final String SCRIPTS = System.getProperty("user.home") + "/.ecsc/scripts";
 	public static final String TUPLECOUNTS = System.getProperty("user.home") + "/.ecsc/tuples.ecs";
 	public static final String SLIPCHART = System.getProperty("user.home") + "/Documents/ECSC/SlipCharts";
 	public static final String BOATDIR = System.getProperty("user.home") + "/Documents/ECSC/Boats";
  	public static final String DEFAULTPHOTO = "/personimg.png";
+	 public static final String BOATLISTS = System.getProperty("user.home") + "/Documents/ECSC/BoatLists";
 	// "C:\\Users\\pcame\\Documents\\email.xlsx"
 	
  	private static boolean isDirEmpty(final Path directory) throws IOException {

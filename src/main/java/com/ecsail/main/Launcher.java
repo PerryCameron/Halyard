@@ -19,6 +19,7 @@ import com.ecsail.gui.tabs.TabPeople;
 import com.ecsail.gui.tabs.TabSlips;
 import com.ecsail.gui.tabs.TabStub;
 import com.ecsail.gui.tabs.TabWelcome;
+import com.ecsail.pdf.PDF_BoatReport;
 import com.ecsail.sql.Sql_SelectMembership;
 import com.ecsail.sql.SqlSelect;
 import com.ecsail.structures.Object_Boat;
@@ -262,4 +263,8 @@ static TabPane tabPane;
 	public static void closeActiveTab() {
 		tabPane.getTabs().remove(tabPane.getSelectionModel().getSelectedIndex());
 	}
+
+    public static void createBoatReport() {
+		new PDF_BoatReport();
+    }
 }
