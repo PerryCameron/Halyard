@@ -61,7 +61,8 @@ public class TabBoardMembers extends Tab {
 //	chairs.setId("bigtext");
 //	board.setId("bigtext");
 //	year.setId("bigtext");
-		chairs.setFont(Font.loadFont("file:/resources/fonts/Fredoka_One", 28));
+//	chairs.setFont(Font.loadFont("file:/resources/fonts/Fredoka_One", 28));
+
 	Image slipImage = new Image(getClass().getResourceAsStream("/Stickers/" + selectedYear + ".png"));
 	//Image slipImage = new Image(getClass().getResourceAsStream("/Stickers/" + filename + ".png"), 600, 600, false, false);
 	ImageView imageView = new ImageView(slipImage);
@@ -147,6 +148,7 @@ public class TabBoardMembers extends Tab {
 	officersHBox.setSpacing(120);
 	committeeHBox.setSpacing(30);
 	boardMembersHBox.setSpacing(40);
+	officersTitleHBox.setPadding(new Insets(10,0,0,0));
 	officersTitleHBox.setSpacing(190);
 	officerVBox1.setSpacing(4);
 	officerVBox2.setSpacing(4);

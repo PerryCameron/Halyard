@@ -3,8 +3,8 @@ package com.ecsail.pdf;
 import com.ecsail.main.HalyardPaths;
 import com.ecsail.sql.SqlSelect;
 import com.ecsail.sql.Sql_SelectMembership;
+import com.ecsail.structures.Object_Boat;
 import com.ecsail.structures.Object_MembershipList;
-import com.ecsail.structures.Object_PaidDues;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.colors.DeviceCmyk;
@@ -21,13 +21,13 @@ import javafx.collections.ObservableList;
 
 import java.awt.*;
 import java.io.*;
-import java.util.Observable;
+import java.util.List;
 
 public class PDF_BoatReport {
     private ObservableList<Object_MembershipList> membershipLists;
 
     public PDF_BoatReport() {
-        this.membershipLists = Sql_SelectMembership.getRosterOfAll(HalyardPaths.getYear());
+        this.membershipLists = Sql_SelectMembership.getRoster(HalyardPaths.getYear(), true);
 
         // Initialize PDF writer
         PdfWriter writer = null;
@@ -48,11 +48,9 @@ public class PDF_BoatReport {
         // Initialize document
         Document document = new Document(pdf);
         document.add(titlePdfTable());
+
         for(Object_MembershipList m: membershipLists) {
-        document.add(membershipTable(m));
-
-
-
+        membershipTable(m, document);
         }
 
         document.close();
@@ -71,10 +69,26 @@ public class PDF_BoatReport {
 
     }
 
-    public Table membershipTable(Object_MembershipList ml) {
-        Table detailTable = new Table(3);
-        // mainTable.setKeepTogether(true);
-        Cell cell;
+    private void removeKayaksAndCanoes(List<Object_Boat> boats) {
+        boats.removeIf(b -> b.getModel().equals("Kayak"));
+        boats.removeIf(b -> b.getModel().equals("Canoe"));
+        boats.removeIf(b -> b.getModel().equals("Paddle Board"));
+        boats.stream().filter(b -> b.getRegistration_num() == null).forEach(b -> b.setRegistration_num(""));
+        boats.stream().filter(b -> b.getBoat_name() == null).forEach(b -> b.setBoat_name(""));
+        boats.stream().filter(b -> b.getManufacturer() == null).forEach(b -> b.setManufacturer(""));
+        boats.stream().filter(b -> b.getManufacture_year() == null).forEach(b -> b.setManufacture_year(""));
+    }
+
+    public void membershipTable(Object_MembershipList ml, Document document) {
+        List<Object_Boat> boats = SqlSelect.getBoats(ml.getMsid());
+        if(boats.size() > 0) {
+            System.out.println("Creating Entry for mebership " + ml.getMsid() + " " + ml.getLname());
+            removeKayaksAndCanoes(boats);
+            System.out.println("-------------------");
+//            System.out.println("creating " + ml.getLname());
+            Table detailTable = new Table(6);
+            // mainTable.setKeepTogether(true);
+            Cell cell;
 
             cell = new Cell();
             cell.setBorder(Border.NO_BORDER);
@@ -83,6 +97,7 @@ public class PDF_BoatReport {
             cell.setWidth(50);
             cell.add(new Paragraph(SqlSelect.getMembershipId(HalyardPaths.getYear(), ml.getMsid()) + "" + "")).setFontSize(10);
             detailTable.addCell(cell);
+
 
             cell = new Cell();
             cell.setBorder(Border.NO_BORDER);
@@ -96,16 +111,16 @@ public class PDF_BoatReport {
             cell.setBorder(Border.NO_BORDER);
             cell.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f));
             cell.setBorderTop(new SolidBorder(ColorConstants.BLACK, 1));
-            cell.setWidth(200);
-            //cell.add(new Paragraph(dues.getL_name() + "")).setFontSize(10);
+            cell.setWidth(100);
+            cell.add(new Paragraph(ml.getFname() + "")).setFontSize(10);
             detailTable.addCell(cell);
 
             cell = new Cell();
             cell.setBorder(Border.NO_BORDER);
             cell.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f));
             cell.setBorderTop(new SolidBorder(ColorConstants.BLACK, 1));
-            cell.setWidth(40);
-            //cell.add(new Paragraph(dues.getL_name() + "")).setFontSize(10);
+            cell.setWidth(70);
+            cell.add(new Paragraph(""));
             detailTable.addCell(cell);
 
             cell = new Cell();
@@ -113,11 +128,59 @@ public class PDF_BoatReport {
             cell.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f));
             cell.setBorderTop(new SolidBorder(ColorConstants.BLACK, 1));
             cell.setWidth(100);
-            //cell.add(new Paragraph(dues.getL_name() + "")).setFontSize(10);
+            cell.add(new Paragraph(""));
             detailTable.addCell(cell);
 
-        return detailTable;
+            cell = new Cell();
+            cell.setBorder(Border.NO_BORDER);
+            cell.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f));
+            cell.setBorderTop(new SolidBorder(ColorConstants.BLACK, 1));
+            cell.setWidth(60);
+            cell.add(new Paragraph(""));
+            detailTable.addCell(cell);
+
+            for(Object_Boat b: boats) {
+                cell = new Cell();
+                cell.setBorder(Border.NO_BORDER);
+                cell.setWidth(50);
+                cell.add(new Paragraph("")).setFontSize(10);
+                detailTable.addCell(cell);
+
+                cell = new Cell();
+                cell.setBorder(Border.NO_BORDER);
+                cell.add(new Paragraph(b.getManufacturer() + ""));
+                cell.setWidth(100);
+                detailTable.addCell(cell);
+
+                cell = new Cell();
+                cell.setBorder(Border.NO_BORDER);
+                cell.add(new Paragraph(b.getModel() + ""));
+                cell.setWidth(100);
+                detailTable.addCell(cell);
+
+                cell = new Cell();
+                cell.setBorder(Border.NO_BORDER);
+                cell.add(new Paragraph(b.getRegistration_num() + ""));
+                cell.setWidth(70);
+                detailTable.addCell(cell);
+
+                cell = new Cell();
+                cell.setBorder(Border.NO_BORDER);
+                cell.add(new Paragraph(b.getBoat_name() + ""));
+                cell.setWidth(100);
+                detailTable.addCell(cell);
+
+                cell = new Cell();
+                cell.setBorder(Border.NO_BORDER);
+                cell.add(new Paragraph(b.getManufacture_year() + ""));
+                cell.setWidth(60);
+                detailTable.addCell(cell);
+            }
+            document.add(detailTable);
         }
+    }
+
+
 
     public Table titlePdfTable() {
         com.itextpdf.layout.element.Image ecscLogo = new Image(ImageDataFactory.create(toByteArray(getClass().getResourceAsStream("/EagleCreekLogoForPDF.png"))));
@@ -144,7 +207,7 @@ public class PDF_BoatReport {
 
         cell = new Cell();
         cell.setBorder(Border.NO_BORDER);
-        cell.add(new Paragraph(HalyardPaths.getDate() + "")).setFontSize(10);
+        cell.add(new Paragraph("As of " + HalyardPaths.getDate() + "")).setFontSize(10);
         mainTable.addCell(cell);
 
         cell = new Cell();
