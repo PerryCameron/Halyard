@@ -415,8 +415,10 @@ public class BoxInvoice extends HBox {
 
 		fnode.getCommitButton().setOnAction((event) -> {
 			if (!fiscals.get(rowIndex).isCommitted()) {
-				if (!fnode.getTotalBalanceText().getText().equals("0.00"))
+				if (!fnode.getTotalBalanceText().getText().equals("0.00")) {
 					fnode.getTotalBalanceText().setStyle("-fx-background-color: #f23a50");
+					note.add("Non-Zero Balance: ",date,fiscals.get(rowIndex).getMoney_id(),"B");
+				}
 //				SqlUpdate.updateMoney(fiscals.get(rowIndex));
 				SqlUpdate.commitFiscalRecord(fiscals.get(rowIndex).getMoney_id(), true);// this could be placed in line above
 //				String date = SqlSelect.getPaymentDate(fiscals.get(rowIndex).getMoney_id()); // dates note to check
@@ -424,6 +426,7 @@ public class BoxInvoice extends HBox {
 				SqlUpdate.updateMembershipId(fiscals.get(rowIndex).getMs_id(), fiscals.get(rowIndex).getFiscal_year(), fnode.getRenewCheckBox().isSelected());
 				fiscals.get(rowIndex).setCommitted(true);
 				addPaidNote(date);
+
 				// if we put an amount in other we need to make a note
 				if(new BigDecimal(fiscals.get(rowIndex).getOther()).compareTo(BigDecimal.ZERO) != 0) {
 					// make sure the memo doesn't already exist

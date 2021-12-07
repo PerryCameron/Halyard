@@ -1,24 +1,10 @@
 package com.ecsail.pdf;
 
-import java.awt.Desktop;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.util.Collections;
-import java.util.Comparator;
 
 import com.ecsail.main.HalyardPaths;
 import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.SqlSelect;
-import com.ecsail.structures.Object_DefinedFee;
-import com.ecsail.structures.Object_Deposit;
-import com.ecsail.structures.Object_DepositPDF;
-import com.ecsail.structures.Object_DepositSummary;
-import com.ecsail.structures.Object_PaidDues;
+import com.ecsail.structures.*;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.colors.DeviceCmyk;
@@ -28,23 +14,24 @@ import com.itextpdf.layout.Document;
 import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.borders.DoubleBorder;
 import com.itextpdf.layout.borders.SolidBorder;
-import com.itextpdf.layout.element.AreaBreak;
-import com.itextpdf.layout.element.Cell;
-import com.itextpdf.layout.element.IElement;
 import com.itextpdf.layout.element.Image;
-import com.itextpdf.layout.element.Paragraph;
-import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.element.*;
 import com.itextpdf.layout.property.AreaBreakType;
 import com.itextpdf.layout.property.TextAlignment;
-
-
 import javafx.collections.ObservableList;
+
+import java.awt.*;
+import java.io.*;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class PDF_DepositReport {
 	
 	private static ObservableList<Object_PaidDues> paidDuesForDeposit;  // these are the paid dues for a single deposit
-	private Object_Deposit currentDeposit;
-	private Object_DefinedFee currentDefinedFee;
+	private final Object_Deposit currentDeposit;
+	private final Object_DefinedFee currentDefinedFee;
 	private Object_DepositSummary totals;
 	String fiscalYear;  // save this because I clear current Deposit
 	Boolean includeDollarSigns = false;
@@ -57,28 +44,14 @@ public class PDF_DepositReport {
 			"Records",
 			"Amount"
 		};
-	
-	static String[] Items = {
-			"Dues",
-			"Beach Fee",
-			"Key Fee",
-			"Slip Fee",
-			"Kayac Rack Fee",
-			"Kayac Inside Storage Fee",
-			"Winter Storage",
-			"Work Credits",
-			"YSP Donation",
-			"Initiation Fee",
-			"Other"
-		};
-	
+
 	public PDF_DepositReport(Object_Deposit cd,Object_DefinedFee cdf, Object_DepositPDF pdfOptions) {
 		this.currentDeposit = cd;
 		PDF_DepositReport.paidDuesForDeposit = SqlSelect.getPaidDues(currentDeposit);
 		this.currentDefinedFee = cdf;
 		this.totals = updateTotals();
 		this.fiscalYear = currentDeposit.getFiscalYear();
-		String dest = "";
+		String dest;
 
 		//Image ecscLogo = new Image(ImageDataFactory.create(toByteArray(getClass().getResourceAsStream("/EagleCreekLogoForPDF.png"))));
 		//public static final String SAFETY_IMG = "/img/Safety.png";
@@ -101,12 +74,14 @@ public class PDF_DepositReport {
 
 		try {
 			writer = new PdfWriter(dest);
+
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 		// Initialize PDF document
+
 		PdfDocument pdf = new PdfDocument(writer);
 
 		// Initialize document
@@ -205,104 +180,139 @@ public class PDF_DepositReport {
 		
 		for(Object_PaidDues dues: paidDuesForDeposit)  // each membership in Deposit
 		{
-		cell = new Cell();
-		cell.setBorder(Border.NO_BORDER);
-		cell.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f));
-		cell.setBorderTop(new SolidBorder(ColorConstants.BLACK, 1));
-		cell.setWidth(50);
-		cell.add(new Paragraph(dues.getMembershipId() + "")).setFontSize(10);
-		detailTable.addCell(cell);
-		
-		cell = new Cell();
-		cell.setBorder(Border.NO_BORDER);
-		cell.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f));
-		cell.setBorderTop(new SolidBorder(ColorConstants.BLACK, 1));
-		cell.setWidth(100);
-		cell.add(new Paragraph(dues.getL_name() + "")).setFontSize(10);
-		detailTable.addCell(cell);
-		
-		cell = new Cell();
-		cell.setBorder(Border.NO_BORDER);
-		cell.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f));
-		cell.setBorderTop(new SolidBorder(ColorConstants.BLACK, 1));
-		cell.setWidth(200);
-		//cell.add(new Paragraph(dues.getL_name() + "")).setFontSize(10);
-		detailTable.addCell(cell);
-		
-		cell = new Cell();
-		cell.setBorder(Border.NO_BORDER);
-		cell.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f));
-		cell.setBorderTop(new SolidBorder(ColorConstants.BLACK, 1));
-		cell.setWidth(40);
-		//cell.add(new Paragraph(dues.getL_name() + "")).setFontSize(10);
-		detailTable.addCell(cell);
-		
-		cell = new Cell();
-		cell.setBorder(Border.NO_BORDER);
-		cell.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f));
-		cell.setBorderTop(new SolidBorder(ColorConstants.BLACK, 1));
-		cell.setWidth(100);
-		//cell.add(new Paragraph(dues.getL_name() + "")).setFontSize(10);
-		detailTable.addCell(cell);
+			cell = new Cell();
+			cell.setBorder(Border.NO_BORDER);
+			cell.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f));
+			cell.setBorderTop(new SolidBorder(ColorConstants.BLACK, 1));
+			cell.setWidth(50);
+			cell.add(new Paragraph(dues.getMembershipId() + "")).setFontSize(10);
+			detailTable.addCell(cell);
 
-		BigDecimal annualDues = new BigDecimal(dues.getDues());
-		if(annualDues.compareTo(BigDecimal.ZERO) != 0) addItemRow(detailTable, "Annual Dues", annualDues,0);
-		if(dues.getWinter_storage() != 0) addItemRow(detailTable, "Winter Storage Fee", BigDecimal.valueOf(dues.getWinter_storage()).multiply(currentDefinedFee.getWinter_storage()), dues.getWinter_storage());
-		//// access ////
+			cell = new Cell();
+			cell.setBorder(Border.NO_BORDER);
+			cell.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f));
+			cell.setBorderTop(new SolidBorder(ColorConstants.BLACK, 1));
+			cell.setWidth(100);
+			cell.add(new Paragraph(dues.getL_name() + "")).setFontSize(10);
+			detailTable.addCell(cell);
+
+			cell = new Cell();
+			cell.setBorder(Border.NO_BORDER);
+			cell.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f));
+			cell.setBorderTop(new SolidBorder(ColorConstants.BLACK, 1));
+			cell.setWidth(200);
+			//cell.add(new Paragraph(dues.getL_name() + "")).setFontSize(10);
+			detailTable.addCell(cell);
+
+			cell = new Cell();
+			cell.setBorder(Border.NO_BORDER);
+			cell.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f));
+			cell.setBorderTop(new SolidBorder(ColorConstants.BLACK, 1));
+			cell.setWidth(40);
+			//cell.add(new Paragraph(dues.getL_name() + "")).setFontSize(10);
+			detailTable.addCell(cell);
+
+			cell = new Cell();
+			cell.setBorder(Border.NO_BORDER);
+			cell.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f));
+			cell.setBorderTop(new SolidBorder(ColorConstants.BLACK, 1));
+			cell.setWidth(100);
+			//cell.add(new Paragraph(dues.getL_name() + "")).setFontSize(10);
+			detailTable.addCell(cell);
+
+			BigDecimal annualDues = new BigDecimal(dues.getDues());
+			if (annualDues.compareTo(BigDecimal.ZERO) != 0) addItemRow(detailTable, "Annual Dues", annualDues, 0);
+			if (dues.getWinter_storage() != 0)
+				addItemRow(detailTable, "Winter Storage Fee", BigDecimal.valueOf(dues.getWinter_storage()).multiply(currentDefinedFee.getWinter_storage()), dues.getWinter_storage());
+			//// access ////
 			BigDecimal wetSlip = new BigDecimal(dues.getWet_slip());
-		if(wetSlip.compareTo(BigDecimal.ZERO) != 0) addItemRow(detailTable, "Wet Slip Fee", wetSlip,returnWetSlipNumber(wetSlip));
-		if(dues.getBeach() != 0) addItemRow(detailTable, "Beach Spot Fee", BigDecimal.valueOf(dues.getBeach()).multiply(currentDefinedFee.getBeach()), dues.getBeach());
-		if(dues.getKayac_rack() != 0) addItemRow(detailTable, "Kayak Rack Fee", BigDecimal.valueOf(dues.getKayac_rack()).multiply(currentDefinedFee.getKayak_rack()), dues.getKayac_rack());
-		if(dues.getKayac_shed() != 0) addItemRow(detailTable, "Kayak Inside Storage Fee", BigDecimal.valueOf(dues.getKayac_shed()).multiply(currentDefinedFee.getKayak_shed()), dues.getKayac_shed());
-		if(dues.getSail_loft() != 0) addItemRow(detailTable, "Sail Loft Access Fee", BigDecimal.valueOf(dues.getSail_loft()).multiply(currentDefinedFee.getSail_loft()), dues.getSail_loft());
-		if(dues.getSail_school_laser_loft() != 0) addItemRow(detailTable, "Sail School Loft Acess", BigDecimal.valueOf(dues.getSail_school_laser_loft()).multiply(currentDefinedFee.getSail_school_laser_loft()), dues.getSail_school_laser_loft());
+			if (wetSlip.compareTo(BigDecimal.ZERO) != 0)
+				addItemRow(detailTable, "Wet Slip Fee", wetSlip, returnWetSlipNumber(wetSlip));
+			if (dues.getBeach() != 0)
+				addItemRow(detailTable, "Beach Spot Fee", BigDecimal.valueOf(dues.getBeach()).multiply(currentDefinedFee.getBeach()), dues.getBeach());
+			if (dues.getKayac_rack() != 0)
+				addItemRow(detailTable, "Kayak Rack Fee", BigDecimal.valueOf(dues.getKayac_rack()).multiply(currentDefinedFee.getKayak_rack()), dues.getKayac_rack());
+			if (dues.getKayac_shed() != 0)
+				addItemRow(detailTable, "Kayak Inside Storage Fee", BigDecimal.valueOf(dues.getKayac_shed()).multiply(currentDefinedFee.getKayak_shed()), dues.getKayac_shed());
+			if (dues.getSail_loft() != 0)
+				addItemRow(detailTable, "Sail Loft Access Fee", BigDecimal.valueOf(dues.getSail_loft()).multiply(currentDefinedFee.getSail_loft()), dues.getSail_loft());
+			if (dues.getSail_school_laser_loft() != 0)
+				addItemRow(detailTable, "Sail School Loft Acess", BigDecimal.valueOf(dues.getSail_school_laser_loft()).multiply(currentDefinedFee.getSail_school_laser_loft()), dues.getSail_school_laser_loft());
 
-		//// keys ////
-		if(dues.getExtra_key() != 0) addItemRow(detailTable, "Extra Gate Key Fee", BigDecimal.valueOf(dues.getExtra_key()).multiply(currentDefinedFee.getMain_gate_key()), dues.getExtra_key());
-		if(dues.getSail_school_loft_key() != 0) addItemRow(detailTable, "Extra Sail School Loft Key Fee", BigDecimal.valueOf(dues.getSail_school_loft_key()).multiply(currentDefinedFee.getSail_school_loft_key()), dues.getSail_school_loft_key());
-		if(dues.getKayac_shed_key() != 0) addItemRow(detailTable, "Extra Inside Storage Key", BigDecimal.valueOf(dues.getKayac_shed_key()).multiply(currentDefinedFee.getKayak_shed_key()), dues.getKayac_shed_key());
-		if(dues.getSail_loft_key() != 0) addItemRow(detailTable, "Extra Sail Loft Key Fee", BigDecimal.valueOf(dues.getSail_loft_key()).multiply(currentDefinedFee.getSail_loft_key()), dues.getSail_loft_key());
+			//// keys ////
+			if (dues.getExtra_key() != 0)
+				addItemRow(detailTable, "Extra Gate Key Fee", BigDecimal.valueOf(dues.getExtra_key()).multiply(currentDefinedFee.getMain_gate_key()), dues.getExtra_key());
+			if (dues.getSail_school_loft_key() != 0)
+				addItemRow(detailTable, "Extra Sail School Loft Key Fee", BigDecimal.valueOf(dues.getSail_school_loft_key()).multiply(currentDefinedFee.getSail_school_loft_key()), dues.getSail_school_loft_key());
+			if (dues.getKayac_shed_key() != 0)
+				addItemRow(detailTable, "Extra Inside Storage Key", BigDecimal.valueOf(dues.getKayac_shed_key()).multiply(currentDefinedFee.getKayak_shed_key()), dues.getKayac_shed_key());
+			if (dues.getSail_loft_key() != 0)
+				addItemRow(detailTable, "Extra Sail Loft Key Fee", BigDecimal.valueOf(dues.getSail_loft_key()).multiply(currentDefinedFee.getSail_loft_key()), dues.getSail_loft_key());
 
-		BigDecimal initiation = new BigDecimal(dues.getInitiation());
-		BigDecimal ysc = new BigDecimal(dues.getYsc_donation());
+			BigDecimal initiation = new BigDecimal(dues.getInitiation());
+			BigDecimal ysc = new BigDecimal(dues.getYsc_donation());
 			BigDecimal other = new BigDecimal(dues.getOther());
 			BigDecimal total = new BigDecimal(dues.getTotal());
 			BigDecimal credit = new BigDecimal(dues.getCredit());
 			BigDecimal paid = new BigDecimal(dues.getPaid());
 			BigDecimal balance = new BigDecimal(dues.getBalance());
 
-		if(initiation.compareTo(BigDecimal.ZERO) != 0) addItemRow(detailTable, "Initiation Fee", initiation, 0);
-		if(ysc.compareTo(BigDecimal.ZERO) != 0) addItemRow(detailTable, "Youth Sailing Club Donation", ysc, 0);
-		if(other.compareTo(BigDecimal.ZERO) != 0) addItemRow(detailTable, "Other: " + getOtherNote(dues) , other,0);
-		addItemRow(detailTable, "Total Fees", total,0);
-		if(credit.compareTo(BigDecimal.ZERO) != 0) addCreditRow(detailTable, "Credit", credit,0);
-		addItemRow(detailTable, "Total Due", total.subtract(credit),0);
-		addItemPaidRow(detailTable, paid);
-		if(balance.compareTo(BigDecimal.ZERO) != 0) addBalanceRow(detailTable, "Balance", balance, 0);
+			if (initiation.compareTo(BigDecimal.ZERO) != 0) addItemRow(detailTable, "Initiation Fee", initiation, 0);
+			if (ysc.compareTo(BigDecimal.ZERO) != 0) addItemRow(detailTable, "Youth Sailing Club Donation", ysc, 0);
+			if (other.compareTo(BigDecimal.ZERO) != 0)
+				addItemRow(detailTable, "Other", other, 0);
+			addItemRow(detailTable, "Total Fees", total, 0);
+			if (credit.compareTo(BigDecimal.ZERO) != 0) addCreditRow(detailTable, "Credit", credit, 0);
+			addItemRow(detailTable, "Total Due", total.subtract(credit), 0);
+			addItemPaidRow(detailTable, paid);
+			if (balance.compareTo(BigDecimal.ZERO) != 0) {
+				addBalanceRow(detailTable, "Balance", balance, 0);
+				addNoteRow(detailTable, "Balance: ",getNote(dues,"B"));
+			}
+			if (other.compareTo(BigDecimal.ZERO) != 0)
+				addNoteRow(detailTable, "Other: ",getNote(dues,"O"));
+
 		}
-		
 		return detailTable;
 	}
-	
-	private String getOtherNote(Object_PaidDues dues) {
+
+	private void addNoteRow(Table detailTable, String label, String note) {
+		Paragraph p = new Paragraph();
+		p.add(new Text("*Note ").setFontColor(ColorConstants.RED));
+		p.add(new Text(label));
+		p.add(new Text(note));
+
+		Cell cell;
+		cell = new Cell(1,2);
+		cell.setBorder(Border.NO_BORDER);
+		detailTable.addCell(cell);
+
+		cell = new Cell(1,3);
+		cell.setBorder(Border.NO_BORDER);
+		cell.setTextAlignment(TextAlignment.LEFT);
+		cell.add(p).setFontSize(10);
+		detailTable.addCell(cell);
+	}
+
+	private String getNote(Object_PaidDues dues, String catagory) {
 		String thisMemo = null;
 		System.out.println("Getting memo for " + dues.getF_name() + " " + dues.getL_name());
 		System.out.println("Money ID=" + dues.getMoney_id());
 		// make sure the memo exists
 		if(SqlExists.memoExists(dues.getMoney_id())) {
-		thisMemo = SqlSelect.getMemos(dues).getMemo();
+		thisMemo = SqlSelect.getMemos(dues, catagory).getMemo();
 		} else {
 		thisMemo = "No note for this entry";
 		}
 		return thisMemo;
 	}
-	
+
 	int returnWetSlipNumber(BigDecimal numberOf) {
 		int result = 0;
 		if(numberOf.compareTo(BigDecimal.ZERO) != 0) result = 1;
 		return result;
 	}
-	
+
 	private void addItemPaidRow(Table detailTable, BigDecimal money) {
 		Cell cell;
 		cell = new Cell();
@@ -331,7 +341,9 @@ public class PDF_DepositReport {
 		cell.add(new Paragraph(addDollarSign() + df.format(money))).setFontSize(10);
 		detailTable.addCell(cell);
 	}
-	
+
+
+
 	private void addBalanceRow(Table detailTable, String label, BigDecimal money, int numberOf) {
 		detailTable.addCell(new Cell().setBorder(Border.NO_BORDER));
 		detailTable.addCell(new Cell().setBorder(Border.NO_BORDER));
@@ -341,7 +353,7 @@ public class PDF_DepositReport {
 		} else {
 			detailTable.addCell(new Cell().setTextAlignment(TextAlignment.CENTER).setBorder(Border.NO_BORDER).add(new Paragraph("" + numberOf)).setFontSize(10));	
 		}
-		detailTable.addCell(new Cell().setTextAlignment(TextAlignment.RIGHT).setBorder(Border.NO_BORDER).add(new Paragraph(addDollarSign() + String.format("%,d", money))).setFontSize(10));
+		detailTable.addCell(new Cell().setTextAlignment(TextAlignment.RIGHT).setBorder(Border.NO_BORDER).add(new Paragraph(addDollarSign() + df.format(money))).setFontSize(10));
 	}
 	
 	private void addItemRow(Table detailTable, String label, BigDecimal money, int numberOf) {

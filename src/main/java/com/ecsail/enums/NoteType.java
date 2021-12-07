@@ -4,7 +4,8 @@ public enum NoteType {
 	
 	   NOTE("N", "Note"), 
 	   WING("O", "Other"), 
-	   PAYM("P", "Payment");
+	   PAYM("P", "Payment"),
+	   BALE("B", "Balance");
 	 
 	   private String code;
 	   private String text;

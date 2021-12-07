@@ -687,8 +687,8 @@ public class SqlSelect {
 		return theseMemos;
 	}
 	
-	public static Object_Memo getMemos(Object_PaidDues dues) {
-		String query = "select * from memo where money_id=" + dues.getMoney_id();
+	public static Object_Memo getMemos(Object_PaidDues dues, String category) {
+		String query = "select * from memo where money_id=" + dues.getMoney_id() + " and category='" + category + "'";
 		System.out.println("select * from memo where money_id=" + dues.getMoney_id());
 		Object_Memo thisMemo = null;
 		try {

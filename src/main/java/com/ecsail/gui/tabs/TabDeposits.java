@@ -445,10 +445,8 @@ public class TabDeposits extends Tab {
 	//////////////////////// CLASS METHODS //////////////////////////
 
 	private void checkForDepositAndCreateIfNotExist() {
-		if (SqlExists.ifDepositRecordExists(selectedYear + "", summaryTotals.getDepositNumber())) { // does a deposit
-																									// exist for
-																									// selected year and
-																									// batch?
+		// does a deposit exist for selected year and batch?
+		if (SqlExists.ifDepositRecordExists(selectedYear + "", summaryTotals.getDepositNumber())) {
 //			System.out.println("deposit exists");
 			SqlSelect.getDeposit(selectedYear + "", summaryTotals.getDepositNumber()).getDeposit_id();
 		} else { // record does not exist
@@ -586,16 +584,16 @@ public class TabDeposits extends Tab {
 			if (dues.compareTo(BigDecimal.ZERO) != 0) { //////// DUES
 				summaryTotals.setDuesNumber(1 + summaryTotals.getDuesNumber()); // Integer
 				summaryTotals.setDues(dues.add(summaryTotals.getDues()));  // BigDecimal
-				System.out.println("d.getDues=" + d.getDues() + " duesNumber=" + summaryTotals.getDuesNumber()
-						+ " dues=" + dues + " dues=" + summaryTotals.getDues() + "currentDefinedFee=" + currentDefinedFee.getDues_regular());
+//				System.out.println("d.getDues=" + d.getDues() + " duesNumber=" + summaryTotals.getDuesNumber()
+//						+ " dues=" + dues + " dues=" + summaryTotals.getDues() + "currentDefinedFee=" + currentDefinedFee.getDues_regular());
 			}
 			BigDecimal extraKey = new BigDecimal(d.getExtra_key());
 			if (d.getExtra_key() != 0) { ///// EXTRA GATE KEY
 				summaryTotals.setGate_keyNumber(d.getExtra_key() + summaryTotals.getGate_keyNumber());
 				BigDecimal totalGateKeyDollars = currentDefinedFee.getMain_gate_key().multiply(extraKey); // Integer
 				summaryTotals.setGate_key(summaryTotals.getGate_key().add(totalGateKeyDollars)); // BigDecimal
-				System.out.println("d.getExtra_key=" + d.getExtra_key() + " gateKeyNumber=" + summaryTotals.getGate_keyNumber()
-						+ " totalGateKeyDollars=" + totalGateKeyDollars + " gate_key=" + summaryTotals.getGate_key());
+//				System.out.println("d.getExtra_key=" + d.getExtra_key() + " gateKeyNumber=" + summaryTotals.getGate_keyNumber()
+//						+ " totalGateKeyDollars=" + totalGateKeyDollars + " gate_key=" + summaryTotals.getGate_key());
 			}
 			BigDecimal initiation = new BigDecimal(d.getInitiation());
 			if (initiation.compareTo(BigDecimal.ZERO) != 0) { /////// INITIATION
@@ -656,12 +654,18 @@ public class TabDeposits extends Tab {
 				summaryTotals.setWet_slipNumber(1 + summaryTotals.getWet_slipNumber());
 				summaryTotals.setWet_slip(wetSlip.add(summaryTotals.getWet_slip()));
 			}
+
 			BigDecimal winterStorage = new BigDecimal(d.getWinter_storage());
 			if (d.getWinter_storage() != 0) { //////// WINTER STORAGE FEE ///////// IN NUMBER OF
+//				System.out.print("Mem ID " + d.getMembershipId() + ": Adding " + d.getWinter_storage() + " total: ");
 				summaryTotals.setWinter_storageNumber(d.getWinter_storage() + summaryTotals.getWinter_storageNumber());
+//				System.out.print(summaryTotals.getWinter_storageNumber());
 				BigDecimal totalWinterStorageDollars = currentDefinedFee.getWinter_storage().multiply(winterStorage);
+//				System.out.print(" -> " +totalWinterStorageDollars);
 				summaryTotals.setWinter_storage(totalWinterStorageDollars.add(summaryTotals.getWinter_storage()));
+//				System.out.println(" -> " + summaryTotals.getWinter_storage());
 			}
+
 			BigDecimal ysc = new BigDecimal(d.getYsc_donation());
 			if (ysc.compareTo(BigDecimal.ZERO) != 0) { //////// YSC DONATION ///////// IN DOLLARS
 				summaryTotals.setYsc_donationNumber(1 + summaryTotals.getYsc_donationNumber());

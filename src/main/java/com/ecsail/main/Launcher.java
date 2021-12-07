@@ -192,6 +192,7 @@ static TabPane tabPane;
 		return thisTab;
 	}
 
+
 	public static void openTabNewYearGenerator() {
 		try {
 			TabNewYearGenerator.makeItSo();
