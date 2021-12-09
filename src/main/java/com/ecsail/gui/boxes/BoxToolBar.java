@@ -63,6 +63,8 @@ public class BoxToolBar extends VBox {
 
 		m1_4.setOnAction((event) -> {
 			Main.closeDatabaseConnection();
+			Launcher.closeTabs();
+			Main.connectDatabase();
 		});
 
 //		m1_5.setOnAction((event) -> {

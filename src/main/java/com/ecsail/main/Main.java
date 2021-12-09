@@ -89,7 +89,8 @@ public static void main(String[] args) throws SQLException {
 		mainPane.setTop(toolbar);
 		primaryStage.setScene(mainScene);
 		primaryStage.show();
-		connect = new ConnectDatabase(primaryStage);
+//		connect = new ConnectDatabase(primaryStage);
+		connectDatabase();
 	}
 	
 	//////////////  CLASS METHODS //////////////////////
@@ -136,6 +137,10 @@ public static void main(String[] args) throws SQLException {
 					e.printStackTrace();
 				}
 			}
+	}
+
+	public static void connectDatabase() {
+	connect = new ConnectDatabase((Stage) getPrimaryStage());
 	}
 
 }

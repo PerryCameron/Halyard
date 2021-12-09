@@ -31,6 +31,10 @@ import javafx.scene.layout.VBox;
 public class Launcher extends VBox {
 static TabPane tabPane;
 
+	public static void closeTabs() {
+		tabPane.getTabs().clear();
+	}
+
 	public Launcher() { 
 		tabPane = new TabPane();
 		tabPane.setId("toolbar-box");
