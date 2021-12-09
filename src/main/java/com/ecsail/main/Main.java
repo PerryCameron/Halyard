@@ -6,6 +6,7 @@ import com.ecsail.gui.boxes.BoxToolBar;
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_TupleCount;
 
+import com.jcraft.jsch.JSchException;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -53,18 +54,15 @@ public static void main(String[] args) throws SQLException {
 		Main.mainScene = new Scene(mainPane, 1028, 830, Color.GREEN);
 		
 		/////////////////  LISTENERS ///////////////////////
-		
+
+		// closing program with x button
 		primaryStage.setOnHiding(new EventHandler<WindowEvent>() {
 			@Override
 			public void handle(WindowEvent event) {
 				Platform.runLater(new Runnable() {
 					@Override
 					public void run() {
-						System.out.println("Application Closed by click to Close Button(X)");
-						// close MySql connection
-						connect.close();
-						// close ssh Tunnel connection
-						System.exit(0);
+						closeDatabaseConnection();
 					}
 				});
 			}
@@ -118,6 +116,26 @@ public static void main(String[] args) throws SQLException {
 
 	public static void setConnect(ConnectDatabase connect) {
 		Main.connect = connect;
+	}
+
+	public static void closeDatabaseConnection() {
+		try {
+			ConnectDatabase.getSqlConnection().close();
+			System.out.println("SQL: Connection closed");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		// if ssh is connected then disconnect
+		if(Main.getConnect().getSshConnection() != null)
+			if(Main.getConnect().getSshConnection().getSession().isConnected()) {
+				try {
+					Main.getConnect().getSshConnection().getSession().delPortForwardingL(3306);
+					Main.getConnect().getSshConnection().getSession().disconnect();
+					System.out.println("SSH: port forwarding closed");
+				} catch (JSchException e) {
+					e.printStackTrace();
+				}
+			}
 	}
 
 }

@@ -3,6 +3,7 @@ package com.ecsail.gui.boxes;
 import com.ecsail.gui.dialogues.*;
 import com.ecsail.main.*;
 import com.ecsail.excel.Xls_email_list;
+import com.jcraft.jsch.JSchException;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -10,6 +11,8 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.sql.SQLException;
 
 public class BoxToolBar extends VBox {
 
@@ -28,6 +31,8 @@ public class BoxToolBar extends VBox {
 		MenuItem m1_1_1 = new MenuItem("Create SQL Script");
 		MenuItem m1_2 = new MenuItem("Console");
 		MenuItem m1_3 = new MenuItem("Update Statistics");
+		MenuItem m1_4 = new MenuItem("Close connection");
+		MenuItem m1_5 = new MenuItem("Log in");
 
 		
 		MenuItem m3_1 = new MenuItem("New Membership");
@@ -55,6 +60,14 @@ public class BoxToolBar extends VBox {
 		MenuItem m4_1_8 = new MenuItem("Renewal Forms");
 		MenuItem m4_1_9 = new MenuItem("Create Envelopes");	
 		MenuItem m4_1_10 = new MenuItem("Create Directory");
+
+		m1_4.setOnAction((event) -> {
+			Main.closeDatabaseConnection();
+		});
+
+//		m1_5.setOnAction((event) -> {
+//			Main.getConnect() = new ConnectDatabase((Stage) Main.getPrimaryStage());
+//		});
 
         m3_3_6.setOnAction((event) -> Launcher.openBoardTab());
         m3_3_3.setOnAction((event) -> Launcher.openPeopleTab());
@@ -95,7 +108,7 @@ public class BoxToolBar extends VBox {
         m1_1.getItems().addAll(m1_1_1);
         m4_1.getItems().addAll(m4_1_1,m4_1_2,m4_1_3,m4_1_4,m4_1_5,m4_1_6,m4_1_7,m4_1_8,m4_1_9,m4_1_10);
         m3_3.getItems().addAll(m3_3_1,m3_3_2,m3_3_3,m3_3_4,m3_3_5,m3_3_6);  // add list items
-        menu1.getItems().addAll(m1_1,m1_2,m1_3);
+        menu1.getItems().addAll(m1_1,m1_2,m1_3,m1_4,m1_5);
         menu3.getItems().addAll(m3_1,m3_2,m3_3,m3_4,m3_5);
         menu4.getItems().add(m4_1);
 

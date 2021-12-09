@@ -67,7 +67,16 @@ public class ConnectDatabase {
 	
 	public ConnectDatabase() { // default constructor
 	}
-	
+
+	public static Connection getSqlConnection() {
+		return sqlConnection;
+	}
+
+	public PortForwardingL getSshConnection() {
+		return sshConnection;
+	}
+
+
 	public void displayLogOn(Stage primaryStage) {
 		int width = 500;
 		int height = 200;
