@@ -61,10 +61,10 @@ public class BoxPaymentList extends HBox {
 		TableColumn<Object_Money, Integer> Col4 = new TableColumn<Object_Money, Integer>("Paid");
 		TableColumn<Object_Money, Integer> Col5 = new TableColumn<Object_Money, Integer>("Balance");
 		ComboBox<Integer> comboBox = new ComboBox();
-		for(int i = Integer.parseInt(HalyardPaths.getYear()); i > 1969; i--) {
+		for(int i = Integer.parseInt(HalyardPaths.getYear()) + 1; i > 1969; i--) {
 			comboBox.getItems().add(i);
 		}
-		comboBox.getSelectionModel().selectFirst();
+		comboBox.getSelectionModel().select(1);
 		///////////////////// SORT ///////////////////////////////////////////
 		Collections.sort(BoxPaymentList.fiscals, (p1,p2) -> Integer.compare(p2.getFiscal_year(), (p1.getFiscal_year())));
 		

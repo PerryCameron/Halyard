@@ -32,7 +32,6 @@ public class BoxToolBar extends VBox {
 		MenuItem m1_2 = new MenuItem("Console");
 		MenuItem m1_3 = new MenuItem("Update Statistics");
 		MenuItem m1_4 = new MenuItem("Close connection");
-		MenuItem m1_5 = new MenuItem("Log in");
 
 		
 		MenuItem m3_1 = new MenuItem("New Membership");
@@ -67,9 +66,6 @@ public class BoxToolBar extends VBox {
 			Main.connectDatabase();
 		});
 
-//		m1_5.setOnAction((event) -> {
-//			Main.getConnect() = new ConnectDatabase((Stage) Main.getPrimaryStage());
-//		});
 
         m3_3_6.setOnAction((event) -> Launcher.openBoardTab());
         m3_3_3.setOnAction((event) -> Launcher.openPeopleTab());
@@ -110,7 +106,7 @@ public class BoxToolBar extends VBox {
         m1_1.getItems().addAll(m1_1_1);
         m4_1.getItems().addAll(m4_1_1,m4_1_2,m4_1_3,m4_1_4,m4_1_5,m4_1_6,m4_1_7,m4_1_8,m4_1_9,m4_1_10);
         m3_3.getItems().addAll(m3_3_1,m3_3_2,m3_3_3,m3_3_4,m3_3_5,m3_3_6);  // add list items
-        menu1.getItems().addAll(m1_1,m1_2,m1_3,m1_4,m1_5);
+        menu1.getItems().addAll(m1_1,m1_2,m1_3,m1_4);
         menu3.getItems().addAll(m3_1,m3_2,m3_3,m3_4,m3_5);
         menu4.getItems().add(m4_1);
 
