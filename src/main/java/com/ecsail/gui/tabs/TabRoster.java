@@ -4,13 +4,14 @@ import com.ecsail.excel.Xls_roster;
 import com.ecsail.gui.tabs.roster.TabKayakLists;
 import com.ecsail.gui.tabs.roster.TabSlipOptions;
 import com.ecsail.gui.tabs.roster.TabStandard;
+import com.ecsail.main.EmailLinkCreator;
 import com.ecsail.main.HalyardPaths;
 import com.ecsail.main.Launcher;
+import com.ecsail.main.rosterContextMenu;
 import com.ecsail.sql.SqlExists;
+import com.ecsail.sql.SqlSelect;
 import com.ecsail.sql.Sql_SelectMembership;
-import com.ecsail.structures.Object_MembershipList;
-import com.ecsail.structures.Object_RosterRadioButtons;
-import com.ecsail.structures.Object_RosterSelect;
+import com.ecsail.structures.*;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,6 +19,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Side;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
@@ -25,6 +28,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
+import java.awt.*;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -243,9 +250,13 @@ public class TabRoster extends Tab {
 					Object_MembershipList clickedRow = row.getItem();
 					Launcher.createMembershipTabForRoster(clickedRow.getMembershipId(), clickedRow.getMsid());
 				}
+				if (!row.isEmpty() && event.getButton() == MouseButton.SECONDARY && event.getClickCount() == 1) {
+				row.setContextMenu(new rosterContextMenu(row.getItem()));
+				}
 			});
 			return row;
 		});
+
 
 		rb.getRadioActive().selectedProperty().addListener((obs, wasPreviouslySelected, isNowSelected) -> {
 			if (isNowSelected) {
@@ -511,4 +522,6 @@ public class TabRoster extends Tab {
 			break;
 		}
 	}
+
+
 }
