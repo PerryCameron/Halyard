@@ -42,19 +42,15 @@ public class rosterContextMenu extends ContextMenu {
             String body = link + linkData;
             // email ID of Recipient.
             String recipient = email;
-//
-//            // email ID of  Sender.
-//            String sender = "perry.lee.cameron@gmail.com";
-//
-//            // using host as localhost
+
             String host = "smtp.gmail.com";
 
             // Getting system properties
             Properties properties = new Properties();
 
             // Setting up mail server
-            properties.put("mail.smtp.username","perry.lee.cameron@gmail.com");
-            properties.put("mail.smtp.password", "Pa25191!Z345");
+            properties.put("mail.smtp.username","");
+            properties.put("mail.smtp.password", "");
             properties.setProperty("mail.smtp.host", host);
             properties.put("mail.smtp.port", "587");
             properties.put("mail.smtp.auth", "true");
