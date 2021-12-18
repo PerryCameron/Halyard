@@ -53,7 +53,7 @@ public class BoxPaymentList extends HBox {
 //		final Spinner<Integer> yearSpinner = new Spinner<Integer>();
 //		SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 2100, Integer.parseInt(currentYear));
 		BoxPaymentList.fiscals = SqlSelect.getMonies(membership.getMsid());
-		Object_DefinedFee definedFees = SqlSelect.selectDefinedFees(Integer.parseInt(currentYear));
+//		Object_DefinedFee definedFees = SqlSelect.selectDefinedFees(Integer.parseInt(currentYear));
 		TableView<Object_Money> fiscalTableView = new TableView<Object_Money>();
 		TableColumn<Object_Money, Integer> Col1 = new TableColumn<Object_Money, Integer>("Year");
 		TableColumn<Object_Money, Integer> Col2 = new TableColumn<Object_Money, Integer>("Fees");
@@ -128,7 +128,7 @@ public class BoxPaymentList extends HBox {
 				int moneyId = SqlSelect.getCount("money_id") + 1;
 				Object_Money newMoney = new Object_Money(moneyId, membership.getMsid(),
 						comboBox.getValue(), 0, "0.00", 0, 0, 0, 0, 0, "0.00", 0, 0, 0, 0, 0,
-						"0.00", "0.00", "0.00", "0.00", "0.00", String.valueOf(getDues(definedFees)), false, false, "0.00", "0.00", false,0, "0.00");
+						"0.00", "0.00", "0.00", "0.00", "0.00", String.valueOf(getDues(comboBox.getValue())), false, false, "0.00", "0.00", false,0, "0.00");
 				if (SqlExists.moneyExists(String.valueOf(comboBox.getValue()), membership)) {
 					newMoney.setSupplemental(true);
 					newMoney.setDues("0.00");
@@ -169,22 +169,23 @@ public class BoxPaymentList extends HBox {
 	
 	/////////////////////  CLASS METHODS /////////////////////////////
 	
-	private BigDecimal getDues(Object_DefinedFee definedFees) {  // takes the membership type and gets the dues
+	private BigDecimal getDues(int year) {  // takes the membership type and gets the dues
+		Object_DefinedFee selectedDefinedFee = SqlSelect.selectDefinedFees(year);
 		BigDecimal dues = BigDecimal.valueOf(0);
 		if(membership.getMemType() != null) {
 		  switch(membership.getMemType()) 
 	        { 
 	            case "RM": 
-	                dues = definedFees.getDues_regular(); 
+	                dues = selectedDefinedFee.getDues_regular();
 	                break; 
 	            case "SO": 
-	            	dues = definedFees.getDues_social(); 
+	            	dues = selectedDefinedFee.getDues_social();
 	                break; 
 	            case "FM": 
-	            	dues = definedFees.getDues_family();  
+	            	dues = selectedDefinedFee.getDues_family();
 	                break; 
 	            case "LA": 
-	            	dues = definedFees.getDues_lake_associate();  
+	            	dues = selectedDefinedFee.getDues_lake_associate();
 	                break; 
 	            case "LM": 
 	            	dues = BigDecimal.valueOf(0);  // life members have no dues
@@ -199,26 +200,11 @@ public class BoxPaymentList extends HBox {
 		return dues;
 	}
 	
-// sweet method, perhaps I should set to static
-//	private void createCurrentFiscalRecord(Object_DefinedFee definedFees) {  // creates a current fiscal record if none exists
-//		System.out.println("Creating fiscal Record because it doesn't exist");
-//		int addSlip = 0;
-//		if(SqlExists.ownsSlip(membership.getMsid()) || SqlExists.subleasesSlip(membership.getMsid())) addSlip = 1;  // member has a slip for current year
-//		int moneyId = SqlSelect.getCount("money_id") + 1;
-//		if(!SqlExists.moneyExists(currentYear,membership)) {  // record doesn't exist
-//			Object_Money newMoney = new Object_Money(moneyId,membership.getMsid(),Integer.parseInt(currentYear),0,getDues(definedFees),0,0,0,0,0,addSlip,0,0,0,0,0,0,0,0,0,0,getDues(definedFees),false,false,0,0,false);
-//			SqlInsert.addRecord(newMoney);
-//			SqlInsert.addRecord(moneyId,membership);
-//			fiscals.add(newMoney);
-//		} 
-//	}
-	
 	private static void createTab(int rowIndex) {
 		parentTabPane.getTabs().add(new Tab(fiscals.get(rowIndex).getFiscal_year() + "", new BoxInvoice(membership, people, fiscals, rowIndex, note, duesText))); // current year tab
 		for(Tab tab: parentTabPane.getTabs()) {
 			if(tab.getText().equals(fiscals.get(rowIndex).getFiscal_year() + ""))
 		parentTabPane.getSelectionModel().select(tab);
 		}
-
 	}
 }

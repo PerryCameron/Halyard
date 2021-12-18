@@ -1,5 +1,6 @@
 package com.ecsail.gui.tabs;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -92,7 +93,7 @@ public class TabBoardMembers extends Tab {
 //		});
 
 	ComboBox comboBox = new ComboBox();
-	for(int i = Integer.parseInt(currentYear); i > 1969; i--) {
+	for(int i = Integer.parseInt(currentYear) + 1; i > 1969; i--) {
 		comboBox.getItems().add(i);
 	}
 	comboBox.getStyleClass().add("bigbox");
@@ -106,7 +107,12 @@ public class TabBoardMembers extends Tab {
 			  addChairmen(committeeVBox1, committeeVBox2);
 			  addBoard(boardMembersVBox1,boardMembersVBox2,boardMembersVBox3);
 			  System.out.println("Creating image: " + selectedYear + ".png");
-			  Image newImage = new Image(getClass().getResourceAsStream("/Stickers/" + selectedYear + ".png"));
+			  Image newImage = null;
+			  try {
+				  newImage = new Image(getClass().getResourceAsStream("/Stickers/" + selectedYear + ".png"));
+			  } catch (NullPointerException e) {
+				  newImage = new Image(getClass().getResourceAsStream("/Stickers/unknown.png"));
+			  }
 			  imageView.setImage(newImage);
 
 		});
@@ -165,7 +171,7 @@ public class TabBoardMembers extends Tab {
 	vboxPink.setId("box-pink");
 	vboxLeft.setId("box-pink");
 
-	comboBox.getSelectionModel().selectFirst();
+	comboBox.getSelectionModel().select(1);
 //	vboxGrey.setId("slip-box");
 
 //	boardMembersHBox.setStyle("-fx-background-color: blue");

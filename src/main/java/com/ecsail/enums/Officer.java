@@ -1,15 +1,18 @@
 package com.ecsail.enums;
 
 public enum Officer {
+		// Officers
 	   COMMODO("CO", "Commodore"), 
 	   VICECOM("VC", "Vice Commodore"),
 	   PASTCOM("PC", "Past Commodore"),
 	   CHAIRMA("CB", "Chairman of the Board"),
+	   GROUNDS("GC", "Grounds Committee"),
+	   FACILIT("FM", "Facility Manager"),
 	   TREASUR("TR", "Treasurer"),
 	   SECRETA("SE", "Secretary"),
+		// Chairs
 	   HARBORM("HM", "Harbormaster"),
 	   AHARBOR("AH", "Assistant Harbormaster"),
-	   GROUNDS("GC", "Grounds Committee"),
 	   AGROUND("AG", "Assistant Grounds Committee"),
 	   MEMBERS("MS", "Membership"),
 	   AMEMBER("AM", "Assistant Membership"),
@@ -25,7 +28,6 @@ public enum Officer {
 	   ASOCIAL("SA", "Assistant Social"),
 	   SHIPSTO("SS", "Ships Store"),
 	   WINTERA("WA", "Winter Activities"),
-	   NEWFACI("NF", "Facilities"),
 	   BDMEMBE("BM", "Board Member")
 	   ;
 	 

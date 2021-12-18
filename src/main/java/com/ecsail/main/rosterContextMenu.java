@@ -33,12 +33,11 @@ public class rosterContextMenu extends ContextMenu {
         this.person = SqlSelect.getPersonByPid(m.getPid());
         this.email = SqlSelect.getEmail(this.person);
         getItems().addAll(emailClient,registration);
-
+        String link = linkCreator.createLink();
 
         registration.setOnAction((ActionEvent e) -> {
 
-            String link = linkCreator.createLink();
-            String linkData = encodeURI(linkCreator.createLinkData(m));
+            String linkData = encodeURI(linkCreator.createLinkData(m, email));
             String body = link + linkData;
             // email ID of Recipient.
             String recipient = email;
@@ -49,8 +48,7 @@ public class rosterContextMenu extends ContextMenu {
             Properties properties = new Properties();
 
             // Setting up mail server
-            properties.put("mail.smtp.username","");
-            properties.put("mail.smtp.password", "");
+
             properties.setProperty("mail.smtp.host", host);
             properties.put("mail.smtp.port", "587");
             properties.put("mail.smtp.auth", "true");
@@ -73,7 +71,8 @@ public class rosterContextMenu extends ContextMenu {
                 MimeMessage message = new MimeMessage(session);
 
                 // Set From Field: adding senders email to from field.
-                message.setFrom(new InternetAddress("perry.lee.cameron@gmail.com"));
+//                message.setFrom(new InternetAddress("perry.lee.cameron@gmail.com"));
+                message.setFrom(new InternetAddress("membership@ecsail.org"));
 
                 // Set To Field: adding recipient's email to from field.
                 message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
@@ -97,8 +96,8 @@ public class rosterContextMenu extends ContextMenu {
 
         emailClient.setOnAction((ActionEvent e) -> {
 
-            String link = linkCreator.createLink();
-            String linkData = encodeURI(linkCreator.createLinkData(m));
+
+            String linkData = encodeURI(linkCreator.createLinkData(m, email));
             String body = link + linkData;
             String subject = encodeURI("2022 Membership Renewal");
             System.out.println(body);

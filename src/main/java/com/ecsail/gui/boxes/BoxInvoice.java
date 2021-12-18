@@ -64,11 +64,11 @@ public class BoxInvoice extends HBox {
 		getPayment();
 
 		/// this is to create compatability with older database versions, probably will set all other credit to 0.00 and then remove this
-		if(isNull(fiscals.get(rowIndex).getOther_credit())) {
-			BigDecimal otherCredit = new BigDecimal("0.00");
-			invoice.setOther_credit(String.valueOf(otherCredit));
-			updateBalance();
-		}
+//		if(isNull(fiscals.get(rowIndex).getOther_credit())) {
+//			BigDecimal otherCredit = new BigDecimal("0.00");
+//			invoice.setOther_credit(String.valueOf(otherCredit));
+//			updateBalance();
+//		}
 
 		////////////// OBJECTS /////////////////////
 
@@ -520,16 +520,16 @@ public class BoxInvoice extends HBox {
 	private void getPayment() {
 		if(SqlExists.paymentExists(fiscals.get(rowIndex).getMoney_id())) {
 			this.payments = SqlSelect.getPayments(fiscals.get(rowIndex).getMoney_id());
-			System.out.println("A record for money_id=" + fiscals.get(rowIndex).getMoney_id() + " exists. Opening Payment");
-			System.out.println("Payment has " + payments.size() + " entries");
+//			System.out.println("A record for money_id=" + fiscals.get(rowIndex).getMoney_id() + " exists. Opening Payment");
+//			System.out.println("Payment has " + payments.size() + " entries");
 			// pull up payments from database
 		} else {  // if not create one
 			this.payments = FXCollections.observableArrayList();
-			System.out.println("Creating a new entry");
+//			System.out.println("Creating a new entry");
 			int pay_id = SqlSelect.getNumberOfPayments() + 1;
 			payments.add(new Object_Payment(pay_id,fiscals.get(rowIndex).getMoney_id(),"0","CH",date, "0",1));
 			SqlInsert.addPaymentRecord(payments.get(payments.size() - 1));
-			System.out.println(payments.get(0).toString());
+//			System.out.println(payments.get(0).toString());
 		}
 	}
 
