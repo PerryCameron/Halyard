@@ -1530,22 +1530,6 @@ public class SqlSelect {
 		return number;
 	}
 	
-	public static int getNumberOfNewMemberships(String year) {
-		int number = 0;
-		ResultSet rs;
-		try {
-			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			rs = stmt.executeQuery("SELECT COUNT(*) from membership WHERE JOIN_DATE >= '" + year + "-01-01' and MEMBERSHIP_ID is not NULL;");
-			rs.next();
-			number = rs.getInt("COUNT(*)");
-		
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
-		}
-		return number;
-	}
-	
 	public static int getNumberOfPayments() {
 		int number = 0;
 		ResultSet rs;

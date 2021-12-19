@@ -63,7 +63,9 @@ public class TabMembership extends Tab {
         fiscalTabPane.setTabClosingPolicy(TabClosingPolicy.SELECTED_TAB);
         peopleTabPane.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
         informationTabPane.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
-		
+
+
+
         hbox1.setSpacing(100);  // membership HBox
         hbox2.setSpacing(10);   // holds PersonVBox
         

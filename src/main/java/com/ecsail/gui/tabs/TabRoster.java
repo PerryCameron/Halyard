@@ -171,10 +171,10 @@ public class TabRoster extends Tab {
 				.addAll(Arrays.asList(Col1, Col2, Col3, Col4, Col5, Col6, Col7, Col8, Col9, Col10, Col11));
 
 		ComboBox<Integer> comboBox = new ComboBox<>();
-		for(int i = Integer.parseInt(HalyardPaths.getYear()); i > 1969; i--) {
+		for(int i = Integer.parseInt(HalyardPaths.getYear()) + 1; i > 1969; i--) {
 			comboBox.getItems().add(i);
 		}
-		comboBox.getSelectionModel().selectFirst();
+		comboBox.getSelectionModel().select(1);
 		comboBox.getStyleClass().add("bigbox");
 		//////////////////// LISTENERS //////////////////////////
 

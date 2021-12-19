@@ -144,5 +144,18 @@ public class Object_MembershipId {
 	public final void setIsLateRenew(final boolean isLateRenew) {
 		this.isLateRenewProperty().set(isLateRenew);
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Object_MembershipId{" +
+				"mid=" + mid +
+				", fiscal_Year=" + fiscal_Year +
+				", ms_id=" + ms_id +
+				", membership_id=" + membership_id +
+				", isRenew=" + isRenew +
+				", mem_type=" + mem_type +
+				", selected=" + selected +
+				", isLateRenew=" + isLateRenew +
+				'}';
+	}
 }

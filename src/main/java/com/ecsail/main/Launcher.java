@@ -13,7 +13,6 @@ import com.ecsail.gui.tabs.TabBoatView;
 import com.ecsail.gui.tabs.TabBoats;
 import com.ecsail.gui.tabs.TabDefinedFee;
 import com.ecsail.gui.tabs.TabMembership;
-import com.ecsail.gui.tabs.TabNewYearGenerator;
 import com.ecsail.gui.tabs.TabNotes;
 import com.ecsail.gui.tabs.TabPeople;
 import com.ecsail.gui.tabs.TabSlips;
@@ -194,16 +193,6 @@ static TabPane tabPane;
 				thisTab = true;
 		}
 		return thisTab;
-	}
-
-
-	public static void openTabNewYearGenerator() {
-		try {
-			TabNewYearGenerator.makeItSo();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 	
 	// gets a row with ms_id
