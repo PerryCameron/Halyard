@@ -106,11 +106,12 @@ public class TabBoardMembers extends Tab {
 			  addOfficers(officerVBox1, officerVBox2);
 			  addChairmen(committeeVBox1, committeeVBox2);
 			  addBoard(boardMembersVBox1,boardMembersVBox2,boardMembersVBox3);
-			  System.out.println("Creating image: " + selectedYear + ".png");
+			  System.out.println("Using image: " + selectedYear + ".png");
 			  Image newImage = null;
 			  try {
 				  newImage = new Image(getClass().getResourceAsStream("/Stickers/" + selectedYear + ".png"));
 			  } catch (NullPointerException e) {
+				  System.out.println("Couldn't locate /Stickers/" + selectedYear + ".png" );
 				  newImage = new Image(getClass().getResourceAsStream("/Stickers/unknown.png"));
 			  }
 			  imageView.setImage(newImage);
