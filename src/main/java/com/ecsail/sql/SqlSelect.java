@@ -1,53 +1,28 @@
 package com.ecsail.sql;
 
+import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
+import com.ecsail.main.ConnectDatabase;
+import com.ecsail.main.HalyardPaths;
+import com.ecsail.main.Main;
+import com.ecsail.pdf.directory.Object_SlipInfo;
+import com.ecsail.pdf.directory.Object_Sportsmen;
+import com.ecsail.pdf.directory.PDF_Object_Officer;
+import com.ecsail.structures.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
-import com.ecsail.main.ConnectDatabase;
-import com.ecsail.main.Main;
-import com.ecsail.main.HalyardPaths;
-import com.ecsail.pdf.directory.Object_SlipInfo;
-import com.ecsail.pdf.directory.Object_Sportsmen;
-import com.ecsail.pdf.directory.PDF_Object_Officer;
-import com.ecsail.structures.Object_Award;
-import com.ecsail.structures.Object_Board;
-import com.ecsail.structures.Object_Boat;
-import com.ecsail.structures.Object_BoatList;
-import com.ecsail.structures.Object_BoatOwner;
-import com.ecsail.structures.Object_DefinedFee;
-import com.ecsail.structures.Object_Deposit;
-import com.ecsail.structures.Object_Email;
-import com.ecsail.structures.Object_Email_Information;
-import com.ecsail.structures.Object_Membership;
-import com.ecsail.structures.Object_MembershipId;
-import com.ecsail.structures.Object_MembershipList;
-import com.ecsail.structures.Object_Memo;
-import com.ecsail.structures.Object_Memo2;
-import com.ecsail.structures.Object_Money;
-import com.ecsail.structures.Object_Officer;
-import com.ecsail.structures.Object_OfficerWithName;
-import com.ecsail.structures.Object_PaidDues;
-import com.ecsail.structures.Object_Payment;
-import com.ecsail.structures.Object_Person;
-import com.ecsail.structures.Object_Phone;
-import com.ecsail.structures.Object_Slip;
-import com.ecsail.structures.Object_Stats;
-import com.ecsail.structures.Object_Temp;
-import com.ecsail.structures.Object_WaitList;
-import com.ecsail.structures.Object_WorkCredit;
-
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 public class SqlSelect {
 
 	
 	
 	public static ArrayList<Object_OfficerWithName> getOfficersWithNames(String type) {
-		ArrayList<Object_OfficerWithName> theseOfficers = new ArrayList<Object_OfficerWithName>();
+		ArrayList<Object_OfficerWithName> theseOfficers = new ArrayList<>();
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
@@ -67,7 +42,7 @@ public class SqlSelect {
 	}
 	
 	public static ArrayList<Object_Sportsmen> getSportsManAwardNames() {
-		ArrayList<Object_Sportsmen> theseOfficers = new ArrayList<Object_Sportsmen>();
+		ArrayList<Object_Sportsmen> theseOfficers = new ArrayList<>();
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
@@ -334,7 +309,7 @@ public class SqlSelect {
 	}
 	
 	public static ArrayList<PDF_Object_Officer> getOfficersByYear(String selectedYear) {
-		ArrayList<PDF_Object_Officer> officers = new ArrayList<PDF_Object_Officer>();
+		ArrayList<PDF_Object_Officer> officers = new ArrayList<>();
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
@@ -630,7 +605,7 @@ public class SqlSelect {
 		}
 		if(email.getEmail() != null) {
 			returnEmail = email.getEmail();
-		} 
+		}
 		return returnEmail;
 	}
 	
@@ -827,7 +802,7 @@ public class SqlSelect {
 			rs = stmt.executeQuery(Main.console.setRegexColor("select * from boat;"));
 			while (rs.next()) {
 				thisBoat.add(new Object_Boat(
-						rs.getInt("BOAT_ID"), 0, // because Object_Boat has an ms-id variable but database does not
+						rs.getInt("BOAT_ID"), 0, // because Object_Boat has a ms-id variable but database does not
 						rs.getString("MANUFACTURER"), // might be the best note I have ever left ^^ lol
 						rs.getString("MANUFACTURE_YEAR"), 
 						rs.getString("REGISTRATION_NUM"), 
@@ -894,24 +869,24 @@ public class SqlSelect {
 		return thisBoat;
 	}
 	
-	public static ArrayList<Integer> getBoatIds(int ms_id) {
-		ArrayList<Integer> boats = new ArrayList<Integer>();	
-		try {
-			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			ResultSet rs;
-			rs = stmt.executeQuery(Main.console.setRegexColor("select bo.BOAT_ID from boat_owner bo inner join boat b on bo.BOAT_ID=b.BOAT_ID where ms_id='" + ms_id + "';"));
-
-			while (rs.next()) {
-			boats.add(rs.getInt("BOAT_ID"));
-			}
-		} catch (SQLException e) {
-			
-		}
-		return boats;
-	}
+//	public static ArrayList<Integer> getBoatIds(int ms_id) {
+//		ArrayList<Integer> boats = new ArrayList<Integer>();
+//		try {
+//			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
+//			ResultSet rs;
+//			rs = stmt.executeQuery(Main.console.setRegexColor("select bo.BOAT_ID from boat_owner bo inner join boat b on bo.BOAT_ID=b.BOAT_ID where ms_id='" + ms_id + "';"));
+//
+//			while (rs.next()) {
+//			boats.add(rs.getInt("BOAT_ID"));
+//			}
+//		} catch (SQLException e) {
+//
+//		}
+//		return boats;
+//	}
 	
 	public static List<Object_Boat> getBoats(int ms_id) { // overload but must be separate
-		List<Object_Boat> thisBoat = new ArrayList<Object_Boat>();
+		List<Object_Boat> thisBoat = new ArrayList<>();
 		try {
 		Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 		ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select b.BOAT_ID, bo.MS_ID, b.MANUFACTURER"
@@ -978,34 +953,6 @@ public class SqlSelect {
 		return thisBoat;
 	}
 	
-	public static List<Object_Boat> getBoatsForPdf() {
-		List<Object_Boat> thisBoat = new ArrayList<Object_Boat>();
-
-		try {
-			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select b.BOAT_ID, bo.MS_ID, b.MANUFACTURER"
-					+ ", b.MANUFACTURE_YEAR, b.REGISTRATION_NUM, b.MODEL, b.BOAT_NAME, b.SAIL_NUMBER"
-					+ ", b.HAS_TRAILER, b.LENGTH, b.WEIGHT, b.KEEL, b.PHRF from boat b inner join boat_owner bo using (boat_id);"));
-			while (rs.next()) {
-
-				thisBoat.add(new Object_Boat(rs.getInt("BOAT_ID"), rs.getInt("MS_ID"), rs.getString("MANUFACTURER"),
-						rs.getString("MANUFACTURE_YEAR"), rs.getString("REGISTRATION_NUM"), rs.getString("MODEL"),
-						rs.getString("BOAT_NAME"), rs.getString("SAIL_NUMBER"), rs.getBoolean("HAS_TRAILER"),
-						rs.getString("LENGTH"), rs.getString("WEIGHT"), rs.getString("KEEL"),
-						rs.getString("PHRF"), 
-						rs.getString("DRAFT"), 
-						rs.getString("BEAM"),
-						rs.getString("LWL")));
-			}
-			stmt.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
-		}
-
-		return thisBoat;
-	}
-	
 	public static ObservableList<Object_Phone> getPhone(int p_id) {  // if p_id = 0 then select all
 		String query = "select * from phone";
 		if(p_id != 0)
@@ -1027,7 +974,7 @@ public class SqlSelect {
 	}
 	
 	public static ArrayList<Object_Phone> getPhone(Object_Person p) {  // if p_id = 0 then select all
-		ArrayList<Object_Phone> thisPhone = new ArrayList<Object_Phone>();
+		ArrayList<Object_Phone> thisPhone = new ArrayList<>();
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
@@ -1119,7 +1066,7 @@ public class SqlSelect {
 	
 	public static ArrayList<Object_Person> getDependants(Object_Membership m) {  
 		String query = "SELECT * FROM person WHERE ms_id= '" + m.getMsid() + "' and MEMBER_TYPE=3";
-		ArrayList<Object_Person> thesepeople = new ArrayList<Object_Person>();
+		ArrayList<Object_Person> thesepeople = new ArrayList<>();
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 		    ResultSet rs;
@@ -1201,7 +1148,7 @@ public class SqlSelect {
 	}
 	
 	public static ArrayList<Object_Stats> getStatistics() {
-		ArrayList<Object_Stats> stats = new ArrayList<Object_Stats>();
+		ArrayList<Object_Stats> stats = new ArrayList<>();
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 		    ResultSet rs;
@@ -1345,7 +1292,7 @@ public class SqlSelect {
 			, rs.getString("MEM_TYPE")
 			, rs.getBoolean("SELECTED")
 			, rs.getBoolean("LATE_RENEW"));
-			};
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
@@ -1478,57 +1425,56 @@ public class SqlSelect {
 		return workCredits;
 	}
 	
-	public static int getActiveMembershipCount(String year) {  // gives the last memo_id number
-		int number = 0;
-		ResultSet rs;
-		try {
-			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			rs = stmt.executeQuery("select count(*) from membership_id where fiscal_year='" + year + "' and renew=true;");
-			rs.next();
-			number = rs.getInt("count(*)");
-		
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
-		}
-		return number;
-	}
+//	public static int getActiveMembershipCount(String year) {  // gives the last memo_id number
+//		int number = 0;
+//		ResultSet rs;
+//		try {
+//			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
+//			rs = stmt.executeQuery("select count(*) from membership_id where fiscal_year='" + year + "' and renew=true;");
+//			rs.next();
+//			number = rs.getInt("count(*)");
+//
+//		} catch (SQLException e) {
+//
+//			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
+//		}
+//		return number;
+//	}
 	
-	public static int getMembershipTypeCount(String type) {  // gives the last memo_id number
-		int number = 0;
-		ResultSet rs;
-		try {
-			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			rs = stmt.executeQuery("select count(*) from membership m "
-					+ "inner join membership_id id on m.ms_id=id.ms_id "
-					+ "where id.fiscal_year='" + HalyardPaths.getYear() + "' and id.mem_type='" + type + "' and id.renew=true;");
-			rs.next();
-			number = rs.getInt("count(*)");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
-		}
-		return number;
-	}
+//	public static int getMembershipTypeCount(String type) {  // gives the last memo_id number
+//		int number = 0;
+//		ResultSet rs;
+//		try {
+//			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
+//			rs = stmt.executeQuery("select count(*) from membership m "
+//					+ "inner join membership_id id on m.ms_id=id.ms_id "
+//					+ "where id.fiscal_year='" + HalyardPaths.getYear() + "' and id.mem_type='" + type + "' and id.renew=true;");
+//			rs.next();
+//			number = rs.getInt("count(*)");
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
+//		}
+//		return number;
+//	}
 	
-	public static int getActivePeopleCount() {  // gives the last memo_id number
-		int number = 0;
-		ResultSet rs;
-		try {
-			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			rs = stmt.executeQuery("select count(*) from person p "
-					+ "inner join membership m on m.ms_id=p.ms_id "
-					+ "left join membership_id id on id.ms_id=m.ms_id "
-					+ "where id.fiscal_year='" + HalyardPaths.getYear() + "' and id.renew=true");
-			rs.next();
-			number = rs.getInt("count(*)");
-		
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
-		}
-		return number;
-	}
+//	public static int getActivePeopleCount() {  // gives the last memo_id number
+//		int number = 0;
+//		ResultSet rs;
+//		try {
+//			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
+//			rs = stmt.executeQuery("select count(*) from person p "
+//					+ "inner join membership m on m.ms_id=p.ms_id "
+//					+ "left join membership_id id on id.ms_id=m.ms_id "
+//					+ "where id.fiscal_year='" + HalyardPaths.getYear() + "' and id.renew=true");
+//			rs.next();
+//			number = rs.getInt("count(*)");
+//
+//		} catch (SQLException e) {
+//			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
+//		}
+//		return number;
+//	}
 	
 	public static int getNumberOfPayments() {
 		int number = 0;
@@ -1577,55 +1523,37 @@ public class SqlSelect {
 		return number;
 	}
 
-	public static String getPaymentDate(int moneyid) {
-		String date = "";
-		ResultSet rs;
-		try {
-			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			rs = stmt.executeQuery("select payment_date from payment where money_id=" + moneyid);
-			rs.next();
-			date = rs.getString("payment_date");
-		
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
-		}
-		
-		return date;
-	}
+//	public static String getPaymentDate(int moneyid) {
+//		String date = "";
+//		ResultSet rs;
+//		try {
+//			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
+//			rs = stmt.executeQuery("select payment_date from payment where money_id=" + moneyid);
+//			rs.next();
+//			date = rs.getString("payment_date");
+//
+//		} catch (SQLException e) {
+//			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
+//		}
+//		return date;
+//	}
+
 	
-	
-	public static int getMoneyCount(String column, int batch) {
-		int number = 0;
-		ResultSet rs;
-		try {
-			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			rs = stmt.executeQuery("Select SUM(" + column + ") from money where commited=true AND batch=" + batch + ";");
-			rs.next();
-			number = rs.getInt("SUM(" + column + ")");
-		
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
-		}
-		return number;
-	}
-	
-	public static int getMoneyCount(String column) {
-		int number = 0;
-		ResultSet rs;
-		try {
-			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			rs = stmt.executeQuery("Select SUM(" + column + ") from money where commited=true;");
-			rs.next();
-			number = rs.getInt("SUM(" + column + ")");
-		
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
-		}
-		return number;
-	}
+//	public static int getMoneyCount(String column) {
+//		int number = 0;
+//		ResultSet rs;
+//		try {
+//			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
+//			rs = stmt.executeQuery("Select SUM(" + column + ") from money where commited=true;");
+//			rs.next();
+//			number = rs.getInt("SUM(" + column + ")");
+//
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
+//		}
+//		return number;
+//	}
 	
 	public static int getCount()  {  // gives the last memo_id number
 		int number = 0;
@@ -1665,7 +1593,7 @@ public class SqlSelect {
 		try {
 			stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select membership_id from membership_id where fiscal_year='" + year + "' and ms_id='" + ms_id + "'"));
-			if (rs.next() == false) {
+			if (!rs.next()) {
 				id = "none";
 			} else {
 				do {
@@ -1817,7 +1745,7 @@ public class SqlSelect {
 	}
 	
 	public static boolean isActive(int ms_id, String year) {
-		Boolean result = false;
+		boolean result = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("Select renew from membership_id where FISCAL_YEAR='"+year+"' and MS_ID='"+ms_id+"'"));
@@ -1831,21 +1759,21 @@ public class SqlSelect {
 		return result;
 	}
 	
-	public static int getMid(String year, int ms_id) {
-		int number = 0;
-		ResultSet rs;
-		try {
-			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			rs = stmt.executeQuery("select mid from membership_id where MS_ID=" + ms_id + " and FISCAL_YEAR=" + year);
-			rs.next();
-			number = rs.getInt("MID");
-		
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
-		}
-		return number;
-	}
+//	public static int getMid(String year, int ms_id) {
+//		int number = 0;
+//		ResultSet rs;
+//		try {
+//			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
+//			rs = stmt.executeQuery("select mid from membership_id where MS_ID=" + ms_id + " and FISCAL_YEAR=" + year);
+//			rs.next();
+//			number = rs.getInt("MID");
+//
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
+//		}
+//		return number;
+//	}
 	
 	public static int getNonRenewNumber(String year) {
 		int number = 0;
@@ -1882,24 +1810,24 @@ public class SqlSelect {
 		return number;
 	}
 	
-	public static int getMSID(Object_Temp t,int year, ArrayList<String> errortuples) {
-		int number = 0;
-		ResultSet rs;
-		try {
-			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			rs = stmt.executeQuery("select ms_id from person where L_NAME='"+t.getLname()+"' and F_NAME='"+t.getFname()+"';");
-			rs.next();
-			number = rs.getInt("ms_id");
-		
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			//System.out.println("The person is " + t.toString() );
-			errortuples.add("Failed to find " + t.toString());
-			//new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
-		}
-		return number;
-		
-	}
+//	public static int getMSID(Object_Temp t,int year, ArrayList<String> errortuples) {
+//		int number = 0;
+//		ResultSet rs;
+//		try {
+//			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
+//			rs = stmt.executeQuery("select ms_id from person where L_NAME='"+t.getLname()+"' and F_NAME='"+t.getFname()+"';");
+//			rs.next();
+//			number = rs.getInt("ms_id");
+//
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			//System.out.println("The person is " + t.toString() );
+//			errortuples.add("Failed to find " + t.toString());
+//			//new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
+//		}
+//		return number;
+//
+//	}
 	
 	public static Object_WaitList getWaitList(int ms_id) {
 		Object_WaitList thisWaitList = null;
@@ -1926,7 +1854,7 @@ public class SqlSelect {
 	}
 	
 	public static ArrayList<Object_WaitList> getWaitLists() {
-		ArrayList<Object_WaitList> thisWaitList = new ArrayList<Object_WaitList>();
+		ArrayList<Object_WaitList> thisWaitList = new ArrayList<>();
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
@@ -1950,7 +1878,7 @@ public class SqlSelect {
 	}
 
 	public static ArrayList<Object_SlipInfo> getSlipsForDock(String dock) {
-		ArrayList<Object_SlipInfo> thisSlipInfo = new ArrayList<Object_SlipInfo>();
+		ArrayList<Object_SlipInfo> thisSlipInfo = new ArrayList<>();
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
@@ -1974,7 +1902,7 @@ public class SqlSelect {
 	}
 
 	public static ArrayList<Object_Award> getAwards() {
-		ArrayList<Object_Award> theseAwards = new ArrayList<Object_Award>();
+		ArrayList<Object_Award> theseAwards = new ArrayList<>();
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;

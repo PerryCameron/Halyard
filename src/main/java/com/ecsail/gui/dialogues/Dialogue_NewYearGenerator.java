@@ -310,7 +310,8 @@ public class Dialogue_NewYearGenerator extends Stage {
 		for (Object_MembershipList ml : memberships) {
 			if(!SqlExists.memberShipIdExists(ml.getMsid(), String.valueOf(selectedYear))) {
 				//System.out.println("Membership " + ml.getMsid() + " exists, Creating new");
-			SqlInsert.addMembershipId(new Object_MembershipId(mid, String.valueOf(selectedYear), ml.getMsid(), count + "",false,ml.getMemType(),false,false));
+//			SqlInsert.addMembershipId(
+			System.out.println(		new Object_MembershipId(mid, String.valueOf(selectedYear), ml.getMsid(), count + "",false,ml.getMemType(),false,false));
 			mid++;
 			count++; // new membership id
 			} else {
@@ -326,7 +327,7 @@ public class Dialogue_NewYearGenerator extends Stage {
 		for (Object_MembershipList ml : memberships) {
 			if (!SqlExists.memberShipIdExists(ml.getMsid(), String.valueOf(selectedYear))) {
 //				SqlInsert.addMembershipId(
-				System.out.println(		new Object_MembershipId(mid, String.valueOf(selectedYear), ml.getMsid(), ml.getMembershipId() + "", false,ml.getMemType(),false,false).toString());
+				System.out.println(new Object_MembershipId(mid, String.valueOf(selectedYear), ml.getMsid(), ml.getMembershipId() + "", false,ml.getMemType(),false,false).toString());
 				mid++;
 			} else {
 				System.out.println("Membership " + ml.getMsid() + " exists");
