@@ -6,6 +6,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.ecsail.sql.select.SqlEmail;
+import com.ecsail.sql.select.SqlMembership_Id;
+import com.ecsail.sql.select.SqlPhone;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
@@ -17,7 +20,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.ecsail.main.HalyardPaths;
 import com.ecsail.main.SaveFileChooser;
-import com.ecsail.sql.SqlSelect;
 import com.ecsail.structures.Object_Email;
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Phone;
@@ -256,7 +258,7 @@ public class Xls_roster {
 	
 	private String getPhone(int p_id) {
 		String phoneString = "";
-		ObservableList<Object_Phone> phones = SqlSelect.getPhone(p_id);
+		ObservableList<Object_Phone> phones = SqlPhone.getPhone(p_id);
 		if (phones != null) {
 			for (Object_Phone p : phones) {
 				if (p.getPhoneType().equals("C")) {  // we prefer a cell phone
@@ -272,7 +274,7 @@ public class Xls_roster {
 	
 	private String getEmail(int p_id) {
 		String emailString = "";
-		ObservableList<Object_Email> email = SqlSelect.getEmail(p_id);
+		ObservableList<Object_Email> email = SqlEmail.getEmail(p_id);
 		if (email != null) {
 			for (Object_Email e: email) {
 				if(e.isIsPrimaryUse()) {
@@ -290,7 +292,7 @@ public class Xls_roster {
 	private String getSubleaser(Object_MembershipList owner) {
 		String subleaseString = "";
 		if(owner.getSubleaser() != 0) {
-			subleaseString = SqlSelect.getId(owner.getSubleaser());
+			subleaseString = SqlMembership_Id.getId(owner.getSubleaser());
 		}
 		return subleaseString;
 	}

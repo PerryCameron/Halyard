@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ecsail.sql.SqlExists;
-import com.ecsail.sql.SqlSelect;
+import com.ecsail.sql.select.*;
 import com.ecsail.structures.Object_Boat;
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Person;
@@ -23,7 +23,7 @@ public class Object_MembershipInformation {
 	String boats;
 	
 	public Object_MembershipInformation(Object_MembershipList m) {
-		this.primary = SqlSelect.getPersonByPid(m.getPid());
+		this.primary = SqlPerson.getPersonByPid(m.getPid());
 		this.secondary = getSecondaryPerson(m);
 		this.children = getChildrenString(m);
 		getSecondaryPhoneAndEmail();
@@ -36,7 +36,7 @@ public class Object_MembershipInformation {
 	private String getChildrenString(Object_MembershipList m) {
 		String children = "Children: ";
 		int count = 0;
-		ArrayList<Object_Person> dependants = SqlSelect.getDependants(m);
+		ArrayList<Object_Person> dependants = SqlPerson.getDependants(m);
 		for(Object_Person d: dependants) {
 			children += d.getFname();
 			count++;
@@ -59,7 +59,7 @@ public class Object_MembershipInformation {
 		Object_Person s = new Object_Person();
 		this.secondaryExists = false;
 		if (SqlExists.activePersonExists(m.getMsid(), 2)) {
-			s = SqlSelect.getPerson(m.getMsid(), 2);
+			s = SqlPerson.getPerson(m.getMsid(), 2);
 			this.secondaryExists = true;
 		}
 		return s;
@@ -70,9 +70,9 @@ public class Object_MembershipInformation {
 		this.secondaryPhone = "";
 		if(secondaryExists) {
 			if (SqlExists.emailExists(secondary))
-				this.secondaryEmail = SqlSelect.getEmail(secondary);
+				this.secondaryEmail = SqlEmail.getEmail(secondary);
 			if (SqlExists.cellPhoneExists(secondary, "C")) 
-				this.secondaryPhone = SqlSelect.getPhone(secondary, "C") + " Cell";
+				this.secondaryPhone = SqlPhone.getPhone(secondary, "C") + " Cell";
 		}
 	}
 	
@@ -80,12 +80,12 @@ public class Object_MembershipInformation {
 		this.primaryEmail = "";
 		this.primaryPhone = "";
 		if (SqlExists.emailExists(primary))
-			this.primaryEmail = SqlSelect.getEmail(primary);
+			this.primaryEmail = SqlEmail.getEmail(primary);
 		if (SqlExists.cellPhoneExists(primary, "C")) {
-			this.primaryPhone = SqlSelect.getPhone(primary, "C") + " Cell";
+			this.primaryPhone = SqlPhone.getPhone(primary, "C") + " Cell";
 		} else {
 			if (SqlExists.cellPhoneExists(primary, "H")) {
-				this.primaryPhone = SqlSelect.getPhone(primary, "H") + " Home";
+				this.primaryPhone = SqlPhone.getPhone(primary, "H") + " Home";
 			}
 		}
 	}
@@ -93,13 +93,13 @@ public class Object_MembershipInformation {
 	private void getEmergencyPhoneString() {
 		this.emergencyPhone = "";
 		if (SqlExists.cellPhoneExists(primary, "E")) 
-			this.emergencyPhone = "Emergency: " + SqlSelect.getPhone(primary, "E");
+			this.emergencyPhone = "Emergency: " + SqlPhone.getPhone(primary, "E");
 	}
 	
 	private String getBoatsString(Object_MembershipList m) {
 		String memberBoats = "";
 		List<Object_Boat> boats = new ArrayList<Object_Boat>();
-		boats = SqlSelect.getBoats(m.getMsid());
+		boats = SqlBoat.getBoats(m.getMsid());
 		int count = 0;
 		if (boats.size() > 0) {  // there are some boats
 			for (Object_Boat b : boats) {

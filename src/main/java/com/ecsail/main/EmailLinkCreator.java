@@ -1,7 +1,11 @@
 package com.ecsail.main;
 
 import com.ecsail.enums.MembershipType;
+import com.ecsail.sql.select.SqlMoney;
 import com.ecsail.structures.Object_MembershipList;
+import com.ecsail.structures.Object_Money;
+import com.ecsail.structures.Object_Person;
+import com.ecsail.structures.Object_Phone;
 
 public class EmailLinkCreator {
 
@@ -14,7 +18,7 @@ public class EmailLinkCreator {
     final String lname = "&primaryMember[last]=";
     final String address = "&address[addr_line1]=";
     final String city = "&address[city]=";
-    final String state = "&address[city]=";
+    final String state = "&address[state]=";
     final String zip = "&address[postal]=";
     final String email = "&primaryemail=";
     final String workCredit = "&workCredit=";
@@ -28,7 +32,11 @@ public class EmailLinkCreator {
         return url+formId;
     }
 
-    public String createLinkData(Object_MembershipList ml, String primaryEmail) {
+    public String createLinkData(Object_MembershipList ml, String primaryEmail, String selectedYear) {
+        System.out.println("selectedYear=" + selectedYear);
+        Object_Money mo = SqlMoney.getMonies(ml.getMsid(),selectedYear);
+        Object_Phone primaryMemberPhone = null;
+        Object_Person secondaryMember = null;
         String a = memId + ml.getMembershipId();
         String b = membershipType + MembershipType.getByCode(ml.getMemType());
         String c = fname + ml.getFname();
@@ -38,7 +46,9 @@ public class EmailLinkCreator {
         String g = state + ml.getState();
         String h = zip + ml.getZip();
         String i = email + primaryEmail;
-        return a+b+c+d+e+f+g+h+i;
+        String j = workCredit + mo.getWork_credit();
+        String k = winterStorage + mo.getWinter_storage();
+        return a+b+c+d+e+f+g+h+i+j+k;
     }
 
 }

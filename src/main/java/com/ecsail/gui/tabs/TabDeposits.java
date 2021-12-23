@@ -11,7 +11,7 @@ import com.ecsail.gui.dialogues.Dialogue_DepositPDF;
 import com.ecsail.main.Launcher;
 import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.SqlInsert;
-import com.ecsail.sql.SqlSelect;
+import com.ecsail.sql.select.*;
 import com.ecsail.sql.SqlUpdate;
 import com.ecsail.structures.Object_DefinedFee;
 import com.ecsail.structures.Object_Deposit;
@@ -76,9 +76,9 @@ public class TabDeposits extends Tab {
 			}
 		});
 		this.selectedYear = new SimpleDateFormat("yyyy").format(new Date()); // lets start at the current year
-		this.paidDues.addAll(SqlSelect.getPaidDues(selectedYear));
-		summaryTotals.setDepositNumber(SqlSelect.getBatchNumber(selectedYear));
-		this.currentDefinedFee = SqlSelect.getDefinedFee(selectedYear);
+		this.paidDues.addAll(SqlDeposit.getPaidDues(selectedYear));
+		summaryTotals.setDepositNumber(SqlMoney.getBatchNumber(selectedYear));
+		this.currentDefinedFee = SqlDefinedFee.getDefinedFeeByYear(selectedYear);
 		this.currentDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date(System.currentTimeMillis()));
 		////////////////////// OBJECT INSTANCE //////////////////////////
 
@@ -166,11 +166,11 @@ public class TabDeposits extends Tab {
 		yearSpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
 			if (!newValue) {
 				selectedYear = yearSpinner.getEditor().getText();
-				batchSpinner.getValueFactory().setValue(SqlSelect.getBatchNumber(selectedYear)); // set batch to last																					// year
+				batchSpinner.getValueFactory().setValue(SqlMoney.getBatchNumber(selectedYear)); // set batch to last																					// year
 				paidDues.clear();
-				paidDues.addAll(SqlSelect.getPaidDues(selectedYear));
+				paidDues.addAll(SqlDeposit.getPaidDues(selectedYear));
 				currentDefinedFee.clear();
-				currentDefinedFee = SqlSelect.getDefinedFee(selectedYear);
+				currentDefinedFee = SqlDefinedFee.getDefinedFeeByYear(selectedYear);
 				summaryTotals.setDepositNumber(Integer.parseInt(batchSpinner.getEditor().getText()));
 				refreshButton.fire();
 			}
@@ -307,9 +307,9 @@ public class TabDeposits extends Tab {
 		refreshButton.setOnAction((event) -> {
 			paidDues.clear();
 			if (comboBox.getValue().equals("Show All")) {
-				paidDues.addAll(SqlSelect.getPaidDues(selectedYear));
+				paidDues.addAll(SqlDeposit.getPaidDues(selectedYear));
 			} else {
-				paidDues.addAll(SqlSelect.getPaidDues(selectedYear, summaryTotals.getDepositNumber()));
+				paidDues.addAll(SqlDeposit.getPaidDues(selectedYear, summaryTotals.getDepositNumber()));
 			}
 			summaryTotals.clear();
 			updateSummaryTotals();
@@ -318,7 +318,7 @@ public class TabDeposits extends Tab {
 			numberOfRecords.setText(paidDues.size() + "");
 
 			if (SqlExists.ifDepositRecordExists(selectedYear + "", summaryTotals.getDepositNumber())) {
-				currentDeposit = SqlSelect.getDeposit(selectedYear + "", summaryTotals.getDepositNumber());
+				currentDeposit = SqlDeposit.getDeposit(selectedYear + "", summaryTotals.getDepositNumber());
 				LocalDate date = LocalDate.parse(currentDeposit.getDepositDate(), formatter);
 				depositDatePicker.setValue(date);
 			}
@@ -448,7 +448,7 @@ public class TabDeposits extends Tab {
 		// does a deposit exist for selected year and batch?
 		if (SqlExists.ifDepositRecordExists(selectedYear + "", summaryTotals.getDepositNumber())) {
 //			System.out.println("deposit exists");
-			SqlSelect.getDeposit(selectedYear + "", summaryTotals.getDepositNumber()).getDeposit_id();
+			SqlDeposit.getDeposit(selectedYear + "", summaryTotals.getDepositNumber()).getDeposit_id();
 		} else { // record does not exist
 //			System.out.println("deposit does not exist, creating record");
 			createDepositRecord();
@@ -468,7 +468,7 @@ public class TabDeposits extends Tab {
 																														// a
 																							// batch?
 //			System.out.println("deposit exists");
-			deposit_id = SqlSelect.getDeposit(selectedYear + "", summaryTotals.getDepositNumber()).getDeposit_id();
+			deposit_id = SqlDeposit.getDeposit(selectedYear + "", summaryTotals.getDepositNumber()).getDeposit_id();
 		} else { // record does not exist
 //			System.out.println("deposit does not exist, creating record");
 			deposit_id = createDepositRecord();
@@ -482,14 +482,14 @@ public class TabDeposits extends Tab {
 																	// blank payment record
 			pay_id = createPaymentRecord(thisPaidDues);
 		} else {
-			pay_id = SqlSelect.getPayment(thisPaidDues.getMoney_id()).getPay_id(); // payment record exists, lets get
+			pay_id = SqlPayment.getPayment(thisPaidDues.getMoney_id()).getPay_id(); // payment record exists, lets get
 																					// it's ID
 		}
 		return pay_id;
 	}
 
 	private int createPaymentRecord(Object_PaidDues thisPaidDues) {
-		int pay_id = SqlSelect.getNumberOfPayments() + 1;
+		int pay_id = SqlPayment.getNumberOfPayments() + 1;
 		Object_Payment newPayment = new Object_Payment(pay_id, thisPaidDues.getMoney_id(), "0", "CH", currentDate, "0",
 				1);
 		SqlInsert.addPaymentRecord(newPayment);
@@ -497,7 +497,7 @@ public class TabDeposits extends Tab {
 	}
 
 	private int createDepositRecord() {
-		int deposit_id = SqlSelect.getNumberOfDeposits() + 1;
+		int deposit_id = SqlDeposit.getNumberOfDeposits() + 1;
 		Object_Deposit newDeposit = new Object_Deposit(deposit_id, currentDate, selectedYear,
 				summaryTotals.getDepositNumber());
 		SqlInsert.addDeposit(newDeposit);
@@ -511,7 +511,7 @@ public class TabDeposits extends Tab {
 	}
 
 	private void updateNonRenewed(Text nonRenewed) {
-		nonRenewed.setText(SqlSelect.getNonRenewNumber(selectedYear) + "");
+		nonRenewed.setText(SqlMembership_Id.getNonRenewNumber(selectedYear) + "");
 	}
 
 	private void updateMoneyTotals() { // need to add defined fees object

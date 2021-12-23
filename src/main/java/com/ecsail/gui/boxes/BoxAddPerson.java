@@ -8,7 +8,7 @@ import com.ecsail.enums.MemberType;
 import com.ecsail.main.Note;
 import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.SqlInsert;
-import com.ecsail.sql.SqlSelect;
+import com.ecsail.sql.select.SqlSelect;
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Person;
 

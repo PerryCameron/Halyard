@@ -1,8 +1,9 @@
 package com.ecsail.pdf;
 
 import com.ecsail.main.HalyardPaths;
-import com.ecsail.sql.SqlSelect;
-import com.ecsail.sql.Sql_SelectMembership;
+import com.ecsail.sql.select.SqlBoat;
+import com.ecsail.sql.select.SqlMembership;
+import com.ecsail.sql.select.SqlMembership_Id;
 import com.ecsail.structures.Object_Boat;
 import com.ecsail.structures.Object_MembershipList;
 import com.itextpdf.io.image.ImageDataFactory;
@@ -27,7 +28,7 @@ public class PDF_BoatReport {
     private ObservableList<Object_MembershipList> membershipLists;
 
     public PDF_BoatReport() {
-        this.membershipLists = Sql_SelectMembership.getRoster(HalyardPaths.getYear(), true);
+        this.membershipLists = SqlMembership.getRoster(HalyardPaths.getYear(), true);
 
         // Initialize PDF writer
         PdfWriter writer = null;
@@ -80,7 +81,7 @@ public class PDF_BoatReport {
     }
 
     public void membershipTable(Object_MembershipList ml, Document document) {
-        List<Object_Boat> boats = SqlSelect.getBoats(ml.getMsid());
+        List<Object_Boat> boats = SqlBoat.getBoats(ml.getMsid());
         if(boats.size() > 0) {
             System.out.println("Creating Entry for mebership " + ml.getMsid() + " " + ml.getLname());
             removeKayaksAndCanoes(boats);
@@ -95,7 +96,7 @@ public class PDF_BoatReport {
             cell.setBackgroundColor(new DeviceCmyk(.12f, .05f, 0, 0.02f));
             cell.setBorderTop(new SolidBorder(ColorConstants.BLACK, 1));
             cell.setWidth(50);
-            cell.add(new Paragraph(SqlSelect.getMembershipId(HalyardPaths.getYear(), ml.getMsid()) + "" + "")).setFontSize(10);
+            cell.add(new Paragraph(SqlMembership_Id.getMembershipId(HalyardPaths.getYear(), ml.getMsid()) + "" + "")).setFontSize(10);
             detailTable.addCell(cell);
 
 

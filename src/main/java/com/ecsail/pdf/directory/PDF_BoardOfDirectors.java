@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import com.ecsail.enums.Officer;
-import com.ecsail.sql.SqlSelect;
+import com.ecsail.sql.select.SqlOfficer;
 import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
@@ -20,7 +20,7 @@ public class PDF_BoardOfDirectors extends Table {
 	public PDF_BoardOfDirectors(int numColumns, PDF_Object_Settings set) {
 		super(numColumns);
 		this.set = set;
-		officers=SqlSelect.getOfficersByYear(set.getSelectedYear());
+		officers= SqlOfficer.getOfficersByYear(set.getSelectedYear());
 		Collections.sort(officers , Comparator.comparing(PDF_Object_Officer::getLname));
 		setWidth(set.getPageSize().getWidth() * 0.9f);  // makes table 90% of page width
 		setHorizontalAlignment(HorizontalAlignment.CENTER);

@@ -1,7 +1,9 @@
 package com.ecsail.structures;
 
 
-import com.ecsail.sql.SqlSelect;
+import com.ecsail.sql.select.SqlMembership;
+import com.ecsail.sql.select.SqlMembershipList;
+import com.ecsail.sql.select.SqlMembership_Id;
 
 public class Object_Stats {
 	
@@ -54,16 +56,16 @@ public Object_Stats(int fiscalYear) {
 }
 
 public void refreshStatsForYear() {
-	setNonRenewMemberships(SqlSelect.getNumberOfInactiveMembershipsForYear(this.fiscalYear));
-	setNewMemberships(SqlSelect.getNumberOfNewMembershipsForYear(this.fiscalYear));
-	setActiveMemberships(SqlSelect.getNumberOfActiveMembershipsForYear(this.fiscalYear));
-	setReturnMemberships(SqlSelect.getNumberOfReturningMembershipsForYear(this.fiscalYear));
-	setFamily(SqlSelect.getNumberOfMembersOfType("FM", this.fiscalYear));
-	setRegular(SqlSelect.getNumberOfMembersOfType("RM", this.fiscalYear));
-	setSocial(SqlSelect.getNumberOfMembersOfType("SO", this.fiscalYear));
-	setLakeAssociates(SqlSelect.getNumberOfMembersOfType("LA", this.fiscalYear));
-	setLifeMembers(SqlSelect.getNumberOfMembersOfType("LM", this.fiscalYear));
-	setStudent(SqlSelect.getNumberOfMembersOfType("SM", this.fiscalYear));
+	setNonRenewMemberships(SqlMembership_Id.getNumberOfInactiveMembershipsForYear(this.fiscalYear));
+	setNewMemberships(SqlMembership.getNumberOfNewMembershipsForYear(this.fiscalYear));
+	setActiveMemberships(SqlMembership_Id.getNumberOfActiveMembershipsForYear(this.fiscalYear));
+	setReturnMemberships(SqlMembershipList.getNumberOfReturningMembershipsForYear(this.fiscalYear));
+	setFamily(SqlMembership_Id.getNumberOfMembersOfType("FM", this.fiscalYear));
+	setRegular(SqlMembership_Id.getNumberOfMembersOfType("RM", this.fiscalYear));
+	setSocial(SqlMembership_Id.getNumberOfMembersOfType("SO", this.fiscalYear));
+	setLakeAssociates(SqlMembership_Id.getNumberOfMembersOfType("LA", this.fiscalYear));
+	setLifeMembers(SqlMembership_Id.getNumberOfMembersOfType("LM", this.fiscalYear));
+	setStudent(SqlMembership_Id.getNumberOfMembersOfType("SM", this.fiscalYear));
 }
 
 public int getStatId() {

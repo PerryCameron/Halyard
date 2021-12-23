@@ -6,7 +6,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import com.ecsail.sql.SqlInsert;
-import com.ecsail.sql.SqlSelect;
+import com.ecsail.sql.select.SqlMembership_Id;
+import com.ecsail.sql.select.SqlPerson;
+import com.ecsail.sql.select.SqlSelect;
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Memo;
 import com.ecsail.structures.Object_Person;
@@ -15,7 +17,7 @@ public class CreateMembership {
 
 	public static Object_Person createUser(int msid) {
 		// create a main person for the membership
-		int pid = SqlSelect.getCount() + 1;
+		int pid = SqlPerson.getCount() + 1;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("INSERT INTO person () VALUES (" + pid  +"," + msid + ",1,'','',null,'','',true,null,null);"));
@@ -33,10 +35,10 @@ public class CreateMembership {
 			// int ms_id = SqlSelect.getMSIDCount() + 1;
 			int ms_id = SqlSelect.getCount("membership", "ms_id") + 1;
 			// int membership_id = SqlSelect.getMembershipIDCount() +1;
-			int membership_id = SqlSelect.getHighestMembershipId(HalyardPaths.getYear()) + 1;
+			int membership_id = SqlMembership_Id.getHighestMembershipId(HalyardPaths.getYear()) + 1;
 			int mid = SqlSelect.getCount("membership_id", "mid") + 1;
 
-			int pid = SqlSelect.getCount() + 1;
+			int pid = SqlPerson.getCount() + 1;
 			Note newMemNote = new Note();
 			int note_id = newMemNote.getCount() + 1;
 			// primary user creation is done in TabMembership();

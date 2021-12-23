@@ -2,9 +2,9 @@ package com.ecsail.gui.boxes;
 
 import com.ecsail.enums.PaymentType;
 import com.ecsail.main.EditCell;
-import com.ecsail.main.HalyardPaths;
 import com.ecsail.main.Note;
 import com.ecsail.sql.*;
+import com.ecsail.sql.select.*;
 import com.ecsail.structures.*;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.StringProperty;
@@ -52,10 +52,10 @@ public class BoxInvoice extends HBox {
 		this.people = p;
 		this.rowIndex = r;
 		this.fiscals = o;
-		this.definedFees = SqlSelect.selectDefinedFees(fiscals.get(rowIndex).getFiscal_year());
+		this.definedFees = SqlDefinedFee.getDefinedFeeByYear(String.valueOf(fiscals.get(rowIndex).getFiscal_year()));
 		this.invoice = fiscals.get(rowIndex);
 		this.fnode = new Object_Invoice(invoice, definedFees, paymentTableView);
-		this.selectedWorkCreditYear = SqlSelect.getWorkCredit(fiscals.get(rowIndex).getMoney_id());
+		this.selectedWorkCreditYear = SqlMoney.getWorkCredit(fiscals.get(rowIndex).getMoney_id());
 		this.hasOfficer = membershipHasOfficer();
 		this.isCommitted = fiscals.get(rowIndex).isCommitted();
 
@@ -93,7 +93,7 @@ public class BoxInvoice extends HBox {
 					BigDecimal amount = new BigDecimal(t.getNewValue());
 					SqlUpdate.updatePayment(pay_id, "amount", String.valueOf(amount.setScale(2, RoundingMode.HALF_UP)));
 					// SQL Query getTotalAmount() adds all the payments for us
-					BigDecimal totalPaidAmount = BigDecimal.valueOf(SqlSelect.getTotalAmount(fiscals.get(rowIndex).getMoney_id()));
+					BigDecimal totalPaidAmount = BigDecimal.valueOf(SqlMoney.getTotalAmount(fiscals.get(rowIndex).getMoney_id()));
 					fnode.getTotalPaymentText().setText(String.valueOf(totalPaidAmount.setScale(2, RoundingMode.HALF_UP)));
 					fiscals.get(rowIndex).setPaid(String.valueOf(totalPaidAmount.setScale(2, RoundingMode.HALF_UP)));
 					updateBalance();
@@ -184,7 +184,7 @@ public class BoxInvoice extends HBox {
 
 		//////////////// LISTENER //////////////////
 		fnode.getButtonAdd().setOnAction(e -> {
-			int pay_id = SqlSelect.getNumberOfPayments() + 1; // get last pay_id number
+			int pay_id = SqlPayment.getNumberOfPayments() + 1; // get last pay_id number
 			payments.add(new Object_Payment(pay_id,fiscals.get(rowIndex).getMoney_id(),null,"CH",date, "0",1)); // let's add it to our GUI
 			SqlInsert.addPaymentRecord(payments.get(payments.size() -1));
 		});
@@ -195,7 +195,7 @@ public class BoxInvoice extends HBox {
 			SqlDelete.deletePayment(payments.get(selectedIndex));
 			paymentTableView.getItems().remove(selectedIndex); // remove it from our GUI
 			// SQL Query getTotalAmount() recalculates the payments for us
-			BigDecimal totalPaidAmount = BigDecimal.valueOf(SqlSelect.getTotalAmount(fiscals.get(rowIndex).getMoney_id()));
+			BigDecimal totalPaidAmount = BigDecimal.valueOf(SqlMoney.getTotalAmount(fiscals.get(rowIndex).getMoney_id()));
 			fnode.getTotalPaymentText().setText(String.valueOf(totalPaidAmount.setScale(2, RoundingMode.HALF_UP)));
 			fiscals.get(rowIndex).setPaid(String.valueOf(totalPaidAmount.setScale(2, RoundingMode.HALF_UP)));
 			updateBalance();
@@ -203,9 +203,9 @@ public class BoxInvoice extends HBox {
 
 		// this is only called if you change membership type or open a record or manually type in
 		fnode.getDuesTextField().textProperty().addListener((observable, oldValue, newValue) -> {
-			if (!SqlSelect.isCommitted(fiscals.get(rowIndex).getMoney_id())) {
+			if (!SqlMoney.isCommitted(fiscals.get(rowIndex).getMoney_id())) {
 				fnode.getDuesText().setText(newValue);
-				System.out.println(" dues text field set to " + newValue);
+				System.out.println("Dues text field set to " + newValue);
 				fiscals.get(rowIndex).setDues(newValue);
 				updateBalance();
 			} else {
@@ -442,7 +442,6 @@ public class BoxInvoice extends HBox {
 		});
 
 		fnode.getWetslipTextFee().setOnMouseClicked(e -> {
-			System.out.println("you clicked on the text");
 			fnode.getVboxWetSlipFee().getChildren().clear();
 			fnode.getVboxWetSlipFee().getChildren().add(fnode.getWetslipTextField());
 		});
@@ -458,7 +457,7 @@ public class BoxInvoice extends HBox {
 			if (hasOfficer) { // has officer and not
 				System.out.println("Member is an officer");
 				fiscals.get(rowIndex).setOfficer_credit(String.valueOf(definedFees.getDues_regular()));
-				if(!SqlSelect.isCommitted(fiscals.get(rowIndex).getMoney_id()))	{	// is not committed
+				if(!SqlMoney.isCommitted(fiscals.get(rowIndex).getMoney_id()))	{	// is not committed
 					System.out.println("Record is not committed");
 				}
 			} else {
@@ -519,14 +518,14 @@ public class BoxInvoice extends HBox {
 
 	private void getPayment() {
 		if(SqlExists.paymentExists(fiscals.get(rowIndex).getMoney_id())) {
-			this.payments = SqlSelect.getPayments(fiscals.get(rowIndex).getMoney_id());
-//			System.out.println("A record for money_id=" + fiscals.get(rowIndex).getMoney_id() + " exists. Opening Payment");
+			this.payments = SqlPayment.getPayments(fiscals.get(rowIndex).getMoney_id());
+			System.out.println("A record for money_id=" + fiscals.get(rowIndex).getMoney_id() + " exists. Opening Payment");
 //			System.out.println("Payment has " + payments.size() + " entries");
 			// pull up payments from database
 		} else {  // if not create one
 			this.payments = FXCollections.observableArrayList();
-//			System.out.println("Creating a new entry");
-			int pay_id = SqlSelect.getNumberOfPayments() + 1;
+			System.out.println("getPayment(): Creating a new payment entry");
+			int pay_id = SqlPayment.getNumberOfPayments() + 1;
 			payments.add(new Object_Payment(pay_id,fiscals.get(rowIndex).getMoney_id(),"0","CH",date, "0",1));
 			SqlInsert.addPaymentRecord(payments.get(payments.size() - 1));
 //			System.out.println(payments.get(0).toString());
@@ -592,7 +591,7 @@ public class BoxInvoice extends HBox {
 		  fiscals.get(rowIndex).setBalance(String.valueOf(getBalance()));
 		  fnode.getTotalBalanceText().setText(fiscals.get(rowIndex).getBalance());
 		  // prints money object to console and then updates to database
-		  System.out.println(fiscals.get(rowIndex).toString());
+		  System.out.println("updateBalance()=" + fiscals.get(rowIndex).getBalance().toString());
 		  SqlUpdate.updateMoney(fiscals.get(rowIndex));  // saves to database
 	}
 	
@@ -621,7 +620,7 @@ public class BoxInvoice extends HBox {
 		BigDecimal paid = new BigDecimal(fiscals.get(rowIndex).getPaid());
 		BigDecimal credit = new BigDecimal(fiscals.get(rowIndex).getCredit());
 		BigDecimal balance = total.subtract(paid).subtract(credit);
-		System.out.println("total balance=" + balance);
+		System.out.println("getBalance()=" + balance);
 		return balance;
 	}
 
@@ -648,7 +647,7 @@ public class BoxInvoice extends HBox {
 		BigDecimal otherCredit;
 		otherCredit = new BigDecimal(fiscals.get(rowIndex).getOther_credit());
 		BigDecimal totalCredit = normalCredit.add(otherCredit);
-		System.out.println("total credit=" + totalCredit);
+		System.out.println("countTotalCredit()=" + totalCredit);
 		return totalCredit;
 	}
 
@@ -664,7 +663,7 @@ public class BoxInvoice extends HBox {
 			if(isOfficer) {  // we will add in pid here if need be
 				finalResult = true;
 //				isOfficer = false;  // reset for next iteration
-				this.officer = SqlSelect.getOfficer(per.getP_id(),fiscals.get(rowIndex).getFiscal_year());
+				this.officer = SqlOfficer.getOfficer(per.getP_id(),fiscals.get(rowIndex).getFiscal_year());
 			}
 		}
 		return finalResult;

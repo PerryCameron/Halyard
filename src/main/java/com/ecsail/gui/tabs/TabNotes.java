@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import com.ecsail.main.HalyardPaths;
-import com.ecsail.sql.SqlSelect;
+import com.ecsail.sql.select.SqlMemos;
 import com.ecsail.structures.Object_Memo2;
 
 import javafx.beans.value.ChangeListener;
@@ -36,7 +36,7 @@ public class TabNotes extends Tab {
 	public TabNotes(String text) {
 		super(text);
 		this.selectedYear = HalyardPaths.getYear();
-		this.memos = SqlSelect.getAllMemosForTabNotes(HalyardPaths.getYear(),setOptions());
+		this.memos = SqlMemos.getAllMemosForTabNotes(HalyardPaths.getYear(),setOptions());
 		VBox vboxGrey = new VBox();  // this is the vbox for organizing all the widgets
 		VBox vboxBlue = new VBox();
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
@@ -70,7 +70,7 @@ public class TabNotes extends Tab {
 			  if (!newValue) {
 				  selectedYear = yearSpinner.getEditor().getText();  /// kept this for clarity, could have used printChoices.getYear()
 				  memos.clear();
-				  memos.addAll(SqlSelect.getAllMemosForTabNotes(selectedYear, setOptions()));
+				  memos.addAll(SqlMemos.getAllMemosForTabNotes(selectedYear, setOptions()));
 			  }
 			});
 		
@@ -103,7 +103,7 @@ public class TabNotes extends Tab {
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
             	o = newValue;
 				memos.clear();
-				memos.addAll(SqlSelect.getAllMemosForTabNotes(selectedYear, setOptions()));
+				memos.addAll(SqlMemos.getAllMemosForTabNotes(selectedYear, setOptions()));
             }
         });
 		
@@ -112,7 +112,7 @@ public class TabNotes extends Tab {
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
             	n = newValue;
 				memos.clear();
-				memos.addAll(SqlSelect.getAllMemosForTabNotes(selectedYear, setOptions()));
+				memos.addAll(SqlMemos.getAllMemosForTabNotes(selectedYear, setOptions()));
             }
         });
 		
@@ -121,7 +121,7 @@ public class TabNotes extends Tab {
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
             	p = newValue;
 				memos.clear();
-				memos.addAll(SqlSelect.getAllMemosForTabNotes(selectedYear, setOptions()));
+				memos.addAll(SqlMemos.getAllMemosForTabNotes(selectedYear, setOptions()));
             }
         });
 		

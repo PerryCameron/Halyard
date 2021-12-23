@@ -5,10 +5,9 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import com.ecsail.main.HalyardPaths;
-import com.ecsail.sql.Sql_SelectMembership;
 import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.SqlInsert;
-import com.ecsail.sql.SqlSelect;
+import com.ecsail.sql.select.*;
 import com.ecsail.sql.SqlUpdate;
 import com.ecsail.structures.Object_DefinedFee;
 import com.ecsail.structures.Object_MembershipId;
@@ -41,7 +40,7 @@ public class Dialogue_NewYearGenerator extends Stage {
 		//this.selectedYear = returnNextRecordYear();
 		this.selectedYear = Integer.parseInt(HalyardPaths.getYear()) + 1;  // this will need to be able to change with a spinner
 		this.previousYear = selectedYear -1;
-		this.definedFee = SqlSelect.getDefinedFee(String.valueOf(selectedYear)); // this will have to update as well
+		this.definedFee = SqlDefinedFee.getDefinedFeeByYear(String.valueOf(selectedYear)); // this will have to update as well
 		Button generateButton = new Button("Yes");
 		Button cancelButton = new Button("Cancel");
 		Button keepSameButton = new Button("Keep Old");
@@ -143,7 +142,7 @@ public class Dialogue_NewYearGenerator extends Stage {
 	/////////////////// CLASS METHODS /////////////////////
 
 	private void generateRecords(Boolean makeNewNumbers) {
-		this.memberships = Sql_SelectMembership.getRoster(String.valueOf(previousYear), true);
+		this.memberships = SqlMembership.getRoster(String.valueOf(previousYear), true);
 		System.out.println("selectedYear= " + selectedYear);
 		if(makeNewNumbers) {
 			System.out.println("Creating new numbers");
@@ -162,10 +161,10 @@ public class Dialogue_NewYearGenerator extends Stage {
 		int lastYear = selectedYear - 1;
 		for (Object_MembershipList membership : memberships) {
 			if (SqlExists.moneyExists(membership.getMsid(), String.valueOf(selectedYear))) { // preserve values incase supplemental overwright
-				currentMoney = SqlSelect.getMonies(membership.getMsid(), String.valueOf(selectedYear));
+				currentMoney = SqlMoney.getMonies(membership.getMsid(), String.valueOf(selectedYear));
 			}
 			if (SqlExists.moneyExists(membership.getMsid(), lastYear + "")) { // last years record exists
-				oldMoney = SqlSelect.getMonies(membership.getMsid(), lastYear + "");
+				oldMoney = SqlMoney.getMonies(membership.getMsid(), lastYear + "");
 				newMoney = setNewMoneyValues(oldMoney, currentMoney, membership);  // newMoney/oldMoney for clarity
 				updateSql(newMoney, membership);
 			} else {  // last years money record does not exist
@@ -178,7 +177,7 @@ public class Dialogue_NewYearGenerator extends Stage {
 	private void createSql(Object_MembershipList ml, Object_Money currentMoney) {
 		Object_Money oldMoney = null;
 		Object_Money newMoney = null;
-		int moneyId = SqlSelect.getCount("money_id") + 1;  // need next money_id for new record
+		int moneyId = SqlMoney.getCount("money_id") + 1;  // need next money_id for new record
 		oldMoney = new Object_Money(moneyId, ml.getMsid(),selectedYear, 0, "0.00", 0, 0, 0, 0, 0, "0.00", 0, 0, 0, 0, 0,"0.00", "0.00", "0.00", "0.00", "0.00", "0.00", false, false, "0.00", "0.00", false, 0, "0.00");
 		newMoney = setNewMoneyValues(oldMoney, currentMoney, ml);
 		System.out.print(" No money records for " + (newMoney.getFiscal_year() - 1));
@@ -201,12 +200,12 @@ public class Dialogue_NewYearGenerator extends Stage {
 	}
 	
 	private Object_Money setNewMoneyValues(Object_Money oldMoney, Object_Money currentMoney, Object_MembershipList membership) {
-		ObservableList<Object_Person> people = SqlSelect.getPeople(oldMoney.getMs_id());
+		ObservableList<Object_Person> people = SqlPerson.getPeople(oldMoney.getMs_id());
 		Object_Money newMoney = new Object_Money();
 		if(currentMoney.getMoney_id() != 0) {  // if money record exists lets use its money_id
 		newMoney.setMoney_id(currentMoney.getMoney_id());
 		} else {  // if money record does not exist lets create a new money_id for it
-			newMoney.setMoney_id(SqlSelect.getCount("money_id") + 1);
+			newMoney.setMoney_id(SqlMoney.getCount("money_id") + 1);
 		}
 		
 		newMoney.setMs_id(oldMoney.getMs_id());
@@ -326,8 +325,7 @@ public class Dialogue_NewYearGenerator extends Stage {
 		Collections.sort(memberships, Comparator.comparing(Object_MembershipList::getMembershipId));
 		for (Object_MembershipList ml : memberships) {
 			if (!SqlExists.memberShipIdExists(ml.getMsid(), String.valueOf(selectedYear))) {
-//				SqlInsert.addMembershipId(
-				System.out.println(new Object_MembershipId(mid, String.valueOf(selectedYear), ml.getMsid(), ml.getMembershipId() + "", false,ml.getMemType(),false,false).toString());
+				SqlInsert.addMembershipId(new Object_MembershipId(mid, String.valueOf(selectedYear), ml.getMsid(), ml.getMembershipId() + "", false,ml.getMemType(),false,false));
 				mid++;
 			} else {
 				System.out.println("Membership " + ml.getMsid() + " exists");

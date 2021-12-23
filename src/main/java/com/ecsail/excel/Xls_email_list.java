@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import com.ecsail.sql.select.SqlEmail;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
@@ -14,7 +15,6 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.ecsail.main.HalyardPaths;
-import com.ecsail.sql.SqlSelect;
 import com.ecsail.structures.Object_Email_Information;
 
 
@@ -23,7 +23,7 @@ import javafx.collections.ObservableList;
 
 
 public class Xls_email_list {
-	private static ObservableList<Object_Email_Information> email = SqlSelect.getEmailInfo();
+	private static ObservableList<Object_Email_Information> email = SqlEmail.getEmailInfo();
 	
 	public static void createSpreadSheet() {
 		System.out.println("Creating email list..");

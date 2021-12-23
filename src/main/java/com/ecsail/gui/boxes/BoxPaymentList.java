@@ -2,16 +2,16 @@ package com.ecsail.gui.boxes;
 
 import java.math.BigDecimal;
 import java.util.Collections;
+import java.util.Comparator;
+
 import com.ecsail.main.Note;
 import com.ecsail.main.HalyardPaths;
 import com.ecsail.sql.SqlDelete;
 import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.SqlInsert;
-import com.ecsail.sql.SqlSelect;
-import com.ecsail.structures.Object_DefinedFee;
-import com.ecsail.structures.Object_Membership;
-import com.ecsail.structures.Object_Money;
-import com.ecsail.structures.Object_Person;
+import com.ecsail.sql.select.SqlDefinedFee;
+import com.ecsail.sql.select.SqlMoney;
+import com.ecsail.structures.*;
 
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -52,7 +52,7 @@ public class BoxPaymentList extends HBox {
 		Button deleteFiscalRecord = new Button("Delete");
 //		final Spinner<Integer> yearSpinner = new Spinner<Integer>();
 //		SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 2100, Integer.parseInt(currentYear));
-		BoxPaymentList.fiscals = SqlSelect.getMonies(membership.getMsid());
+		BoxPaymentList.fiscals = SqlMoney.getMonies(membership.getMsid());
 //		Object_DefinedFee definedFees = SqlSelect.selectDefinedFees(Integer.parseInt(currentYear));
 		TableView<Object_Money> fiscalTableView = new TableView<Object_Money>();
 		TableColumn<Object_Money, Integer> Col1 = new TableColumn<Object_Money, Integer>("Year");
@@ -125,7 +125,7 @@ public class BoxPaymentList extends HBox {
 
         ////////////////  LISTENERS ///////////////////
 		addFiscalRecord.setOnAction((event) -> {
-				int moneyId = SqlSelect.getCount("money_id") + 1;
+				int moneyId = SqlMoney.getCount("money_id") + 1;
 				Object_Money newMoney = new Object_Money(moneyId, membership.getMsid(),
 						comboBox.getValue(), 0, "0.00", 0, 0, 0, 0, 0, "0.00", 0, 0, 0, 0, 0,
 						"0.00", "0.00", "0.00", "0.00", "0.00", String.valueOf(getDues(comboBox.getValue())), false, false, "0.00", "0.00", false,0, "0.00");
@@ -136,6 +136,8 @@ public class BoxPaymentList extends HBox {
 				SqlInsert.addRecord(newMoney);
 				SqlInsert.addRecord(moneyId, membership);
 				fiscals.add(newMoney);
+				fiscals.sort(Comparator.comparing(Object_Money::getFiscal_year).reversed());
+				createTab(0);
 		});
         
 		deleteFiscalRecord.setOnAction((event) -> {
@@ -170,7 +172,7 @@ public class BoxPaymentList extends HBox {
 	/////////////////////  CLASS METHODS /////////////////////////////
 	
 	private BigDecimal getDues(int year) {  // takes the membership type and gets the dues
-		Object_DefinedFee selectedDefinedFee = SqlSelect.selectDefinedFees(year);
+		Object_DefinedFee selectedDefinedFee = SqlDefinedFee.getDefinedFeeByYear(String.valueOf(year));
 		BigDecimal dues = BigDecimal.valueOf(0);
 		if(membership.getMemType() != null) {
 		  switch(membership.getMemType()) 

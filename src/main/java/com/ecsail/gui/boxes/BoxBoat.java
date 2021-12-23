@@ -8,7 +8,8 @@ import com.ecsail.main.EditCell;
 import com.ecsail.main.Launcher;
 import com.ecsail.sql.SqlDelete;
 import com.ecsail.sql.SqlInsert;
-import com.ecsail.sql.SqlSelect;
+import com.ecsail.sql.select.SqlBoat;
+import com.ecsail.sql.select.SqlSelect;
 import com.ecsail.sql.SqlUpdate;
 import com.ecsail.structures.Object_Boat;
 import com.ecsail.structures.Object_MembershipList;
@@ -55,7 +56,7 @@ private TableView<Object_Boat> boatTableView;
 			return new Observable[] { param.hasTrailerProperty() };
 		}
 	});
-	this.boats.addAll(SqlSelect.getBoats(membership.getMsid()));
+	this.boats.addAll(SqlBoat.getBoats(membership.getMsid()));
 	this.boatTableView = new TableView<Object_Boat>();
 	///////////	 OBJECTS ///////////////
 

@@ -13,7 +13,8 @@ import com.ecsail.gui.boxes.BoxProperties;
 import com.ecsail.gui.boxes.BoxSlip;
 import com.ecsail.main.CreateMembership;
 import com.ecsail.main.Note;
-import com.ecsail.sql.SqlSelect;
+import com.ecsail.sql.select.SqlMemos;
+import com.ecsail.sql.select.SqlPerson;
 import com.ecsail.structures.Object_MemLabels;
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Memo;
@@ -41,9 +42,9 @@ public class TabMembership extends Tab {
 	public TabMembership(Object_MembershipList me) { 
 		super();
 		this.membership = me;
-        this.memos = SqlSelect.getMemos(membership.getMsid());
+        this.memos = SqlMemos.getMemos(membership.getMsid());
         this.labels = new Object_MemLabels();
-        this.people = SqlSelect.getPeople(membership.getMsid());
+        this.people = SqlPerson.getPeople(membership.getMsid());
 		this.setText(setTabLabel());
 		
 		////////// OBJECTS /////////////

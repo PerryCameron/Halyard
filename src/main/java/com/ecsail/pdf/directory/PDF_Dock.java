@@ -3,9 +3,9 @@ package com.ecsail.pdf.directory;
 import java.util.Collections;
 import java.util.Comparator;
 
-import com.ecsail.sql.Sql_SelectMembership;
-import com.ecsail.sql.SqlSelect;
-import com.ecsail.structures.Object_MembershipList;
+   import com.ecsail.sql.select.SqlMembership;
+   import com.ecsail.sql.select.SqlSlip;
+   import com.ecsail.structures.Object_MembershipList;
 import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.layout.borders.Border;
@@ -28,7 +28,7 @@ import com.itextpdf.layout.property.TextAlignment;
 	   
 	public PDF_Dock(int numColumns, String dock, int lDocks, int rDocks, PDF_Object_Settings set, boolean inColor) {
 		super(numColumns);
-		this.slips = SqlSelect.getSlipsForDock(dock);
+		this.slips = SqlSlip.getSlipsForDock(dock);
 		this.lDocks = lDocks;
 		this.rDocks = rDocks;
 		this.dock = dock;
@@ -224,7 +224,7 @@ import com.itextpdf.layout.property.TextAlignment;
 		/// find out if this is a sublease and put there name in if they are.
 		if (slips.get(element + offset).getSubleaseMsID() != 0) {
 			Object_MembershipList subleaser = new Object_MembershipList();
-			subleaser = Sql_SelectMembership.getMembershipList(slips.get(element + offset).getSubleaseMsID(), set.getSelectedYear());
+			subleaser = SqlMembership.getMembershipList(slips.get(element + offset).getSubleaseMsID(), set.getSelectedYear());
 			name = subleaser.getLname() + " " + returnInitial(subleaser.getFname());
 			isSublease = true;
 		}

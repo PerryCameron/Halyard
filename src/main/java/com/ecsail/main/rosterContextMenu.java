@@ -1,6 +1,7 @@
 package com.ecsail.main;
 
-import com.ecsail.sql.SqlSelect;
+import com.ecsail.sql.select.SqlEmail;
+import com.ecsail.sql.select.SqlPerson;
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Person;
 import javafx.event.ActionEvent;
@@ -16,7 +17,6 @@ import java.net.URLEncoder;
 import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
-import javax.activation.*;
 import javax.mail.Session;
 import javax.mail.Transport;
 
@@ -24,20 +24,21 @@ public class rosterContextMenu extends ContextMenu {
     MenuItem emailClient = new MenuItem("Open in Email Client");
     MenuItem registration = new MenuItem("Send Renewal Link");
     private EmailLinkCreator linkCreator = new EmailLinkCreator();
-
+    private String selectedYear;
     private Object_Person person;
     private String email;
 
 
-    public rosterContextMenu(Object_MembershipList m) {
-        this.person = SqlSelect.getPersonByPid(m.getPid());
-        this.email = SqlSelect.getEmail(this.person);
+    public rosterContextMenu(Object_MembershipList m, String selectedYear) {
+        this.person = SqlPerson.getPersonByPid(m.getPid());
+        this.email = SqlEmail.getEmail(this.person);
+        this.selectedYear = selectedYear;
         getItems().addAll(emailClient,registration);
         String link = linkCreator.createLink();
 
         registration.setOnAction((ActionEvent e) -> {
 
-            String linkData = encodeURI(linkCreator.createLinkData(m, email));
+            String linkData = encodeURI(linkCreator.createLinkData(m, email, selectedYear));
             String body = link + linkData;
             // email ID of Recipient.
             String recipient = email;
@@ -97,7 +98,7 @@ public class rosterContextMenu extends ContextMenu {
         emailClient.setOnAction((ActionEvent e) -> {
 
 
-            String linkData = encodeURI(linkCreator.createLinkData(m, email));
+            String linkData = encodeURI(linkCreator.createLinkData(m, email, selectedYear));
             String body = link + linkData;
             String subject = encodeURI("2022 Membership Renewal");
             System.out.println(body);

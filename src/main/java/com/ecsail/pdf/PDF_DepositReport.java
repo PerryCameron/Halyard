@@ -3,7 +3,8 @@ package com.ecsail.pdf;
 
 import com.ecsail.main.HalyardPaths;
 import com.ecsail.sql.SqlExists;
-import com.ecsail.sql.SqlSelect;
+import com.ecsail.sql.select.SqlDeposit;
+import com.ecsail.sql.select.SqlMemos;
 import com.ecsail.structures.*;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.colors.ColorConstants;
@@ -47,7 +48,7 @@ public class PDF_DepositReport {
 
 	public PDF_DepositReport(Object_Deposit cd,Object_DefinedFee cdf, Object_DepositPDF pdfOptions) {
 		this.currentDeposit = cd;
-		PDF_DepositReport.paidDuesForDeposit = SqlSelect.getPaidDues(currentDeposit);
+		PDF_DepositReport.paidDuesForDeposit = SqlDeposit.getPaidDues(currentDeposit);
 		this.currentDefinedFee = cdf;
 		this.totals = updateTotals();
 		this.fiscalYear = currentDeposit.getFiscalYear();
@@ -92,7 +93,7 @@ public class PDF_DepositReport {
 		if (pdfOptions.isSingleDeposit()) { // are we only creating a report of a single deposit
 			createDepositTable(currentDeposit.getBatch(), document);
 		} else { // we are creating a report for the entire year
-			int numberOfBatches = SqlSelect.getNumberOfDepositBatches(currentDeposit.getFiscalYear()) + 1;
+			int numberOfBatches = SqlDeposit.getNumberOfDepositBatches(currentDeposit.getFiscalYear()) + 1;
 			for (int i = 1; i < numberOfBatches; i++) {
 				createDepositTable(i, document);
 				document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
@@ -123,8 +124,8 @@ public class PDF_DepositReport {
 	private void createDepositTable(int batch, Document document) {
 		currentDeposit.clear();
 		paidDuesForDeposit.clear();
-		SqlSelect.updateDeposit(fiscalYear, batch, currentDeposit);
-		paidDuesForDeposit = SqlSelect.getPaidDues(currentDeposit);
+		SqlDeposit.updateDeposit(fiscalYear, batch, currentDeposit);
+		paidDuesForDeposit = SqlDeposit.getPaidDues(currentDeposit);
 		/////////// add the details pages ////////////
 		document.add(titlePdfTable("Deposit Report"));
 		document.add(detailPdfTable());
@@ -300,7 +301,7 @@ public class PDF_DepositReport {
 		System.out.println("Money ID=" + dues.getMoney_id());
 		// make sure the memo exists
 		if(SqlExists.memoExists(dues.getMoney_id())) {
-		thisMemo = SqlSelect.getMemos(dues, catagory).getMemo();
+		thisMemo = SqlMemos.getMemos(dues, catagory).getMemo();
 		} else {
 		thisMemo = "No note for this entry";
 		}

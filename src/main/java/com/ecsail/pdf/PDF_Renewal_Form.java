@@ -12,9 +12,8 @@ import java.util.List;
 
 import com.ecsail.enums.KeelType;
 import com.ecsail.main.HalyardPaths;
-import com.ecsail.sql.Sql_SelectMembership;
 import com.ecsail.sql.SqlExists;
-import com.ecsail.sql.SqlSelect;
+import com.ecsail.sql.select.*;
 import com.ecsail.structures.Object_Boat;
 import com.ecsail.structures.Object_DefinedFee;
 import com.ecsail.structures.Object_MembershipId;
@@ -61,7 +60,7 @@ public class PDF_Renewal_Form {
 	public PDF_Renewal_Form(String y, String membershipId, boolean isOneMembership, boolean emailCopies, boolean seperateFiles) throws IOException {
 		PDF_Renewal_Form.year = y;
 		PDF_Renewal_Form.current_membership_id = membershipId;
-		this.definedFees = SqlSelect.selectDefinedFees(Integer.parseInt(year));
+		this.definedFees = SqlDefinedFee.getDefinedFeeByYear(year);
 		// Check if our path exists, if not create it
 		HalyardPaths.checkPath(HalyardPaths.RENEWALFORM + "/" + year);
 
@@ -90,7 +89,7 @@ public class PDF_Renewal_Form {
 	private void makeManyMembershipsIntoOnePDF() throws IOException {
 		filenm = HalyardPaths.RENEWALFORM + "/" + year + "/" + year + "_Renewal_Forms.pdf";
 		Document document = createDocument(filenm);
-		ids = SqlSelect.getMembershipIds(year);
+		ids = SqlMembership_Id.getMembershipIds(year);
 		Collections.sort(ids, Comparator.comparing(Object_MembershipId::getMembership_id));
 		for (Object_MembershipId id : ids) {
 			current_membership_id = id.getMembership_id();
@@ -105,7 +104,7 @@ public class PDF_Renewal_Form {
 	}
 	
 	private void makeManyMembershipsIntoManyPDF() throws IOException {
-		ids = SqlSelect.getMembershipIds(year);
+		ids = SqlMembership_Id.getMembershipIds(year);
 		Collections.sort(ids, Comparator.comparing(Object_MembershipId::getMembership_id));
 		for (Object_MembershipId id : ids) {
 			current_membership_id = id.getMembership_id();
@@ -190,23 +189,23 @@ public class PDF_Renewal_Form {
 	}
 	
 	private void gatherMembershipInformation() {
-		ms_id = SqlSelect.getMsidFromMembershipID(Integer.parseInt(current_membership_id));
+		ms_id = SqlMembership_Id.getMsidFromMembershipID(Integer.parseInt(current_membership_id));
 		System.out.println("MSID=" + ms_id);
-		membership = Sql_SelectMembership.getMembershipFromList(ms_id,year);
+		membership = SqlMembership.getMembershipFromList(ms_id,year);
 		System.out.println(membership.getMsid());
-		last_membership_id = SqlSelect.getMembershipId((Integer.parseInt(year) -1) +"" , membership.getMsid());
-		dues = SqlSelect.getMonies(ms_id, year);
-		boats = SqlSelect.getBoats(ms_id);
+		last_membership_id = SqlMembership_Id.getMembershipId((Integer.parseInt(year) -1) +"" , membership.getMsid());
+		dues = SqlMoney.getMonies(ms_id, year);
+		boats = SqlBoat.getBoats(ms_id);
 		boats.add(0, new Object_Boat(0, 0, "Manufacturer", "Year", "Registration", "Model", "Boat Name", "Sail #", true, "Length", "Header", "Keel Type", "PHRF", "Draft", "Beam", "LWL"));
 		boats.add(new Object_Boat(0, 0, "", "", "", "", "", "", false, "", "Blank", "", "","","",""));
-		dependants = SqlSelect.getDependants
+		dependants = SqlPerson.getDependants
 				(membership);
-		primary = SqlSelect.getPerson(ms_id, 1); // 1 = primary member
-		primaryPhone = SqlSelect.getPhone(primary);
+		primary = SqlPerson.getPerson(ms_id, 1); // 1 = primary member
+		primaryPhone = SqlPhone.getPhone(primary);
 		shortenDate(primary);
 			if(SqlExists.activePersonExists(ms_id, 2)) {
-			secondary = SqlSelect.getPerson(ms_id, 2);
-			secondaryPhone = SqlSelect.getPhone(secondary);
+			secondary = SqlPerson.getPerson(ms_id, 2);
+			secondaryPhone = SqlPhone.getPhone(secondary);
 			shortenDate(secondary);
 			} else {
 				secondary = new Object_Person(0, 0, 0, "", "", "", "", "", false,null);
@@ -269,7 +268,7 @@ public class PDF_Renewal_Form {
 	public String getEmail(Object_Person person) {
 		String email = "";
 		if(SqlExists.emailExists(person)) {
-			email = SqlSelect.getEmail(person);
+			email = SqlEmail.getEmail(person);
 		}
 		return email;
 	}

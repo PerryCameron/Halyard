@@ -10,6 +10,8 @@ import com.ecsail.main.BoxConsole;
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.Main;
 import com.ecsail.main.HalyardPaths;
+import com.ecsail.sql.select.SqlMembership;
+import com.ecsail.sql.select.SqlPerson;
 import com.ecsail.structures.*;
 import com.ecsail.gui.dialogues.*;
 
@@ -400,7 +402,7 @@ public class SqlUpdate {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("update slip set subleased_to=null where subleased_to='" + subleasee + "';"));
 			BoxConsole.setInfoLine("Released sublease for subleaser " + subleasee, "orange");
-			Object_MembershipList ownerMembership = Sql_SelectMembership.getMembershipFromList(subleasee, HalyardPaths.getYear());
+			Object_MembershipList ownerMembership = SqlMembership.getMembershipFromList(subleasee, HalyardPaths.getYear());
 			ownerMembership.setSubleaser(0);
 			Main.edits.setSlipsEdits(Main.edits.getSlipsEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
@@ -415,7 +417,7 @@ public class SqlUpdate {
 			stmt.execute(Main.console.setRegexColor("update slip set ms_id='" + ms_id + "' where ms_id='" + membership.getMsid() + "';"));
 			String slip = membership.getSlip();
 			membership.setSlip("0");
-			Object_MembershipList newSlipOwnerMembership = Sql_SelectMembership.getMembershipFromList(ms_id, HalyardPaths.getYear());
+			Object_MembershipList newSlipOwnerMembership = SqlMembership.getMembershipFromList(ms_id, HalyardPaths.getYear());
 			newSlipOwnerMembership.setSlip(slip);
 			Main.edits.setSlipsEdits(Main.edits.getSlipsEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
@@ -549,7 +551,7 @@ public class SqlUpdate {
 			stmt.execute(Main.console.setRegexColor("UPDATE membership_id SET " + field + "=\"" + attribute + "\" WHERE mid=" + thisId.getMid()));
 			Main.edits.setIdEdits(Main.edits.getIdEdits() + 1);
 		} catch (SQLIntegrityConstraintViolationException IV) {
-			Object_Person accountHolder = SqlSelect.getPersonFromMembershipID(thisId.getMembership_id(), thisId.getFiscal_Year());
+			Object_Person accountHolder = SqlPerson.getPersonFromMembershipID(thisId.getMembership_id(), thisId.getFiscal_Year());
 			String errorMessage = "The entry for the year " + thisId.getFiscal_Year() + " with a membership ID of " + thisId.getMembership_id() 
 			+ " already exists for another member: " + accountHolder.getFname() + " " + accountHolder.getLname();
 			new Dialogue_CustomErrorMessage(errorMessage, "Duplicate Entry");

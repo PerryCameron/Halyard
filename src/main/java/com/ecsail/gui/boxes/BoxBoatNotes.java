@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.function.Function;
 
 import com.ecsail.main.EditCell;
-import com.ecsail.sql.SqlSelect;
+import com.ecsail.sql.select.SqlSelect;
 import com.ecsail.structures.Object_Boat;
 import com.ecsail.structures.Object_BoatMemo;
 

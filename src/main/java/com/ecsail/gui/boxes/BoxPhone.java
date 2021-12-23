@@ -8,7 +8,8 @@ import com.ecsail.enums.PhoneType;
 import com.ecsail.main.EditCell;
 import com.ecsail.sql.SqlDelete;
 import com.ecsail.sql.SqlInsert;
-import com.ecsail.sql.SqlSelect;
+import com.ecsail.sql.select.SqlPhone;
+import com.ecsail.sql.select.SqlSelect;
 import com.ecsail.sql.SqlUpdate;
 import com.ecsail.structures.Object_Person;
 import com.ecsail.structures.Object_Phone;
@@ -53,7 +54,7 @@ public class BoxPhone extends HBox {
 
             }
         });
-        this.phone.addAll(SqlSelect.getPhone(person.getP_id()));
+        this.phone.addAll(SqlPhone.getPhone(person.getP_id()));
         
         /////// OBJECT INSTANCE //////  
         VBox vboxButtons = new VBox(); // holds phone buttons

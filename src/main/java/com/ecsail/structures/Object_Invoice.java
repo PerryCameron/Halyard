@@ -217,7 +217,7 @@ public class Object_Invoice {
         this.vboxCommitButton = new VBox();
 
         // fill comboBox
-        for(int i = 0; i < 50; i++) {
+        for(int i = 0; i < 100; i++) {
             comboBox.getItems().add(i);
         }
         comboBox.getSelectionModel().selectFirst();

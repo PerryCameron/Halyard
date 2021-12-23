@@ -5,7 +5,7 @@ import com.ecsail.gui.boxes.BoxInvoice;
 import com.ecsail.main.HalyardPaths;
 import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.SqlInsert;
-import com.ecsail.sql.SqlSelect;
+import com.ecsail.sql.select.SqlDefinedFee;
 import com.ecsail.sql.SqlUpdate;
 import com.ecsail.structures.Object_DefinedFee;
 import javafx.collections.ObservableList;
@@ -65,7 +65,7 @@ public class TabDefinedFee extends Tab {
 		super(text);
 		this.selectedYear = HalyardPaths.getYear();
 //		this.definedFees.get(selectedIndex)s = SqlSelect.selectDefinedFees(Integer.parseInt(selectedYear));
-		this.definedFees =  SqlSelect.getDefinedFees();
+		this.definedFees =  SqlDefinedFee.getDefinedFees();
 		this.duesLineChart = new FeesLineChart(definedFees);
 		this.selectedIndex = getSelectedIndex(selectedYear);
 		copyObjectToFields();

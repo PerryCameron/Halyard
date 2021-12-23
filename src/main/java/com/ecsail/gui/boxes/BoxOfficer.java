@@ -8,7 +8,8 @@ import com.ecsail.enums.Officer;
 import com.ecsail.main.EditCell;
 import com.ecsail.sql.SqlDelete;
 import com.ecsail.sql.SqlInsert;
-import com.ecsail.sql.SqlSelect;
+import com.ecsail.sql.select.SqlOfficer;
+import com.ecsail.sql.select.SqlSelect;
 import com.ecsail.sql.SqlUpdate;
 import com.ecsail.structures.Object_Officer;
 import com.ecsail.structures.Object_Person;
@@ -44,7 +45,7 @@ public class BoxOfficer extends HBox {
 	public BoxOfficer(Object_Person p) {
 		this.person = p;
 		this.currentYear = new SimpleDateFormat("yyyy").format(new Date());
-		this.officer =  SqlSelect.getOfficer("p_id",person.getP_id());
+		this.officer =  SqlOfficer.getOfficer("p_id",person.getP_id());
 		
 		///////////////// OBJECT INSTANCE ///////////////////
 		Button officerAdd = new Button("Add");

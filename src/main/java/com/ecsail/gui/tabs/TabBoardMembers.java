@@ -1,25 +1,22 @@
 package com.ecsail.gui.tabs;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.ecsail.enums.Officer;
 import com.ecsail.main.Launcher;
-import com.ecsail.sql.SqlSelect;
+import com.ecsail.sql.select.SqlSelect;
 import com.ecsail.structures.Object_Board;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public class TabBoardMembers extends Tab {

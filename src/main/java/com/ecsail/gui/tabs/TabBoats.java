@@ -3,7 +3,7 @@ package com.ecsail.gui.tabs;
 import java.util.Arrays;
 
 import com.ecsail.main.Launcher;
-import com.ecsail.sql.SqlSelect;
+import com.ecsail.sql.select.SqlBoat;
 import com.ecsail.structures.Object_Boat;
 import com.ecsail.structures.Object_BoatList;
 import javafx.collections.FXCollections;
@@ -24,7 +24,7 @@ public class TabBoats extends Tab {
 	
 	public TabBoats(String text) {
 		super(text);
-		this.boats = SqlSelect.getBoatsWithOwners();
+		this.boats = SqlBoat.getBoatsWithOwners();
 		VBox vboxGrey = new VBox();  // this is the vbox for organizing all the widgets
 		VBox vboxBlue = new VBox();
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
@@ -85,7 +85,7 @@ public class TabBoats extends Tab {
 				if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
 					// int rowIndex = row.getIndex();
 					Object_BoatList clickedRow = row.getItem();
-					Object_Boat selectedBoat = SqlSelect.getBoatbyBoatId(clickedRow.getBoat_id());
+					Object_Boat selectedBoat = SqlBoat.getBoatbyBoatId(clickedRow.getBoat_id());
 					Launcher.openBoatViewTab(selectedBoat);
 				}
 			});

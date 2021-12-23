@@ -13,7 +13,8 @@ import com.ecsail.main.HalyardPaths;
 import com.ecsail.sql.SqlDelete;
 import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.SqlInsert;
-import com.ecsail.sql.SqlSelect;
+import com.ecsail.sql.select.SqlMembership_Id;
+import com.ecsail.sql.select.SqlSelect;
 import com.ecsail.sql.SqlUpdate;
 import com.ecsail.structures.Object_MemLabels;
 import com.ecsail.structures.Object_MembershipId;
@@ -62,7 +63,7 @@ public class BoxHistory extends HBox {
 				return new Observable[] { param.isRenewProperty() };
 			}
 		});
-		this.id.addAll(SqlSelect.getIds(m.getMsid()));
+		this.id.addAll(SqlMembership_Id.getIds(m.getMsid()));
 		this.labels = l;
 		/////// OBJECT INSTANCE //////
 		
@@ -132,7 +133,7 @@ public class BoxHistory extends HBox {
 				int mid = thisId.getMid();
 				if(!SqlUpdate.updateMembershipId(thisId, "fiscal_year", FixInput.changeEmptyStringToZero(t.getNewValue()))) {
 					// if it does not update correctly lets set tableview back to defaults
-					Object_MembershipId storedId = SqlSelect.getMembershipIdObject(mid);
+					Object_MembershipId storedId = SqlMembership_Id.getMembershipIdObject(mid);
 					System.out.println("fiscal year=" + storedId.getFiscal_Year() + " memId=" + storedId.getMembership_id());
 					thisId.setFiscal_Year(storedId.getFiscal_Year());
 					thisId.setMembership_id(storedId.getMembership_id());
@@ -152,7 +153,7 @@ public class BoxHistory extends HBox {
 				int mid = thisId.getMid();
 				if(!SqlUpdate.updateMembershipId(thisId, "membership_id", FixInput.changeEmptyStringToZero(t.getNewValue()))) {
 					// if it does not update correctly lets set tableview back to defaults
-					Object_MembershipId storedId = SqlSelect.getMembershipIdObject(mid);
+					Object_MembershipId storedId = SqlMembership_Id.getMembershipIdObject(mid);
 					System.out.println("fiscal year=" + storedId.getFiscal_Year() + " memId=" + storedId.getMembership_id());
 					thisId.setFiscal_Year(storedId.getFiscal_Year());
 					thisId.setMembership_id(storedId.getMembership_id());

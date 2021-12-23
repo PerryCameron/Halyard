@@ -8,7 +8,8 @@ import com.ecsail.enums.Awards;
 import com.ecsail.main.EditCell;
 import com.ecsail.sql.SqlDelete;
 import com.ecsail.sql.SqlInsert;
-import com.ecsail.sql.SqlSelect;
+import com.ecsail.sql.select.SqlAward;
+import com.ecsail.sql.select.SqlSelect;
 import com.ecsail.sql.SqlUpdate;
 import com.ecsail.structures.Object_Award;
 import com.ecsail.structures.Object_Person;
@@ -44,7 +45,7 @@ public class BoxAward extends HBox {
 	public BoxAward(Object_Person p) {
 		this.person = p;
 		this.currentYear = new SimpleDateFormat("yyyy").format(new Date());
-		this.award =  SqlSelect.getAwards(person);
+		this.award =  SqlAward.getAwards(person);
 		
 		///////////////// OBJECT INSTANCE ///////////////////
 		Button awardAdd = new Button("Add");

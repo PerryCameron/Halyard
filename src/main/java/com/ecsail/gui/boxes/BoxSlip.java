@@ -3,8 +3,10 @@ package com.ecsail.gui.boxes;
 import com.ecsail.main.Launcher;
 import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.SqlInsert;
-import com.ecsail.sql.SqlSelect;
+import com.ecsail.sql.select.SqlMembership_Id;
 import com.ecsail.sql.SqlUpdate;
+import com.ecsail.sql.select.SqlSlip;
+import com.ecsail.sql.select.SqlWaitList;
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Slip;
 import com.ecsail.structures.Object_WaitList;
@@ -228,7 +230,7 @@ public class BoxSlip extends HBox {
 		///////////// ACTIONS //////////////////////////////
 		
 		if(SqlExists.waitListExists(m.getMsid())) {
-			waitList = SqlSelect.getWaitList(membership.getMsid());
+			waitList = SqlWaitList.getWaitList(membership.getMsid());
 		} else { //it doesn't exist
 			waitList = new Object_WaitList(membership.getMsid(),false,false,false,false,false,false);
 			SqlInsert.addWaitList(waitList);
@@ -266,7 +268,7 @@ public class BoxSlip extends HBox {
 	
 	private int getMsidFromTextField() {
 		if(isInteger(membershipIdTextField.getText()))
-		return SqlSelect.getMsidFromMembershipID(Integer.parseInt(membershipIdTextField.getText()));
+		return SqlMembership_Id.getMsidFromMembershipID(Integer.parseInt(membershipIdTextField.getText()));
 		else return 0;
 	}
 	
@@ -300,7 +302,7 @@ public class BoxSlip extends HBox {
 	}
 	
 	private void releaseSlipSublease(int ms_id) {  // overloaded method
-		   slip = SqlSelect.getSubleasedSlip(ms_id);
+		   slip = SqlSlip.getSubleasedSlip(ms_id);
 		   SqlUpdate.subleaserReleaseSlip(ms_id); // this releases the slip
 	}
 	
@@ -338,7 +340,7 @@ public class BoxSlip extends HBox {
 				printErrorMessage("Membership " + membershipIdTextField.getText() + " already has a slip");
 			else { 
 				SqlUpdate.updateSlip(ms_id, membership);
-				slip = SqlSelect.getSlip(membership.getMsid()); // added in because sublease changed it
+				slip = SqlSlip.getSlip(membership.getMsid()); // added in because sublease changed it
 				membership.setSlip(slip.getSlipNumber());
 			}
 		} else  // Member does not exist
@@ -443,11 +445,11 @@ public class BoxSlip extends HBox {
 	}
 	
 	private void setSubleasedSlip() {
-		slip = SqlSelect.getSubleasedSlip(membership.getMsid());  // gets the slip information using the sub-slip attribute
+		slip = SqlSlip.getSubleasedSlip(membership.getMsid());  // gets the slip information using the sub-slip attribute
 		Label slipNumber = new Label(slip.getSlipNumber());
 		slipNumber.setTextFill(Color.DARKCYAN);
 		slipNumber.setStyle("-fx-font-weight: bold;");
-		Text subLease = new Text("" + SqlSelect.getMembershipIDfromMsid(slip.getMs_id())); // Converts to membership ID
+		Text subLease = new Text("" + SqlMembership_Id.getMembershipIDfromMsid(slip.getMs_id())); // Converts to membership ID
 		subLease.setStyle("-fx-font-weight: bold;");
 		setMouseListener(subLease, slip.getMs_id()); // need to get msid from
 		hbox1.getChildren().addAll(new Text("Slip Number:"), slipNumber);
@@ -457,7 +459,7 @@ public class BoxSlip extends HBox {
 	}
 	
 	private Label setMemberSlip() {
-		slip = SqlSelect.getSlip(membership.getMsid());
+		slip = SqlSlip.getSlip(membership.getMsid());
 		Label slipNumber = new Label(slip.getSlipNumber());
 		slipNumber.setTextFill(Color.BLUE);
 		slipNumber.setStyle("-fx-font-weight: bold;");
@@ -469,7 +471,7 @@ public class BoxSlip extends HBox {
 	}
 	
 	private void displaySublease(Label slipNumber) {
-		Text subLease = new Text("" + SqlSelect.getMembershipIDfromMsid(slip.getSubleased_to()));
+		Text subLease = new Text("" + SqlMembership_Id.getMembershipIDfromMsid(slip.getSubleased_to()));
 		subLease.setStyle("-fx-font-weight: bold;");
 		setMouseListener(subLease, membership.getSubleaser());
 		hbox1.getChildren().addAll(new Text("Slip Number:"), slipNumber);  // member plus their slip number

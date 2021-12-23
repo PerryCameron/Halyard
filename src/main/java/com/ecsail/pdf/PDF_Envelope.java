@@ -10,8 +10,8 @@ import java.util.Comparator;
 import java.util.List;
 
 import com.ecsail.main.HalyardPaths;
-import com.ecsail.sql.Sql_SelectMembership;
-import com.ecsail.sql.SqlSelect;
+import com.ecsail.sql.select.SqlMembership;
+import com.ecsail.sql.select.SqlMembership_Id;
 import com.ecsail.structures.Object_MembershipId;
 import com.ecsail.structures.Object_MembershipList;
 import com.itextpdf.io.font.FontProgramFactory;
@@ -101,19 +101,19 @@ public class PDF_Envelope {
 		doc.setTopMargin(0);
 		doc.setLeftMargin(0.25f);
 		if(isOneMembership) {
-			ms_id = SqlSelect.getMsidFromMembershipID(Integer.parseInt(current_membership_id));
-			membership = Sql_SelectMembership.getMembershipFromList(ms_id, year);
+			ms_id = SqlMembership_Id.getMsidFromMembershipID(Integer.parseInt(current_membership_id));
+			membership = SqlMembership.getMembershipFromList(ms_id, year);
 		doc.add(createReturnAddress());
 		doc.add(new Paragraph(new Text("\n\n\n\n\n")));
 		doc.add(createAddress());
 		} else {
-			ids = SqlSelect.getMembershipIds(year);
+			ids = SqlMembership_Id.getMembershipIds(year);
 			Collections.sort(ids, Comparator.comparing(Object_MembershipId::getMembership_id));
 
 			for(Object_MembershipId id: ids) {
 				current_membership_id = id.getMembership_id();
-				ms_id = SqlSelect.getMsidFromMembershipID(Integer.parseInt(current_membership_id));
-				membership = Sql_SelectMembership.getMembershipFromList(ms_id, year);
+				ms_id = SqlMembership_Id.getMsidFromMembershipID(Integer.parseInt(current_membership_id));
+				membership = SqlMembership.getMembershipFromList(ms_id, year);
 				doc.add(createReturnAddress());
 				doc.add(new Paragraph(new Text("\n\n\n\n\n")));
 				doc.add(createAddress());
@@ -136,18 +136,18 @@ public class PDF_Envelope {
 		doc.setTopMargin(0);
 		doc.setLeftMargin(0.25f);
 		if(isOneMembership) {
-			ms_id = SqlSelect.getMsidFromMembershipID(Integer.parseInt(current_membership_id));
-			membership = Sql_SelectMembership.getMembershipFromList(ms_id, year);
+			ms_id = SqlMembership_Id.getMsidFromMembershipID(Integer.parseInt(current_membership_id));
+			membership = SqlMembership.getMembershipFromList(ms_id, year);
 		doc.add(createReturnAddress());
 		doc.add(new Paragraph(new Text("\n\n\n\n\n\n\n\n\n")));
 		doc.add(createAddress());
 		} else {
-			ids = SqlSelect.getMembershipIds(year);
+			ids = SqlMembership_Id.getMembershipIds(year);
 			Collections.sort(ids, Comparator.comparing(Object_MembershipId::getMembership_id));
 			for(Object_MembershipId id: ids) {
 				current_membership_id = id.getMembership_id();
-				ms_id = SqlSelect.getMsidFromMembershipID(Integer.parseInt(current_membership_id));
-				membership = Sql_SelectMembership.getMembershipFromList(ms_id, year);
+				ms_id = SqlMembership_Id.getMsidFromMembershipID(Integer.parseInt(current_membership_id));
+				membership = SqlMembership.getMembershipFromList(ms_id, year);
 				doc.add(createReturnAddress());
 				doc.add(new Paragraph(new Text("\n\n\n\n\n")));
 				doc.add(createAddress());

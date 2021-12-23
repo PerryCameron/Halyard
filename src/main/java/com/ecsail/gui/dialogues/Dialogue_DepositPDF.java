@@ -2,7 +2,7 @@ package com.ecsail.gui.dialogues;
 
 import com.ecsail.pdf.PDF_DepositReport;
 import com.ecsail.sql.SqlExists;
-import com.ecsail.sql.SqlSelect;
+import com.ecsail.sql.select.SqlDeposit;
 import com.ecsail.structures.Object_DefinedFee;
 import com.ecsail.structures.Object_Deposit;
 import com.ecsail.structures.Object_DepositPDF;
@@ -88,7 +88,7 @@ public class Dialogue_DepositPDF extends Stage {
 		////////////  Check to see if batch exists first////////////
 		
   		if(currentDeposit == null) { // deposit does not exist
-  		currentDeposit = SqlSelect.getDeposit(selectedYear, 1);
+  		currentDeposit = SqlDeposit.getDeposit(selectedYear, 1);
 		batchSpinner.getValueFactory().setValue(1);
   		} else {
   		batchSpinner.getValueFactory().setValue(currentDeposit.getBatch());	
