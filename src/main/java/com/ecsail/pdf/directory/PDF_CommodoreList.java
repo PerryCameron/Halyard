@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import com.ecsail.sql.select.SqlSelect;
+import com.ecsail.sql.select.SqlOfficer;
 import com.ecsail.structures.Object_OfficerWithName;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.layout.borders.Border;
@@ -24,7 +24,7 @@ public class PDF_CommodoreList extends Table {
 	public PDF_CommodoreList(int numColumns, PDF_Object_Settings set) {
 		super(numColumns);
 		this.set = set;
-		this.commodores = SqlSelect.getOfficersWithNames("CO");
+		this.commodores = SqlOfficer.getOfficersWithNames("CO");
 		setWidth(PageSize.A5.getWidth() * 0.8f);  // makes table 90% of page width
 		setHorizontalAlignment(HorizontalAlignment.CENTER);
 		// sort commodore list by year

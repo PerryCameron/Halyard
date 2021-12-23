@@ -9,7 +9,7 @@ import com.ecsail.gui.boxes.BoxSearch;
 import com.ecsail.main.HalyardPaths;
 import com.ecsail.main.Launcher;
 import com.ecsail.sql.SqlExists;
-import com.ecsail.sql.select.SqlMembership;
+import com.ecsail.sql.select.SqlMembershipList;
 import com.ecsail.sql.select.SqlPerson;
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Person;
@@ -137,9 +137,9 @@ public class TabPeople extends Tab {
 	private static void createPersonBox(Object_Person person)  {
 		Object_MembershipList membership = null;
 		if(SqlExists.currentMembershipIdExists(person.getMs_id())) {
-		membership = SqlMembership.getMembershipFromList(person.getMs_id(), HalyardPaths.getYear());
+		membership = SqlMembershipList.getMembershipFromList(person.getMs_id(), HalyardPaths.getYear());
 		} else {
-		membership = SqlMembership.getMembershipFromListWithoutMembershipId(person.getMs_id());
+		membership = SqlMembershipList.getMembershipFromListWithoutMembershipId(person.getMs_id());
 		}
 		personHBox.getChildren().clear();  // remove if exists
 		//System.out.println("cleared the personHBox");

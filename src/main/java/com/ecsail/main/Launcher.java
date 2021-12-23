@@ -17,7 +17,7 @@ import com.ecsail.gui.tabs.TabSlips;
 import com.ecsail.gui.tabs.TabStub;
 import com.ecsail.gui.tabs.TabWelcome;
 import com.ecsail.pdf.PDF_BoatReport;
-import com.ecsail.sql.select.SqlMembership;
+import com.ecsail.sql.select.SqlMembershipList;
 import com.ecsail.sql.select.SqlMembership_Id;
 import com.ecsail.structures.Object_Boat;
 import com.ecsail.structures.Object_MembershipList;
@@ -98,7 +98,7 @@ static TabPane tabPane;
 	}
 	
 	public static void createMembershipTabFromPeopleList(int msid)  {
-		Object_MembershipList membership = SqlMembership.getMembershipFromListWithoutMembershipId(msid);
+		Object_MembershipList membership = SqlMembershipList.getMembershipFromListWithoutMembershipId(msid);
 		 if(!SqlMembership_Id.isRenewed(msid, HalyardPaths.getYear()))
 		 Launcher.createInactiveMemberTab(membership);
 		 else
@@ -117,7 +117,7 @@ static TabPane tabPane;
 		if(SqlMembership_Id.isRenewed(ms_id, HalyardPaths.getYear())) { // membership is active and in our object tree
 		membership = getMembership(ms_id);
 		} else { // membership is not active and needs to be pulled from the SQL Database
-		membership = SqlMembership.getMembershipFromList(ms_id, HalyardPaths.getYear());
+		membership = SqlMembershipList.getMembershipFromList(ms_id, HalyardPaths.getYear());
 		}
 		Tab membershipTab = new TabMembership(membership);
 		tabPane.getTabs().add(membershipTab);
@@ -127,18 +127,18 @@ static TabPane tabPane;
 	// used for TabDeposits
 	public static void createTabForDeposits(int ms_id, String year) {  // overload
 		Object_MembershipList membership;
-		membership = SqlMembership.getMembershipFromList(ms_id, year);
+		membership = SqlMembershipList.getMembershipFromList(ms_id, year);
 		createOrOpenTab(membership, "Membership");
 	}
 
 	public static void launchTabFromSlips(int ms_id) {
-		Object_MembershipList membership = SqlMembership.getMembershipList(ms_id, HalyardPaths.getYear());
+		Object_MembershipList membership = SqlMembershipList.getMembershipList(ms_id, HalyardPaths.getYear());
 		createOrOpenTab(membership, "Membership");
 	}
 	
 	// fills incomplete object with latest information and opens tab.
 	public static void createActiveMembershipTab(Object_MembershipList membership) {
-		membership = SqlMembership.getMembershipFromList(membership.getMsid(), HalyardPaths.getYear());
+		membership = SqlMembershipList.getMembershipFromList(membership.getMsid(), HalyardPaths.getYear());
 		createOrOpenTab(membership, "Membership");
 	}
 	
@@ -147,7 +147,7 @@ static TabPane tabPane;
 	}
 	
 	public static void createMembershipTabForBOD(int msid, String selectedYear) {
-		Object_MembershipList membership = SqlMembership.getMembershipList(msid, selectedYear);
+		Object_MembershipList membership = SqlMembershipList.getMembershipList(msid, selectedYear);
 		createOrOpenTab(membership, "Membership");
 	}
 	

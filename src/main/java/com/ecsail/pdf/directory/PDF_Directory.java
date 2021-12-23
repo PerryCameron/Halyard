@@ -10,7 +10,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import com.ecsail.main.HalyardPaths;
-import com.ecsail.sql.select.SqlMembership;
+import com.ecsail.sql.select.SqlMembershipList;
 import com.ecsail.structures.Object_MembershipList;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
@@ -36,7 +36,7 @@ public class PDF_Directory {
 		this.textArea = textArea;
 		this.message = new String();
 
-		this.rosters = SqlMembership.getRoster(year, true);
+		this.rosters = SqlMembershipList.getRoster(year, true);
 		HalyardPaths.checkPath(HalyardPaths.ECSCHOME);
 		textArea.setText("Creating " + year + " directory");
 		

@@ -20,7 +20,7 @@ import com.ecsail.main.Main;
 import com.ecsail.main.HalyardPaths;
 import com.ecsail.sql.SqlDelete;
 import com.ecsail.sql.SqlUpdate;
-import com.ecsail.sql.select.SqlMembership;
+import com.ecsail.sql.select.SqlMembershipList;
 import com.ecsail.structures.Object_Boat;
 import com.ecsail.structures.Object_MembershipList;
 import javafx.beans.value.ChangeListener;
@@ -61,7 +61,7 @@ public class TabBoatView extends Tab {
 	public TabBoatView(String text, Object_Boat b) {
 		super(text);
 		this.b = b;
-		this.boatOwners = SqlMembership.getBoatOwnerRoster(b.getBoat_id());
+		this.boatOwners = SqlMembershipList.getBoatOwnerRoster(b.getBoat_id());
 		this.ftp = Main.getConnect().getForwardedConnection().getFtp();
 		checkRemoteFiles();
 		// make sure directory exists, and create it if it does not

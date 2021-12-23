@@ -142,7 +142,7 @@ public class Dialogue_NewYearGenerator extends Stage {
 	/////////////////// CLASS METHODS /////////////////////
 
 	private void generateRecords(Boolean makeNewNumbers) {
-		this.memberships = SqlMembership.getRoster(String.valueOf(previousYear), true);
+		this.memberships = SqlMembershipList.getRoster(String.valueOf(previousYear), true);
 		System.out.println("selectedYear= " + selectedYear);
 		if(makeNewNumbers) {
 			System.out.println("Creating new numbers");

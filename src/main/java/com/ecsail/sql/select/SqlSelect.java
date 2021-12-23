@@ -17,28 +17,7 @@ import java.util.ArrayList;
 
 public class SqlSelect {
 
-	
-	
-	public static ArrayList<Object_OfficerWithName> getOfficersWithNames(String type) {
-		ArrayList<Object_OfficerWithName> theseOfficers = new ArrayList<>();
-		try {
-			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			ResultSet rs;
-			rs = stmt.executeQuery(Main.console.setRegexColor("select F_NAME,L_NAME,OFF_YEAR from officer o left join person p on o.P_ID=p.P_ID where OFF_TYPE='"+type+"'"));
-			while (rs.next()) {
-				theseOfficers.add(new Object_OfficerWithName(
-						rs.getString("L_NAME"), 
-						rs.getString("F_NAME"),
-						rs.getString("OFF_YEAR")
-						));
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
-		}
-		return theseOfficers;
-	}
-	
+
 	public static ArrayList<Object_Sportsmen> getSportsManAwardNames() {
 		ArrayList<Object_Sportsmen> theseOfficers = new ArrayList<>();
 		try {

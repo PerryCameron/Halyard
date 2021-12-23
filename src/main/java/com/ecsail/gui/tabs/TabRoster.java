@@ -8,7 +8,7 @@ import com.ecsail.main.HalyardPaths;
 import com.ecsail.main.Launcher;
 import com.ecsail.main.rosterContextMenu;
 import com.ecsail.sql.SqlExists;
-import com.ecsail.sql.select.SqlMembership;
+import com.ecsail.sql.select.SqlMembershipList;
 import com.ecsail.structures.*;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -256,7 +256,7 @@ public class TabRoster extends Tab {
 			if (isNowSelected) {
 				setListType("active");
 				rosters.clear();
-				rosters.addAll(SqlMembership.getRoster(selectedYear, true));
+				rosters.addAll(SqlMembershipList.getRoster(selectedYear, true));
 
 				records.setText(rosters.size() + " Records");
 				//rosterTableView.sort();
@@ -268,7 +268,7 @@ public class TabRoster extends Tab {
 			if (isNowSelected) {
 				setListType("all");
 				rosters.clear();
-				rosters.addAll(SqlMembership.getRosterOfAll(selectedYear));
+				rosters.addAll(SqlMembershipList.getRosterOfAll(selectedYear));
 				records.setText(rosters.size() + " Records");
 				//rosterTableView.sort();
 				rosters.sort(Comparator.comparing(Object_MembershipList::getMembershipId));
@@ -279,7 +279,7 @@ public class TabRoster extends Tab {
 			if (isNowSelected) {
 				setListType("non-renew");
 				rosters.clear();
-				rosters.addAll(SqlMembership.getRoster(selectedYear, false));
+				rosters.addAll(SqlMembershipList.getRoster(selectedYear, false));
 				records.setText(rosters.size() + " Records");
 				//rosterTableView.sort();
 				rosters.sort(Comparator.comparing(Object_MembershipList::getMembershipId));
@@ -290,7 +290,7 @@ public class TabRoster extends Tab {
 			if (isNowSelected) {
 				setListType("new-members");
 				rosters.clear();
-				rosters.addAll(SqlMembership.getNewMemberRoster(selectedYear));
+				rosters.addAll(SqlMembershipList.getNewMemberRoster(selectedYear));
 				records.setText(rosters.size() + " Records");
 				//rosterTableView.sort();
 				rosters.sort(Comparator.comparing(Object_MembershipList::getMembershipId));
@@ -303,7 +303,7 @@ public class TabRoster extends Tab {
 					ObservableList<Object_MembershipList> keepers = FXCollections.observableArrayList();
 					setListType("return");
 					rosters.clear();
-					rosters.addAll(SqlMembership.getFullNewMemberRoster(selectedYear));
+					rosters.addAll(SqlMembershipList.getFullNewMemberRoster(selectedYear));
 					for (Object_MembershipList roster : rosters) {
 						if (!SqlExists.paidLate(roster)) {
 							keepers.add(roster);
@@ -322,7 +322,7 @@ public class TabRoster extends Tab {
 			if (isNowSelected) {
 				setListType("slip-waitlist");
 				rosters.clear();
-				rosters.addAll(SqlMembership.getWaitListRoster("slipwait"));
+				rosters.addAll(SqlMembershipList.getWaitListRoster("slipwait"));
 				records.setText(rosters.size() + " Records");
 				//rosterTableView.sort();
 				rosters.sort(Comparator.comparing(Object_MembershipList::getMembershipId));
@@ -333,7 +333,7 @@ public class TabRoster extends Tab {
 			if (isNowSelected) {
 				setListType("wantsrelease");
 				rosters.clear();
-				rosters.addAll(SqlMembership.getWaitListRoster("wantrelease"));
+				rosters.addAll(SqlMembershipList.getWaitListRoster("wantrelease"));
 				records.setText(rosters.size() + " Records");
 				//rosterTableView.sort();
 				rosters.sort(Comparator.comparing(Object_MembershipList::getMembershipId));
@@ -344,7 +344,7 @@ public class TabRoster extends Tab {
 			if (isNowSelected) {
 				setListType("slipOwners");
 				rosters.clear();
-				rosters.addAll(SqlMembership.getRosterOfSlipOwners(HalyardPaths.getYear()));
+				rosters.addAll(SqlMembershipList.getRosterOfSlipOwners(HalyardPaths.getYear()));
 				records.setText(rosters.size() + " Records");
 				//rosterTableView.sort();
 				rosters.sort(Comparator.comparing(Object_MembershipList::getMembershipId));
@@ -355,7 +355,7 @@ public class TabRoster extends Tab {
 			if (isNowSelected) {
 				setListType("wantsublease");
 				rosters.clear();
-				rosters.addAll(SqlMembership.getWaitListRoster("wantsublease"));
+				rosters.addAll(SqlMembershipList.getWaitListRoster("wantsublease"));
 				records.setText(rosters.size() + " Records");
 				//rosterTableView.sort();
 				rosters.sort(Comparator.comparing(Object_MembershipList::getMembershipId));
@@ -366,7 +366,7 @@ public class TabRoster extends Tab {
 			if (isNowSelected) {
 				setListType("wantsublease");
 				rosters.clear();
-				rosters.addAll(SqlMembership.getWaitListRoster("wantslipchange"));
+				rosters.addAll(SqlMembershipList.getWaitListRoster("wantslipchange"));
 				records.setText(rosters.size() + " Records");
 				//rosterTableView.sort();
 				rosters.sort(Comparator.comparing(Object_MembershipList::getMembershipId));
@@ -377,7 +377,7 @@ public class TabRoster extends Tab {
 			if (isNowSelected) {
 				setListType("subleasedslips");
 				rosters.clear();
-				rosters.addAll(SqlMembership.getRosterOfSubleasedSlips());
+				rosters.addAll(SqlMembershipList.getRosterOfSubleasedSlips());
 				records.setText(rosters.size() + " Records");
 				//rosterTableView.sort();
 				rosters.sort(Comparator.comparing(Object_MembershipList::getMembershipId));
@@ -388,7 +388,7 @@ public class TabRoster extends Tab {
 			if (isNowSelected) {
 				setListType("shedowners");
 				rosters.clear();
-				rosters.addAll(SqlMembership.getRosterOfKayakShedOwners(HalyardPaths.getYear()));
+				rosters.addAll(SqlMembershipList.getRosterOfKayakShedOwners(HalyardPaths.getYear()));
 				records.setText(rosters.size() + " Records");
 				//rosterTableView.sort();
 				rosters.sort(Comparator.comparing(Object_MembershipList::getMembershipId));
@@ -399,7 +399,7 @@ public class TabRoster extends Tab {
 			if (isNowSelected) {
 				setListType("rackowners");
 				rosters.clear();
-				rosters.addAll(SqlMembership.getRosterOfKayakRackOwners(HalyardPaths.getYear()));
+				rosters.addAll(SqlMembershipList.getRosterOfKayakRackOwners(HalyardPaths.getYear()));
 				records.setText(rosters.size() + " Records");
 				//rosterTableView.sort();
 				rosters.sort(Comparator.comparing(Object_MembershipList::getMembershipId));
@@ -412,7 +412,7 @@ public class TabRoster extends Tab {
 				ObservableList<Object_MembershipList> keepers = FXCollections.observableArrayList();
 				setListType("return");
 				rosters.clear();
-				rosters.addAll(SqlMembership.getFullNewMemberRoster(selectedYear));
+				rosters.addAll(SqlMembershipList.getFullNewMemberRoster(selectedYear));
 				for (Object_MembershipList roster : rosters) {
 					// if they didn't pay late
 					if (SqlExists.paidLate(roster)) {
@@ -450,15 +450,15 @@ public class TabRoster extends Tab {
 	private void changeSelectedRoster() {
 		rosters.clear();
 		if (rb.getRadioActive().isSelected())
-			rosters.addAll(SqlMembership.getRoster(selectedYear, true));
+			rosters.addAll(SqlMembershipList.getRoster(selectedYear, true));
 		if (rb.getRadioNonRenew().isSelected())
-			rosters.addAll(SqlMembership.getRoster(selectedYear, false));
+			rosters.addAll(SqlMembershipList.getRoster(selectedYear, false));
 		if (rb.getRadioNewMembers().isSelected())
-			rosters.addAll(SqlMembership.getNewMemberRoster(selectedYear));
+			rosters.addAll(SqlMembershipList.getNewMemberRoster(selectedYear));
 		if (rb.getRadioReturnMembers().isSelected())
-			rosters.addAll(SqlMembership.getFullNewMemberRoster(selectedYear));
+			rosters.addAll(SqlMembershipList.getFullNewMemberRoster(selectedYear));
 		if (rb.getRadioAll().isSelected())
-			rosters.addAll(SqlMembership.getRosterOfAll(selectedYear));
+			rosters.addAll(SqlMembershipList.getRosterOfAll(selectedYear));
 		rosters.sort(Comparator.comparing(Object_MembershipList::getMembershipId));
 	}
 

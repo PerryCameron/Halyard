@@ -191,7 +191,7 @@ public class PDF_Renewal_Form {
 	private void gatherMembershipInformation() {
 		ms_id = SqlMembership_Id.getMsidFromMembershipID(Integer.parseInt(current_membership_id));
 		System.out.println("MSID=" + ms_id);
-		membership = SqlMembership.getMembershipFromList(ms_id,year);
+		membership = SqlMembershipList.getMembershipFromList(ms_id,year);
 		System.out.println(membership.getMsid());
 		last_membership_id = SqlMembership_Id.getMembershipId((Integer.parseInt(year) -1) +"" , membership.getMsid());
 		dues = SqlMoney.getMonies(ms_id, year);

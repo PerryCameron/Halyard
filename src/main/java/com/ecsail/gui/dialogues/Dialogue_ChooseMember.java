@@ -1,7 +1,7 @@
 package com.ecsail.gui.dialogues;
 
 import com.ecsail.sql.SqlInsert;
-import com.ecsail.sql.select.SqlMembership;
+import com.ecsail.sql.select.SqlMembershipList;
 import com.ecsail.structures.Object_MembershipList;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -83,7 +83,7 @@ public class Dialogue_ChooseMember extends Stage {
 		memIdTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
             //focus out
             if (oldValue) {  // we have focused and unfocused
-            	newOwner = SqlMembership.getMembershipByMembershipId(memIdTextField.getText());
+            	newOwner = SqlMembershipList.getMembershipByMembershipId(memIdTextField.getText());
         		fnameTextField.setText(newOwner.getFname());
                 lnameTextField.setText(newOwner.getLname());
             }

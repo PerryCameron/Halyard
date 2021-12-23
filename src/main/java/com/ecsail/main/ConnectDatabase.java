@@ -9,7 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.ecsail.gui.boxes.BoxWelcome;
-import com.ecsail.sql.select.SqlMembership;
+import com.ecsail.sql.select.SqlMembershipList;
 import com.ecsail.structures.Object_Login;
 
 import javafx.application.Platform;
@@ -311,7 +311,7 @@ public class ConnectDatabase {
         		} else System.out.println("SSH connection is not being used");
         		// create mysql login
         		if(createConnection(user, pass, loopback, port)) {
-        		Main.activememberships = SqlMembership.getRoster(Main.selectedYear, true);
+        		Main.activememberships = SqlMembershipList.getRoster(Main.selectedYear, true);
         		logonStage.close();
         		primaryStage.setTitle("ECSC Membership Database (connected) " + host);
         		} else {

@@ -2,7 +2,7 @@ package com.ecsail.pdf;
 
 import com.ecsail.main.HalyardPaths;
 import com.ecsail.sql.select.SqlBoat;
-import com.ecsail.sql.select.SqlMembership;
+import com.ecsail.sql.select.SqlMembershipList;
 import com.ecsail.sql.select.SqlMembership_Id;
 import com.ecsail.structures.Object_Boat;
 import com.ecsail.structures.Object_MembershipList;
@@ -28,7 +28,7 @@ public class PDF_BoatReport {
     private ObservableList<Object_MembershipList> membershipLists;
 
     public PDF_BoatReport() {
-        this.membershipLists = SqlMembership.getRoster(HalyardPaths.getYear(), true);
+        this.membershipLists = SqlMembershipList.getRoster(HalyardPaths.getYear(), true);
 
         // Initialize PDF writer
         PdfWriter writer = null;
