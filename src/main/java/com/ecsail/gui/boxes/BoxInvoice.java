@@ -53,6 +53,7 @@ public class BoxInvoice extends HBox {
 		this.rowIndex = r;
 		this.fiscals = o;
 		this.definedFees = SqlDefinedFee.getDefinedFeeByYear(String.valueOf(fiscals.get(rowIndex).getFiscal_year()));
+		System.out.println(this.definedFees.toString());
 		this.invoice = fiscals.get(rowIndex);
 		this.fnode = new Object_Invoice(invoice, definedFees, paymentTableView);
 		this.selectedWorkCreditYear = SqlMoney.getWorkCredit(fiscals.get(rowIndex).getMoney_id());

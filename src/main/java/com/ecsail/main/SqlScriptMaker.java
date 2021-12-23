@@ -75,7 +75,7 @@ public class SqlScriptMaker {
 		monies = SqlMoney.getMonies(ALL);
 		officers = SqlOfficer.getOfficers();
 		definedfees = SqlDefinedFee.getDefinedFees();
-		workcredits = SqlSelect.getWorkCredits();
+		workcredits = SqlWorkCredit.getWorkCredits();
 		payments = SqlPayment.getPayments();
 		deposits = SqlDeposit.getDeposits();
 		waitlist = SqlWaitList.getWaitLists();

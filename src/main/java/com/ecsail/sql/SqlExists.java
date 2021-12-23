@@ -18,17 +18,15 @@ public class SqlExists {
 	
 	// this may be a duplicate, for instance it dosent need int pid, and why the inner join
 	// this is used on BoxAddPerson only
-	public static Boolean personExists(int pid, int type, int ms_id) {
-		Boolean answer = false;
+	public static Boolean personExists(int type, int ms_id) {
+		boolean answer = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT EXISTS(select * from person INNER JOIN membership ON person.MS_ID = membership.MS_ID where membership.MS_ID ='" 
-						+ ms_id + "' AND person.MEMBER_TYPE='" + type + "');"));
+			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT EXISTS(select * from person INNER JOIN membership ON person.MS_ID = membership.MS_ID where membership.MS_ID ="
+						+ ms_id + " AND person.MEMBER_TYPE=" + type + ") AS personexists"));
 			rs.next();
-		    answer = rs.getBoolean("EXISTS(select * from person INNER JOIN membership ON person.MS_ID = membership.MS_ID where membership.MS_ID ='"
-		    		    + ms_id +"' AND person.MEMBER_TYPE='" + type + "')");
+		    answer = rs.getBoolean("personexists");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
 
 		}
@@ -36,7 +34,7 @@ public class SqlExists {
 	}
 	
 	public static Boolean paymentExists(int money_id) {
-		Boolean answer = false;
+		boolean answer = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT EXISTS(SELECT * FROM payment WHERE MONEY_ID=" + money_id + ");"));
@@ -50,28 +48,26 @@ public class SqlExists {
 	}
 	
 	public static Boolean paymentsExistForMembership(int ms_id) {
-		Boolean answer = false;
+		boolean answer = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT EXISTS(SELECT * FROM money WHERE MS_ID=" + ms_id + ");"));
+			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT EXISTS(SELECT * FROM money WHERE MS_ID=" + ms_id + ") AS paymentexists"));
 			rs.next();
-		    answer = rs.getBoolean("EXISTS(SELECT * FROM money WHERE MS_ID=" + ms_id + ")");
+		    answer = rs.getBoolean("paymentexists");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"Unable to check if money record exists","See below for details");
 		}
 		return answer;
 	}
 	
 	public static Boolean memoExists(int money_id) {
-		Boolean answer = false;
+		boolean answer = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT EXISTS(SELECT * FROM memo WHERE MONEY_ID=" + money_id + ");"));
 			rs.next();
 		    answer = rs.getBoolean("EXISTS(SELECT * FROM memo WHERE MONEY_ID=" + money_id + ")");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
 		}
 		return answer;
@@ -85,7 +81,6 @@ public class SqlExists {
 			rs.next();
 			recordExists = rs.getBoolean("EXISTS(SELECT * FROM stats WHERE FISCAL_YEAR='" + fiscal_year + "')");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
 		}
 		return recordExists;

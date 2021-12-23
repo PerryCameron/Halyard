@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import com.ecsail.sql.select.SqlSelect;
+import com.ecsail.sql.select.SqlSportsMan;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.element.Cell;
@@ -25,7 +25,7 @@ public class PDF_SportsmanAward extends Table {
 	public PDF_SportsmanAward(int numColumns, PDF_Object_Settings set) {
 		super(numColumns);
 		this.set = set;
-		this.sportsman = SqlSelect.getSportsManAwardNames();
+		this.sportsman = SqlSportsMan.getSportsManAwardNames();
 		Collections.sort(sportsman , Comparator.comparing(Object_Sportsmen::getYear));
 		popCoWinners();
 		setWidth(PageSize.A5.getWidth() * 0.8f);  // makes table 90% of page width

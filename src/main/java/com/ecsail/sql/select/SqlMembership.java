@@ -2,10 +2,8 @@ package com.ecsail.sql.select;
 
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
-import com.ecsail.main.HalyardPaths;
 import com.ecsail.main.Main;
 import com.ecsail.structures.Object_Membership;
-import com.ecsail.structures.Object_MembershipList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 

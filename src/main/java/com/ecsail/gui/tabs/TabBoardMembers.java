@@ -5,7 +5,7 @@ import java.util.Date;
 
 import com.ecsail.enums.Officer;
 import com.ecsail.main.Launcher;
-import com.ecsail.sql.select.SqlSelect;
+import com.ecsail.sql.select.SqlBoard;
 import com.ecsail.structures.Object_Board;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -36,7 +36,7 @@ public class TabBoardMembers extends Tab {
 	public TabBoardMembers(String text) {
 		super(text);
 		this.selectedYear = new SimpleDateFormat("yyyy").format(new Date());  // lets start at the current year
-		this.board =  SqlSelect.getBoard(selectedYear);
+		this.board =  SqlBoard.getBoard(selectedYear);
 		this.currentYear = selectedYear;  // save the current year for later
 		this.year = new Text(selectedYear + " Officers");
 		
@@ -204,7 +204,7 @@ public class TabBoardMembers extends Tab {
 	private void refreshBoardList() {
 		year.setText(selectedYear + " Officers");
 		board.clear();
-		board =  SqlSelect.getBoard(selectedYear);
+		board =  SqlBoard.getBoard(selectedYear);
 	}
 	
 	private void clearBoard(VBox officerVBox1, VBox officerVBox2, VBox committeeVBox1, VBox committeeVBox2,VBox boardMembersVBox1,VBox boardMembersVBox2,VBox boardMembersVBox3) {

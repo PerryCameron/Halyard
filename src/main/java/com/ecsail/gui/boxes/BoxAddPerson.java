@@ -221,12 +221,12 @@ public class BoxAddPerson extends VBox {
 		switch (person.getMemberType()) {
 		case PRIMARY:
 			memberType = "Primary";
-			if (SqlExists.personExists(person.getP_id(), PRIMARY, ms_id))
+			if (SqlExists.personExists(PRIMARY, ms_id))
 				printErrorMessage("A primary member already exists for this account");
 			break;
 		case SECONDARY:
 			memberType = "Secondary";
-			if (SqlExists.personExists(person.getP_id(), SECONDARY, ms_id)) {
+			if (SqlExists.personExists(SECONDARY, ms_id)) {
 				printErrorMessage("A secondary member already exists for this account");
 			}
 			break;

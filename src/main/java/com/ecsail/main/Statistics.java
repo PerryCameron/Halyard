@@ -5,24 +5,24 @@ import java.util.ArrayList;
 import com.ecsail.gui.dialogues.Dialogue_StatisticsStatusBar;
 import com.ecsail.sql.SqlDelete;
 import com.ecsail.sql.SqlInsert;
-import com.ecsail.sql.select.SqlSelect;
+import com.ecsail.sql.select.SqlStats;
 import com.ecsail.structures.Object_Stats;
 
 public class Statistics {
 	public ArrayList<Object_Stats> stats;
 	
 	public Statistics() {
-		this.stats = SqlSelect.getStatistics();
+		this.stats = SqlStats.getStatistics();
 	}
 	
 	public ArrayList<Object_Stats> populateStats() {
-		ArrayList<Object_Stats> stats = SqlSelect.getStatistics();
+		ArrayList<Object_Stats> stats = SqlStats.getStatistics();
 		return stats;
 	}
 	
 	public void reload() {
 		stats.clear();
-		stats = SqlSelect.getStatistics();
+		stats = SqlStats.getStatistics();
 	}
 
 	public static void updateStats(Dialogue_StatisticsStatusBar statBar) {
