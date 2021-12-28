@@ -103,10 +103,6 @@ public class HBoxBoatNotes extends HBox {
 		Col3.setMaxWidth( 1f * Integer.MAX_VALUE * 85 );   // Note
 
         ////////////////  LISTENERS ///////////////////
-        vboxPink.heightProperty().addListener((obs, oldVal, newVal) -> {
-    		System.out.println("vboxPink height=" + newVal);
-    		//memoTableView.setPrefHeight(newVal.floatValue());
-    		});  /// 545 start height
         
         add.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {

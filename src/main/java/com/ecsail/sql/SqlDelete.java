@@ -68,6 +68,7 @@ public class SqlDelete {
 			} catch (SQLException e) {
 				new Dialogue_ErrorSQL(e,"Unable to Delete Blank Membership ID Row","See below for details");
 			}
+			System.out.println("Deleting any rows with memId=0 and year=0");
 	    return noError;
 	}
 	

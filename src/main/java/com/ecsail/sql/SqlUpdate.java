@@ -558,6 +558,8 @@ public class SqlUpdate {
 				noError = false;
 		} catch (SQLException e) {
 				new Dialogue_ErrorSQL(e, "There was a problem with the Update", "");
+		} catch (NullPointerException f) {
+				new Dialogue_ErrorSQL(f, "Null pointer for MID="+thisId.getMid()+" membership ID=" + thisId.getMembership_id() + " Fiscal Year=" + thisId.getFiscal_Year(), "");
 		}
 		return noError;
 	}

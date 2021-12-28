@@ -472,7 +472,6 @@ public class TabRoster extends Tab {
 			printChoices.setNewMembers(false);
 			printChoices.setNewAndReturnd(false);
 			printChoices.setSlipwait(false);
-			//System.out.println("All was chosen");
 		case "active":
 			printChoices.setAll(false);
 			printChoices.setActive(true);
@@ -480,7 +479,6 @@ public class TabRoster extends Tab {
 			printChoices.setNewMembers(false);
 			printChoices.setNewAndReturnd(false);
 			printChoices.setSlipwait(false);
-			//System.out.println("Active was chosen");
 			break;
 		case "non-renew":
 			printChoices.setAll(false);

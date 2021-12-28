@@ -200,7 +200,6 @@ public class SqlInsert {
 			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"Unable to create new row","See below for details");
 		}
-		System.out.println("Creating entry for " + id.getMembership_id());
 	}
 	
 	public static void addWaitList(Object_WaitList w) {

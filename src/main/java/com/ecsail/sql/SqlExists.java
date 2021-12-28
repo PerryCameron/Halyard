@@ -102,17 +102,15 @@ public class SqlExists {
 		return result;
 	}
 	
-	public static boolean membershipIdBlankRowExists() {
-		
+	public static boolean membershipIdBlankRowExists(String msid) {
 		boolean result = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT EXISTS(select * from membership_id where fiscal_year=0 and MEMBERSHIP_ID=0)"));
+			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT EXISTS(select * from membership_id where fiscal_year=0 and MEMBERSHIP_ID=0 and MS_ID!="+msid+") AS newtuple"));
 			while(rs.next()) {
-			result = rs.getBoolean("EXISTS(select * from membership_id where fiscal_year=0 and MEMBERSHIP_ID=0)");
+			result = rs.getBoolean("newtuple");
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"Unable to check if a blank membership_id row exists","See below for details");
 		}
 		return result;

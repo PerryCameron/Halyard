@@ -20,6 +20,7 @@ import com.ecsail.structures.Object_MemLabels;
 import com.ecsail.structures.Object_MembershipId;
 import com.ecsail.structures.Object_MembershipList;
 
+import com.ecsail.structures.Object_Memo;
 import javafx.beans.Observable;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -134,7 +135,6 @@ public class HBoxHistory extends HBox {
 				if(!SqlUpdate.updateMembershipId(thisId, "fiscal_year", FixInput.changeEmptyStringToZero(t.getNewValue()))) {
 					// if it does not update correctly lets set tableview back to defaults
 					Object_MembershipId storedId = SqlMembership_Id.getMembershipIdObject(mid);
-					System.out.println("fiscal year=" + storedId.getFiscal_Year() + " memId=" + storedId.getMembership_id());
 					thisId.setFiscal_Year(storedId.getFiscal_Year());
 					thisId.setMembership_id(storedId.getMembership_id());
 				}
@@ -154,7 +154,6 @@ public class HBoxHistory extends HBox {
 				if(!SqlUpdate.updateMembershipId(thisId, "membership_id", FixInput.changeEmptyStringToZero(t.getNewValue()))) {
 					// if it does not update correctly lets set tableview back to defaults
 					Object_MembershipId storedId = SqlMembership_Id.getMembershipIdObject(mid);
-					System.out.println("fiscal year=" + storedId.getFiscal_Year() + " memId=" + storedId.getMembership_id());
 					thisId.setFiscal_Year(storedId.getFiscal_Year());
 					thisId.setMembership_id(storedId.getMembership_id());
 				}
@@ -274,29 +273,38 @@ public class HBoxHistory extends HBox {
 			membership.setJoinDate(joinDatePicker.getValue().toString());
 			labels.getJoinDate().setText(joinDatePicker.getValue().toString());
 		}));
-		
-		idAdd.setOnAction((event) -> {
-			Object_MembershipId newIdTuple = null;
-			int mid = SqlSelect.getCount("membership_id", "mid") + 1; // get last mid number add 1
-			// make sure any blank unused rows are removed before creating another
-			// no need to specify a year, just remove any of them.
-			if(SqlExists.membershipIdBlankRowExists()) {
-				System.out.println("Found unused blank row: Deleted");
-				SqlDelete.deleteBlankMembershipIdRow();	
-			}
 
-			if (!tupleExistsInTableView()) {  // prevent creating duplicate new tuples
-				if (SqlExists.memberShipIdExists(m.getMsid())) {
-					newIdTuple = new Object_MembershipId(mid, 0 + "", m.getMsid(), "0", true, m.getMemType(), false,
-							false);
-				} else {
-					newIdTuple = new Object_MembershipId(mid, HalyardPaths.getYear(), m.getMsid(), "0", true, m.getMemType(),
-							false, false);
-				}
-			SqlInsert.addMembershipId(newIdTuple);
-			System.out.println("Added new row for MS_ID " + newIdTuple.getMs_id());
-			id.add(newIdTuple);	
-			} else { System.out.println("Duplicate new tuple: ignoring"); }
+		idAdd.setOnAction((event) -> {
+			// gets next available id for membership_id table
+			int mid = SqlSelect.getCount("membership_id", "mid") + 1; // get last mid number add 1
+			System.out.println("new mid=" + mid);
+			//	if tuple of year=0 and memId=0 exists anywhere in SQL not belonging to this membership then delete it
+			if(SqlExists.membershipIdBlankRowExists(String.valueOf(membership.getMsid()))) {
+				SqlDelete.deleteBlankMembershipIdRow();
+				System.out.println("Found blank row in SQL deleting");
+			} else {
+				System.out.println("Found no blank rows in SQL to delete");
+			}
+			// see if another year=0 and memId=0 row exists in current tableView, bring it to top and edit
+			if (blankTupleExistsInTableView()) {
+				Collections.sort(id, Comparator.comparing(Object_MembershipId::getFiscal_Year));
+				idTableView.edit(0, Col1);
+				System.out.println("Found blank row in table, bringing to the top to edit");
+				// create an appropriate new object to place in list
+			} else {
+				// create a blank membershipId object
+				Object_MembershipId newIdTuple = new Object_MembershipId(mid, "0", m.getMsid(), "0", true, m.getMemType(), false, false);
+				// add the information from the new object into SQL
+				SqlInsert.addMembershipId(newIdTuple);
+				// add the new tuple to the appropriate history tableView
+				id.add(newIdTuple);
+				// sort so that new membership id entry is at the top
+
+				// edit the year cell after creating
+				idTableView.refresh();
+				Collections.sort(id, Comparator.comparing(Object_MembershipId::getFiscal_Year));
+				idTableView.edit(0, Col1);
+			}
 		});
 
 		idDelete.setOnAction((event) -> {
@@ -318,11 +326,25 @@ public class HBoxHistory extends HBox {
 
 	} // end of constructor
 
-	private boolean tupleExistsInTableView() {
+	// the problem here is the index is wrong
+	private int findBlankTupleIndex() {
+		System.out.println("number of index before=" + id.size());
+		int index = 0;
+		for(int i = 0; i < id.size(); i++) {
+			if(id.get(i).getFiscal_Year().equals("0"))
+				if(id.get(i).getMembership_id().equals("0"));
+				index = i;
+		}
+		System.out.println("Blank row has index of " + index + " MID=" + id.get(index).getMid());
+		return index;
+	}
+
+	private boolean blankTupleExistsInTableView() {
 		boolean tupleExists = false;
 		for(Object_MembershipId i: id) {
 			if(i.getFiscal_Year().equals("0") && i.getMembership_id().equals("0")) tupleExists=true;
 		}
+		System.out.println("Blank tuple exists=" + tupleExists);
 		return tupleExists;
 	}
 
