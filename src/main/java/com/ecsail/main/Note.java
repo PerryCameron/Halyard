@@ -28,12 +28,14 @@ public class Note {
 		super();
 	}
 
-	public void add(String note, String date, int money_id, String category) {
+	public int addMemoAndReturnId(String note, String date, int money_id, String category) {
 		//String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date(System.currentTimeMillis()));
 		int memo_id = getCount() + 1;
 		Object_Memo memo = new Object_Memo(memo_id,msid,date,note,money_id,category);
 		memos.add(memo); // add in observable list
 		addMemo(memo); // add in SQL
+		Collections.sort(memos, Comparator.comparing(Object_Memo::getMemo_id).reversed());
+		return memo_id;
 	}
 
 	protected int getCount() { // gives the last memo_id number

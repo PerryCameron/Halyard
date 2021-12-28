@@ -100,7 +100,7 @@ public class rosterContextMenu extends ContextMenu {
             String URL = linkCreator.createLinkData(m, selectedYear);
             new HTTPRequestBuilder(URL,"member" + String.valueOf(m.getMembershipId()));
             // this will be the short link
-            String body = "https://eaglecreeksailing.com/ecscurl/member" + String.valueOf(m.getMembershipId());
+            String body = "https://eaglecreeksailing.com/url/member" + String.valueOf(m.getMembershipId());
             // encodes so I can have spaces
             String subject = encodeURI("2022 Membership Renewal");
             System.out.println(body);

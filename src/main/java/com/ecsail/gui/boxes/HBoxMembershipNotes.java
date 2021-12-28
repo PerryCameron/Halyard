@@ -23,10 +23,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
-public class HBoxNotes extends HBox {
+public class HBoxMembershipNotes extends HBox {
 	private Note note;
 	
-	public HBoxNotes(Note n) {
+	public HBoxMembershipNotes(Note n) {
 		this.note = n;
 		
 		//////////// OBJECTS ///////////////
@@ -108,7 +108,10 @@ public class HBoxNotes extends HBox {
         add.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
             	String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date(System.currentTimeMillis()));
-             	note.add("new memo", date,0,"N");
+				// add a memo and return its id
+             	int memoId = note.addMemoAndReturnId("new memo", date,0,"N");
+				// open memo for editing
+				 memoTableView.edit(0,Col3);
             }
         });
         
@@ -131,7 +134,10 @@ public class HBoxNotes extends HBox {
 		hboxGrey.getChildren().addAll(vboxPink,buttonVBox);
 		getChildren().add(hboxGrey);
 	}
-	
+
+
+
+
 	// This allows out of focus committ
     private <T> TableColumn<T, String> createColumn(String title, Function<T, StringProperty> property) {
         TableColumn<T, String> col = new TableColumn<>(title);

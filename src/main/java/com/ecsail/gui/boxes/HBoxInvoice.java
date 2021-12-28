@@ -411,7 +411,7 @@ public class HBoxInvoice extends HBox {
 			if (!fiscals.get(rowIndex).isCommitted()) {
 				if (!fnode.getTotalBalanceText().getText().equals("0.00")) {
 					fnode.getTotalBalanceText().setStyle("-fx-background-color: #f23a50");
-					note.add("Non-Zero Balance: ",date,fiscals.get(rowIndex).getMoney_id(),"B");
+					note.addMemoAndReturnId("Non-Zero Balance: ",date,fiscals.get(rowIndex).getMoney_id(),"B");
 				}
 				SqlUpdate.commitFiscalRecord(fiscals.get(rowIndex).getMoney_id(), true);// this could be placed in line above
 				SqlUpdate.updateMembershipId(fiscals.get(rowIndex).getMs_id(), fiscals.get(rowIndex).getFiscal_year(), fnode.getRenewCheckBox().isSelected());
@@ -421,7 +421,7 @@ public class HBoxInvoice extends HBox {
 				if(new BigDecimal(fiscals.get(rowIndex).getOther()).compareTo(BigDecimal.ZERO) != 0) {
 					// make sure the memo doesn't already exist
 					if(!SqlExists.memoExists(fiscals.get(rowIndex).getMoney_id()))
-						note.add("Other expense: ",date,fiscals.get(rowIndex).getMoney_id(),"O");
+						note.addMemoAndReturnId("Other expense: ",date,fiscals.get(rowIndex).getMoney_id(),"O");
 				}
 				setEditable(false);
 			} else {

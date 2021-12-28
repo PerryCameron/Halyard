@@ -7,7 +7,7 @@ import com.ecsail.gui.boxes.HBoxBoat;
 import com.ecsail.gui.boxes.HBoxHistory;
 import com.ecsail.gui.boxes.HBoxInvoiceList;
 import com.ecsail.gui.boxes.HBoxMembership;
-import com.ecsail.gui.boxes.HBoxNotes;
+import com.ecsail.gui.boxes.HBoxMembershipNotes;
 import com.ecsail.gui.boxes.HBoxPerson;
 import com.ecsail.gui.boxes.HBoxProperties;
 import com.ecsail.gui.boxes.HBoxSlip;
@@ -119,7 +119,7 @@ public class TabMembership extends Tab {
 		fiscalTabPane.getTabs().add(new Tab("History", new HBoxHistory(membership, labels)));
 		fiscalTabPane.getTabs().add(new Tab("Payments", new HBoxInvoiceList(membership, fiscalTabPane, people, note, duesText)));
 		informationTabPane.getTabs().add(new Tab("Boats", new HBoxBoat(membership)));
-		informationTabPane.getTabs().add(new Tab("Notes", new HBoxNotes(note)));
+		informationTabPane.getTabs().add(new Tab("Notes", new HBoxMembershipNotes(note)));
 		informationTabPane.getTabs().add(new Tab("Properties", new HBoxProperties(membership, this)));
 		informationTabPane.getTabs().add(new Tab("Attachments", new HBoxAttachment(membership)));
 		informationTabPane.getTabs().add(new Tab("Address", new HBoxAddress(membership)));
