@@ -23,7 +23,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
-public class HBoxInvoiceSummaryList extends HBox {
+public class HBoxInvoiceList extends HBox {
 	
 	private static ObservableList<Object_Money> fiscals = null;
 	private static TabPane parentTabPane;
@@ -34,14 +34,14 @@ public class HBoxInvoiceSummaryList extends HBox {
 	
 	String currentYear;
 
-	public HBoxInvoiceSummaryList(Object_Membership membership, TabPane t, ObservableList<Object_Person> p, Note n, TextField dt) {
+	public HBoxInvoiceList(Object_Membership membership, TabPane t, ObservableList<Object_Person> p, Note n, TextField dt) {
 		super();
-		HBoxInvoiceSummaryList.membership = membership;
+		HBoxInvoiceList.membership = membership;
 		this.currentYear = HalyardPaths.getYear();
-		HBoxInvoiceSummaryList.duesText = dt;
-		HBoxInvoiceSummaryList.note = n;
-		HBoxInvoiceSummaryList.parentTabPane = t;
-		HBoxInvoiceSummaryList.people = p;
+		HBoxInvoiceList.duesText = dt;
+		HBoxInvoiceList.note = n;
+		HBoxInvoiceList.parentTabPane = t;
+		HBoxInvoiceList.people = p;
 		
 		////////////////////////  OBJECTS   ///////////////////////////////
 		VBox vboxGrey = new VBox();  // this is the vbox for organizing all the widgets
@@ -52,7 +52,7 @@ public class HBoxInvoiceSummaryList extends HBox {
 		Button deleteFiscalRecord = new Button("Delete");
 //		final Spinner<Integer> yearSpinner = new Spinner<Integer>();
 //		SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 2100, Integer.parseInt(currentYear));
-		HBoxInvoiceSummaryList.fiscals = SqlMoney.getMonies(membership.getMsid());
+		HBoxInvoiceList.fiscals = SqlMoney.getMonies(membership.getMsid());
 //		Object_DefinedFee definedFees = SqlSelect.selectDefinedFees(Integer.parseInt(currentYear));
 		TableView<Object_Money> fiscalTableView = new TableView<Object_Money>();
 		TableColumn<Object_Money, Integer> Col1 = new TableColumn<Object_Money, Integer>("Year");
@@ -66,7 +66,7 @@ public class HBoxInvoiceSummaryList extends HBox {
 		}
 		comboBox.getSelectionModel().select(1);
 		///////////////////// SORT ///////////////////////////////////////////
-		Collections.sort(HBoxInvoiceSummaryList.fiscals, (p1, p2) -> Integer.compare(p2.getFiscal_year(), (p1.getFiscal_year())));
+		Collections.sort(HBoxInvoiceList.fiscals, (p1, p2) -> Integer.compare(p2.getFiscal_year(), (p1.getFiscal_year())));
 		
 		///////////////////// ATTRIBUTES /////////////////////////////////////
 
