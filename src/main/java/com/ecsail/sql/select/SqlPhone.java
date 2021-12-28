@@ -14,7 +14,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class SqlPhone {
-    public static ObservableList<Object_Phone> getPhone(int p_id) {  // if p_id = 0 then select all
+    public static ObservableList<Object_Phone> getPhoneByPid(int p_id) {  // if p_id = 0 then select all
         String query = "select * from phone";
         if(p_id != 0)
             query += " WHERE p_id='" + p_id + "'";
@@ -28,30 +28,28 @@ public class SqlPhone {
                         rs.getString("PHONE"), rs.getString("PHONE_TYPE")));
             }
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
         return thisPhone;
     }
 
-    public static ArrayList<Object_Phone> getPhone(Object_Person p) {  // if p_id = 0 then select all
+    public static ArrayList<Object_Phone> getPhoneByPerson(Object_Person p) {  // if p_id = 0 then select all
         ArrayList<Object_Phone> thisPhone = new ArrayList<>();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
-            rs = stmt.executeQuery(Main.console.setRegexColor("SELECT * from phone Where P_ID=" + p.getP_id() + ""));
+            rs = stmt.executeQuery(Main.console.setRegexColor("SELECT * from phone Where P_ID=" + p.getP_id()));
             while (rs.next()) {
                 thisPhone.add(new Object_Phone(rs.getInt("PHONE_ID"), rs.getInt("P_ID"), rs.getBoolean("PHONE_LISTED"),
                         rs.getString("PHONE"), rs.getString("PHONE_TYPE")));
             }
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
         return thisPhone;
     }
 
-    public static String getPhone(Object_Person p, String type) {  // if p_id = 0 then select all
+    public static String getListedPhoneByType(Object_Person p, String type) {  // if p_id = 0 then select all
         String phone = "";
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
@@ -61,7 +59,21 @@ public class SqlPhone {
             phone = rs.getString("PHONE");
 
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
+            new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
+        }
+        return phone;
+    }
+
+    public static String getPhoneByType(String pid, String type) {  // if p_id = 0 then select all
+        String phone = "";
+        try {
+            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
+            ResultSet rs;
+            rs = stmt.executeQuery(Main.console.setRegexColor("select * from phone where P_ID=" + pid + " and PHONE_TYPE='" + type + "'"));
+            rs.next();
+            phone = rs.getString("PHONE");
+
+        } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
         return phone;

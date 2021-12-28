@@ -317,7 +317,7 @@ public class TabDeposits extends Tab {
 			updateNonRenewed(nonRenewed);
 			numberOfRecords.setText(paidDues.size() + "");
 
-			if (SqlExists.ifDepositRecordExists(selectedYear + "", summaryTotals.getDepositNumber())) {
+			if (SqlExists.depositRecordExists(selectedYear + "", summaryTotals.getDepositNumber())) {
 				currentDeposit = SqlDeposit.getDeposit(selectedYear + "", summaryTotals.getDepositNumber());
 				LocalDate date = LocalDate.parse(currentDeposit.getDepositDate(), formatter);
 				depositDatePicker.setValue(date);
@@ -446,7 +446,7 @@ public class TabDeposits extends Tab {
 
 	private void checkForDepositAndCreateIfNotExist() {
 		// does a deposit exist for selected year and batch?
-		if (SqlExists.ifDepositRecordExists(selectedYear + "", summaryTotals.getDepositNumber())) {
+		if (SqlExists.depositRecordExists(selectedYear + "", summaryTotals.getDepositNumber())) {
 //			System.out.println("deposit exists");
 			SqlDeposit.getDeposit(selectedYear + "", summaryTotals.getDepositNumber()).getDeposit_id();
 		} else { // record does not exist
@@ -464,7 +464,7 @@ public class TabDeposits extends Tab {
 
 	private int getDepositId(Object_PaidDues thisPaidDues) {
 		int deposit_id = 0;
-		if (SqlExists.ifDepositRecordExists(thisPaidDues.getFiscal_year() + "", summaryTotals.getDepositNumber())) { // does
+		if (SqlExists.depositRecordExists(thisPaidDues.getFiscal_year() + "", summaryTotals.getDepositNumber())) { // does
 																														// a
 																							// batch?
 //			System.out.println("deposit exists");

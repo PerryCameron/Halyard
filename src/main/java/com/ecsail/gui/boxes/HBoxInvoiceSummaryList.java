@@ -23,7 +23,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
-public class BoxPaymentList extends HBox {
+public class HBoxInvoiceSummaryList extends HBox {
 	
 	private static ObservableList<Object_Money> fiscals = null;
 	private static TabPane parentTabPane;
@@ -34,14 +34,14 @@ public class BoxPaymentList extends HBox {
 	
 	String currentYear;
 
-	public BoxPaymentList(Object_Membership membership, TabPane t, ObservableList<Object_Person> p, Note n, TextField dt) {
+	public HBoxInvoiceSummaryList(Object_Membership membership, TabPane t, ObservableList<Object_Person> p, Note n, TextField dt) {
 		super();
-		BoxPaymentList.membership = membership;
+		HBoxInvoiceSummaryList.membership = membership;
 		this.currentYear = HalyardPaths.getYear();
-		BoxPaymentList.duesText = dt;
-		BoxPaymentList.note = n;
-		BoxPaymentList.parentTabPane = t;
-		BoxPaymentList.people = p;
+		HBoxInvoiceSummaryList.duesText = dt;
+		HBoxInvoiceSummaryList.note = n;
+		HBoxInvoiceSummaryList.parentTabPane = t;
+		HBoxInvoiceSummaryList.people = p;
 		
 		////////////////////////  OBJECTS   ///////////////////////////////
 		VBox vboxGrey = new VBox();  // this is the vbox for organizing all the widgets
@@ -52,7 +52,7 @@ public class BoxPaymentList extends HBox {
 		Button deleteFiscalRecord = new Button("Delete");
 //		final Spinner<Integer> yearSpinner = new Spinner<Integer>();
 //		SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 2100, Integer.parseInt(currentYear));
-		BoxPaymentList.fiscals = SqlMoney.getMonies(membership.getMsid());
+		HBoxInvoiceSummaryList.fiscals = SqlMoney.getMonies(membership.getMsid());
 //		Object_DefinedFee definedFees = SqlSelect.selectDefinedFees(Integer.parseInt(currentYear));
 		TableView<Object_Money> fiscalTableView = new TableView<Object_Money>();
 		TableColumn<Object_Money, Integer> Col1 = new TableColumn<Object_Money, Integer>("Year");
@@ -66,7 +66,7 @@ public class BoxPaymentList extends HBox {
 		}
 		comboBox.getSelectionModel().select(1);
 		///////////////////// SORT ///////////////////////////////////////////
-		Collections.sort(BoxPaymentList.fiscals, (p1,p2) -> Integer.compare(p2.getFiscal_year(), (p1.getFiscal_year())));
+		Collections.sort(HBoxInvoiceSummaryList.fiscals, (p1, p2) -> Integer.compare(p2.getFiscal_year(), (p1.getFiscal_year())));
 		
 		///////////////////// ATTRIBUTES /////////////////////////////////////
 
@@ -125,19 +125,27 @@ public class BoxPaymentList extends HBox {
 
         ////////////////  LISTENERS ///////////////////
 		addFiscalRecord.setOnAction((event) -> {
+				// get the next available key for money_id table
 				int moneyId = SqlMoney.getCount("money_id") + 1;
+				// create appropriate money object for this membership
 				Object_Money newMoney = new Object_Money(moneyId, membership.getMsid(),
 						comboBox.getValue(), 0, "0.00", 0, 0, 0, 0, 0, "0.00", 0, 0, 0, 0, 0,
 						"0.00", "0.00", "0.00", "0.00", "0.00", String.valueOf(getDues(comboBox.getValue())), false, false, "0.00", "0.00", false,0, "0.00");
+				// if a record already exists for this year then this is a supplemental record
 				if (SqlExists.moneyExists(String.valueOf(comboBox.getValue()), membership)) {
 					newMoney.setSupplemental(true);
 					newMoney.setDues("0.00");
 				}
+				// insert the new record into the SQL database
 				SqlInsert.addRecord(newMoney);
+				// insert the work credit information (This may be deprecated. I haven't made up my mind yet)
 				SqlInsert.addRecord(moneyId, membership);
+				// add new money row to tableview
 				fiscals.add(newMoney);
+				// send new money row to top
 				fiscals.sort(Comparator.comparing(Object_Money::getFiscal_year).reversed());
-				createTab(0);
+				// open a tab for the year we just created
+				createTabByYear(newMoney);
 		});
         
 		deleteFiscalRecord.setOnAction((event) -> {
@@ -168,8 +176,12 @@ public class BoxPaymentList extends HBox {
 		vboxGrey.getChildren().addAll(hbox1,vboxPink);
 		getChildren().addAll(vboxGrey);	
 	}
-	
+
+
+
 	/////////////////////  CLASS METHODS /////////////////////////////
+
+
 	
 	private BigDecimal getDues(int year) {  // takes the membership type and gets the dues
 		Object_DefinedFee selectedDefinedFee = SqlDefinedFee.getDefinedFeeByYear(String.valueOf(year));
@@ -203,10 +215,36 @@ public class BoxPaymentList extends HBox {
 	}
 	
 	private static void createTab(int rowIndex) {
-		parentTabPane.getTabs().add(new Tab(fiscals.get(rowIndex).getFiscal_year() + "", new BoxInvoice(membership, people, fiscals, rowIndex, note, duesText))); // current year tab
+		parentTabPane.getTabs().add(new Tab(fiscals.get(rowIndex).getFiscal_year() + "", new HBoxInvoice(membership, people, fiscals, rowIndex, note))); // current year tab
 		for(Tab tab: parentTabPane.getTabs()) {
 			if(tab.getText().equals(fiscals.get(rowIndex).getFiscal_year() + ""))
 		parentTabPane.getSelectionModel().select(tab);
 		}
 	}
+
+	private static void createTabByYear(Object_Money money) {
+		// create a tab with the correct year
+		Tab newTab = new Tab(String.valueOf(money.getFiscal_year()));
+		// add tab to pane
+		parentTabPane.getTabs().add(newTab);
+		// find the index value of the correct Object_Money in fiscals ArrayList
+		int fiscalsIndex = getFiscalIndexByYear(money.getFiscal_year());
+		// get the last index in the tabPane
+		int tabIndex = parentTabPane.getTabs().size() - 1;
+		// add appropritate invoice to the tab using the index of fiscals
+		newTab.setContent(new HBoxInvoice(membership, people, fiscals, fiscalsIndex, note));
+		// open the correct tab
+		parentTabPane.getSelectionModel().select(newTab);
+	}
+
+	private static int getFiscalIndexByYear(int year) {
+		int index = 0;
+		for(int i =0; i < fiscals.size(); i++) {
+			// find index that matches the year
+			if(fiscals.get(i).getFiscal_year() == year)
+				index = i;
+		}
+		return index;
+	}
+
 }

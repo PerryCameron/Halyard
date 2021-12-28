@@ -53,13 +53,6 @@ public class TabBoardMembers extends Tab {
 		//Label year = new Label(selectedYear + " Officers");
 	Text chairs = new Text("Committee Chairs");
 	Text board = new Text("Board of Directors");
-	
-	/// experimental ///
-//	String filename = "2020";
-//	chairs.setId("bigtext");
-//	board.setId("bigtext");
-//	year.setId("bigtext");
-//	chairs.setFont(Font.loadFont("file:/resources/fonts/Fredoka_One", 28));
 
 	Image slipImage = new Image(getClass().getResourceAsStream("/Stickers/" + selectedYear + ".png"));
 	//Image slipImage = new Image(getClass().getResourceAsStream("/Stickers/" + filename + ".png"), 600, 600, false, false);
@@ -67,27 +60,6 @@ public class TabBoardMembers extends Tab {
 	imageView.setFitWidth(300);
 	imageView.setFitHeight(300);
 	imageView.setPreserveRatio(true);
-	//VBox image = new VBox();
-	//image.getChildren().add(imageView);
-	//// experimental ///
-	
-//	final Spinner<Integer> yearSpinner = new Spinner<Integer>();
-//	SpinnerValueFactory<Integer> wetSlipValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1970, Integer.parseInt(selectedYear) + 1, Integer.parseInt(selectedYear));
-//	yearSpinner.setValueFactory(wetSlipValueFactory);
-//	yearSpinner.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_HORIZONTAL);
-//	yearSpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
-//		  if (!newValue) {
-//			  selectedYear = yearSpinner.getEditor().getText();
-//			  refreshBoardList();
-//			  clearBoard(officerVBox1, officerVBox2, committeeVBox1, committeeVBox2,boardMembersVBox1,boardMembersVBox2,boardMembersVBox3);
-//			  addOfficers(officerVBox1, officerVBox2);
-//			  addChairmen(committeeVBox1, committeeVBox2);
-//			  addBoard(boardMembersVBox1,boardMembersVBox2,boardMembersVBox3);
-//			  System.out.println("Creating image: " + selectedYear + ".png");
-//			  Image newImage = new Image(getClass().getResourceAsStream("/Stickers/" + selectedYear + ".png"));
-//			  imageView.setImage(newImage);
-//		  }
-//		});
 
 	ComboBox comboBox = new ComboBox();
 	for(int i = Integer.parseInt(currentYear) + 1; i > 1969; i--) {
@@ -114,10 +86,6 @@ public class TabBoardMembers extends Tab {
 			  imageView.setImage(newImage);
 
 		});
-
-//	year.setEffect(new DropShadow(1, Color.BLACK));
-//	chairs.setEffect(new DropShadow(1, Color.BLACK));
-//	board.setEffect(new DropShadow(1, Color.BLACK));
 	
 	boardMembersVBox1.setPrefWidth(150);
 	boardMembersVBox2.setPrefWidth(150);

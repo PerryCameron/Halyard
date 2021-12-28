@@ -11,11 +11,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 // this is the contents inside tabWelcome() launched from ConnectDatabase() about line 229
-public class BoxWelcome extends HBox {
+public class HBoxWelcome extends HBox {
 	private VBox vboxLeft;
 	private Statistics dbStats;
 	
-	public BoxWelcome() {
+	public HBoxWelcome() {
 		this.dbStats = new Statistics();
 		this.vboxLeft = new VBox();
 		

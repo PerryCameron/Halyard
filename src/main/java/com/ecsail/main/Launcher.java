@@ -1,6 +1,6 @@
 package com.ecsail.main;
 
-import com.ecsail.gui.boxes.BoxWelcome;
+import com.ecsail.gui.boxes.HBoxWelcome;
 import com.ecsail.gui.dialogues.Dialogue_EnvelopePDF;
 import com.ecsail.gui.dialogues.Dialogue_RenewalForm;
 import com.ecsail.gui.tabs.TabRoster;
@@ -81,7 +81,7 @@ static TabPane tabPane;
 			tabPane.getSelectionModel().select(getTabIndex("Boat " + b.getBoat_id()));
 	}
 	
-	public static void openWelcomeTab(BoxWelcome boxWelcome) {
+	public static void openWelcomeTab(HBoxWelcome boxWelcome) {
 		tabPane.getTabs().add(new TabWelcome(boxWelcome));
 	}
 	

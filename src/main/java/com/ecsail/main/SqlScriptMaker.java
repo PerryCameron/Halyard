@@ -66,7 +66,7 @@ public class SqlScriptMaker {
 		memberships = SqlMembership.getMemberships();
 		ids = SqlMembership_Id.getIds();
 		people = SqlPerson.getPeople();
-		phones = SqlPhone.getPhone(ALL);
+		phones = SqlPhone.getPhoneByPid(ALL);
 		boats = SqlBoat.getBoats();
 		boatowners = SqlBoat.getBoatOwners();
 		slips = SqlSlip.getSlips();

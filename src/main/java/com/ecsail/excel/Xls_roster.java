@@ -258,7 +258,7 @@ public class Xls_roster {
 	
 	private String getPhone(int p_id) {
 		String phoneString = "";
-		ObservableList<Object_Phone> phones = SqlPhone.getPhone(p_id);
+		ObservableList<Object_Phone> phones = SqlPhone.getPhoneByPid(p_id);
 		if (phones != null) {
 			for (Object_Phone p : phones) {
 				if (p.getPhoneType().equals("C")) {  // we prefer a cell phone

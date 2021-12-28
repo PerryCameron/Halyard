@@ -59,7 +59,7 @@ public class Dialogue_DepositPDF extends Stage {
 			  if (!newValue) {
 				  batchSpinner.increment(0); // won't change value, but will commit editor
 				  int fieldValue = Integer.parseInt(batchSpinner.getEditor().getText());
-				  		if(SqlExists.ifDepositRecordExists(currentDeposit.getFiscalYear(), fieldValue))  // deposit exists
+				  		if(SqlExists.depositRecordExists(currentDeposit.getFiscalYear(), fieldValue))  // deposit exists
 				  		currentDeposit.setBatch(fieldValue);
 				  		else
 				  		currentDeposit.setBatch(1);	

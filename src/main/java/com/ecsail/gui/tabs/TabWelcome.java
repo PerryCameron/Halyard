@@ -2,7 +2,7 @@ package com.ecsail.gui.tabs;
 
 import com.ecsail.charts.MembershipLineChart;
 import com.ecsail.charts.MembershipStackedBarChart;
-import com.ecsail.gui.boxes.BoxWelcome;
+import com.ecsail.gui.boxes.HBoxWelcome;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.scene.control.Tab;
@@ -11,7 +11,7 @@ import javafx.scene.layout.VBox;
 
 public class TabWelcome extends Tab {
 	
-	public TabWelcome(BoxWelcome boxWelcome) {  // check boxWelcome
+	public TabWelcome(HBoxWelcome boxWelcome) {  // check boxWelcome
 		super();
 		setText("Welcome");
 		//double titleBarHeight = Main.getPrimaryStage().getHeight() - Main.getPrimaryScene().getHeight();

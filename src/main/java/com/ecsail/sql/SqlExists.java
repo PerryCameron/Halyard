@@ -1,18 +1,17 @@
 package com.ecsail.sql;
 
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
-import com.ecsail.main.Main;
 import com.ecsail.main.HalyardPaths;
+import com.ecsail.main.Main;
 import com.ecsail.structures.Object_Membership;
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_Person;
-import com.ecsail.structures.Object_Temp;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class SqlExists {
 	
@@ -73,21 +72,8 @@ public class SqlExists {
 		return answer;
 	}
 	
-	public static Boolean statRecordExists(int fiscal_year) {
-		Boolean recordExists = false;
-		try {
-			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT EXISTS(SELECT * FROM stats WHERE FISCAL_YEAR='" + fiscal_year + "')"));
-			rs.next();
-			recordExists = rs.getBoolean("EXISTS(SELECT * FROM stats WHERE FISCAL_YEAR='" + fiscal_year + "')");
-		} catch (SQLException e) {
-			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
-		}
-		return recordExists;
-	}
-	
 	public static boolean memberShipExists(int ms_id) {
-		Boolean result = false;
+		boolean result = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT EXISTS(select * from membership WHERE ms_id='" + ms_id + "')"));
@@ -102,7 +88,7 @@ public class SqlExists {
 	}
 	
 	public static boolean memberShipIdExists(int ms_id) {
-		Boolean result = false;
+		boolean result = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT EXISTS(select * from membership_id WHERE ms_id='" + ms_id + "')"));
@@ -118,7 +104,7 @@ public class SqlExists {
 	
 	public static boolean membershipIdBlankRowExists() {
 		
-		Boolean result = false;
+		boolean result = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT EXISTS(select * from membership_id where fiscal_year=0 and MEMBERSHIP_ID=0)"));
@@ -133,7 +119,7 @@ public class SqlExists {
 	}
 	
 	public static boolean memberShipIdExists(int ms_id, String year) {
-		Boolean result = false;
+		boolean result = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT EXISTS(select * from membership_id WHERE ms_id='" + ms_id + "' and FISCAL_YEAR='" + year + "')"));
@@ -141,14 +127,13 @@ public class SqlExists {
 			result = rs.getBoolean("EXISTS(select * from membership_id WHERE ms_id='" + ms_id + "' and FISCAL_YEAR='" + year + "')");
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
 		}
 		return result;
 	}
 	
 	public static boolean activePersonExists(int ms_id, int member_type) {
-		Boolean result = false;
+		boolean result = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select exists(select * from person where MS_ID=" + ms_id + " and MEMBER_TYPE=" + member_type + " and is_active=true)"));
@@ -163,7 +148,7 @@ public class SqlExists {
 	}
 	
 	public static boolean definedFeeExists(String year) {
-		Boolean result = false;
+		boolean result = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select exists(select * from defined_fee where FISCAL_YEAR='" + year + "')"));
@@ -178,12 +163,12 @@ public class SqlExists {
 	}
 	
 	public static boolean emailExists(Object_Person p) {
-		Boolean result = false;
+		boolean result = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select exists(select * from email where P_ID=" + p.getP_id() + " and PRIMARY_USE=true);"));
+			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select exists(select * from email where P_ID=" + p.getP_id() + " and PRIMARY_USE=true) AS emailexists"));
 			while(rs.next()) {
-			result = rs.getBoolean("exists(select * from email where P_ID=" + p.getP_id() + " and PRIMARY_USE=true)");
+			result = rs.getBoolean("emailexists");
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -192,23 +177,36 @@ public class SqlExists {
 		return result;
 	}
 	
-	public static boolean cellPhoneExists(Object_Person p, String type) {
-		Boolean result = false;
+	public static boolean listedPhoneOfTypeExists(Object_Person p, String type) {
+		boolean result = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select exists(select * from phone where P_ID=" + p.getP_id() + " and PHONE_LISTED=true and PHONE_TYPE='" + type + "')"));
+			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT EXISTS(SELECT * FROM phone WHERE P_ID=" + p.getP_id() + " AND PHONE_LISTED=true AND PHONE_TYPE='" + type + "') AS phoneexists"));
 			while(rs.next()) {
-			result = rs.getBoolean("exists(select * from phone where P_ID=" + p.getP_id() + " and PHONE_LISTED=true and PHONE_TYPE='" + type + "')");
+			result = rs.getBoolean("phoneexists");
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
+		}
+		return result;
+	}
+
+	public static boolean phoneOfTypeExists(String pid, String type) {
+		boolean result = false;
+		try {
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
+			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT EXISTS(SELECT * FROM phone WHERE P_ID=" + pid + " AND PHONE_TYPE='" + type + "') AS phoneexists"));
+			while(rs.next()) {
+				result = rs.getBoolean("phoneexists");
+			}
+		} catch (SQLException e) {
 			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
 		}
 		return result;
 	}
 	
 	public static boolean fiscalRecordExists(Object_MembershipList ms, int year) {
-		Boolean result = false;
+		boolean result = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select Exists(select * FROM money where MS_ID=" + ms.getMsid() + " and FISCAL_YEAR='" + year + "');"));
@@ -226,7 +224,7 @@ public class SqlExists {
 	
 	//select exists(select * from person where MS_ID=229 and MEMBER_TYPE=2);
 	public static Boolean slipExists(int ms_id) {
-		Boolean result = false;
+		boolean result = false;
 		  // we must convert here (this is getting crazy!)
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
@@ -242,7 +240,7 @@ public class SqlExists {
 	}
 	
 	public static Boolean slipRentExists(int subMsid) {
-		Boolean result = false;
+		boolean result = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery(
@@ -258,38 +256,8 @@ public class SqlExists {
 		return result;
 	}
 	
-	public static Boolean ownsSlip(int ms_id) {
-		Boolean result = false;
-		try {
-			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT EXISTS(select * from slip WHERE ms_id='" + ms_id + "')"));
-			while(rs.next()) {
-			result = rs.getBoolean("EXISTS(select * from slip WHERE ms_id='" + ms_id + "')");
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
-		}
-		return result;
-	}
-	
-	public static Boolean subleasesSlip(int ms_id) {
-		Boolean result = false;
-		try {
-			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT EXISTS(select * from slip WHERE subleased_to='" + ms_id + "')"));
-			while(rs.next()) {
-			result = rs.getBoolean("EXISTS(select * from slip WHERE subleased_to='" + ms_id + "')");
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
-		}
-		return result;
-	}
-	
 	public static Boolean moneyExists(String year, Object_Membership membership) {
-		Boolean result = false;		
+		boolean result = false;
 		  // we must convert here (this is getting crazy!)
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
@@ -339,8 +307,8 @@ public class SqlExists {
 	}
 	
 	
-	public static Boolean ifDepositRecordExists(String year, int batch) {
-		Boolean result = false;		
+	public static Boolean depositRecordExists(String year, int batch) {
+		boolean result = false;
 		  // we must convert here (this is getting crazy!)
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
@@ -369,28 +337,11 @@ public class SqlExists {
 							+ per.getP_id() + "' AND off_year='" + year + "' and OFF_TYPE != 'BM')");
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
 		}
 		return result;
 	}
-	
-	public static Boolean isThere(Object_Temp t,int year) {
-		boolean result = false;
-		try {  
-			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			ResultSet rs = stmt
-					.executeQuery(Main.console.setRegexColor("select Exists(select * from membership_id mi join membership m on m.MS_ID=mi.MS_ID join person p on p.P_ID=m.P_ID where mi.fiscal_year="+year+" and p.L_NAME='"+t.getLname()+"' and p.F_NAME='"+t.getFname()+"');"));
-			while (rs.next()) {
-				result = rs.getBoolean(
-						"Exists(select * from membership_id mi join membership m on m.MS_ID=mi.MS_ID join person p on p.P_ID=m.P_ID where mi.fiscal_year="+year+" and p.L_NAME='"+t.getLname()+"' and p.F_NAME='"+t.getFname()+"')");
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
-		}
-		return result;
-	}
+
 	
 	public static Boolean workCreditExists(int money_id) {
 		boolean result = false;
@@ -403,7 +354,6 @@ public class SqlExists {
 						"exists(select * from work_credit where money_id=" + money_id + ")");
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
 		}
 		return result;
@@ -420,24 +370,6 @@ public class SqlExists {
 						"exists(select * from membership_id where fiscal_year='" + HalyardPaths.getYear() + "' and ms_id=" + ms_id + ")");
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
-		}
-		return result;
-	}
-	
-	public static Boolean memberExists(int ms_id, int type) {
-		boolean result = false;
-		try {  
-			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			ResultSet rs = stmt
-					.executeQuery(Main.console.setRegexColor("select exists(select * from person where ms_id="+ms_id+" and member_type="+type+")"));
-			while (rs.next()) {
-				result = rs.getBoolean(
-						"exists(select * from person where ms_id="+ms_id+" and member_type="+type+")");
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
 		}
 		return result;
@@ -454,7 +386,6 @@ public class SqlExists {
 						"exists(select * from waitlist where ms_id="+ms_id+")");
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
 		}
 		return result;
@@ -471,10 +402,24 @@ public class SqlExists {
 						"exists(select * from membership_id where fiscal_year='" + r.getSelectedYear() + "' and MS_ID=" + r.getMsid() + " and LATE_RENEW=true)");
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
 		}
 		return result;
 	}
-	
+
+	public static Boolean personExistsByType(String msid, String type) {
+		boolean result = false;
+		try {
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
+			ResultSet rs = stmt
+					.executeQuery(Main.console.setRegexColor("SELECT EXISTS(SELECT * FROM person WHERE MS_ID=" + msid + " AND MEMBER_TYPE=" + type + ") AS personexist"));
+			while (rs.next()) {
+				result = rs.getBoolean(
+						"personexist");
+			}
+		} catch (SQLException e) {
+			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
+		}
+		return result;
+	}
 }

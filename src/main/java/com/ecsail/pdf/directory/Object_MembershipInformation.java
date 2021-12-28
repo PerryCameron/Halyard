@@ -71,8 +71,8 @@ public class Object_MembershipInformation {
 		if(secondaryExists) {
 			if (SqlExists.emailExists(secondary))
 				this.secondaryEmail = SqlEmail.getEmail(secondary);
-			if (SqlExists.cellPhoneExists(secondary, "C")) 
-				this.secondaryPhone = SqlPhone.getPhone(secondary, "C") + " Cell";
+			if (SqlExists.listedPhoneOfTypeExists(secondary, "C"))
+				this.secondaryPhone = SqlPhone.getListedPhoneByType(secondary, "C") + " Cell";
 		}
 	}
 	
@@ -81,19 +81,19 @@ public class Object_MembershipInformation {
 		this.primaryPhone = "";
 		if (SqlExists.emailExists(primary))
 			this.primaryEmail = SqlEmail.getEmail(primary);
-		if (SqlExists.cellPhoneExists(primary, "C")) {
-			this.primaryPhone = SqlPhone.getPhone(primary, "C") + " Cell";
+		if (SqlExists.listedPhoneOfTypeExists(primary, "C")) {
+			this.primaryPhone = SqlPhone.getListedPhoneByType(primary, "C") + " Cell";
 		} else {
-			if (SqlExists.cellPhoneExists(primary, "H")) {
-				this.primaryPhone = SqlPhone.getPhone(primary, "H") + " Home";
+			if (SqlExists.listedPhoneOfTypeExists(primary, "H")) {
+				this.primaryPhone = SqlPhone.getListedPhoneByType(primary, "H") + " Home";
 			}
 		}
 	}
 	
 	private void getEmergencyPhoneString() {
 		this.emergencyPhone = "";
-		if (SqlExists.cellPhoneExists(primary, "E")) 
-			this.emergencyPhone = "Emergency: " + SqlPhone.getPhone(primary, "E");
+		if (SqlExists.listedPhoneOfTypeExists(primary, "E"))
+			this.emergencyPhone = "Emergency: " + SqlPhone.getListedPhoneByType(primary, "E");
 	}
 	
 	private String getBoatsString(Object_MembershipList m) {

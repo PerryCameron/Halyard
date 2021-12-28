@@ -1,7 +1,7 @@
 package com.ecsail.gui.tabs;
 
 import com.ecsail.charts.FeesLineChart;
-import com.ecsail.gui.boxes.BoxInvoice;
+import com.ecsail.gui.boxes.HBoxInvoice;
 import com.ecsail.main.HalyardPaths;
 import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.SqlInsert;
@@ -264,7 +264,7 @@ public class TabDefinedFee extends Tab {
 	}
 
 	private void updateTextField(TextField textField) {
-		if(!BoxInvoice.isNumeric(textField.getText())) {
+		if(!HBoxInvoice.isNumeric(textField.getText())) {
 			textField.setText("0.00");
 		}
 		BigDecimal field = new BigDecimal(textField.getText());

@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.ecsail.gui.boxes.BoxWelcome;
+import com.ecsail.gui.boxes.HBoxWelcome;
 import com.ecsail.sql.select.SqlMembershipList;
 import com.ecsail.structures.Object_Login;
 
@@ -481,7 +481,7 @@ public class ConnectDatabase {
 			sqlConnection = DriverManager.getConnection(server, user, password);
 			Launcher.closeActiveTab();
 			//vboxGrey.getChildren().add();
-			Launcher.openWelcomeTab(new BoxWelcome());
+			Launcher.openWelcomeTab(new HBoxWelcome());
 			showStatus();
 			sucessful = true;
 			// Creating a Statement object

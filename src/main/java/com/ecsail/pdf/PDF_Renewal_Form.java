@@ -201,11 +201,11 @@ public class PDF_Renewal_Form {
 		dependants = SqlPerson.getDependants
 				(membership);
 		primary = SqlPerson.getPerson(ms_id, 1); // 1 = primary member
-		primaryPhone = SqlPhone.getPhone(primary);
+		primaryPhone = SqlPhone.getPhoneByPerson(primary);
 		shortenDate(primary);
 			if(SqlExists.activePersonExists(ms_id, 2)) {
 			secondary = SqlPerson.getPerson(ms_id, 2);
-			secondaryPhone = SqlPhone.getPhone(secondary);
+			secondaryPhone = SqlPhone.getPhoneByPerson(secondary);
 			shortenDate(secondary);
 			} else {
 				secondary = new Object_Person(0, 0, 0, "", "", "", "", "", false,null);

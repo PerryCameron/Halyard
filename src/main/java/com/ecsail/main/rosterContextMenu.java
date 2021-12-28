@@ -23,7 +23,7 @@ import javax.mail.Transport;
 public class rosterContextMenu extends ContextMenu {
     MenuItem emailClient = new MenuItem("Open in Email Client");
     MenuItem registration = new MenuItem("Send Renewal Link");
-    private EmailLinkCreator linkCreator = new EmailLinkCreator();
+    private EmailLinkBuilder linkCreator = new EmailLinkBuilder();
     private String selectedYear;
     private Object_Person person;
     private String email;
@@ -34,12 +34,12 @@ public class rosterContextMenu extends ContextMenu {
         this.email = SqlEmail.getEmail(this.person);
         this.selectedYear = selectedYear;
         getItems().addAll(emailClient,registration);
-        String link = linkCreator.createLink();
+//        String link = linkCreator.createLink();
 
         registration.setOnAction((ActionEvent e) -> {
 
-            String linkData = encodeURI(linkCreator.createLinkData(m, email, selectedYear));
-            String body = link + linkData;
+            String linkData = encodeURI(linkCreator.createLinkData(m, selectedYear));
+//            String body = link + linkData;
             // email ID of Recipient.
             String recipient = email;
 
@@ -82,7 +82,7 @@ public class rosterContextMenu extends ContextMenu {
                 message.setSubject("2022 Membership Dues");
 
                 // set body of the email.
-                message.setText(body);
+                message.setText("https://eaglecreeksailing.com/url/member" + String.valueOf(m.getMembershipId()));
 
                 // Send email.
                 Transport.send(message);
@@ -96,12 +96,17 @@ public class rosterContextMenu extends ContextMenu {
         });
 
         emailClient.setOnAction((ActionEvent e) -> {
-
-
-            String linkData = encodeURI(linkCreator.createLinkData(m, email, selectedYear));
-            String body = link + linkData;
+            System.out.println("Selected Year=" + selectedYear);
+            String URL = linkCreator.createLinkData(m, selectedYear);
+            new HTTPRequestBuilder(URL,"member" + String.valueOf(m.getMembershipId()));
+            // this will be the short link
+            String body = "https://eaglecreeksailing.com/ecscurl/member" + String.valueOf(m.getMembershipId());
+            // encodes so I can have spaces
             String subject = encodeURI("2022 Membership Renewal");
             System.out.println(body);
+
+            // link created with urlBuilder, why the fuck does it keep giving him 15 work credits?
+            System.out.println(URL);
 
             Desktop desktop = Desktop.getDesktop();
 

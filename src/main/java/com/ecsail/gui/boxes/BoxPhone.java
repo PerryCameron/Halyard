@@ -54,7 +54,7 @@ public class BoxPhone extends HBox {
 
             }
         });
-        this.phone.addAll(SqlPhone.getPhone(person.getP_id()));
+        this.phone.addAll(SqlPhone.getPhoneByPid(person.getP_id()));
         
         /////// OBJECT INSTANCE //////  
         VBox vboxButtons = new VBox(); // holds phone buttons

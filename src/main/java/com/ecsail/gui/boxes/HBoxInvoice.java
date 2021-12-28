@@ -30,10 +30,10 @@ import java.util.function.Function;
 
 // replaces tabCredit, tabBalance, tabPayment, BoxFiscal2 also need to delete Object_Integer
 
-public class BoxInvoice extends HBox {
+public class HBoxInvoice extends HBox {
 	private final ObservableList<Object_Money> fiscals;
 	private ObservableList<Object_Payment> payments;
-	private Object_Money invoice;
+	private final Object_Money invoice;
 	private final Object_Invoice fnode;
 	Object_Membership membership;
 	Object_DefinedFee definedFees;
@@ -47,13 +47,13 @@ public class BoxInvoice extends HBox {
 	boolean isCommitted;
 	Button addWetSlip = new Button();
 	
-	public BoxInvoice(Object_Membership m, ObservableList<Object_Person> p, ObservableList<Object_Money> o, int r, Note note, TextField dt) {
+	public HBoxInvoice(Object_Membership m, ObservableList<Object_Person> p, ObservableList<Object_Money> o, int r, Note note) {
 		this.membership = m;
 		this.people = p;
 		this.rowIndex = r;
 		this.fiscals = o;
 		this.definedFees = SqlDefinedFee.getDefinedFeeByYear(String.valueOf(fiscals.get(rowIndex).getFiscal_year()));
-		System.out.println(this.definedFees.toString());
+//		System.out.println(this.definedFees.toString());
 		this.invoice = fiscals.get(rowIndex);
 		this.fnode = new Object_Invoice(invoice, definedFees, paymentTableView);
 		this.selectedWorkCreditYear = SqlMoney.getWorkCredit(fiscals.get(rowIndex).getMoney_id());
@@ -63,13 +63,6 @@ public class BoxInvoice extends HBox {
 
 		///////////// ACTION ///////////////
 		getPayment();
-
-		/// this is to create compatability with older database versions, probably will set all other credit to 0.00 and then remove this
-//		if(isNull(fiscals.get(rowIndex).getOther_credit())) {
-//			BigDecimal otherCredit = new BigDecimal("0.00");
-//			invoice.setOther_credit(String.valueOf(otherCredit));
-//			updateBalance();
-//		}
 
 		////////////// OBJECTS /////////////////////
 
@@ -206,7 +199,7 @@ public class BoxInvoice extends HBox {
 		fnode.getDuesTextField().textProperty().addListener((observable, oldValue, newValue) -> {
 			if (!SqlMoney.isCommitted(fiscals.get(rowIndex).getMoney_id())) {
 				fnode.getDuesText().setText(newValue);
-				System.out.println("Dues text field set to " + newValue);
+//				System.out.println("Dues text field set to " + newValue);
 				fiscals.get(rowIndex).setDues(newValue);
 				updateBalance();
 			} else {
@@ -420,13 +413,9 @@ public class BoxInvoice extends HBox {
 					fnode.getTotalBalanceText().setStyle("-fx-background-color: #f23a50");
 					note.add("Non-Zero Balance: ",date,fiscals.get(rowIndex).getMoney_id(),"B");
 				}
-//				SqlUpdate.updateMoney(fiscals.get(rowIndex));
 				SqlUpdate.commitFiscalRecord(fiscals.get(rowIndex).getMoney_id(), true);// this could be placed in line above
-//				String date = SqlSelect.getPaymentDate(fiscals.get(rowIndex).getMoney_id()); // dates note to check
-				// update membership_id record to renew or non-renew
 				SqlUpdate.updateMembershipId(fiscals.get(rowIndex).getMs_id(), fiscals.get(rowIndex).getFiscal_year(), fnode.getRenewCheckBox().isSelected());
 				fiscals.get(rowIndex).setCommitted(true);
-				addPaidNote(date);
 
 				// if we put an amount in other we need to make a note
 				if(new BigDecimal(fiscals.get(rowIndex).getOther()).compareTo(BigDecimal.ZERO) != 0) {
@@ -521,7 +510,6 @@ public class BoxInvoice extends HBox {
 		if(SqlExists.paymentExists(fiscals.get(rowIndex).getMoney_id())) {
 			this.payments = SqlPayment.getPayments(fiscals.get(rowIndex).getMoney_id());
 			System.out.println("A record for money_id=" + fiscals.get(rowIndex).getMoney_id() + " exists. Opening Payment");
-//			System.out.println("Payment has " + payments.size() + " entries");
 			// pull up payments from database
 		} else {  // if not create one
 			this.payments = FXCollections.observableArrayList();
@@ -529,10 +517,8 @@ public class BoxInvoice extends HBox {
 			int pay_id = SqlPayment.getNumberOfPayments() + 1;
 			payments.add(new Object_Payment(pay_id,fiscals.get(rowIndex).getMoney_id(),"0","CH",date, "0",1));
 			SqlInsert.addPaymentRecord(payments.get(payments.size() - 1));
-//			System.out.println(payments.get(0).toString());
 		}
 	}
-
 
 	private void updateItem(BigDecimal newTotalValue, String type) {
 		switch(type) {
@@ -557,12 +543,6 @@ public class BoxInvoice extends HBox {
 		}
 
 		fiscals.get(rowIndex).setTotal(String.valueOf(updateTotalFeeField()));
-	}
-	
-	
-	private void addPaidNote(String date) {
-//		note.add("Paid $" + textFields.getPaidText().getText() + " leaving a balance of $" + textFields.getBalanceText().getText() + " for "
-//				+ fiscals.get(rowIndex).getFiscal_year(), date,0,"P");
 	}
 	
 	private void setEditable(boolean isEditable) {
@@ -592,7 +572,7 @@ public class BoxInvoice extends HBox {
 		  fiscals.get(rowIndex).setBalance(String.valueOf(getBalance()));
 		  fnode.getTotalBalanceText().setText(fiscals.get(rowIndex).getBalance());
 		  // prints money object to console and then updates to database
-		  System.out.println("updateBalance()=" + fiscals.get(rowIndex).getBalance().toString());
+		  System.out.println("updateBalance()=" + fiscals.get(rowIndex).getBalance());
 		  SqlUpdate.updateMoney(fiscals.get(rowIndex));  // saves to database
 	}
 	
@@ -638,8 +618,7 @@ public class BoxInvoice extends HBox {
 	}
 
 	private BigDecimal countWorkCredits() {
-		BigDecimal credit = definedFees.getWork_credit().multiply(BigDecimal.valueOf(fiscals.get(rowIndex).getWork_credit()));
-		return credit;
+		return definedFees.getWork_credit().multiply(BigDecimal.valueOf(fiscals.get(rowIndex).getWork_credit()));
 	}
 
 	private BigDecimal countTotalCredit() {
@@ -652,10 +631,6 @@ public class BoxInvoice extends HBox {
 		return totalCredit;
 	}
 
-	private boolean isNull(String testcase) {
-		return testcase == null;
-	}
-	
 	private Boolean membershipHasOfficer() {
 		Boolean isOfficer;
 		boolean finalResult = false;
@@ -673,10 +648,10 @@ public class BoxInvoice extends HBox {
 	public static boolean isNumeric(String str) {
 		try {
 			new BigDecimal(str);
+			return true;
 		} catch (Exception e) {
 			return false;
 		}
-		return true;
 	}
 
 	private <T> TableColumn<T, String> createColumn(String title, Function<T, StringProperty> property) {
