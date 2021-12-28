@@ -277,19 +277,13 @@ public class HBoxHistory extends HBox {
 		idAdd.setOnAction((event) -> {
 			// gets next available id for membership_id table
 			int mid = SqlSelect.getCount("membership_id", "mid") + 1; // get last mid number add 1
-			System.out.println("new mid=" + mid);
 			//	if tuple of year=0 and memId=0 exists anywhere in SQL not belonging to this membership then delete it
-			if(SqlExists.membershipIdBlankRowExists(String.valueOf(membership.getMsid()))) {
+			if(SqlExists.membershipIdBlankRowExists(String.valueOf(membership.getMsid())))
 				SqlDelete.deleteBlankMembershipIdRow();
-				System.out.println("Found blank row in SQL deleting");
-			} else {
-				System.out.println("Found no blank rows in SQL to delete");
-			}
 			// see if another year=0 and memId=0 row exists in current tableView, bring it to top and edit
 			if (blankTupleExistsInTableView()) {
 				Collections.sort(id, Comparator.comparing(Object_MembershipId::getFiscal_Year));
 				idTableView.edit(0, Col1);
-				System.out.println("Found blank row in table, bringing to the top to edit");
 				// create an appropriate new object to place in list
 			} else {
 				// create a blank membershipId object
@@ -299,10 +293,8 @@ public class HBoxHistory extends HBox {
 				// add the new tuple to the appropriate history tableView
 				id.add(newIdTuple);
 				// sort so that new membership id entry is at the top
-
-				// edit the year cell after creating
-				idTableView.refresh();
 				Collections.sort(id, Comparator.comparing(Object_MembershipId::getFiscal_Year));
+				// edit the year cell after creating
 				idTableView.edit(0, Col1);
 			}
 		});
