@@ -4,8 +4,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.ecsail.enums.MemberType;
-import com.ecsail.gui.boxes.BoxPerson;
-import com.ecsail.gui.boxes.BoxSearch;
+import com.ecsail.gui.boxes.HBoxPerson;
+import com.ecsail.gui.boxes.HBoxSearch;
 import com.ecsail.main.HalyardPaths;
 import com.ecsail.main.Launcher;
 import com.ecsail.sql.SqlExists;
@@ -127,7 +127,7 @@ public class TabPeople extends Tab {
 	    });
 		
 		vboxBlue.getChildren().add(hboxPink);
-		vbox2.getChildren().addAll(new BoxSearch(personTableView), personHBox);
+		vbox2.getChildren().addAll(new HBoxSearch(personTableView), personHBox);
 		hboxPink.getChildren().addAll(personTableView,vbox2);
 		setContent(vboxBlue);
 		
@@ -143,7 +143,7 @@ public class TabPeople extends Tab {
 		}
 		personHBox.getChildren().clear();  // remove if exists
 		//System.out.println("cleared the personHBox");
-		personHBox.getChildren().add(new BoxPerson(person, membership,null)); // null is for tabpane not being used here.
+		personHBox.getChildren().add(new HBoxPerson(person, membership,null)); // null is for tabpane not being used here.
 	}
 
 	public Object_Person getPersonByPid(int pid) {

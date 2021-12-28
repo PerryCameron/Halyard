@@ -32,13 +32,13 @@ import javafx.scene.layout.VBox;
 
 
 
-public class BoxPerson extends HBox {
+public class HBoxPerson extends HBox {
 	private Object_Person person;
 	private Object_MembershipList membership;
 	private ObservableList<Object_Person> people;  // this is only for updating people list when in people list mode
 	private ImageView photo;
 	
-	public BoxPerson(Object_Person p, Object_MembershipList me, TabPane personTabPane) {
+	public HBoxPerson(Object_Person p, Object_MembershipList me, TabPane personTabPane) {
 		this.person = p;
 		this.membership = me;
 		
@@ -79,10 +79,10 @@ public class BoxPerson extends HBox {
 		VBox vbBuisnessBox = new VBox();
 		VBox vbBirthdayBox = new VBox();
 		
-		HBox hboxPhone = new BoxPhone(person); // Phone
-		HBox hboxEmail = new BoxEmail(person); // Email
-		HBox hboxOfficer = new BoxOfficer(person); // Officer
-		HBox hboxAward = new BoxAward(person);
+		HBox hboxPhone = new HBoxPhone(person); // Phone
+		HBox hboxEmail = new HBoxEmail(person); // Email
+		HBox hboxOfficer = new HBoxOfficer(person); // Officer
+		HBox hboxAward = new HBoxAward(person);
 
 		Label fnameLabel = new Label("First Name");
 		Label lnameLabel = new Label("Last Name");

@@ -34,7 +34,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
-public class BoxAward extends HBox {
+public class HBoxAward extends HBox {
 
 	private Object_Person person;
 	private ObservableList<Object_Award> award;
@@ -42,7 +42,7 @@ public class BoxAward extends HBox {
 	private String currentYear;
 	
 	@SuppressWarnings("unchecked")
-	public BoxAward(Object_Person p) {
+	public HBoxAward(Object_Person p) {
 		this.person = p;
 		this.currentYear = new SimpleDateFormat("yyyy").format(new Date());
 		this.award =  SqlAward.getAwards(person);

@@ -47,14 +47,14 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
-public class BoxHistory extends HBox {
+public class HBoxHistory extends HBox {
 	Object_MembershipList membership;
 	private Object_MemLabels labels;
 	private TableView<Object_MembershipId> idTableView;
 	private ObservableList<Object_MembershipId> id;
     LocalDate date;
     
-	public BoxHistory(Object_MembershipList m, Object_MemLabels l) {
+	public HBoxHistory(Object_MembershipList m, Object_MemLabels l) {
 		this.membership = m;
 		this.idTableView = new TableView<Object_MembershipId>();
 		this.id = FXCollections.observableArrayList(new Callback<Object_MembershipId, Observable[]>() {

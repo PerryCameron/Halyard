@@ -41,14 +41,14 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
-public class BoxBoat extends HBox{
+public class HBoxBoat extends HBox{
 	
 Object_MembershipList membership;
 private ObservableList<Object_Boat> boats;  // = FXCollections.observableArrayList();
 private TableView<Object_Boat> boatTableView;
 	
 	//@SuppressWarnings("unchecked")
-	public BoxBoat(Object_MembershipList m) {
+	public HBoxBoat(Object_MembershipList m) {
 	this.membership = m;
 	this.boats = FXCollections.observableArrayList(new Callback<Object_Boat, Observable[]>() {
 		@Override

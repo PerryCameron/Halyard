@@ -2,7 +2,7 @@ package com.ecsail.main;
 
 import java.sql.SQLException;
 
-import com.ecsail.gui.boxes.BoxToolBar;
+import com.ecsail.gui.boxes.VBoxToolBar;
 import com.ecsail.structures.Object_MembershipList;
 import com.ecsail.structures.Object_TupleCount;
 
@@ -31,7 +31,7 @@ public static BoxConsole console;
 private static Stage pStage;
 private static Scene mainScene;
 static String ipaddress;
-VBox toolbar = new BoxToolBar();
+VBox toolbar = new VBoxToolBar();
 
 public static void main(String[] args) throws SQLException {
 	System.out.println("Starting application...");

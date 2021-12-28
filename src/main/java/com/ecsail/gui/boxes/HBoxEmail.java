@@ -33,14 +33,14 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
-public class BoxEmail extends HBox {
+public class HBoxEmail extends HBox {
 	
 	private Object_Person person;
 	private ObservableList<Object_Email> email;
 	private TableView<Object_Email> emailTableView;
 	
 	@SuppressWarnings("unchecked")
-	public BoxEmail(Object_Person p) {
+	public HBoxEmail(Object_Person p) {
 		this.person = p;
 		this.email =  FXCollections.observableArrayList(new Callback<Object_Email, Observable[]>() {
 			@Override

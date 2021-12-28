@@ -15,10 +15,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
-public class BoxSearch extends HBox {
+public class HBoxSearch extends HBox {
 	public static TableView<Object_Person> personTableView;
-	public BoxSearch(TableView<Object_Person> ptv) {
-		BoxSearch.personTableView = ptv;
+	public HBoxSearch(TableView<Object_Person> ptv) {
+		HBoxSearch.personTableView = ptv;
 		
 		VBox vbox1 = new VBox(); // holds email buttons
 		HBox hboxGrey = new HBox(); // this is here for the grey background to make nice apperence

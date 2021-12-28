@@ -8,10 +8,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
-public class BoxAttachment extends HBox {
+public class HBoxAttachment extends HBox {
 	Object_Membership membership;
 
-	public BoxAttachment(Object_Membership membership) {
+	public HBoxAttachment(Object_Membership membership) {
 		//super();
 		this.membership = membership;
 

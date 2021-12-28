@@ -34,7 +34,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
-public class BoxOfficer extends HBox {
+public class HBoxOfficer extends HBox {
 
 	private Object_Person person;
 	private ObservableList<Object_Officer> officer;
@@ -42,7 +42,7 @@ public class BoxOfficer extends HBox {
 	private String currentYear;
 	
 	@SuppressWarnings("unchecked")
-	public BoxOfficer(Object_Person p) {
+	public HBoxOfficer(Object_Person p) {
 		this.person = p;
 		this.currentYear = new SimpleDateFormat("yyyy").format(new Date());
 		this.officer =  SqlOfficer.getOfficer("p_id",person.getP_id());

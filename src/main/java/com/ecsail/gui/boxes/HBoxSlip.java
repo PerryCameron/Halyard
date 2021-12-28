@@ -29,7 +29,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
-public class BoxSlip extends HBox {
+public class HBoxSlip extends HBox {
 	
 	private Object_MembershipList membership;
 	private Object_WaitList waitList;
@@ -55,7 +55,7 @@ public class BoxSlip extends HBox {
 	private Button submitButton = new Button("Submit");
 	private ToggleGroup group = new ToggleGroup();
 	
-	public BoxSlip(Object_MembershipList m, Tab tt) {
+	public HBoxSlip(Object_MembershipList m, Tab tt) {
 		this.membership = m;
 		this.thisTab = tt;
 	    this.errorMessage = ""; // error messaging
@@ -362,7 +362,7 @@ public class BoxSlip extends HBox {
 		r1.getChildren().add(rb1); // in hbox so can remove
 		r2.getChildren().add(rb2);
 		r3.getChildren().add(rb3);
-		mainHBox.getChildren().addAll(mainVBox, new BoxSlipImage(slip.getSlipNumber()));
+		mainHBox.getChildren().addAll(mainVBox, new HBoxSlipImage(slip.getSlipNumber()));
 	}
 	
 	private void clearControls() {

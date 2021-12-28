@@ -1,16 +1,16 @@
 package com.ecsail.gui.tabs;
 
-import com.ecsail.gui.boxes.BoxAddPerson;
-import com.ecsail.gui.boxes.BoxAddress;
-import com.ecsail.gui.boxes.BoxAttachment;
-import com.ecsail.gui.boxes.BoxBoat;
-import com.ecsail.gui.boxes.BoxHistory;
+import com.ecsail.gui.boxes.VBoxAddPerson;
+import com.ecsail.gui.boxes.HBoxAddress;
+import com.ecsail.gui.boxes.HBoxAttachment;
+import com.ecsail.gui.boxes.HBoxBoat;
+import com.ecsail.gui.boxes.HBoxHistory;
 import com.ecsail.gui.boxes.HBoxInvoiceSummaryList;
-import com.ecsail.gui.boxes.BoxMembership;
-import com.ecsail.gui.boxes.BoxNotes;
-import com.ecsail.gui.boxes.BoxPerson;
-import com.ecsail.gui.boxes.BoxProperties;
-import com.ecsail.gui.boxes.BoxSlip;
+import com.ecsail.gui.boxes.HBoxMembership;
+import com.ecsail.gui.boxes.HBoxNotes;
+import com.ecsail.gui.boxes.HBoxPerson;
+import com.ecsail.gui.boxes.HBoxProperties;
+import com.ecsail.gui.boxes.HBoxSlip;
 import com.ecsail.main.CreateMembership;
 import com.ecsail.main.Note;
 import com.ecsail.sql.select.SqlMemos;
@@ -52,7 +52,7 @@ public class TabMembership extends Tab {
 		TextField duesText = new TextField();
 		VBox containerVBox = new VBox();
         VBox vboxBlue = new VBox();
-        HBox hbox1 = new BoxMembership(membership, labels);  // holds membershipID, Type and Active
+        HBox hbox1 = new HBoxMembership(membership, labels);  // holds membershipID, Type and Active
         HBox hbox2 = new HBox();  // holds PersonVBoxes (2 instances require a genereic HBox
         HBox hbox3 = new HBox();
         TabPane peopleTabPane = new TabPane();
@@ -114,15 +114,15 @@ public class TabMembership extends Tab {
         	peopleTabPane.getTabs().add(new Tab("Secondary Member", getSecondaryMember(peopleTabPane)));
 		if(hasPerson(DEPENDANT)) 
 			addDependentTabs(peopleTabPane);	
-		peopleTabPane.getTabs().add(new Tab("Add", new BoxAddPerson(peopleTabPane, note, membership)));
-		fiscalTabPane.getTabs().add(new Tab("Slip", new BoxSlip(membership, this)));
-		fiscalTabPane.getTabs().add(new Tab("History", new BoxHistory(membership, labels)));
+		peopleTabPane.getTabs().add(new Tab("Add", new VBoxAddPerson(peopleTabPane, note, membership)));
+		fiscalTabPane.getTabs().add(new Tab("Slip", new HBoxSlip(membership, this)));
+		fiscalTabPane.getTabs().add(new Tab("History", new HBoxHistory(membership, labels)));
 		fiscalTabPane.getTabs().add(new Tab("Payments", new HBoxInvoiceSummaryList(membership, fiscalTabPane, people, note, duesText)));
-		informationTabPane.getTabs().add(new Tab("Boats", new BoxBoat(membership)));
-		informationTabPane.getTabs().add(new Tab("Notes", new BoxNotes(note)));
-		informationTabPane.getTabs().add(new Tab("Properties", new BoxProperties(membership, this)));
-		informationTabPane.getTabs().add(new Tab("Attachments", new BoxAttachment(membership)));
-		informationTabPane.getTabs().add(new Tab("Address", new BoxAddress(membership)));
+		informationTabPane.getTabs().add(new Tab("Boats", new HBoxBoat(membership)));
+		informationTabPane.getTabs().add(new Tab("Notes", new HBoxNotes(note)));
+		informationTabPane.getTabs().add(new Tab("Properties", new HBoxProperties(membership, this)));
+		informationTabPane.getTabs().add(new Tab("Attachments", new HBoxAttachment(membership)));
+		informationTabPane.getTabs().add(new Tab("Address", new HBoxAddress(membership)));
 		hbox2.getChildren().addAll(peopleTabPane, fiscalTabPane);  // new BoxInformation(membership)
 		hbox3.getChildren().addAll(informationTabPane);
 		containerVBox.getChildren().addAll(hbox1,hbox2,hbox3);
@@ -137,7 +137,7 @@ public class TabMembership extends Tab {
 		int count2 = 1;
 		for (Object_Person per : people) {
 			if (per.getMemberType() == DEPENDANT) { // if this record is a child of the primary member
-				peopleTabPane.getTabs().add(new Tab("Dependent " + count2, new BoxPerson(people.get(count),membership,peopleTabPane)));
+				peopleTabPane.getTabs().add(new Tab("Dependent " + count2, new HBoxPerson(people.get(count),membership,peopleTabPane)));
 				count2++; // child number
 			}
 			count++; // array element
@@ -164,17 +164,17 @@ public class TabMembership extends Tab {
 		return type;
 	}
 
-	private BoxPerson getSecondaryMember(TabPane peopleTabPane) {
-		BoxPerson secondaryMember = new BoxPerson(people.get(getPerson(SECONDARY)), membership,peopleTabPane); // gets by membertype
+	private HBoxPerson getSecondaryMember(TabPane peopleTabPane) {
+		HBoxPerson secondaryMember = new HBoxPerson(people.get(getPerson(SECONDARY)), membership,peopleTabPane); // gets by membertype
 		return secondaryMember;
 	}
 	
-	private BoxPerson getPrimaryMember(TabPane peopleTabPane) {
-		BoxPerson primaryMember;
+	private HBoxPerson getPrimaryMember(TabPane peopleTabPane) {
+		HBoxPerson primaryMember;
 		if (isNewMembership()) 
-			primaryMember = new BoxPerson(CreateMembership.createUser(membership.getMsid()), membership,peopleTabPane);// create new primary
+			primaryMember = new HBoxPerson(CreateMembership.createUser(membership.getMsid()), membership,peopleTabPane);// create new primary
 		else
-			primaryMember = new BoxPerson(people.get(getPerson(PRIMARY)), membership,peopleTabPane); // load the primary member
+			primaryMember = new HBoxPerson(people.get(getPerson(PRIMARY)), membership,peopleTabPane); // load the primary member
 		return primaryMember;
 	}
 	

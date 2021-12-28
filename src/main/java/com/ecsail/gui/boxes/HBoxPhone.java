@@ -39,13 +39,13 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
-public class BoxPhone extends HBox {
+public class HBoxPhone extends HBox {
     
     private Object_Person person;
     private TableView<Object_Phone> phoneTableView;
     private ObservableList<Object_Phone> phone;
     
-    public BoxPhone(Object_Person p) {
+    public HBoxPhone(Object_Person p) {
         this.person = p;  // the below callback is to allow commit when focus removed, overrides FX default behavior
         this.phone = FXCollections.observableArrayList(new Callback<Object_Phone, Observable[]>() {
             @Override

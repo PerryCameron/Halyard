@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 import com.ecsail.connection.Sftp;
 import com.ecsail.enums.KeelType;
-import com.ecsail.gui.boxes.BoxBoatNotes;
+import com.ecsail.gui.boxes.HBoxBoatNotes;
 import com.ecsail.gui.dialogues.Dialogue_ChooseMember;
 import com.ecsail.main.ImageViewPane;
 import com.ecsail.main.LoadFileChooser;
@@ -582,7 +582,7 @@ public class TabBoatView extends Tab {
 		vboxRightContainer.getChildren().addAll(hboxPictureControls, vboxPicture);
 
 		hboxContainer.getChildren().addAll(vboxLeftContainer, vboxRightContainer);
-		vboxGrey.getChildren().addAll(hboxContainer, new BoxBoatNotes(b));
+		vboxGrey.getChildren().addAll(hboxContainer, new HBoxBoatNotes(b));
 		vboxBlue.getChildren().add(vboxPink);
 		vboxPink.getChildren().add(vboxGrey);
 		setContent(vboxBlue);

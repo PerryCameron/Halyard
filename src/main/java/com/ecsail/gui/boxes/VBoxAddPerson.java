@@ -26,7 +26,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
-public class BoxAddPerson extends VBox {
+public class VBoxAddPerson extends VBox {
 	
 	int ms_id;
 	private Label titleLabel;
@@ -40,7 +40,7 @@ public class BoxAddPerson extends VBox {
 	private Boolean hasError = false;
 	private TabPane tp;
 	
-	public BoxAddPerson(TabPane tp, Note n, Object_MembershipList me) {
+	public VBoxAddPerson(TabPane tp, Note n, Object_MembershipList me) {
 		this.note = n;
 		this.ms_id = n.getMsid();
 		this.peopleTabPane = tp;
@@ -247,7 +247,7 @@ public class BoxAddPerson extends VBox {
 	
 	private void addPerson(String memberType) {
 		SqlInsert.addRecord(person);
-		peopleTabPane.getTabs().add(new Tab(memberType, new BoxPerson(person, membership,tp)));  //tp is tappane to remove tab if deleting
+		peopleTabPane.getTabs().add(new Tab(memberType, new HBoxPerson(person, membership,tp)));  //tp is tappane to remove tab if deleting
     	titleLabel.setText("Add New Member");
 		titleLabel.setTextFill(Color.BLACK);
 	}

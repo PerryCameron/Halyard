@@ -7,9 +7,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-public class BoxSlipImage extends HBox {
+public class HBoxSlipImage extends HBox {
 
-	public BoxSlipImage(String filename) {
+	public HBoxSlipImage(String filename) {
 		
 	Image slipImage = new Image(getClass().getResourceAsStream("/slips/" + filename + "_icon.png"));
 	ImageView imageView = new ImageView(slipImage);	

@@ -10,12 +10,12 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 
-public class BoxMembership extends HBox {
+public class HBoxMembership extends HBox {
 	
 	private Object_MembershipList membership;
 	private Object_MemLabels labels;
 
-	public BoxMembership(Object_MembershipList m, Object_MemLabels ml) {
+	public HBoxMembership(Object_MembershipList m, Object_MemLabels ml) {
 		this.membership =  m;
 		this.labels = ml;
 		

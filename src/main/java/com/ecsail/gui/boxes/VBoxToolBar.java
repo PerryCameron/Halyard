@@ -14,9 +14,9 @@ import javafx.stage.Stage;
 
 import java.sql.SQLException;
 
-public class BoxToolBar extends VBox {
+public class VBoxToolBar extends VBox {
 
-	public BoxToolBar() {
+	public VBoxToolBar() {
 		
 		//HBox toolBar = new HBox();
 		MenuBar menuBar = new MenuBar();

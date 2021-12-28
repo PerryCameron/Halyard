@@ -25,10 +25,10 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 ///  this class is for the properties tab in membership view
-public class BoxProperties extends HBox {
+public class HBoxProperties extends HBox {
 	private Object_MembershipList membership;
 	//private TextField duesText;
-	public BoxProperties(Object_MembershipList m, Tab membershipTab) {
+	public HBoxProperties(Object_MembershipList m, Tab membershipTab) {
 		super();
 		this.membership = m;
 		//this.duesText = dt;

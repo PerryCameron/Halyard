@@ -16,10 +16,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
-public class BoxAddress extends HBox {
+public class HBoxAddress extends HBox {
 	Object_MembershipList membership;
 	
-	public BoxAddress(Object_MembershipList me) {
+	public HBoxAddress(Object_MembershipList me) {
 		this.membership = me;
 			ObservableList<String> states = 
 		    FXCollections.observableArrayList(
