@@ -294,6 +294,9 @@ public class HBoxHistory extends HBox {
 				id.add(newIdTuple);
 				// sort so that new membership id entry is at the top
 				Collections.sort(id, Comparator.comparing(Object_MembershipId::getFiscal_Year));
+				// this line prevents strange buggy behaviour I found the solution here:
+				// https://stackoverflow.com/questions/49531071/insert-row-in-javafx-tableview-and-start-editing-is-not-working-correctly
+				idTableView.layout();
 				// edit the year cell after creating
 				idTableView.edit(0, Col1);
 			}
