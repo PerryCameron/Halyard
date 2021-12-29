@@ -1,6 +1,8 @@
 package com.ecsail.gui.boxes;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.function.Function;
 
 import com.ecsail.enums.KeelType;
@@ -300,9 +302,20 @@ private TableView<Object_Boat> boatTableView;
 	/////////////// LISTENERS ////////////////////
     
     boatAdd.setOnAction((event) -> {
-        	int boat_id = SqlSelect.getCount("boat", "boat_id") + 1; // gets last memo_id number and add one
-        	boats.add(new Object_Boat(boat_id,membership.getMsid(),"","","","","","",true,"","","","","","","")); // lets add it to our list
-			SqlInsert.addBoatRecord(boat_id,membership.getMsid()); // lets add it to our database
+        // get next available primary key for boat table
+        int boat_id = SqlSelect.getCount("boat", "boat_id") + 1;
+        // create boat object
+        Object_Boat b = new Object_Boat(boat_id,membership.getMsid(),"","","","","","",true,"","","","","","","");
+        // insert data from new boat object into SQL table boat, return true if successful
+        if(SqlInsert.addBoatRecord(b,membership.getMsid()))
+            // insert row into tableView to match SQL record
+        	boats.add(b);
+        // Now we will sort it to the top
+        Collections.sort(boats, Comparator.comparing(Object_Boat::getBoat_id).reversed());
+        // this line prevents strange buggy behaviour
+        boatTableView.layout();
+        // edit the boat name cell after creating
+        boatTableView.edit(0, col1);
     });
     
     boatDelete.setOnAction((event) -> {

@@ -7,18 +7,7 @@ import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.Main;
 import com.ecsail.main.SqlScriptMaker;
-import com.ecsail.structures.Object_Award;
-import com.ecsail.structures.Object_DefinedFee;
-import com.ecsail.structures.Object_Deposit;
-import com.ecsail.structures.Object_Membership;
-import com.ecsail.structures.Object_MembershipId;
-import com.ecsail.structures.Object_MembershipList;
-import com.ecsail.structures.Object_Memo;
-import com.ecsail.structures.Object_Money;
-import com.ecsail.structures.Object_Payment;
-import com.ecsail.structures.Object_Person;
-import com.ecsail.structures.Object_Stats;
-import com.ecsail.structures.Object_WaitList;
+import com.ecsail.structures.*;
 
 public class SqlInsert {
 	
@@ -87,17 +76,19 @@ public class SqlInsert {
 		return noError;  // return true if insert performed without error
 	}
 	
-	public static void addBoatRecord(int boat_id, int msid) {
+	public static boolean addBoatRecord(Object_Boat b, int msid) {
+		boolean noError = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor(
-					"INSERT into boat () VALUES (" + boat_id + ",null,null,null,null,null,null,true,null,null,null,null,null,null,null);"));
+					"INSERT into boat () VALUES (" + b.getBoat_id() + ",null,null,null,null,null,null,true,null,null,null,null,null,null,null);"));
 			stmt.execute(
-					Main.console.setRegexColor("INSERT into boat_owner () VALUES (" + msid + "," + boat_id + ");"));
+					Main.console.setRegexColor("INSERT into boat_owner () VALUES (" + msid + "," + b.getBoat_id() + ");"));
+			noError = true;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"Unable to create new row","See below for details");
 		}
+		return noError;  // return true if insert performed without error
 	}
 	
 	public static void addPersonRecord(Object_Person person) {
