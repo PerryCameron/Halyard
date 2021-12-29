@@ -1,6 +1,8 @@
 package com.ecsail.gui.boxes;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 
@@ -112,12 +114,10 @@ public class HBoxPhone extends HBox {
                     private String processNumber(String newValue) {
                         // adds dashes
                         if(Pattern.matches("\\d{10}", newValue)) {
-                            System.out.println("Added dashes");
                             return addDashes(newValue);
                         }
                         // need to add area code
                         else if(Pattern.matches("\\d{7}", newValue)) {
-                            System.out.println("Found 7 numbers, adding default area code");
                             return addDashes("317" + newValue);
                         }
                         // perfect no need to change anything
@@ -126,16 +126,13 @@ public class HBoxPhone extends HBox {
                         }
                         // removes all junk as long as there are 10 numbers
                         else if(keepOnlyNumbers(newValue).length() == 10) {
-                            System.out.println("Bad Formatting, fixing...");
                             return addDashes(keepOnlyNumbers(newValue));
                         }
                         // removes all junk and adds default area code if there are 7 numbers
                         else if(keepOnlyNumbers(newValue).length() == 7) {
-                            System.out.println("Bad Formatting, fixing...");
                             return addDashes("317" + keepOnlyNumbers(newValue));
                         }
                         else {
-                            System.out.println("This is a bad number");
                             return "illformatted number";
                         }
                     }
@@ -224,10 +221,18 @@ public class HBoxPhone extends HBox {
         /////////////////// LISTENERS //////////////////////////////
         
         phoneAdd.setOnAction((event) -> {
-                int phone_id = SqlSelect.getCount("phone", "phone_id"); // get last phone_id number
-                phone_id++; // increase to first available number
-                if (SqlInsert.addRecord(phone_id, person.getP_id(), true, "new phone", "")) // if added with no errors
-                    phone.add(new Object_Phone(phone_id, person.getP_id(), true, "new phone", "")); // lets add it to our GUI
+                // return next key id for phone table
+                int phone_id = SqlSelect.getCount("phone", "phone_id") + 1;
+                // attempt to add a new record and return if it is sucessful
+                if (SqlInsert.addRecord(phone_id, person.getP_id(), true, "new phone", ""))
+                    // if sucessfully added to SQL then add a new row in the tableview
+                    phone.add(new Object_Phone(phone_id, person.getP_id(), true, "new phone", ""));
+                // Now we will sort it to the top
+                Collections.sort(phone, Comparator.comparing(Object_Phone::getPhone_ID).reversed());
+                // this line prevents strange buggy behaviour
+                phoneTableView.layout();
+                // edit the phone number cell after creating
+                phoneTableView.edit(0, Col1);
             });
         
         phoneDelete.setOnAction((event) -> {
