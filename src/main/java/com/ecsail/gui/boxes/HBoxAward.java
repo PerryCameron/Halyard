@@ -1,6 +1,8 @@
 package com.ecsail.gui.boxes;
 
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.function.Function;
 
@@ -130,11 +132,19 @@ public class HBoxAward extends HBox {
 	        ////////////////////// LISTENERS /////////////////////////
 	    	    
 	        awardAdd.setOnAction((event) -> {
-	            	int awards_id = SqlSelect.getCount("awards","award_id"); // gets last memo_id number
-						awards_id++; // lets select next number
-						Object_Award a = new Object_Award(awards_id,person.getP_id(),currentYear,"New Award");
-						award.add(a);
-						SqlInsert.addAwardRecord(a); // lets add it to our database
+				// get next primary key for awards table
+				int awards_id = SqlSelect.getCount("awards","award_id") + 1; // gets last memo_id number
+				// Create new award object
+				Object_Award a = new Object_Award(awards_id,person.getP_id(),currentYear,"New Award");
+				// Add info from award object to SQL database
+				if(SqlInsert.addAwardRecord(a));
+					// create a new row in tableView to match SQL insert from above
+					award.add(a);
+				Collections.sort(award, Comparator.comparing(Object_Award::getAwardId).reversed());
+				// this line prevents strange buggy behaviour
+				awardTableView.layout();
+				// edit the year cell after creating
+				awardTableView.edit(0, Col1);
 	        });
 	        
 	        awardDelete.setOnAction(new EventHandler<ActionEvent>() {

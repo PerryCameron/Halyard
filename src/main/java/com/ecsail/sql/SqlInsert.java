@@ -70,20 +70,21 @@ public class SqlInsert {
 					+ op.getMoney_id() + "," + op.getCheckNumber() + ",'" + op.getPaymentType() + "','"
 					+ op.getPaymentDate() + "','" + op.getPaymentAmount() + "','" + op.getDeposit_id() + "');"));
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"Unable to create new row","See below for details");
 		}
 	}
 	
-	public static void addAwardRecord(Object_Award a) {
+	public static boolean addAwardRecord(Object_Award a) {
+		boolean noError = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("INSERT into awards () VALUES (" + a.getAwardId() + ","
 					+ a.getPid() + ",'" + a.getAwardYear() + "','" + a.getAwardType() + "')"));
+			noError = true;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"Unable to create new row","See below for details");
 		}
+		return noError;  // return true if insert performed without error
 	}
 	
 	public static void addBoatRecord(int boat_id, int msid) {
