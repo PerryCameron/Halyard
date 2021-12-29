@@ -68,6 +68,8 @@ public class HBoxInvoice extends HBox {
 
 		ScrollPane scrollPane = new ScrollPane();
 
+		scrollPane.setMaxHeight(500);
+
 		VBox vboxGrey = new VBox();  // this is the vbox for organizing all the widgets
 		VBox mainVbox = new VBox();
 		HBox mainHbox = new HBox();
