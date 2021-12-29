@@ -143,7 +143,7 @@ public class HBoxOfficer extends HBox {
 	            	int officer_id = SqlSelect.getCount("officer","o_id"); // gets last memo_id number
 						officer_id++; // lets select next number
 	            	officer.add(new Object_Officer(officer_id,person.getP_id(),"0","new officer",currentYear)); // lets add it to our list
-						SqlInsert.addRecord(officer_id,person.getP_id(),"0","new officer",Integer.parseInt(currentYear)); // lets add it to our database
+						SqlInsert.addOfficerRecord(officer_id,person.getP_id(),"0","new officer",Integer.parseInt(currentYear)); // lets add it to our database
 	            }
 	        });
 	        

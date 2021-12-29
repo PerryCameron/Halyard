@@ -161,7 +161,7 @@ public class TabDefinedFee extends Tab {
 			if (!SqlExists.definedFeeExists(selectedYear)) {
 				Object_DefinedFee newFee = new Object_DefinedFee(Integer.parseInt(selectedYear), BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO);
 				definedFees.add(newFee);
-				SqlInsert.addRecord(newFee);
+				SqlInsert.addDefinedFeeRecord(newFee);
 			}
 			selectedIndex = getSelectedIndex(selectedYear);
 			copyObjectToFields();

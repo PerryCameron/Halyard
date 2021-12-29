@@ -178,10 +178,11 @@ public class HBoxEmail extends HBox {
 			/////////////////  LISTENERS ////////////////////////
 
 	        emailAdd.setOnAction((event) -> {
-	            	int email_id = SqlSelect.getCount("email","email_id"); // gets last memo_id number
-					email_id++; // lets select next number
+					// get the next available primary key for table email
+	            	int email_id = SqlSelect.getCount("email","email_id") + 1; // gets last memo_id number
+
 	            	email.add(new Object_Email(email_id,person.getP_id(),true,"new email",true)); // lets add it to our list
-						SqlInsert.addRecord(email_id,person.getP_id(),true,"new email",true); // lets add it to our database
+						SqlInsert.addEmailRecord(email_id,person.getP_id(),true,"new email",true); // lets add it to our database
 	        });
 	        
 	        emailDelete.setOnAction((event) -> {

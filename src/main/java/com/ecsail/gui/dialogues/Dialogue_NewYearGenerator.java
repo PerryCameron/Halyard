@@ -190,10 +190,10 @@ public class Dialogue_NewYearGenerator extends Stage {
 			System.out.print(" Update " + newMoney.getFiscal_year() + " record for " + newMoney.getMs_id());
 		} else { // this years record does not exist
 			
-			SqlInsert.addRecord(newMoney); // add money record
+			SqlInsert.addMoneyRecord(newMoney); // add money record
 			System.out.print(" Adding Money Record " + newMoney.getFiscal_year() + " record for " + newMoney.getMs_id());
 			if(!SqlExists.workCreditExists(newMoney.getMoney_id())) { // if the work credit doesn't exist
-			SqlInsert.addRecord(newMoney.getMoney_id(), ml); // add blank work credit record
+			SqlInsert.addWorkCreditRecord(newMoney.getMoney_id(), ml); // add blank work credit record
 			System.out.println(" Adding Work Credit " + newMoney.getFiscal_year() + " credit for " + newMoney.getMs_id());
 			}
 		}

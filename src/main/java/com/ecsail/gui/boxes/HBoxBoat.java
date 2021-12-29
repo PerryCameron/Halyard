@@ -302,7 +302,7 @@ private TableView<Object_Boat> boatTableView;
     boatAdd.setOnAction((event) -> {
         	int boat_id = SqlSelect.getCount("boat", "boat_id") + 1; // gets last memo_id number and add one
         	boats.add(new Object_Boat(boat_id,membership.getMsid(),"","","","","","",true,"","","","","","","")); // lets add it to our list
-			SqlInsert.addRecord(boat_id,membership.getMsid()); // lets add it to our database
+			SqlInsert.addBoatRecord(boat_id,membership.getMsid()); // lets add it to our database
     });
     
     boatDelete.setOnAction((event) -> {

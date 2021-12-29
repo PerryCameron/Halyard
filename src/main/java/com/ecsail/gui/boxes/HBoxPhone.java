@@ -224,7 +224,7 @@ public class HBoxPhone extends HBox {
                 // return next key id for phone table
                 int phone_id = SqlSelect.getCount("phone", "phone_id") + 1;
                 // attempt to add a new record and return if it is sucessful
-                if (SqlInsert.addRecord(phone_id, person.getP_id(), true, "new phone", ""))
+                if (SqlInsert.addPhoneRecord(phone_id, person.getP_id(), true, "new phone", ""))
                     // if sucessfully added to SQL then add a new row in the tableview
                     phone.add(new Object_Phone(phone_id, person.getP_id(), true, "new phone", ""));
                 // Now we will sort it to the top

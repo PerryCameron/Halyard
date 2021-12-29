@@ -137,9 +137,9 @@ public class HBoxInvoiceList extends HBox {
 					newMoney.setDues("0.00");
 				}
 				// insert the new record into the SQL database
-				SqlInsert.addRecord(newMoney);
+				SqlInsert.addMoneyRecord(newMoney);
 				// insert the work credit information (This may be deprecated. I haven't made up my mind yet)
-				SqlInsert.addRecord(moneyId, membership);
+				SqlInsert.addWorkCreditRecord(moneyId, membership);
 				// add new money row to tableview
 				fiscals.add(newMoney);
 				// send new money row to top

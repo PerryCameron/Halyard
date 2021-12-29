@@ -25,7 +25,7 @@ public class SqlInsert {
 	///////////////  CLASS OF STATIC PURE FUNCTIONS /////////////////////////////
 	
 	// add phone record
-	public static boolean addRecord(int phone_id, int pid ,Boolean listed, String phone, String type) {
+	public static boolean addPhoneRecord(int phone_id, int pid , Boolean listed, String phone, String type) {
 		boolean noError = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
@@ -39,7 +39,7 @@ public class SqlInsert {
 	}
 	
 	// add email record
-	public static void addRecord(int email_id, int pid, Boolean primary, String email, Boolean listed) {
+	public static void addEmailRecord(int email_id, int pid, Boolean primary, String email, Boolean listed) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("INSERT into email () VALUES (" + email_id + "," + pid + ","
@@ -50,7 +50,7 @@ public class SqlInsert {
 		}
 	}
 	
-	public static void addRecord(int officer_id, int pid ,String board_year, String officer, int year) {
+	public static void addOfficerRecord(int officer_id, int pid , String board_year, String officer, int year) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("INSERT into officer () VALUES (" + officer_id + "," + pid + "," + board_year + ",\"" + officer + "\"," + year + ");"));
@@ -83,7 +83,7 @@ public class SqlInsert {
 		}
 	}
 	
-	public static void addRecord(int boat_id, int msid) {
+	public static void addBoatRecord(int boat_id, int msid) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor(
@@ -96,7 +96,7 @@ public class SqlInsert {
 		}
 	}
 	
-	public static void addRecord(Object_Person person) {
+	public static void addPersonRecord(Object_Person person) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("INSERT INTO person () VALUES (" 
@@ -109,7 +109,7 @@ public class SqlInsert {
 		}
 	}
 	
-	public static void addRecord(int moneyId, Object_Membership membership) {
+	public static void addWorkCreditRecord(int moneyId, Object_Membership membership) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("INSERT INTO work_credit () VALUES (" 
@@ -122,7 +122,7 @@ public class SqlInsert {
 		}
 	}
 	
-	public static void addRecord(Object_Money m) {
+	public static void addMoneyRecord(Object_Money m) {
 		//Object_DefinedFee definedFees = selectDefinedFees(year);
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
@@ -141,7 +141,7 @@ public class SqlInsert {
 		}
 	}
 	
-	public static void addRecord(Object_DefinedFee d) {
+	public static void addDefinedFeeRecord(Object_DefinedFee d) {
 		//Object_DefinedFee definedFees = selectDefinedFees(year);
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();

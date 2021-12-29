@@ -246,7 +246,7 @@ public class VBoxAddPerson extends VBox {
 	}
 	
 	private void addPerson(String memberType) {
-		SqlInsert.addRecord(person);
+		SqlInsert.addPersonRecord(person);
 		peopleTabPane.getTabs().add(new Tab(memberType, new HBoxPerson(person, membership,tp)));  //tp is tappane to remove tab if deleting
     	titleLabel.setText("Add New Member");
 		titleLabel.setTextFill(Color.BLACK);
