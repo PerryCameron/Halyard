@@ -51,14 +51,16 @@ public class SqlInsert {
 		return noError;  // return true if insert performed without error
 	}
 	
-	public static void addOfficerRecord(int officer_id, int pid , String board_year, String officer, int year) {
+	public static boolean addOfficerRecord(int officer_id, int pid , String board_year, String officer, int year) {
+		boolean noError = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("INSERT into officer () VALUES (" + officer_id + "," + pid + "," + board_year + ",\"" + officer + "\"," + year + ");"));
+			noError = true;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"Unable to create new row","See below for details");
 		}
+		return noError;  // return true if insert performed without error
 	}
 	
 	public static void addPaymentRecord(Object_Payment op) {

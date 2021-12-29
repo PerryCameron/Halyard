@@ -1,6 +1,8 @@
 package com.ecsail.gui.boxes;
 
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.function.Function;
 
@@ -140,10 +142,18 @@ public class HBoxOfficer extends HBox {
 	    	    
 	        officerAdd.setOnAction(new EventHandler<ActionEvent>() {
 	            @Override public void handle(ActionEvent e) {
-	            	int officer_id = SqlSelect.getCount("officer","o_id"); // gets last memo_id number
-						officer_id++; // lets select next number
-	            	officer.add(new Object_Officer(officer_id,person.getP_id(),"0","new officer",currentYear)); // lets add it to our list
-						SqlInsert.addOfficerRecord(officer_id,person.getP_id(),"0","new officer",Integer.parseInt(currentYear)); // lets add it to our database
+					// get next available primary key for officer table
+	            	int officer_id = SqlSelect.getCount("officer","o_id") + 1; // gets last memo_id number
+					// insert a new officer row into SQL and return true on success
+					if(SqlInsert.addOfficerRecord(officer_id,person.getP_id(),"0","new officer",Integer.parseInt(currentYear)))
+						// add a new row to the tableView to match new SQL entry
+	            		officer.add(new Object_Officer(officer_id,person.getP_id(),"0","new officer",currentYear));
+					// Now we will sort it to the top
+					Collections.sort(officer, Comparator.comparing(Object_Officer::getOfficer_id).reversed());
+					// this line prevents strange buggy behaviour
+					officerTableView.layout();
+					// edit the phone number cell after creating
+					officerTableView.edit(0, Col1);
 	            }
 	        });
 	        
