@@ -1,5 +1,7 @@
 package com.ecsail.gui.boxes;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.function.Function;
 
 import com.ecsail.main.EditCell;
@@ -178,11 +180,18 @@ public class HBoxEmail extends HBox {
 			/////////////////  LISTENERS ////////////////////////
 
 	        emailAdd.setOnAction((event) -> {
-					// get the next available primary key for table email
-	            	int email_id = SqlSelect.getCount("email","email_id") + 1; // gets last memo_id number
-
-	            	email.add(new Object_Email(email_id,person.getP_id(),true,"new email",true)); // lets add it to our list
-						SqlInsert.addEmailRecord(email_id,person.getP_id(),true,"new email",true); // lets add it to our database
+				// get the next available primary key for table email
+				int email_id = SqlSelect.getCount("email","email_id") + 1; // gets last memo_id number
+				// add record to SQL and return sucess or not
+				if(SqlInsert.addEmailRecord(email_id,person.getP_id(),true,"new email",true))
+					// if we have added it to SQL we need to create a new row in tableview to match
+	            	email.add(new Object_Email(email_id,person.getP_id(),true,"new email",true));
+				// Now we will sort it to the top
+				Collections.sort(email, Comparator.comparing(Object_Email::getEmail_id).reversed());
+				// this line prevents strange buggy behaviour
+				emailTableView.layout();
+				// edit the phone number cell after creating
+				emailTableView.edit(0, Col1);
 	        });
 	        
 	        emailDelete.setOnAction((event) -> {

@@ -32,22 +32,23 @@ public class SqlInsert {
 			stmt.execute(Main.console.setRegexColor("INSERT into phone () VALUES (" + phone_id + "," + pid + ",\"" + phone + "\",'" + type + "'," + listed + ");"));
 			noError = true;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"Unable to create new row","See below for details");
 		}
 		return noError;  // return true if insert performed without error
 	}
 	
 	// add email record
-	public static void addEmailRecord(int email_id, int pid, Boolean primary, String email, Boolean listed) {
+	public static boolean addEmailRecord(int email_id, int pid, Boolean primary, String email, Boolean listed) {
+		boolean noError = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("INSERT into email () VALUES (" + email_id + "," + pid + ","
 					+ primary + ",\"" + email + "\"," + listed + ");"));
+			noError = true;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"Unable to create new row","See below for details");
 		}
+		return noError;  // return true if insert performed without error
 	}
 	
 	public static void addOfficerRecord(int officer_id, int pid , String board_year, String officer, int year) {
