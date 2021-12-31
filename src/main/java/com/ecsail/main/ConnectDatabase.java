@@ -521,21 +521,7 @@ public class ConnectDatabase {
 		}
 		// Retrieving the data
 	}
-	
-	void close() {
-		try {
-			sqlConnection.close();
-			System.out.println("SQL Connection to " + currentLogon.getHost() + " closed.");
-//			sshConnection.getFtp().closeSession();
-//			System.out.println("SFTP Connection closed");
-//			sshConnection.getSession();
-//			System.out.println("SSH Tunnel closed");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			System.out.println("Disconnection from " + currentLogon.getHost() + " Failed.");
-			e.printStackTrace();
-		}
-	}
+
 
 	public boolean isConnectionSucess() {
 		return connectionSucess;
