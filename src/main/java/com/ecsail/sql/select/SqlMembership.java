@@ -42,7 +42,9 @@ public class SqlMembership {
         ResultSet rs;
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            rs = stmt.executeQuery("select count(*) from membership where year(join_date) =" + year);
+            rs = stmt.executeQuery("select count(*) from membership m " +
+                    "inner join membership_id id on id.ms_id=m.ms_id " +
+                    "where YEAR(JOIN_DATE)="+year+" and id.FISCAL_YEAR=" + year);
             rs.next();
             number = rs.getInt("count(*)");
 
