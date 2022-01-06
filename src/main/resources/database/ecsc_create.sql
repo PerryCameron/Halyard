@@ -396,4 +396,12 @@ create table waitlist
     foreign key (MS_ID) references membership (MS_ID) on DELETE no action on UPDATE no action
 );
 
-    
+create table msid_hash
+(
+    HASH_ID    int        NOT NULL auto_increment primary key,
+    HASH       int unique NOT NULL,
+    MS_ID      int        NOT NULL,
+    foreign key (MS_ID) references membership (MS_ID) on DELETE no action on UPDATE no action
+);
+
+ALTER TABLE ECSC_SQL.msid_hash MODIFY COLUMN HASH BIGINT NOT NULL;
