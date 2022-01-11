@@ -509,7 +509,9 @@ public class HBoxInvoice extends HBox {
 	}
 
 	private void getPayment() {
+		// check to see if invoice record exists
 		if(SqlExists.paymentExists(fiscals.get(rowIndex).getMoney_id())) {
+			// select existing invoice record from SQL
 			this.payments = SqlPayment.getPayments(fiscals.get(rowIndex).getMoney_id());
 			System.out.println("A record for money_id=" + fiscals.get(rowIndex).getMoney_id() + " exists. Opening Payment");
 			// pull up payments from database
