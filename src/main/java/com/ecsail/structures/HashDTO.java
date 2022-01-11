@@ -12,11 +12,13 @@ public class HashDTO {
     }
 
     public HashDTO(int hash_id, long hash, int msid) {
+        this.hash_id = hash_id;
+        this.hash = hash;
+        this.msid = msid;
     }
 
     public HashDTO() {
     }
-
 
     public int getHash_id() {
         return hash_id;

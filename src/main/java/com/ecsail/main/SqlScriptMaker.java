@@ -11,24 +11,7 @@ import java.util.Date;
 
 import com.ecsail.gui.dialogues.Dialogue_DatabaseBackup;
 import com.ecsail.sql.select.*;
-import com.ecsail.structures.Object_Award;
-import com.ecsail.structures.Object_Boat;
-import com.ecsail.structures.Object_BoatOwner;
-import com.ecsail.structures.Object_DefinedFee;
-import com.ecsail.structures.Object_Deposit;
-import com.ecsail.structures.Object_Email;
-import com.ecsail.structures.Object_Membership;
-import com.ecsail.structures.Object_MembershipId;
-import com.ecsail.structures.Object_Memo;
-import com.ecsail.structures.Object_Money;
-import com.ecsail.structures.Object_Officer;
-import com.ecsail.structures.Object_Payment;
-import com.ecsail.structures.Object_Person;
-import com.ecsail.structures.Object_Phone;
-import com.ecsail.structures.Object_Slip;
-import com.ecsail.structures.Object_TupleCount;
-import com.ecsail.structures.Object_WaitList;
-import com.ecsail.structures.Object_WorkCredit;
+import com.ecsail.structures.*;
 
 import javafx.collections.ObservableList;
 
@@ -52,6 +35,7 @@ public class SqlScriptMaker {
 	static ObservableList<Object_Deposit> deposits;
 	static ArrayList<Object_WaitList> waitlist;
 	static ArrayList<Object_Award>awards;
+	static ArrayList<HashDTO>hash;
 	
 	private static final int ALL = 0;
 	
@@ -80,6 +64,7 @@ public class SqlScriptMaker {
 		deposits = SqlDeposit.getDeposits();
 		waitlist = SqlWaitList.getWaitLists();
 		awards = SqlAward.getAwards();
+		hash = HashSeSQL.getAllHash();
 		HalyardPaths.checkPath(HalyardPaths.SQLBACKUP + "/" + HalyardPaths.getYear());
 		readFromFile(HalyardPaths.SQLBACKUP + "/ecsc_create.sql");
 		calculateSums();
@@ -126,9 +111,11 @@ public class SqlScriptMaker {
 				writer.write(getWorkCreditString(woc));
 			for (Object_WaitList wal: waitlist)
 				writer.write(getWaitListString(wal));
-			for (Object_Award oa: awards) {
+			for (Object_Award oa: awards)
 				writer.write(getAwardsString(oa));
-			}
+			for (HashDTO hd: hash)
+				writer.write(getHashString(hd));
+
 			clearMemory();
 			writer.close();
 			System.out.println("SQL script file sucessfully made");
@@ -136,7 +123,8 @@ public class SqlScriptMaker {
 			e.printStackTrace();
 		}
 	}
-	
+
+
 
 
 	public static void clearMemory() {
@@ -195,7 +183,15 @@ public class SqlScriptMaker {
 	//	System.out.println(workcredits.size() + " workcredits written");
 		newTupleCount.setWorkCreditsSize(workcredits.size());
 	}
-	
+
+	private static String getHashString(HashDTO hd) {
+		return
+		"INSERT INTO msid_hash () VALUES("
+		+hd.getHash_id() + ","
+		+ hd.getHash() + ","
+		+ hd.getMsid() + ");\n";
+	}
+
 	private static String getAwardsString(Object_Award oa) {
 		return
 		"INSERT INTO awards () VALUES ("
