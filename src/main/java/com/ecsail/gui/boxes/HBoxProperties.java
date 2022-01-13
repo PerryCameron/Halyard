@@ -7,7 +7,7 @@ import com.ecsail.sql.SqlDelete;
 import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.select.SqlPerson;
 import com.ecsail.structures.MembershipListDTO;
-import com.ecsail.structures.Object_Person;
+import com.ecsail.structures.PersonDTO;
 
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -96,8 +96,8 @@ public class HBoxProperties extends HBox {
 			SqlDelete.deleteMonies(ms_id);
 			SqlDelete.deleteWaitList(ms_id);
 			SqlDelete.deleteMembershipId(ms_id); // removes all entries
-			ObservableList<Object_Person> people = SqlPerson.getPeople(ms_id);
-			for (Object_Person p : people) {
+			ObservableList<PersonDTO> people = SqlPerson.getPeople(ms_id);
+			for (PersonDTO p : people) {
 				SqlDelete.deletePhones(p.getP_id());
 				SqlDelete.deleteEmail(p.getP_id());
 				SqlDelete.deleteOfficer(p.getP_id());

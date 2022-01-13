@@ -3,7 +3,7 @@ package com.ecsail.sql.select;
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.Main;
-import com.ecsail.structures.Object_Stats;
+import com.ecsail.structures.StatsDTO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,14 +11,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class SqlStats {
-    public static ArrayList<Object_Stats> getStatistics() {
-        ArrayList<Object_Stats> stats = new ArrayList<>();
+    public static ArrayList<StatsDTO> getStatistics() {
+        ArrayList<StatsDTO> stats = new ArrayList<>();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
             rs = stmt.executeQuery(Main.console.setRegexColor("select * from stats"));
         while (rs.next()) {
-            stats.add(new Object_Stats(
+            stats.add(new StatsDTO(
                     rs.getInt("STAT_ID"),
                     rs.getInt("FISCAL_YEAR"),
                     rs.getInt("ACTIVE_MEMBERSHIPS"),

@@ -6,7 +6,7 @@ import com.ecsail.main.HalyardPaths;
 import com.ecsail.main.Main;
 import com.ecsail.structures.EmailDTO;
 import com.ecsail.structures.Email_InformationDTO;
-import com.ecsail.structures.Object_Person;
+import com.ecsail.structures.PersonDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -66,7 +66,7 @@ public class SqlEmail {
         return email;
     }
 
-    public static String getEmail(Object_Person person) {
+    public static String getEmail(PersonDTO person) {
         //System.out.println(person);
         EmailDTO email = null;
         String returnEmail = "";

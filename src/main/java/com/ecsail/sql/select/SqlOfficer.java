@@ -4,8 +4,8 @@ import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.Main;
 import com.ecsail.pdf.directory.PDF_Object_Officer;
-import com.ecsail.structures.Object_Officer;
-import com.ecsail.structures.Object_OfficerWithName;
+import com.ecsail.structures.OfficerDTO;
+import com.ecsail.structures.OfficerWithNameDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -24,14 +24,14 @@ public class SqlOfficer {
     static String query05 = "select F_NAME,L_NAME,OFF_YEAR from officer o left join person p on o.P_ID=p.P_ID where OFF_TYPE='";
 
 
-    public static ObservableList<Object_Officer> getOfficers() {
-        ObservableList<Object_Officer> thisOfficer = FXCollections.observableArrayList();
+    public static ObservableList<OfficerDTO> getOfficers() {
+        ObservableList<OfficerDTO> thisOfficer = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
             rs = stmt.executeQuery(Main.console.setRegexColor(query01));
             while (rs.next()) {
-                thisOfficer.add(new Object_Officer(
+                thisOfficer.add(new OfficerDTO(
                         rs.getInt("O_ID"),
                         rs.getInt("P_ID"),
                         rs.getString("BOARD_YEAR"), // beginning of board term
@@ -64,14 +64,14 @@ public class SqlOfficer {
         return officers;
     }
 
-    public static ObservableList<Object_Officer> getOfficer(String field, int attribute) {  //p_id
-        ObservableList<Object_Officer> thisOfficer = FXCollections.observableArrayList();
+    public static ObservableList<OfficerDTO> getOfficer(String field, int attribute) {  //p_id
+        ObservableList<OfficerDTO> thisOfficer = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs = stmt
                     .executeQuery(Main.console.setRegexColor(query03 + field + "='" + attribute + "'"));
             while (rs.next()) {
-                thisOfficer.add(new Object_Officer(
+                thisOfficer.add(new OfficerDTO(
                         rs.getInt("O_ID"),
                         rs.getInt("P_ID"),
                         rs.getString("BOARD_YEAR"),
@@ -84,8 +84,8 @@ public class SqlOfficer {
         return thisOfficer;
     }
 
-    public static Object_Officer getOfficer(int p_id, int i) {
-		Object_Officer thisOfficer = null;
+    public static OfficerDTO getOfficer(int p_id, int i) {
+		OfficerDTO thisOfficer = null;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
@@ -93,7 +93,7 @@ public class SqlOfficer {
 			rs = stmt.executeQuery(Main.console
 					.setRegexColor(query04 + p_id + "' and off_year='" + i + "';"));
 			while (rs.next()) {
-				thisOfficer = new Object_Officer(rs.getInt("O_ID"), rs.getInt("P_ID"), rs.getString("BOARD_YEAR"),
+				thisOfficer = new OfficerDTO(rs.getInt("O_ID"), rs.getInt("P_ID"), rs.getString("BOARD_YEAR"),
 						rs.getString("OFF_TYPE"), rs.getString("OFF_YEAR"));
 			}
 		} catch (SQLException e) {
@@ -102,14 +102,14 @@ public class SqlOfficer {
 		return thisOfficer;
 	}
 
-    public static ArrayList<Object_OfficerWithName> getOfficersWithNames(String type) {
-        ArrayList<Object_OfficerWithName> theseOfficers = new ArrayList<>();
+    public static ArrayList<OfficerWithNameDTO> getOfficersWithNames(String type) {
+        ArrayList<OfficerWithNameDTO> theseOfficers = new ArrayList<>();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
             rs = stmt.executeQuery(Main.console.setRegexColor(query05 +type+ "'"));
             while (rs.next()) {
-                theseOfficers.add(new Object_OfficerWithName(
+                theseOfficers.add(new OfficerWithNameDTO(
                         rs.getString("L_NAME"),
                         rs.getString("F_NAME"),
                         rs.getString("OFF_YEAR")

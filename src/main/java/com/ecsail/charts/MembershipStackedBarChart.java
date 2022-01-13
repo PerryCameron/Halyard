@@ -3,7 +3,7 @@ package com.ecsail.charts;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import com.ecsail.structures.Object_Stats;
+import com.ecsail.structures.StatsDTO;
 
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
@@ -11,9 +11,9 @@ import javafx.scene.chart.StackedBarChart;
 import javafx.scene.chart.XYChart;
 
 public class MembershipStackedBarChart extends StackedBarChart<String,Number> {
-	ArrayList<Object_Stats> stats;
+	ArrayList<StatsDTO> stats;
 	
-	public MembershipStackedBarChart(ArrayList<Object_Stats> stats) {
+	public MembershipStackedBarChart(ArrayList<StatsDTO> stats) {
 		super(new CategoryAxis(), new NumberAxis());
 		this.stats = stats;
 		//this.setAnimated(true);
@@ -28,7 +28,7 @@ public class MembershipStackedBarChart extends StackedBarChart<String,Number> {
 			seriesSocial.setName("Social");
 			seriesLakeAssociate.setName("Lake Associate");
 			seriesLifeMember.setName("Life Member");
-	        for (Object_Stats s: stats) {
+	        for (StatsDTO s: stats) {
 	    		seriesFamily.getData().add(new XYChart.Data<>(s.getFiscalYear() + "",s.getFamily()));
 	    		seriesRegular.getData().add(new XYChart.Data<>(s.getFiscalYear() + "",s.getRegular()));
 	    		seriesSocial.getData().add(new XYChart.Data<>(s.getFiscalYear() + "",s.getSocial()));

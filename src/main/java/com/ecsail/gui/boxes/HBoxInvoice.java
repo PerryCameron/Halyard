@@ -31,23 +31,23 @@ import java.util.function.Function;
 // replaces tabCredit, tabBalance, tabPayment, BoxFiscal2 also need to delete Object_Integer
 
 public class HBoxInvoice extends HBox {
-	private final ObservableList<Object_Money> fiscals;
-	private ObservableList<Object_Payment> payments;
-	private final Object_Money invoice;
+	private final ObservableList<MoneyDTO> fiscals;
+	private ObservableList<PaymentDTO> payments;
+	private final MoneyDTO invoice;
 	private final InvoiceDTO fnode;
 	MembershipDTO membership;
 	DefinedFeeDTO definedFees;
-	Object_WorkCredit selectedWorkCreditYear;
-	Object_Officer officer;
-	final private ObservableList<Object_Person> people;
+	WorkCreditDTO selectedWorkCreditYear;
+	OfficerDTO officer;
+	final private ObservableList<PersonDTO> people;
 	boolean hasOfficer;
 	final private int rowIndex;
 	String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date(System.currentTimeMillis()));
-	private final TableView<Object_Payment> paymentTableView = new TableView<>();
+	private final TableView<PaymentDTO> paymentTableView = new TableView<>();
 	boolean isCommitted;
 	Button addWetSlip = new Button();
 	
-	public HBoxInvoice(MembershipDTO m, ObservableList<Object_Person> p, ObservableList<Object_Money> o, int r, Note note) {
+	public HBoxInvoice(MembershipDTO m, ObservableList<PersonDTO> p, ObservableList<MoneyDTO> o, int r, Note note) {
 		this.membership = m;
 		this.people = p;
 		this.rowIndex = r;
@@ -78,7 +78,7 @@ public class HBoxInvoice extends HBox {
 		HBox hboxButtonCommit = new HBox();
 
 		/////////////// TABLE ///////////////////
-		TableColumn<Object_Payment, String> col1 = createColumn("Amount", Object_Payment::PaymentAmountProperty);
+		TableColumn<PaymentDTO, String> col1 = createColumn("Amount", PaymentDTO::PaymentAmountProperty);
 		col1.setPrefWidth(60);
 		col1.setStyle( "-fx-alignment: CENTER-RIGHT;");
 		col1.setOnEditCommit(
@@ -98,12 +98,12 @@ public class HBoxInvoice extends HBox {
 
 		// example for this column found at https://o7planning.org/en/11079/javafx-tableview-tutorial
 		ObservableList<PaymentType> paymentTypeList = FXCollections.observableArrayList(PaymentType.values());
-		TableColumn<Object_Payment, PaymentType> col2 = new TableColumn<>("Type");
+		TableColumn<PaymentDTO, PaymentType> col2 = new TableColumn<>("Type");
 
 		col2.setPrefWidth(55);
 		col2.setStyle( "-fx-alignment: CENTER;");
 		col2.setCellValueFactory(param -> {
-			Object_Payment thisPayment = param.getValue();
+			PaymentDTO thisPayment = param.getValue();
 			String paymentCode = thisPayment.getPaymentType();
 			PaymentType paymentType = PaymentType.getByCode(paymentCode);
 			return new SimpleObjectProperty<>(paymentType);
@@ -111,17 +111,17 @@ public class HBoxInvoice extends HBox {
 
 		col2.setCellFactory(ComboBoxTableCell.forTableColumn(paymentTypeList));
 
-		col2.setOnEditCommit((TableColumn.CellEditEvent<Object_Payment, PaymentType> event) -> {
-			TablePosition<Object_Payment, PaymentType> pos = event.getTablePosition();
+		col2.setOnEditCommit((TableColumn.CellEditEvent<PaymentDTO, PaymentType> event) -> {
+			TablePosition<PaymentDTO, PaymentType> pos = event.getTablePosition();
 			PaymentType newPaymentType = event.getNewValue();
 			int row = pos.getRow();
-			Object_Payment thisPayment = event.getTableView().getItems().get(row);
+			PaymentDTO thisPayment = event.getTableView().getItems().get(row);
 			SqlUpdate.updatePayment(thisPayment.getPay_id(), "payment_type", newPaymentType.getCode());
 			// need to update paid from here
 			thisPayment.setPaymentType(newPaymentType.getCode());
 		});
 
-		TableColumn<Object_Payment, String> col3 = createColumn("Check #", Object_Payment::checkNumberProperty);
+		TableColumn<PaymentDTO, String> col3 = createColumn("Check #", PaymentDTO::checkNumberProperty);
 		col3.setPrefWidth(55);
 		col3.setStyle( "-fx-alignment: CENTER-LEFT;");
 		col3.setOnEditCommit(
@@ -134,7 +134,7 @@ public class HBoxInvoice extends HBox {
 				}
 		);
 
-		TableColumn<Object_Payment, String> col4 = createColumn("Date", Object_Payment::paymentDateProperty);
+		TableColumn<PaymentDTO, String> col4 = createColumn("Date", PaymentDTO::paymentDateProperty);
 		col4.setPrefWidth(70);
 		col4.setStyle( "-fx-alignment: CENTER-LEFT;");
 		col4.setOnEditCommit(
@@ -181,7 +181,7 @@ public class HBoxInvoice extends HBox {
 		//////////////// LISTENER //////////////////
 		fnode.getButtonAdd().setOnAction(e -> {
 			int pay_id = SqlPayment.getNumberOfPayments() + 1; // get last pay_id number
-			payments.add(new Object_Payment(pay_id,fiscals.get(rowIndex).getMoney_id(),null,"CH",date, "0",1)); // let's add it to our GUI
+			payments.add(new PaymentDTO(pay_id,fiscals.get(rowIndex).getMoney_id(),null,"CH",date, "0",1)); // let's add it to our GUI
 			SqlInsert.addPaymentRecord(payments.get(payments.size() -1));
 		});
 
@@ -519,7 +519,7 @@ public class HBoxInvoice extends HBox {
 			this.payments = FXCollections.observableArrayList();
 			System.out.println("getPayment(): Creating a new payment entry");
 			int pay_id = SqlPayment.getNumberOfPayments() + 1;
-			payments.add(new Object_Payment(pay_id,fiscals.get(rowIndex).getMoney_id(),"0","CH",date, "0",1));
+			payments.add(new PaymentDTO(pay_id,fiscals.get(rowIndex).getMoney_id(),"0","CH",date, "0",1));
 			SqlInsert.addPaymentRecord(payments.get(payments.size() - 1));
 		}
 	}
@@ -638,7 +638,7 @@ public class HBoxInvoice extends HBox {
 	private Boolean membershipHasOfficer() {
 		Boolean isOfficer;
 		boolean finalResult = false;
-		for (Object_Person per : people) {
+		for (PersonDTO per : people) {
 			isOfficer = SqlExists.isOfficer(per, fiscals.get(rowIndex).getFiscal_year());
 			if(isOfficer) {  // we will add in pid here if need be
 				finalResult = true;

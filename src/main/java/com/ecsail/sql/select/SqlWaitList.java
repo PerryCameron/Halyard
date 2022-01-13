@@ -3,7 +3,7 @@ package com.ecsail.sql.select;
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.Main;
-import com.ecsail.structures.Object_WaitList;
+import com.ecsail.structures.WaitListDTO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,14 +11,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class SqlWaitList {
-    public static Object_WaitList getWaitList(int ms_id) {
-        Object_WaitList thisWaitList = null;
+    public static WaitListDTO getWaitList(int ms_id) {
+        WaitListDTO thisWaitList = null;
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
             rs = stmt.executeQuery(Main.console.setRegexColor("select * from waitlist where ms_id=" + ms_id));
             while (rs.next()) {
-                thisWaitList = new Object_WaitList(
+                thisWaitList = new WaitListDTO(
                         rs.getInt("MS_ID"),
                         rs.getBoolean("SLIPWAIT"),
                         rs.getBoolean("KAYAKRACKWAIT"),
@@ -35,14 +35,14 @@ public class SqlWaitList {
         return thisWaitList;
     }
 
-    public static ArrayList<Object_WaitList> getWaitLists() {
-        ArrayList<Object_WaitList> thisWaitList = new ArrayList<>();
+    public static ArrayList<WaitListDTO> getWaitLists() {
+        ArrayList<WaitListDTO> thisWaitList = new ArrayList<>();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
             rs = stmt.executeQuery(Main.console.setRegexColor("select * from waitlist"));
             while (rs.next()) {
-                thisWaitList.add(new Object_WaitList(
+                thisWaitList.add(new WaitListDTO(
                         rs.getInt("MS_ID"),
                         rs.getBoolean("SLIPWAIT"),
                         rs.getBoolean("KAYAKRACKWAIT"),

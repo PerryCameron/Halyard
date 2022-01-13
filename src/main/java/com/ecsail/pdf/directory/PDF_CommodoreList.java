@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import com.ecsail.sql.select.SqlOfficer;
-import com.ecsail.structures.Object_OfficerWithName;
+import com.ecsail.structures.OfficerWithNameDTO;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.element.Cell;
@@ -17,7 +17,7 @@ import com.itextpdf.layout.property.VerticalAlignment;
 
 
 public class PDF_CommodoreList extends Table {
-	ArrayList<Object_OfficerWithName> commodores = new ArrayList<Object_OfficerWithName>();
+	ArrayList<OfficerWithNameDTO> commodores = new ArrayList<OfficerWithNameDTO>();
 	ArrayList<Table> tables = new ArrayList<Table>(); // Stores the column tables
 	PDF_Object_Settings set;
 	
@@ -28,7 +28,7 @@ public class PDF_CommodoreList extends Table {
 		setWidth(PageSize.A5.getWidth() * 0.8f);  // makes table 90% of page width
 		setHorizontalAlignment(HorizontalAlignment.CENTER);
 		// sort commodore list by year
-		Collections.sort(commodores , Comparator.comparing(Object_OfficerWithName::getYear));
+		Collections.sort(commodores , Comparator.comparing(OfficerWithNameDTO::getYear));
 		// remove the current commodore
 		commodores.remove(commodores.size() -1);
 		// used to know where we are in iterations
@@ -93,7 +93,7 @@ public class PDF_CommodoreList extends Table {
 	}
 	
 	// creates a single cell with membership names
-	private Cell createCommodoreEntry(Object_OfficerWithName c) {
+	private Cell createCommodoreEntry(OfficerWithNameDTO c) {
 		Cell cell;
 		Paragraph p;
 		cell = new Cell();

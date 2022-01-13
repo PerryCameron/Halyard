@@ -3,7 +3,7 @@ package com.ecsail.main;
 import com.ecsail.sql.select.SqlEmail;
 import com.ecsail.sql.select.SqlPerson;
 import com.ecsail.structures.MembershipListDTO;
-import com.ecsail.structures.Object_Person;
+import com.ecsail.structures.PersonDTO;
 import javafx.event.ActionEvent;
 
 import javafx.scene.control.ContextMenu;
@@ -25,7 +25,7 @@ public class rosterContextMenu extends ContextMenu {
     MenuItem registration = new MenuItem("Send Renewal Link");
     private EmailLinkBuilder linkCreator = new EmailLinkBuilder();
     private String selectedYear;
-    private Object_Person person;
+    private PersonDTO person;
     private String email;
 
 

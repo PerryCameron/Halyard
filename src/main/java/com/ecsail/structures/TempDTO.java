@@ -1,19 +1,19 @@
 package com.ecsail.structures;
 
-public class Object_Temp {  // used in TabNewYearGenerator
+public class TempDTO {  // used in TabNewYearGenerator
 	int membership_id;
 	String fname;
 	String lname;
 	String wname;
 	
-	public Object_Temp(int membership_id, String fname, String lname, String wname) {
+	public TempDTO(int membership_id, String fname, String lname, String wname) {
 		this.membership_id = membership_id;
 		this.fname = fname;
 		this.lname = lname;
 		this.wname = wname;
 	}
 
-	public Object_Temp() {
+	public TempDTO() {
 		// TODO Auto-generated constructor stub
 	}
 

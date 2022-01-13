@@ -18,9 +18,9 @@ import com.ecsail.structures.BoatDTO;
 import com.ecsail.structures.DefinedFeeDTO;
 import com.ecsail.structures.MembershipIdDTO;
 import com.ecsail.structures.MembershipListDTO;
-import com.ecsail.structures.Object_Money;
-import com.ecsail.structures.Object_Person;
-import com.ecsail.structures.Object_Phone;
+import com.ecsail.structures.MoneyDTO;
+import com.ecsail.structures.PersonDTO;
+import com.ecsail.structures.PhoneDTO;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.colors.DeviceCmyk;
 import com.itextpdf.kernel.pdf.PdfDocument;
@@ -43,16 +43,16 @@ public class PDF_Renewal_Form {
 	private static String current_membership_id;
 	private static int ms_id;
 	private static MembershipListDTO membership;
-	private static Object_Person primary;
-	private static Object_Person secondary;
-	private static Object_Money dues;
+	private static PersonDTO primary;
+	private static PersonDTO secondary;
+	private static MoneyDTO dues;
 	DefinedFeeDTO definedFees;
 	private int borderSize = 1;
 	private List<BoatDTO> boats = new ArrayList<BoatDTO>();
 	private List<MembershipIdDTO> ids = new ArrayList<MembershipIdDTO>();
-	private ArrayList<Object_Phone> primaryPhone = new ArrayList<Object_Phone>();
-	private ArrayList<Object_Phone> secondaryPhone = new ArrayList<Object_Phone>();
-	private ArrayList<Object_Person> dependants = new ArrayList<Object_Person>();
+	private ArrayList<PhoneDTO> primaryPhone = new ArrayList<PhoneDTO>();
+	private ArrayList<PhoneDTO> secondaryPhone = new ArrayList<PhoneDTO>();
+	private ArrayList<PersonDTO> dependants = new ArrayList<PersonDTO>();
 	//Image new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/checked-checkbox9x9.png")))) = new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/checked-checkbox9x9.png"))));
 	//Image new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/unchecked-checkbox9x9.png")))) = new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/unchecked-checkbox9x9.png"))));
 	String filenm = "";
@@ -208,7 +208,7 @@ public class PDF_Renewal_Form {
 			secondaryPhone = SqlPhone.getPhoneByPerson(secondary);
 			shortenDate(secondary);
 			} else {
-				secondary = new Object_Person(0, 0, 0, "", "", "", "", "", false,null);
+				secondary = new PersonDTO(0, 0, 0, "", "", "", "", "", false,null);
 			}
 	}
 		
@@ -216,7 +216,7 @@ public class PDF_Renewal_Form {
 		String children = "";
 		if (dependants.size() > 0) {
 			int numberOfChildren = dependants.size();
-			for (Object_Person c : dependants) {
+			for (PersonDTO c : dependants) {
 				if (c.isActive()) {
 					children += c.getFname();
 					if (c.getBirthday() != null) {
@@ -235,7 +235,7 @@ public class PDF_Renewal_Form {
 		String children = "";
 		if (dependants.size() > 0) {
 			int numberOfChildren = dependants.size();
-			for (Object_Person c : dependants) {
+			for (PersonDTO c : dependants) {
 				children += c.getBirthday().substring(0,4);
 				if (numberOfChildren != 1)
 					children += ", ";
@@ -255,7 +255,7 @@ public class PDF_Renewal_Form {
 		return cleanedString;
 	}
 	
-	public void shortenDate(Object_Person person) {
+	public void shortenDate(PersonDTO person) {
 		if(person.getBirthday() != null) {
 			if(person.getBirthday().length() > 4) {
 				person.setBirthday(person.getBirthday().substring(0, 4));
@@ -265,7 +265,7 @@ public class PDF_Renewal_Form {
 		}
 	}
 	
-	public String getEmail(Object_Person person) {
+	public String getEmail(PersonDTO person) {
 		String email = "";
 		if(SqlExists.emailExists(person)) {
 			email = SqlEmail.getEmail(person);
@@ -273,11 +273,11 @@ public class PDF_Renewal_Form {
 		return email;
 	}
 	
-	public String getPhone(Object_Person person, String type) {
+	public String getPhone(PersonDTO person, String type) {
 		String phone = "";
 		if(person.getMemberType() == 1) { // this is the primary person
 			if(!primaryPhone.isEmpty()) {
-				for(Object_Phone p: primaryPhone) {
+				for(PhoneDTO p: primaryPhone) {
 					if(type.equals("CELL")) {
 						if(p.getPhoneType().equals("C")) phone = p.getPhoneNumber();
 					}
@@ -291,7 +291,7 @@ public class PDF_Renewal_Form {
 			}
 		} else { 
 			if(!secondaryPhone.isEmpty()) {
-				for(Object_Phone p: secondaryPhone) {
+				for(PhoneDTO p: secondaryPhone) {
 					if(type.equals("CELL")) {
 						if(p.getPhoneType().equals("C")) phone = p.getPhoneNumber();
 					}

@@ -10,7 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
 
-public class Object_Phone {
+public class PhoneDTO {
 	
 	private IntegerProperty phone_ID;
 	private IntegerProperty pid;
@@ -19,7 +19,7 @@ public class Object_Phone {
 	private StringProperty phoneType;
 	private ObservableList<String> membershiptypes; 
 	private ComboBox<String> combo_box;
-	public Object_Phone(Integer phone_ID, Integer pid, Boolean isListed, String phoneNumber, String phoneType) {
+	public PhoneDTO(Integer phone_ID, Integer pid, Boolean isListed, String phoneNumber, String phoneType) {
 		this.phone_ID = new SimpleIntegerProperty(phone_ID);
 		this.pid = new SimpleIntegerProperty(pid);
 		this.isListed = new SimpleBooleanProperty(isListed);

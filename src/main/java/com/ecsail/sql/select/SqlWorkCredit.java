@@ -3,7 +3,7 @@ package com.ecsail.sql.select;
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.Main;
-import com.ecsail.structures.Object_WorkCredit;
+import com.ecsail.structures.WorkCreditDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -12,14 +12,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class SqlWorkCredit {
-    public static ObservableList<Object_WorkCredit> getWorkCredits() {
-        ObservableList<Object_WorkCredit> thisWorkCredit = FXCollections.observableArrayList();
+    public static ObservableList<WorkCreditDTO> getWorkCredits() {
+        ObservableList<WorkCreditDTO> thisWorkCredit = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
             rs = stmt.executeQuery(Main.console.setRegexColor("select * from work_credit;"));
             while (rs.next()) {
-                thisWorkCredit.add(new Object_WorkCredit(
+                thisWorkCredit.add(new WorkCreditDTO(
                         rs.getInt("MONEY_ID"),
                         rs.getInt("MS_ID"),
                         rs.getInt("RACING"),

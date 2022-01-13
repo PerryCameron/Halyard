@@ -5,15 +5,15 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class Object_Slip {
+public class SlipDTO {
 	
 	private IntegerProperty slip_id;
 	private IntegerProperty ms_id;
 	private StringProperty slipNumber;
 	private IntegerProperty subleased_to;
 	
-	public Object_Slip(Integer slip_id, Integer ms_id, String slipNumber,
-			Integer subleased_to) {
+	public SlipDTO(Integer slip_id, Integer ms_id, String slipNumber,
+				   Integer subleased_to) {
 		super();
 		this.slip_id = new SimpleIntegerProperty(slip_id);
 		this.ms_id = new SimpleIntegerProperty(ms_id);

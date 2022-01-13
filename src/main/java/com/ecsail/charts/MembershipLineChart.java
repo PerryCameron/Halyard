@@ -3,7 +3,7 @@ package com.ecsail.charts;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import com.ecsail.structures.Object_Stats;
+import com.ecsail.structures.StatsDTO;
 
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
@@ -11,9 +11,9 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 
 public class MembershipLineChart extends LineChart<String, Number> {
-	ArrayList<Object_Stats> stats;
+	ArrayList<StatsDTO> stats;
 	
-	public MembershipLineChart(ArrayList<Object_Stats> stats) {
+	public MembershipLineChart(ArrayList<StatsDTO> stats) {
 	super(new CategoryAxis(), new NumberAxis());
 	this.stats = stats;	
 
@@ -33,7 +33,7 @@ public class MembershipLineChart extends LineChart<String, Number> {
 		seriesNonRenew.setName("Non-Renew");
 		seriesNewMembers.setName("New");
 		seriesReturnMembers.setName("Return");
-		for (Object_Stats s: stats) {
+		for (StatsDTO s: stats) {
         seriesNonRenew.getData().add(new Data<String, Number>(s.getFiscalYear() + "", s.getNonRenewMemberships()));
         seriesNewMembers.getData().add(new Data<String, Number>(s.getFiscalYear() + "", s.getNewMemberships()));
         seriesReturnMembers.getData().add(new Data<String, Number>(s.getFiscalYear() + "", s.getReturnMemberships()));

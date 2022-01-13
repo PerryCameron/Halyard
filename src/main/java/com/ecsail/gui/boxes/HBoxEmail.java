@@ -11,7 +11,7 @@ import com.ecsail.sql.select.SqlEmail;
 import com.ecsail.sql.select.SqlSelect;
 import com.ecsail.sql.SqlUpdate;
 import com.ecsail.structures.EmailDTO;
-import com.ecsail.structures.Object_Person;
+import com.ecsail.structures.PersonDTO;
 
 import javafx.beans.Observable;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -37,12 +37,12 @@ import javafx.util.Callback;
 
 public class HBoxEmail extends HBox {
 	
-	private Object_Person person;
+	private PersonDTO person;
 	private ObservableList<EmailDTO> email;
 	private TableView<EmailDTO> emailTableView;
 	
 	@SuppressWarnings("unchecked")
-	public HBoxEmail(Object_Person p) {
+	public HBoxEmail(PersonDTO p) {
 		this.person = p;
 		this.email =  FXCollections.observableArrayList(new Callback<EmailDTO, Observable[]>() {
 			@Override

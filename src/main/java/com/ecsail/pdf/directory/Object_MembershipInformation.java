@@ -7,11 +7,11 @@ import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.select.*;
 import com.ecsail.structures.BoatDTO;
 import com.ecsail.structures.MembershipListDTO;
-import com.ecsail.structures.Object_Person;
+import com.ecsail.structures.PersonDTO;
 
 public class Object_MembershipInformation {
-	Object_Person primary;
-	Object_Person secondary;
+	PersonDTO primary;
+	PersonDTO secondary;
 	String primaryEmail;
 	String secondaryEmail;
 	String primaryPhone;
@@ -36,8 +36,8 @@ public class Object_MembershipInformation {
 	private String getChildrenString(MembershipListDTO m) {
 		String children = "Children: ";
 		int count = 0;
-		ArrayList<Object_Person> dependants = SqlPerson.getDependants(m);
-		for(Object_Person d: dependants) {
+		ArrayList<PersonDTO> dependants = SqlPerson.getDependants(m);
+		for(PersonDTO d: dependants) {
 			children += d.getFname();
 			count++;
 			if(count < dependants.size()) children += ",";
@@ -55,8 +55,8 @@ public class Object_MembershipInformation {
 	}
 	
 	
-	private Object_Person getSecondaryPerson(MembershipListDTO m) {
-		Object_Person s = new Object_Person();
+	private PersonDTO getSecondaryPerson(MembershipListDTO m) {
+		PersonDTO s = new PersonDTO();
 		this.secondaryExists = false;
 		if (SqlExists.activePersonExists(m.getMsid(), 2)) {
 			s = SqlPerson.getPerson(m.getMsid(), 2);
@@ -114,19 +114,19 @@ public class Object_MembershipInformation {
 		return memberBoats;
 	}
 
-	public Object_Person getPrimary() {
+	public PersonDTO getPrimary() {
 		return primary;
 	}
 
-	public void setPrimary(Object_Person primary) {
+	public void setPrimary(PersonDTO primary) {
 		this.primary = primary;
 	}
 
-	public Object_Person getSecondary() {
+	public PersonDTO getSecondary() {
 		return secondary;
 	}
 
-	public void setSecondary(Object_Person secondary) {
+	public void setSecondary(PersonDTO secondary) {
 		this.secondary = secondary;
 	}
 

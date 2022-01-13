@@ -3,7 +3,7 @@ package com.ecsail.structures;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 
-public class Object_RosterRadioButtons {
+public class RosterRadioButtonsDTO {
 	RadioButton radioAll = new RadioButton("All");
 	RadioButton radioActive = new RadioButton("Active"); 
     RadioButton radioNonRenew = new RadioButton("Non-Renew"); 
@@ -24,11 +24,11 @@ public class Object_RosterRadioButtons {
     RadioButton radioShedOwner = new RadioButton("Kayak Shed");
     ToggleGroup tg1 = new ToggleGroup();
     
-	public Object_RosterRadioButtons(RadioButton radioAll, RadioButton radioActive, RadioButton radioNonRenew,
-			RadioButton radioNewMembers, RadioButton radioNewReturnMembers, RadioButton radioAllActiveMembers, RadioButton radioSlipWaitList,
-			RadioButton radioSlip, RadioButton radioWantsToSublease, RadioButton radioOpenSlips,
-			RadioButton radioSlipChange, RadioButton radioSubLeasedSlips, RadioButton radioKayakRackWaitList,
-			RadioButton radioKayakRackOwners, RadioButton radioShedWaitList, RadioButton radioShedOwner) {
+	public RosterRadioButtonsDTO(RadioButton radioAll, RadioButton radioActive, RadioButton radioNonRenew,
+								 RadioButton radioNewMembers, RadioButton radioNewReturnMembers, RadioButton radioAllActiveMembers, RadioButton radioSlipWaitList,
+								 RadioButton radioSlip, RadioButton radioWantsToSublease, RadioButton radioOpenSlips,
+								 RadioButton radioSlipChange, RadioButton radioSubLeasedSlips, RadioButton radioKayakRackWaitList,
+								 RadioButton radioKayakRackOwners, RadioButton radioShedWaitList, RadioButton radioShedOwner) {
 		this.radioAll = radioAll;
 		this.radioActive = radioActive;
 		this.radioNonRenew = radioNonRenew;
@@ -47,7 +47,7 @@ public class Object_RosterRadioButtons {
 		this.radioShedOwner = radioShedOwner;
 	}
 	
-	public Object_RosterRadioButtons() {
+	public RosterRadioButtonsDTO() {
 		// default constructor
 	}
 	

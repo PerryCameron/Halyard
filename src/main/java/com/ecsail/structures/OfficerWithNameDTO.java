@@ -1,11 +1,11 @@
 package com.ecsail.structures;
 
-public class Object_OfficerWithName {
+public class OfficerWithNameDTO {
 	String lName;
 	String fName;
 	String year;
 
-	public Object_OfficerWithName(String lName, String fName, String year) {
+	public OfficerWithNameDTO(String lName, String fName, String year) {
 		super();
 		this.lName = lName;
 		this.fName = fName;

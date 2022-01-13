@@ -5,7 +5,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class Object_Payment {
+public class PaymentDTO {
 	private IntegerProperty pay_id;
 	private IntegerProperty money_id;
 	private StringProperty checkNumber;
@@ -14,8 +14,8 @@ public class Object_Payment {
 	private StringProperty PaymentAmount;
 	private IntegerProperty deposit_id;
 	
-	public Object_Payment(Integer pay_id, Integer money_id, String checkNumber, String paymentType, String paymentDate,
-			String paymentAmount, Integer deposit_id) {
+	public PaymentDTO(Integer pay_id, Integer money_id, String checkNumber, String paymentType, String paymentDate,
+					  String paymentAmount, Integer deposit_id) {
 		this.pay_id = new SimpleIntegerProperty(pay_id);
 		this.money_id = new SimpleIntegerProperty(money_id);
 		this.checkNumber = new SimpleStringProperty(checkNumber);

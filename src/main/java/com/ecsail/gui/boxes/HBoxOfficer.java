@@ -13,8 +13,8 @@ import com.ecsail.sql.SqlInsert;
 import com.ecsail.sql.select.SqlOfficer;
 import com.ecsail.sql.select.SqlSelect;
 import com.ecsail.sql.SqlUpdate;
-import com.ecsail.structures.Object_Officer;
-import com.ecsail.structures.Object_Person;
+import com.ecsail.structures.OfficerDTO;
+import com.ecsail.structures.PersonDTO;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.StringProperty;
@@ -38,13 +38,13 @@ import javafx.util.Callback;
 
 public class HBoxOfficer extends HBox {
 
-	private Object_Person person;
-	private ObservableList<Object_Officer> officer;
-	private TableView<Object_Officer> officerTableView;
+	private PersonDTO person;
+	private ObservableList<OfficerDTO> officer;
+	private TableView<OfficerDTO> officerTableView;
 	private String currentYear;
 	
 	@SuppressWarnings("unchecked")
-	public HBoxOfficer(Object_Person p) {
+	public HBoxOfficer(PersonDTO p) {
 		this.person = p;
 		this.currentYear = new SimpleDateFormat("yyyy").format(new Date());
 		this.officer =  SqlOfficer.getOfficer("p_id",person.getP_id());
@@ -55,7 +55,7 @@ public class HBoxOfficer extends HBox {
 		VBox vboxButton = new VBox(); // holds officer buttons
 		HBox hboxGrey = new HBox(); // this is here for the grey background to make nice apperence
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
-		officerTableView = new TableView<Object_Officer>();
+		officerTableView = new TableView<OfficerDTO>();
 
 		/////////////////  ATTRIBUTES  /////////////////////
 		officerAdd.setPrefWidth(60);
@@ -83,13 +83,13 @@ public class HBoxOfficer extends HBox {
 			officerTableView.setEditable(true);
 			officerTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY );
 			
-			TableColumn<Object_Officer, String> Col1 = createColumn("Year", Object_Officer::fiscal_yearProperty);
+			TableColumn<OfficerDTO, String> Col1 = createColumn("Year", OfficerDTO::fiscal_yearProperty);
 			Col1.setSortType(TableColumn.SortType.DESCENDING);
 	        Col1.setOnEditCommit(
-	                new EventHandler<CellEditEvent<Object_Officer, String>>() {
+	                new EventHandler<CellEditEvent<OfficerDTO, String>>() {
 	                    @Override
-	                    public void handle(CellEditEvent<Object_Officer, String> t) {
-	                        ((Object_Officer) t.getTableView().getItems().get(
+	                    public void handle(CellEditEvent<OfficerDTO, String> t) {
+	                        ((OfficerDTO) t.getTableView().getItems().get(
 	                                t.getTablePosition().getRow())
 	                                ).setFiscal_year(t.getNewValue());
 	                        SqlUpdate.updateOfficer("off_year",t.getRowValue().getOfficer_id(), t.getNewValue());  // have to get by money id and pid eventually
@@ -99,11 +99,11 @@ public class HBoxOfficer extends HBox {
 	        
 	        
 	        ObservableList<Officer> officerList = FXCollections.observableArrayList(Officer.values());
-	    	final TableColumn<Object_Officer, Officer> Col2 = new TableColumn<Object_Officer, Officer>("Officers, Chairs and Board");
-	        Col2.setCellValueFactory(new Callback<CellDataFeatures<Object_Officer, Officer>, ObservableValue<Officer>>() {
+	    	final TableColumn<OfficerDTO, Officer> Col2 = new TableColumn<OfficerDTO, Officer>("Officers, Chairs and Board");
+	        Col2.setCellValueFactory(new Callback<CellDataFeatures<OfficerDTO, Officer>, ObservableValue<Officer>>() {
 	            @Override
-	            public ObservableValue<Officer> call(CellDataFeatures<Object_Officer, Officer> param) {
-	                Object_Officer thisofficer = param.getValue();
+	            public ObservableValue<Officer> call(CellDataFeatures<OfficerDTO, Officer> param) {
+	                OfficerDTO thisofficer = param.getValue();
 	                String officerCode = thisofficer.getOfficer_type();
 	                Officer type = Officer.getByCode(officerCode);
 	                return new SimpleObjectProperty<Officer>(type);
@@ -112,21 +112,21 @@ public class HBoxOfficer extends HBox {
 	        
 	        Col2.setCellFactory(ComboBoxTableCell.forTableColumn(officerList));
 	 
-	        Col2.setOnEditCommit((CellEditEvent<Object_Officer, Officer> event) -> {
-	            TablePosition<Object_Officer, Officer> pos = event.getTablePosition();
+	        Col2.setOnEditCommit((CellEditEvent<OfficerDTO, Officer> event) -> {
+	            TablePosition<OfficerDTO, Officer> pos = event.getTablePosition();
 	            Officer newOfficer = event.getNewValue();
 	            int row = pos.getRow();
-	            Object_Officer thisofficer = event.getTableView().getItems().get(row);
+	            OfficerDTO thisofficer = event.getTableView().getItems().get(row);
 	            SqlUpdate.updateOfficer("off_type",thisofficer.getOfficer_id(), newOfficer.getCode());
 	            thisofficer.setOfficer_type(newOfficer.getCode());
 	        });
 	        
-			TableColumn<Object_Officer, String> Col3 = createColumn("Exp", Object_Officer::board_yearProperty);
+			TableColumn<OfficerDTO, String> Col3 = createColumn("Exp", OfficerDTO::board_yearProperty);
 	        Col3.setOnEditCommit(
-	                new EventHandler<CellEditEvent<Object_Officer, String>>() {
+	                new EventHandler<CellEditEvent<OfficerDTO, String>>() {
 	                    @Override
-	                    public void handle(CellEditEvent<Object_Officer, String> t) {
-	                        ((Object_Officer) t.getTableView().getItems().get(
+	                    public void handle(CellEditEvent<OfficerDTO, String> t) {
+	                        ((OfficerDTO) t.getTableView().getItems().get(
 	                                t.getTablePosition().getRow())
 	                                ).setBoard_year(t.getNewValue());  // need to change
 	                        	SqlUpdate.updateOfficer("board_year",t.getRowValue().getOfficer_id(), t.getNewValue());  // have to get by money id and pid eventually
@@ -147,9 +147,9 @@ public class HBoxOfficer extends HBox {
 					// insert a new officer row into SQL and return true on success
 					if(SqlInsert.addOfficerRecord(officer_id,person.getP_id(),"0","new officer",Integer.parseInt(currentYear)))
 						// add a new row to the tableView to match new SQL entry
-	            		officer.add(new Object_Officer(officer_id,person.getP_id(),"0","new officer",currentYear));
+	            		officer.add(new OfficerDTO(officer_id,person.getP_id(),"0","new officer",currentYear));
 					// Now we will sort it to the top
-					Collections.sort(officer, Comparator.comparing(Object_Officer::getOfficer_id).reversed());
+					Collections.sort(officer, Comparator.comparing(OfficerDTO::getOfficer_id).reversed());
 					// this line prevents strange buggy behaviour
 					officerTableView.layout();
 					// edit the phone number cell after creating

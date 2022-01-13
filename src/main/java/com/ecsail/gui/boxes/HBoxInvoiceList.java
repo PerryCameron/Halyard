@@ -25,16 +25,16 @@ import javafx.scene.layout.VBox;
 
 public class HBoxInvoiceList extends HBox {
 	
-	private static ObservableList<Object_Money> fiscals = null;
+	private static ObservableList<MoneyDTO> fiscals = null;
 	private static TabPane parentTabPane;
 	private static MembershipDTO membership;
-	private static ObservableList<Object_Person> people;
+	private static ObservableList<PersonDTO> people;
 	private static Note note;
 	private static TextField duesText;
 	
 	String currentYear;
 
-	public HBoxInvoiceList(MembershipDTO membership, TabPane t, ObservableList<Object_Person> p, Note n, TextField dt) {
+	public HBoxInvoiceList(MembershipDTO membership, TabPane t, ObservableList<PersonDTO> p, Note n, TextField dt) {
 		super();
 		HBoxInvoiceList.membership = membership;
 		this.currentYear = HalyardPaths.getYear();
@@ -54,12 +54,12 @@ public class HBoxInvoiceList extends HBox {
 //		SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 2100, Integer.parseInt(currentYear));
 		HBoxInvoiceList.fiscals = SqlMoney.getMonies(membership.getMsid());
 //		Object_DefinedFee definedFees = SqlSelect.selectDefinedFees(Integer.parseInt(currentYear));
-		TableView<Object_Money> fiscalTableView = new TableView<Object_Money>();
-		TableColumn<Object_Money, Integer> Col1 = new TableColumn<Object_Money, Integer>("Year");
-		TableColumn<Object_Money, Integer> Col2 = new TableColumn<Object_Money, Integer>("Fees");
-		TableColumn<Object_Money, Integer> Col3 = new TableColumn<Object_Money, Integer>("Credit");
-		TableColumn<Object_Money, Integer> Col4 = new TableColumn<Object_Money, Integer>("Paid");
-		TableColumn<Object_Money, Integer> Col5 = new TableColumn<Object_Money, Integer>("Balance");
+		TableView<MoneyDTO> fiscalTableView = new TableView<MoneyDTO>();
+		TableColumn<MoneyDTO, Integer> Col1 = new TableColumn<MoneyDTO, Integer>("Year");
+		TableColumn<MoneyDTO, Integer> Col2 = new TableColumn<MoneyDTO, Integer>("Fees");
+		TableColumn<MoneyDTO, Integer> Col3 = new TableColumn<MoneyDTO, Integer>("Credit");
+		TableColumn<MoneyDTO, Integer> Col4 = new TableColumn<MoneyDTO, Integer>("Paid");
+		TableColumn<MoneyDTO, Integer> Col5 = new TableColumn<MoneyDTO, Integer>("Balance");
 		ComboBox<Integer> comboBox = new ComboBox();
 		for(int i = Integer.parseInt(HalyardPaths.getYear()) + 1; i > 1969; i--) {
 			comboBox.getItems().add(i);
@@ -76,11 +76,11 @@ public class HBoxInvoiceList extends HBox {
 		//fiscalTableView.maxHeightProperty().bind(vboxGrey.prefHeightProperty());
 		fiscalTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY );
 		
-		Col1.setCellValueFactory(new PropertyValueFactory<Object_Money, Integer>("fiscal_year"));
-		Col2.setCellValueFactory(new PropertyValueFactory<Object_Money, Integer>("total"));
-		Col3.setCellValueFactory(new PropertyValueFactory<Object_Money, Integer>("credit"));
-		Col4.setCellValueFactory(new PropertyValueFactory<Object_Money, Integer>("paid"));
-		Col5.setCellValueFactory(new PropertyValueFactory<Object_Money, Integer>("balance"));
+		Col1.setCellValueFactory(new PropertyValueFactory<MoneyDTO, Integer>("fiscal_year"));
+		Col2.setCellValueFactory(new PropertyValueFactory<MoneyDTO, Integer>("total"));
+		Col3.setCellValueFactory(new PropertyValueFactory<MoneyDTO, Integer>("credit"));
+		Col4.setCellValueFactory(new PropertyValueFactory<MoneyDTO, Integer>("paid"));
+		Col5.setCellValueFactory(new PropertyValueFactory<MoneyDTO, Integer>("balance"));
 
 		Col2.setStyle( "-fx-alignment: CENTER;");
 		Col2.setStyle( "-fx-alignment: CENTER-RIGHT;");
@@ -128,7 +128,7 @@ public class HBoxInvoiceList extends HBox {
 				// get the next available key for money_id table
 				int moneyId = SqlMoney.getCount("money_id") + 1;
 				// create appropriate money object for this membership
-				Object_Money newMoney = new Object_Money(moneyId, membership.getMsid(),
+				MoneyDTO newMoney = new MoneyDTO(moneyId, membership.getMsid(),
 						comboBox.getValue(), 0, "0.00", 0, 0, 0, 0, 0, "0.00", 0, 0, 0, 0, 0,
 						"0.00", "0.00", "0.00", "0.00", "0.00", String.valueOf(getDues(comboBox.getValue())), false, false, "0.00", "0.00", false,0, "0.00");
 				// if a record already exists for this year then this is a supplemental record
@@ -143,7 +143,7 @@ public class HBoxInvoiceList extends HBox {
 				// add new money row to tableview
 				fiscals.add(newMoney);
 				// send new money row to top
-				fiscals.sort(Comparator.comparing(Object_Money::getFiscal_year).reversed());
+				fiscals.sort(Comparator.comparing(MoneyDTO::getFiscal_year).reversed());
 				// open a tab for the year we just created
 				createTabByYear(newMoney);
 		});
@@ -158,7 +158,7 @@ public class HBoxInvoiceList extends HBox {
 		});
 		
 		fiscalTableView.setRowFactory(tv -> {
-			TableRow<Object_Money> row = new TableRow<>();
+			TableRow<MoneyDTO> row = new TableRow<>();
 			row.setOnMouseClicked(event -> {
 				if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
 					int rowIndex = row.getIndex();
@@ -222,7 +222,7 @@ public class HBoxInvoiceList extends HBox {
 		}
 	}
 
-	private static void createTabByYear(Object_Money money) {
+	private static void createTabByYear(MoneyDTO money) {
 		// create a tab with the correct year
 		Tab newTab = new Tab(String.valueOf(money.getFiscal_year()));
 		// add tab to pane

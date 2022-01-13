@@ -1,7 +1,7 @@
 package com.ecsail.gui.boxes;
 
 import com.ecsail.gui.tabs.TabPeople;
-import com.ecsail.structures.Object_Person;
+import com.ecsail.structures.PersonDTO;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -16,8 +16,8 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 public class HBoxSearch extends HBox {
-	public static TableView<Object_Person> personTableView;
-	public HBoxSearch(TableView<Object_Person> ptv) {
+	public static TableView<PersonDTO> personTableView;
+	public HBoxSearch(TableView<PersonDTO> ptv) {
 		HBoxSearch.personTableView = ptv;
 		
 		VBox vbox1 = new VBox(); // holds email buttons

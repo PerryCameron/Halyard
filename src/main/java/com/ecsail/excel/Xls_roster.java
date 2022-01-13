@@ -22,15 +22,15 @@ import com.ecsail.main.HalyardPaths;
 import com.ecsail.main.SaveFileChooser;
 import com.ecsail.structures.EmailDTO;
 import com.ecsail.structures.MembershipListDTO;
-import com.ecsail.structures.Object_Phone;
-import com.ecsail.structures.Object_RosterSelect;
+import com.ecsail.structures.PhoneDTO;
+import com.ecsail.structures.RosterSelectDTO;
 
 import javafx.collections.ObservableList;
 
 public class Xls_roster {
-	private Object_RosterSelect printChoices;
+	private RosterSelectDTO printChoices;
 	
-	public Xls_roster(ObservableList<MembershipListDTO> rosters, Object_RosterSelect printChoices) {
+	public Xls_roster(ObservableList<MembershipListDTO> rosters, RosterSelectDTO printChoices) {
 		this.printChoices = printChoices;
 		ArrayList<String> headers = getHeaders();
 		System.out.println("Creating Roster..");
@@ -258,9 +258,9 @@ public class Xls_roster {
 	
 	private String getPhone(int p_id) {
 		String phoneString = "";
-		ObservableList<Object_Phone> phones = SqlPhone.getPhoneByPid(p_id);
+		ObservableList<PhoneDTO> phones = SqlPhone.getPhoneByPid(p_id);
 		if (phones != null) {
-			for (Object_Phone p : phones) {
+			for (PhoneDTO p : phones) {
 				if (p.getPhoneType().equals("C")) {  // we prefer a cell phone
 					phoneString = p.getPhoneNumber();
 					break;

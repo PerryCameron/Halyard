@@ -278,7 +278,7 @@ public class SqlUpdate {
 		}
 	}
 	
-	public static void updateBirthday(LocalDate date, Object_Person person) {
+	public static void updateBirthday(LocalDate date, PersonDTO person) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE person SET birthday=\"" + date
@@ -290,7 +290,7 @@ public class SqlUpdate {
 		}
 	}
 	
-	public static void updateNickName(String nname, Object_Person person) {
+	public static void updateNickName(String nname, PersonDTO person) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE person SET NICK_NAME=\"" + nname
@@ -302,7 +302,7 @@ public class SqlUpdate {
 		}
 	}
 	
-	public static void updateBuisness(String buisness, Object_Person person ) {
+	public static void updateBuisness(String buisness, PersonDTO person ) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE person SET buisness=\"" + buisness
@@ -314,7 +314,7 @@ public class SqlUpdate {
 		}
 	}
 	
-	public static void updateOccupation(String occupation, Object_Person person) {	
+	public static void updateOccupation(String occupation, PersonDTO person) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE person SET occupation=\"" + occupation
@@ -326,7 +326,7 @@ public class SqlUpdate {
 		}
 	}
 	
-	public static void updateLastName(String lname, Object_Person person)  { // Business
+	public static void updateLastName(String lname, PersonDTO person)  { // Business
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE person SET l_name=\"" + lname
@@ -338,7 +338,7 @@ public class SqlUpdate {
 		}
 	}
 	
-	public static void updateFirstName(String fname, Object_Person person) {
+	public static void updateFirstName(String fname, PersonDTO person) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE person SET f_name=\"" + fname
@@ -439,7 +439,7 @@ public class SqlUpdate {
 		}
 	}
 	
-	public static final void updateField(BigDecimal newValue, String table, String field, ObservableList<Object_Money> fiscals, int rowIndex)  {
+	public static final void updateField(BigDecimal newValue, String table, String field, ObservableList<MoneyDTO> fiscals, int rowIndex)  {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE " + table + " SET " + field + "=\"" + newValue
@@ -451,7 +451,7 @@ public class SqlUpdate {
 		}
 	}
 	
-	public static final void updateMoney(Object_Money money) {
+	public static final void updateMoney(MoneyDTO money) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE money SET extra_key=" 
@@ -484,7 +484,7 @@ public class SqlUpdate {
 		}
 	}
 	
-	public static final void updateWorkCredit(Object_WorkCredit swcy)  {
+	public static final void updateWorkCredit(WorkCreditDTO swcy)  {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE work_credit SET racing=" + swcy.getRacing()
@@ -551,7 +551,7 @@ public class SqlUpdate {
 			stmt.execute(Main.console.setRegexColor("UPDATE membership_id SET " + field + "=\"" + attribute + "\" WHERE mid=" + thisId.getMid()));
 			Main.edits.setIdEdits(Main.edits.getIdEdits() + 1);
 		} catch (SQLIntegrityConstraintViolationException IV) {
-			Object_Person accountHolder = SqlPerson.getPersonFromMembershipID(thisId.getMembership_id(), thisId.getFiscal_Year());
+			PersonDTO accountHolder = SqlPerson.getPersonFromMembershipID(thisId.getMembership_id(), thisId.getFiscal_Year());
 			String errorMessage = "The entry for the year " + thisId.getFiscal_Year() + " with a membership ID of " + thisId.getMembership_id() 
 			+ " already exists for another member: " + accountHolder.getFname() + " " + accountHolder.getLname();
 			new Dialogue_CustomErrorMessage(errorMessage, "Duplicate Entry");
@@ -637,7 +637,7 @@ public class SqlUpdate {
 		}
 	}
 	
-	public static void updateStatRecord(Object_Stats s)  {
+	public static void updateStatRecord(StatsDTO s)  {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE stats SET " +

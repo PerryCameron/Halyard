@@ -4,12 +4,10 @@ package com.ecsail.sql.select;
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.structures.HashDTO;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
 
 public class HashSeSQL {
 

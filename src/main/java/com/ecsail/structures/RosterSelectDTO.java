@@ -1,6 +1,6 @@
 package com.ecsail.structures;
 
-public class Object_RosterSelect {  /// class purpose is to allow making of excel file Xls_roster
+public class RosterSelectDTO {  /// class purpose is to allow making of excel file Xls_roster
 	private String year;
 	// lists
 	private boolean slipwait;
@@ -26,10 +26,10 @@ public class Object_RosterSelect {  /// class purpose is to allow making of exce
 	private boolean email;
 	private boolean subleasedto;
 	
-	public Object_RosterSelect(String year, boolean slipwait, boolean all, boolean active, boolean nonRenew, boolean newMembers, boolean newAndReturnd,
-			boolean activeAndInactive, boolean membership_id, boolean lastName, boolean firstName, boolean joinDate, boolean streetAddress,
-			boolean city, boolean state, boolean zip, boolean memtype, boolean slip, boolean phone, boolean email,
-			boolean subleasedto) {
+	public RosterSelectDTO(String year, boolean slipwait, boolean all, boolean active, boolean nonRenew, boolean newMembers, boolean newAndReturnd,
+						   boolean activeAndInactive, boolean membership_id, boolean lastName, boolean firstName, boolean joinDate, boolean streetAddress,
+						   boolean city, boolean state, boolean zip, boolean memtype, boolean slip, boolean phone, boolean email,
+						   boolean subleasedto) {
 		
 		this.year = year;
 		this.slipwait = slipwait;

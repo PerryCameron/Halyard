@@ -12,8 +12,8 @@ import com.ecsail.sql.SqlUpdate;
 import com.ecsail.structures.DefinedFeeDTO;
 import com.ecsail.structures.MembershipIdDTO;
 import com.ecsail.structures.MembershipListDTO;
-import com.ecsail.structures.Object_Money;
-import com.ecsail.structures.Object_Person;
+import com.ecsail.structures.MoneyDTO;
+import com.ecsail.structures.PersonDTO;
 
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -155,9 +155,9 @@ public class Dialogue_NewYearGenerator extends Stage {
 	}
 	
 	private void generateMoneyRecords() {
-		Object_Money oldMoney = null;
-		Object_Money currentMoney = null; // this is for adding values of supplemental instead of overwriting
-		Object_Money newMoney = null;
+		MoneyDTO oldMoney = null;
+		MoneyDTO currentMoney = null; // this is for adding values of supplemental instead of overwriting
+		MoneyDTO newMoney = null;
 		int lastYear = selectedYear - 1;
 		for (MembershipListDTO membership : memberships) {
 			if (SqlExists.moneyExists(membership.getMsid(), String.valueOf(selectedYear))) { // preserve values incase supplemental overwright
@@ -174,17 +174,17 @@ public class Dialogue_NewYearGenerator extends Stage {
 		}
 	}
 	
-	private void createSql(MembershipListDTO ml, Object_Money currentMoney) {
-		Object_Money oldMoney = null;
-		Object_Money newMoney = null;
+	private void createSql(MembershipListDTO ml, MoneyDTO currentMoney) {
+		MoneyDTO oldMoney = null;
+		MoneyDTO newMoney = null;
 		int moneyId = SqlMoney.getCount("money_id") + 1;  // need next money_id for new record
-		oldMoney = new Object_Money(moneyId, ml.getMsid(),selectedYear, 0, "0.00", 0, 0, 0, 0, 0, "0.00", 0, 0, 0, 0, 0,"0.00", "0.00", "0.00", "0.00", "0.00", "0.00", false, false, "0.00", "0.00", false, 0, "0.00");
+		oldMoney = new MoneyDTO(moneyId, ml.getMsid(),selectedYear, 0, "0.00", 0, 0, 0, 0, 0, "0.00", 0, 0, 0, 0, 0,"0.00", "0.00", "0.00", "0.00", "0.00", "0.00", false, false, "0.00", "0.00", false, 0, "0.00");
 		newMoney = setNewMoneyValues(oldMoney, currentMoney, ml);
 		System.out.print(" No money records for " + (newMoney.getFiscal_year() - 1));
 			SqlUpdate.updateMoney(newMoney);
 	}
 	
-	private void updateSql(Object_Money newMoney, MembershipListDTO ml) {
+	private void updateSql(MoneyDTO newMoney, MembershipListDTO ml) {
 		if (SqlExists.moneyExists(newMoney.getMoney_id()))  { // this years record exists
 			SqlUpdate.updateMoney(newMoney);
 			System.out.print(" Update " + newMoney.getFiscal_year() + " record for " + newMoney.getMs_id());
@@ -199,9 +199,9 @@ public class Dialogue_NewYearGenerator extends Stage {
 		}
 	}
 	
-	private Object_Money setNewMoneyValues(Object_Money oldMoney, Object_Money currentMoney, MembershipListDTO membership) {
-		ObservableList<Object_Person> people = SqlPerson.getPeople(oldMoney.getMs_id());
-		Object_Money newMoney = new Object_Money();
+	private MoneyDTO setNewMoneyValues(MoneyDTO oldMoney, MoneyDTO currentMoney, MembershipListDTO membership) {
+		ObservableList<PersonDTO> people = SqlPerson.getPeople(oldMoney.getMs_id());
+		MoneyDTO newMoney = new MoneyDTO();
 		if(currentMoney.getMoney_id() != 0) {  // if money record exists lets use its money_id
 		newMoney.setMoney_id(currentMoney.getMoney_id());
 		} else {  // if money record does not exist lets create a new money_id for it
@@ -219,7 +219,7 @@ public class Dialogue_NewYearGenerator extends Stage {
 		newMoney.setSail_loft(oldMoney.getSail_loft() + currentMoney.getSail_loft());
 		newMoney.setSail_school_laser_loft(oldMoney.getSail_school_laser_loft() + currentMoney.getSail_school_laser_loft());
 		/// set officer credit here
-		for(Object_Person p: people) {
+		for(PersonDTO p: people) {
 			if(p.getMemberType() != 3) {  // if membership has a primary or secondary member
 				if(SqlExists.isOfficer(p,selectedYear)) {  // person is an officer
 					if(membership.getMemType().equals("RM"))
@@ -259,7 +259,7 @@ public class Dialogue_NewYearGenerator extends Stage {
 		return newMoney;
 	}
 	
-	private void printRecord(Object_Money newMoney, MembershipListDTO membership) {
+	private void printRecord(MoneyDTO newMoney, MembershipListDTO membership) {
 		System.out.println(" Membership ID " + membership.getMembershipId());
 		System.out.println(" Money_id=" + newMoney.getMoney_id());
 		System.out.print(" Dues=" + newMoney.getDues());
@@ -274,7 +274,7 @@ public class Dialogue_NewYearGenerator extends Stage {
 		System.out.println("----------------------");
 	}
 	
-	private BigDecimal calculateFees(Object_Money newMoney) {
+	private BigDecimal calculateFees(MoneyDTO newMoney) {
 		BigDecimal result = new BigDecimal("0.00");
 
 		BigDecimal dues = new BigDecimal(newMoney.getDues());

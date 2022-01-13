@@ -11,11 +11,11 @@ import com.ecsail.sql.select.SqlPerson;
 import com.ecsail.sql.select.SqlSelect;
 import com.ecsail.structures.MembershipListDTO;
 import com.ecsail.structures.MemoDTO;
-import com.ecsail.structures.Object_Person;
+import com.ecsail.structures.PersonDTO;
 
 public class CreateMembership {
 
-	public static Object_Person createUser(int msid) {
+	public static PersonDTO createUser(int msid) {
 		// create a main person for the membership
 		int pid = SqlPerson.getCount() + 1;
 		try {
@@ -26,7 +26,7 @@ public class CreateMembership {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return new Object_Person(pid,msid,1,"","",null,"","",true,null);
+		return new PersonDTO(pid,msid,1,"","",null,"","",true,null);
 	}
 	
 	public static void Create() { // create a membership

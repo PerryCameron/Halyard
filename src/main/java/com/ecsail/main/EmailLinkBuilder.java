@@ -7,8 +7,8 @@ import com.ecsail.sql.select.SqlMoney;
 import com.ecsail.sql.select.SqlPerson;
 import com.ecsail.sql.select.SqlPhone;
 import com.ecsail.structures.MembershipListDTO;
-import com.ecsail.structures.Object_Money;
-import com.ecsail.structures.Object_Person;
+import com.ecsail.structures.MoneyDTO;
+import com.ecsail.structures.PersonDTO;
 import okhttp3.HttpUrl;
 
 
@@ -24,9 +24,9 @@ public class EmailLinkBuilder {
 
     public String createLinkData(MembershipListDTO ml, String selectedYear)  {
 
-        Object_Person primaryMember = null;
-        Object_Person secondaryMember = null;
-        Object_Money mo = SqlMoney.getMonies(ml.getMsid(),selectedYear);
+        PersonDTO primaryMember = null;
+        PersonDTO secondaryMember = null;
+        MoneyDTO mo = SqlMoney.getMonies(ml.getMsid(),selectedYear);
         System.out.println("Using money record from " + mo.getFiscal_year());
         System.out.println("Work Credits=" + mo.getWork_credit());
 

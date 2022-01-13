@@ -7,7 +7,7 @@ import com.ecsail.main.HalyardPaths;
 import com.ecsail.main.Main;
 import com.ecsail.structures.MembershipDTO;
 import com.ecsail.structures.MembershipListDTO;
-import com.ecsail.structures.Object_Person;
+import com.ecsail.structures.PersonDTO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -160,7 +160,7 @@ public class SqlExists {
 		return result;
 	}
 	
-	public static boolean emailExists(Object_Person p) {
+	public static boolean emailExists(PersonDTO p) {
 		boolean result = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
@@ -175,7 +175,7 @@ public class SqlExists {
 		return result;
 	}
 	
-	public static boolean listedPhoneOfTypeExists(Object_Person p, String type) {
+	public static boolean listedPhoneOfTypeExists(PersonDTO p, String type) {
 		boolean result = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
@@ -322,7 +322,7 @@ public class SqlExists {
 	}
 	
 	
-	public static Boolean isOfficer(Object_Person per,int year) {
+	public static Boolean isOfficer(PersonDTO per, int year) {
 		boolean result = false;
 		try {  
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();

@@ -10,7 +10,7 @@ import com.ecsail.main.Launcher;
 import com.ecsail.main.HalyardPaths;
 import com.ecsail.sql.SqlUpdate;
 import com.ecsail.structures.MembershipListDTO;
-import com.ecsail.structures.Object_Person;
+import com.ecsail.structures.PersonDTO;
 
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -33,12 +33,12 @@ import javafx.scene.layout.VBox;
 
 
 public class HBoxPerson extends HBox {
-	private Object_Person person;
+	private PersonDTO person;
 	private MembershipListDTO membership;
-	private ObservableList<Object_Person> people;  // this is only for updating people list when in people list mode
+	private ObservableList<PersonDTO> people;  // this is only for updating people list when in people list mode
 	private ImageView photo;
 	
-	public HBoxPerson(Object_Person p, MembershipListDTO me, TabPane personTabPane) {
+	public HBoxPerson(PersonDTO p, MembershipListDTO me, TabPane personTabPane) {
 		this.person = p;
 		this.membership = me;
 		

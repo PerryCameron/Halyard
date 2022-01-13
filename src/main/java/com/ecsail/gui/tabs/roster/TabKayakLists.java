@@ -1,6 +1,6 @@
 package com.ecsail.gui.tabs.roster;
 
-import com.ecsail.structures.Object_RosterRadioButtons;
+import com.ecsail.structures.RosterRadioButtonsDTO;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Tab;
@@ -11,7 +11,7 @@ import javafx.scene.layout.VBox;
 
 public class TabKayakLists extends Tab {
 	
-	public TabKayakLists(Object_RosterRadioButtons rb) {
+	public TabKayakLists(RosterRadioButtonsDTO rb) {
 		HBox hboxFrame = new HBox();
 		HBox hboxMain = new HBox();
 		VBox vboxRadioButton1 = new VBox();

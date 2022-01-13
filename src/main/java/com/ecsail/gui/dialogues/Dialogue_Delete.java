@@ -2,7 +2,7 @@ package com.ecsail.gui.dialogues;
 
 import com.ecsail.sql.SqlDelete;
 import com.ecsail.structures.BooleanDTO;
-import com.ecsail.structures.Object_Person;
+import com.ecsail.structures.PersonDTO;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -18,7 +18,7 @@ import javafx.stage.Stage;
 public class Dialogue_Delete extends Stage {
 	private BooleanDTO xBoolean;
 
-	public Dialogue_Delete(Object_Person p, BooleanDTO x) {
+	public Dialogue_Delete(PersonDTO p, BooleanDTO x) {
 		this.xBoolean = x;
 		VBox vboxGrey = new VBox(); // this is the vbox for organizing all the widgets
 		VBox vboxBlue = new VBox();

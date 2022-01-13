@@ -12,7 +12,7 @@ import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.select.SqlMembershipList;
 import com.ecsail.sql.select.SqlPerson;
 import com.ecsail.structures.MembershipListDTO;
-import com.ecsail.structures.Object_Person;
+import com.ecsail.structures.PersonDTO;
 
 import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
@@ -35,16 +35,16 @@ import javafx.util.Callback;
 public class TabPeople extends Tab {
 
 	//private Object_MembershipList membership;
-	public static ObservableList<Object_Person> people;
+	public static ObservableList<PersonDTO> people;
 	private static HBox personHBox = new HBox();
-	TableColumn<Object_Person, Integer> Col1;
-	TableColumn<Object_Person, Integer> Col2;
-	TableColumn<Object_Person, MemberType> Col3;
-	static TableColumn<Object_Person, String> Col4;
-	static TableColumn<Object_Person, String> Col5;
-	TableColumn<Object_Person, String> Col6;
-	TableColumn<Object_Person, String> Col8;
-	static TableView<Object_Person> personTableView;
+	TableColumn<PersonDTO, Integer> Col1;
+	TableColumn<PersonDTO, Integer> Col2;
+	TableColumn<PersonDTO, MemberType> Col3;
+	static TableColumn<PersonDTO, String> Col4;
+	static TableColumn<PersonDTO, String> Col5;
+	TableColumn<PersonDTO, String> Col6;
+	TableColumn<PersonDTO, String> Col8;
+	static TableView<PersonDTO> personTableView;
 	static int pick = 1;
 
 	@SuppressWarnings("unchecked")
@@ -73,52 +73,52 @@ public class TabPeople extends Tab {
 		personTableView.setFixedCellSize(30);
 		personTableView.setPrefHeight(680);
 		
-		Col1 = new TableColumn<Object_Person, Integer>("P ID");
-		Col1.setCellValueFactory(new PropertyValueFactory<Object_Person, Integer>("p_id"));
+		Col1 = new TableColumn<PersonDTO, Integer>("P ID");
+		Col1.setCellValueFactory(new PropertyValueFactory<PersonDTO, Integer>("p_id"));
 		
-		Col2 = new TableColumn<Object_Person, Integer>("MSID");
-		Col2.setCellValueFactory(new PropertyValueFactory<Object_Person, Integer>("ms_id"));
+		Col2 = new TableColumn<PersonDTO, Integer>("MSID");
+		Col2.setCellValueFactory(new PropertyValueFactory<PersonDTO, Integer>("ms_id"));
 		
-		Col3 = new TableColumn<Object_Person, MemberType>("Member Type");
+		Col3 = new TableColumn<PersonDTO, MemberType>("Member Type");
 		Col3.setPrefWidth(120);
 		Col3.setEditable(false);
-		Col3.setCellValueFactory(new Callback<CellDataFeatures<Object_Person, MemberType>, ObservableValue<MemberType>>() {
+		Col3.setCellValueFactory(new Callback<CellDataFeatures<PersonDTO, MemberType>, ObservableValue<MemberType>>() {
 			 
 	        @Override
-	        public ObservableValue<MemberType> call(CellDataFeatures<Object_Person, MemberType> param) {
-	        	Object_Person person = param.getValue();
+	        public ObservableValue<MemberType> call(CellDataFeatures<PersonDTO, MemberType> param) {
+	        	PersonDTO person = param.getValue();
 	            int memberCode = person.getMemberType();
 	            MemberType keel = MemberType.getByCode(memberCode);
 	            return new SimpleObjectProperty<MemberType>(keel);
 	        }
 	    });
 			
-		Col4 = new TableColumn<Object_Person, String>("First Name");
-		Col4.setCellValueFactory(new PropertyValueFactory<Object_Person, String>("fname"));
+		Col4 = new TableColumn<PersonDTO, String>("First Name");
+		Col4.setCellValueFactory(new PropertyValueFactory<PersonDTO, String>("fname"));
 		
-		Col5 = new TableColumn<Object_Person, String>("Last Name");
-		Col5.setCellValueFactory(new PropertyValueFactory<Object_Person, String>("lname"));
+		Col5 = new TableColumn<PersonDTO, String>("Last Name");
+		Col5.setCellValueFactory(new PropertyValueFactory<PersonDTO, String>("lname"));
 
-		Col6 = new TableColumn<Object_Person, String>("Occupation");
-		Col6.setCellValueFactory(new PropertyValueFactory<Object_Person, String>("occupation"));
+		Col6 = new TableColumn<PersonDTO, String>("Occupation");
+		Col6.setCellValueFactory(new PropertyValueFactory<PersonDTO, String>("occupation"));
 		
-		Col8 = new TableColumn<Object_Person, String>("Active");
-		Col8.setCellValueFactory(new PropertyValueFactory<Object_Person, String>("active"));
+		Col8 = new TableColumn<PersonDTO, String>("Active");
+		Col8.setCellValueFactory(new PropertyValueFactory<PersonDTO, String>("active"));
 		
 		personTableView.getColumns().addAll(Col1, Col2, Col3, Col4, Col5, Col6, Col8);
 		
 		personTableView.setRowFactory(tv -> {
-	        TableRow<Object_Person> row = new TableRow<>();
+	        TableRow<PersonDTO> row = new TableRow<>();
 	        row.setOnMouseClicked(event -> {
 	            if (! row.isEmpty() && event.getButton()==MouseButton.PRIMARY 
 	                 && event.getClickCount() == 2) {
-	                Object_Person clickedRow = row.getItem();
+	                PersonDTO clickedRow = row.getItem();
 					Launcher.createMembershipTabFromPeopleList(clickedRow.getMs_id());
 					//System.out.println("clickedrow= " + clickedRow.getMs_id());
 	            }
 	            if (! row.isEmpty() && event.getButton()==MouseButton.PRIMARY 
 		                 && event.getClickCount() == 1) {
-		                Object_Person clickedRow = row.getItem();
+		                PersonDTO clickedRow = row.getItem();
 		                createPersonBox(clickedRow);
 						//System.out.println("clickedrow= " + clickedRow.getP_id());
 		        }
@@ -134,7 +134,7 @@ public class TabPeople extends Tab {
 	}
 	// creates array list of people objects populated from SQL database
 
-	private static void createPersonBox(Object_Person person)  {
+	private static void createPersonBox(PersonDTO person)  {
 		MembershipListDTO membership = null;
 		if(SqlExists.currentMembershipIdExists(person.getMs_id())) {
 		membership = SqlMembershipList.getMembershipFromList(person.getMs_id(), HalyardPaths.getYear());
@@ -146,10 +146,10 @@ public class TabPeople extends Tab {
 		personHBox.getChildren().add(new HBoxPerson(person, membership,null)); // null is for tabpane not being used here.
 	}
 
-	public Object_Person getPersonByPid(int pid) {
+	public PersonDTO getPersonByPid(int pid) {
 		int index = 0;
 		int count = 0;
-		for(Object_Person person : people) {
+		for(PersonDTO person : people) {
 			if(person.getP_id() == pid) {
 				//System.out.println("Found pid " + pid);
 				index = count; 
@@ -162,7 +162,7 @@ public class TabPeople extends Tab {
 	public static int getIndexByPid(int pid) {
 		int index = 0;
 		int count = 0;
-		for(Object_Person person : people) {
+		for(PersonDTO person : people) {
 			if(person.getP_id() == pid) {
 				//System.out.println("Found pid " + pid);
 				index = count; 
@@ -176,7 +176,7 @@ public class TabPeople extends Tab {
 		int count = 0;
 		Pattern p = Pattern.compile("^" +searchString, Pattern.MULTILINE);
 		boolean flag = true;
-		for (Object_Person o : personTableView.getItems()) {
+		for (PersonDTO o : personTableView.getItems()) {
 		Matcher m = p.matcher(o.getLname().toLowerCase());
 		
 			while(m.find()) {

@@ -5,7 +5,7 @@ import com.ecsail.sql.select.SqlMembership;
 import com.ecsail.sql.select.SqlMembershipList;
 import com.ecsail.sql.select.SqlMembership_Id;
 
-public class Object_Stats {
+public class StatsDTO {
 	
 int statId;
 int fiscalYear;
@@ -26,10 +26,10 @@ int student;
 double deposits;
 double initiation;
 
-public Object_Stats(int statId, int fiscalYear, int activeMemberships, int nonRenewMemberships,
-		int returnMemberships, int newMemberships, int secondaryMembers, int dependants, int numberOfBoats, int family,
-		int regular, int social, int lakeAssociates, int lifeMembers, int raceFellows, int student, double deposits,
-		double initiation) {
+public StatsDTO(int statId, int fiscalYear, int activeMemberships, int nonRenewMemberships,
+				int returnMemberships, int newMemberships, int secondaryMembers, int dependants, int numberOfBoats, int family,
+				int regular, int social, int lakeAssociates, int lifeMembers, int raceFellows, int student, double deposits,
+				double initiation) {
 	super();
 	this.statId = statId;
 	this.fiscalYear = fiscalYear;
@@ -51,7 +51,7 @@ public Object_Stats(int statId, int fiscalYear, int activeMemberships, int nonRe
 	this.initiation = initiation;
 }
 
-public Object_Stats(int fiscalYear) {
+public StatsDTO(int fiscalYear) {
 	this.fiscalYear = fiscalYear;
 }
 

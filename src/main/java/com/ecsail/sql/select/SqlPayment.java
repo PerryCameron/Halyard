@@ -3,7 +3,7 @@ package com.ecsail.sql.select;
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.Main;
-import com.ecsail.structures.Object_Payment;
+import com.ecsail.structures.PaymentDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -12,14 +12,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class SqlPayment {
-    public static ObservableList<Object_Payment> getPayments() {
-        ObservableList<Object_Payment> thisPayments = FXCollections.observableArrayList();
+    public static ObservableList<PaymentDTO> getPayments() {
+        ObservableList<PaymentDTO> thisPayments = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
             rs = stmt.executeQuery(Main.console.setRegexColor("select * from payment;"));
             while (rs.next()) {
-                thisPayments.add(new Object_Payment(
+                thisPayments.add(new PaymentDTO(
                         rs.getInt("PAY_ID"),
                         rs.getInt("MONEY_ID"),
                         rs.getString("CHECKNUMBER"),
@@ -36,14 +36,14 @@ public class SqlPayment {
         return thisPayments;
     }
 
-    public static ObservableList<Object_Payment> getPayments(int money_id) {
-        ObservableList<Object_Payment> thisPayments = FXCollections.observableArrayList();
+    public static ObservableList<PaymentDTO> getPayments(int money_id) {
+        ObservableList<PaymentDTO> thisPayments = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
             rs = stmt.executeQuery(Main.console.setRegexColor("select * from payment where money_id=" + money_id));
             while (rs.next()) {
-                thisPayments.add(new Object_Payment(
+                thisPayments.add(new PaymentDTO(
                         rs.getInt("PAY_ID"),
                         rs.getInt("MONEY_ID"),
                         rs.getString("CHECKNUMBER"),
@@ -60,14 +60,14 @@ public class SqlPayment {
         return thisPayments;
     }
 
-    public static Object_Payment getPayment(int money_id) {
-        Object_Payment thisPayment = null;
+    public static PaymentDTO getPayment(int money_id) {
+        PaymentDTO thisPayment = null;
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
             rs = stmt.executeQuery(Main.console.setRegexColor("select * from payment where money_id=" + money_id));
             while (rs.next()) {
-                thisPayment = new Object_Payment(
+                thisPayment = new PaymentDTO(
                         rs.getInt("PAY_ID"),
                         rs.getInt("MONEY_ID"),
                         rs.getString("CHECKNUMBER"),

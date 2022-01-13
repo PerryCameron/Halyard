@@ -14,7 +14,7 @@ import com.ecsail.sql.select.SqlAward;
 import com.ecsail.sql.select.SqlSelect;
 import com.ecsail.sql.SqlUpdate;
 import com.ecsail.structures.AwardDTO;
-import com.ecsail.structures.Object_Person;
+import com.ecsail.structures.PersonDTO;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.StringProperty;
@@ -38,13 +38,13 @@ import javafx.util.Callback;
 
 public class HBoxAward extends HBox {
 
-	private Object_Person person;
+	private PersonDTO person;
 	private ObservableList<AwardDTO> award;
 	private TableView<AwardDTO> awardTableView;
 	private String currentYear;
 	
 	@SuppressWarnings("unchecked")
-	public HBoxAward(Object_Person p) {
+	public HBoxAward(PersonDTO p) {
 		this.person = p;
 		this.currentYear = new SimpleDateFormat("yyyy").format(new Date());
 		this.award =  SqlAward.getAwards(person);

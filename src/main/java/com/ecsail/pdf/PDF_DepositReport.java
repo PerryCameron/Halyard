@@ -30,7 +30,7 @@ import java.util.Comparator;
 
 public class PDF_DepositReport {
 	
-	private static ObservableList<Object_PaidDues> paidDuesForDeposit;  // these are the paid dues for a single deposit
+	private static ObservableList<PaidDuesDTO> paidDuesForDeposit;  // these are the paid dues for a single deposit
 	private final DepositDTO currentDeposit;
 	private final DefinedFeeDTO currentDefinedFee;
 	private DepositSummaryDTO totals;
@@ -179,7 +179,7 @@ public class PDF_DepositReport {
 		// mainTable.setKeepTogether(true);
 		Cell cell;
 		
-		for(Object_PaidDues dues: paidDuesForDeposit)  // each membership in Deposit
+		for(PaidDuesDTO dues: paidDuesForDeposit)  // each membership in Deposit
 		{
 			cell = new Cell();
 			cell.setBorder(Border.NO_BORDER);
@@ -295,7 +295,7 @@ public class PDF_DepositReport {
 		detailTable.addCell(cell);
 	}
 
-	private String getNote(Object_PaidDues dues, String catagory) {
+	private String getNote(PaidDuesDTO dues, String catagory) {
 		String thisMemo = null;
 		System.out.println("Getting memo for " + dues.getF_name() + " " + dues.getL_name());
 		System.out.println("Money ID=" + dues.getMoney_id());
@@ -491,7 +491,7 @@ public class PDF_DepositReport {
 	private DepositSummaryDTO updateTotals() {
 		int numberOfRecordsCounted = 0; // number of records counted
 		DepositSummaryDTO t = new DepositSummaryDTO();
-		for (Object_PaidDues d : paidDuesForDeposit) {
+		for (PaidDuesDTO d : paidDuesForDeposit) {
 
 			if (d.getBeach() != 0) { ///////// BEACH
 				t.setBeachNumber(d.getBeach() + t.getBeachNumber());
@@ -602,8 +602,8 @@ public class PDF_DepositReport {
 	}
 	
     public static void sortByMembershipId() {
-		  Collections.sort(paidDuesForDeposit, new Comparator<Object_PaidDues>() {
-		        @Override public int compare(Object_PaidDues p1, Object_PaidDues p2) {
+		  Collections.sort(paidDuesForDeposit, new Comparator<PaidDuesDTO>() {
+		        @Override public int compare(PaidDuesDTO p1, PaidDuesDTO p2) {
 		            return p1.getMembershipId() - p2.getMembershipId(); // Ascending
 		        }
 

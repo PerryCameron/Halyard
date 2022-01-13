@@ -24,7 +24,7 @@ public class SqlDelete {
     return noError;
 	}
 	
-	public static boolean deletePerson(Object_Person p) {
+	public static boolean deletePerson(PersonDTO p) {
 	    boolean noError = false;
 	    	Statement stmt;
 			try {
@@ -37,7 +37,7 @@ public class SqlDelete {
 	    return noError;
 	}
 	
-	public static boolean deletePhone(Object_Phone phone) {
+	public static boolean deletePhone(PhoneDTO phone) {
 	    boolean noError = false;
 	    	Statement stmt;
 			try {
@@ -88,7 +88,7 @@ public class SqlDelete {
 	    return noError;
 	}
 	
-	public static boolean deleteOfficer(Object_Officer officer) {
+	public static boolean deleteOfficer(OfficerDTO officer) {
 		boolean noError = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
@@ -283,7 +283,7 @@ public class SqlDelete {
 	}
 	
 	
-	public static void deletePayment(Object_Payment p) {
+	public static void deletePayment(PaymentDTO p) {
 		Statement stmt;
 		try {
 			stmt = ConnectDatabase.sqlConnection.createStatement();

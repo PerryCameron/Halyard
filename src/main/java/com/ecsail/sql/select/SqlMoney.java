@@ -3,8 +3,8 @@ package com.ecsail.sql.select;
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.Main;
-import com.ecsail.structures.Object_Money;
-import com.ecsail.structures.Object_WorkCredit;
+import com.ecsail.structures.MoneyDTO;
+import com.ecsail.structures.WorkCreditDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -13,16 +13,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class SqlMoney {
-    public static ObservableList<Object_Money> getMonies(int ms_id) { // overload
+    public static ObservableList<MoneyDTO> getMonies(int ms_id) { // overload
         String query = "SELECT * FROM money";
         if(ms_id != 0)
         query += " WHERE ms_id=" + ms_id;
-        ObservableList<Object_Money> theseFiscals = FXCollections.observableArrayList();
+        ObservableList<MoneyDTO> theseFiscals = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(query + ";"));
             while (rs.next()) {
-                theseFiscals.add(new Object_Money(rs.getInt("MONEY_ID"), rs.getInt("MS_ID"),
+                theseFiscals.add(new MoneyDTO(rs.getInt("MONEY_ID"), rs.getInt("MS_ID"),
                         rs.getInt("FISCAL_YEAR"), rs.getInt("BATCH"), rs.getString("OFFICER_CREDIT"), rs.getInt("EXTRA_KEY"),
                         rs.getInt("KAYAK_SHED_KEY"), rs.getInt("SAIL_LOFT_KEY"),
                         rs.getInt("SAIL_SCHOOL_LOFT_KEY"), rs.getInt("BEACH"),
@@ -39,14 +39,14 @@ public class SqlMoney {
         return theseFiscals;
     }
 
-    public static Object_Money getMonies(int ms_id, String fiscalYear) { // overload
+    public static MoneyDTO getMonies(int ms_id, String fiscalYear) { // overload
         String query = "SELECT * FROM money WHERE ms_id=" + ms_id + " and fiscal_year=" + fiscalYear;
-        Object_Money thisFiscal = null;
+        MoneyDTO thisFiscal = null;
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(query + ";"));
             while (rs.next()) {
-                thisFiscal = new Object_Money(rs.getInt("MONEY_ID"), rs.getInt("MS_ID"),
+                thisFiscal = new MoneyDTO(rs.getInt("MONEY_ID"), rs.getInt("MS_ID"),
                         rs.getInt("FISCAL_YEAR"), rs.getInt("BATCH"), rs.getString("OFFICER_CREDIT"), rs.getInt("EXTRA_KEY"),
                         rs.getInt("KAYAK_SHED_KEY"), rs.getInt("SAIL_LOFT_KEY"),
                         rs.getInt("SAIL_SCHOOL_LOFT_KEY"), rs.getInt("BEACH"),
@@ -64,16 +64,16 @@ public class SqlMoney {
         return thisFiscal;
     }
 
-    public static Object_WorkCredit getWorkCredit(int moneyID) {
+    public static WorkCreditDTO getWorkCredit(int moneyID) {
         Statement stmt;
-        Object_WorkCredit workCredits = null;
+        WorkCreditDTO workCredits = null;
         try {
             stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs = stmt.executeQuery(
                     Main.console.setRegexColor("select * from work_credit WHERE money_id='" + moneyID + "';"));
             // if(Main.consoleVerbose) ;
             while (rs.next()) {
-                workCredits = new Object_WorkCredit(rs.getInt("MONEY_ID"), rs.getInt("MS_ID"),rs.getInt("RACING"), rs.getInt("HARBOR"),
+                workCredits = new WorkCreditDTO(rs.getInt("MONEY_ID"), rs.getInt("MS_ID"),rs.getInt("RACING"), rs.getInt("HARBOR"),
                         rs.getInt("SOCIAL"), rs.getInt("OTHER"));
             }
         } catch (SQLException e) {

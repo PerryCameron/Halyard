@@ -11,7 +11,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 public class InvoiceDTO {
-    private final Object_Money invoice;
+    private final MoneyDTO invoice;
     private GridPane gridPane;
     private TextField yscTextField;
     private TextField duesTextField;
@@ -114,7 +114,7 @@ public class InvoiceDTO {
     private DefinedFeeDTO definedFees;
     Separator separator = new Separator(Orientation.HORIZONTAL);
 
-    public InvoiceDTO(Object_Money invoice, DefinedFeeDTO definedFees, TableView<Object_Payment> paymentTableView) {
+    public InvoiceDTO(MoneyDTO invoice, DefinedFeeDTO definedFees, TableView<PaymentDTO> paymentTableView) {
         Text text1 = new Text("Fee");
         Text text2 = new Text("Price");
         Text text3 = new Text("Total");
@@ -357,7 +357,7 @@ public class InvoiceDTO {
         this.comboBox = comboBox;
     }
 
-    public Object_Money getInvoice() {
+    public MoneyDTO getInvoice() {
         return invoice;
     }
 

@@ -3,7 +3,7 @@ package com.ecsail.structures;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
-public class Object_WorkCredit {
+public class WorkCreditDTO {
 
 	private IntegerProperty money_id;
 	private IntegerProperty msid;
@@ -12,8 +12,8 @@ public class Object_WorkCredit {
 	private IntegerProperty social;
 	private IntegerProperty other;
 	
-	public Object_WorkCredit(Integer money_id, Integer msid, Integer racing,
-			Integer harbor, Integer social, Integer other) {
+	public WorkCreditDTO(Integer money_id, Integer msid, Integer racing,
+						 Integer harbor, Integer social, Integer other) {
 
 		this.money_id = new SimpleIntegerProperty(money_id);
 		this.msid = new SimpleIntegerProperty(msid);

@@ -52,7 +52,7 @@ public class SqlInsert {
 		return noError;  // return true if insert performed without error
 	}
 	
-	public static void addPaymentRecord(Object_Payment op) {
+	public static void addPaymentRecord(PaymentDTO op) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("INSERT into payment () VALUES (" + op.getPay_id() + ","
@@ -91,7 +91,7 @@ public class SqlInsert {
 		return noError;  // return true if insert performed without error
 	}
 	
-	public static void addPersonRecord(Object_Person person) {
+	public static void addPersonRecord(PersonDTO person) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("INSERT INTO person () VALUES (" 
@@ -117,7 +117,7 @@ public class SqlInsert {
 		}
 	}
 	
-	public static void addMoneyRecord(Object_Money m) {
+	public static void addMoneyRecord(MoneyDTO m) {
 		//Object_DefinedFee definedFees = selectDefinedFees(year);
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
@@ -197,7 +197,7 @@ public class SqlInsert {
 		}
 	}
 	
-	public static void addWaitList(Object_WaitList w) {
+	public static void addWaitList(WaitListDTO w) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("INSERT INTO waitlist () VALUES (" 
@@ -214,7 +214,7 @@ public class SqlInsert {
 		}
 	}
 	
-	public static void addStatRecord(Object_Stats s) {
+	public static void addStatRecord(StatsDTO s) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("INSERT INTO stats () VALUES (" 

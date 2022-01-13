@@ -3,8 +3,8 @@ package com.ecsail.sql.select;
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.structures.MemoDTO;
-import com.ecsail.structures.Object_Memo2;
-import com.ecsail.structures.Object_PaidDues;
+import com.ecsail.structures.Memo2DTO;
+import com.ecsail.structures.PaidDuesDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -39,8 +39,8 @@ public class SqlMemos {
         return theseMemos;
     }
 
-    public static ObservableList<Object_Memo2> getAllMemosForTabNotes(String year, String category) {
-        ObservableList<Object_Memo2> theseMemos = FXCollections.observableArrayList();
+    public static ObservableList<Memo2DTO> getAllMemosForTabNotes(String year, String category) {
+        ObservableList<Memo2DTO> theseMemos = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
@@ -48,7 +48,7 @@ public class SqlMemos {
                     + "left join membership_id id on memo.ms_id=id.ms_id\n"
                     + "where year(memo_date)='"+year+"' and id.fiscal_year='"+year+"' and memo.CATEGORY IN("+category+")");
             while (rs.next()) {
-                theseMemos.add(new Object_Memo2( // why do I keep gettin a nullpointer exception here?
+                theseMemos.add(new Memo2DTO( // why do I keep gettin a nullpointer exception here?
                         rs.getString("MEMBERSHIP_ID"),
                         rs.getInt("MEMO_ID"),
                         rs.getInt("MS_ID"),
@@ -65,7 +65,7 @@ public class SqlMemos {
         return theseMemos;
     }
 
-    public static MemoDTO getMemos(Object_PaidDues dues, String category) {
+    public static MemoDTO getMemos(PaidDuesDTO dues, String category) {
         String query = "select * from memo where money_id=" + dues.getMoney_id() + " and category='" + category + "'";
         System.out.println("select * from memo where money_id=" + dues.getMoney_id());
         MemoDTO thisMemo = null;

@@ -7,7 +7,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class Object_Person {
+public class PersonDTO {
 	private IntegerProperty p_id;
 	private IntegerProperty ms_id;
 	private IntegerProperty memberType; // 1 == primary 2 == secondary 3 == children of
@@ -19,8 +19,8 @@ public class Object_Person {
 	private BooleanProperty active;
 	private StringProperty nname;
 
-	public Object_Person(Integer pid, Integer ms_id, Integer mt, String fn, String ln, String birthday, String oc,
-			String bu, Boolean active, String nn) {
+	public PersonDTO(Integer pid, Integer ms_id, Integer mt, String fn, String ln, String birthday, String oc,
+					 String bu, Boolean active, String nn) {
 		this.p_id = new SimpleIntegerProperty(pid);
 		this.ms_id = new SimpleIntegerProperty(ms_id);
 		this.memberType = new SimpleIntegerProperty(mt);
@@ -33,7 +33,7 @@ public class Object_Person {
 		this.nname = new SimpleStringProperty(nn);
 	}
 
-	public Object_Person() { // default constructor
+	public PersonDTO() { // default constructor
 
 	}
 

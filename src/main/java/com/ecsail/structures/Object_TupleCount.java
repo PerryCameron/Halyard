@@ -40,11 +40,11 @@ public class Object_TupleCount implements Serializable{
 	private int workCreditsEdits;
 	
 	public Object_TupleCount(int tableCreationSize, int membershipSize, int idSize, int peopleSize, int phoneSize,
-			int boatSize, int boatOwnerSize, int slipsSize, int memosSize, int emailSize, int moniesSize,
-			int depositsSize, int paymentsSize, int officersSize, int definedFeesSize, int workCreditsSize,
-			int membershipEdits, int idEdits, int peopleEdits, int phoneEdits, int boatEdits, int boatOwnerEdits,
-			int slipsEdits, int memosEdits, int emailEdits, int moniesEdits, int depositsEdits, int paymentsEdits,
-			int officersEdits, int definedFeesEdits, int workCreditsEdits) {
+							 int boatSize, int boatOwnerSize, int slipsSize, int memosSize, int emailSize, int moniesSize,
+							 int depositsSize, int paymentsSize, int officersSize, int definedFeesSize, int workCreditsSize,
+							 int membershipEdits, int idEdits, int peopleEdits, int phoneEdits, int boatEdits, int boatOwnerEdits,
+							 int slipsEdits, int memosEdits, int emailEdits, int moniesEdits, int depositsEdits, int paymentsEdits,
+							 int officersEdits, int definedFeesEdits, int workCreditsEdits) {
 		this.tableCreationSize = tableCreationSize;
 		this.membershipSize = membershipSize;
 		this.idSize = idSize;

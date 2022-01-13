@@ -4,7 +4,7 @@ import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.Main;
 import com.ecsail.pdf.directory.Object_SlipInfo;
-import com.ecsail.structures.Object_Slip;
+import com.ecsail.structures.SlipDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -14,13 +14,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class SqlSlip {
-    public static ObservableList<Object_Slip> getSlips() {
-        ObservableList<Object_Slip> slips = FXCollections.observableArrayList();
+    public static ObservableList<SlipDTO> getSlips() {
+        ObservableList<SlipDTO> slips = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs = stmt.executeQuery("select * from slip;");
             while (rs.next()) {
-                slips.add(new Object_Slip(rs.getInt("SLIP_ID")
+                slips.add(new SlipDTO(rs.getInt("SLIP_ID")
                         , rs.getInt("MS_ID")
                         , rs.getString("SLIP_NUM"),
                         rs.getInt("SUBLEASED_TO")));
@@ -32,13 +32,13 @@ public class SqlSlip {
         return slips;
     }
 
-    public static Object_Slip getSlip(int ms_id) {
-        Object_Slip thisSlip = null;
+    public static SlipDTO getSlip(int ms_id) {
+        SlipDTO thisSlip = null;
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs = stmt.executeQuery("select * from slip WHERE ms_id='" + ms_id + "'");
             while (rs.next()) {
-                thisSlip = new Object_Slip(rs.getInt("SLIP_ID")
+                thisSlip = new SlipDTO(rs.getInt("SLIP_ID")
                         , rs.getInt("MS_ID")
                         , rs.getString("SLIP_NUM"),
                         rs.getInt("SUBLEASED_TO"));
@@ -50,13 +50,13 @@ public class SqlSlip {
         return thisSlip;
     }
 
-    public static Object_Slip getSubleasedSlip(int ms_id) {
-        Object_Slip thisSlip = null;
+    public static SlipDTO getSubleasedSlip(int ms_id) {
+        SlipDTO thisSlip = null;
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs = stmt.executeQuery("select * from slip WHERE subleased_to='" + ms_id + "'");
             while (rs.next()) {
-                thisSlip = new Object_Slip(
+                thisSlip = new SlipDTO(
                         rs.getInt("SLIP_ID"),
                         rs.getInt("MS_ID"),
                         rs.getString("SLIP_NUM"),

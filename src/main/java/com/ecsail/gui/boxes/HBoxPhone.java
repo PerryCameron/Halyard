@@ -13,8 +13,8 @@ import com.ecsail.sql.SqlInsert;
 import com.ecsail.sql.select.SqlPhone;
 import com.ecsail.sql.select.SqlSelect;
 import com.ecsail.sql.SqlUpdate;
-import com.ecsail.structures.Object_Person;
-import com.ecsail.structures.Object_Phone;
+import com.ecsail.structures.PersonDTO;
+import com.ecsail.structures.PhoneDTO;
 
 import javafx.beans.Observable;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -43,15 +43,15 @@ import javafx.util.Callback;
 
 public class HBoxPhone extends HBox {
     
-    private Object_Person person;
-    private TableView<Object_Phone> phoneTableView;
-    private ObservableList<Object_Phone> phone;
+    private PersonDTO person;
+    private TableView<PhoneDTO> phoneTableView;
+    private ObservableList<PhoneDTO> phone;
     
-    public HBoxPhone(Object_Person p) {
+    public HBoxPhone(PersonDTO p) {
         this.person = p;  // the below callback is to allow commit when focus removed, overrides FX default behavior
-        this.phone = FXCollections.observableArrayList(new Callback<Object_Phone, Observable[]>() {
+        this.phone = FXCollections.observableArrayList(new Callback<PhoneDTO, Observable[]>() {
             @Override
-            public Observable[] call(Object_Phone param) {
+            public Observable[] call(PhoneDTO param) {
                 return new Observable[] { param.isListedProperty() };
 
             }
@@ -64,7 +64,7 @@ public class HBoxPhone extends HBox {
         Button phoneDelete = new Button("Delete");
         HBox hboxGrey = new HBox(); // this is here for the grey background to make nice apperence
         VBox vboxPink = new VBox(); // this creates a pink border around the table
-        phoneTableView = new TableView<Object_Phone>();
+        phoneTableView = new TableView<PhoneDTO>();
 
         //// OBJECT ATTRIBUTES /////
         phoneAdd.setPrefWidth(60);
@@ -93,20 +93,20 @@ public class HBoxPhone extends HBox {
         phoneTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY );
             
         // example for this column found at https://gist.github.com/james-d/be5bbd6255a4640a5357#file-editcell-java-L109
-        TableColumn<Object_Phone, String> Col1 = createColumn("Phone", Object_Phone::phoneNumberProperty);
+        TableColumn<PhoneDTO, String> Col1 = createColumn("Phone", PhoneDTO::phoneNumberProperty);
         Col1.setOnEditCommit(
-                new EventHandler<CellEditEvent<Object_Phone, String>>() {
+                new EventHandler<CellEditEvent<PhoneDTO, String>>() {
                     @Override
-                    public void handle(CellEditEvent<Object_Phone, String> t) {
+                    public void handle(CellEditEvent<PhoneDTO, String> t) {
                         
-                        ((Object_Phone) t.getTableView().getItems().get(
+                        ((PhoneDTO) t.getTableView().getItems().get(
                                 t.getTablePosition().getRow())
                                 ).setPhoneNumber(t.getNewValue());
                         String processedNumber = processNumber(t.getNewValue());        
-                        int phone_id = ((Object_Phone) t.getTableView().getItems().get(t.getTablePosition().getRow())).getPhone_ID();
+                        int phone_id = ((PhoneDTO) t.getTableView().getItems().get(t.getTablePosition().getRow())).getPhone_ID();
                             SqlUpdate.updatePhone("phone", phone_id, processedNumber);
                         // update the observable list so that JavaFX will update the table cell
-                        for(Object_Phone p: phone) {
+                        for(PhoneDTO p: phone) {
                             if(p.getPhone_ID() == phone_id) p.setPhoneNumber(processedNumber);
                         }
                     }
@@ -157,12 +157,12 @@ public class HBoxPhone extends HBox {
         
         // example for this column found at https://o7planning.org/en/11079/javafx-tableview-tutorial
         ObservableList<PhoneType> phoneTypeList = FXCollections.observableArrayList(PhoneType.values());
-        TableColumn<Object_Phone, PhoneType> Col2 = new TableColumn<Object_Phone, PhoneType>("Type");
-        Col2.setCellValueFactory(new Callback<CellDataFeatures<Object_Phone, PhoneType>, ObservableValue<PhoneType>>() {
+        TableColumn<PhoneDTO, PhoneType> Col2 = new TableColumn<PhoneDTO, PhoneType>("Type");
+        Col2.setCellValueFactory(new Callback<CellDataFeatures<PhoneDTO, PhoneType>, ObservableValue<PhoneType>>() {
              
             @Override
-            public ObservableValue<PhoneType> call(CellDataFeatures<Object_Phone, PhoneType> param) {
-                Object_Phone thisPhone = param.getValue();
+            public ObservableValue<PhoneType> call(CellDataFeatures<PhoneDTO, PhoneType> param) {
+                PhoneDTO thisPhone = param.getValue();
                 String phoneCode = thisPhone.getPhoneType();
                 PhoneType phoneType = PhoneType.getByCode(phoneCode);
                 return new SimpleObjectProperty<PhoneType>(phoneType);
@@ -171,21 +171,21 @@ public class HBoxPhone extends HBox {
  
         Col2.setCellFactory(ComboBoxTableCell.forTableColumn(phoneTypeList));
  
-        Col2.setOnEditCommit((CellEditEvent<Object_Phone, PhoneType> event) -> {
-            TablePosition<Object_Phone, PhoneType> pos = event.getTablePosition();
+        Col2.setOnEditCommit((CellEditEvent<PhoneDTO, PhoneType> event) -> {
+            TablePosition<PhoneDTO, PhoneType> pos = event.getTablePosition();
             PhoneType newPhoneType = event.getNewValue();
             int row = pos.getRow();
-            Object_Phone thisPhone = event.getTableView().getItems().get(row);
+            PhoneDTO thisPhone = event.getTableView().getItems().get(row);
             SqlUpdate.updatePhone("phone_type", thisPhone.getPhone_ID(), newPhoneType.getCode());
             thisPhone.setPhoneType(newPhoneType.getCode());
         });
         
         // example for this column found at https://o7planning.org/en/11079/javafx-tableview-tutorial
-        TableColumn<Object_Phone, Boolean> Col3 = new TableColumn<Object_Phone, Boolean>("Listed");
-        Col3.setCellValueFactory(new Callback<CellDataFeatures<Object_Phone, Boolean>, ObservableValue<Boolean>>() {
+        TableColumn<PhoneDTO, Boolean> Col3 = new TableColumn<PhoneDTO, Boolean>("Listed");
+        Col3.setCellValueFactory(new Callback<CellDataFeatures<PhoneDTO, Boolean>, ObservableValue<Boolean>>() {
                 @Override
-                public ObservableValue<Boolean> call(CellDataFeatures<Object_Phone, Boolean> param) {
-                    Object_Phone phone = param.getValue();
+                public ObservableValue<Boolean> call(CellDataFeatures<PhoneDTO, Boolean> param) {
+                    PhoneDTO phone = param.getValue();
                     SimpleBooleanProperty booleanProp = new SimpleBooleanProperty(phone.isIsListed());
                     // Note: singleCol.setOnEditCommit(): Not work for
                     // CheckBoxTableCell.
@@ -202,11 +202,11 @@ public class HBoxPhone extends HBox {
                 }
             });
      
-        Col3.setCellFactory(new Callback<TableColumn<Object_Phone, Boolean>, //
-            TableCell<Object_Phone, Boolean>>() {
+        Col3.setCellFactory(new Callback<TableColumn<PhoneDTO, Boolean>, //
+            TableCell<PhoneDTO, Boolean>>() {
                 @Override
-                public TableCell<Object_Phone, Boolean> call(TableColumn<Object_Phone, Boolean> p) {
-                    CheckBoxTableCell<Object_Phone, Boolean> cell = new CheckBoxTableCell<Object_Phone, Boolean>();
+                public TableCell<PhoneDTO, Boolean> call(TableColumn<PhoneDTO, Boolean> p) {
+                    CheckBoxTableCell<PhoneDTO, Boolean> cell = new CheckBoxTableCell<PhoneDTO, Boolean>();
                     cell.setAlignment(Pos.CENTER);
                     return cell;
                 }
@@ -226,9 +226,9 @@ public class HBoxPhone extends HBox {
                 // attempt to add a new record and return if it is sucessful
                 if (SqlInsert.addPhoneRecord(phone_id, person.getP_id(), true, "new phone", ""))
                     // if sucessfully added to SQL then add a new row in the tableview
-                    phone.add(new Object_Phone(phone_id, person.getP_id(), true, "new phone", ""));
+                    phone.add(new PhoneDTO(phone_id, person.getP_id(), true, "new phone", ""));
                 // Now we will sort it to the top
-                Collections.sort(phone, Comparator.comparing(Object_Phone::getPhone_ID).reversed());
+                Collections.sort(phone, Comparator.comparing(PhoneDTO::getPhone_ID).reversed());
                 // this line prevents strange buggy behaviour
                 phoneTableView.layout();
                 // edit the phone number cell after creating

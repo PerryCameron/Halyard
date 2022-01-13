@@ -5,7 +5,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class Object_Officer {
+public class OfficerDTO {
 
 	private IntegerProperty officer_id;
 	private IntegerProperty person_id;
@@ -13,8 +13,8 @@ public class Object_Officer {
 	private StringProperty officer_type;
 	private StringProperty fiscal_year;
 	
-	public Object_Officer(Integer officer_id, Integer person_id, String board_year,
-			String officer_type, String fiscal_year) {
+	public OfficerDTO(Integer officer_id, Integer person_id, String board_year,
+					  String officer_type, String fiscal_year) {
 
 		this.officer_id = new SimpleIntegerProperty(officer_id);
 		this.person_id = new SimpleIntegerProperty(person_id);

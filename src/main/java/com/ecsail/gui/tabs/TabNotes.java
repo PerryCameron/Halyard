@@ -6,7 +6,7 @@ import java.util.Comparator;
 
 import com.ecsail.main.HalyardPaths;
 import com.ecsail.sql.select.SqlMemos;
-import com.ecsail.structures.Object_Memo2;
+import com.ecsail.structures.Memo2DTO;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -25,8 +25,8 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 
 public class TabNotes extends Tab {
-	private TableView<Object_Memo2> notesTableView = new TableView<>();
-	private ObservableList<Object_Memo2> memos;
+	private TableView<Memo2DTO> notesTableView = new TableView<>();
+	private ObservableList<Memo2DTO> memos;
 	String selectedYear;
 	String options;
 	Boolean n = true;
@@ -78,24 +78,24 @@ public class TabNotes extends Tab {
 		notesTableView.setFixedCellSize(30);
 		notesTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY );
 		
-		TableColumn<Object_Memo2, String> Col1 = new TableColumn<Object_Memo2, String>("MEM");
-		Col1.setCellValueFactory(new PropertyValueFactory<Object_Memo2, String>("membershipId"));
+		TableColumn<Memo2DTO, String> Col1 = new TableColumn<Memo2DTO, String>("MEM");
+		Col1.setCellValueFactory(new PropertyValueFactory<Memo2DTO, String>("membershipId"));
 		
-		TableColumn<Object_Memo2, String> Col2 = new TableColumn<Object_Memo2, String>("DATE");
-		Col2.setCellValueFactory(new PropertyValueFactory<Object_Memo2, String>("memo_date"));
+		TableColumn<Memo2DTO, String> Col2 = new TableColumn<Memo2DTO, String>("DATE");
+		Col2.setCellValueFactory(new PropertyValueFactory<Memo2DTO, String>("memo_date"));
 		
-		TableColumn<Object_Memo2, String> Col3 = new TableColumn<Object_Memo2, String>("TYPE");
-		Col3.setCellValueFactory(new PropertyValueFactory<Object_Memo2, String>("category"));
+		TableColumn<Memo2DTO, String> Col3 = new TableColumn<Memo2DTO, String>("TYPE");
+		Col3.setCellValueFactory(new PropertyValueFactory<Memo2DTO, String>("category"));
 		
-		TableColumn<Object_Memo2, String> Col4 = new TableColumn<Object_Memo2, String>("NOTE");
-		Col4.setCellValueFactory(new PropertyValueFactory<Object_Memo2, String>("memo"));
+		TableColumn<Memo2DTO, String> Col4 = new TableColumn<Memo2DTO, String>("NOTE");
+		Col4.setCellValueFactory(new PropertyValueFactory<Memo2DTO, String>("memo"));
 
 		Col1.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );   // Mem 5%
 		Col2.setMaxWidth( 1f * Integer.MAX_VALUE * 10 );  // Join Date 15%
 		Col3.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );   // Type
 		Col4.setMaxWidth( 1f * Integer.MAX_VALUE * 80 );   // Slip
 
-		Collections.sort(memos, Comparator.comparing(Object_Memo2::getMemo_date).reversed());
+		Collections.sort(memos, Comparator.comparing(Memo2DTO::getMemo_date).reversed());
 
 
 		oCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {

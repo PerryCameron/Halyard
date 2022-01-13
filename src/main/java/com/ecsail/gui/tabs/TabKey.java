@@ -1,7 +1,7 @@
 package com.ecsail.gui.tabs;
 
 import com.ecsail.structures.IntegerDTO;
-import com.ecsail.structures.Object_Money;
+import com.ecsail.structures.MoneyDTO;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -14,14 +14,14 @@ import javafx.scene.layout.VBox;
 
 public class TabKey extends Tab {
 	//private final String disabledColor = "-fx-background-color: #d5dade";
-	Object_Money selectedFiscalYear;
+	MoneyDTO selectedFiscalYear;
 	private final Spinner<Integer> extraKeySpinner = new Spinner<Integer>();
 	private final Spinner<Integer> sailLKeySpinner = new Spinner<Integer>();
 	private final Spinner<Integer> kayakSKeySpinner = new Spinner<Integer>();
 	private final Spinner<Integer> sailSSLKeySpinner = new Spinner<Integer>();
 	IntegerDTO numberOfKeys;
 	
-	public TabKey(String text, Object_Money sm, IntegerDTO wc) {
+	public TabKey(String text, MoneyDTO sm, IntegerDTO wc) {
 		super(text);
 		this.selectedFiscalYear = sm;
 		this.numberOfKeys = wc;

@@ -10,7 +10,7 @@ import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.SqlInsert;
 import com.ecsail.sql.select.SqlSelect;
 import com.ecsail.structures.MembershipListDTO;
-import com.ecsail.structures.Object_Person;
+import com.ecsail.structures.PersonDTO;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -33,7 +33,7 @@ public class VBoxAddPerson extends VBox {
 	private TabPane peopleTabPane; // a reference so we can open up the newly created pane
 	private Note note;
 	private MembershipListDTO membership;
-	private Object_Person person;
+	private PersonDTO person;
 	private final int PRIMARY = 1;
 	private final int SECONDARY = 2;
 	private final int DEPENDANT = 3;
@@ -144,7 +144,7 @@ public class VBoxAddPerson extends VBox {
 		/////////////////  LISTENERS  /////////////////////
 		addButton.setOnAction((event) -> {
 			int pid = SqlSelect.getCount("person", "p_id") + 1;
-			person = new Object_Person(pid, ms_id, memberType.getValue().getCode(), fnameTextField.getText(),
+			person = new PersonDTO(pid, ms_id, memberType.getValue().getCode(), fnameTextField.getText(),
 					lnameTextField.getText(), getBirthday(birthdayDatePicker.getValue()), occupationTextField.getText(),
 					businessTextField.getText(), true, null);
 
@@ -199,7 +199,7 @@ public class VBoxAddPerson extends VBox {
 		return date;
 	}
 	
-	private Boolean setNewMember(Object_Person person) {  // gives the last memo_id number
+	private Boolean setNewMember(PersonDTO person) {  // gives the last memo_id number
 		String memberStringType = getMemberType(person,hasError);
 		checkName(person.getFname());
 		checkName(person.getLname());
@@ -216,7 +216,7 @@ public class VBoxAddPerson extends VBox {
 		}
 	}
 	
-	private String getMemberType(Object_Person person, Boolean hasError) {
+	private String getMemberType(PersonDTO person, Boolean hasError) {
 		String memberType = null;
 		switch (person.getMemberType()) {
 		case PRIMARY:

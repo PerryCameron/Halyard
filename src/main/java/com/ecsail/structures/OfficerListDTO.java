@@ -3,7 +3,7 @@ package com.ecsail.structures;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class Object_OfficerList {
+public class OfficerListDTO {
 	private StringProperty commodore;
 	private StringProperty viceCommodore;
 	private StringProperty pastCommodore;
@@ -46,18 +46,18 @@ public class Object_OfficerList {
 	private StringProperty board37;
 	private StringProperty board38;
 	
-	public Object_OfficerList(String commodore, String viceCommodore, String pastCommodore,
-			String treasurer, String secretary, String harbormaster,
-			String assistantHarbormaster, String membership, String assistantMembership,
-			String publicity, String assistantPublicity, String racing,
-			String assistantRacing, String safety, String assistantSafety,
-			String social, String assistantSocial, String board11, String board12,
-			String board13, String board14, String board15, String board16,
-			String board17, String board18, String board21, String board22,
-			String board23, String board24, String board25, String board26,
-			String board27, String board28, String board31, String board32,
-			String board33, String board34, String board35, String board36,
-			String board37, String board38) {
+	public OfficerListDTO(String commodore, String viceCommodore, String pastCommodore,
+						  String treasurer, String secretary, String harbormaster,
+						  String assistantHarbormaster, String membership, String assistantMembership,
+						  String publicity, String assistantPublicity, String racing,
+						  String assistantRacing, String safety, String assistantSafety,
+						  String social, String assistantSocial, String board11, String board12,
+						  String board13, String board14, String board15, String board16,
+						  String board17, String board18, String board21, String board22,
+						  String board23, String board24, String board25, String board26,
+						  String board27, String board28, String board31, String board32,
+						  String board33, String board34, String board35, String board36,
+						  String board37, String board38) {
 		
 		this.commodore = new SimpleStringProperty(commodore);
 		this.viceCommodore = new SimpleStringProperty(viceCommodore);

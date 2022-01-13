@@ -4,7 +4,7 @@ import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.Main;
 import com.ecsail.structures.DepositDTO;
-import com.ecsail.structures.Object_PaidDues;
+import com.ecsail.structures.PaidDuesDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -34,19 +34,19 @@ public class SqlDeposit {
         return thisDeposit;
     }
 
-    public static ObservableList<Object_PaidDues> getPaidDues(DepositDTO currentDeposit) {
+    public static ObservableList<PaidDuesDTO> getPaidDues(DepositDTO currentDeposit) {
         String query = "SELECT id.MEMBERSHIP_ID, mo.*, p.l_name, p.f_name FROM money mo "
                 + "INNER JOIN membership_id id on mo.MS_ID=id.MS_ID and mo.FISCAL_YEAR=id.FISCAL_YEAR "
                 + "INNER JOIN membership me on mo.MS_ID=me.MS_ID "
                 + "INNER JOIN person p ON me.P_ID=p.P_ID  WHERE mo.FISCAL_YEAR='" + currentDeposit.getFiscalYear()
                 + "' AND mo.COMMITED=true AND mo.BATCH=" + currentDeposit.getBatch() + " "
                 + "ORDER BY id.MEMBERSHIP_ID";
-        ObservableList<Object_PaidDues> theseFiscals = FXCollections.observableArrayList();
+        ObservableList<PaidDuesDTO> theseFiscals = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(query + ";"));
             while (rs.next()) {
-                theseFiscals.add(new Object_PaidDues(rs.getInt("MONEY_ID"), rs.getInt("MS_ID"),
+                theseFiscals.add(new PaidDuesDTO(rs.getInt("MONEY_ID"), rs.getInt("MS_ID"),
                         rs.getInt("FISCAL_YEAR"), rs.getInt("BATCH"), rs.getString("OFFICER_CREDIT"), rs.getInt("EXTRA_KEY"),
                         rs.getInt("KAYAK_SHED_KEY"), rs.getInt("SAIL_LOFT_KEY"),
                         rs.getInt("SAIL_SCHOOL_LOFT_KEY"), rs.getInt("BEACH"),
@@ -64,17 +64,17 @@ public class SqlDeposit {
         return theseFiscals;
     }
 
-    public static ObservableList<Object_PaidDues> getPaidDues(String selectedYear) {
+    public static ObservableList<PaidDuesDTO> getPaidDues(String selectedYear) {
         String query = "SELECT id.MEMBERSHIP_ID, mo .*, p.l_name, p.f_name FROM money mo "
                 + "INNER JOIN membership_id id on mo.MS_ID=id.MS_ID and mo.FISCAL_YEAR=id.FISCAL_YEAR "
                 + "INNER JOIN membership me on mo.MS_ID=me.MS_ID "
                 + "INNER JOIN person p ON me.P_ID=p.P_ID WHERE mo.FISCAL_YEAR='" + selectedYear + "' AND mo.COMMITED=true ORDER BY id.MEMBERSHIP_ID";
-        ObservableList<Object_PaidDues> theseFiscals = FXCollections.observableArrayList();
+        ObservableList<PaidDuesDTO> theseFiscals = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(query + ";"));
             while (rs.next()) {
-                theseFiscals.add(new Object_PaidDues(rs.getInt("MONEY_ID"), rs.getInt("MS_ID"),
+                theseFiscals.add(new PaidDuesDTO(rs.getInt("MONEY_ID"), rs.getInt("MS_ID"),
                         rs.getInt("FISCAL_YEAR"), rs.getInt("BATCH"), rs.getString("OFFICER_CREDIT"), rs.getInt("EXTRA_KEY"),
                         rs.getInt("KAYAK_SHED_KEY"), rs.getInt("SAIL_LOFT_KEY"),
                         rs.getInt("SAIL_SCHOOL_LOFT_KEY"), rs.getInt("BEACH"),
@@ -93,15 +93,15 @@ public class SqlDeposit {
         return theseFiscals;
     }
 
-    public static ObservableList<Object_PaidDues> getPaidDues(String selectedYear, int batch) { // overload
+    public static ObservableList<PaidDuesDTO> getPaidDues(String selectedYear, int batch) { // overload
         //  SELECT mo.*, id.MEMBERSHIP_ID, p.l_name, p.f_name from membership_id id INNER JOIN membership m ON m.MS_ID=id.MS_ID LEFT JOIN person p ON m.P_ID=p.P_ID INNER JOIN money mo ON mo.MS_ID=m.MS_ID Where id.FISCAL_YEAR='2019' AND mo.BATCH=2 AND mo.FISCAL_YEAR='2019';
         String query = "SELECT mo.*, id.MEMBERSHIP_ID, p.l_name, p.f_name FROM membership_id id INNER JOIN membership m ON m.MS_ID=id.MS_ID LEFT JOIN person p ON m.P_ID=p.P_ID INNER JOIN money mo ON mo.MS_ID=m.MS_ID WHERE id.FISCAL_YEAR=" + selectedYear + " AND mo.BATCH=" + batch + " AND mo.FISCAL_YEAR=" + selectedYear;
-        ObservableList<Object_PaidDues> theseFiscals = FXCollections.observableArrayList();
+        ObservableList<PaidDuesDTO> theseFiscals = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(query + ";"));
             while (rs.next()) {
-                theseFiscals.add(new Object_PaidDues(rs.getInt("MONEY_ID"), rs.getInt("MS_ID"),
+                theseFiscals.add(new PaidDuesDTO(rs.getInt("MONEY_ID"), rs.getInt("MS_ID"),
                         rs.getInt("FISCAL_YEAR"), rs.getInt("BATCH"), rs.getString("OFFICER_CREDIT"), rs.getInt("EXTRA_KEY"),
                         rs.getInt("KAYAK_SHED_KEY"), rs.getInt("SAIL_LOFT_KEY"),
                         rs.getInt("SAIL_SCHOOL_LOFT_KEY"), rs.getInt("BEACH"),

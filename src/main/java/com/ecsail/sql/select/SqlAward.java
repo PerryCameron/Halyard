@@ -4,7 +4,7 @@ import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.Main;
 import com.ecsail.structures.AwardDTO;
-import com.ecsail.structures.Object_Person;
+import com.ecsail.structures.PersonDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -14,7 +14,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class SqlAward {
-    public static ObservableList<AwardDTO> getAwards(Object_Person p) {  //p_id
+    public static ObservableList<AwardDTO> getAwards(PersonDTO p) {  //p_id
         ObservableList<AwardDTO> thisAwards = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();

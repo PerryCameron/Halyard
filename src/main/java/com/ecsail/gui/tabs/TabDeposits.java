@@ -16,8 +16,8 @@ import com.ecsail.sql.SqlUpdate;
 import com.ecsail.structures.DefinedFeeDTO;
 import com.ecsail.structures.DepositDTO;
 import com.ecsail.structures.DepositSummaryDTO;
-import com.ecsail.structures.Object_PaidDues;
-import com.ecsail.structures.Object_Payment;
+import com.ecsail.structures.PaidDuesDTO;
+import com.ecsail.structures.PaymentDTO;
 import com.ecsail.structures.DepositSummaryTextDTO;
 
 import javafx.beans.Observable;
@@ -54,7 +54,7 @@ import javafx.scene.text.Text;
 import javafx.util.Callback;
 
 public class TabDeposits extends Tab {
-	private ObservableList<Object_PaidDues> paidDues; // starts with all paid dues for a given year, then can change to
+	private ObservableList<PaidDuesDTO> paidDues; // starts with all paid dues for a given year, then can change to
 														// dues for a selected deposit
 	private DefinedFeeDTO currentDefinedFee; // containes all the defined fees for a given year
 	private DepositDTO currentDeposit; // contains deposit number, date, year for a selected deposit
@@ -68,9 +68,9 @@ public class TabDeposits extends Tab {
 
 	public TabDeposits(String text) {
 		super(text);
-		this.paidDues = FXCollections.observableArrayList(new Callback<Object_PaidDues, Observable[]>() {
+		this.paidDues = FXCollections.observableArrayList(new Callback<PaidDuesDTO, Observable[]>() {
 			@Override
-			public Observable[] call(Object_PaidDues param) {
+			public Observable[] call(PaidDuesDTO param) {
 				return new Observable[] { param.closedProperty() };
 
 			}
@@ -99,7 +99,7 @@ public class TabDeposits extends Tab {
 		HBox numberOfRecordsHBox = new HBox();
 		HBox comboBoxHBox = new HBox();
 		Text nonRenewed = new Text("0");
-		TableView<Object_PaidDues> paidDuesTableView = new TableView<Object_PaidDues>();
+		TableView<PaidDuesDTO> paidDuesTableView = new TableView<PaidDuesDTO>();
 		
 		final ComboBox<String> comboBox = new ComboBox<String>(options);
 		GridPane gridPane = new GridPane();
@@ -193,12 +193,12 @@ public class TabDeposits extends Tab {
 
 		// example for this column found at
 		// https://o7planning.org/en/11079/javafx-tableview-tutorial
-		TableColumn<Object_PaidDues, Boolean> Col1 = new TableColumn<Object_PaidDues, Boolean>("Select");
+		TableColumn<PaidDuesDTO, Boolean> Col1 = new TableColumn<PaidDuesDTO, Boolean>("Select");
 		Col1.setPrefWidth(50);
-		Col1.setCellValueFactory(new Callback<CellDataFeatures<Object_PaidDues, Boolean>, ObservableValue<Boolean>>() {
+		Col1.setCellValueFactory(new Callback<CellDataFeatures<PaidDuesDTO, Boolean>, ObservableValue<Boolean>>() {
 			@Override
-			public ObservableValue<Boolean> call(CellDataFeatures<Object_PaidDues, Boolean> param) {
-				Object_PaidDues thisPaidDues = param.getValue();
+			public ObservableValue<Boolean> call(CellDataFeatures<PaidDuesDTO, Boolean> param) {
+				PaidDuesDTO thisPaidDues = param.getValue();
 				SimpleBooleanProperty booleanProp = new SimpleBooleanProperty(thisPaidDues.isClosed());
 				booleanProp.addListener(new ChangeListener<Boolean>() {
 
@@ -224,52 +224,52 @@ public class TabDeposits extends Tab {
 			}
 		});
 
-		Col1.setCellFactory(new Callback<TableColumn<Object_PaidDues, Boolean>, //
-				TableCell<Object_PaidDues, Boolean>>() {
+		Col1.setCellFactory(new Callback<TableColumn<PaidDuesDTO, Boolean>, //
+				TableCell<PaidDuesDTO, Boolean>>() {
 			@Override
-			public TableCell<Object_PaidDues, Boolean> call(TableColumn<Object_PaidDues, Boolean> p) {
-				CheckBoxTableCell<Object_PaidDues, Boolean> cell = new CheckBoxTableCell<Object_PaidDues, Boolean>();
+			public TableCell<PaidDuesDTO, Boolean> call(TableColumn<PaidDuesDTO, Boolean> p) {
+				CheckBoxTableCell<PaidDuesDTO, Boolean> cell = new CheckBoxTableCell<PaidDuesDTO, Boolean>();
 				cell.setAlignment(Pos.CENTER);
 				return cell;
 			}
 		});
 
-		TableColumn<Object_PaidDues, Integer> Col2 = new TableColumn<Object_PaidDues, Integer>("Batch");
-		Col2.setCellValueFactory(new PropertyValueFactory<Object_PaidDues, Integer>("batch"));
+		TableColumn<PaidDuesDTO, Integer> Col2 = new TableColumn<PaidDuesDTO, Integer>("Batch");
+		Col2.setCellValueFactory(new PropertyValueFactory<PaidDuesDTO, Integer>("batch"));
 
-		TableColumn<Object_PaidDues, Integer> Col9 = new TableColumn<Object_PaidDues, Integer>("Mem ID");
-		Col9.setCellValueFactory(new PropertyValueFactory<Object_PaidDues, Integer>("membershipId"));
+		TableColumn<PaidDuesDTO, Integer> Col9 = new TableColumn<PaidDuesDTO, Integer>("Mem ID");
+		Col9.setCellValueFactory(new PropertyValueFactory<PaidDuesDTO, Integer>("membershipId"));
 
-		TableColumn<Object_PaidDues, String> Col3 = new TableColumn<Object_PaidDues, String>("Last Name");
-		Col3.setCellValueFactory(new PropertyValueFactory<Object_PaidDues, String>("l_name"));
+		TableColumn<PaidDuesDTO, String> Col3 = new TableColumn<PaidDuesDTO, String>("Last Name");
+		Col3.setCellValueFactory(new PropertyValueFactory<PaidDuesDTO, String>("l_name"));
 		Col3.setPrefWidth(80);
 
-		TableColumn<Object_PaidDues, String> Col4 = new TableColumn<Object_PaidDues, String>("First Name");
-		Col4.setCellValueFactory(new PropertyValueFactory<Object_PaidDues, String>("f_name"));
+		TableColumn<PaidDuesDTO, String> Col4 = new TableColumn<PaidDuesDTO, String>("First Name");
+		Col4.setCellValueFactory(new PropertyValueFactory<PaidDuesDTO, String>("f_name"));
 		Col4.setPrefWidth(80);
 
-		TableColumn<Object_PaidDues, String> Col10 = new TableColumn<Object_PaidDues, String>("Slip");
-		Col10.setCellValueFactory(new PropertyValueFactory<Object_PaidDues, String>("wet_slip"));
+		TableColumn<PaidDuesDTO, String> Col10 = new TableColumn<PaidDuesDTO, String>("Slip");
+		Col10.setCellValueFactory(new PropertyValueFactory<PaidDuesDTO, String>("wet_slip"));
 		Col10.setPrefWidth(50);
 
-		TableColumn<Object_PaidDues, Integer> Col5 = new TableColumn<Object_PaidDues, Integer>("Fees");
-		Col5.setCellValueFactory(new PropertyValueFactory<Object_PaidDues, Integer>("total"));
+		TableColumn<PaidDuesDTO, Integer> Col5 = new TableColumn<PaidDuesDTO, Integer>("Fees");
+		Col5.setCellValueFactory(new PropertyValueFactory<PaidDuesDTO, Integer>("total"));
 		Col5.setPrefWidth(50);
 
-		TableColumn<Object_PaidDues, Integer> Col6 = new TableColumn<Object_PaidDues, Integer>("Credit");
-		Col6.setCellValueFactory(new PropertyValueFactory<Object_PaidDues, Integer>("credit"));
+		TableColumn<PaidDuesDTO, Integer> Col6 = new TableColumn<PaidDuesDTO, Integer>("Credit");
+		Col6.setCellValueFactory(new PropertyValueFactory<PaidDuesDTO, Integer>("credit"));
 		Col6.setPrefWidth(50);
 
-		TableColumn<Object_PaidDues, Integer> Col7 = new TableColumn<Object_PaidDues, Integer>("Paid");
-		Col7.setCellValueFactory(new PropertyValueFactory<Object_PaidDues, Integer>("paid"));
+		TableColumn<PaidDuesDTO, Integer> Col7 = new TableColumn<PaidDuesDTO, Integer>("Paid");
+		Col7.setCellValueFactory(new PropertyValueFactory<PaidDuesDTO, Integer>("paid"));
 		Col7.setPrefWidth(50);
 
-		TableColumn<Object_PaidDues, Integer> Col8 = new TableColumn<Object_PaidDues, Integer>("Balance");
-		Col8.setCellValueFactory(new PropertyValueFactory<Object_PaidDues, Integer>("balance"));
+		TableColumn<PaidDuesDTO, Integer> Col8 = new TableColumn<PaidDuesDTO, Integer>("Balance");
+		Col8.setCellValueFactory(new PropertyValueFactory<PaidDuesDTO, Integer>("balance"));
 		Col8.setPrefWidth(50);
 
-		TableColumn<Object_PaidDues, Integer> Col11 = new TableColumn<Object_PaidDues, Integer>("Cmit");
-		Col11.setCellValueFactory(new PropertyValueFactory<Object_PaidDues, Integer>("committed"));
+		TableColumn<PaidDuesDTO, Integer> Col11 = new TableColumn<PaidDuesDTO, Integer>("Cmit");
+		Col11.setCellValueFactory(new PropertyValueFactory<PaidDuesDTO, Integer>("committed"));
 		Col11.setPrefWidth(50);
 
 		Col6.setStyle( "-fx-alignment: CENTER-RIGHT;");
@@ -293,10 +293,10 @@ public class TabDeposits extends Tab {
 		////////////////// LISTENERS //////////////////////
 
 		paidDuesTableView.setRowFactory(tv -> {
-			TableRow<Object_PaidDues> row = new TableRow<>();
+			TableRow<PaidDuesDTO> row = new TableRow<>();
 			row.setOnMouseClicked(event -> {
 				if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
-					Object_PaidDues clickedRow = row.getItem();
+					PaidDuesDTO clickedRow = row.getItem();
 //					System.out.println("TabDeposits: membership=" + clickedRow.toString());
 					Launcher.createTabForDeposits(clickedRow.getMs_id(), selectedYear);
 				}
@@ -455,14 +455,14 @@ public class TabDeposits extends Tab {
 		}
 	}
 
-	private void addDepositIdToPayment(Object_PaidDues thisPaidDues) {
+	private void addDepositIdToPayment(PaidDuesDTO thisPaidDues) {
 		int pay_id = getPayId(thisPaidDues); // gets relevant object_payment
 		int deposit_id = getDepositId(thisPaidDues);
 //		System.out.println("Adding deposit id to payment tuple");
 		SqlUpdate.updatePayment(pay_id, "deposit_id", deposit_id + ""); // add deposit_id to payment tuple
 	}
 
-	private int getDepositId(Object_PaidDues thisPaidDues) {
+	private int getDepositId(PaidDuesDTO thisPaidDues) {
 		int deposit_id = 0;
 		if (SqlExists.depositRecordExists(thisPaidDues.getFiscal_year() + "", summaryTotals.getDepositNumber())) { // does
 																														// a
@@ -476,7 +476,7 @@ public class TabDeposits extends Tab {
 		return deposit_id;
 	}
 
-	private int getPayId(Object_PaidDues thisPaidDues) {
+	private int getPayId(PaidDuesDTO thisPaidDues) {
 		int pay_id = 0;
 		if (!SqlExists.paymentExists(thisPaidDues.getMoney_id())) { // No payment has been recorded, we need to create a
 																	// blank payment record
@@ -488,9 +488,9 @@ public class TabDeposits extends Tab {
 		return pay_id;
 	}
 
-	private int createPaymentRecord(Object_PaidDues thisPaidDues) {
+	private int createPaymentRecord(PaidDuesDTO thisPaidDues) {
 		int pay_id = SqlPayment.getNumberOfPayments() + 1;
-		Object_Payment newPayment = new Object_Payment(pay_id, thisPaidDues.getMoney_id(), "0", "CH", currentDate, "0",
+		PaymentDTO newPayment = new PaymentDTO(pay_id, thisPaidDues.getMoney_id(), "0", "CH", currentDate, "0",
 				1);
 		SqlInsert.addPaymentRecord(newPayment);
 		return pay_id;
@@ -504,7 +504,7 @@ public class TabDeposits extends Tab {
 		return deposit_id;
 	}
 
-	private void setBatchAndClose(Object_PaidDues thisPaidDues, int thisBatch, Boolean closed) {
+	private void setBatchAndClose(PaidDuesDTO thisPaidDues, int thisBatch, Boolean closed) {
 		SqlUpdate.updateMoneyBatch(thisPaidDues.getMoney_id(), thisBatch);
 		SqlUpdate.updateMoneyClosed(thisPaidDues.getMoney_id(), closed);
 		thisPaidDues.setBatch(thisBatch);
@@ -567,7 +567,7 @@ public class TabDeposits extends Tab {
 	private void updateSummaryTotals() {
 		int numberOfRecordsCounted = 0; // number of records counted
 
-		for (Object_PaidDues d : paidDues) {
+		for (PaidDuesDTO d : paidDues) {
 			BigDecimal beach = new BigDecimal(d.getBeach());  // make d.getbeach into bigDecimal
 			if (beach.compareTo(BigDecimal.ZERO) != 0) { ///////// BEACH
 				summaryTotals.setBeachNumber(d.getBeach() + summaryTotals.getBeachNumber()); // Integer

@@ -8,8 +8,8 @@ import com.ecsail.sql.SqlUpdate;
 import com.ecsail.sql.select.SqlSlip;
 import com.ecsail.sql.select.SqlWaitList;
 import com.ecsail.structures.MembershipListDTO;
-import com.ecsail.structures.Object_Slip;
-import com.ecsail.structures.Object_WaitList;
+import com.ecsail.structures.SlipDTO;
+import com.ecsail.structures.WaitListDTO;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -32,9 +32,9 @@ import javafx.scene.text.Text;
 public class HBoxSlip extends HBox {
 	
 	private MembershipListDTO membership;
-	private Object_WaitList waitList;
+	private WaitListDTO waitList;
 	private String errorMessage;
-	private Object_Slip slip;
+	private SlipDTO slip;
 	private Label noSlipLabel;
 	private HBox errorHBox;
 	private Tab thisTab;
@@ -232,7 +232,7 @@ public class HBoxSlip extends HBox {
 		if(SqlExists.waitListExists(m.getMsid())) {
 			waitList = SqlWaitList.getWaitList(membership.getMsid());
 		} else { //it doesn't exist
-			waitList = new Object_WaitList(membership.getMsid(),false,false,false,false,false,false);
+			waitList = new WaitListDTO(membership.getMsid(),false,false,false,false,false,false);
 			SqlInsert.addWaitList(waitList);
 		}
 		slipWaitCheckBox.setSelected(waitList.isSlipWait());
@@ -318,7 +318,7 @@ public class HBoxSlip extends HBox {
 	}
 	
 	private void setSlipAsNone() { // for displayInformation()
-		slip = new Object_Slip(0,membership.getMsid(),"none",0);
+		slip = new SlipDTO(0,membership.getMsid(),"none",0);
 		hbox1.getChildren().addAll(new Label("Slip Number:"), noSlipLabel);
 		setRadioButtonVisibility(false, false, false);
 		hbox3.setVisible(false);

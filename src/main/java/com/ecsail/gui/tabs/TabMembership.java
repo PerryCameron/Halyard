@@ -18,7 +18,7 @@ import com.ecsail.sql.select.SqlPerson;
 import com.ecsail.structures.MemLabelsDTO;
 import com.ecsail.structures.MembershipListDTO;
 import com.ecsail.structures.MemoDTO;
-import com.ecsail.structures.Object_Person;
+import com.ecsail.structures.PersonDTO;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -34,7 +34,7 @@ public class TabMembership extends Tab {
 	private MembershipListDTO membership;
 	private MemLabelsDTO labels; // allows labels to be easily changed from another class
 	private ObservableList<MemoDTO> memos;
-	private ObservableList<Object_Person> people;  // has to be in this class because we pull up two instances
+	private ObservableList<PersonDTO> people;  // has to be in this class because we pull up two instances
 	private final int PRIMARY = 1;
 	private final int SECONDARY = 2;
 	private final int DEPENDANT = 3;
@@ -135,7 +135,7 @@ public class TabMembership extends Tab {
 	private void addDependentTabs(TabPane peopleTabPane) {
 		int count = 0;
 		int count2 = 1;
-		for (Object_Person per : people) {
+		for (PersonDTO per : people) {
 			if (per.getMemberType() == DEPENDANT) { // if this record is a child of the primary member
 				peopleTabPane.getTabs().add(new Tab("Dependent " + count2, new HBoxPerson(people.get(count),membership,peopleTabPane)));
 				count2++; // child number
@@ -147,7 +147,7 @@ public class TabMembership extends Tab {
 	private int getPerson(int membertype) {  /// selects a person by membertype
 		int element = 0;
 		int loop = 0;
-		for(Object_Person per : people) {
+		for(PersonDTO per : people) {
 			if(per.getMemberType() == membertype) 
 				element=loop;
 			loop++;
@@ -157,7 +157,7 @@ public class TabMembership extends Tab {
 	
 	private boolean hasPerson(int memberType) {
 		boolean type = false;
-		for(Object_Person per : people) {
+		for(PersonDTO per : people) {
 			if(per.getMemberType() == memberType) 
 				type = true;
 		}

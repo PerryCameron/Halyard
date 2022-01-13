@@ -2,7 +2,7 @@ package com.ecsail.structures;
 
 import javafx.beans.property.*;
 
-public class Object_Money {
+public class MoneyDTO {
 	/// when storing integers it's a multiplier when a String the dollar amount
 	private IntegerProperty money_id;
 	private IntegerProperty ms_id;
@@ -34,13 +34,13 @@ public class Object_Money {
 	private IntegerProperty work_credit;
 	private StringProperty other_credit;
 
-	public Object_Money(Integer money_id, Integer ms_id, Integer fiscal_year, Integer batch,
-			String officer_credit, Integer extra_key, Integer kayac_shed_key,
-			Integer sail_loft_key, Integer sail_school_loft_key, Integer beach,
-						String wet_slip, Integer kayac_rack, Integer kayac_shed, Integer sail_loft,
-						Integer sail_school_laser_loft, Integer winter_storage, String ysc_donation,
-						String paid, String total, String credit, String balance, String dues,
-			Boolean committed, Boolean closed, String other, String initiation, Boolean supplemental, Integer work_credit, String other_credit) {
+	public MoneyDTO(Integer money_id, Integer ms_id, Integer fiscal_year, Integer batch,
+					String officer_credit, Integer extra_key, Integer kayac_shed_key,
+					Integer sail_loft_key, Integer sail_school_loft_key, Integer beach,
+					String wet_slip, Integer kayac_rack, Integer kayac_shed, Integer sail_loft,
+					Integer sail_school_laser_loft, Integer winter_storage, String ysc_donation,
+					String paid, String total, String credit, String balance, String dues,
+					Boolean committed, Boolean closed, String other, String initiation, Boolean supplemental, Integer work_credit, String other_credit) {
 
 		this.money_id = new SimpleIntegerProperty(money_id);
 		this.ms_id = new SimpleIntegerProperty(ms_id);
@@ -73,7 +73,7 @@ public class Object_Money {
 		this.other_credit = new SimpleStringProperty(other_credit);
 	}
 
-	public Object_Money() {
+	public MoneyDTO() {
 		this.money_id = new SimpleIntegerProperty(0);
 		this.ms_id = new SimpleIntegerProperty(0);
 		this.fiscal_year = new SimpleIntegerProperty(0);

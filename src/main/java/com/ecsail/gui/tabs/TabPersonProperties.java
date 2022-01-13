@@ -4,7 +4,7 @@ import com.ecsail.enums.MemberType;
 import com.ecsail.gui.dialogues.Dialogue_Delete;
 import com.ecsail.sql.SqlUpdate;
 import com.ecsail.structures.BooleanDTO;
-import com.ecsail.structures.Object_Person;
+import com.ecsail.structures.PersonDTO;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -24,10 +24,10 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 public class TabPersonProperties extends Tab {
-	private Object_Person person;  // this is the person we are focused on.
-	private ObservableList<Object_Person> people;  // this is only for updating people list when in people list mode
+	private PersonDTO person;  // this is the person we are focused on.
+	private ObservableList<PersonDTO> people;  // this is only for updating people list when in people list mode
 	private BooleanDTO isDeleted;
-	public TabPersonProperties(Object_Person p, ObservableList<Object_Person> pe, TabPane personTabPane) {
+	public TabPersonProperties(PersonDTO p, ObservableList<PersonDTO> pe, TabPane personTabPane) {
 		super("Properties");
 		this.person = p;
 		this.people = pe;

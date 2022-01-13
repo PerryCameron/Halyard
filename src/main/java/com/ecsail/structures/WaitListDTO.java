@@ -1,6 +1,6 @@
 package com.ecsail.structures;
 
-public class Object_WaitList {
+public class WaitListDTO {
 	private int ms_id;
 	private boolean slipWait;
 	private boolean kayakWait;
@@ -9,8 +9,8 @@ public class Object_WaitList {
 	private boolean wantsRelease;
 	private boolean wantSlipChange;
 	
-	public Object_WaitList(int ms_id, boolean slipWait, boolean kayakWait, boolean shedWait, boolean wantToSublease,
-			boolean wantsRelease,boolean wantSlipChange) {
+	public WaitListDTO(int ms_id, boolean slipWait, boolean kayakWait, boolean shedWait, boolean wantToSublease,
+					   boolean wantsRelease, boolean wantSlipChange) {
 		this.ms_id = ms_id;
 		this.slipWait = slipWait;
 		this.kayakWait = kayakWait;

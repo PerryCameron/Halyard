@@ -33,8 +33,8 @@ public class TabRoster extends Tab {
 
 	private final ObservableList<MembershipListDTO> rosters;
 	private final TableView<MembershipListDTO> rosterTableView = new TableView<>();
-	private final Object_RosterSelect printChoices;
-	private final Object_RosterRadioButtons rb;
+	private final RosterSelectDTO printChoices;
+	private final RosterRadioButtonsDTO rb;
 	String selectedYear;
 
 	public TabRoster(ObservableList<MembershipListDTO> a, String sy) {
@@ -42,8 +42,8 @@ public class TabRoster extends Tab {
 		this.rosters = a;
 		this.selectedYear = sy;
 		this.setText("Roster");
-		this.rb = new Object_RosterRadioButtons();
-		this.printChoices = new Object_RosterSelect(sy, false, false, true, false, false, false, false, true, true, true, false,
+		this.rb = new RosterRadioButtonsDTO();
+		this.printChoices = new RosterSelectDTO(sy, false, false, true, false, false, false, false, true, true, true, false,
 				false, false, false, false, false, false, false, false, false);
 
 		/////////////////// OBJECTS //////////////////////////

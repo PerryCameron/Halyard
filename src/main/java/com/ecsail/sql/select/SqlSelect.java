@@ -2,18 +2,10 @@ package com.ecsail.sql.select;
 
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
-import com.ecsail.main.HalyardPaths;
-import com.ecsail.main.Main;
-import com.ecsail.pdf.directory.Object_Sportsmen;
-import com.ecsail.sql.SqlExists;
-import com.ecsail.structures.*;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 
 public class SqlSelect {
 

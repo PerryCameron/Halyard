@@ -56,7 +56,7 @@ public class Dialogue_DatabaseBackup extends Stage {
 	private VBox addInformationVBox() {
 		VBox iBox = new VBox();
 		GridPane pane = new GridPane();
-		Object_TupleCount at = getAddedTuples(); 
+		Object_TupleCount at = getAddedTuples();
 		int r = tuples.size() - 1;
 		Font font1 = Font.font("Verdana", FontWeight.BOLD, 14);
 		Text text;

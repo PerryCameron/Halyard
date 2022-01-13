@@ -12,17 +12,17 @@ import javafx.beans.property.SimpleStringProperty;
 //INNER JOIN person p on me.P_ID=p.P_ID where m.FISCAL_YEAR=2020 and m.COMMITED=true;
 
 
-public class Object_PaidDues extends Object_Money {
+public class PaidDuesDTO extends MoneyDTO {
 	private StringProperty f_name;
 	private StringProperty l_name;
 	private IntegerProperty membershipId;  // Member ID used in real life
 	
-	public Object_PaidDues(Integer money_id, Integer ms_id, Integer fiscal_year, Integer batch, String officer_credit,
-						   Integer extra_key, Integer kayak_shed_key, Integer sail_loft_key, Integer sail_school_loft_key,
-						   Integer beach, String wet_slip, Integer kayak_rack, Integer kayac_shed, Integer sail_loft,
-						   Integer sail_school_laser_loft, Integer winter_storage, String ysc_donation, String paid, String total,
-						   String credit, String balance, String dues, Boolean committed, Boolean closed, String other, String initiation,
-			Boolean supplemental,Integer work_credit, String other_credit, String f_name, String l_name, Integer membershipId) {
+	public PaidDuesDTO(Integer money_id, Integer ms_id, Integer fiscal_year, Integer batch, String officer_credit,
+					   Integer extra_key, Integer kayak_shed_key, Integer sail_loft_key, Integer sail_school_loft_key,
+					   Integer beach, String wet_slip, Integer kayak_rack, Integer kayac_shed, Integer sail_loft,
+					   Integer sail_school_laser_loft, Integer winter_storage, String ysc_donation, String paid, String total,
+					   String credit, String balance, String dues, Boolean committed, Boolean closed, String other, String initiation,
+					   Boolean supplemental, Integer work_credit, String other_credit, String f_name, String l_name, Integer membershipId) {
 		
 		super(money_id, ms_id, fiscal_year, batch, officer_credit, extra_key, kayak_shed_key, sail_loft_key,
 				sail_school_loft_key, beach, wet_slip, kayak_rack, kayac_shed, sail_loft, sail_school_laser_loft,
