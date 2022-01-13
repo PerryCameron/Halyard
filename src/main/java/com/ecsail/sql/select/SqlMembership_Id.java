@@ -4,7 +4,7 @@ import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.HalyardPaths;
 import com.ecsail.main.Main;
-import com.ecsail.structures.Object_MembershipId;
+import com.ecsail.structures.MembershipIdDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -13,13 +13,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class SqlMembership_Id {
-    public static ObservableList<Object_MembershipId> getIds() {
-        ObservableList<Object_MembershipId> ids = FXCollections.observableArrayList();
+    public static ObservableList<MembershipIdDTO> getIds() {
+        ObservableList<MembershipIdDTO> ids = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs = stmt.executeQuery("select * from membership_id;");
             while (rs.next()) {
-                ids.add(new Object_MembershipId(
+                ids.add(new MembershipIdDTO(
                         rs.getInt("MID")
                         , rs.getString("FISCAL_YEAR")
                         , rs.getInt("MS_ID")
@@ -36,13 +36,13 @@ public class SqlMembership_Id {
         return ids;
     }
 
-    public static ObservableList<Object_MembershipId> getIds(int ms_id) {
-        ObservableList<Object_MembershipId> ids = FXCollections.observableArrayList();
+    public static ObservableList<MembershipIdDTO> getIds(int ms_id) {
+        ObservableList<MembershipIdDTO> ids = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs = stmt.executeQuery("select * from membership_id where ms_id=" +ms_id + ";");
             while (rs.next()) {
-                ids.add(new Object_MembershipId(
+                ids.add(new MembershipIdDTO(
                         rs.getInt("MID")
                         , rs.getString("FISCAL_YEAR")
                         , rs.getInt("MS_ID")
@@ -60,12 +60,12 @@ public class SqlMembership_Id {
     }
 
     public static String getId(int ms_id) {
-        Object_MembershipId id = null;
+        MembershipIdDTO id = null;
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs = stmt.executeQuery("select * from membership_id where ms_id=" +ms_id + ";");
             while (rs.next()) {
-                id = new Object_MembershipId(
+                id = new MembershipIdDTO(
                         rs.getInt("MID")
                         , rs.getString("FISCAL_YEAR")
                         , rs.getInt("MS_ID")
@@ -82,14 +82,14 @@ public class SqlMembership_Id {
         return id.getMembership_id();
     }
 
-    public static Object_MembershipId getCount(int ms_id) {
-        Object_MembershipId thisId = null; // new Object_MembershipId();
+    public static MembershipIdDTO getCount(int ms_id) {
+        MembershipIdDTO thisId = null; // new Object_MembershipId();
         Statement stmt;
         try {
             stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs = stmt.executeQuery("select MID, MIN(FISCAL_YEAR), MS_ID, MAX(MEMBERSHIP_ID), RENEW from membership_id where MS_ID=" + ms_id);
             while (rs.next()) {
-                thisId = new Object_MembershipId(
+                thisId = new MembershipIdDTO(
             rs.getInt("MID")
             , rs.getString("MIN(FISCAL_YEAR)")
             , rs.getInt("MS_ID")
@@ -161,13 +161,13 @@ public class SqlMembership_Id {
 
     }
 
-    public static Object_MembershipId getMembershipIdObject(int mid) {
-        Object_MembershipId id = null;
+    public static MembershipIdDTO getMembershipIdObject(int mid) {
+        MembershipIdDTO id = null;
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs = stmt.executeQuery("select * from membership_id where mid='"  + mid + "'");
             while (rs.next()) {
-                id = new Object_MembershipId(
+                id = new MembershipIdDTO(
                         rs.getInt("MID")
                         , rs.getString("FISCAL_YEAR")
                         , rs.getInt("MS_ID")
@@ -232,14 +232,14 @@ public class SqlMembership_Id {
         return number;
     }
 
-    public static ObservableList<Object_MembershipId> getMembershipIds(String year) {
-		ObservableList<Object_MembershipId> theseIds = FXCollections.observableArrayList();
+    public static ObservableList<MembershipIdDTO> getMembershipIds(String year) {
+		ObservableList<MembershipIdDTO> theseIds = FXCollections.observableArrayList();
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 		    ResultSet rs;
 			rs = stmt.executeQuery(Main.console.setRegexColor("select * from membership_id where fiscal_year=" + year));
 		while (rs.next()) {
-			theseIds.add(new Object_MembershipId(
+			theseIds.add(new MembershipIdDTO(
 					rs.getInt("MID"),
 					rs.getString("FISCAL_YEAR"),
 					rs.getInt("MS_ID"),

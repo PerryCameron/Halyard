@@ -3,7 +3,7 @@ package com.ecsail.sql.select;
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.Main;
-import com.ecsail.structures.Object_Membership;
+import com.ecsail.structures.MembershipDTO;
 import com.ecsail.structures.Object_Person;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -44,7 +44,7 @@ public class SqlPerson {
         return thesepeople;
     }
 
-    public static ArrayList<Object_Person> getDependants(Object_Membership m) {
+    public static ArrayList<Object_Person> getDependants(MembershipDTO m) {
         String query = "SELECT * FROM person WHERE ms_id= '" + m.getMsid() + "' and MEMBER_TYPE=3";
         ArrayList<Object_Person> thesepeople = new ArrayList<>();
         try {

@@ -3,7 +3,7 @@ package com.ecsail.sql.select;
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.Main;
-import com.ecsail.structures.Object_Board;
+import com.ecsail.structures.BoardDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -13,15 +13,15 @@ import java.sql.Statement;
 
 public class SqlBoard {
     // select p.P_ID, p.MS_ID, o.O_ID, p.F_NAME, p.L_NAME, o.OFF_YEAR, o.BOARD_YEAR, o.OFF_TYPE  from person p inner join officer o on p.p_id = o.p_id where o.off_year='2020';
-    public static ObservableList<Object_Board> getBoard(String currentYear) {  //p_id
-        ObservableList<Object_Board> thisBoardMember = FXCollections.observableArrayList();
+    public static ObservableList<BoardDTO> getBoard(String currentYear) {  //p_id
+        ObservableList<BoardDTO> thisBoardMember = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs = stmt
                     .executeQuery(Main.console.setRegexColor("select p.P_ID, p.MS_ID, o.O_ID, p.F_NAME, p.L_NAME, o.OFF_YEAR, o.BOARD_YEAR, o.OFF_TYPE  from person p inner join officer o on p.p_id = o.p_id where o.off_year='" + currentYear + "';"));
 
             while (rs.next()) {
-                thisBoardMember.add(new Object_Board(
+                thisBoardMember.add(new BoardDTO(
                         rs.getInt("P_ID"),
                         rs.getInt("MS_ID"),
                         rs.getInt("O_ID"),

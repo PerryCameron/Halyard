@@ -13,12 +13,12 @@ import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.SqlInsert;
 import com.ecsail.sql.select.*;
 import com.ecsail.sql.SqlUpdate;
-import com.ecsail.structures.Object_DefinedFee;
-import com.ecsail.structures.Object_Deposit;
-import com.ecsail.structures.Object_DepositSummary;
+import com.ecsail.structures.DefinedFeeDTO;
+import com.ecsail.structures.DepositDTO;
+import com.ecsail.structures.DepositSummaryDTO;
 import com.ecsail.structures.Object_PaidDues;
 import com.ecsail.structures.Object_Payment;
-import com.ecsail.structures.Object_DepositSummaryText;
+import com.ecsail.structures.DepositSummaryTextDTO;
 
 import javafx.beans.Observable;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -56,10 +56,10 @@ import javafx.util.Callback;
 public class TabDeposits extends Tab {
 	private ObservableList<Object_PaidDues> paidDues; // starts with all paid dues for a given year, then can change to
 														// dues for a selected deposit
-	private Object_DefinedFee currentDefinedFee; // containes all the defined fees for a given year
-	private Object_Deposit currentDeposit; // contains deposit number, date, year for a selected deposit
-	private Object_DepositSummaryText summaryText = new Object_DepositSummaryText(); // object of text objects for																				// display
-	private Object_DepositSummary summaryTotals = new Object_DepositSummary(); // will hold the totals of all at first
+	private DefinedFeeDTO currentDefinedFee; // containes all the defined fees for a given year
+	private DepositDTO currentDeposit; // contains deposit number, date, year for a selected deposit
+	private DepositSummaryTextDTO summaryText = new DepositSummaryTextDTO(); // object of text objects for																				// display
+	private DepositSummaryDTO summaryTotals = new DepositSummaryDTO(); // will hold the totals of all at first
 																				// and then for a selected deposit
 	Text numberOfRecords = new Text("0");
 	String currentDate;
@@ -498,7 +498,7 @@ public class TabDeposits extends Tab {
 
 	private int createDepositRecord() {
 		int deposit_id = SqlDeposit.getNumberOfDeposits() + 1;
-		Object_Deposit newDeposit = new Object_Deposit(deposit_id, currentDate, selectedYear,
+		DepositDTO newDeposit = new DepositDTO(deposit_id, currentDate, selectedYear,
 				summaryTotals.getDepositNumber());
 		SqlInsert.addDeposit(newDeposit);
 		return deposit_id;

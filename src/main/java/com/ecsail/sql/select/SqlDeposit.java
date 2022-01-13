@@ -3,7 +3,7 @@ package com.ecsail.sql.select;
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.Main;
-import com.ecsail.structures.Object_Deposit;
+import com.ecsail.structures.DepositDTO;
 import com.ecsail.structures.Object_PaidDues;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,14 +13,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class SqlDeposit {
-    public static Object_Deposit getDeposit(String year, int batch) {
-        Object_Deposit thisDeposit = null;
+    public static DepositDTO getDeposit(String year, int batch) {
+        DepositDTO thisDeposit = null;
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
             rs = stmt.executeQuery(Main.console.setRegexColor("select * from deposit where fiscal_year=" + year + " and batch=" + batch));
             while (rs.next()) {
-                thisDeposit = new Object_Deposit(
+                thisDeposit = new DepositDTO(
                         rs.getInt("DEPOSIT_ID"),
                         rs.getString("DEPOSIT_DATE"),
                         rs.getString("FISCAL_YEAR"),
@@ -34,7 +34,7 @@ public class SqlDeposit {
         return thisDeposit;
     }
 
-    public static ObservableList<Object_PaidDues> getPaidDues(Object_Deposit currentDeposit) {
+    public static ObservableList<Object_PaidDues> getPaidDues(DepositDTO currentDeposit) {
         String query = "SELECT id.MEMBERSHIP_ID, mo.*, p.l_name, p.f_name FROM money mo "
                 + "INNER JOIN membership_id id on mo.MS_ID=id.MS_ID and mo.FISCAL_YEAR=id.FISCAL_YEAR "
                 + "INNER JOIN membership me on mo.MS_ID=me.MS_ID "
@@ -120,14 +120,14 @@ public class SqlDeposit {
         return theseFiscals;
     }
 
-    public static ObservableList<Object_Deposit> getDeposits() {
-        ObservableList<Object_Deposit> thisDeposits = FXCollections.observableArrayList();
+    public static ObservableList<DepositDTO> getDeposits() {
+        ObservableList<DepositDTO> thisDeposits = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
             rs = stmt.executeQuery(Main.console.setRegexColor("select * from deposit;"));
             while (rs.next()) {
-                thisDeposits.add(new Object_Deposit(
+                thisDeposits.add(new DepositDTO(
                         rs.getInt("DEPOSIT_ID"),
                         rs.getString("DEPOSIT_DATE"),
                         rs.getString("FISCAL_YEAR"),
@@ -142,7 +142,7 @@ public class SqlDeposit {
     }
 
     // can do this with a regular object but not properties for some reason
-    public static void  updateDeposit(String year, int batch, Object_Deposit thisDeposit) {
+    public static void  updateDeposit(String year, int batch, DepositDTO thisDeposit) {
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;

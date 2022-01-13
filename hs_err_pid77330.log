@@ -169,7 +169,7 @@ Event: 220.292 Thread 0x0000000117008800 8358       3       com.sun.javafx.scene
 Event: 220.292 Thread 0x0000000135918800 nmethod 8357 0x00000001024ac050 code [0x00000001024ac200, 0x00000001024ac410]
 Event: 220.292 Thread 0x0000000117008800 nmethod 8358 0x0000000102ac8d10 code [0x0000000102ac8e80, 0x0000000102ac8f90]
 Event: 220.292 Thread 0x0000000113809000 8359       4       com.sun.javafx.scene.control.skin.LabeledSkinBase::sceneChanged (29 bytes)
-Event: 220.292 Thread 0x0000000117008800 8360       1       com.ecsail.structures.Object_Memo::categoryProperty (5 bytes)
+Event: 220.292 Thread 0x0000000117008800 8360       1       com.ecsail.structures.MemoDTO::categoryProperty (5 bytes)
 Event: 220.292 Thread 0x0000000117008800 nmethod 8360 0x00000001025b6610 code [0x00000001025b6740, 0x00000001025b67d0]
 Event: 220.293 Thread 0x0000000113809000 nmethod 8359 0x0000000102d0ea90 code [0x0000000102d0ec00, 0x0000000102d0ed50]
 Event: 220.293 Thread 0x0000000117008800 8361       3       javafx.scene.control.ListView::itemsProperty (26 bytes)

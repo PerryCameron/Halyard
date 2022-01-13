@@ -7,7 +7,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.StringProperty;
 
-public class Object_Email {
+public class EmailDTO {
 	
 	private IntegerProperty email_id;
 	private IntegerProperty pid;
@@ -16,7 +16,7 @@ public class Object_Email {
 	private BooleanProperty isListed;
 
 	
-	public Object_Email(Integer email_id, Integer pid, Boolean primaryUse,  String email, Boolean isListed) {
+	public EmailDTO(Integer email_id, Integer pid, Boolean primaryUse, String email, Boolean isListed) {
 		this.email_id = new SimpleIntegerProperty(email_id);
 		this.pid = new SimpleIntegerProperty(pid);
 		this.isPrimaryUse = new SimpleBooleanProperty(primaryUse);

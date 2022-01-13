@@ -13,8 +13,8 @@ import com.ecsail.sql.SqlInsert;
 import com.ecsail.sql.select.SqlBoat;
 import com.ecsail.sql.select.SqlSelect;
 import com.ecsail.sql.SqlUpdate;
-import com.ecsail.structures.Object_Boat;
-import com.ecsail.structures.Object_MembershipList;
+import com.ecsail.structures.BoatDTO;
+import com.ecsail.structures.MembershipListDTO;
 
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -45,21 +45,21 @@ import javafx.util.Callback;
 
 public class HBoxBoat extends HBox{
 	
-Object_MembershipList membership;
-private ObservableList<Object_Boat> boats;  // = FXCollections.observableArrayList();
-private TableView<Object_Boat> boatTableView;
+MembershipListDTO membership;
+private ObservableList<BoatDTO> boats;  // = FXCollections.observableArrayList();
+private TableView<BoatDTO> boatTableView;
 	
 	//@SuppressWarnings("unchecked")
-	public HBoxBoat(Object_MembershipList m) {
+	public HBoxBoat(MembershipListDTO m) {
 	this.membership = m;
-	this.boats = FXCollections.observableArrayList(new Callback<Object_Boat, Observable[]>() {
+	this.boats = FXCollections.observableArrayList(new Callback<BoatDTO, Observable[]>() {
 		@Override
-		public Observable[] call(Object_Boat param) {
+		public Observable[] call(BoatDTO param) {
 			return new Observable[] { param.hasTrailerProperty() };
 		}
 	});
 	this.boats.addAll(SqlBoat.getBoats(membership.getMsid()));
-	this.boatTableView = new TableView<Object_Boat>();
+	this.boatTableView = new TableView<BoatDTO>();
 	///////////	 OBJECTS ///////////////
 
 	HBox hboxGrey = new HBox();  // this is the vbox for organizing all the widgets
@@ -102,138 +102,138 @@ private TableView<Object_Boat> boatTableView;
 	boatTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY );
 	
 
-	final TableColumn<Object_Boat, String> col1 = createColumn("Boat Name", Object_Boat::boat_nameProperty);
+	final TableColumn<BoatDTO, String> col1 = createColumn("Boat Name", BoatDTO::boat_nameProperty);
     col1.setOnEditCommit(
-            new EventHandler<CellEditEvent<Object_Boat, String>>() {
+            new EventHandler<CellEditEvent<BoatDTO, String>>() {
                 @Override
-                public void handle(CellEditEvent<Object_Boat, String> t) {
-                    ((Object_Boat) t.getTableView().getItems().get(
+                public void handle(CellEditEvent<BoatDTO, String> t) {
+                    ((BoatDTO) t.getTableView().getItems().get(
                             t.getTablePosition().getRow())
                             ).setBoat_name(t.getNewValue());
-                    int boat_id = ((Object_Boat) t.getTableView().getItems().get(t.getTablePosition().getRow())).getBoat_id();
+                    int boat_id = ((BoatDTO) t.getTableView().getItems().get(t.getTablePosition().getRow())).getBoat_id();
                     SqlUpdate.updateBoat("boat_name", boat_id, t.getNewValue());
                 }
             }
         );
 	
-	final TableColumn<Object_Boat, String> col2 = createColumn("Manufacturer", Object_Boat::manufacturerProperty);
+	final TableColumn<BoatDTO, String> col2 = createColumn("Manufacturer", BoatDTO::manufacturerProperty);
     col2.setOnEditCommit(
-            new EventHandler<CellEditEvent<Object_Boat, String>>() {
+            new EventHandler<CellEditEvent<BoatDTO, String>>() {
                 @Override
-                public void handle(CellEditEvent<Object_Boat, String> t) {
-                    ((Object_Boat) t.getTableView().getItems().get(
+                public void handle(CellEditEvent<BoatDTO, String> t) {
+                    ((BoatDTO) t.getTableView().getItems().get(
                             t.getTablePosition().getRow())
                             ).setManufacturer(t.getNewValue());
-                    int boat_id = ((Object_Boat) t.getTableView().getItems().get(t.getTablePosition().getRow())).getBoat_id();
+                    int boat_id = ((BoatDTO) t.getTableView().getItems().get(t.getTablePosition().getRow())).getBoat_id();
                     SqlUpdate.updateBoat("manufacturer", boat_id, t.getNewValue());
                 }
             }
         );
     
-    final TableColumn<Object_Boat, String> col3 = createColumn("Year", Object_Boat::manufacture_yearProperty);
+    final TableColumn<BoatDTO, String> col3 = createColumn("Year", BoatDTO::manufacture_yearProperty);
     col3.setOnEditCommit(
-            new EventHandler<CellEditEvent<Object_Boat, String>>() {
+            new EventHandler<CellEditEvent<BoatDTO, String>>() {
                 @Override
-                public void handle(CellEditEvent<Object_Boat, String> t) {
-                    ((Object_Boat) t.getTableView().getItems().get(
+                public void handle(CellEditEvent<BoatDTO, String> t) {
+                    ((BoatDTO) t.getTableView().getItems().get(
                             t.getTablePosition().getRow())
                             ).setManufacture_year(t.getNewValue());
-                    int boat_id = ((Object_Boat) t.getTableView().getItems().get(t.getTablePosition().getRow())).getBoat_id();
+                    int boat_id = ((BoatDTO) t.getTableView().getItems().get(t.getTablePosition().getRow())).getBoat_id();
                     SqlUpdate.updateBoat("manufacture_year",boat_id, t.getNewValue());
                 }
             }
         );
     
-	final TableColumn<Object_Boat, String> col4 = createColumn("Model", Object_Boat::modelProperty);
+	final TableColumn<BoatDTO, String> col4 = createColumn("Model", BoatDTO::modelProperty);
     col4.setOnEditCommit(
-            new EventHandler<CellEditEvent<Object_Boat, String>>() {
+            new EventHandler<CellEditEvent<BoatDTO, String>>() {
                 @Override
-                public void handle(CellEditEvent<Object_Boat, String> t) {
-                    ((Object_Boat) t.getTableView().getItems().get(
+                public void handle(CellEditEvent<BoatDTO, String> t) {
+                    ((BoatDTO) t.getTableView().getItems().get(
                             t.getTablePosition().getRow())
                             ).setModel(t.getNewValue());
-                    int boat_id = ((Object_Boat) t.getTableView().getItems().get(t.getTablePosition().getRow())).getBoat_id();
+                    int boat_id = ((BoatDTO) t.getTableView().getItems().get(t.getTablePosition().getRow())).getBoat_id();
                     SqlUpdate.updateBoat("model",boat_id, t.getNewValue());
                 }
             }
         );
     
-	final TableColumn<Object_Boat, String> col5 = createColumn("Registration", Object_Boat::registration_numProperty);
+	final TableColumn<BoatDTO, String> col5 = createColumn("Registration", BoatDTO::registration_numProperty);
 	col5.setOnEditCommit(
-            new EventHandler<CellEditEvent<Object_Boat, String>>() {
+            new EventHandler<CellEditEvent<BoatDTO, String>>() {
                 @Override
-                public void handle(CellEditEvent<Object_Boat, String> t) {
-                    ((Object_Boat) t.getTableView().getItems().get(
+                public void handle(CellEditEvent<BoatDTO, String> t) {
+                    ((BoatDTO) t.getTableView().getItems().get(
                             t.getTablePosition().getRow())
                             ).setRegistration_num(t.getNewValue());
-                    int boat_id = ((Object_Boat) t.getTableView().getItems().get(t.getTablePosition().getRow())).getBoat_id();
+                    int boat_id = ((BoatDTO) t.getTableView().getItems().get(t.getTablePosition().getRow())).getBoat_id();
                     SqlUpdate.updateBoat("registration_num",boat_id, t.getNewValue());
                 }
             }
         );
     
-	final TableColumn<Object_Boat, String> col6 = createColumn("Sail #", Object_Boat::sail_numberProperty);
+	final TableColumn<BoatDTO, String> col6 = createColumn("Sail #", BoatDTO::sail_numberProperty);
 	col6.setOnEditCommit(
-            new EventHandler<CellEditEvent<Object_Boat, String>>() {
+            new EventHandler<CellEditEvent<BoatDTO, String>>() {
                 @Override
-                public void handle(CellEditEvent<Object_Boat, String> t) {
-                    ((Object_Boat) t.getTableView().getItems().get(
+                public void handle(CellEditEvent<BoatDTO, String> t) {
+                    ((BoatDTO) t.getTableView().getItems().get(
                             t.getTablePosition().getRow())
                             ).setSail_number(t.getNewValue());
-                    int boat_id = ((Object_Boat) t.getTableView().getItems().get(t.getTablePosition().getRow())).getBoat_id();
+                    int boat_id = ((BoatDTO) t.getTableView().getItems().get(t.getTablePosition().getRow())).getBoat_id();
                     SqlUpdate.updateBoat("sail_number",boat_id, t.getNewValue());
                 }
             }
         );
 	
-	final TableColumn<Object_Boat, String> col7 = createColumn("PHRF", Object_Boat::phrfProperty);
+	final TableColumn<BoatDTO, String> col7 = createColumn("PHRF", BoatDTO::phrfProperty);
 	col7.setOnEditCommit(
-            new EventHandler<CellEditEvent<Object_Boat, String>>() {
+            new EventHandler<CellEditEvent<BoatDTO, String>>() {
                 @Override
-                public void handle(CellEditEvent<Object_Boat, String> t) {
-                    ((Object_Boat) t.getTableView().getItems().get(
+                public void handle(CellEditEvent<BoatDTO, String> t) {
+                    ((BoatDTO) t.getTableView().getItems().get(
                             t.getTablePosition().getRow())
                             ).setPhrf(t.getNewValue());
-                    int boat_id = ((Object_Boat) t.getTableView().getItems().get(t.getTablePosition().getRow())).getBoat_id();
+                    int boat_id = ((BoatDTO) t.getTableView().getItems().get(t.getTablePosition().getRow())).getBoat_id();
                     SqlUpdate.updateBoat("phrf",boat_id, t.getNewValue());
                 }
             }
         );
 	
-	final TableColumn<Object_Boat, String> col8 = createColumn("Length", Object_Boat::lengthProperty);
+	final TableColumn<BoatDTO, String> col8 = createColumn("Length", BoatDTO::lengthProperty);
 	col8.setOnEditCommit(
-            new EventHandler<CellEditEvent<Object_Boat, String>>() {
+            new EventHandler<CellEditEvent<BoatDTO, String>>() {
                 @Override
-                public void handle(CellEditEvent<Object_Boat, String> t) {
-                    ((Object_Boat) t.getTableView().getItems().get(
+                public void handle(CellEditEvent<BoatDTO, String> t) {
+                    ((BoatDTO) t.getTableView().getItems().get(
                             t.getTablePosition().getRow())
                             ).setLength(t.getNewValue());
-                    int boat_id = ((Object_Boat) t.getTableView().getItems().get(t.getTablePosition().getRow())).getBoat_id();
+                    int boat_id = ((BoatDTO) t.getTableView().getItems().get(t.getTablePosition().getRow())).getBoat_id();
                     SqlUpdate.updateBoat("length",boat_id, t.getNewValue());
                 }
             }
         );
 	
-	final TableColumn<Object_Boat, String> col9 = createColumn("Weight", Object_Boat::weightProperty);
+	final TableColumn<BoatDTO, String> col9 = createColumn("Weight", BoatDTO::weightProperty);
 	col9.setOnEditCommit(
-            new EventHandler<CellEditEvent<Object_Boat, String>>() {
+            new EventHandler<CellEditEvent<BoatDTO, String>>() {
                 @Override
-                public void handle(CellEditEvent<Object_Boat, String> t) {
-                    ((Object_Boat) t.getTableView().getItems().get(
+                public void handle(CellEditEvent<BoatDTO, String> t) {
+                    ((BoatDTO) t.getTableView().getItems().get(
                             t.getTablePosition().getRow())
                             ).setWeight(t.getNewValue());
-                    int boat_id = ((Object_Boat) t.getTableView().getItems().get(t.getTablePosition().getRow())).getBoat_id();
+                    int boat_id = ((BoatDTO) t.getTableView().getItems().get(t.getTablePosition().getRow())).getBoat_id();
                     SqlUpdate.updateBoat("weight",boat_id, t.getNewValue());
                 }
             }
         );
 	
 	// example for this column found at https://o7planning.org/en/11079/javafx-tableview-tutorial
-	final TableColumn<Object_Boat, Boolean> col10 = new TableColumn<Object_Boat, Boolean>("Trailer");
-	col10.setCellValueFactory(new Callback<CellDataFeatures<Object_Boat, Boolean>, ObservableValue<Boolean>>() {
+	final TableColumn<BoatDTO, Boolean> col10 = new TableColumn<BoatDTO, Boolean>("Trailer");
+	col10.setCellValueFactory(new Callback<CellDataFeatures<BoatDTO, Boolean>, ObservableValue<Boolean>>() {
         @Override
-        public ObservableValue<Boolean> call(CellDataFeatures<Object_Boat, Boolean> param) {
-        	Object_Boat boat = param.getValue();
+        public ObservableValue<Boolean> call(CellDataFeatures<BoatDTO, Boolean> param) {
+        	BoatDTO boat = param.getValue();
             SimpleBooleanProperty booleanProp = new SimpleBooleanProperty(boat.isHasTrailer());
             // Note: singleCol.setOnEditCommit(): Not work for
             // CheckBoxTableCell.
@@ -251,11 +251,11 @@ private TableView<Object_Boat> boatTableView;
         }
     });
 
-	col10.setCellFactory(new Callback<TableColumn<Object_Boat, Boolean>, //
-    TableCell<Object_Boat, Boolean>>() {
+	col10.setCellFactory(new Callback<TableColumn<BoatDTO, Boolean>, //
+    TableCell<BoatDTO, Boolean>>() {
         @Override
-        public TableCell<Object_Boat, Boolean> call(TableColumn<Object_Boat, Boolean> p) {
-            CheckBoxTableCell<Object_Boat, Boolean> cell = new CheckBoxTableCell<Object_Boat, Boolean>();
+        public TableCell<BoatDTO, Boolean> call(TableColumn<BoatDTO, Boolean> p) {
+            CheckBoxTableCell<BoatDTO, Boolean> cell = new CheckBoxTableCell<BoatDTO, Boolean>();
             cell.setAlignment(Pos.CENTER);
             return cell;
         }
@@ -263,12 +263,12 @@ private TableView<Object_Boat> boatTableView;
 
 	//example for this column found at https://o7planning.org/en/11079/javafx-tableview-tutorial
     ObservableList<KeelType> keelList = FXCollections.observableArrayList(KeelType.values());
-	final TableColumn<Object_Boat, KeelType> col11 = new TableColumn<Object_Boat, KeelType>("Keel");
-	col11.setCellValueFactory(new Callback<CellDataFeatures<Object_Boat, KeelType>, ObservableValue<KeelType>>() {
+	final TableColumn<BoatDTO, KeelType> col11 = new TableColumn<BoatDTO, KeelType>("Keel");
+	col11.setCellValueFactory(new Callback<CellDataFeatures<BoatDTO, KeelType>, ObservableValue<KeelType>>() {
 		 
         @Override
-        public ObservableValue<KeelType> call(CellDataFeatures<Object_Boat, KeelType> param) {
-        	Object_Boat boat = param.getValue();
+        public ObservableValue<KeelType> call(CellDataFeatures<BoatDTO, KeelType> param) {
+        	BoatDTO boat = param.getValue();
             String keelCode = boat.getKeel();
   
             KeelType keel = KeelType.getByCode(keelCode);
@@ -278,11 +278,11 @@ private TableView<Object_Boat> boatTableView;
 
 	col11.setCellFactory(ComboBoxTableCell.forTableColumn(keelList));
 
-	col11.setOnEditCommit((CellEditEvent<Object_Boat, KeelType> event) -> {
-        TablePosition<Object_Boat, KeelType> pos = event.getTablePosition();
+	col11.setOnEditCommit((CellEditEvent<BoatDTO, KeelType> event) -> {
+        TablePosition<BoatDTO, KeelType> pos = event.getTablePosition();
         KeelType newKeel = event.getNewValue();
         int row = pos.getRow();
-        Object_Boat boat = event.getTableView().getItems().get(row);
+        BoatDTO boat = event.getTableView().getItems().get(row);
         SqlUpdate.updateBoat(boat.getBoat_id(), newKeel.getCode());
         boat.setKeel(newKeel.getCode());
     });
@@ -305,13 +305,13 @@ private TableView<Object_Boat> boatTableView;
         // get next available primary key for boat table
         int boat_id = SqlSelect.getCount("boat", "boat_id") + 1;
         // create boat object
-        Object_Boat b = new Object_Boat(boat_id,membership.getMsid(),"","","","","","",true,"","","","","","","");
+        BoatDTO b = new BoatDTO(boat_id,membership.getMsid(),"","","","","","",true,"","","","","","","");
         // insert data from new boat object into SQL table boat, return true if successful
         if(SqlInsert.addBoatRecord(b,membership.getMsid()))
             // insert row into tableView to match SQL record
         	boats.add(b);
         // Now we will sort it to the top
-        Collections.sort(boats, Comparator.comparing(Object_Boat::getBoat_id).reversed());
+        Collections.sort(boats, Comparator.comparing(BoatDTO::getBoat_id).reversed());
         // this line prevents strange buggy behaviour
         boatTableView.layout();
         // edit the boat name cell after creating
@@ -331,7 +331,7 @@ private TableView<Object_Boat> boatTableView;
     });
     
 	boatTableView.setRowFactory(tv -> {
-		TableRow<Object_Boat> row = new TableRow<>();
+		TableRow<BoatDTO> row = new TableRow<>();
 		row.setOnMouseClicked(event -> {
 			if (!row.isEmpty() && event.getButton() == MouseButton.SECONDARY && event.getClickCount() == 1) {
 				System.out.println("We want to do something with " + row.getItem().toString());

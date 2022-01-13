@@ -2,7 +2,7 @@ package com.ecsail.sql.select;
 
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
-import com.ecsail.structures.Object_Memo;
+import com.ecsail.structures.MemoDTO;
 import com.ecsail.structures.Object_Memo2;
 import com.ecsail.structures.Object_PaidDues;
 import javafx.collections.FXCollections;
@@ -13,17 +13,17 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class SqlMemos {
-    public static ObservableList<Object_Memo> getMemos(int ms_id) {
+    public static ObservableList<MemoDTO> getMemos(int ms_id) {
         String query = "SELECT * FROM memo";
         if(ms_id != 0)
             query +=  " WHERE ms_id='" + ms_id + "'";
-        ObservableList<Object_Memo> theseMemos = FXCollections.observableArrayList();
+        ObservableList<MemoDTO> theseMemos = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
             rs = stmt.executeQuery(query + ";");
             while (rs.next()) {
-                theseMemos.add(new Object_Memo( // why do I keep gettin a nullpointer exception here?
+                theseMemos.add(new MemoDTO( // why do I keep gettin a nullpointer exception here?
                         rs.getInt("MEMO_ID"),
                         rs.getInt("MS_ID"),
                         rs.getString("MEMO_DATE"),
@@ -65,16 +65,16 @@ public class SqlMemos {
         return theseMemos;
     }
 
-    public static Object_Memo getMemos(Object_PaidDues dues, String category) {
+    public static MemoDTO getMemos(Object_PaidDues dues, String category) {
         String query = "select * from memo where money_id=" + dues.getMoney_id() + " and category='" + category + "'";
         System.out.println("select * from memo where money_id=" + dues.getMoney_id());
-        Object_Memo thisMemo = null;
+        MemoDTO thisMemo = null;
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
             rs = stmt.executeQuery(query + ";");
             while (rs.next()) {
-                thisMemo = new Object_Memo( // why do I keep gettin a nullpointer exception here?
+                thisMemo = new MemoDTO( // why do I keep gettin a nullpointer exception here?
                         rs.getInt("MEMO_ID"),
                         rs.getInt("MS_ID"),
                         rs.getString("MEMO_DATE"),

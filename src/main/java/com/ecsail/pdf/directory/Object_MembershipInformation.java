@@ -5,8 +5,8 @@ import java.util.List;
 
 import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.select.*;
-import com.ecsail.structures.Object_Boat;
-import com.ecsail.structures.Object_MembershipList;
+import com.ecsail.structures.BoatDTO;
+import com.ecsail.structures.MembershipListDTO;
 import com.ecsail.structures.Object_Person;
 
 public class Object_MembershipInformation {
@@ -22,7 +22,7 @@ public class Object_MembershipInformation {
 	String slip;
 	String boats;
 	
-	public Object_MembershipInformation(Object_MembershipList m) {
+	public Object_MembershipInformation(MembershipListDTO m) {
 		this.primary = SqlPerson.getPersonByPid(m.getPid());
 		this.secondary = getSecondaryPerson(m);
 		this.children = getChildrenString(m);
@@ -33,7 +33,7 @@ public class Object_MembershipInformation {
 		this.boats = getBoatsString(m);
 	}
 	
-	private String getChildrenString(Object_MembershipList m) {
+	private String getChildrenString(MembershipListDTO m) {
 		String children = "Children: ";
 		int count = 0;
 		ArrayList<Object_Person> dependants = SqlPerson.getDependants(m);
@@ -46,7 +46,7 @@ public class Object_MembershipInformation {
 		return children;
 	}
 	
-	private String getSlipString(Object_MembershipList m) {
+	private String getSlipString(MembershipListDTO m) {
 	if (m.getSlip() != null)
 		slip = "Slip: " + m.getSlip();
 	else
@@ -55,7 +55,7 @@ public class Object_MembershipInformation {
 	}
 	
 	
-	private Object_Person getSecondaryPerson(Object_MembershipList m) {
+	private Object_Person getSecondaryPerson(MembershipListDTO m) {
 		Object_Person s = new Object_Person();
 		this.secondaryExists = false;
 		if (SqlExists.activePersonExists(m.getMsid(), 2)) {
@@ -96,13 +96,13 @@ public class Object_MembershipInformation {
 			this.emergencyPhone = "Emergency: " + SqlPhone.getListedPhoneByType(primary, "E");
 	}
 	
-	private String getBoatsString(Object_MembershipList m) {
+	private String getBoatsString(MembershipListDTO m) {
 		String memberBoats = "";
-		List<Object_Boat> boats = new ArrayList<Object_Boat>();
+		List<BoatDTO> boats = new ArrayList<BoatDTO>();
 		boats = SqlBoat.getBoats(m.getMsid());
 		int count = 0;
 		if (boats.size() > 0) {  // there are some boats
-			for (Object_Boat b : boats) {
+			for (BoatDTO b : boats) {
 				count++;
 				memberBoats += b.getModel();
 				if (b.getRegistration_num() != null) {  // this boat has registration

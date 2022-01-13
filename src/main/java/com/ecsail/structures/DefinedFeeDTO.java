@@ -3,7 +3,7 @@ package com.ecsail.structures;
 
 import java.math.BigDecimal;
 
-public class Object_DefinedFee {
+public class DefinedFeeDTO {
 
 	private Integer fiscal_year;
 	private BigDecimal dues_regular;
@@ -24,7 +24,7 @@ public class Object_DefinedFee {
 	private BigDecimal kayak_shed_key;
 	private BigDecimal work_credit;
 
-	public Object_DefinedFee(Integer fiscal_year, BigDecimal dues_regular, BigDecimal dues_family, BigDecimal dues_lake_associate, BigDecimal dues_social, BigDecimal initiation, BigDecimal wet_slip, BigDecimal beach, BigDecimal winter_storage, BigDecimal main_gate_key, BigDecimal sail_loft, BigDecimal sail_loft_key, BigDecimal sail_school_laser_loft, BigDecimal sail_school_loft_key, BigDecimal kayak_rack, BigDecimal kayak_shed, BigDecimal kayak_shed_key, BigDecimal work_credit) {
+	public DefinedFeeDTO(Integer fiscal_year, BigDecimal dues_regular, BigDecimal dues_family, BigDecimal dues_lake_associate, BigDecimal dues_social, BigDecimal initiation, BigDecimal wet_slip, BigDecimal beach, BigDecimal winter_storage, BigDecimal main_gate_key, BigDecimal sail_loft, BigDecimal sail_loft_key, BigDecimal sail_school_laser_loft, BigDecimal sail_school_loft_key, BigDecimal kayak_rack, BigDecimal kayak_shed, BigDecimal kayak_shed_key, BigDecimal work_credit) {
 		this.fiscal_year = fiscal_year;
 		this.dues_regular = dues_regular;
 		this.dues_family = dues_family;
@@ -45,7 +45,7 @@ public class Object_DefinedFee {
 		this.work_credit = work_credit;
 	}
 
-	public Object_DefinedFee() {
+	public DefinedFeeDTO() {
 		// default constructor
 	}
 

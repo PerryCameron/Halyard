@@ -31,9 +31,9 @@ import java.util.Comparator;
 public class PDF_DepositReport {
 	
 	private static ObservableList<Object_PaidDues> paidDuesForDeposit;  // these are the paid dues for a single deposit
-	private final Object_Deposit currentDeposit;
-	private final Object_DefinedFee currentDefinedFee;
-	private Object_DepositSummary totals;
+	private final DepositDTO currentDeposit;
+	private final DefinedFeeDTO currentDefinedFee;
+	private DepositSummaryDTO totals;
 	String fiscalYear;  // save this because I clear current Deposit
 	Boolean includeDollarSigns = false;
 	DecimalFormat df = new DecimalFormat("#,###.00");
@@ -46,7 +46,7 @@ public class PDF_DepositReport {
 			"Amount"
 		};
 
-	public PDF_DepositReport(Object_Deposit cd,Object_DefinedFee cdf, Object_DepositPDF pdfOptions) {
+	public PDF_DepositReport(DepositDTO cd, DefinedFeeDTO cdf, DepositPDFDTO pdfOptions) {
 		this.currentDeposit = cd;
 		PDF_DepositReport.paidDuesForDeposit = SqlDeposit.getPaidDues(currentDeposit);
 		this.currentDefinedFee = cdf;
@@ -488,9 +488,9 @@ public class PDF_DepositReport {
 		return mainTable;
 	}
 	
-	private Object_DepositSummary updateTotals() {
+	private DepositSummaryDTO updateTotals() {
 		int numberOfRecordsCounted = 0; // number of records counted
-		Object_DepositSummary t = new Object_DepositSummary();
+		DepositSummaryDTO t = new DepositSummaryDTO();
 		for (Object_PaidDues d : paidDuesForDeposit) {
 
 			if (d.getBeach() != 0) { ///////// BEACH

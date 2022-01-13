@@ -69,7 +69,7 @@ public class SqlUpdate {
 		}
 	}
 	
-	public static void updateAddress(String address,Object_MembershipList membership) {
+	public static void updateAddress(String address, MembershipListDTO membership) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE membership SET address=\"" + address
@@ -82,7 +82,7 @@ public class SqlUpdate {
 		membership.setAddress(address);
 	}
 	
-	public static void updateCity(String city,Object_MembershipList membership) {
+	public static void updateCity(String city, MembershipListDTO membership) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE membership SET city=\"" + city
@@ -95,7 +95,7 @@ public class SqlUpdate {
 		membership.setCity(city);
 	}
 	
-	public static void updateState(String state,Object_MembershipList membership) {
+	public static void updateState(String state, MembershipListDTO membership) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE membership SET state=\"" + state
@@ -109,7 +109,7 @@ public class SqlUpdate {
 		
 	}
 	
-	public static void updateZipcode(String zip,Object_MembershipList membership) {
+	public static void updateZipcode(String zip, MembershipListDTO membership) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE membership SET zip=\"" + zip
@@ -372,7 +372,7 @@ public class SqlUpdate {
 		}
 	}
 	
-	public static void updateSlip(int ms_id, Object_MembershipList membership) {  // ms_id in this case came from the text field and is converted from membership_id
+	public static void updateSlip(int ms_id, MembershipListDTO membership) {  // ms_id in this case came from the text field and is converted from membership_id
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("update slip set subleased_to='" + ms_id + "' where ms_id='" + membership.getMsid() + "';"));
@@ -384,7 +384,7 @@ public class SqlUpdate {
 		}
 	}
 	
-	public static void releaseSlip(Object_MembershipList membership) {  // this releases the slip using the slip owners ms_id
+	public static void releaseSlip(MembershipListDTO membership) {  // this releases the slip using the slip owners ms_id
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("update slip set subleased_to=null where ms_id='" + membership.getMsid() + "';"));
@@ -402,7 +402,7 @@ public class SqlUpdate {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("update slip set subleased_to=null where subleased_to='" + subleasee + "';"));
 			BoxConsole.setInfoLine("Released sublease for subleaser " + subleasee, "orange");
-			Object_MembershipList ownerMembership = SqlMembershipList.getMembershipFromList(subleasee, HalyardPaths.getYear());
+			MembershipListDTO ownerMembership = SqlMembershipList.getMembershipFromList(subleasee, HalyardPaths.getYear());
 			ownerMembership.setSubleaser(0);
 			Main.edits.setSlipsEdits(Main.edits.getSlipsEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
@@ -411,13 +411,13 @@ public class SqlUpdate {
 		}
 	}
 	
-	public static void reAssignSlip(int ms_id, Object_MembershipList membership) {  // this reassignes the slip using the subleasee ms_id (came from text field)
+	public static void reAssignSlip(int ms_id, MembershipListDTO membership) {  // this reassignes the slip using the subleasee ms_id (came from text field)
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("update slip set ms_id='" + ms_id + "' where ms_id='" + membership.getMsid() + "';"));
 			String slip = membership.getSlip();
 			membership.setSlip("0");
-			Object_MembershipList newSlipOwnerMembership = SqlMembershipList.getMembershipFromList(ms_id, HalyardPaths.getYear());
+			MembershipListDTO newSlipOwnerMembership = SqlMembershipList.getMembershipFromList(ms_id, HalyardPaths.getYear());
 			newSlipOwnerMembership.setSlip(slip);
 			Main.edits.setSlipsEdits(Main.edits.getSlipsEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
@@ -544,7 +544,7 @@ public class SqlUpdate {
 		
 	}
 	
-	public static Boolean updateMembershipId(Object_MembershipId thisId, String field, String attribute) {
+	public static Boolean updateMembershipId(MembershipIdDTO thisId, String field, String attribute) {
 		Boolean noError = true;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
@@ -605,7 +605,7 @@ public class SqlUpdate {
 		}
 	}
 
-	public static void updateDefinedFeeRecord(Object_DefinedFee d) {
+	public static void updateDefinedFeeRecord(DefinedFeeDTO d) {
 		String query = null;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();

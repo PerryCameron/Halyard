@@ -4,8 +4,8 @@ import com.ecsail.main.HalyardPaths;
 import com.ecsail.sql.select.SqlBoat;
 import com.ecsail.sql.select.SqlMembershipList;
 import com.ecsail.sql.select.SqlMembership_Id;
-import com.ecsail.structures.Object_Boat;
-import com.ecsail.structures.Object_MembershipList;
+import com.ecsail.structures.BoatDTO;
+import com.ecsail.structures.MembershipListDTO;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.colors.DeviceCmyk;
@@ -25,7 +25,7 @@ import java.io.*;
 import java.util.List;
 
 public class PDF_BoatReport {
-    private ObservableList<Object_MembershipList> membershipLists;
+    private ObservableList<MembershipListDTO> membershipLists;
 
     public PDF_BoatReport() {
         this.membershipLists = SqlMembershipList.getRoster(HalyardPaths.getYear(), true);
@@ -50,7 +50,7 @@ public class PDF_BoatReport {
         Document document = new Document(pdf);
         document.add(titlePdfTable());
 
-        for(Object_MembershipList m: membershipLists) {
+        for(MembershipListDTO m: membershipLists) {
         membershipTable(m, document);
         }
 
@@ -70,7 +70,7 @@ public class PDF_BoatReport {
 
     }
 
-    private void removeKayaksAndCanoes(List<Object_Boat> boats) {
+    private void removeKayaksAndCanoes(List<BoatDTO> boats) {
         boats.removeIf(b -> b.getModel().equals("Kayak"));
         boats.removeIf(b -> b.getModel().equals("Canoe"));
         boats.removeIf(b -> b.getModel().equals("Paddle Board"));
@@ -80,8 +80,8 @@ public class PDF_BoatReport {
         boats.stream().filter(b -> b.getManufacture_year() == null).forEach(b -> b.setManufacture_year(""));
     }
 
-    public void membershipTable(Object_MembershipList ml, Document document) {
-        List<Object_Boat> boats = SqlBoat.getBoats(ml.getMsid());
+    public void membershipTable(MembershipListDTO ml, Document document) {
+        List<BoatDTO> boats = SqlBoat.getBoats(ml.getMsid());
         if(boats.size() > 0) {
             System.out.println("Creating Entry for mebership " + ml.getMsid() + " " + ml.getLname());
             removeKayaksAndCanoes(boats);
@@ -140,7 +140,7 @@ public class PDF_BoatReport {
             cell.add(new Paragraph(""));
             detailTable.addCell(cell);
 
-            for(Object_Boat b: boats) {
+            for(BoatDTO b: boats) {
                 cell = new Cell();
                 cell.setBorder(Border.NO_BORDER);
                 cell.setWidth(50);

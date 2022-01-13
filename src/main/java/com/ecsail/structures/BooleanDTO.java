@@ -3,10 +3,10 @@ package com.ecsail.structures;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 
-public class Object_Boolean {
+public class BooleanDTO {
 	private BooleanProperty xBoolean;
 
-	public Object_Boolean(Boolean xBoolean) {
+	public BooleanDTO(Boolean xBoolean) {
 		this.xBoolean = new SimpleBooleanProperty(xBoolean);
 	}
 

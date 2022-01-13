@@ -3,11 +3,11 @@ package com.ecsail.structures;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
-public class Object_BoatOwner {
+public class BoatOwnerDTO {
 	private IntegerProperty msid;
 	private IntegerProperty boat_id;
 	
-	public Object_BoatOwner(Integer msid, Integer boat_id) {
+	public BoatOwnerDTO(Integer msid, Integer boat_id) {
 		super();
 		this.msid = new SimpleIntegerProperty(msid);
 		this.boat_id = new SimpleIntegerProperty(boat_id);

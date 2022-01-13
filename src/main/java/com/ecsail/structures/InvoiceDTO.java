@@ -10,7 +10,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
-public class Object_Invoice {
+public class InvoiceDTO {
     private final Object_Money invoice;
     private GridPane gridPane;
     private TextField yscTextField;
@@ -111,10 +111,10 @@ public class Object_Invoice {
     private CheckBox renewCheckBox;
     private ComboBox<Integer> comboBox;
 
-    private Object_DefinedFee definedFees;
+    private DefinedFeeDTO definedFees;
     Separator separator = new Separator(Orientation.HORIZONTAL);
 
-    public Object_Invoice(Object_Money invoice, Object_DefinedFee definedFees, TableView<Object_Payment> paymentTableView) {
+    public InvoiceDTO(Object_Money invoice, DefinedFeeDTO definedFees, TableView<Object_Payment> paymentTableView) {
         Text text1 = new Text("Fee");
         Text text2 = new Text("Price");
         Text text3 = new Text("Total");
@@ -441,11 +441,11 @@ public class Object_Invoice {
         this.renewCheckBox = renewCheckBox;
     }
 
-    public Object_DefinedFee getDefinedFees() {
+    public DefinedFeeDTO getDefinedFees() {
         return definedFees;
     }
 
-    public void setDefinedFees(Object_DefinedFee definedFees) {
+    public void setDefinedFees(DefinedFeeDTO definedFees) {
         this.definedFees = definedFees;
     }
 

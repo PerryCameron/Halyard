@@ -1,7 +1,7 @@
 package com.ecsail.gui.boxes;
 
 import com.ecsail.sql.SqlUpdate;
-import com.ecsail.structures.Object_MembershipList;
+import com.ecsail.structures.MembershipListDTO;
 
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -17,9 +17,9 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 public class HBoxAddress extends HBox {
-	Object_MembershipList membership;
+	MembershipListDTO membership;
 	
-	public HBoxAddress(Object_MembershipList me) {
+	public HBoxAddress(MembershipListDTO me) {
 		this.membership = me;
 			ObservableList<String> states = 
 		    FXCollections.observableArrayList(

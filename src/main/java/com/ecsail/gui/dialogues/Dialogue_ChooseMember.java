@@ -2,7 +2,7 @@ package com.ecsail.gui.dialogues;
 
 import com.ecsail.sql.SqlInsert;
 import com.ecsail.sql.select.SqlMembershipList;
-import com.ecsail.structures.Object_MembershipList;
+import com.ecsail.structures.MembershipListDTO;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -19,10 +19,10 @@ import javafx.stage.Stage;
 
 public class Dialogue_ChooseMember extends Stage {
 	//private ObservableList<Object_MembershipList> boatOwners;
-	private Object_MembershipList newOwner;
+	private MembershipListDTO newOwner;
 	private String boat_id;
 	
-	public Dialogue_ChooseMember(ObservableList<Object_MembershipList> boatOwners, int boat_id) {
+	public Dialogue_ChooseMember(ObservableList<MembershipListDTO> boatOwners, int boat_id) {
 		
 		//this.boatOwners=boatOwners;
 		//////////////// ADD OBJECTS ///////////////////

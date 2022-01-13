@@ -21,8 +21,8 @@ import com.ecsail.main.HalyardPaths;
 import com.ecsail.sql.SqlDelete;
 import com.ecsail.sql.SqlUpdate;
 import com.ecsail.sql.select.SqlMembershipList;
-import com.ecsail.structures.Object_Boat;
-import com.ecsail.structures.Object_MembershipList;
+import com.ecsail.structures.BoatDTO;
+import com.ecsail.structures.MembershipListDTO;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -49,16 +49,16 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 
 public class TabBoatView extends Tab {
-	private ObservableList<Object_MembershipList> boatOwners;
+	private ObservableList<MembershipListDTO> boatOwners;
 	private int pictureNumber = 0;
 	private File imagePath;
 	private Sftp ftp;
 	private ArrayList<String> localImageFiles = null;
 	private ArrayList<String> remoteImageFiles = null;
-	private Object_Boat b;
+	private BoatDTO b;
 	/// need to add history to boat_owner table
 
-	public TabBoatView(String text, Object_Boat b) {
+	public TabBoatView(String text, BoatDTO b) {
 		super(text);
 		this.b = b;
 		this.boatOwners = SqlMembershipList.getBoatOwnerRoster(b.getBoat_id());
@@ -73,7 +73,7 @@ public class TabBoatView extends Tab {
 			image = getImage(HalyardPaths.BOATDIR + "/" + b.getBoat_id() + "/" + localImageFiles.get(pictureNumber));
 		checkIfLocalandRemoteDirectoriesMatch();
 
-		TableView<Object_MembershipList> boatOwnerTableView = new TableView<>();
+		TableView<MembershipListDTO> boatOwnerTableView = new TableView<>();
 		VBox vboxGrey = new VBox(); // this is the hbox for holding all content
 		VBox vboxBlue = new VBox(); // creates blue boarder around content
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
@@ -157,9 +157,9 @@ public class TabBoatView extends Tab {
 		Button buttonAddPicture = new Button("Add");
 		Button buttonDelete = new Button("Delete");
 		
-		TableColumn<Object_MembershipList, Integer> col1 = new TableColumn<Object_MembershipList, Integer>("MEM");
-		TableColumn<Object_MembershipList, String> col2 = new TableColumn<Object_MembershipList, String>("Last Name");
-		TableColumn<Object_MembershipList, String> col3 = new TableColumn<Object_MembershipList, String>("First Name");
+		TableColumn<MembershipListDTO, Integer> col1 = new TableColumn<MembershipListDTO, Integer>("MEM");
+		TableColumn<MembershipListDTO, String> col2 = new TableColumn<MembershipListDTO, String>("Last Name");
+		TableColumn<MembershipListDTO, String> col3 = new TableColumn<MembershipListDTO, String>("First Name");
 		Button boatOwnerAdd = new Button("Add");
 		Button boatOwnerDelete = new Button("Delete");
 
@@ -297,9 +297,9 @@ public class TabBoatView extends Tab {
 		boatOwnerTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		boatOwnerTableView.setPrefHeight(90);
 
-		col1.setCellValueFactory(new PropertyValueFactory<Object_MembershipList, Integer>("membershipId"));
-		col2.setCellValueFactory(new PropertyValueFactory<Object_MembershipList, String>("lname"));
-		col3.setCellValueFactory(new PropertyValueFactory<Object_MembershipList, String>("fname"));
+		col1.setCellValueFactory(new PropertyValueFactory<MembershipListDTO, Integer>("membershipId"));
+		col2.setCellValueFactory(new PropertyValueFactory<MembershipListDTO, String>("lname"));
+		col3.setCellValueFactory(new PropertyValueFactory<MembershipListDTO, String>("fname"));
 
 		/// sets width of columns by percentage
 		col1.setMaxWidth(1f * Integer.MAX_VALUE * 20); // Mem 5%

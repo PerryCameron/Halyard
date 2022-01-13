@@ -5,7 +5,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class Object_Membership {
+public class MembershipDTO {
 
 	private IntegerProperty msid; /// unique auto key for Membership
 	private IntegerProperty pid;  /// pid of Main Member
@@ -18,7 +18,7 @@ public class Object_Membership {
 	private StringProperty state;
 	private StringProperty zip;
 
-	public Object_Membership(Integer msid, Integer pid, String joinDate, String memType
+	public MembershipDTO(Integer msid, Integer pid, String joinDate, String memType
 			, String address, String city, String state, String zip) {
 
 		this.msid = new SimpleIntegerProperty(msid);
@@ -35,7 +35,7 @@ public class Object_Membership {
 	
 	
 
-	public Object_Membership() {
+	public MembershipDTO() {
 		// TODO Auto-generated constructor stub
 	}
 

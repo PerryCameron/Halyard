@@ -2,7 +2,7 @@ package com.ecsail.structures;
 
 import javafx.scene.text.Text;
 
-public class Object_DepositSummaryText {
+public class DepositSummaryTextDTO {
 	/////// number of records //////////
 	Text duesNumberText = new Text();
 	Text gateKeyNumberText = new Text();
@@ -38,7 +38,7 @@ public class Object_DepositSummaryText {
 	Text yspDonationMoneyText = new Text();
 	Text totalMoneyText = new Text();
 	
-	public Object_DepositSummaryText() {
+	public DepositSummaryTextDTO() {
 		this.duesNumberText.setText("0");
 		this.gateKeyNumberText.setText("0");
 		this.sailLoftKeyNumberText.setText("0");

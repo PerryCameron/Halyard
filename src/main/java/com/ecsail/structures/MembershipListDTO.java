@@ -5,7 +5,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class Object_MembershipList extends Object_Membership {
+public class MembershipListDTO extends MembershipDTO {
 
 	private StringProperty lname;
 	private StringProperty fname;
@@ -14,8 +14,8 @@ public class Object_MembershipList extends Object_Membership {
 	private IntegerProperty membershipId;
 	private StringProperty selectedYear;
 	
-	public Object_MembershipList(Integer msid, Integer pid, Integer membershipId, String joinDate, String memType,
-			String slip, String lname, String fname, Integer subleaser, String address, String city, String state, String zip, String selectedYear) {
+	public MembershipListDTO(Integer msid, Integer pid, Integer membershipId, String joinDate, String memType,
+							 String slip, String lname, String fname, Integer subleaser, String address, String city, String state, String zip, String selectedYear) {
 		super(msid, pid, joinDate, memType, address, city, state, zip);
 		this.lname = new SimpleStringProperty(lname);
 		this.fname = new SimpleStringProperty(fname);
@@ -27,7 +27,7 @@ public class Object_MembershipList extends Object_Membership {
 
 	
 
-	public Object_MembershipList() {
+	public MembershipListDTO() {
 		// TODO Auto-generated constructor stub
 	}
 

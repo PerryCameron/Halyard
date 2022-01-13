@@ -13,7 +13,7 @@ import com.ecsail.sql.SqlInsert;
 import com.ecsail.sql.select.SqlAward;
 import com.ecsail.sql.select.SqlSelect;
 import com.ecsail.sql.SqlUpdate;
-import com.ecsail.structures.Object_Award;
+import com.ecsail.structures.AwardDTO;
 import com.ecsail.structures.Object_Person;
 
 import javafx.beans.property.SimpleObjectProperty;
@@ -39,8 +39,8 @@ import javafx.util.Callback;
 public class HBoxAward extends HBox {
 
 	private Object_Person person;
-	private ObservableList<Object_Award> award;
-	private TableView<Object_Award> awardTableView;
+	private ObservableList<AwardDTO> award;
+	private TableView<AwardDTO> awardTableView;
 	private String currentYear;
 	
 	@SuppressWarnings("unchecked")
@@ -55,7 +55,7 @@ public class HBoxAward extends HBox {
 		VBox vboxButtons = new VBox(); // holds officer buttons
 		HBox hboxGrey = new HBox(); // this is here for the grey background to make nice apperence
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
-		awardTableView = new TableView<Object_Award>();
+		awardTableView = new TableView<AwardDTO>();
 
 		/////////////////  ATTRIBUTES  /////////////////////
 		awardAdd.setPrefWidth(60);
@@ -85,13 +85,13 @@ public class HBoxAward extends HBox {
 			awardTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY );
 			
 			
-			TableColumn<Object_Award, String> Col1 = createColumn("Year", Object_Award::awardYearProperty);
+			TableColumn<AwardDTO, String> Col1 = createColumn("Year", AwardDTO::awardYearProperty);
 			Col1.setSortType(TableColumn.SortType.DESCENDING);
 	        Col1.setOnEditCommit(
-	                new EventHandler<CellEditEvent<Object_Award, String>>() {
+	                new EventHandler<CellEditEvent<AwardDTO, String>>() {
 	                    @Override
-	                    public void handle(CellEditEvent<Object_Award, String> t) {
-	                        ((Object_Award) t.getTableView().getItems().get(
+	                    public void handle(CellEditEvent<AwardDTO, String> t) {
+	                        ((AwardDTO) t.getTableView().getItems().get(
 	                                t.getTablePosition().getRow())
 	                                ).setAwardYear(t.getNewValue());
 	                        SqlUpdate.updateAward("award_year",t.getRowValue().getAwardId(), t.getNewValue());  // have to get by money id and pid eventually
@@ -101,12 +101,12 @@ public class HBoxAward extends HBox {
 	        
 	        
 	        ObservableList<Awards> awardsList = FXCollections.observableArrayList(Awards.values());
-	    	final TableColumn<Object_Award, Awards> Col2 = new TableColumn<Object_Award, Awards>("Award Type");
-	        Col2.setCellValueFactory(new Callback<CellDataFeatures<Object_Award, Awards>, ObservableValue<Awards>>() {
+	    	final TableColumn<AwardDTO, Awards> Col2 = new TableColumn<AwardDTO, Awards>("Award Type");
+	        Col2.setCellValueFactory(new Callback<CellDataFeatures<AwardDTO, Awards>, ObservableValue<Awards>>() {
 	        	 
 	            @Override
-	            public ObservableValue<Awards> call(CellDataFeatures<Object_Award, Awards> param) {
-	                Object_Award thisAward = param.getValue();
+	            public ObservableValue<Awards> call(CellDataFeatures<AwardDTO, Awards> param) {
+	                AwardDTO thisAward = param.getValue();
 	                String awardCode = thisAward.getAwardType();
 	                Awards type = Awards.getByCode(awardCode);
 	                return new SimpleObjectProperty<Awards>(type);
@@ -115,11 +115,11 @@ public class HBoxAward extends HBox {
 	        
 	        Col2.setCellFactory(ComboBoxTableCell.forTableColumn(awardsList));
 	 
-	        Col2.setOnEditCommit((CellEditEvent<Object_Award, Awards> event) -> {
-	            TablePosition<Object_Award, Awards> pos = event.getTablePosition();
+	        Col2.setOnEditCommit((CellEditEvent<AwardDTO, Awards> event) -> {
+	            TablePosition<AwardDTO, Awards> pos = event.getTablePosition();
 	            Awards newAward = event.getNewValue();
 	            int row = pos.getRow();
-	            Object_Award thisAward = event.getTableView().getItems().get(row);
+	            AwardDTO thisAward = event.getTableView().getItems().get(row);
 	            SqlUpdate.updateAward("award_type",thisAward.getAwardId(), newAward.getCode());
 	            thisAward.setAwardType(newAward.getCode());
 	        });
@@ -135,12 +135,12 @@ public class HBoxAward extends HBox {
 				// get next primary key for awards table
 				int awards_id = SqlSelect.getCount("awards","award_id") + 1; // gets last memo_id number
 				// Create new award object
-				Object_Award a = new Object_Award(awards_id,person.getP_id(),currentYear,"New Award");
+				AwardDTO a = new AwardDTO(awards_id,person.getP_id(),currentYear,"New Award");
 				// Add info from award object to SQL database
 				if(SqlInsert.addAwardRecord(a));
 					// create a new row in tableView to match SQL insert from above
 					award.add(a);
-				Collections.sort(award, Comparator.comparing(Object_Award::getAwardId).reversed());
+				Collections.sort(award, Comparator.comparing(AwardDTO::getAwardId).reversed());
 				// this line prevents strange buggy behaviour
 				awardTableView.layout();
 				// edit the year cell after creating

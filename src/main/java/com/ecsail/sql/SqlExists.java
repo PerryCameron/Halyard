@@ -5,8 +5,8 @@ import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.HalyardPaths;
 import com.ecsail.main.Main;
-import com.ecsail.structures.Object_Membership;
-import com.ecsail.structures.Object_MembershipList;
+import com.ecsail.structures.MembershipDTO;
+import com.ecsail.structures.MembershipListDTO;
 import com.ecsail.structures.Object_Person;
 
 import java.sql.ResultSet;
@@ -203,7 +203,7 @@ public class SqlExists {
 		return result;
 	}
 	
-	public static boolean fiscalRecordExists(Object_MembershipList ms, int year) {
+	public static boolean fiscalRecordExists(MembershipListDTO ms, int year) {
 		boolean result = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
@@ -254,7 +254,7 @@ public class SqlExists {
 		return result;
 	}
 	
-	public static Boolean moneyExists(String year, Object_Membership membership) {
+	public static Boolean moneyExists(String year, MembershipDTO membership) {
 		boolean result = false;
 		  // we must convert here (this is getting crazy!)
 		try {
@@ -389,7 +389,7 @@ public class SqlExists {
 		return result;
 	}
 	
-	public static Boolean paidLate(Object_MembershipList r) {
+	public static Boolean paidLate(MembershipListDTO r) {
 		boolean result = false;
 		try {  
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();

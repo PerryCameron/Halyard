@@ -63,7 +63,7 @@ public class SqlInsert {
 		}
 	}
 	
-	public static boolean addAwardRecord(Object_Award a) {
+	public static boolean addAwardRecord(AwardDTO a) {
 		boolean noError = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
@@ -76,7 +76,7 @@ public class SqlInsert {
 		return noError;  // return true if insert performed without error
 	}
 	
-	public static boolean addBoatRecord(Object_Boat b, int msid) {
+	public static boolean addBoatRecord(BoatDTO b, int msid) {
 		boolean noError = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
@@ -104,7 +104,7 @@ public class SqlInsert {
 		}
 	}
 	
-	public static void addWorkCreditRecord(int moneyId, Object_Membership membership) {
+	public static void addWorkCreditRecord(int moneyId, MembershipDTO membership) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("INSERT INTO work_credit () VALUES (" 
@@ -136,7 +136,7 @@ public class SqlInsert {
 		}
 	}
 	
-	public static void addDefinedFeeRecord(Object_DefinedFee d) {
+	public static void addDefinedFeeRecord(DefinedFeeDTO d) {
 		//Object_DefinedFee definedFees = selectDefinedFees(year);
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
@@ -153,7 +153,7 @@ public class SqlInsert {
 		}
 	}
 	
-	public static boolean addMembershipIsSucessful(Object_MembershipList nm) {
+	public static boolean addMembershipIsSucessful(MembershipListDTO nm) {
 		boolean updateIsSucessful = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
@@ -166,7 +166,7 @@ public class SqlInsert {
 		return updateIsSucessful;
 	}
 	
-	public static void addMemo(Object_Memo m) {
+	public static void addMemo(MemoDTO m) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("INSERT INTO memo () VALUES (" + m.getMemo_id() + "," + m.getMsid() + ",'" + m.getMemo_date() + "',\"" + m.getMemo() + "\"," + m.getMoney_id() + ",\"" + m.getCategory() + "\");"));
@@ -176,7 +176,7 @@ public class SqlInsert {
 		}
 	}
 	
-	public static void addDeposit(Object_Deposit d) {
+	public static void addDeposit(DepositDTO d) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("INSERT INTO deposit () VALUES (" + d.getDeposit_id() + ",'" + d.getDepositDate() + "','" + d.getFiscalYear() + "'," + d.getBatch() + ");"));
@@ -186,7 +186,7 @@ public class SqlInsert {
 		}
 	}
 	
-	public static void addMembershipId(Object_MembershipId id) {
+	public static void addMembershipId(MembershipIdDTO id) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("INSERT INTO membership_id () VALUES (" + id.getMid() + ",'" + id.getFiscal_Year() + "','" + id.getMs_id() 

@@ -20,8 +20,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.ecsail.main.HalyardPaths;
 import com.ecsail.main.SaveFileChooser;
-import com.ecsail.structures.Object_Email;
-import com.ecsail.structures.Object_MembershipList;
+import com.ecsail.structures.EmailDTO;
+import com.ecsail.structures.MembershipListDTO;
 import com.ecsail.structures.Object_Phone;
 import com.ecsail.structures.Object_RosterSelect;
 
@@ -30,7 +30,7 @@ import javafx.collections.ObservableList;
 public class Xls_roster {
 	private Object_RosterSelect printChoices;
 	
-	public Xls_roster(ObservableList<Object_MembershipList> rosters, Object_RosterSelect printChoices) {
+	public Xls_roster(ObservableList<MembershipListDTO> rosters, Object_RosterSelect printChoices) {
 		this.printChoices = printChoices;
 		ArrayList<String> headers = getHeaders();
 		System.out.println("Creating Roster..");
@@ -68,7 +68,7 @@ public class Xls_roster {
         
         // prints the main body of information
         int rowNum = 1;
-        for(Object_MembershipList m: rosters) {
+        for(MembershipListDTO m: rosters) {
             createRow(sheet,rowNum,m);
             rowNum++;
         }
@@ -154,7 +154,7 @@ public class Xls_roster {
 		return fileName += " Roster.xlsx";
 	}
 	
-	private Row createRow(Sheet sheet, int rowNum, Object_MembershipList m) {
+	private Row createRow(Sheet sheet, int rowNum, MembershipListDTO m) {
 		Row row = sheet.createRow(rowNum);
 		int cellNumber = 0;
 		if(printChoices.isMembership_id()) {
@@ -274,9 +274,9 @@ public class Xls_roster {
 	
 	private String getEmail(int p_id) {
 		String emailString = "";
-		ObservableList<Object_Email> email = SqlEmail.getEmail(p_id);
+		ObservableList<EmailDTO> email = SqlEmail.getEmail(p_id);
 		if (email != null) {
-			for (Object_Email e: email) {
+			for (EmailDTO e: email) {
 				if(e.isIsPrimaryUse()) {
 					emailString = e.getEmail();
 					break;
@@ -289,7 +289,7 @@ public class Xls_roster {
 		return emailString;
 	}
 	
-	private String getSubleaser(Object_MembershipList owner) {
+	private String getSubleaser(MembershipListDTO owner) {
 		String subleaseString = "";
 		if(owner.getSubleaser() != 0) {
 			subleaseString = SqlMembership_Id.getId(owner.getSubleaser());

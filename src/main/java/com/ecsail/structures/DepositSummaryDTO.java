@@ -3,7 +3,7 @@ package com.ecsail.structures;
 
 import java.math.BigDecimal;
 
-public class Object_DepositSummary {
+public class DepositSummaryDTO {
 
 	private BigDecimal officer_credit;
 	private BigDecimal gate_key;
@@ -46,7 +46,7 @@ public class Object_DepositSummary {
 	private BigDecimal paid;
 	
 	
-	public Object_DepositSummary() {
+	public DepositSummaryDTO() {
 		clear();  // initialized them to 0 except date and number
 		this.depositNumber = 0;
 		this.depositDate = "";

@@ -4,7 +4,7 @@ import com.ecsail.main.HalyardPaths;
 import com.ecsail.pdf.PDF_SlipChart;
 import com.ecsail.main.Launcher;
 import com.ecsail.sql.select.SqlMembershipList;
-import com.ecsail.structures.Object_MembershipList;
+import com.ecsail.structures.MembershipListDTO;
 
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -26,8 +26,8 @@ import javafx.scene.transform.Rotate;
 public class TabSlips extends Tab {
 
 	//private ObservableList<Object_Slip> slips;
-	private ObservableList<Object_MembershipList> slipmemberships;
-	private ObservableList<Object_MembershipList> subleaserMemberships;
+	private ObservableList<MembershipListDTO> slipmemberships;
+	private ObservableList<MembershipListDTO> subleaserMemberships;
 	
 	private Text d40 = null ,d39 = null ,a35= null ,a34= null ,b93= null ,b94= null ,c157= null ,c156 = null;
 	private Text d38 = null ,d37 = null ,a33= null ,a32= null ,b91= null ,b92= null ,c155= null ,c154 = null;
@@ -312,7 +312,7 @@ public class TabSlips extends Tab {
 	}
 
 	private void fillSlips() {
-		for (Object_MembershipList mem : slipmemberships) {
+		for (MembershipListDTO mem : slipmemberships) {
 			if (mem.getSlip() != null) {
 				switch (mem.getSlip()) {
 				case "D40":

@@ -5,7 +5,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class Object_Award {
+public class AwardDTO {
 	
 	private IntegerProperty awardId;
 	private IntegerProperty pid;
@@ -14,7 +14,7 @@ public class Object_Award {
 
 
 	
-	public Object_Award(Integer awardId, Integer pid, String awardYear,  String awardType) {
+	public AwardDTO(Integer awardId, Integer pid, String awardYear, String awardType) {
 		this.awardId = new SimpleIntegerProperty(awardId);
 		this.pid = new SimpleIntegerProperty(pid);
 		this.awardYear = new SimpleStringProperty(awardYear);

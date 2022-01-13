@@ -3,7 +3,7 @@ package com.ecsail.main;
 import java.sql.SQLException;
 
 import com.ecsail.gui.boxes.VBoxToolBar;
-import com.ecsail.structures.Object_MembershipList;
+import com.ecsail.structures.MembershipListDTO;
 import com.ecsail.structures.Object_TupleCount;
 
 import com.jcraft.jsch.JSchException;
@@ -23,7 +23,7 @@ import javafx.stage.WindowEvent;
 public class Main extends Application {
 static ConnectDatabase connect;  // mysql and ssh connection
 public static Object_TupleCount edits = new Object_TupleCount();
-public static ObservableList<Object_MembershipList> activememberships;
+public static ObservableList<MembershipListDTO> activememberships;
 public static String selectedYear; 
 static BorderPane mainPane;
 static Launcher vboxMain;

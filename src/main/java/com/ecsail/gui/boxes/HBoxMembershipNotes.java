@@ -8,7 +8,7 @@ import java.util.function.Function;
 
 import com.ecsail.main.EditCell;
 import com.ecsail.main.Note;
-import com.ecsail.structures.Object_Memo;
+import com.ecsail.structures.MemoDTO;
 
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
@@ -35,7 +35,7 @@ public class HBoxMembershipNotes extends HBox {
 		VBox buttonVBox = new VBox();
 		Button add = new Button("Add");
 		Button delete = new Button("Delete");
-		TableView<Object_Memo> memoTableView = new TableView<Object_Memo>();
+		TableView<MemoDTO> memoTableView = new TableView<MemoDTO>();
 		
 		/////////////  ATTRIBUTES /////////////
 		add.setPrefWidth(60);
@@ -63,32 +63,32 @@ public class HBoxMembershipNotes extends HBox {
 		memoTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY );
 		memoTableView.setFixedCellSize(30);
 
-		TableColumn<Object_Memo, String> Col1 = createColumn("Date", Object_Memo::memo_dateProperty);
+		TableColumn<MemoDTO, String> Col1 = createColumn("Date", MemoDTO::memo_dateProperty);
         Col1.setOnEditCommit(
-                new EventHandler<CellEditEvent<Object_Memo, String>>() {
+                new EventHandler<CellEditEvent<MemoDTO, String>>() {
                     @Override
-                    public void handle(CellEditEvent<Object_Memo, String> t) {
-                        ((Object_Memo) t.getTableView().getItems().get(
+                    public void handle(CellEditEvent<MemoDTO, String> t) {
+                        ((MemoDTO) t.getTableView().getItems().get(
                                 t.getTablePosition().getRow())
                                 ).setMemo_date(t.getNewValue());
-                        int memo_id = ((Object_Memo) t.getTableView().getItems().get(t.getTablePosition().getRow())).getMemo_id();
+                        int memo_id = ((MemoDTO) t.getTableView().getItems().get(t.getTablePosition().getRow())).getMemo_id();
                         note.updateMemo(memo_id, "memo_date", t.getNewValue());
                     }
                 }
             );
 		/// editable row that writes to database when enter is hit
         
-		TableColumn<Object_Memo, String> Col2 = new TableColumn<Object_Memo, String>("Type");
-		Col2.setCellValueFactory(new PropertyValueFactory<Object_Memo, String>("category"));
+		TableColumn<MemoDTO, String> Col2 = new TableColumn<MemoDTO, String>("Type");
+		Col2.setCellValueFactory(new PropertyValueFactory<MemoDTO, String>("category"));
         
-		TableColumn<Object_Memo, String> Col3 = createColumn("Note", Object_Memo::memoProperty);
+		TableColumn<MemoDTO, String> Col3 = createColumn("Note", MemoDTO::memoProperty);
 		Col3.setPrefWidth(740);
         Col3.setOnEditCommit(
-                new EventHandler<CellEditEvent<Object_Memo, String>>() {
+                new EventHandler<CellEditEvent<MemoDTO, String>>() {
                     @Override
-                    public void handle(CellEditEvent<Object_Memo, String> t) {
-                       ((Object_Memo) t.getTableView().getItems().get(t.getTablePosition().getRow())).setMemo(t.getNewValue());
-                       int memo_id = ((Object_Memo) t.getTableView().getItems().get(t.getTablePosition().getRow())).getMemo_id();
+                    public void handle(CellEditEvent<MemoDTO, String> t) {
+                       ((MemoDTO) t.getTableView().getItems().get(t.getTablePosition().getRow())).setMemo(t.getNewValue());
+                       int memo_id = ((MemoDTO) t.getTableView().getItems().get(t.getTablePosition().getRow())).getMemo_id();
                        note.updateMemo(memo_id, "memo", t.getNewValue());
                     }
                 }

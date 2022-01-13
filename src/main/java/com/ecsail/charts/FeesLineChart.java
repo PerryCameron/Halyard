@@ -1,6 +1,6 @@
 package com.ecsail.charts;
 
-import com.ecsail.structures.Object_DefinedFee;
+import com.ecsail.structures.DefinedFeeDTO;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
@@ -9,10 +9,10 @@ import javafx.scene.chart.NumberAxis;
 import java.util.Arrays;
 
 public class FeesLineChart extends LineChart<String, Number> {
-	ObservableList<Object_DefinedFee> definedFees;
+	ObservableList<DefinedFeeDTO> definedFees;
 
 
-	public FeesLineChart(ObservableList<Object_DefinedFee> definedFees) {
+	public FeesLineChart(ObservableList<DefinedFeeDTO> definedFees) {
 	super(new CategoryAxis(), new NumberAxis());
 	Series<String,Number> series = new Series<String, Number>();
 	this.definedFees = definedFees;
@@ -37,7 +37,7 @@ public class FeesLineChart extends LineChart<String, Number> {
 //		seriesNewMembers.setName("New");
 //		seriesReturnMembers.setName("Return");
 		getData().addAll(Arrays.asList(series));
-		for (Object_DefinedFee d: definedFees) {
+		for (DefinedFeeDTO d: definedFees) {
 			if(type.equals("Regular Dues"))
         		series.getData().add(new Data<String, Number>(d.getFiscal_year() + "", d.getDues_regular()));
 			if(type.equals("Family Dues"))

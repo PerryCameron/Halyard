@@ -1,6 +1,6 @@
 package com.ecsail.structures;
 
-public class Object_Email_Information {
+public class Email_InformationDTO {
 	private int membershipId;
 	private String joinDate;
 	private String Lname;
@@ -8,8 +8,8 @@ public class Object_Email_Information {
 	private String email;
 	private boolean isPrimary;
 	
-	public Object_Email_Information(int membershipId, String joinDate, String lname, String fname, String email,
-			boolean isPrimary) {
+	public Email_InformationDTO(int membershipId, String joinDate, String lname, String fname, String email,
+								boolean isPrimary) {
 		this.membershipId = membershipId;
 		this.joinDate = joinDate;
 		Lname = lname;

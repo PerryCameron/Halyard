@@ -27,14 +27,14 @@ public class HBoxInvoiceList extends HBox {
 	
 	private static ObservableList<Object_Money> fiscals = null;
 	private static TabPane parentTabPane;
-	private static Object_Membership membership;
+	private static MembershipDTO membership;
 	private static ObservableList<Object_Person> people;
 	private static Note note;
 	private static TextField duesText;
 	
 	String currentYear;
 
-	public HBoxInvoiceList(Object_Membership membership, TabPane t, ObservableList<Object_Person> p, Note n, TextField dt) {
+	public HBoxInvoiceList(MembershipDTO membership, TabPane t, ObservableList<Object_Person> p, Note n, TextField dt) {
 		super();
 		HBoxInvoiceList.membership = membership;
 		this.currentYear = HalyardPaths.getYear();
@@ -184,7 +184,7 @@ public class HBoxInvoiceList extends HBox {
 
 	
 	private BigDecimal getDues(int year) {  // takes the membership type and gets the dues
-		Object_DefinedFee selectedDefinedFee = SqlDefinedFee.getDefinedFeeByYear(String.valueOf(year));
+		DefinedFeeDTO selectedDefinedFee = SqlDefinedFee.getDefinedFeeByYear(String.valueOf(year));
 		BigDecimal dues = BigDecimal.valueOf(0);
 		if(membership.getMemType() != null) {
 		  switch(membership.getMemType()) 

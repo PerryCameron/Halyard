@@ -3,7 +3,7 @@ package com.ecsail.sql.select;
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.Main;
-import com.ecsail.structures.Object_Membership;
+import com.ecsail.structures.MembershipDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -13,14 +13,14 @@ import java.sql.Statement;
 
 public class SqlMembership {
 
-    public static ObservableList<Object_Membership> getMemberships() {  /// for SQL Script Maker
-        ObservableList<Object_Membership> memberships = FXCollections.observableArrayList();
+    public static ObservableList<MembershipDTO> getMemberships() {  /// for SQL Script Maker
+        ObservableList<MembershipDTO> memberships = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
             rs = stmt.executeQuery(Main.console.setRegexColor("select * from membership;"));
             while (rs.next()) {
-                memberships.add(new Object_Membership(
+                memberships.add(new MembershipDTO(
                         rs.getInt("MS_ID"),
                         rs.getInt("P_ID"),
                         rs.getString("JOIN_DATE"),

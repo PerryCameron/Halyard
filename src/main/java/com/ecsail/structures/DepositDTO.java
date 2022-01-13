@@ -1,13 +1,13 @@
 package com.ecsail.structures;
 
-public class Object_Deposit {
+public class DepositDTO {
 	private Integer deposit_id;
 	private String depositDate;
 	private String fiscalYear;
 	private Integer batch;
 	
-	public Object_Deposit(Integer deposit_id, String depositDate, String fiscalYear,
-			Integer batch) {
+	public DepositDTO(Integer deposit_id, String depositDate, String fiscalYear,
+                      Integer batch) {
 		this.deposit_id = deposit_id;
 		this.depositDate = depositDate;
 		this.fiscalYear = fiscalYear;

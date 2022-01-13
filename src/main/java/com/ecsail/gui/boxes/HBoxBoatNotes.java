@@ -8,8 +8,8 @@ import java.util.function.Function;
 
 import com.ecsail.main.EditCell;
 import com.ecsail.sql.select.SqlSelect;
-import com.ecsail.structures.Object_Boat;
-import com.ecsail.structures.Object_BoatMemo;
+import com.ecsail.structures.BoatDTO;
+import com.ecsail.structures.BoatMemoDTO;
 
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
@@ -25,9 +25,9 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 public class HBoxBoatNotes extends HBox {
-	private ObservableList<Object_BoatMemo> memos;
+	private ObservableList<BoatMemoDTO> memos;
 	
-	public HBoxBoatNotes(Object_Boat b) {
+	public HBoxBoatNotes(BoatDTO b) {
 		
 		
 		//////////// OBJECTS ///////////////
@@ -36,7 +36,7 @@ public class HBoxBoatNotes extends HBox {
 		VBox buttonVBox = new VBox();
 		Button add = new Button("Add");
 		Button delete = new Button("Delete");
-		TableView<Object_BoatMemo> memoTableView = new TableView<Object_BoatMemo>();
+		TableView<BoatMemoDTO> memoTableView = new TableView<BoatMemoDTO>();
 		
 		/////////////  ATTRIBUTES /////////////
 		add.setPrefWidth(60);
@@ -66,15 +66,15 @@ public class HBoxBoatNotes extends HBox {
 		memoTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY );
 		memoTableView.setFixedCellSize(30);
 
-		TableColumn<Object_BoatMemo, String> Col1 = createColumn("Date", Object_BoatMemo::memo_dateProperty);
+		TableColumn<BoatMemoDTO, String> Col1 = createColumn("Date", BoatMemoDTO::memo_dateProperty);
         Col1.setOnEditCommit(
-                new EventHandler<CellEditEvent<Object_BoatMemo, String>>() {
+                new EventHandler<CellEditEvent<BoatMemoDTO, String>>() {
                     @Override
-                    public void handle(CellEditEvent<Object_BoatMemo, String> t) {
-                        ((Object_BoatMemo) t.getTableView().getItems().get(
+                    public void handle(CellEditEvent<BoatMemoDTO, String> t) {
+                        ((BoatMemoDTO) t.getTableView().getItems().get(
                                 t.getTablePosition().getRow())
                                 ).setMemo_date(t.getNewValue());
-                        int memo_id = ((Object_BoatMemo) t.getTableView().getItems().get(t.getTablePosition().getRow())).getBoat_id();
+                        int memo_id = ((BoatMemoDTO) t.getTableView().getItems().get(t.getTablePosition().getRow())).getBoat_id();
                         //note.updateMemo(memo_id, "memo_date", t.getNewValue());
                     }
                 }
@@ -84,14 +84,14 @@ public class HBoxBoatNotes extends HBox {
 		//TableColumn<Object_BoatMemo, String> Col2 = new TableColumn<Object_BoatMemo, String>("Type");
 		//Col2.setCellValueFactory(new PropertyValueFactory<Object_BoatMemo, String>("category"));
         
-		TableColumn<Object_BoatMemo, String> Col3 = createColumn("Note", Object_BoatMemo::memoProperty);
+		TableColumn<BoatMemoDTO, String> Col3 = createColumn("Note", BoatMemoDTO::memoProperty);
 		Col3.setPrefWidth(740);
         Col3.setOnEditCommit(
-                new EventHandler<CellEditEvent<Object_BoatMemo, String>>() {
+                new EventHandler<CellEditEvent<BoatMemoDTO, String>>() {
                     @Override
-                    public void handle(CellEditEvent<Object_BoatMemo, String> t) {
-                       ((Object_BoatMemo) t.getTableView().getItems().get(t.getTablePosition().getRow())).setMemo(t.getNewValue());
-                       int boat_memo_id = ((Object_BoatMemo) t.getTableView().getItems().get(t.getTablePosition().getRow())).getBoat_memo_id();
+                    public void handle(CellEditEvent<BoatMemoDTO, String> t) {
+                       ((BoatMemoDTO) t.getTableView().getItems().get(t.getTablePosition().getRow())).setMemo(t.getNewValue());
+                       int boat_memo_id = ((BoatMemoDTO) t.getTableView().getItems().get(t.getTablePosition().getRow())).getBoat_memo_id();
                        //note.updateMemo(memo_id, "memo", t.getNewValue());
                     }
                 }
@@ -108,7 +108,7 @@ public class HBoxBoatNotes extends HBox {
             @Override public void handle(ActionEvent e) {
             	String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date(System.currentTimeMillis()));
             	int boat_memo_id = SqlSelect.getCount("boat_memo", "boat_memo_id") + 1; // gets last memo_id number and add one
-             	memos.add(new Object_BoatMemo(boat_memo_id,b.getBoat_id(), date, "new note"));
+             	memos.add(new BoatMemoDTO(boat_memo_id,b.getBoat_id(), date, "new note"));
             }
         });
         

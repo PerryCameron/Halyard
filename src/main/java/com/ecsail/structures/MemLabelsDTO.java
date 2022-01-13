@@ -2,7 +2,7 @@ package com.ecsail.structures;
 
 import javafx.scene.control.Label;
 
-public class Object_MemLabels {
+public class MemLabelsDTO {
 	
 	private Label joinDate;
     private Label memberID;
@@ -10,7 +10,7 @@ public class Object_MemLabels {
     private Label status;
     private Label selectedYear;
     
-	public Object_MemLabels() {
+	public MemLabelsDTO() {
 		this.joinDate = new Label();
 		this.memberID = new Label();
 		this.memberType = new Label();

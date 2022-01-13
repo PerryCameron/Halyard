@@ -3,9 +3,9 @@ package com.ecsail.gui.dialogues;
 import com.ecsail.pdf.PDF_DepositReport;
 import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.select.SqlDeposit;
-import com.ecsail.structures.Object_DefinedFee;
-import com.ecsail.structures.Object_Deposit;
-import com.ecsail.structures.Object_DepositPDF;
+import com.ecsail.structures.DefinedFeeDTO;
+import com.ecsail.structures.DepositDTO;
+import com.ecsail.structures.DepositPDFDTO;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -24,15 +24,15 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class Dialogue_DepositPDF extends Stage {
-	private Object_Deposit currentDeposit;
-	private Object_DefinedFee currentDefinedFee;
-	private Object_DepositPDF pdfOptions;
+	private DepositDTO currentDeposit;
+	private DefinedFeeDTO currentDefinedFee;
+	private DepositPDFDTO pdfOptions;
 	String selectedYear;
 	
-	public Dialogue_DepositPDF(Object_Deposit cd, Object_DefinedFee cdf, String y) {
+	public Dialogue_DepositPDF(DepositDTO cd, DefinedFeeDTO cdf, String y) {
 		this.currentDeposit = cd;
 		this.currentDefinedFee = cdf;
-		this.pdfOptions = new Object_DepositPDF();
+		this.pdfOptions = new DepositPDFDTO();
 		this.selectedYear = y;
 		
 		Button createPDFbutton = new Button("Create PDF");

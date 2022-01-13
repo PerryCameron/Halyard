@@ -9,8 +9,8 @@ import com.ecsail.sql.SqlInsert;
 import com.ecsail.sql.select.SqlMembership_Id;
 import com.ecsail.sql.select.SqlPerson;
 import com.ecsail.sql.select.SqlSelect;
-import com.ecsail.structures.Object_MembershipList;
-import com.ecsail.structures.Object_Memo;
+import com.ecsail.structures.MembershipListDTO;
+import com.ecsail.structures.MemoDTO;
 import com.ecsail.structures.Object_Person;
 
 public class CreateMembership {
@@ -45,10 +45,10 @@ public class CreateMembership {
 			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 			LocalDateTime now = LocalDateTime.now();
 			String date = dtf.format(now);
-			Object_MembershipList newMembership = new Object_MembershipList(ms_id, pid, membership_id, date, "FM", "",
+			MembershipListDTO newMembership = new MembershipListDTO(ms_id, pid, membership_id, date, "FM", "",
 					"", "", 0, "", "", "", "", HalyardPaths.getYear());
 			if (SqlInsert.addMembershipIsSucessful(newMembership)) {
-				newMemNote.addMemo(new Object_Memo(note_id, ms_id, date, "Created new membership record", 0, "N")); 
+				newMemNote.addMemo(new MemoDTO(note_id, ms_id, date, "Created new membership record", 0, "N"));
 				Main.activememberships.add(newMembership);
 				//SqlInsert.addMembershipId(new Object_MembershipId(mid, Paths.getYear(), ms_id, membership_id + "", true,
 				//		"RM", false, false));

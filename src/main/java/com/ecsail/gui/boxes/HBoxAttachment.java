@@ -1,6 +1,6 @@
 package com.ecsail.gui.boxes;
 
-import com.ecsail.structures.Object_Membership;
+import com.ecsail.structures.MembershipDTO;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
@@ -9,9 +9,9 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 public class HBoxAttachment extends HBox {
-	Object_Membership membership;
+	MembershipDTO membership;
 
-	public HBoxAttachment(Object_Membership membership) {
+	public HBoxAttachment(MembershipDTO membership) {
 		//super();
 		this.membership = membership;
 

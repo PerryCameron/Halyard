@@ -12,8 +12,8 @@ import java.util.List;
 import com.ecsail.main.HalyardPaths;
 import com.ecsail.sql.select.SqlMembershipList;
 import com.ecsail.sql.select.SqlMembership_Id;
-import com.ecsail.structures.Object_MembershipId;
-import com.ecsail.structures.Object_MembershipList;
+import com.ecsail.structures.MembershipIdDTO;
+import com.ecsail.structures.MembershipListDTO;
 import com.itextpdf.io.font.FontProgramFactory;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.font.PdfFont;
@@ -36,11 +36,11 @@ import com.itextpdf.layout.property.VerticalAlignment;
 
 public class PDF_Envelope {
 	Image ecscLogo = new Image(ImageDataFactory.create(PDF_DepositReport.toByteArray(getClass().getResourceAsStream("/EagleCreekLogoForPDF.png"))));
-	Object_MembershipList membership;
+	MembershipListDTO membership;
 	private String year;
 	private String current_membership_id;
 	private static int ms_id;
-	private List<Object_MembershipId> ids = new ArrayList<Object_MembershipId>();
+	private List<MembershipIdDTO> ids = new ArrayList<MembershipIdDTO>();
 	PdfFont font;
 	private boolean isOneMembership;
 	
@@ -108,9 +108,9 @@ public class PDF_Envelope {
 		doc.add(createAddress());
 		} else {
 			ids = SqlMembership_Id.getMembershipIds(year);
-			Collections.sort(ids, Comparator.comparing(Object_MembershipId::getMembership_id));
+			Collections.sort(ids, Comparator.comparing(MembershipIdDTO::getMembership_id));
 
-			for(Object_MembershipId id: ids) {
+			for(MembershipIdDTO id: ids) {
 				current_membership_id = id.getMembership_id();
 				ms_id = SqlMembership_Id.getMsidFromMembershipID(Integer.parseInt(current_membership_id));
 				membership = SqlMembershipList.getMembershipFromList(ms_id, year);
@@ -143,8 +143,8 @@ public class PDF_Envelope {
 		doc.add(createAddress());
 		} else {
 			ids = SqlMembership_Id.getMembershipIds(year);
-			Collections.sort(ids, Comparator.comparing(Object_MembershipId::getMembership_id));
-			for(Object_MembershipId id: ids) {
+			Collections.sort(ids, Comparator.comparing(MembershipIdDTO::getMembership_id));
+			for(MembershipIdDTO id: ids) {
 				current_membership_id = id.getMembership_id();
 				ms_id = SqlMembership_Id.getMsidFromMembershipID(Integer.parseInt(current_membership_id));
 				membership = SqlMembershipList.getMembershipFromList(ms_id, year);

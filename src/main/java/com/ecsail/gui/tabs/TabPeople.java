@@ -11,7 +11,7 @@ import com.ecsail.main.Launcher;
 import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.select.SqlMembershipList;
 import com.ecsail.sql.select.SqlPerson;
-import com.ecsail.structures.Object_MembershipList;
+import com.ecsail.structures.MembershipListDTO;
 import com.ecsail.structures.Object_Person;
 
 import javafx.application.Platform;
@@ -135,7 +135,7 @@ public class TabPeople extends Tab {
 	// creates array list of people objects populated from SQL database
 
 	private static void createPersonBox(Object_Person person)  {
-		Object_MembershipList membership = null;
+		MembershipListDTO membership = null;
 		if(SqlExists.currentMembershipIdExists(person.getMs_id())) {
 		membership = SqlMembershipList.getMembershipFromList(person.getMs_id(), HalyardPaths.getYear());
 		} else {

@@ -4,7 +4,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 
-public class Object_BalanceText {
+public class BalanceTextDTO {
 	private TextField paidText;
 	private TextField totalFeesText;
 	private TextField creditText;
@@ -12,8 +12,8 @@ public class Object_BalanceText {
 	private Button commitButton;
 	private CheckBox renewCheckBox;
 	
-	public Object_BalanceText(TextField paidText, TextField totalFeesText, TextField creditText,
-			TextField balanceText, Button commitButton, CheckBox renewCheckBox) {
+	public BalanceTextDTO(TextField paidText, TextField totalFeesText, TextField creditText,
+						  TextField balanceText, Button commitButton, CheckBox renewCheckBox) {
 		this.paidText = paidText;
 		this.totalFeesText = totalFeesText;
 		this.creditText = creditText;
@@ -22,7 +22,7 @@ public class Object_BalanceText {
 		this.renewCheckBox = renewCheckBox;
 	}
 
-	public Object_BalanceText() {
+	public BalanceTextDTO() {
 		this.paidText = new TextField();
 		this.totalFeesText = new TextField();
 		this.creditText = new TextField();

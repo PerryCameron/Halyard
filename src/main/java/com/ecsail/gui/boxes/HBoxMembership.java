@@ -3,8 +3,8 @@ package com.ecsail.gui.boxes;
 import com.ecsail.enums.MembershipType;
 import com.ecsail.main.HalyardPaths;
 import com.ecsail.sql.select.SqlMembership_Id;
-import com.ecsail.structures.Object_MemLabels;
-import com.ecsail.structures.Object_MembershipList;
+import com.ecsail.structures.MemLabelsDTO;
+import com.ecsail.structures.MembershipListDTO;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -12,10 +12,10 @@ import javafx.scene.layout.HBox;
 
 public class HBoxMembership extends HBox {
 	
-	private Object_MembershipList membership;
-	private Object_MemLabels labels;
+	private MembershipListDTO membership;
+	private MemLabelsDTO labels;
 
-	public HBoxMembership(Object_MembershipList m, Object_MemLabels ml) {
+	public HBoxMembership(MembershipListDTO m, MemLabelsDTO ml) {
 		this.membership =  m;
 		this.labels = ml;
 		

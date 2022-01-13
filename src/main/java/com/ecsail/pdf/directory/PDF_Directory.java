@@ -11,7 +11,7 @@ import java.util.concurrent.Executors;
 
 import com.ecsail.main.HalyardPaths;
 import com.ecsail.sql.select.SqlMembershipList;
-import com.ecsail.structures.Object_MembershipList;
+import com.ecsail.structures.MembershipListDTO;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
@@ -24,7 +24,7 @@ import javafx.concurrent.Task;
 import javafx.scene.control.TextArea;
 
 public class PDF_Directory {
-	private ObservableList<Object_MembershipList> rosters;
+	private ObservableList<MembershipListDTO> rosters;
 	
 	static PDF_Object_Settings set;
 	TextArea textArea;
@@ -56,7 +56,7 @@ public class PDF_Directory {
 		doc.setTopMargin(1f);
 		doc.setBottomMargin(0.5f);
 		
-		Collections.sort(rosters , Comparator.comparing(Object_MembershipList::getLname));
+		Collections.sort(rosters , Comparator.comparing(MembershipListDTO::getLname));
 		
 		createDirectoryTask();
 	}
@@ -140,7 +140,7 @@ public class PDF_Directory {
 	private void createMemberInfoPages(Document doc) {
 			int count = 0;
 			doc.add(new Paragraph("\n"));
-			for(Object_MembershipList l: rosters) {
+			for(MembershipListDTO l: rosters) {
 			textArea.appendText("Creating entry for " + l.getFname() + " " + l.getLname() + "\n");
 			doc.add(new PDF_MemberShipInformation(2,l,set));
 			count++;

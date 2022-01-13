@@ -6,16 +6,8 @@ import java.sql.Statement;
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.Main;
-import com.ecsail.structures.Object_Award;
-import com.ecsail.structures.Object_Boat;
-import com.ecsail.structures.Object_Email;
-import com.ecsail.structures.Object_MembershipId;
-import com.ecsail.structures.Object_MembershipList;
-import com.ecsail.structures.Object_Memo;
-import com.ecsail.structures.Object_Officer;
-import com.ecsail.structures.Object_Payment;
-import com.ecsail.structures.Object_Person;
-import com.ecsail.structures.Object_Phone;
+import com.ecsail.structures.*;
+import com.ecsail.structures.MemoDTO;
 
 public class SqlDelete {
 
@@ -72,7 +64,7 @@ public class SqlDelete {
 	    return noError;
 	}
 	
-	public static boolean deleteEmail(Object_Email email) {
+	public static boolean deleteEmail(EmailDTO email) {
 		boolean noError = false;
 			try {
 				Statement stmt = ConnectDatabase.sqlConnection.createStatement();
@@ -84,7 +76,7 @@ public class SqlDelete {
 	    return noError;
 	}
 	
-	public static boolean deleteMembershipId(Object_MembershipId mid) {
+	public static boolean deleteMembershipId(MembershipIdDTO mid) {
 		boolean noError = false;
 			try {
 				Statement stmt = ConnectDatabase.sqlConnection.createStatement();
@@ -109,7 +101,7 @@ public class SqlDelete {
 		return noError;
 	}
 	
-	public static boolean deleteAward(Object_Award a) {
+	public static boolean deleteAward(AwardDTO a) {
 		boolean noError = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
@@ -122,7 +114,7 @@ public class SqlDelete {
 		return noError;
 	}
 	
-	public static boolean deleteBoat(Object_Boat boat, Object_MembershipList membership) {
+	public static boolean deleteBoat(BoatDTO boat, MembershipListDTO membership) {
 		boolean noError = false;
 			try {
 				Statement stmt = ConnectDatabase.sqlConnection.createStatement();
@@ -150,7 +142,7 @@ public class SqlDelete {
 		return noError;	
 	}
 	
-	public static void deleteMemo(Object_Memo memo) {
+	public static void deleteMemo(MemoDTO memo) {
 		Statement stmt;
 		try {
 			stmt = ConnectDatabase.sqlConnection.createStatement();

@@ -6,7 +6,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 // select p.P_ID, p.MS_ID, o.O_ID, p.F_NAME, p.L_NAME, o.OFF_YEAR, o.BOARD_YEAR, o.OFF_TYPE  from person p inner join officer o on p.p_id = o.p_id where o.off_year='2020';
-public class Object_Board {
+public class BoardDTO {
 	
 	private IntegerProperty person_id;
 	private IntegerProperty ms_id;
@@ -17,9 +17,9 @@ public class Object_Board {
 	private StringProperty board_year;  // when their board seat expires
 	private StringProperty officer_type;  // the type of officer
 
-	public Object_Board(Integer person_id, Integer ms_id, Integer officer_id,
-			String fname, String lname, String fiscal_year, String board_year,
-			String officer_type) {
+	public BoardDTO(Integer person_id, Integer ms_id, Integer officer_id,
+					String fname, String lname, String fiscal_year, String board_year,
+					String officer_type) {
 		this.person_id = new SimpleIntegerProperty(person_id);
 		this.ms_id = new SimpleIntegerProperty(ms_id);
 		this.officer_id = new SimpleIntegerProperty(officer_id);

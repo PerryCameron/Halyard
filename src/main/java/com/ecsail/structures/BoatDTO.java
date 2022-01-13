@@ -7,7 +7,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class Object_Boat {
+public class BoatDTO {
 	
 	private IntegerProperty boat_id;
 	private IntegerProperty ms_id;
@@ -26,10 +26,10 @@ public class Object_Boat {
 	private StringProperty beam;
 	private StringProperty lwl;
 	
-	public Object_Boat(Integer boat_id, Integer ms_id, String manufacturer, String manufacture_year,
-			String registration_num, String model, String boat_name, String sail_number,
-			Boolean hasTrailer, String length, String weight, String keel, String phrf,
-			String draft, String beam, String lwl) {
+	public BoatDTO(Integer boat_id, Integer ms_id, String manufacturer, String manufacture_year,
+				   String registration_num, String model, String boat_name, String sail_number,
+				   Boolean hasTrailer, String length, String weight, String keel, String phrf,
+				   String draft, String beam, String lwl) {
 
 		this.boat_id = new SimpleIntegerProperty(boat_id);
 		this.ms_id = new SimpleIntegerProperty(ms_id);
@@ -49,7 +49,7 @@ public class Object_Boat {
 		this.lwl = new SimpleStringProperty(lwl);
 	}
 
-	public Object_Boat() {
+	public BoatDTO() {
 		// TODO Auto-generated constructor stub
 	}
 

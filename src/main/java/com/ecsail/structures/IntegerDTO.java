@@ -3,11 +3,11 @@ package com.ecsail.structures;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
-public class Object_Integer {
+public class IntegerDTO {
 	
 	private IntegerProperty integer;
 
-	public Object_Integer(Integer integer) {
+	public IntegerDTO(Integer integer) {
 		this.integer = new SimpleIntegerProperty(integer);
 	}
 

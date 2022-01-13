@@ -1,6 +1,6 @@
 package com.ecsail.gui.tabs;
 
-import com.ecsail.structures.Object_Integer;
+import com.ecsail.structures.IntegerDTO;
 import com.ecsail.structures.Object_Money;
 
 import javafx.geometry.Insets;
@@ -19,9 +19,9 @@ public class TabKey extends Tab {
 	private final Spinner<Integer> sailLKeySpinner = new Spinner<Integer>();
 	private final Spinner<Integer> kayakSKeySpinner = new Spinner<Integer>();
 	private final Spinner<Integer> sailSSLKeySpinner = new Spinner<Integer>();
-	Object_Integer numberOfKeys;
+	IntegerDTO numberOfKeys;
 	
-	public TabKey(String text, Object_Money sm, Object_Integer wc) {
+	public TabKey(String text, Object_Money sm, IntegerDTO wc) {
 		super(text);
 		this.selectedFiscalYear = sm;
 		this.numberOfKeys = wc;

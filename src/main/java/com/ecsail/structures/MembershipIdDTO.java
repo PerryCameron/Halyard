@@ -5,7 +5,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class Object_MembershipId {
+public class MembershipIdDTO {
 	private IntegerProperty mid;
 	private SimpleStringProperty fiscal_Year;
 	private IntegerProperty ms_id;
@@ -15,8 +15,8 @@ public class Object_MembershipId {
 	private SimpleBooleanProperty selected;
 	private SimpleBooleanProperty isLateRenew;
 	
-	public Object_MembershipId(Integer mid, String fiscal_Year, Integer ms_id, String membership_id, 
-		 Boolean isRenew, String mem_type, Boolean selected, Boolean isLateRenew) {
+	public MembershipIdDTO(Integer mid, String fiscal_Year, Integer ms_id, String membership_id,
+						   Boolean isRenew, String mem_type, Boolean selected, Boolean isLateRenew) {
 		this.mid = new SimpleIntegerProperty(mid);
 		this.fiscal_Year = new SimpleStringProperty(fiscal_Year);
 		this.ms_id = new SimpleIntegerProperty(ms_id);

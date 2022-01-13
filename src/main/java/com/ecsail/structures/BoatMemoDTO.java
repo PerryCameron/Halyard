@@ -5,7 +5,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class Object_BoatMemo {
+public class BoatMemoDTO {
 	
 	private IntegerProperty boat_memo_id;
 	private IntegerProperty boat_id;
@@ -13,8 +13,8 @@ public class Object_BoatMemo {
 	private StringProperty memo;
 
 	
-	public Object_BoatMemo(Integer boat_memo_id, Integer boat_id, String memo_date,
-			String memo) {
+	public BoatMemoDTO(Integer boat_memo_id, Integer boat_id, String memo_date,
+					   String memo) {
 		super();
 		this.boat_memo_id = new SimpleIntegerProperty(boat_memo_id);
 		this.boat_id = new SimpleIntegerProperty(boat_id);

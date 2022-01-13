@@ -31,13 +31,13 @@ import java.util.Comparator;
 
 public class TabRoster extends Tab {
 
-	private final ObservableList<Object_MembershipList> rosters;
-	private final TableView<Object_MembershipList> rosterTableView = new TableView<>();
+	private final ObservableList<MembershipListDTO> rosters;
+	private final TableView<MembershipListDTO> rosterTableView = new TableView<>();
 	private final Object_RosterSelect printChoices;
 	private final Object_RosterRadioButtons rb;
 	String selectedYear;
 
-	public TabRoster(ObservableList<Object_MembershipList> a, String sy) {
+	public TabRoster(ObservableList<MembershipListDTO> a, String sy) {
 		super();
 		this.rosters = a;
 		this.selectedYear = sy;
@@ -79,17 +79,17 @@ public class TabRoster extends Tab {
 		CheckBox c13 = new CheckBox("Subleased To");
 		Button buttonXLS = new Button("Export XLS");
 //		final Spinner<Integer> yearSpinner = new Spinner<Integer>();
-		TableColumn<Object_MembershipList, Integer> Col1 = new TableColumn<>("ID");
-		TableColumn<Object_MembershipList, String> Col2 = new TableColumn<>("Join Date");
-		TableColumn<Object_MembershipList, String> Col3 = new TableColumn<>("Type");
-		TableColumn<Object_MembershipList, String> Col4 = new TableColumn<>("Slip");
-		TableColumn<Object_MembershipList, String> Col5 = new TableColumn<>("First Name");
-		TableColumn<Object_MembershipList, String> Col6 = new TableColumn<>("Last Name");
-		TableColumn<Object_MembershipList, String> Col7 = new TableColumn<>("Address");
-		TableColumn<Object_MembershipList, String> Col8 = new TableColumn<>("City");
-		TableColumn<Object_MembershipList, String> Col9 = new TableColumn<>("State");
-		TableColumn<Object_MembershipList, String> Col10 = new TableColumn<>("Zip");
-		TableColumn<Object_MembershipList, String> Col11 = new TableColumn<>("MSID");
+		TableColumn<MembershipListDTO, Integer> Col1 = new TableColumn<>("ID");
+		TableColumn<MembershipListDTO, String> Col2 = new TableColumn<>("Join Date");
+		TableColumn<MembershipListDTO, String> Col3 = new TableColumn<>("Type");
+		TableColumn<MembershipListDTO, String> Col4 = new TableColumn<>("Slip");
+		TableColumn<MembershipListDTO, String> Col5 = new TableColumn<>("First Name");
+		TableColumn<MembershipListDTO, String> Col6 = new TableColumn<>("Last Name");
+		TableColumn<MembershipListDTO, String> Col7 = new TableColumn<>("Address");
+		TableColumn<MembershipListDTO, String> Col8 = new TableColumn<>("City");
+		TableColumn<MembershipListDTO, String> Col9 = new TableColumn<>("State");
+		TableColumn<MembershipListDTO, String> Col10 = new TableColumn<>("Zip");
+		TableColumn<MembershipListDTO, String> Col11 = new TableColumn<>("MSID");
 
 		tabPane.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
 		titledPane.setText("Roster " + selectedYear);
@@ -237,11 +237,11 @@ public class TabRoster extends Tab {
 
 		
 		rosterTableView.setRowFactory(tv -> {
-			TableRow<Object_MembershipList> row = new TableRow<>();
+			TableRow<MembershipListDTO> row = new TableRow<>();
 			row.setOnMouseClicked(event -> {
 				if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
 					// int rowIndex = row.getIndex();
-					Object_MembershipList clickedRow = row.getItem();
+					MembershipListDTO clickedRow = row.getItem();
 					Launcher.createMembershipTabForRoster(clickedRow.getMembershipId(), clickedRow.getMsid());
 				}
 				if (!row.isEmpty() && event.getButton() == MouseButton.SECONDARY && event.getClickCount() == 1) {
@@ -260,7 +260,7 @@ public class TabRoster extends Tab {
 
 				records.setText(rosters.size() + " Records");
 				//rosterTableView.sort();
-				rosters.sort(Comparator.comparing(Object_MembershipList::getMembershipId));
+				rosters.sort(Comparator.comparing(MembershipListDTO::getMembershipId));
 			}
 		});
 
@@ -271,7 +271,7 @@ public class TabRoster extends Tab {
 				rosters.addAll(SqlMembershipList.getRosterOfAll(selectedYear));
 				records.setText(rosters.size() + " Records");
 				//rosterTableView.sort();
-				rosters.sort(Comparator.comparing(Object_MembershipList::getMembershipId));
+				rosters.sort(Comparator.comparing(MembershipListDTO::getMembershipId));
 			}
 		});
 
@@ -282,7 +282,7 @@ public class TabRoster extends Tab {
 				rosters.addAll(SqlMembershipList.getRoster(selectedYear, false));
 				records.setText(rosters.size() + " Records");
 				//rosterTableView.sort();
-				rosters.sort(Comparator.comparing(Object_MembershipList::getMembershipId));
+				rosters.sort(Comparator.comparing(MembershipListDTO::getMembershipId));
 			}
 		});
 
@@ -293,18 +293,18 @@ public class TabRoster extends Tab {
 				rosters.addAll(SqlMembershipList.getNewMemberRoster(selectedYear));
 				records.setText(rosters.size() + " Records");
 				//rosterTableView.sort();
-				rosters.sort(Comparator.comparing(Object_MembershipList::getMembershipId));
+				rosters.sort(Comparator.comparing(MembershipListDTO::getMembershipId));
 			}
 		});
 
 		rb.getRadioReturnMembers().selectedProperty().addListener((ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected,
 					Boolean isNowSelected) -> {
 				if (isNowSelected) {
-					ObservableList<Object_MembershipList> keepers = FXCollections.observableArrayList();
+					ObservableList<MembershipListDTO> keepers = FXCollections.observableArrayList();
 					setListType("return");
 					rosters.clear();
 					rosters.addAll(SqlMembershipList.getFullNewMemberRoster(selectedYear));
-					for (Object_MembershipList roster : rosters) {
+					for (MembershipListDTO roster : rosters) {
 						if (!SqlExists.paidLate(roster)) {
 							keepers.add(roster);
 						}
@@ -314,7 +314,7 @@ public class TabRoster extends Tab {
 					keepers.clear();
 					records.setText(rosters.size() + " Records");
 					//rosterTableView.sort();
-					rosters.sort(Comparator.comparing(Object_MembershipList::getMembershipId));
+					rosters.sort(Comparator.comparing(MembershipListDTO::getMembershipId));
 				}
 		});
 
@@ -325,7 +325,7 @@ public class TabRoster extends Tab {
 				rosters.addAll(SqlMembershipList.getWaitListRoster("slipwait"));
 				records.setText(rosters.size() + " Records");
 				//rosterTableView.sort();
-				rosters.sort(Comparator.comparing(Object_MembershipList::getMembershipId));
+				rosters.sort(Comparator.comparing(MembershipListDTO::getMembershipId));
 			}
 		});
 
@@ -336,7 +336,7 @@ public class TabRoster extends Tab {
 				rosters.addAll(SqlMembershipList.getWaitListRoster("wantrelease"));
 				records.setText(rosters.size() + " Records");
 				//rosterTableView.sort();
-				rosters.sort(Comparator.comparing(Object_MembershipList::getMembershipId));
+				rosters.sort(Comparator.comparing(MembershipListDTO::getMembershipId));
 			}
 		});
 
@@ -347,7 +347,7 @@ public class TabRoster extends Tab {
 				rosters.addAll(SqlMembershipList.getRosterOfSlipOwners(HalyardPaths.getYear()));
 				records.setText(rosters.size() + " Records");
 				//rosterTableView.sort();
-				rosters.sort(Comparator.comparing(Object_MembershipList::getMembershipId));
+				rosters.sort(Comparator.comparing(MembershipListDTO::getMembershipId));
 			}
 		});
 
@@ -358,7 +358,7 @@ public class TabRoster extends Tab {
 				rosters.addAll(SqlMembershipList.getWaitListRoster("wantsublease"));
 				records.setText(rosters.size() + " Records");
 				//rosterTableView.sort();
-				rosters.sort(Comparator.comparing(Object_MembershipList::getMembershipId));
+				rosters.sort(Comparator.comparing(MembershipListDTO::getMembershipId));
 			}
 		});
 
@@ -369,7 +369,7 @@ public class TabRoster extends Tab {
 				rosters.addAll(SqlMembershipList.getWaitListRoster("wantslipchange"));
 				records.setText(rosters.size() + " Records");
 				//rosterTableView.sort();
-				rosters.sort(Comparator.comparing(Object_MembershipList::getMembershipId));
+				rosters.sort(Comparator.comparing(MembershipListDTO::getMembershipId));
 			}
 		});
 
@@ -380,7 +380,7 @@ public class TabRoster extends Tab {
 				rosters.addAll(SqlMembershipList.getRosterOfSubleasedSlips());
 				records.setText(rosters.size() + " Records");
 				//rosterTableView.sort();
-				rosters.sort(Comparator.comparing(Object_MembershipList::getMembershipId));
+				rosters.sort(Comparator.comparing(MembershipListDTO::getMembershipId));
 			}
 		});
 
@@ -391,7 +391,7 @@ public class TabRoster extends Tab {
 				rosters.addAll(SqlMembershipList.getRosterOfKayakShedOwners(HalyardPaths.getYear()));
 				records.setText(rosters.size() + " Records");
 				//rosterTableView.sort();
-				rosters.sort(Comparator.comparing(Object_MembershipList::getMembershipId));
+				rosters.sort(Comparator.comparing(MembershipListDTO::getMembershipId));
 			}
 		});
 
@@ -402,18 +402,18 @@ public class TabRoster extends Tab {
 				rosters.addAll(SqlMembershipList.getRosterOfKayakRackOwners(HalyardPaths.getYear()));
 				records.setText(rosters.size() + " Records");
 				//rosterTableView.sort();
-				rosters.sort(Comparator.comparing(Object_MembershipList::getMembershipId));
+				rosters.sort(Comparator.comparing(MembershipListDTO::getMembershipId));
 			}
 		});
 
 		rb.getRadioLatePaymentMembers().selectedProperty().addListener((ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected,
 				Boolean isNowSelected) -> {
 			if (isNowSelected) {
-				ObservableList<Object_MembershipList> keepers = FXCollections.observableArrayList();
+				ObservableList<MembershipListDTO> keepers = FXCollections.observableArrayList();
 				setListType("return");
 				rosters.clear();
 				rosters.addAll(SqlMembershipList.getFullNewMemberRoster(selectedYear));
-				for (Object_MembershipList roster : rosters) {
+				for (MembershipListDTO roster : rosters) {
 					// if they didn't pay late
 					if (SqlExists.paidLate(roster)) {
 						keepers.add(roster);
@@ -424,7 +424,7 @@ public class TabRoster extends Tab {
 				rosters.addAll(keepers);
 				keepers.clear();
 				records.setText(rosters.size() + " Records");
-				rosters.sort(Comparator.comparing(Object_MembershipList::getMembershipId));
+				rosters.sort(Comparator.comparing(MembershipListDTO::getMembershipId));
 			}
 	});
 
@@ -459,7 +459,7 @@ public class TabRoster extends Tab {
 			rosters.addAll(SqlMembershipList.getFullNewMemberRoster(selectedYear));
 		if (rb.getRadioAll().isSelected())
 			rosters.addAll(SqlMembershipList.getRosterOfAll(selectedYear));
-		rosters.sort(Comparator.comparing(Object_MembershipList::getMembershipId));
+		rosters.sort(Comparator.comparing(MembershipListDTO::getMembershipId));
 	}
 
 	//// Class Methods ////

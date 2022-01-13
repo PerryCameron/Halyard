@@ -18,23 +18,23 @@ import javafx.collections.ObservableList;
 public class SqlScriptMaker {
 	static Object_TupleCount newTupleCount;
 	static ArrayList<String> tableCreation = new ArrayList<String>();
-	static ObservableList<Object_Membership> memberships;
-	static ObservableList<Object_MembershipId> ids;
+	static ObservableList<MembershipDTO> memberships;
+	static ObservableList<MembershipIdDTO> ids;
 	static ObservableList<Object_Person> people;
 	static ObservableList<Object_Phone> phones;
-	static ObservableList<Object_Boat> boats;
-	static ObservableList<Object_BoatOwner> boatowners;
+	static ObservableList<BoatDTO> boats;
+	static ObservableList<BoatOwnerDTO> boatowners;
 	static ObservableList<Object_Slip> slips;
-	static ObservableList<Object_Memo> memos;
-	static ObservableList<Object_Email> email;
+	static ObservableList<MemoDTO> memos;
+	static ObservableList<EmailDTO> email;
 	static ObservableList<Object_Money> monies;
 	static ObservableList<Object_Officer> officers;
-	static ObservableList<Object_DefinedFee> definedfees;
+	static ObservableList<DefinedFeeDTO> definedfees;
 	static ObservableList<Object_WorkCredit> workcredits;
 	static ObservableList<Object_Payment> payments;
-	static ObservableList<Object_Deposit> deposits;
+	static ObservableList<DepositDTO> deposits;
 	static ArrayList<Object_WaitList> waitlist;
-	static ArrayList<Object_Award>awards;
+	static ArrayList<AwardDTO>awards;
 	static ArrayList<HashDTO>hash;
 	
 	private static final int ALL = 0;
@@ -79,39 +79,39 @@ public class SqlScriptMaker {
 			// writer.write("use ECSC_SQL;" + System.lineSeparator());
 			for (String tabe : tableCreation)
 				writer.write(tabe + System.lineSeparator());
-			for (Object_Membership mem : memberships)
+			for (MembershipDTO mem : memberships)
 				writer.write(getMembershipString(mem));
-			for(Object_MembershipId mid : ids)
+			for(MembershipIdDTO mid : ids)
 				writer.write(getMembershipIdString(mid));
 			for (Object_Person peo : people)
 				writer.write(getPeopleString(peo));
 			for (Object_Phone pho : phones)
 				writer.write(getPhoneString(pho));
-			for (Object_Boat boa : boats)
+			for (BoatDTO boa : boats)
 				writer.write(getBoatString(boa));
-			for (Object_BoatOwner bos : boatowners)
+			for (BoatOwnerDTO bos : boatowners)
 				writer.write(getBoatOwnerString(bos));
 			for (Object_Slip sli : slips)
 				writer.write(getSlipString(sli));
-			for (Object_Memo mem : memos)
+			for (MemoDTO mem : memos)
 				writer.write(getMemoString(mem));
-			for (Object_Email eml : email)
+			for (EmailDTO eml : email)
 				writer.write(getEmailString(eml));
 			for (Object_Money mon : monies)
 				writer.write(getMoneyString(mon));
-			for (Object_Deposit dep : deposits)
+			for (DepositDTO dep : deposits)
 				writer.write(getDepositString(dep));
 			for (Object_Payment obp : payments)
 				writer.write(getPaymentString(obp));
 			for (Object_Officer off : officers)
 				writer.write(getOfficerString(off));
-			for (Object_DefinedFee def : definedfees)
+			for (DefinedFeeDTO def : definedfees)
 				writer.write(getDefinedFeeString(def));
 			for (Object_WorkCredit woc : workcredits)
 				writer.write(getWorkCreditString(woc));
 			for (Object_WaitList wal: waitlist)
 				writer.write(getWaitListString(wal));
-			for (Object_Award oa: awards)
+			for (AwardDTO oa: awards)
 				writer.write(getAwardsString(oa));
 			for (HashDTO hd: hash)
 				writer.write(getHashString(hd));
@@ -192,7 +192,7 @@ public class SqlScriptMaker {
 		+ hd.getMsid() + ");\n";
 	}
 
-	private static String getAwardsString(Object_Award oa) {
+	private static String getAwardsString(AwardDTO oa) {
 		return
 		"INSERT INTO awards () VALUES ("
 		+ oa.getAwardId() + ","
@@ -215,7 +215,7 @@ public class SqlScriptMaker {
 		+ ");\n"; //stored as integer in database
 	}
 	
-	public static String getMembershipIdString(Object_MembershipId mid) {
+	public static String getMembershipIdString(MembershipIdDTO mid) {
 		return
 		"INSERT INTO membership_id () VALUES ("
 		+ mid.getMid() + ","
@@ -229,7 +229,7 @@ public class SqlScriptMaker {
 		+ ");\n"; //stored as integer in database
 	}
 	
-	public static String getDepositString(Object_Deposit d) {
+	public static String getDepositString(DepositDTO d) {
 		return
 				"INSERT INTO deposit () VALUES ("
 				+ d.getDeposit_id() + ",'"
@@ -264,7 +264,7 @@ public class SqlScriptMaker {
 				+ ");\n";
 	}
 	
-	public static String getDefinedFeeString(Object_DefinedFee def) {
+	public static String getDefinedFeeString(DefinedFeeDTO def) {
 		return 
 				"INSERT INTO defined_fee () VALUES ("
 				+ def.getFiscal_year() + ","
@@ -334,7 +334,7 @@ public class SqlScriptMaker {
 				+ ");\n";
 	}
 	
-	public static String getEmailString(Object_Email eml) {
+	public static String getEmailString(EmailDTO eml) {
 		return 
 				"INSERT INTO email () VALUES ("
 				+ eml.getEmail_id() + ","
@@ -345,7 +345,7 @@ public class SqlScriptMaker {
 				+ ");\n";
 	}
 	
-	public static String getMemoString(Object_Memo mem) {
+	public static String getMemoString(MemoDTO mem) {
 		return 
 				"INSERT INTO memo () VALUES ("
 				+ mem.getMemo_id() + ","
@@ -366,14 +366,14 @@ public class SqlScriptMaker {
 				+ getCorrectString(sli.getSubleased_to()) + ");\n";
 	}
 	
-	public static String getBoatOwnerString(Object_BoatOwner bos) {
+	public static String getBoatOwnerString(BoatOwnerDTO bos) {
 		return 
 				"INSERT INTO boat_owner () VALUES ("
 				+ bos.getMsid() + ","
 				+ bos.getBoat_id() +");\n";
 	}
 	
-	public static String getBoatString(Object_Boat boa) {
+	public static String getBoatString(BoatDTO boa) {
 		return 
 				"INSERT INTO boat () VALUES ("
 				+ boa.getBoat_id() + ","
@@ -440,7 +440,7 @@ public class SqlScriptMaker {
 				+ getCorrectString(peo.getNname()) + ");\n";  // this will be a picture or link to eventually
 	}
 	
-	public static String getMembershipString(Object_Membership mem) {  // change back once done
+	public static String getMembershipString(MembershipDTO mem) {  // change back once done
 
 			return "INSERT INTO membership () VALUES (" 
 					+ mem.getMsid() + ","

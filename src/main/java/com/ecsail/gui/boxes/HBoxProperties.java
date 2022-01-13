@@ -6,7 +6,7 @@ import com.ecsail.main.Launcher;
 import com.ecsail.sql.SqlDelete;
 import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.select.SqlPerson;
-import com.ecsail.structures.Object_MembershipList;
+import com.ecsail.structures.MembershipListDTO;
 import com.ecsail.structures.Object_Person;
 
 import javafx.collections.ObservableList;
@@ -26,9 +26,9 @@ import javafx.scene.layout.VBox;
 
 ///  this class is for the properties tab in membership view
 public class HBoxProperties extends HBox {
-	private Object_MembershipList membership;
+	private MembershipListDTO membership;
 	//private TextField duesText;
-	public HBoxProperties(Object_MembershipList m, Tab membershipTab) {
+	public HBoxProperties(MembershipListDTO m, Tab membershipTab) {
 		super();
 		this.membership = m;
 		//this.duesText = dt;

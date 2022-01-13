@@ -9,7 +9,7 @@ import com.ecsail.main.Note;
 import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.SqlInsert;
 import com.ecsail.sql.select.SqlSelect;
-import com.ecsail.structures.Object_MembershipList;
+import com.ecsail.structures.MembershipListDTO;
 import com.ecsail.structures.Object_Person;
 
 import javafx.geometry.Insets;
@@ -32,7 +32,7 @@ public class VBoxAddPerson extends VBox {
 	private Label titleLabel;
 	private TabPane peopleTabPane; // a reference so we can open up the newly created pane
 	private Note note;
-	private Object_MembershipList membership;
+	private MembershipListDTO membership;
 	private Object_Person person;
 	private final int PRIMARY = 1;
 	private final int SECONDARY = 2;
@@ -40,7 +40,7 @@ public class VBoxAddPerson extends VBox {
 	private Boolean hasError = false;
 	private TabPane tp;
 	
-	public VBoxAddPerson(TabPane tp, Note n, Object_MembershipList me) {
+	public VBoxAddPerson(TabPane tp, Note n, MembershipListDTO me) {
 		this.note = n;
 		this.ms_id = n.getMsid();
 		this.peopleTabPane = tp;

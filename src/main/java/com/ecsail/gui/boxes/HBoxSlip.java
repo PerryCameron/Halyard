@@ -7,7 +7,7 @@ import com.ecsail.sql.select.SqlMembership_Id;
 import com.ecsail.sql.SqlUpdate;
 import com.ecsail.sql.select.SqlSlip;
 import com.ecsail.sql.select.SqlWaitList;
-import com.ecsail.structures.Object_MembershipList;
+import com.ecsail.structures.MembershipListDTO;
 import com.ecsail.structures.Object_Slip;
 import com.ecsail.structures.Object_WaitList;
 
@@ -31,7 +31,7 @@ import javafx.scene.text.Text;
 
 public class HBoxSlip extends HBox {
 	
-	private Object_MembershipList membership;
+	private MembershipListDTO membership;
 	private Object_WaitList waitList;
 	private String errorMessage;
 	private Object_Slip slip;
@@ -55,7 +55,7 @@ public class HBoxSlip extends HBox {
 	private Button submitButton = new Button("Submit");
 	private ToggleGroup group = new ToggleGroup();
 	
-	public HBoxSlip(Object_MembershipList m, Tab tt) {
+	public HBoxSlip(MembershipListDTO m, Tab tt) {
 		this.membership = m;
 		this.thisTab = tt;
 	    this.errorMessage = ""; // error messaging

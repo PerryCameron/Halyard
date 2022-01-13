@@ -15,7 +15,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.ecsail.main.HalyardPaths;
-import com.ecsail.structures.Object_Email_Information;
+import com.ecsail.structures.Email_InformationDTO;
 
 
 import javafx.collections.ObservableList;
@@ -23,7 +23,7 @@ import javafx.collections.ObservableList;
 
 
 public class Xls_email_list {
-	private static ObservableList<Object_Email_Information> email = SqlEmail.getEmailInfo();
+	private static ObservableList<Email_InformationDTO> email = SqlEmail.getEmailInfo();
 	
 	public static void createSpreadSheet() {
 		System.out.println("Creating email list..");
@@ -60,7 +60,7 @@ public class Xls_email_list {
         }
         
         int rowNum = 1;
-        for(Object_Email_Information e: email) {
+        for(Email_InformationDTO e: email) {
             Row row = sheet.createRow(rowNum++);
             row.createCell(0).setCellValue(e.getMembershipId());
             row.createCell(1).setCellValue(e.getJoinDate());

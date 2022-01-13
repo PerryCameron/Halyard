@@ -3,7 +3,7 @@ package com.ecsail.sql.select;
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.Main;
-import com.ecsail.structures.Object_Award;
+import com.ecsail.structures.AwardDTO;
 import com.ecsail.structures.Object_Person;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,14 +14,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class SqlAward {
-    public static ObservableList<Object_Award> getAwards(Object_Person p) {  //p_id
-        ObservableList<Object_Award> thisAwards = FXCollections.observableArrayList();
+    public static ObservableList<AwardDTO> getAwards(Object_Person p) {  //p_id
+        ObservableList<AwardDTO> thisAwards = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs = stmt
                     .executeQuery(Main.console.setRegexColor("select * from awards where P_ID=" + p.getP_id()));
             while (rs.next()) {
-                thisAwards.add(new Object_Award(
+                thisAwards.add(new AwardDTO(
                         rs.getInt("AWARD_ID"),
                         rs.getInt("P_ID"),
                         rs.getString("AWARD_YEAR"),
@@ -34,14 +34,14 @@ public class SqlAward {
         return thisAwards;
     }
 
-    public static ArrayList<Object_Award> getAwards() {
-        ArrayList<Object_Award> theseAwards = new ArrayList<>();
+    public static ArrayList<AwardDTO> getAwards() {
+        ArrayList<AwardDTO> theseAwards = new ArrayList<>();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
             rs = stmt.executeQuery(Main.console.setRegexColor("select * from awards"));
             while (rs.next()) {
-                theseAwards.add(new Object_Award(
+                theseAwards.add(new AwardDTO(
                         rs.getInt("AWARD_ID"),
                         rs.getInt("P_ID"),
                         rs.getString("AWARD_YEAR"),

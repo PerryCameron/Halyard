@@ -15,9 +15,9 @@ import com.ecsail.main.CreateMembership;
 import com.ecsail.main.Note;
 import com.ecsail.sql.select.SqlMemos;
 import com.ecsail.sql.select.SqlPerson;
-import com.ecsail.structures.Object_MemLabels;
-import com.ecsail.structures.Object_MembershipList;
-import com.ecsail.structures.Object_Memo;
+import com.ecsail.structures.MemLabelsDTO;
+import com.ecsail.structures.MembershipListDTO;
+import com.ecsail.structures.MemoDTO;
 import com.ecsail.structures.Object_Person;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -31,19 +31,19 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 public class TabMembership extends Tab {
-	private Object_MembershipList membership;
-	private Object_MemLabels labels; // allows labels to be easily changed from another class
-	private ObservableList<Object_Memo> memos;
+	private MembershipListDTO membership;
+	private MemLabelsDTO labels; // allows labels to be easily changed from another class
+	private ObservableList<MemoDTO> memos;
 	private ObservableList<Object_Person> people;  // has to be in this class because we pull up two instances
 	private final int PRIMARY = 1;
 	private final int SECONDARY = 2;
 	private final int DEPENDANT = 3;
 	
-	public TabMembership(Object_MembershipList me) { 
+	public TabMembership(MembershipListDTO me) {
 		super();
 		this.membership = me;
         this.memos = SqlMemos.getMemos(membership.getMsid());
-        this.labels = new Object_MemLabels();
+        this.labels = new MemLabelsDTO();
         this.people = SqlPerson.getPeople(membership.getMsid());
 		this.setText(setTabLabel());
 		

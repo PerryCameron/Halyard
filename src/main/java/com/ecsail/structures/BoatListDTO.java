@@ -5,16 +5,16 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class Object_BoatList extends Object_Boat{
+public class BoatListDTO extends BoatDTO {
 	
 	private IntegerProperty membership_id;
 	private StringProperty lname;
 	private StringProperty fname;
 	
-	public Object_BoatList(Integer boat_id, Integer ms_id, String manufacturer, String manufacture_year,
-			String registration_num, String model, String boat_name, String sail_number,
-			Boolean hasTrailer, String length, String weight, String keel, String phrf,
-			String draft, String beam, String lwl, Integer membership_id, String lname, String fname) {
+	public BoatListDTO(Integer boat_id, Integer ms_id, String manufacturer, String manufacture_year,
+					   String registration_num, String model, String boat_name, String sail_number,
+					   Boolean hasTrailer, String length, String weight, String keel, String phrf,
+					   String draft, String beam, String lwl, Integer membership_id, String lname, String fname) {
 		
 		super(boat_id, ms_id, manufacturer, manufacture_year, registration_num, model, boat_name,
 				sail_number, hasTrailer, length, weight, keel, phrf, draft, beam, lwl);

@@ -4,8 +4,8 @@ import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.HalyardPaths;
 import com.ecsail.main.Main;
-import com.ecsail.structures.Object_Email;
-import com.ecsail.structures.Object_Email_Information;
+import com.ecsail.structures.EmailDTO;
+import com.ecsail.structures.Email_InformationDTO;
 import com.ecsail.structures.Object_Person;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,8 +15,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class SqlEmail {
-    public static ObservableList<Object_Email_Information> getEmailInfo() {
-        ObservableList<Object_Email_Information> thisEmailInfo = FXCollections.observableArrayList();
+    public static ObservableList<Email_InformationDTO> getEmailInfo() {
+        ObservableList<Email_InformationDTO> thisEmailInfo = FXCollections.observableArrayList();
 
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
@@ -32,7 +32,7 @@ public class SqlEmail {
                     + " order by id.MEMBERSHIP_ID"));
 
             while (rs.next()) {
-                thisEmailInfo.add(new Object_Email_Information(rs.getInt("MEMBERSHIP_ID"), rs.getString("JOIN_DATE"),
+                thisEmailInfo.add(new Email_InformationDTO(rs.getInt("MEMBERSHIP_ID"), rs.getString("JOIN_DATE"),
                         rs.getString("L_NAME"), rs.getString("F_NAME"), rs.getString("EMAIL"),
                         rs.getBoolean("PRIMARY_USE")));
             }
@@ -43,16 +43,16 @@ public class SqlEmail {
         return thisEmailInfo;
     }
 
-    public static ObservableList<Object_Email> getEmail(int p_id) {
+    public static ObservableList<EmailDTO> getEmail(int p_id) {
         String query = "SELECT * FROM email";
         if(p_id != 0)
             query += " WHERE p_id='" + p_id + "'";
-        ObservableList<Object_Email> email = FXCollections.observableArrayList();
+        ObservableList<EmailDTO> email = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs = stmt.executeQuery(query + ";");
             while (rs.next()) {
-                email.add(new Object_Email(
+                email.add(new EmailDTO(
                         rs.getInt("EMAIL_ID")
                         ,rs.getInt("P_ID")
                         ,rs.getBoolean("PRIMARY_USE")
@@ -68,13 +68,13 @@ public class SqlEmail {
 
     public static String getEmail(Object_Person person) {
         //System.out.println(person);
-        Object_Email email = null;
+        EmailDTO email = null;
         String returnEmail = "";
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs = stmt.executeQuery("select * from email where P_ID=" + person.getP_id() +" and PRIMARY_USE=true");
             while (rs.next()) {
-                email = new Object_Email(
+                email = new EmailDTO(
                         rs.getInt("EMAIL_ID")
                         ,rs.getInt("P_ID")
                         ,rs.getBoolean("PRIMARY_USE")

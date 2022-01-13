@@ -4,8 +4,8 @@ import java.util.Arrays;
 
 import com.ecsail.main.Launcher;
 import com.ecsail.sql.select.SqlBoat;
-import com.ecsail.structures.Object_Boat;
-import com.ecsail.structures.Object_BoatList;
+import com.ecsail.structures.BoatDTO;
+import com.ecsail.structures.BoatListDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -20,7 +20,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 public class TabBoats extends Tab {
-	ObservableList<Object_BoatList> boats = FXCollections.observableArrayList();
+	ObservableList<BoatListDTO> boats = FXCollections.observableArrayList();
 	
 	public TabBoats(String text) {
 		super(text);
@@ -28,7 +28,7 @@ public class TabBoats extends Tab {
 		VBox vboxGrey = new VBox();  // this is the vbox for organizing all the widgets
 		VBox vboxBlue = new VBox();
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
-		TableView<Object_BoatList> boatListTableView = new TableView<>();
+		TableView<BoatListDTO> boatListTableView = new TableView<>();
 
 		
 		boatListTableView.setItems(boats);
@@ -45,25 +45,25 @@ public class TabBoats extends Tab {
 		VBox.setVgrow(boatListTableView, Priority.ALWAYS);
 		HBox.setHgrow(boatListTableView, Priority.ALWAYS);
 		
-		TableColumn<Object_BoatList, Integer> Col1 = new TableColumn<Object_BoatList, Integer>("MEM");
-		TableColumn<Object_BoatList, String> Col2 = new TableColumn<Object_BoatList, String>("Last Name");
-		TableColumn<Object_BoatList, String> Col3 = new TableColumn<Object_BoatList, String>("First Name");
-		TableColumn<Object_BoatList, String> Col4 = new TableColumn<Object_BoatList, String>("Model");
-		TableColumn<Object_BoatList, String> Col5 = new TableColumn<Object_BoatList, String>("Registration");
-		TableColumn<Object_BoatList, String> Col6 = new TableColumn<Object_BoatList, String>("Year");
-		TableColumn<Object_BoatList, String> Col7 = new TableColumn<Object_BoatList, String>("Name");
+		TableColumn<BoatListDTO, Integer> Col1 = new TableColumn<BoatListDTO, Integer>("MEM");
+		TableColumn<BoatListDTO, String> Col2 = new TableColumn<BoatListDTO, String>("Last Name");
+		TableColumn<BoatListDTO, String> Col3 = new TableColumn<BoatListDTO, String>("First Name");
+		TableColumn<BoatListDTO, String> Col4 = new TableColumn<BoatListDTO, String>("Model");
+		TableColumn<BoatListDTO, String> Col5 = new TableColumn<BoatListDTO, String>("Registration");
+		TableColumn<BoatListDTO, String> Col6 = new TableColumn<BoatListDTO, String>("Year");
+		TableColumn<BoatListDTO, String> Col7 = new TableColumn<BoatListDTO, String>("Name");
 		//TableColumn<Object_BoatList, String> Col8 = new TableColumn<Object_BoatList, String>("City");
 		//TableColumn<Object_BoatList, String> Col9 = new TableColumn<Object_BoatList, String>("State");
 		//TableColumn<Object_BoatList, String> Col10 = new TableColumn<Object_BoatList, String>("Zip");
 		//TableColumn<Object_BoatList, String> Col11 = new TableColumn<Object_BoatList, String>("MSID");
 		
-		Col1.setCellValueFactory(new PropertyValueFactory<Object_BoatList, Integer>("membership_id"));
-		Col2.setCellValueFactory(new PropertyValueFactory<Object_BoatList, String>("lname"));
-		Col3.setCellValueFactory(new PropertyValueFactory<Object_BoatList, String>("fname"));
-		Col4.setCellValueFactory(new PropertyValueFactory<Object_BoatList, String>("model"));
-		Col5.setCellValueFactory(new PropertyValueFactory<Object_BoatList, String>("registration_num"));
-		Col6.setCellValueFactory(new PropertyValueFactory<Object_BoatList, String>("manufacture_year"));
-		Col7.setCellValueFactory(new PropertyValueFactory<Object_BoatList, String>("boat_name"));
+		Col1.setCellValueFactory(new PropertyValueFactory<BoatListDTO, Integer>("membership_id"));
+		Col2.setCellValueFactory(new PropertyValueFactory<BoatListDTO, String>("lname"));
+		Col3.setCellValueFactory(new PropertyValueFactory<BoatListDTO, String>("fname"));
+		Col4.setCellValueFactory(new PropertyValueFactory<BoatListDTO, String>("model"));
+		Col5.setCellValueFactory(new PropertyValueFactory<BoatListDTO, String>("registration_num"));
+		Col6.setCellValueFactory(new PropertyValueFactory<BoatListDTO, String>("manufacture_year"));
+		Col7.setCellValueFactory(new PropertyValueFactory<BoatListDTO, String>("boat_name"));
 		
 		/// sets width of columns by percentage
 		Col1.setMaxWidth( 1f * Integer.MAX_VALUE * 10 );  // Membership ID
@@ -80,12 +80,12 @@ public class TabBoats extends Tab {
 		
 		/////////////////// LISTENERS  /////////////////////////
 		boatListTableView.setRowFactory(tv -> {
-			TableRow<Object_BoatList> row = new TableRow<>();
+			TableRow<BoatListDTO> row = new TableRow<>();
 			row.setOnMouseClicked(event -> {
 				if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
 					// int rowIndex = row.getIndex();
-					Object_BoatList clickedRow = row.getItem();
-					Object_Boat selectedBoat = SqlBoat.getBoatbyBoatId(clickedRow.getBoat_id());
+					BoatListDTO clickedRow = row.getItem();
+					BoatDTO selectedBoat = SqlBoat.getBoatbyBoatId(clickedRow.getBoat_id());
 					Launcher.openBoatViewTab(selectedBoat);
 				}
 			});

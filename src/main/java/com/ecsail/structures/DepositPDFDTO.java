@@ -1,20 +1,20 @@
 package com.ecsail.structures;
 
-public class Object_DepositPDF {
+public class DepositPDFDTO {
 	boolean isSingleDeposit;
 	boolean includesDetailedReport;
 	boolean includesSummaryReport;
 	int depositNumber;
 	
-	public Object_DepositPDF(boolean isSingleDeposit, boolean includesDetailedReport, boolean includesSummaryReport,
-			int depositNumber) {
+	public DepositPDFDTO(boolean isSingleDeposit, boolean includesDetailedReport, boolean includesSummaryReport,
+						 int depositNumber) {
 		this.isSingleDeposit = isSingleDeposit;
 		this.includesDetailedReport = includesDetailedReport;
 		this.includesSummaryReport = includesSummaryReport;
 		this.depositNumber = depositNumber;
 	}	
 
-	public Object_DepositPDF() {
+	public DepositPDFDTO() {
 		this.isSingleDeposit = false;
 		this.includesDetailedReport = false;
 		this.includesSummaryReport = false;

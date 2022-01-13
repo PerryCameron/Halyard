@@ -3,9 +3,9 @@ package com.ecsail.sql.select;
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.Main;
-import com.ecsail.structures.Object_Boat;
-import com.ecsail.structures.Object_BoatList;
-import com.ecsail.structures.Object_BoatOwner;
+import com.ecsail.structures.BoatDTO;
+import com.ecsail.structures.BoatListDTO;
+import com.ecsail.structures.BoatOwnerDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -17,14 +17,14 @@ import java.util.List;
 
 public class SqlBoat {
     // was a list
-    public static ObservableList<Object_BoatOwner> getBoatOwners() {
-        ObservableList<Object_BoatOwner> thisBoatOwner = FXCollections.observableArrayList();
+    public static ObservableList<BoatOwnerDTO> getBoatOwners() {
+        ObservableList<BoatOwnerDTO> thisBoatOwner = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
             rs = stmt.executeQuery(Main.console.setRegexColor("select * from boat_owner;"));
             while (rs.next()) {
-                thisBoatOwner.add(new Object_BoatOwner(
+                thisBoatOwner.add(new BoatOwnerDTO(
                         rs.getInt("MS_ID"),
                         rs.getInt("BOAT_ID")));
             }
@@ -36,14 +36,14 @@ public class SqlBoat {
         return thisBoatOwner;
     }
 
-    public static ObservableList<Object_Boat> getBoats() {
-        ObservableList<Object_Boat> thisBoat = FXCollections.observableArrayList();
+    public static ObservableList<BoatDTO> getBoats() {
+        ObservableList<BoatDTO> thisBoat = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
             rs = stmt.executeQuery(Main.console.setRegexColor("select * from boat;"));
             while (rs.next()) {
-                thisBoat.add(new Object_Boat(
+                thisBoat.add(new BoatDTO(
                         rs.getInt("BOAT_ID"), 0, // because Object_Boat has a ms-id variable but database does not
                         rs.getString("MANUFACTURER"), // might be the best note I have ever left ^^ lol
                         rs.getString("MANUFACTURE_YEAR"),
@@ -69,8 +69,8 @@ public class SqlBoat {
         return thisBoat;
     }
 
-    public static ObservableList<Object_BoatList> getBoatsWithOwners() {
-        ObservableList<Object_BoatList> thisBoat = FXCollections.observableArrayList();
+    public static ObservableList<BoatListDTO> getBoatsWithOwners() {
+        ObservableList<BoatListDTO> thisBoat = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
@@ -82,7 +82,7 @@ public class SqlBoat {
                     + "id.MS_ID=m.MS_ID left join person p on m.P_ID=p.P_ID "
                     + "where id.RENEW=true and id.FISCAL_YEAR='2021'"));
             while (rs.next()) {
-                thisBoat.add(new Object_BoatList(
+                thisBoat.add(new BoatListDTO(
                         rs.getInt("BOAT_ID"),
                         rs.getInt("MS_ID"),
                         rs.getString("MANUFACTURER"),
@@ -111,15 +111,15 @@ public class SqlBoat {
         return thisBoat;
     }
 
-    public static List<Object_Boat> getBoats(int ms_id) { // overload but must be separate
-        List<Object_Boat> thisBoat = new ArrayList<>();
+    public static List<BoatDTO> getBoats(int ms_id) { // overload but must be separate
+        List<BoatDTO> thisBoat = new ArrayList<>();
         try {
         Statement stmt = ConnectDatabase.sqlConnection.createStatement();
         ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select b.BOAT_ID, bo.MS_ID, b.MANUFACTURER"
                 + ", b.MANUFACTURE_YEAR, b.REGISTRATION_NUM, b.MODEL, b.BOAT_NAME, b.SAIL_NUMBER"
                 + ", b.HAS_TRAILER, b.LENGTH, b.WEIGHT, b.KEEL, b.PHRF, b.DRAFT, b.BEAM, b.LWL from boat b inner join boat_owner bo using (boat_id) where ms_id='" + ms_id + "';"));
         while (rs.next()) {
-            thisBoat.add(new Object_Boat(
+            thisBoat.add(new BoatDTO(
                     rs.getInt("BOAT_ID"),
                     rs.getInt("MS_ID"),
                     rs.getString("MANUFACTURER"),
@@ -145,15 +145,15 @@ public class SqlBoat {
         return thisBoat;
     }
 
-    public static Object_Boat getBoatbyBoatId(int boat_id) { // overload but must be separate
-        Object_Boat thisBoat = null;
+    public static BoatDTO getBoatbyBoatId(int boat_id) { // overload but must be separate
+        BoatDTO thisBoat = null;
         try {
         Statement stmt = ConnectDatabase.sqlConnection.createStatement();
         ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select b.BOAT_ID, bo.MS_ID, b.MANUFACTURER"
                 + ", b.MANUFACTURE_YEAR, b.REGISTRATION_NUM, b.MODEL, b.BOAT_NAME, b.SAIL_NUMBER"
                 + ", b.HAS_TRAILER, b.LENGTH, b.WEIGHT, b.KEEL, b.PHRF, b.DRAFT, b.BEAM, b.LWL from boat b inner join boat_owner bo using (boat_id) where boat_id='" + boat_id + "';"));
         while (rs.next()) {
-            thisBoat = new Object_Boat(
+            thisBoat = new BoatDTO(
                     rs.getInt("BOAT_ID"),
                     rs.getInt("MS_ID"),
                     rs.getString("MANUFACTURER"),

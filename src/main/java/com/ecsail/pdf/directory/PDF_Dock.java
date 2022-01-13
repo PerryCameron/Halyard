@@ -5,7 +5,7 @@ import java.util.Comparator;
 
    import com.ecsail.sql.select.SqlMembershipList;
    import com.ecsail.sql.select.SqlSlip;
-   import com.ecsail.structures.Object_MembershipList;
+   import com.ecsail.structures.MembershipListDTO;
 import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.layout.borders.Border;
@@ -223,7 +223,7 @@ import com.itextpdf.layout.property.TextAlignment;
 		boolean isSublease = false;
 		/// find out if this is a sublease and put there name in if they are.
 		if (slips.get(element + offset).getSubleaseMsID() != 0) {
-			Object_MembershipList subleaser = new Object_MembershipList();
+			MembershipListDTO subleaser = new MembershipListDTO();
 			subleaser = SqlMembershipList.getMembershipList(slips.get(element + offset).getSubleaseMsID(), set.getSelectedYear());
 			name = subleaser.getLname() + " " + returnInitial(subleaser.getFname());
 			isSublease = true;

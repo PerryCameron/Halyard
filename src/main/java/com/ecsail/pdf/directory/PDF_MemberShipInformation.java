@@ -1,6 +1,6 @@
 package com.ecsail.pdf.directory;
 
-import com.ecsail.structures.Object_MembershipList;
+import com.ecsail.structures.MembershipListDTO;
 import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.borders.SolidBorder;
@@ -13,7 +13,7 @@ import com.itextpdf.layout.property.VerticalAlignment;
 public class PDF_MemberShipInformation extends Table {
 	PDF_Object_Settings set;
 	
-	public PDF_MemberShipInformation(int numColumns, Object_MembershipList m, PDF_Object_Settings set) {
+	public PDF_MemberShipInformation(int numColumns, MembershipListDTO m, PDF_Object_Settings set) {
 		super(numColumns);
 		this.set = set;
 		Object_MembershipInformation ms = new Object_MembershipInformation(m);

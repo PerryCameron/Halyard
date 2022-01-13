@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import com.ecsail.structures.Object_MembershipList;
+import com.ecsail.structures.MembershipListDTO;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.element.AreaBreak;
@@ -18,16 +18,16 @@ import com.itextpdf.layout.property.VerticalAlignment;
 import javafx.collections.ObservableList;
 
 public class PDF_MembersByNumber {
-	ObservableList<Object_MembershipList> rosters;
+	ObservableList<MembershipListDTO> rosters;
 	PDF_Object_Settings set;
 	ArrayList<Table> tables = new ArrayList<Table>(); // Stores the column tables
 	ArrayList<Object_StoreMemberPosition> position;
 	
-	public PDF_MembersByNumber(PDF_Object_Settings set, Document doc, ObservableList<Object_MembershipList> rosters) {
+	public PDF_MembersByNumber(PDF_Object_Settings set, Document doc, ObservableList<MembershipListDTO> rosters) {
 		this.set = set;
 		this.rosters = rosters;
 		this.position = new ArrayList<Object_StoreMemberPosition>();
-		Collections.sort(this.rosters , Comparator.comparing(Object_MembershipList::getMembershipId));
+		Collections.sort(this.rosters , Comparator.comparing(MembershipListDTO::getMembershipId));
 		
 		// used to know where we are in iterations
 		int count = 0;
@@ -110,7 +110,7 @@ public class PDF_MembersByNumber {
 	}
 	
 	// creates a single cell with membership names
-	private Cell createMembershipEntry(Object_MembershipList m) {
+	private Cell createMembershipEntry(MembershipListDTO m) {
 		Cell cell;
 		Paragraph p;
 		cell = new Cell();

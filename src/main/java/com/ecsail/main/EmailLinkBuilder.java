@@ -6,7 +6,7 @@ import com.ecsail.sql.select.SqlEmail;
 import com.ecsail.sql.select.SqlMoney;
 import com.ecsail.sql.select.SqlPerson;
 import com.ecsail.sql.select.SqlPhone;
-import com.ecsail.structures.Object_MembershipList;
+import com.ecsail.structures.MembershipListDTO;
 import com.ecsail.structures.Object_Money;
 import com.ecsail.structures.Object_Person;
 import okhttp3.HttpUrl;
@@ -22,7 +22,7 @@ public class EmailLinkBuilder {
     public EmailLinkBuilder() {
     }
 
-    public String createLinkData(Object_MembershipList ml, String selectedYear)  {
+    public String createLinkData(MembershipListDTO ml, String selectedYear)  {
 
         Object_Person primaryMember = null;
         Object_Person secondaryMember = null;

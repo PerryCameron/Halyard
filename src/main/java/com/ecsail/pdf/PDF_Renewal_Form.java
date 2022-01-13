@@ -14,10 +14,10 @@ import com.ecsail.enums.KeelType;
 import com.ecsail.main.HalyardPaths;
 import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.select.*;
-import com.ecsail.structures.Object_Boat;
-import com.ecsail.structures.Object_DefinedFee;
-import com.ecsail.structures.Object_MembershipId;
-import com.ecsail.structures.Object_MembershipList;
+import com.ecsail.structures.BoatDTO;
+import com.ecsail.structures.DefinedFeeDTO;
+import com.ecsail.structures.MembershipIdDTO;
+import com.ecsail.structures.MembershipListDTO;
 import com.ecsail.structures.Object_Money;
 import com.ecsail.structures.Object_Person;
 import com.ecsail.structures.Object_Phone;
@@ -42,14 +42,14 @@ public class PDF_Renewal_Form {
 	private static String last_membership_id;
 	private static String current_membership_id;
 	private static int ms_id;
-	private static Object_MembershipList membership;
+	private static MembershipListDTO membership;
 	private static Object_Person primary;
 	private static Object_Person secondary;
 	private static Object_Money dues;
-	Object_DefinedFee definedFees;
+	DefinedFeeDTO definedFees;
 	private int borderSize = 1;
-	private List<Object_Boat> boats = new ArrayList<Object_Boat>();
-	private List<Object_MembershipId> ids = new ArrayList<Object_MembershipId>();
+	private List<BoatDTO> boats = new ArrayList<BoatDTO>();
+	private List<MembershipIdDTO> ids = new ArrayList<MembershipIdDTO>();
 	private ArrayList<Object_Phone> primaryPhone = new ArrayList<Object_Phone>();
 	private ArrayList<Object_Phone> secondaryPhone = new ArrayList<Object_Phone>();
 	private ArrayList<Object_Person> dependants = new ArrayList<Object_Person>();
@@ -90,8 +90,8 @@ public class PDF_Renewal_Form {
 		filenm = HalyardPaths.RENEWALFORM + "/" + year + "/" + year + "_Renewal_Forms.pdf";
 		Document document = createDocument(filenm);
 		ids = SqlMembership_Id.getMembershipIds(year);
-		Collections.sort(ids, Comparator.comparing(Object_MembershipId::getMembership_id));
-		for (Object_MembershipId id : ids) {
+		Collections.sort(ids, Comparator.comparing(MembershipIdDTO::getMembership_id));
+		for (MembershipIdDTO id : ids) {
 			current_membership_id = id.getMembership_id();
 			System.out.println("printing for membership " + id.getMembership_id());
 			makeRenewPdf(document);
@@ -105,8 +105,8 @@ public class PDF_Renewal_Form {
 	
 	private void makeManyMembershipsIntoManyPDF() throws IOException {
 		ids = SqlMembership_Id.getMembershipIds(year);
-		Collections.sort(ids, Comparator.comparing(Object_MembershipId::getMembership_id));
-		for (Object_MembershipId id : ids) {
+		Collections.sort(ids, Comparator.comparing(MembershipIdDTO::getMembership_id));
+		for (MembershipIdDTO id : ids) {
 			current_membership_id = id.getMembership_id();
 			Document document = makeRenewPdf();
 			document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
@@ -196,8 +196,8 @@ public class PDF_Renewal_Form {
 		last_membership_id = SqlMembership_Id.getMembershipId((Integer.parseInt(year) -1) +"" , membership.getMsid());
 		dues = SqlMoney.getMonies(ms_id, year);
 		boats = SqlBoat.getBoats(ms_id);
-		boats.add(0, new Object_Boat(0, 0, "Manufacturer", "Year", "Registration", "Model", "Boat Name", "Sail #", true, "Length", "Header", "Keel Type", "PHRF", "Draft", "Beam", "LWL"));
-		boats.add(new Object_Boat(0, 0, "", "", "", "", "", "", false, "", "Blank", "", "","","",""));
+		boats.add(0, new BoatDTO(0, 0, "Manufacturer", "Year", "Registration", "Model", "Boat Name", "Sail #", true, "Length", "Header", "Keel Type", "PHRF", "Draft", "Beam", "LWL"));
+		boats.add(new BoatDTO(0, 0, "", "", "", "", "", "", false, "", "Blank", "", "","","",""));
 		dependants = SqlPerson.getDependants
 				(membership);
 		primary = SqlPerson.getPerson(ms_id, 1); // 1 = primary member
@@ -1421,7 +1421,7 @@ public class PDF_Renewal_Form {
 		Table mainTable = new Table(9);
 		mainTable.setWidth(590);
 		//System.out.println("boats size is " + boats.size());
-		for(Object_Boat b: boats) {
+		for(BoatDTO b: boats) {
 			//System.out.println(b);
 			createBoatTableRow(mainTable, b);
 		}
@@ -1445,7 +1445,7 @@ public class PDF_Renewal_Form {
 		return mainTable;
 	}
 	
-	public void createBoatTableRow(Table mainTable, Object_Boat boat) {
+	public void createBoatTableRow(Table mainTable, BoatDTO boat) {
 		Boolean isHeader = false;
 		//////// Determine if Header ///
 		if(boat.getWeight() == null) boat.setWeight("");  // quick hack to prevent null exception if weight is null

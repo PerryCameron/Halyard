@@ -2,7 +2,7 @@ package com.ecsail.main;
 
 import com.ecsail.sql.select.SqlEmail;
 import com.ecsail.sql.select.SqlPerson;
-import com.ecsail.structures.Object_MembershipList;
+import com.ecsail.structures.MembershipListDTO;
 import com.ecsail.structures.Object_Person;
 import javafx.event.ActionEvent;
 
@@ -29,7 +29,7 @@ public class rosterContextMenu extends ContextMenu {
     private String email;
 
 
-    public rosterContextMenu(Object_MembershipList m, String selectedYear) {
+    public rosterContextMenu(MembershipListDTO m, String selectedYear) {
         this.person = SqlPerson.getPersonByPid(m.getPid());
         this.email = SqlEmail.getEmail(this.person);
         this.selectedYear = selectedYear;

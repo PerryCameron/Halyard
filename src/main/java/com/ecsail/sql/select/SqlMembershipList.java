@@ -4,7 +4,7 @@ import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.HalyardPaths;
 import com.ecsail.main.Main;
-import com.ecsail.structures.Object_MembershipList;
+import com.ecsail.structures.MembershipListDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -15,12 +15,12 @@ import java.sql.Statement;
 public class SqlMembershipList {
     /// not a pure SQL FUNCTION was having difficulties narrowing it down pure SQL.
     public static int getNumberOfReturningMembershipsForYear(int fiscalYear) {
-        ObservableList<Object_MembershipList> rosters = getReturnMembers(fiscalYear);
+        ObservableList<MembershipListDTO> rosters = getReturnMembers(fiscalYear);
         return rosters.size();
     }
 
-    public static ObservableList<Object_MembershipList> getRosterOfKayakRackOwners(String year) {
-        ObservableList<Object_MembershipList> rosters = FXCollections.observableArrayList();
+    public static ObservableList<MembershipListDTO> getRosterOfKayakRackOwners(String year) {
+        ObservableList<MembershipListDTO> rosters = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
@@ -42,8 +42,8 @@ public class SqlMembershipList {
 
 
 
-    public static ObservableList<Object_MembershipList> getRosterOfKayakShedOwners(String year) {
-        ObservableList<Object_MembershipList> rosters = FXCollections.observableArrayList();
+    public static ObservableList<MembershipListDTO> getRosterOfKayakShedOwners(String year) {
+        ObservableList<MembershipListDTO> rosters = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
@@ -63,8 +63,8 @@ public class SqlMembershipList {
         return rosters;
     }
 
-    public static ObservableList<Object_MembershipList> getRoster(String year, boolean isActive) {
-        ObservableList<Object_MembershipList> rosters = FXCollections.observableArrayList();
+    public static ObservableList<MembershipListDTO> getRoster(String year, boolean isActive) {
+        ObservableList<MembershipListDTO> rosters = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
@@ -83,8 +83,8 @@ public class SqlMembershipList {
         return rosters;
     }
 
-    public static ObservableList<Object_MembershipList> getRosterOfAll(String year) {
-        ObservableList<Object_MembershipList> rosters = FXCollections.observableArrayList();
+    public static ObservableList<MembershipListDTO> getRosterOfAll(String year) {
+        ObservableList<MembershipListDTO> rosters = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
@@ -103,8 +103,8 @@ public class SqlMembershipList {
         return rosters;
     }
 
-    public static ObservableList<Object_MembershipList> getRosterOfSlipOwners(String year) {
-        ObservableList<Object_MembershipList> rosters = FXCollections.observableArrayList();
+    public static ObservableList<MembershipListDTO> getRosterOfSlipOwners(String year) {
+        ObservableList<MembershipListDTO> rosters = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
@@ -123,8 +123,8 @@ public class SqlMembershipList {
         return rosters;
     }
 
-    public static ObservableList<Object_MembershipList> getRosterOfSubleasedSlips() {
-        ObservableList<Object_MembershipList> rosters = FXCollections.observableArrayList();
+    public static ObservableList<MembershipListDTO> getRosterOfSubleasedSlips() {
+        ObservableList<MembershipListDTO> rosters = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
@@ -141,8 +141,8 @@ public class SqlMembershipList {
         return rosters;
     }
 
-    public static Object_MembershipList getMembershipList(int ms_id, String year) {
-        Object_MembershipList thisMembership = null;
+    public static MembershipListDTO getMembershipList(int ms_id, String year) {
+        MembershipListDTO thisMembership = null;
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
@@ -152,7 +152,7 @@ public class SqlMembershipList {
                     + "id on m.MS_ID=id.MS_ID left join person p on p.MS_ID=m.MS_ID where id.FISCAL_YEAR='" + year + "' "
                     + "and m.ms_id=" + ms_id));
             while (rs.next()) {
-                thisMembership = new Object_MembershipList(
+                thisMembership = new MembershipListDTO(
                         rs.getInt("MS_ID"),
                         rs.getInt("P_ID"),
                         rs.getInt("MEMBERSHIP_ID"),
@@ -174,9 +174,9 @@ public class SqlMembershipList {
         return thisMembership;
     }
 
-    public static Object_MembershipList getMembershipFromList(int ms_id, String year) {
+    public static MembershipListDTO getMembershipFromList(int ms_id, String year) {
         System.out.println("Pulling membership for ms_id=" + ms_id + " for the year year");
-        Object_MembershipList thisMembership = null;
+        MembershipListDTO thisMembership = null;
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
@@ -186,7 +186,7 @@ public class SqlMembershipList {
                     + "id on m.MS_ID=id.MS_ID left join person p on p.MS_ID=m.MS_ID where id.FISCAL_YEAR='" + year + "' "
                     + "and p.MEMBER_TYPE=1 and m.ms_id=" + ms_id));
             while (rs.next()) {
-                thisMembership = new Object_MembershipList(
+                thisMembership = new MembershipListDTO(
                         rs.getInt("MS_ID"),
                         rs.getInt("P_ID"),
                         rs.getInt("MEMBERSHIP_ID"),
@@ -208,8 +208,8 @@ public class SqlMembershipList {
         return thisMembership;
     }
 
-    public static Object_MembershipList getMembershipFromListWithoutMembershipId(int ms_id) {
-        Object_MembershipList thisMembership = null;
+    public static MembershipListDTO getMembershipFromListWithoutMembershipId(int ms_id) {
+        MembershipListDTO thisMembership = null;
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
@@ -217,7 +217,7 @@ public class SqlMembershipList {
                     + "p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip from slip s right join "
                     + "membership m on m.MS_ID=s.MS_ID left join person p on p.MS_ID=m.MS_ID where m.ms_id=" + ms_id));
             while (rs.next()) {
-                thisMembership = new Object_MembershipList(
+                thisMembership = new MembershipListDTO(
                         rs.getInt("MS_ID"),
                         rs.getInt("P_ID"),
                         0,
@@ -240,8 +240,8 @@ public class SqlMembershipList {
         return thisMembership;
     }
 
-    public static ObservableList<Object_MembershipList> getSlipRoster(String year) {
-        ObservableList<Object_MembershipList> rosters = FXCollections.observableArrayList();
+    public static ObservableList<MembershipListDTO> getSlipRoster(String year) {
+        ObservableList<MembershipListDTO> rosters = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
@@ -256,8 +256,8 @@ public class SqlMembershipList {
         return rosters;
     }
 
-    public static ObservableList<Object_MembershipList> getWaitListRoster(String waitlist) {
-        ObservableList<Object_MembershipList> rosters = FXCollections.observableArrayList();
+    public static ObservableList<MembershipListDTO> getWaitListRoster(String waitlist) {
+        ObservableList<MembershipListDTO> rosters = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
@@ -276,8 +276,8 @@ public class SqlMembershipList {
         return rosters;
     }
 
-    public static ObservableList<Object_MembershipList> getNewMemberRoster(String year) {
-        ObservableList<Object_MembershipList> rosters = FXCollections.observableArrayList();
+    public static ObservableList<MembershipListDTO> getNewMemberRoster(String year) {
+        ObservableList<MembershipListDTO> rosters = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
@@ -298,9 +298,9 @@ public class SqlMembershipList {
 
 
 
-    public static ObservableList<Object_MembershipList> getFullNewMemberRoster(String year) {
+    public static ObservableList<MembershipListDTO> getFullNewMemberRoster(String year) {
         int lastYear = Integer.parseInt(year) - 1;
-        ObservableList<Object_MembershipList> rosters = FXCollections.observableArrayList();
+        ObservableList<MembershipListDTO> rosters = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
@@ -324,9 +324,9 @@ public class SqlMembershipList {
         return rosters;
     }
 
-    public static ObservableList<Object_MembershipList> getReturnMembers(int fiscalYear) { // and those who lost their membership number
+    public static ObservableList<MembershipListDTO> getReturnMembers(int fiscalYear) { // and those who lost their membership number
         int lastYear = fiscalYear - 1;
-        ObservableList<Object_MembershipList> rosters = FXCollections.observableArrayList();
+        ObservableList<MembershipListDTO> rosters = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
@@ -346,8 +346,8 @@ public class SqlMembershipList {
         return rosters;
     }
 
-    public static Object_MembershipList getMembershipByMembershipId(String membership_id) {  /// for SQL Script Maker
-        Object_MembershipList membership = null;
+    public static MembershipListDTO getMembershipByMembershipId(String membership_id) {  /// for SQL Script Maker
+        MembershipListDTO membership = null;
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
@@ -357,7 +357,7 @@ public class SqlMembershipList {
                     + "membership m left join person p on m.P_ID=p.P_ID left join membership_id "
                     + "id on m.MS_ID=id.MS_ID where id.FISCAL_YEAR='2021' and membership_id='" + membership_id + "'"));
             while (rs.next()) {
-                membership = new Object_MembershipList(
+                membership = new MembershipListDTO(
                         rs.getInt("MS_ID"),
                         rs.getInt("P_ID"),
                         rs.getInt("MEMBERSHIP_ID"),
@@ -380,8 +380,8 @@ public class SqlMembershipList {
         return membership;
     }
 
-    public static ObservableList<Object_MembershipList> getBoatOwners(int boat_id) {
-        ObservableList<Object_MembershipList> rosters = FXCollections.observableArrayList();
+    public static ObservableList<MembershipListDTO> getBoatOwners(int boat_id) {
+        ObservableList<MembershipListDTO> rosters = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
@@ -401,8 +401,8 @@ public class SqlMembershipList {
     }
 
     /// may be a duplicate from above
-    public static ObservableList<Object_MembershipList> getBoatOwnerRoster(int boat_id) {
-        ObservableList<Object_MembershipList> boatOwners = FXCollections.observableArrayList();
+    public static ObservableList<MembershipListDTO> getBoatOwnerRoster(int boat_id) {
+        ObservableList<MembershipListDTO> boatOwners = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
@@ -419,9 +419,9 @@ public class SqlMembershipList {
 
     /////////////////// OBJECT PACKERS /////////////////////////////
 
-    private static void queryToArrayListConstant(ObservableList<Object_MembershipList> rosters, ResultSet rs) throws SQLException {
+    private static void queryToArrayListConstant(ObservableList<MembershipListDTO> rosters, ResultSet rs) throws SQLException {
         while (rs.next()) {
-            rosters.add(new Object_MembershipList(
+            rosters.add(new MembershipListDTO(
                     rs.getInt("MS_ID"),
                     rs.getInt("P_ID"),
                     rs.getInt("MEMBERSHIP_ID"),
@@ -439,9 +439,9 @@ public class SqlMembershipList {
         }
     }
 
-    private static void queryToArrayList(ObservableList<Object_MembershipList> rosters, ResultSet rs) throws SQLException {
+    private static void queryToArrayList(ObservableList<MembershipListDTO> rosters, ResultSet rs) throws SQLException {
         while (rs.next()) {
-            rosters.add(new Object_MembershipList(
+            rosters.add(new MembershipListDTO(
                     rs.getInt("MS_ID"),
                     rs.getInt("P_ID"),
                     rs.getInt("MEMBERSHIP_ID"),

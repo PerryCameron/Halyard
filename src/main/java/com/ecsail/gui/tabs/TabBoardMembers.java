@@ -6,7 +6,7 @@ import java.util.Date;
 import com.ecsail.enums.Officer;
 import com.ecsail.main.Launcher;
 import com.ecsail.sql.select.SqlBoard;
-import com.ecsail.structures.Object_Board;
+import com.ecsail.structures.BoardDTO;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -28,7 +28,7 @@ public class TabBoardMembers extends Tab {
 	VBox committeeVBox2 = new VBox();
 	VBox officerVBox1 = new VBox();  // titles
 	VBox officerVBox2 = new VBox();
-	private ObservableList<Object_Board> board;
+	private ObservableList<BoardDTO> board;
 	String selectedYear;
 	String currentYear;
 	Text year;
@@ -238,7 +238,7 @@ public class TabBoardMembers extends Tab {
 		@SuppressWarnings("unused")
 		int count = 0;
 		String officerName = "";
-		for(Object_Board bm: board) {
+		for(BoardDTO bm: board) {
 			if(offType.equals(bm.getOfficer_type()))
 				officerName = bm.getFname() + " " + bm.getLname();
 			
@@ -249,7 +249,7 @@ public class TabBoardMembers extends Tab {
 	
 	private int getOfficerMSID(String offType) {
 		int msid = 0;
-		for(Object_Board bm: board) {
+		for(BoardDTO bm: board) {
 			if(offType.equals(bm.getOfficer_type()))
 				msid = bm.getMs_id();
 		}	
@@ -261,7 +261,7 @@ public class TabBoardMembers extends Tab {
 		setMouseListener(yearText);
 		yearText.getStyleClass().add("title");
 		fillHBox.getChildren().add(yearText);
-		for(Object_Board bm: board) {
+		for(BoardDTO bm: board) {
 				if(bm.getBoard_year().equals(year))
 					fillHBox.getChildren().add(setMouseListener(new Text((bm.getFname() + " " + bm.getLname())), bm.getMs_id()));
 		}	

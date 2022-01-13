@@ -19,8 +19,8 @@ import com.ecsail.gui.tabs.TabWelcome;
 import com.ecsail.pdf.PDF_BoatReport;
 import com.ecsail.sql.select.SqlMembershipList;
 import com.ecsail.sql.select.SqlMembership_Id;
-import com.ecsail.structures.Object_Boat;
-import com.ecsail.structures.Object_MembershipList;
+import com.ecsail.structures.BoatDTO;
+import com.ecsail.structures.MembershipListDTO;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.VBox;
@@ -75,7 +75,7 @@ static TabPane tabPane;
 		tabPane.getSelectionModel().select(getTabIndex("Roster"));
 	}
 	
-	public static void openBoatViewTab(Object_Boat b) {
+	public static void openBoatViewTab(BoatDTO b) {
 		if(!tabOpen("Boat"))
 			tabPane.getTabs().add(new TabBoatView("Boat " + b.getBoat_id(), b));
 			tabPane.getSelectionModel().select(getTabIndex("Boat " + b.getBoat_id()));
@@ -98,7 +98,7 @@ static TabPane tabPane;
 	}
 	
 	public static void createMembershipTabFromPeopleList(int msid)  {
-		Object_MembershipList membership = SqlMembershipList.getMembershipFromListWithoutMembershipId(msid);
+		MembershipListDTO membership = SqlMembershipList.getMembershipFromListWithoutMembershipId(msid);
 		 if(!SqlMembership_Id.isRenewed(msid, HalyardPaths.getYear()))
 		 Launcher.createInactiveMemberTab(membership);
 		 else
@@ -106,14 +106,14 @@ static TabPane tabPane;
 	}
 	// used for TabRoster and CreateMembership
 	public static void createMembershipTabForRoster(int membershipID, int ms_id)  {
-		Object_MembershipList membership;
+		MembershipListDTO membership;
 		membership = getMembership(ms_id);
 		createOrOpenTab(membership, "Membership");
 	}
 	
 	// used in BoxSlip
 	public static void createTabForBoxSlip(int ms_id) { 
-		Object_MembershipList membership;
+		MembershipListDTO membership;
 		if(SqlMembership_Id.isRenewed(ms_id, HalyardPaths.getYear())) { // membership is active and in our object tree
 		membership = getMembership(ms_id);
 		} else { // membership is not active and needs to be pulled from the SQL Database
@@ -126,28 +126,28 @@ static TabPane tabPane;
 
 	// used for TabDeposits
 	public static void createTabForDeposits(int ms_id, String year) {  // overload
-		Object_MembershipList membership;
+		MembershipListDTO membership;
 		membership = SqlMembershipList.getMembershipFromList(ms_id, year);
 		createOrOpenTab(membership, "Membership");
 	}
 
 	public static void launchTabFromSlips(int ms_id) {
-		Object_MembershipList membership = SqlMembershipList.getMembershipList(ms_id, HalyardPaths.getYear());
+		MembershipListDTO membership = SqlMembershipList.getMembershipList(ms_id, HalyardPaths.getYear());
 		createOrOpenTab(membership, "Membership");
 	}
 	
 	// fills incomplete object with latest information and opens tab.
-	public static void createActiveMembershipTab(Object_MembershipList membership) {
+	public static void createActiveMembershipTab(MembershipListDTO membership) {
 		membership = SqlMembershipList.getMembershipFromList(membership.getMsid(), HalyardPaths.getYear());
 		createOrOpenTab(membership, "Membership");
 	}
 	
-	public static void createInactiveMemberTab(Object_MembershipList membership) {
+	public static void createInactiveMemberTab(MembershipListDTO membership) {
 		createOrOpenTab(membership, "MSID");
 	}
 	
 	public static void createMembershipTabForBOD(int msid, String selectedYear) {
-		Object_MembershipList membership = SqlMembershipList.getMembershipList(msid, selectedYear);
+		MembershipListDTO membership = SqlMembershipList.getMembershipList(msid, selectedYear);
 		createOrOpenTab(membership, "Membership");
 	}
 	
@@ -167,7 +167,7 @@ static TabPane tabPane;
 
 	////////////////  UTILITY METHODS ///////////////////////
 
-	private static void createOrOpenTab(Object_MembershipList membership, String label) {
+	private static void createOrOpenTab(MembershipListDTO membership, String label) {
 		String tabLabel = "";
 		if(label.equals("Membership")) {
 			tabLabel = "Membership " + membership.getMembershipId();
@@ -197,7 +197,7 @@ static TabPane tabPane;
 	public static void removeMembershipRow(int ms_id) {
 		int count = 0;
 		int element = 0;
-		for(Object_MembershipList mem: Main.activememberships) {
+		for(MembershipListDTO mem: Main.activememberships) {
 			if(mem.getMsid() == ms_id) element = count;
 			count++;
 		}
@@ -205,20 +205,20 @@ static TabPane tabPane;
 	}
 
 	// gets a specific membership with and ms_id
-	public static Object_MembershipList getMembership(int ms_id) {
-		Object_MembershipList membership = null;
+	public static MembershipListDTO getMembership(int ms_id) {
+		MembershipListDTO membership = null;
 		int element = 0;
-		for(Object_MembershipList mem: Main.activememberships) {
+		for(MembershipListDTO mem: Main.activememberships) {
 			if(mem.getMsid() == ms_id) membership = Main.activememberships.get(element);
 			element++;
 		}
 		return membership;
 	}
 	
-	public static Object_MembershipList getSubleaser(int ms_id) {  // ms_id here is the subleasee
-		Object_MembershipList membership = null;
+	public static MembershipListDTO getSubleaser(int ms_id) {  // ms_id here is the subleasee
+		MembershipListDTO membership = null;
 		int element = 0;
-		for(Object_MembershipList mem: Main.activememberships) {
+		for(MembershipListDTO mem: Main.activememberships) {
 			if(mem.getSubleaser() == ms_id) membership = Main.activememberships.get(element);
 			element++;
 		}

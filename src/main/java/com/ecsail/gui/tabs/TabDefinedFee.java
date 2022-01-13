@@ -7,7 +7,7 @@ import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.SqlInsert;
 import com.ecsail.sql.select.SqlDefinedFee;
 import com.ecsail.sql.SqlUpdate;
-import com.ecsail.structures.Object_DefinedFee;
+import com.ecsail.structures.DefinedFeeDTO;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
@@ -22,7 +22,7 @@ import java.math.RoundingMode;
 public class TabDefinedFee extends Tab {
 	int fieldWidth = 60;
 	String selectedYear;
-	ObservableList<Object_DefinedFee> definedFees;
+	ObservableList<DefinedFeeDTO> definedFees;
 	int selectedIndex;
 	TextField duesRegularTextField = new TextField();
 	TextField duesFamilyTextField = new TextField();
@@ -159,7 +159,7 @@ public class TabDefinedFee extends Tab {
 		comboBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
 			selectedYear = newValue.toString();
 			if (!SqlExists.definedFeeExists(selectedYear)) {
-				Object_DefinedFee newFee = new Object_DefinedFee(Integer.parseInt(selectedYear), BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO);
+				DefinedFeeDTO newFee = new DefinedFeeDTO(Integer.parseInt(selectedYear), BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO);
 				definedFees.add(newFee);
 				SqlInsert.addDefinedFeeRecord(newFee);
 			}
@@ -340,7 +340,7 @@ public class TabDefinedFee extends Tab {
 	private int getSelectedIndex(String selectedYear) {
 		int count = 0;
 		int index = 0;
-		for(Object_DefinedFee df: definedFees) {
+		for(DefinedFeeDTO df: definedFees) {
 			if(df.getFiscal_year() == Integer.parseInt(selectedYear)) {
 				System.out.println("found match=" + count);
 				index = count;

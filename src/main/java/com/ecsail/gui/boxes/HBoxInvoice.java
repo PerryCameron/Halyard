@@ -34,9 +34,9 @@ public class HBoxInvoice extends HBox {
 	private final ObservableList<Object_Money> fiscals;
 	private ObservableList<Object_Payment> payments;
 	private final Object_Money invoice;
-	private final Object_Invoice fnode;
-	Object_Membership membership;
-	Object_DefinedFee definedFees;
+	private final InvoiceDTO fnode;
+	MembershipDTO membership;
+	DefinedFeeDTO definedFees;
 	Object_WorkCredit selectedWorkCreditYear;
 	Object_Officer officer;
 	final private ObservableList<Object_Person> people;
@@ -47,7 +47,7 @@ public class HBoxInvoice extends HBox {
 	boolean isCommitted;
 	Button addWetSlip = new Button();
 	
-	public HBoxInvoice(Object_Membership m, ObservableList<Object_Person> p, ObservableList<Object_Money> o, int r, Note note) {
+	public HBoxInvoice(MembershipDTO m, ObservableList<Object_Person> p, ObservableList<Object_Money> o, int r, Note note) {
 		this.membership = m;
 		this.people = p;
 		this.rowIndex = r;
@@ -55,7 +55,7 @@ public class HBoxInvoice extends HBox {
 		this.definedFees = SqlDefinedFee.getDefinedFeeByYear(String.valueOf(fiscals.get(rowIndex).getFiscal_year()));
 //		System.out.println(this.definedFees.toString());
 		this.invoice = fiscals.get(rowIndex);
-		this.fnode = new Object_Invoice(invoice, definedFees, paymentTableView);
+		this.fnode = new InvoiceDTO(invoice, definedFees, paymentTableView);
 		this.selectedWorkCreditYear = SqlMoney.getWorkCredit(fiscals.get(rowIndex).getMoney_id());
 		this.hasOfficer = membershipHasOfficer();
 		this.isCommitted = fiscals.get(rowIndex).isCommitted();

@@ -8,20 +8,20 @@ import java.util.Comparator;
 import com.ecsail.sql.SqlDelete;
 import com.ecsail.sql.SqlInsert;
 import com.ecsail.sql.SqlUpdate;
-import com.ecsail.structures.Object_Memo;
+import com.ecsail.structures.MemoDTO;
 
 import javafx.collections.ObservableList;
 
 public class Note {
-	private ObservableList<Object_Memo> memos;
+	private ObservableList<MemoDTO> memos;
 	private int msid;
 	
-	public Note(ObservableList<Object_Memo> memos, int m) {
+	public Note(ObservableList<MemoDTO> memos, int m) {
 		super();
 		this.memos = memos;
 		this.msid = m;
 		//Collections.sort(memos, (p1,p2) -> p1.getMemo_date().compareTo(p2.getMemo_date()));
-		Collections.sort(memos, Comparator.comparing(Object_Memo::getMemo_date).reversed());
+		Collections.sort(memos, Comparator.comparing(MemoDTO::getMemo_date).reversed());
 	}
 	
 	public Note() { // overload
@@ -31,10 +31,10 @@ public class Note {
 	public int addMemoAndReturnId(String note, String date, int money_id, String category) {
 		//String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date(System.currentTimeMillis()));
 		int memo_id = getCount() + 1;
-		Object_Memo memo = new Object_Memo(memo_id,msid,date,note,money_id,category);
+		MemoDTO memo = new MemoDTO(memo_id,msid,date,note,money_id,category);
 		memos.add(memo); // add in observable list
 		addMemo(memo); // add in SQL
-		Collections.sort(memos, Comparator.comparing(Object_Memo::getMemo_id).reversed());
+		Collections.sort(memos, Comparator.comparing(MemoDTO::getMemo_id).reversed());
 		return memo_id;
 	}
 
@@ -53,7 +53,7 @@ public class Note {
 		return count;
 	}
 	
-	public void addMemo(Object_Memo memo) {
+	public void addMemo(MemoDTO memo) {
         SqlInsert.addMemo(memo);
 	}
 	
@@ -65,11 +65,11 @@ public class Note {
 		SqlDelete.deleteMemo(memos.get(index));
 	}
 
-	public ObservableList<Object_Memo> getMemos() {
+	public ObservableList<MemoDTO> getMemos() {
 		return memos;
 	}
 
-	public void setMemos(ObservableList<Object_Memo> memos) {
+	public void setMemos(ObservableList<MemoDTO> memos) {
 		this.memos = memos;
 	}
 
