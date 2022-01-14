@@ -305,7 +305,7 @@ private TableView<BoatDTO> boatTableView;
         // get next available primary key for boat table
         int boat_id = SqlSelect.getCount("boat", "boat_id") + 1;
         // create boat object
-        BoatDTO b = new BoatDTO(boat_id,membership.getMsid(),"","","","","","",true,"","","","","","","");
+        BoatDTO b = new BoatDTO(boat_id,membership.getMsid(),"","","","","","",true,"","","","","","","",false);
         // insert data from new boat object into SQL table boat, return true if successful
         if(SqlInsert.addBoatRecord(b,membership.getMsid()))
             // insert row into tableView to match SQL record

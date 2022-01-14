@@ -14,10 +14,10 @@ public class BoatListDTO extends BoatDTO {
 	public BoatListDTO(Integer boat_id, Integer ms_id, String manufacturer, String manufacture_year,
 					   String registration_num, String model, String boat_name, String sail_number,
 					   Boolean hasTrailer, String length, String weight, String keel, String phrf,
-					   String draft, String beam, String lwl, Integer membership_id, String lname, String fname) {
+					   String draft, String beam, String lwl, Boolean aux, Integer membership_id, String lname, String fname) {
 		
 		super(boat_id, ms_id, manufacturer, manufacture_year, registration_num, model, boat_name,
-				sail_number, hasTrailer, length, weight, keel, phrf, draft, beam, lwl);
+				sail_number, hasTrailer, length, weight, keel, phrf, draft, beam, lwl, aux);
 		this.membership_id = new SimpleIntegerProperty(membership_id);
 		this.lname = new SimpleStringProperty(lname);
 		this.fname = new SimpleStringProperty(fname);

@@ -563,7 +563,20 @@ public class SqlUpdate {
 		}
 		return noError;
 	}
-	
+
+	public static Boolean updateAux(String boatId, Boolean value) {
+		Boolean noError = true;
+		try {
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
+			stmt.execute(Main.console.setRegexColor("update boat set aux=" + value + " where BOAT_ID=" + boatId));
+			Main.edits.setIdEdits(Main.edits.getBoatEdits() + 1);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
+			noError = false;
+		}
+		return noError;
+	}
 	
 	public static Boolean updateMembershipId(int ms_id, int year, boolean value) {
 		Boolean noError = true;

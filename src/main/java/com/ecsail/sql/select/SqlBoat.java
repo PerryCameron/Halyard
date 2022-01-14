@@ -58,7 +58,8 @@ public class SqlBoat {
                         rs.getString("PHRF"),
                         rs.getString("DRAFT"),
                         rs.getString("BEAM"),
-                        rs.getString("LWL")));
+                        rs.getString("LWL"),
+                        rs.getBoolean("AUX")));
 
             }
             stmt.close();
@@ -99,6 +100,7 @@ public class SqlBoat {
                         rs.getString("DRAFT"),
                         rs.getString("BEAM"),
                         rs.getString("LWL"),
+                        rs.getBoolean("AUX"),
                         rs.getInt("MEMBERSHIP_ID"),
                         rs.getString("L_NAME"),
                         rs.getString("F_NAME")));
@@ -117,7 +119,7 @@ public class SqlBoat {
         Statement stmt = ConnectDatabase.sqlConnection.createStatement();
         ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select b.BOAT_ID, bo.MS_ID, b.MANUFACTURER"
                 + ", b.MANUFACTURE_YEAR, b.REGISTRATION_NUM, b.MODEL, b.BOAT_NAME, b.SAIL_NUMBER"
-                + ", b.HAS_TRAILER, b.LENGTH, b.WEIGHT, b.KEEL, b.PHRF, b.DRAFT, b.BEAM, b.LWL from boat b inner join boat_owner bo using (boat_id) where ms_id='" + ms_id + "';"));
+                + ", b.HAS_TRAILER, b.LENGTH, b.WEIGHT, b.KEEL, b.PHRF, b.DRAFT, b.BEAM, b.LWL, b.AUX from boat b inner join boat_owner bo using (boat_id) where ms_id='" + ms_id + "';"));
         while (rs.next()) {
             thisBoat.add(new BoatDTO(
                     rs.getInt("BOAT_ID"),
@@ -135,7 +137,8 @@ public class SqlBoat {
                     rs.getString("PHRF"),
                     rs.getString("DRAFT"),
                     rs.getString("BEAM"),
-                    rs.getString("LWL")));
+                    rs.getString("LWL"),
+                    rs.getBoolean("AUX")));
         }
         stmt.close();
         } catch (SQLException e) {
@@ -151,7 +154,7 @@ public class SqlBoat {
         Statement stmt = ConnectDatabase.sqlConnection.createStatement();
         ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select b.BOAT_ID, bo.MS_ID, b.MANUFACTURER"
                 + ", b.MANUFACTURE_YEAR, b.REGISTRATION_NUM, b.MODEL, b.BOAT_NAME, b.SAIL_NUMBER"
-                + ", b.HAS_TRAILER, b.LENGTH, b.WEIGHT, b.KEEL, b.PHRF, b.DRAFT, b.BEAM, b.LWL from boat b inner join boat_owner bo using (boat_id) where boat_id='" + boat_id + "';"));
+                + ", b.HAS_TRAILER, b.LENGTH, b.WEIGHT, b.KEEL, b.PHRF, b.DRAFT, b.BEAM, b.LWL, b.AUX from boat b inner join boat_owner bo using (boat_id) where boat_id='" + boat_id + "';"));
         while (rs.next()) {
             thisBoat = new BoatDTO(
                     rs.getInt("BOAT_ID"),
@@ -169,12 +172,14 @@ public class SqlBoat {
                     rs.getString("PHRF"),
                     rs.getString("DRAFT"),
                     rs.getString("BEAM"),
-                    rs.getString("LWL"));
+                    rs.getString("LWL"),
+                    rs.getBoolean("AUX"));
         }
         stmt.close();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
-            new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
+//            new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
+            e.printStackTrace();
         }
         return thisBoat;
     }

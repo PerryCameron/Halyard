@@ -196,8 +196,8 @@ public class PDF_Renewal_Form {
 		last_membership_id = SqlMembership_Id.getMembershipId((Integer.parseInt(year) -1) +"" , membership.getMsid());
 		dues = SqlMoney.getMonies(ms_id, year);
 		boats = SqlBoat.getBoats(ms_id);
-		boats.add(0, new BoatDTO(0, 0, "Manufacturer", "Year", "Registration", "Model", "Boat Name", "Sail #", true, "Length", "Header", "Keel Type", "PHRF", "Draft", "Beam", "LWL"));
-		boats.add(new BoatDTO(0, 0, "", "", "", "", "", "", false, "", "Blank", "", "","","",""));
+		boats.add(0, new BoatDTO(0, 0, "Manufacturer", "Year", "Registration", "Model", "Boat Name", "Sail #", true, "Length", "Header", "Keel Type", "PHRF", "Draft", "Beam", "LWL",false));
+		boats.add(new BoatDTO(0, 0, "", "", "", "", "", "", false, "", "Blank", "", "","","","",false));
 		dependants = SqlPerson.getDependants
 				(membership);
 		primary = SqlPerson.getPerson(ms_id, 1); // 1 = primary member
