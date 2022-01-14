@@ -1,11 +1,14 @@
 package com.ecsail.structures;
 
+import javafx.beans.InvalidationListener;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 
 public class BoatDTO {
 	
@@ -25,11 +28,12 @@ public class BoatDTO {
 	private StringProperty draft;
 	private StringProperty beam;
 	private StringProperty lwl;
+	private BooleanProperty aux;
 	
 	public BoatDTO(Integer boat_id, Integer ms_id, String manufacturer, String manufacture_year,
 				   String registration_num, String model, String boat_name, String sail_number,
 				   Boolean hasTrailer, String length, String weight, String keel, String phrf,
-				   String draft, String beam, String lwl) {
+				   String draft, String beam, String lwl, Boolean aux) {
 
 		this.boat_id = new SimpleIntegerProperty(boat_id);
 		this.ms_id = new SimpleIntegerProperty(ms_id);
@@ -47,10 +51,23 @@ public class BoatDTO {
 		this.draft = new SimpleStringProperty(draft);
 		this.beam = new SimpleStringProperty(beam);
 		this.lwl = new SimpleStringProperty(lwl);
+		this.aux = new SimpleBooleanProperty(aux);
 	}
 
 	public BoatDTO() {
 		// TODO Auto-generated constructor stub
+	}
+
+	public BooleanProperty auxProperty() {
+		return this.aux;
+	}
+
+	public boolean isAux() {
+		return auxProperty().get();
+	}
+
+	public void setAux(boolean aux) {
+		this.auxProperty().set(aux);
 	}
 
 	public final IntegerProperty boat_idProperty() {
