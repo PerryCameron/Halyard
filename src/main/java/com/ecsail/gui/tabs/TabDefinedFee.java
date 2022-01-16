@@ -173,7 +173,6 @@ public class TabDefinedFee extends Tab {
 		});
 
 		duesRegularTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-			System.out.println("observable=" + observable + " oldValue=" + oldValue + " newValue=" + newValue) ;
 			if (oldValue) updateTextField(duesRegularTextField);
 		});
 		
@@ -194,55 +193,56 @@ public class TabDefinedFee extends Tab {
 		});
 		
 		wetSlipTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-			if (oldValue) if (oldValue) updateTextField(wetSlipTextField);
+			if (oldValue) updateTextField(wetSlipTextField);
 		});
 		
 		beachTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-			if (oldValue) if (oldValue) updateTextField(beachTextField);
+			if (oldValue) updateTextField(beachTextField);
 		});
 		
 		winterStorageTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-			if (oldValue) if (oldValue) updateTextField(winterStorageTextField);
+			if (oldValue) updateTextField(winterStorageTextField);
 		});
 		
 		gateKeyTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-			if (oldValue) if (oldValue) updateTextField(gateKeyTextField);
+			if (oldValue) updateTextField(gateKeyTextField);
 		});
 		
 		sailLoftAccessTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-			if (oldValue) if (oldValue) updateTextField(sailLoftAccessTextField);
+			if (oldValue)  updateTextField(sailLoftAccessTextField);
 		});
 		
 		sailLoftKeyTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-			if (oldValue) if (oldValue) updateTextField(sailLoftKeyTextField);
+			if (oldValue) updateTextField(sailLoftKeyTextField);
 		});
 		
 		sailSchoolLoftAccessTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-			if (oldValue) if (oldValue) updateTextField(sailSchoolLoftAccessTextField);
+			if (oldValue)  updateTextField(sailSchoolLoftAccessTextField);
 		});
 		
 		sailSchoolLoftKeyTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-			if (oldValue) if (oldValue) updateTextField(sailSchoolLoftKeyTextField);
+			if (oldValue) updateTextField(sailSchoolLoftKeyTextField);
 		});
 		
 		kayakRackTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-			if (oldValue) if (oldValue) updateTextField(kayakRackTextField);
+			if (oldValue) updateTextField(kayakRackTextField);
 		});
 
 		kayakBeachRackTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-			if (oldValue) if (oldValue) updateTextField(kayakBeachRackTextField);
+			System.out.println("observable=" + observable + " oldValue=" + oldValue + " newValue=" + newValue);
+			if (oldValue) updateTextField(kayakBeachRackTextField);
 		});
 		
 		kayakShedTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-			if (oldValue) if (oldValue) updateTextField(kayakShedTextField);
+			if (oldValue) updateTextField(kayakShedTextField);
 		});
 		
 		kayakShedKeyTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-			if (oldValue) if (oldValue) updateTextField(kayakShedKeyTextField);
+			if (oldValue) updateTextField(kayakShedKeyTextField);
 		});
 		
 		workCreditTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-			if (oldValue) if (oldValue) updateTextField(workCreditTextField);
+			if (oldValue) updateTextField(workCreditTextField);
 		});
 
 		group.selectedToggleProperty().addListener((ov, old_toggle, new_toggle) -> {
