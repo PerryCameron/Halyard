@@ -64,7 +64,7 @@ public class InvoiceDTO {
     private VBox vboxDues;
     private VBox vboxBeach;
     private VBox vboxKayak;
-    private VBox vboxKayakBeach;
+    private VBox vboxBeachKayak;
     private VBox vboxKayakShed;
     private VBox vboxSailLoft;
     private VBox vboxSailSchoolLoft;
@@ -84,7 +84,7 @@ public class InvoiceDTO {
     // VBoxes for multipliers
     private VBox vboxBeachFee;
     private VBox vboxKayakFee;
-    private VBox vboxKayakBeachFee;
+    private VBox vboxBeachKayakFee;
     private VBox vboxKayakShedFee;
     private VBox vboxSailLoftFee;
     private VBox vboxSailSchoolLoftFee;
@@ -155,6 +155,7 @@ public class InvoiceDTO {
         this.duesText = new Text();
         this.beachText = new Text();
         this.kayakRackText = new Text();
+        this.kayakBeachRackText = new Text();
         this.kayakShedText = new Text();
         this.sailLoftText = new Text();
         this.sailSchoolLoftText = new Text();
@@ -180,6 +181,7 @@ public class InvoiceDTO {
         this.vboxDues = new VBox();
         this.vboxBeach = new VBox();
         this.vboxKayak = new VBox();
+        this.vboxBeachKayak = new VBox();
         this.vboxKayakShed = new VBox();
         this.vboxSailLoft = new VBox();
         this.vboxSailSchoolLoft = new VBox();
@@ -199,6 +201,7 @@ public class InvoiceDTO {
         // VBoxes for multipliers
         this.vboxBeachFee = new VBox();
         this.vboxKayakFee = new VBox();
+        this.vboxBeachKayakFee = new VBox();
         this.vboxKayakShedFee = new VBox();
         this.vboxSailLoftFee = new VBox();
         this.vboxSailSchoolLoftFee = new VBox();
@@ -261,7 +264,6 @@ public class InvoiceDTO {
         this.kayakRackSpinner.setPrefWidth(65);
         this.kayakBeachRackSpinner.setPrefWidth(65);
         this.comboBox.setPrefWidth(65);
-//        this.workCreditSpinner.setPrefWidth(65);
         this.gateKeySpinner.setPrefWidth(65);
         this.sailLKeySpinner.setPrefWidth(65);
         this.sailSSLKeySpinner.setPrefWidth(65);
@@ -277,6 +279,8 @@ public class InvoiceDTO {
         vboxBeach.setAlignment(Pos.CENTER_RIGHT);
         vboxKayak.getChildren().add(kayakRackText);
         vboxKayak.setAlignment(Pos.CENTER_RIGHT);
+        vboxBeachKayak.getChildren().add(kayakBeachRackText);
+        vboxBeachKayak.setAlignment(Pos.CENTER_RIGHT);
         vboxKayakShed.getChildren().add(kayakShedText);
         vboxKayakShed.setAlignment(Pos.CENTER_RIGHT);
         vboxSailLoft.getChildren().add(sailLoftText);
@@ -313,6 +317,9 @@ public class InvoiceDTO {
         vboxBeachFee.setAlignment(Pos.CENTER_RIGHT);
         vboxKayakFee.getChildren().add(new Text(String.valueOf(definedFees.getKayak_rack())));
         vboxKayakFee.setAlignment(Pos.CENTER_RIGHT);
+        vboxBeachKayakFee.getChildren().add(new Text(String.valueOf(definedFees.getKayak_beach_rack())));
+        vboxBeachKayakFee.setAlignment(Pos.CENTER_RIGHT);
+
         vboxKayakShedFee.getChildren().add(new Text(String.valueOf(definedFees.getKayak_shed())));
         vboxKayakShedFee.setAlignment(Pos.CENTER_RIGHT);
         vboxSailLoftFee.getChildren().add(new Text(String.valueOf(definedFees.getSail_loft())));
@@ -1084,19 +1091,35 @@ public class InvoiceDTO {
     }
 
     public VBox getVboxKayakBeach() {
-        return vboxKayakBeach;
+        return vboxBeachKayak;
     }
 
     public void setVboxKayakBeach(VBox vboxKayakBeach) {
-        this.vboxKayakBeach = vboxKayakBeach;
+        this.vboxBeachKayak = vboxKayakBeach;
     }
 
     public VBox getVboxKayakBeachFee() {
-        return vboxKayakBeachFee;
+        return vboxBeachKayakFee;
     }
 
     public void setVboxKayakBeachFee(VBox vboxKayakBeachFee) {
-        this.vboxKayakBeachFee = vboxKayakBeachFee;
+        this.vboxBeachKayakFee = vboxKayakBeachFee;
+    }
+
+    public VBox getVboxBeachKayak() {
+        return vboxBeachKayak;
+    }
+
+    public void setVboxBeachKayak(VBox vboxBeachKayak) {
+        this.vboxBeachKayak = vboxBeachKayak;
+    }
+
+    public VBox getVboxBeachKayakFee() {
+        return vboxBeachKayakFee;
+    }
+
+    public void setVboxBeachKayakFee(VBox vboxBeachKayakFee) {
+        this.vboxBeachKayakFee = vboxBeachKayakFee;
     }
 
     public static <T, E, F> int addCommittedRow(int row, GridPane gridPane, T name, E quantity, F total ) {
@@ -1117,9 +1140,8 @@ public class InvoiceDTO {
             row = addCommittedRow(row,gridPane,new Label("Beach Spot:"), new Text(String.valueOf(invoice.getBeach())), vboxBeach);
         if(invoice.getKayac_rack() != 0)
             row = addCommittedRow(row,gridPane,new Label("Kayak Rack:"), new Text(String.valueOf(invoice.getKayac_rack())), vboxKayak);
-
         if(invoice.getKayak_beach_rack() != 0)
-            row = addCommittedRow(row,gridPane,new Label("Kayak Beach Rack:"), new Text(String.valueOf(invoice.getKayak_beach_rack())), vboxKayakBeach);
+            row = addCommittedRow(row,gridPane,new Label("Kayak Beach Rack:"), new Text(String.valueOf(invoice.getKayak_beach_rack())), vboxBeachKayak);
 
 
 
@@ -1185,8 +1207,7 @@ public class InvoiceDTO {
         row = addUnCommittedRow(row, gridPane, new Label("Beach Spot:"), beachSpinner, new Label("X"), vboxBeachFee, vboxBeach);
         row = addUnCommittedRow(row, gridPane, new Label("Kayak Rack:"), kayakRackSpinner, new Label("X"), vboxKayakFee, vboxKayak);
 
-
-        row = addUnCommittedRow(row, gridPane, new Label("Kayak Beach Rack:"), kayakBeachRackSpinner, new Label("X"), vboxKayakBeachFee, vboxKayakBeach);
+        row = addUnCommittedRow(row, gridPane, new Label("Kayak Beach Rack:"), kayakBeachRackSpinner, new Label("X"), vboxBeachKayakFee, vboxBeachKayak);
 
         row = addUnCommittedRow(row, gridPane, new Label("Kayak Shed:"), kayakShedSpinner, new Label("X"), vboxKayakShedFee, vboxKayakShed);
         row = addUnCommittedRow(row, gridPane, new Label("Sail Loft:"), sailLoftSpinner,new Label("X"), vboxSailLoftFee, vboxSailLoft);

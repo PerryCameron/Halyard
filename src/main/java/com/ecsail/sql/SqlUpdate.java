@@ -619,7 +619,6 @@ public class SqlUpdate {
 	}
 
 	public static void updateDefinedFeeRecord(DefinedFeeDTO d) {
-		System.out.println(d);
 		String query = null;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
@@ -643,10 +642,8 @@ public class SqlUpdate {
 					"KAYAK_SHED_KEY=" + d.getKayak_shed_key() + "," +
 					"WORK_CREDIT=" + d.getWork_credit() +
 					" WHERE fiscal_year=" + d.getFiscal_year() + ";";
-			System.out.println(query);
 			stmt.execute(Main.console.setRegexColor(query));
 			Main.edits.setDefinedFeesEdits(Main.edits.getDefinedFeesEdits() + 1);
-			System.out.println("updated defined fee");
 		} catch (SQLException e) {
 			e.printStackTrace();
 			//			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");

@@ -60,7 +60,7 @@ public class HBoxInvoice extends HBox {
 		this.hasOfficer = membershipHasOfficer();
 		this.isCommitted = fiscals.get(rowIndex).isCommitted();
 
-
+		System.out.println("Kayak beach rack=" + fiscals.get(rowIndex).getKayak_beach_rack());
 		///////////// ACTION ///////////////
 		getPayment();
 
@@ -239,9 +239,12 @@ public class HBoxInvoice extends HBox {
 		});
 
 		SpinnerValueFactory<Integer> kayakBeachRackValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 5, fiscals.get(rowIndex).getKayak_beach_rack());
-		fnode.getKayakRackSpinner().setValueFactory(kayakBeachRackValueFactory);
-		fnode.getKayakRackSpinner().valueProperty().addListener((observable, oldValue, newValue) -> {
+		fnode.getKayakBeachRackSpinner().setValueFactory(kayakBeachRackValueFactory);
+		fnode.getKayakBeachRackSpinner().valueProperty().addListener((observable, oldValue, newValue) -> {
+			System.out.println(fiscals.get(rowIndex));
+			System.out.println("newValue= " + newValue);
 			fiscals.get(rowIndex).setKayak_beach_rack(newValue);
+			System.out.println("Set kayack beach rack to money object =" + fiscals.get(rowIndex).getKayak_beach_rack());
 			fnode.getKayakBeachRackText().setText(String.valueOf(definedFees.getKayak_beach_rack().multiply(BigDecimal.valueOf(newValue))));
 			updateBalance();
 		});
@@ -484,9 +487,10 @@ public class HBoxInvoice extends HBox {
 		fnode.getTotalPaymentText().setText(fiscals.get(rowIndex).getPaid());
 		fnode.getWetslipTextFee().setText(String.valueOf(definedFees.getWet_slip()));
 		fnode.getBeachText().setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getBeach()).multiply(definedFees.getBeach())));
+
 		fnode.getKayakRackText().setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getKayac_rack()).multiply(definedFees.getKayak_rack())));
 
-		fnode.getKayakRackText().setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getKayak_beach_rack()).multiply(definedFees.getKayak_beach_rack())));
+		fnode.getKayakBeachRackText().setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getKayak_beach_rack()).multiply(definedFees.getKayak_beach_rack())));
 
 		fnode.getKayakShedText().setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getKayac_shed()).multiply(definedFees.getKayak_shed())));
 		fnode.getSailLoftText().setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getSail_loft()).multiply(definedFees.getSail_loft())));
@@ -577,17 +581,19 @@ public class HBoxInvoice extends HBox {
 	}
 	
 	private void updateBalance() {
-		  // writes total to money object, then displays on screen
+		  // updates total to money object, then displays on screen
 		  fiscals.get(rowIndex).setTotal(String.valueOf(updateTotalFeeField()));
+
 		  fnode.getTotalFeesText().setText(String.valueOf(fiscals.get(rowIndex).getTotal()));
 		  // writes credit to money object, then displays on screen
 		  fiscals.get(rowIndex).setCredit(String.valueOf(countTotalCredit()));
+		  // updates credit textfield
 		  fnode.getTotalCreditText().setText(fiscals.get(rowIndex).getCredit());
 		  // writes balance to money object, then displays on screen
 		  fiscals.get(rowIndex).setBalance(String.valueOf(getBalance()));
+		  // updates text field balance
 		  fnode.getTotalBalanceText().setText(fiscals.get(rowIndex).getBalance());
-		  // prints money object to console and then updates to database
-		  System.out.println("updateBalance()=" + fiscals.get(rowIndex).getBalance());
+		  // updates money object
 		  SqlUpdate.updateMoney(fiscals.get(rowIndex));  // saves to database
 	}
 	
@@ -595,7 +601,10 @@ public class HBoxInvoice extends HBox {
 		BigDecimal dues = new BigDecimal(fiscals.get(rowIndex).getDues());
 		BigDecimal beachSpot = new BigDecimal(fiscals.get(rowIndex).getBeach()).multiply(definedFees.getBeach());
 		BigDecimal kayakRack = new BigDecimal(fiscals.get(rowIndex).getKayac_rack()).multiply(definedFees.getKayak_rack());
+
+		System.out.println("test:" + fiscals.get(rowIndex).getKayak_beach_rack() + " x " + definedFees.getKayak_beach_rack());
 		BigDecimal kayakBeachRack = new BigDecimal(fiscals.get(rowIndex).getKayak_beach_rack()).multiply(definedFees.getKayak_beach_rack());
+
 		BigDecimal kayakShed = new BigDecimal(fiscals.get(rowIndex).getKayac_shed()).multiply(definedFees.getKayak_shed());
 		BigDecimal sailLoft = new BigDecimal(fiscals.get(rowIndex).getSail_loft()).multiply(definedFees.getSail_loft());
 		BigDecimal sailSchoolLoft = new BigDecimal(fiscals.get(rowIndex).getSail_school_laser_loft()).multiply(definedFees.getSail_school_laser_loft());
@@ -608,8 +617,10 @@ public class HBoxInvoice extends HBox {
 		BigDecimal yscDonation = new BigDecimal(fiscals.get(rowIndex).getYsc_donation());
 		BigDecimal other = new BigDecimal(fiscals.get(rowIndex).getOther());
 		BigDecimal initiation = new BigDecimal(fiscals.get(rowIndex).getInitiation());
+		System.out.println("added beach kayak=" + kayakBeachRack + "to total");
 		return extraKey.add(sailLoftKey).add(kayakShedKey).add(sailSchoolLoftKey).add(beachSpot).add(kayakRack).add(kayakBeachRack).add(kayakShed)
 				.add(sailLoft).add(sailSchoolLoft).add(wetSlip).add(winterStorage).add(yscDonation).add(dues).add(other).add(initiation);
+
 	}
 
 	private BigDecimal getBalance() {

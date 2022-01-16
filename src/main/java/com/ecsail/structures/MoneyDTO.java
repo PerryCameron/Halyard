@@ -241,6 +241,7 @@ public class MoneyDTO {
 		this.wet_slip.set(wet_slip);
 	}
 
+
 	public int getKayac_rack() {
 		return kayac_rack.get();
 	}
@@ -253,17 +254,17 @@ public class MoneyDTO {
 		this.kayac_rack.set(kayac_rack);
 	}
 
+
 	public int getKayak_beach_rack() {
 		return kayak_beach_rack.get();
 	}
 
 	public IntegerProperty kayak_beach_rackProperty() {
-		return kayac_rack;
+		return kayak_beach_rack;
 	}
 
-	public void setKayak_beach_rack(int kayak_beach_rack) {
-		this.kayac_rack.set(kayak_beach_rack);
-	}
+	public void setKayak_beach_rack(int kayak_beach_rack) { this.kayak_beach_rack.set(kayak_beach_rack); }
+
 
 	public int getKayac_shed() {
 		return kayac_shed.get();
