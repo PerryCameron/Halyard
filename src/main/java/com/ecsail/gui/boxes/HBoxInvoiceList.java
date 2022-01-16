@@ -52,7 +52,7 @@ public class HBoxInvoiceList extends HBox {
 		Button deleteFiscalRecord = new Button("Delete");
 //		final Spinner<Integer> yearSpinner = new Spinner<Integer>();
 //		SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 2100, Integer.parseInt(currentYear));
-		HBoxInvoiceList.fiscals = SqlMoney.getMonies(membership.getMsid());
+		HBoxInvoiceList.fiscals = SqlMoney.getMoniesByMsid(membership.getMsid());
 //		Object_DefinedFee definedFees = SqlSelect.selectDefinedFees(Integer.parseInt(currentYear));
 		TableView<MoneyDTO> fiscalTableView = new TableView<MoneyDTO>();
 		TableColumn<MoneyDTO, Integer> Col1 = new TableColumn<MoneyDTO, Integer>("Year");

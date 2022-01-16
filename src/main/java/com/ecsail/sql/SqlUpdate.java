@@ -454,9 +454,9 @@ public class SqlUpdate {
 	public static final void updateMoney(MoneyDTO money) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("UPDATE money SET extra_key=" 
-					+ money.getExtra_key() 
-					+ ",kayak_shed_key=" + money.getKayac_shed_key() 
+			String query = "UPDATE money SET extra_key="
+					+ money.getExtra_key()
+					+ ",kayak_shed_key=" + money.getKayac_shed_key()
 					+ ",sail_loft_key=" + money.getSail_loft_key()
 					+ ",sail_school_loft_key=" + money.getSail_school_loft_key()
 					+ ",beach=" + money.getBeach()
@@ -466,7 +466,7 @@ public class SqlUpdate {
 					+ ",sail_loft=" + money.getSail_loft()
 					+ ",sail_school_laser_loft=" + money.getSail_school_laser_loft()
 					+ ",winter_storage=" + money.getWinter_storage()
-					+ ",ysc_donation=" + money.getYsc_donation() 
+					+ ",ysc_donation=" + money.getYsc_donation()
 					+ ",paid=" + money.getPaid()
 					+ ",total=" + money.getTotal()
 					+ ",credit=" + money.getCredit()
@@ -476,11 +476,14 @@ public class SqlUpdate {
 					+ ",initiation=" + money.getInitiation()
 					+ ",work_credit=" + money.getWork_credit()
 					+ ",other_credit=" + money.getOther_credit()
-					+ " WHERE money_id=" + money.getMoney_id() + ";"));
+					+ ",kayak_beach_rack=" + money.getKayak_beach_rack()
+					+ " WHERE money_id=" + money.getMoney_id() + ";";
+			stmt.execute(Main.console.setRegexColor(query));
+//			System.out.println(query);
 			Main.edits.setMoniesEdits(Main.edits.getMoniesEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
+		e.printStackTrace();
+		new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
 	}
 	

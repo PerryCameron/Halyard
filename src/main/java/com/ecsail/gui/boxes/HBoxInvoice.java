@@ -594,6 +594,7 @@ public class HBoxInvoice extends HBox {
 		  // updates text field balance
 		  fnode.getTotalBalanceText().setText(fiscals.get(rowIndex).getBalance());
 		  // updates money object
+			System.out.println("Kayak Beach Rack =" + fiscals.get(rowIndex).getKayak_beach_rack());
 		  SqlUpdate.updateMoney(fiscals.get(rowIndex));  // saves to database
 	}
 	
@@ -601,10 +602,8 @@ public class HBoxInvoice extends HBox {
 		BigDecimal dues = new BigDecimal(fiscals.get(rowIndex).getDues());
 		BigDecimal beachSpot = new BigDecimal(fiscals.get(rowIndex).getBeach()).multiply(definedFees.getBeach());
 		BigDecimal kayakRack = new BigDecimal(fiscals.get(rowIndex).getKayac_rack()).multiply(definedFees.getKayak_rack());
-
-		System.out.println("test:" + fiscals.get(rowIndex).getKayak_beach_rack() + " x " + definedFees.getKayak_beach_rack());
+//		System.out.println("test:" + fiscals.get(rowIndex).getKayak_beach_rack() + " x " + definedFees.getKayak_beach_rack());
 		BigDecimal kayakBeachRack = new BigDecimal(fiscals.get(rowIndex).getKayak_beach_rack()).multiply(definedFees.getKayak_beach_rack());
-
 		BigDecimal kayakShed = new BigDecimal(fiscals.get(rowIndex).getKayac_shed()).multiply(definedFees.getKayak_shed());
 		BigDecimal sailLoft = new BigDecimal(fiscals.get(rowIndex).getSail_loft()).multiply(definedFees.getSail_loft());
 		BigDecimal sailSchoolLoft = new BigDecimal(fiscals.get(rowIndex).getSail_school_laser_loft()).multiply(definedFees.getSail_school_laser_loft());
@@ -617,7 +616,7 @@ public class HBoxInvoice extends HBox {
 		BigDecimal yscDonation = new BigDecimal(fiscals.get(rowIndex).getYsc_donation());
 		BigDecimal other = new BigDecimal(fiscals.get(rowIndex).getOther());
 		BigDecimal initiation = new BigDecimal(fiscals.get(rowIndex).getInitiation());
-		System.out.println("added beach kayak=" + kayakBeachRack + "to total");
+//		System.out.println("added beach kayak=" + kayakBeachRack + "to total");
 		return extraKey.add(sailLoftKey).add(kayakShedKey).add(sailSchoolLoftKey).add(beachSpot).add(kayakRack).add(kayakBeachRack).add(kayakShed)
 				.add(sailLoft).add(sailSchoolLoft).add(wetSlip).add(winterStorage).add(yscDonation).add(dues).add(other).add(initiation);
 

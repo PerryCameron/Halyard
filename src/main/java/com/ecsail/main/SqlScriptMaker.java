@@ -56,7 +56,7 @@ public class SqlScriptMaker {
 		slips = SqlSlip.getSlips();
 		memos = SqlMemos.getMemos(ALL);
 		email = SqlEmail.getEmail(ALL);
-		monies = SqlMoney.getMonies(ALL);
+		monies = SqlMoney.getAllMonies();
 		officers = SqlOfficer.getOfficers();
 		definedfees = SqlDefinedFee.getDefinedFees();
 		workcredits = SqlWorkCredit.getWorkCredits();
@@ -284,7 +284,8 @@ public class SqlScriptMaker {
 				+ def.getKayak_rack() + ","
 				+ def.getKayak_shed() + ","
 				+ def.getKayak_shed_key() + ","
-				+ def.getWork_credit()
+				+ def.getWork_credit() + ","
+				+ def.getKayak_beach_rack()
 				+ ");\n";
 	}
 	
@@ -330,7 +331,8 @@ public class SqlScriptMaker {
 				+ mon.getInitiation() + ","
 				+ mon.isSupplemental() + ","
 				+ mon.getWork_credit() + ","
-				+ mon.getOther_credit()
+				+ mon.getOther_credit() + ","
+				+ mon.getKayak_beach_rack()
 				+ ");\n";
 	}
 	

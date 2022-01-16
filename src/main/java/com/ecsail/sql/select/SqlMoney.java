@@ -13,24 +13,87 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class SqlMoney {
-    public static ObservableList<MoneyDTO> getMonies(int ms_id) { // overload
-        String query = "SELECT * FROM money";
-        if(ms_id != 0)
-        query += " WHERE ms_id=" + ms_id;
+    public static ObservableList<MoneyDTO> getMoniesByMsid(int ms_id) { // overload
+//        String query = "SELECT * FROM money";
+//        if(ms_id != 0)
+//        query += " WHERE ms_id=" + ms_id;
         ObservableList<MoneyDTO> theseFiscals = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(query + ";"));
+            ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT * FROM money WHERE ms_id=" + ms_id + ";"));
             while (rs.next()) {
                 theseFiscals.add(new MoneyDTO(rs.getInt("MONEY_ID"), rs.getInt("MS_ID"),
-                        rs.getInt("FISCAL_YEAR"), rs.getInt("BATCH"), rs.getString("OFFICER_CREDIT"), rs.getInt("EXTRA_KEY"),
-                        rs.getInt("KAYAK_SHED_KEY"), rs.getInt("SAIL_LOFT_KEY"),
-                        rs.getInt("SAIL_SCHOOL_LOFT_KEY"), rs.getInt("BEACH"),
-                        rs.getString("WET_SLIP"), rs.getInt("KAYAK_RACK"), rs.getInt("KAYAK_RACK"), rs.getInt("KAYAK_SHED"),
-                        rs.getInt("SAIL_LOFT"), rs.getInt("SAIL_SCHOOL_LASER_LOFT"), rs.getInt("WINTER_STORAGE"),
-                        rs.getString("YSC_DONATION"),rs.getString("PAID"),rs.getString("TOTAL"),rs.getString("CREDIT"),
-                        rs.getString("BALANCE"), rs.getString("DUES"),rs.getBoolean("COMMITED"),rs.getBoolean("CLOSED"),
-                        rs.getString("OTHER"),rs.getString("INITIATION"),rs.getBoolean("SUPPLEMENTAL"),rs.getInt("WORK_CREDIT"),rs.getString("OTHER_CREDIT")));
+                        rs.getInt("FISCAL_YEAR"),
+                        rs.getInt("BATCH"),
+                        rs.getString("OFFICER_CREDIT"),
+                        rs.getInt("EXTRA_KEY"),
+                        rs.getInt("KAYAK_SHED_KEY"),
+                        rs.getInt("SAIL_LOFT_KEY"),
+                        rs.getInt("SAIL_SCHOOL_LOFT_KEY"),
+                        rs.getInt("BEACH"),
+                        rs.getString("WET_SLIP"),
+                        rs.getInt("KAYAK_RACK"),
+                        rs.getInt("KAYAK_BEACH_RACK"),
+                        rs.getInt("KAYAK_SHED"),
+                        rs.getInt("SAIL_LOFT"),
+                        rs.getInt("SAIL_SCHOOL_LASER_LOFT"),
+                        rs.getInt("WINTER_STORAGE"),
+                        rs.getString("YSC_DONATION"),
+                        rs.getString("PAID"),
+                        rs.getString("TOTAL"),
+                        rs.getString("CREDIT"),
+                        rs.getString("BALANCE"),
+                        rs.getString("DUES"),
+                        rs.getBoolean("COMMITED"),
+                        rs.getBoolean("CLOSED"),
+                        rs.getString("OTHER"),
+                        rs.getString("INITIATION"),
+                        rs.getBoolean("SUPPLEMENTAL"),
+                        rs.getInt("WORK_CREDIT"),
+                        rs.getString("OTHER_CREDIT")));
+            }
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
+        }
+        return theseFiscals;
+    }
+
+    public static ObservableList<MoneyDTO> getAllMonies() { // overload
+        ObservableList<MoneyDTO> theseFiscals = FXCollections.observableArrayList();
+        try {
+            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
+            ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT * FROM money"));
+            while (rs.next()) {
+                theseFiscals.add(new MoneyDTO(rs.getInt("MONEY_ID"), rs.getInt("MS_ID"),
+                        rs.getInt("FISCAL_YEAR"),
+                        rs.getInt("BATCH"),
+                        rs.getString("OFFICER_CREDIT"),
+                        rs.getInt("EXTRA_KEY"),
+                        rs.getInt("KAYAK_SHED_KEY"),
+                        rs.getInt("SAIL_LOFT_KEY"),
+                        rs.getInt("SAIL_SCHOOL_LOFT_KEY"),
+                        rs.getInt("BEACH"),
+                        rs.getString("WET_SLIP"),
+                        rs.getInt("KAYAK_RACK"),
+                        rs.getInt("KAYAK_BEACH_RACK"),
+                        rs.getInt("KAYAK_SHED"),
+                        rs.getInt("SAIL_LOFT"),
+                        rs.getInt("SAIL_SCHOOL_LASER_LOFT"),
+                        rs.getInt("WINTER_STORAGE"),
+                        rs.getString("YSC_DONATION"),
+                        rs.getString("PAID"),
+                        rs.getString("TOTAL"),
+                        rs.getString("CREDIT"),
+                        rs.getString("BALANCE"),
+                        rs.getString("DUES"),
+                        rs.getBoolean("COMMITED"),
+                        rs.getBoolean("CLOSED"),
+                        rs.getString("OTHER"),
+                        rs.getString("INITIATION"),
+                        rs.getBoolean("SUPPLEMENTAL"),
+                        rs.getInt("WORK_CREDIT"),
+                        rs.getString("OTHER_CREDIT")));
             }
         } catch (SQLException e) {
             // TODO Auto-generated catch block
