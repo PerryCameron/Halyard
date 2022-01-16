@@ -46,6 +46,7 @@ public class SqlDefinedFee {
                         rs.getBigDecimal("SAIL_SCHOOL_LASER_LOFT"),
                         rs.getBigDecimal("SAIL_SCHOOL_LOFT_KEY"),
                         rs.getBigDecimal("KAYAK_RACK"),
+                        rs.getBigDecimal("KAYAK_BEACH_RACK"),
                         rs.getBigDecimal("KAYAK_SHED"),
                         rs.getBigDecimal("kAYAK_SHED_KEY"),
                         rs.getBigDecimal("WORK_CREDIT"));
@@ -79,10 +80,12 @@ public class SqlDefinedFee {
                     rs.getBigDecimal("SAIL_SCHOOL_LASER_LOFT"),
                     rs.getBigDecimal("SAIL_SCHOOL_LOFT_KEY"),
                     rs.getBigDecimal("KAYAK_RACK"),
+                    rs.getBigDecimal("KAYAK_BEACH_RACK"),
                     rs.getBigDecimal("KAYAK_SHED"),
                     rs.getBigDecimal("KAYAK_SHED_KEY"),
                     rs.getBigDecimal("WORK_CREDIT")
             ));
         }
+        System.out.println("updated definedfee");
     }
 }

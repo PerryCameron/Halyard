@@ -178,7 +178,7 @@ public class Dialogue_NewYearGenerator extends Stage {
 		MoneyDTO oldMoney = null;
 		MoneyDTO newMoney = null;
 		int moneyId = SqlMoney.getCount("money_id") + 1;  // need next money_id for new record
-		oldMoney = new MoneyDTO(moneyId, ml.getMsid(),selectedYear, 0, "0.00", 0, 0, 0, 0, 0, "0.00", 0, 0, 0, 0, 0,"0.00", "0.00", "0.00", "0.00", "0.00", "0.00", false, false, "0.00", "0.00", false, 0, "0.00");
+		oldMoney = new MoneyDTO(moneyId, ml.getMsid(),selectedYear, 0, "0.00", 0, 0, 0, 0, 0, "0.00", 0, 0, 0,0, 0, 0,"0.00", "0.00", "0.00", "0.00", "0.00", "0.00", false, false, "0.00", "0.00", false, 0, "0.00");
 		newMoney = setNewMoneyValues(oldMoney, currentMoney, ml);
 		System.out.print(" No money records for " + (newMoney.getFiscal_year() - 1));
 			SqlUpdate.updateMoney(newMoney);

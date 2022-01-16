@@ -637,6 +637,7 @@ public class SqlUpdate {
 					"SAIL_SCHOOL_LASER_LOFT=" + d.getSail_school_laser_loft() + "," +
 					"SAIL_SCHOOL_LOFT_KEY=" + d.getSail_school_loft_key() + "," +
 					"KAYAK_RACK=" + d.getKayak_rack()+ "," +
+					"KAYAK_BEACH_RACK" + d.getKayak_beach_rack() + "," +
 					"KAYAK_SHED=" + d.getKayak_shed() + "," +
 					"KAYAK_SHED_KEY=" + d.getKayak_shed_key() + "," +
 					"WORK_CREDIT=" + d.getWork_credit() +

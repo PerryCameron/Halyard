@@ -81,7 +81,7 @@ public class SqlInsert {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor(
-					"INSERT into boat () VALUES (" + b.getBoat_id() + ",null,null,null,null,null,null,true,null,null,null,null,null,null,null);"));
+					"INSERT into boat () VALUES (" + b.getBoat_id() + ",null,null,null,null,null,null,true,null,null,null,null,null,null,null,false);"));
 			stmt.execute(
 					Main.console.setRegexColor("INSERT into boat_owner () VALUES (" + msid + "," + b.getBoat_id() + ");"));
 			noError = true;

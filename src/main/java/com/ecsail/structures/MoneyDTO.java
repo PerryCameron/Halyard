@@ -3,6 +3,7 @@ package com.ecsail.structures;
 import javafx.beans.property.*;
 
 public class MoneyDTO {
+
 	/// when storing integers it's a multiplier when a String the dollar amount
 	private IntegerProperty money_id;
 	private IntegerProperty ms_id;
@@ -16,6 +17,7 @@ public class MoneyDTO {
 	private IntegerProperty beach; // this will need to change to string because they used to charge different for types of boats
 	private StringProperty wet_slip;
 	private IntegerProperty kayac_rack;
+	private IntegerProperty kayak_beach_rack;
 	private IntegerProperty kayac_shed;
 	private IntegerProperty sail_loft;
 	private IntegerProperty sail_school_laser_loft;
@@ -37,7 +39,7 @@ public class MoneyDTO {
 	public MoneyDTO(Integer money_id, Integer ms_id, Integer fiscal_year, Integer batch,
 					String officer_credit, Integer extra_key, Integer kayac_shed_key,
 					Integer sail_loft_key, Integer sail_school_loft_key, Integer beach,
-					String wet_slip, Integer kayac_rack, Integer kayac_shed, Integer sail_loft,
+					String wet_slip, Integer kayac_rack, Integer kayak_beach_rack, Integer kayac_shed, Integer sail_loft,
 					Integer sail_school_laser_loft, Integer winter_storage, String ysc_donation,
 					String paid, String total, String credit, String balance, String dues,
 					Boolean committed, Boolean closed, String other, String initiation, Boolean supplemental, Integer work_credit, String other_credit) {
@@ -54,6 +56,7 @@ public class MoneyDTO {
 		this.beach = new SimpleIntegerProperty(beach);
 		this.wet_slip = new SimpleStringProperty(wet_slip);
 		this.kayac_rack = new SimpleIntegerProperty(kayac_rack);
+		this.kayak_beach_rack = new SimpleIntegerProperty(kayak_beach_rack);
 		this.kayac_shed = new SimpleIntegerProperty(kayac_shed);
 		this.sail_loft = new SimpleIntegerProperty(sail_loft);
 		this.sail_school_laser_loft = new SimpleIntegerProperty(sail_school_laser_loft);
@@ -86,6 +89,7 @@ public class MoneyDTO {
 		this.beach = new SimpleIntegerProperty(0);
 		this.wet_slip = new SimpleStringProperty("0.00");
 		this.kayac_rack = new SimpleIntegerProperty(0);
+		this.kayak_beach_rack = new SimpleIntegerProperty(0);
 		this.kayac_shed = new SimpleIntegerProperty(0);
 		this.sail_loft = new SimpleIntegerProperty(0);
 		this.sail_school_laser_loft = new SimpleIntegerProperty(0);
@@ -247,6 +251,18 @@ public class MoneyDTO {
 
 	public void setKayac_rack(int kayac_rack) {
 		this.kayac_rack.set(kayac_rack);
+	}
+
+	public int getKayak_beach_rack() {
+		return kayak_beach_rack.get();
+	}
+
+	public IntegerProperty kayak_beach_rackProperty() {
+		return kayac_rack;
+	}
+
+	public void setKayak_beach_rack(int kayak_beach_rack) {
+		this.kayac_rack.set(kayak_beach_rack);
 	}
 
 	public int getKayac_shed() {
@@ -466,6 +482,7 @@ public class MoneyDTO {
 		setBeach(0);
 		setWet_slip("0.00");
 		setKayac_rack(0);
+		setKayak_beach_rack(0);
 		setKayac_shed(0);
 		setSail_loft(0);
 		setSail_school_laser_loft(0);
@@ -487,7 +504,7 @@ public class MoneyDTO {
 
 	@Override
 	public String toString() {
-		return "Object_Money{" +
+		return "MoneyDTO{" +
 				"money_id=" + money_id +
 				", ms_id=" + ms_id +
 				", fiscal_year=" + fiscal_year +
@@ -500,6 +517,7 @@ public class MoneyDTO {
 				", beach=" + beach +
 				", wet_slip=" + wet_slip +
 				", kayac_rack=" + kayac_rack +
+				", kayak_beach_rack=" + kayak_beach_rack +
 				", kayac_shed=" + kayac_shed +
 				", sail_loft=" + sail_loft +
 				", sail_school_laser_loft=" + sail_school_laser_loft +

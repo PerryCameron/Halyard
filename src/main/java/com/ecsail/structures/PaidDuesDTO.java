@@ -19,14 +19,12 @@ public class PaidDuesDTO extends MoneyDTO {
 	
 	public PaidDuesDTO(Integer money_id, Integer ms_id, Integer fiscal_year, Integer batch, String officer_credit,
 					   Integer extra_key, Integer kayak_shed_key, Integer sail_loft_key, Integer sail_school_loft_key,
-					   Integer beach, String wet_slip, Integer kayak_rack, Integer kayac_shed, Integer sail_loft,
+					   Integer beach, String wet_slip, Integer kayak_rack, Integer kayak_beach_rack, Integer kayac_shed, Integer sail_loft,
 					   Integer sail_school_laser_loft, Integer winter_storage, String ysc_donation, String paid, String total,
 					   String credit, String balance, String dues, Boolean committed, Boolean closed, String other, String initiation,
 					   Boolean supplemental, Integer work_credit, String other_credit, String f_name, String l_name, Integer membershipId) {
 		
-		super(money_id, ms_id, fiscal_year, batch, officer_credit, extra_key, kayak_shed_key, sail_loft_key,
-				sail_school_loft_key, beach, wet_slip, kayak_rack, kayac_shed, sail_loft, sail_school_laser_loft,
-				winter_storage, ysc_donation, paid, total, credit, balance, dues, committed, closed, other, initiation, supplemental, work_credit, other_credit);
+		super();
 		
 		this.membershipId = new SimpleIntegerProperty(membershipId);
 		this.f_name = new SimpleStringProperty(f_name);

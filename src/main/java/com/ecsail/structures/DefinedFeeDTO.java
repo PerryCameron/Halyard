@@ -20,11 +20,12 @@ public class DefinedFeeDTO {
 	private BigDecimal sail_school_laser_loft;
 	private BigDecimal sail_school_loft_key;
 	private BigDecimal kayak_rack;
+	private BigDecimal kayak_beach_rack;
 	private BigDecimal kayak_shed;
 	private BigDecimal kayak_shed_key;
 	private BigDecimal work_credit;
 
-	public DefinedFeeDTO(Integer fiscal_year, BigDecimal dues_regular, BigDecimal dues_family, BigDecimal dues_lake_associate, BigDecimal dues_social, BigDecimal initiation, BigDecimal wet_slip, BigDecimal beach, BigDecimal winter_storage, BigDecimal main_gate_key, BigDecimal sail_loft, BigDecimal sail_loft_key, BigDecimal sail_school_laser_loft, BigDecimal sail_school_loft_key, BigDecimal kayak_rack, BigDecimal kayak_shed, BigDecimal kayak_shed_key, BigDecimal work_credit) {
+	public DefinedFeeDTO(Integer fiscal_year, BigDecimal dues_regular, BigDecimal dues_family, BigDecimal dues_lake_associate, BigDecimal dues_social, BigDecimal initiation, BigDecimal wet_slip, BigDecimal beach, BigDecimal winter_storage, BigDecimal main_gate_key, BigDecimal sail_loft, BigDecimal sail_loft_key, BigDecimal sail_school_laser_loft, BigDecimal sail_school_loft_key, BigDecimal kayak_rack, BigDecimal kayak_beach_rack, BigDecimal kayak_shed, BigDecimal kayak_shed_key, BigDecimal work_credit) {
 		this.fiscal_year = fiscal_year;
 		this.dues_regular = dues_regular;
 		this.dues_family = dues_family;
@@ -40,6 +41,7 @@ public class DefinedFeeDTO {
 		this.sail_school_laser_loft = sail_school_laser_loft;
 		this.sail_school_loft_key = sail_school_loft_key;
 		this.kayak_rack = kayak_rack;
+		this.kayak_beach_rack = kayak_beach_rack;
 		this.kayak_shed = kayak_shed;
 		this.kayak_shed_key = kayak_shed_key;
 		this.work_credit = work_credit;
@@ -47,6 +49,14 @@ public class DefinedFeeDTO {
 
 	public DefinedFeeDTO() {
 		// default constructor
+	}
+
+	public BigDecimal getKayak_beach_rack() {
+		return kayak_beach_rack;
+	}
+
+	public void setKayak_beach_rack(BigDecimal kayak_beach_rack) {
+		this.kayak_beach_rack = kayak_beach_rack;
 	}
 
 	public Integer getFiscal_year() {
@@ -196,7 +206,7 @@ public class DefinedFeeDTO {
 	public final void set(Integer fiscal_year, BigDecimal dues_regular, BigDecimal dues_family,
 						  BigDecimal dues_lake_associate, BigDecimal dues_social, BigDecimal initiation, BigDecimal wet_slip, BigDecimal beach,
 						  BigDecimal winter_storage, BigDecimal main_gate_key, BigDecimal sail_loft, BigDecimal sail_loft_key, BigDecimal sail_school_laser_loft,
-						  BigDecimal sail_school_loft_key, BigDecimal kayak_rack, BigDecimal kayak_shed, BigDecimal kayak_shed_key, BigDecimal work_credit) {
+						  BigDecimal sail_school_loft_key, BigDecimal kayak_rack, BigDecimal kayak_beach_rack, BigDecimal kayak_shed, BigDecimal kayak_shed_key, BigDecimal work_credit) {
 		
 		setFiscal_year(fiscal_year);
 		setDues_regular(dues_regular);
@@ -213,6 +223,7 @@ public class DefinedFeeDTO {
 		setSail_school_laser_loft(sail_school_laser_loft);
 		setSail_school_loft_key(sail_school_loft_key);
 		setKayak_rack(kayak_rack);
+		setKayak_beach_rack(kayak_beach_rack);
 		setKayak_shed(kayak_shed);
 		setKayak_shed_key(kayak_shed_key);
 		setWork_credit(work_credit);
@@ -234,6 +245,7 @@ public class DefinedFeeDTO {
 		setSail_school_laser_loft(BigDecimal.valueOf(0.00));
 		setSail_school_loft_key(BigDecimal.valueOf(0.00));
 		setKayak_rack(BigDecimal.valueOf(0.00));
+		setKayak_beach_rack(BigDecimal.valueOf(0.00));
 		setKayak_shed(BigDecimal.valueOf(0.00));
 		setKayak_shed_key(BigDecimal.valueOf(0.00));
 		setWork_credit(BigDecimal.valueOf(0.00));
@@ -241,7 +253,7 @@ public class DefinedFeeDTO {
 
 	@Override
 	public String toString() {
-		return "Object_DefinedFee{" +
+		return "DefinedFeeDTO{" +
 				"fiscal_year=" + fiscal_year +
 				", dues_regular=" + dues_regular +
 				", dues_family=" + dues_family +
@@ -257,6 +269,7 @@ public class DefinedFeeDTO {
 				", sail_school_laser_loft=" + sail_school_laser_loft +
 				", sail_school_loft_key=" + sail_school_loft_key +
 				", kayak_rack=" + kayak_rack +
+				", kayak_beach_rack=" + kayak_beach_rack +
 				", kayak_shed=" + kayak_shed +
 				", kayak_shed_key=" + kayak_shed_key +
 				", work_credit=" + work_credit +

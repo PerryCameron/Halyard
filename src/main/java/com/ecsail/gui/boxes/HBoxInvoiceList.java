@@ -129,7 +129,7 @@ public class HBoxInvoiceList extends HBox {
 				int moneyId = SqlMoney.getCount("money_id") + 1;
 				// create appropriate money object for this membership
 				MoneyDTO newMoney = new MoneyDTO(moneyId, membership.getMsid(),
-						comboBox.getValue(), 0, "0.00", 0, 0, 0, 0, 0, "0.00", 0, 0, 0, 0, 0,
+						comboBox.getValue(), 0, "0.00", 0, 0, 0, 0, 0, "0.00", 0, 0 ,0, 0, 0,0,
 						"0.00", "0.00", "0.00", "0.00", "0.00", String.valueOf(getDues(comboBox.getValue())), false, false, "0.00", "0.00", false,0, "0.00");
 				// if a record already exists for this year then this is a supplemental record
 				if (SqlExists.moneyExists(String.valueOf(comboBox.getValue()), membership)) {

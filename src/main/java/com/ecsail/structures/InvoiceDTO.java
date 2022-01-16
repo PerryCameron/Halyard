@@ -22,6 +22,7 @@ public class InvoiceDTO {
 
     private Spinner<Integer> beachSpinner;
     private Spinner<Integer> kayakRackSpinner;
+    private Spinner<Integer> kayakBeachRackSpinner; // new
     private Spinner<Integer> kayakShedSpinner;
     private Spinner<Integer> sailLoftSpinner;
     private Spinner<Integer> sailSchoolLoftSpinner;
@@ -36,6 +37,7 @@ public class InvoiceDTO {
     private Text duesText;
     private Text beachText;
     private Text kayakRackText;
+    private Text kayakBeachRackText;
     private Text kayakShedText;
     private Text sailLoftText;
     private Text sailSchoolLoftText;
@@ -62,6 +64,7 @@ public class InvoiceDTO {
     private VBox vboxDues;
     private VBox vboxBeach;
     private VBox vboxKayak;
+    private VBox vboxKayakBeach;
     private VBox vboxKayakShed;
     private VBox vboxSailLoft;
     private VBox vboxSailSchoolLoft;
@@ -81,6 +84,7 @@ public class InvoiceDTO {
     // VBoxes for multipliers
     private VBox vboxBeachFee;
     private VBox vboxKayakFee;
+    private VBox vboxKayakBeachFee;
     private VBox vboxKayakShedFee;
     private VBox vboxSailLoftFee;
     private VBox vboxSailSchoolLoftFee;
@@ -136,6 +140,7 @@ public class InvoiceDTO {
 
         this.beachSpinner = new Spinner<>();
         this.kayakRackSpinner = new Spinner<>();
+        this.kayakBeachRackSpinner = new Spinner<>();
         this.kayakShedSpinner = new Spinner<>();
         this.sailLoftSpinner = new Spinner<>();
         this.sailSchoolLoftSpinner = new Spinner<>();
@@ -254,6 +259,7 @@ public class InvoiceDTO {
         this.winterStorageSpinner.setPrefWidth(65);
         this.wetSlipSpinner.setPrefWidth(65);
         this.kayakRackSpinner.setPrefWidth(65);
+        this.kayakBeachRackSpinner.setPrefWidth(65);
         this.comboBox.setPrefWidth(65);
 //        this.workCreditSpinner.setPrefWidth(65);
         this.gateKeySpinner.setPrefWidth(65);
@@ -1061,6 +1067,37 @@ public class InvoiceDTO {
         gridPane.getChildren().clear();
     }
 
+    public Spinner<Integer> getKayakBeachRackSpinner() {
+        return kayakBeachRackSpinner;
+    }
+
+    public void setKayakBeachRackSpinner(Spinner<Integer> kayakBeachRackSpinner) {
+        this.kayakBeachRackSpinner = kayakBeachRackSpinner;
+    }
+
+    public Text getKayakBeachRackText() {
+        return kayakBeachRackText;
+    }
+
+    public void setKayakBeachRackText(Text kayakBeachRackText) {
+        this.kayakBeachRackText = kayakBeachRackText;
+    }
+
+    public VBox getVboxKayakBeach() {
+        return vboxKayakBeach;
+    }
+
+    public void setVboxKayakBeach(VBox vboxKayakBeach) {
+        this.vboxKayakBeach = vboxKayakBeach;
+    }
+
+    public VBox getVboxKayakBeachFee() {
+        return vboxKayakBeachFee;
+    }
+
+    public void setVboxKayakBeachFee(VBox vboxKayakBeachFee) {
+        this.vboxKayakBeachFee = vboxKayakBeachFee;
+    }
 
     public static <T, E, F> int addCommittedRow(int row, GridPane gridPane, T name, E quantity, F total ) {
         gridPane.add((Node) name, 0, row, 1, 1);
@@ -1080,6 +1117,12 @@ public class InvoiceDTO {
             row = addCommittedRow(row,gridPane,new Label("Beach Spot:"), new Text(String.valueOf(invoice.getBeach())), vboxBeach);
         if(invoice.getKayac_rack() != 0)
             row = addCommittedRow(row,gridPane,new Label("Kayak Rack:"), new Text(String.valueOf(invoice.getKayac_rack())), vboxKayak);
+
+        if(invoice.getKayak_beach_rack() != 0)
+            row = addCommittedRow(row,gridPane,new Label("Kayak Beach Rack:"), new Text(String.valueOf(invoice.getKayak_beach_rack())), vboxKayakBeach);
+
+
+
         if(invoice.getKayac_shed() != 0)
             row = addCommittedRow(row,gridPane,new Label("Kayak Shed:"), new Text(String.valueOf(invoice.getKayac_shed())), vboxKayakShed);
         if(invoice.getSail_loft() != 0)
@@ -1141,6 +1184,10 @@ public class InvoiceDTO {
         row = addUnCommittedRow(row, gridPane, new Label("Dues:"), duesTextField, new Text(""), new Label(""), vboxDues);
         row = addUnCommittedRow(row, gridPane, new Label("Beach Spot:"), beachSpinner, new Label("X"), vboxBeachFee, vboxBeach);
         row = addUnCommittedRow(row, gridPane, new Label("Kayak Rack:"), kayakRackSpinner, new Label("X"), vboxKayakFee, vboxKayak);
+
+
+        row = addUnCommittedRow(row, gridPane, new Label("Kayak Beach Rack:"), kayakBeachRackSpinner, new Label("X"), vboxKayakBeachFee, vboxKayakBeach);
+
         row = addUnCommittedRow(row, gridPane, new Label("Kayak Shed:"), kayakShedSpinner, new Label("X"), vboxKayakShedFee, vboxKayakShed);
         row = addUnCommittedRow(row, gridPane, new Label("Sail Loft:"), sailLoftSpinner,new Label("X"), vboxSailLoftFee, vboxSailLoft);
         row = addUnCommittedRow(row, gridPane, new Label("Sail School Loft:"), sailSchoolLoftSpinner, new Label("X"), vboxSailSchoolLoftFee, vboxSailSchoolLoft);

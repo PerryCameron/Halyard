@@ -38,6 +38,7 @@ public class TabDefinedFee extends Tab {
 	TextField sailSchoolLoftAccessTextField = new TextField();
 	TextField sailSchoolLoftKeyTextField = new TextField();
 	TextField kayakRackTextField = new TextField();
+	TextField kayakBeachRackTextField = new TextField();
 	TextField kayakShedTextField = new TextField();
 	TextField kayakShedKeyTextField = new TextField();
 	TextField workCreditTextField = new TextField();
@@ -57,6 +58,7 @@ public class TabDefinedFee extends Tab {
 	RadioButton sailSchoolLoftAccessRadioButton = new RadioButton();
 	RadioButton sailSchoolLoftKeyRadioButton = new RadioButton();
 	RadioButton kayakRackRadioButton = new RadioButton();
+	RadioButton kayakBeachRackRadioButton = new RadioButton();
 	RadioButton kayakShedRadioButton = new RadioButton();
 	RadioButton kayakShedKeyRadioButton = new RadioButton();
 	RadioButton workCreditRadioButton = new RadioButton();
@@ -99,6 +101,7 @@ public class TabDefinedFee extends Tab {
 		row = addRow(gridPane,row,sailSchoolLoftAccessRadioButton, sailSchoolLoftAccessTextField, "Sail School Loft Access Fee");
 		row = addRow(gridPane,row,sailSchoolLoftKeyRadioButton, sailSchoolLoftKeyTextField, "Sail School Loft Key Fee");
 		row = addRow(gridPane,row,kayakRackRadioButton, kayakRackTextField, "Kayak Rack Fee");
+		row = addRow(gridPane,row,kayakBeachRackRadioButton, kayakBeachRackTextField, "Kayak Beach Rack Fee");
 		row = addRow(gridPane,row,kayakShedRadioButton, kayakShedTextField, "Kayak Inside Storage Fee");
 		row = addRow(gridPane,row,kayakShedKeyRadioButton, kayakShedKeyTextField, "Kayak Inside Storage Key Fee");
 		row = addRow(gridPane,row,workCreditRadioButton, workCreditTextField, "Work Credit Amount");
@@ -121,6 +124,7 @@ public class TabDefinedFee extends Tab {
 		sailSchoolLoftAccessRadioButton.setToggleGroup(group);
 		sailSchoolLoftKeyRadioButton.setToggleGroup(group);
 		kayakRackRadioButton.setToggleGroup(group);
+		kayakBeachRackRadioButton.setToggleGroup(group);
 		kayakShedRadioButton.setToggleGroup(group);
 		kayakShedKeyRadioButton.setToggleGroup(group);
 		workCreditRadioButton.setToggleGroup(group);
@@ -139,6 +143,7 @@ public class TabDefinedFee extends Tab {
 		sailSchoolLoftAccessTextField.setPrefWidth(fieldWidth);
 		sailSchoolLoftKeyTextField.setPrefWidth(fieldWidth);
 		kayakRackTextField.setPrefWidth(fieldWidth);
+		kayakBeachRackTextField.setPrefWidth(fieldWidth);
 		kayakShedTextField.setPrefWidth(fieldWidth);
 		kayakShedKeyTextField.setPrefWidth(fieldWidth);
 		workCreditTextField.setPrefWidth(fieldWidth);
@@ -159,7 +164,7 @@ public class TabDefinedFee extends Tab {
 		comboBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
 			selectedYear = newValue.toString();
 			if (!SqlExists.definedFeeExists(selectedYear)) {
-				DefinedFeeDTO newFee = new DefinedFeeDTO(Integer.parseInt(selectedYear), BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO);
+				DefinedFeeDTO newFee = new DefinedFeeDTO(Integer.parseInt(selectedYear), BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO,BigDecimal.ZERO);
 				definedFees.add(newFee);
 				SqlInsert.addDefinedFeeRecord(newFee);
 			}
@@ -223,6 +228,10 @@ public class TabDefinedFee extends Tab {
 		kayakRackTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
 			if (oldValue) if (oldValue) updateTextField(kayakRackTextField);
 		});
+
+		kayakBeachRackTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+			if (oldValue) if (oldValue) updateTextField(kayakBeachRackTextField);
+		});
 		
 		kayakShedTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
 			if (oldValue) if (oldValue) updateTextField(kayakShedTextField);
@@ -264,12 +273,17 @@ public class TabDefinedFee extends Tab {
 	}
 
 	private void updateTextField(TextField textField) {
+		// if not a proper number reset to 0
 		if(!HBoxInvoice.isNumeric(textField.getText())) {
 			textField.setText("0.00");
 		}
+		// put value in variable
 		BigDecimal field = new BigDecimal(textField.getText());
+		// format the variable
 		textField.setText(String.valueOf(field.setScale(2, RoundingMode.HALF_UP)));
-		copyFieldsToObject(textField);
+		// put all fields into an object definedFees.get(selectedIndex)
+		copyFieldsToObject();
+		// update fields in sql
 		SqlUpdate.updateDefinedFeeRecord(definedFees.get(selectedIndex));
 		updateChart();
 	}
@@ -304,6 +318,8 @@ public class TabDefinedFee extends Tab {
 			update = "Sail School Loft Key";
 		} else if (kayakRackRadioButton.isSelected()) {
 			update = "Kayak Rack Fee";
+		} else if (kayakBeachRackRadioButton.isSelected()) {
+			update = "Kayak Beach Rack Fee";
 		} else if (kayakShedRadioButton.isSelected()) {
 			update = "Kayak Inside Storage";
 		} else if (kayakShedKeyRadioButton.isSelected()) {
@@ -316,7 +332,7 @@ public class TabDefinedFee extends Tab {
 		duesLineChart.refreshChart(update);
 	}
 
-	private void copyFieldsToObject(TextField textField) {
+	private void copyFieldsToObject() {
 			definedFees.get(selectedIndex).setDues_regular(new BigDecimal(duesRegularTextField.getText()));
 			definedFees.get(selectedIndex).setDues_family(new BigDecimal(duesFamilyTextField.getText()));
 			definedFees.get(selectedIndex).setDues_lake_associate(new BigDecimal(duesLakeAssociateTextField.getText()));
@@ -331,6 +347,7 @@ public class TabDefinedFee extends Tab {
 			definedFees.get(selectedIndex).setSail_school_laser_loft(new BigDecimal(sailSchoolLoftAccessTextField.getText()));
 			definedFees.get(selectedIndex).setSail_school_loft_key(new BigDecimal(sailSchoolLoftKeyTextField.getText()));
 			definedFees.get(selectedIndex).setKayak_rack(new BigDecimal(kayakRackTextField.getText()));
+			definedFees.get(selectedIndex).setKayak_beach_rack(new BigDecimal(kayakBeachRackTextField.getText()));
 			definedFees.get(selectedIndex).setKayak_shed(new BigDecimal(kayakShedTextField.getText()));
 			definedFees.get(selectedIndex).setKayak_shed_key(new BigDecimal(kayakShedKeyTextField.getText()));
 			definedFees.get(selectedIndex).setWork_credit(new BigDecimal(workCreditTextField.getText()));
@@ -365,6 +382,7 @@ public class TabDefinedFee extends Tab {
 		sailSchoolLoftAccessTextField.setText(definedFees.get(selectedIndex).getSail_school_laser_loft() + "");
 		sailSchoolLoftKeyTextField.setText(definedFees.get(selectedIndex).getSail_school_loft_key() + "");
 		kayakRackTextField.setText(definedFees.get(selectedIndex).getKayak_rack() + "");
+		kayakBeachRackTextField.setText(definedFees.get(selectedIndex).getKayak_beach_rack() + "");
 		kayakShedTextField.setText(definedFees.get(selectedIndex).getKayak_shed() + "");
 		kayakShedKeyTextField.setText(definedFees.get(selectedIndex).getKayak_shed_key() + "");
 		workCreditTextField.setText(definedFees.get(selectedIndex).getWork_credit() + "");
