@@ -274,14 +274,17 @@ public class TabDefinedFee extends Tab {
 
 	private void updateTextField(TextField textField) {
 		// if not a proper number reset to 0
+		System.out.println("updating text field");
 		if(!HBoxInvoice.isNumeric(textField.getText())) {
 			textField.setText("0.00");
 		}
 		// put value in variable
 		BigDecimal field = new BigDecimal(textField.getText());
+
 		// format the variable
 		textField.setText(String.valueOf(field.setScale(2, RoundingMode.HALF_UP)));
 		// put all fields into an object definedFees.get(selectedIndex)
+		System.out.println("New Value is=" +field);
 		copyFieldsToObject();
 		// update fields in sql
 		SqlUpdate.updateDefinedFeeRecord(definedFees.get(selectedIndex));
@@ -333,6 +336,7 @@ public class TabDefinedFee extends Tab {
 	}
 
 	private void copyFieldsToObject() {
+		System.out.println("Copying fields to object");
 			definedFees.get(selectedIndex).setDues_regular(new BigDecimal(duesRegularTextField.getText()));
 			definedFees.get(selectedIndex).setDues_family(new BigDecimal(duesFamilyTextField.getText()));
 			definedFees.get(selectedIndex).setDues_lake_associate(new BigDecimal(duesLakeAssociateTextField.getText()));

@@ -619,6 +619,7 @@ public class SqlUpdate {
 	}
 
 	public static void updateDefinedFeeRecord(DefinedFeeDTO d) {
+		System.out.println(d);
 		String query = null;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
@@ -637,17 +638,18 @@ public class SqlUpdate {
 					"SAIL_SCHOOL_LASER_LOFT=" + d.getSail_school_laser_loft() + "," +
 					"SAIL_SCHOOL_LOFT_KEY=" + d.getSail_school_loft_key() + "," +
 					"KAYAK_RACK=" + d.getKayak_rack()+ "," +
-					"KAYAK_BEACH_RACK" + d.getKayak_beach_rack() + "," +
+					"KAYAK_BEACH_RACK=" + d.getKayak_beach_rack() + "," +
 					"KAYAK_SHED=" + d.getKayak_shed() + "," +
 					"KAYAK_SHED_KEY=" + d.getKayak_shed_key() + "," +
 					"WORK_CREDIT=" + d.getWork_credit() +
 					" WHERE fiscal_year=" + d.getFiscal_year() + ";";
-
+			System.out.println(query);
 			stmt.execute(Main.console.setRegexColor(query));
 			Main.edits.setDefinedFeesEdits(Main.edits.getDefinedFeesEdits() + 1);
+			System.out.println("updated defined fee");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-//			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
+			e.printStackTrace();
+			//			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
 	}
 	
