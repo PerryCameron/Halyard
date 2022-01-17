@@ -38,7 +38,7 @@ public class HBoxInvoice extends HBox {
 	MembershipDTO membership;
 	DefinedFeeDTO definedFees;
 	WorkCreditDTO selectedWorkCreditYear;
-	OfficerDTO officer;
+//	OfficerDTO officer;
 	final private ObservableList<PersonDTO> people;
 	boolean hasOfficer;
 	final private int rowIndex;
@@ -53,14 +53,12 @@ public class HBoxInvoice extends HBox {
 		this.rowIndex = r;
 		this.fiscals = o;
 		this.definedFees = SqlDefinedFee.getDefinedFeeByYear(String.valueOf(fiscals.get(rowIndex).getFiscal_year()));
-//		System.out.println(this.definedFees.toString());
 		this.invoice = fiscals.get(rowIndex);
 		this.fnode = new InvoiceDTO(invoice, definedFees, paymentTableView);
 		this.selectedWorkCreditYear = SqlMoney.getWorkCredit(fiscals.get(rowIndex).getMoney_id());
 		this.hasOfficer = membershipHasOfficer();
 		this.isCommitted = fiscals.get(rowIndex).isCommitted();
 
-		System.out.println("Kayak beach rack=" + fiscals.get(rowIndex).getKayak_beach_rack());
 		///////////// ACTION ///////////////
 		getPayment();
 
@@ -244,7 +242,7 @@ public class HBoxInvoice extends HBox {
 			System.out.println(fiscals.get(rowIndex));
 			System.out.println("newValue= " + newValue);
 			fiscals.get(rowIndex).setKayak_beach_rack(newValue);
-			System.out.println("Set kayack beach rack to money object =" + fiscals.get(rowIndex).getKayak_beach_rack());
+			System.out.println("Set kayak beach rack to money object =" + fiscals.get(rowIndex).getKayak_beach_rack());
 			fnode.getKayakBeachRackText().setText(String.valueOf(definedFees.getKayak_beach_rack().multiply(BigDecimal.valueOf(newValue))));
 			updateBalance();
 		});
@@ -581,28 +579,27 @@ public class HBoxInvoice extends HBox {
 	}
 	
 	private void updateBalance() {
-		  // updates total to money object, then displays on screen
+		  // updates total to the selected money object
 		  fiscals.get(rowIndex).setTotal(String.valueOf(updateTotalFeeField()));
-
+		  // updates gui with the newly calculated total
 		  fnode.getTotalFeesText().setText(String.valueOf(fiscals.get(rowIndex).getTotal()));
-		  // writes credit to money object, then displays on screen
+		  // updates credit to the selected money object
 		  fiscals.get(rowIndex).setCredit(String.valueOf(countTotalCredit()));
-		  // updates credit textfield
+		  // updates gui with the newly calculated credit
 		  fnode.getTotalCreditText().setText(fiscals.get(rowIndex).getCredit());
-		  // writes balance to money object, then displays on screen
+		  // updates balance to the selected money object
 		  fiscals.get(rowIndex).setBalance(String.valueOf(getBalance()));
-		  // updates text field balance
+		  // updates gui with the newly calculated balance
 		  fnode.getTotalBalanceText().setText(fiscals.get(rowIndex).getBalance());
-		  // updates money object
-			System.out.println("Kayak Beach Rack =" + fiscals.get(rowIndex).getKayak_beach_rack());
+		  // updates sql using selected money object
 		  SqlUpdate.updateMoney(fiscals.get(rowIndex));  // saves to database
 	}
 	
 	private BigDecimal updateTotalFeeField() {
+		// adds all values together to get total
 		BigDecimal dues = new BigDecimal(fiscals.get(rowIndex).getDues());
 		BigDecimal beachSpot = new BigDecimal(fiscals.get(rowIndex).getBeach()).multiply(definedFees.getBeach());
 		BigDecimal kayakRack = new BigDecimal(fiscals.get(rowIndex).getKayac_rack()).multiply(definedFees.getKayak_rack());
-//		System.out.println("test:" + fiscals.get(rowIndex).getKayak_beach_rack() + " x " + definedFees.getKayak_beach_rack());
 		BigDecimal kayakBeachRack = new BigDecimal(fiscals.get(rowIndex).getKayak_beach_rack()).multiply(definedFees.getKayak_beach_rack());
 		BigDecimal kayakShed = new BigDecimal(fiscals.get(rowIndex).getKayac_shed()).multiply(definedFees.getKayak_shed());
 		BigDecimal sailLoft = new BigDecimal(fiscals.get(rowIndex).getSail_loft()).multiply(definedFees.getSail_loft());
@@ -616,56 +613,54 @@ public class HBoxInvoice extends HBox {
 		BigDecimal yscDonation = new BigDecimal(fiscals.get(rowIndex).getYsc_donation());
 		BigDecimal other = new BigDecimal(fiscals.get(rowIndex).getOther());
 		BigDecimal initiation = new BigDecimal(fiscals.get(rowIndex).getInitiation());
-//		System.out.println("added beach kayak=" + kayakBeachRack + "to total");
 		return extraKey.add(sailLoftKey).add(kayakShedKey).add(sailSchoolLoftKey).add(beachSpot).add(kayakRack).add(kayakBeachRack).add(kayakShed)
 				.add(sailLoft).add(sailSchoolLoft).add(wetSlip).add(winterStorage).add(yscDonation).add(dues).add(other).add(initiation);
-
 	}
 
 	private BigDecimal getBalance() {
+		// calculates new balance
 		BigDecimal total = new BigDecimal(fiscals.get(rowIndex).getTotal());
 		BigDecimal paid = new BigDecimal(fiscals.get(rowIndex).getPaid());
 		BigDecimal credit = new BigDecimal(fiscals.get(rowIndex).getCredit());
-		BigDecimal balance = total.subtract(paid).subtract(credit);
-		System.out.println("getBalance()=" + balance);
-		return balance;
+		return total.subtract(paid).subtract(credit);
 	}
 
-	// counts work credit or position credit and adds it to other credit
+	// decides if officer credit or work credit is counted
 	private BigDecimal countCredit() {
 		BigDecimal credit;
-		if(membershipHasOfficer()) {
-			credit = new BigDecimal(fiscals.get(rowIndex).getOfficer_credit());  // inserts credit for member type into fiscal
-			//System.out.println("Has an officer credit changed to=" + credit);
-		} else {
-			credit = countWorkCredits();
-		}
+		// if an officer we are going to use this
+		if(membershipHasOfficer()) credit = new BigDecimal(fiscals.get(rowIndex).getOfficer_credit());
+		// else we are going to calculate work credits
+		else credit = countWorkCredits();
 		return credit;
 	}
 
 	private BigDecimal countWorkCredits() {
+		// counts the dollar value of a credit by the number of credits earned
 		return definedFees.getWork_credit().multiply(BigDecimal.valueOf(fiscals.get(rowIndex).getWork_credit()));
 	}
 
 	private BigDecimal countTotalCredit() {
+		// calculates either officer credit or work credits
 		BigDecimal normalCredit = countCredit();
-		// this if then is to fix older records with a different format
-		BigDecimal otherCredit;
-		otherCredit = new BigDecimal(fiscals.get(rowIndex).getOther_credit());
-		BigDecimal totalCredit = normalCredit.add(otherCredit);
-		System.out.println("countTotalCredit()=" + totalCredit);
-		return totalCredit;
+		//  additional or "other credit"
+		BigDecimal otherCredit = new BigDecimal(fiscals.get(rowIndex).getOther_credit());
+		//  sum of both credits above
+		return normalCredit.add(otherCredit);
 	}
 
 	private Boolean membershipHasOfficer() {
 		Boolean isOfficer;
 		boolean finalResult = false;
+		// list of primary and secondary members
 		for (PersonDTO per : people) {
+			// check database if person is an officer
 			isOfficer = SqlExists.isOfficer(per, fiscals.get(rowIndex).getFiscal_year());
-			if(isOfficer) {  // we will add in pid here if need be
+			// if the primary or secondary member is an officer this flags true
+			if(isOfficer) {
 				finalResult = true;
-//				isOfficer = false;  // reset for next iteration
-				this.officer = SqlOfficer.getOfficer(per.getP_id(),fiscals.get(rowIndex).getFiscal_year());
+				// store the member who is an officer in DTO
+//				this.officer = SqlOfficer.getOfficer(per.getP_id(),fiscals.get(rowIndex).getFiscal_year()); // don't think we need this
 			}
 		}
 		return finalResult;
