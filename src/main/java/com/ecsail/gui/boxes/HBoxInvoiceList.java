@@ -22,6 +22,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Comparator;
 
 public class HBoxInvoiceList extends HBox {
@@ -83,7 +84,7 @@ public class HBoxInvoiceList extends HBox {
 		Col5.setStyle( "-fx-alignment: CENTER-RIGHT;");
 		
 		/////////////  ATTRIBUTES /////////////
-		fiscalTableView.getColumns().addAll(Col1, Col2, Col3, Col4, Col5);
+		fiscalTableView.getColumns().addAll(Arrays.asList(Col1, Col2, Col3, Col4, Col5));
 		fiscalTableView.getSortOrder().add(Col1);  // start sorted by membershipID
 		fiscalTableView.sort();
 

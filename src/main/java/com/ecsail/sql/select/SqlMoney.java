@@ -14,9 +14,6 @@ import java.sql.Statement;
 
 public class SqlMoney {
     public static ObservableList<MoneyDTO> getMoniesByMsid(int ms_id) { // overload
-//        String query = "SELECT * FROM money";
-//        if(ms_id != 0)
-//        query += " WHERE ms_id=" + ms_id;
         ObservableList<MoneyDTO> theseFiscals = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();

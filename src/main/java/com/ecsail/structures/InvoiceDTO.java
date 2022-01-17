@@ -123,7 +123,7 @@ public class InvoiceDTO {
         Text text2 = new Text("Price");
         Text text3 = new Text("Total");
         Text text4 = new Text("Qty");
-        this.comboBox = new ComboBox();
+        this.comboBox = new ComboBox<>();
         this.invoice = invoice;
         this.buttonAdd = new Button("Add");
         this.buttonDelete = new Button("Delete");
@@ -845,14 +845,6 @@ public class InvoiceDTO {
     public void setWetSlipSpinner(Spinner<Integer> wetSlipSpinner) {
         this.wetSlipSpinner = wetSlipSpinner;
     }
-
-//    public Spinner<Integer> getWorkCreditSpinner() {
-//        return workCreditSpinner;
-//    }
-//
-//    public void setWorkCreditSpinner(Spinner<Integer> workCreditSpinner) {
-//        this.workCreditSpinner = workCreditSpinner;
-//    }
 
     public Spinner<Integer> getGateKeySpinner() {
         return gateKeySpinner;

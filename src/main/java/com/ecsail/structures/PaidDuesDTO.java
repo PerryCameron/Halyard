@@ -5,37 +5,27 @@ import javafx.beans.property.StringProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-
-//SELECT m.commited, me.MEMBERSHIP_ID, p.l_name, p.f_name, m.TOTAL, m.CREDIT, m.PAID, m.BALANCE
-//FROM money m
-//INNER JOIN membership me on m.MS_ID=me.MS_ID
-//INNER JOIN person p on me.P_ID=p.P_ID where m.FISCAL_YEAR=2020 and m.COMMITED=true;
-
-
 public class PaidDuesDTO extends MoneyDTO {
-	private StringProperty f_name;
-	private StringProperty l_name;
-	private IntegerProperty membershipId;  // Member ID used in real life
+	private final StringProperty f_name;
+	private final StringProperty l_name;
+	private final IntegerProperty membershipId;  // Member ID used in real life
 	
 	public PaidDuesDTO(Integer money_id, Integer ms_id, Integer fiscal_year, Integer batch, String officer_credit,
 					   Integer extra_key, Integer kayak_shed_key, Integer sail_loft_key, Integer sail_school_loft_key,
-					   Integer beach, String wet_slip, Integer kayak_rack, Integer kayak_beach_rack, Integer kayac_shed, Integer sail_loft,
+					   Integer beach, String wet_slip, Integer kayak_rack, Integer kayak_beach_rack, Integer kayak_shed, Integer sail_loft,
 					   Integer sail_school_laser_loft, Integer winter_storage, String ysc_donation, String paid, String total,
 					   String credit, String balance, String dues, Boolean committed, Boolean closed, String other, String initiation,
 					   Boolean supplemental, Integer work_credit, String other_credit, String f_name, String l_name, Integer membershipId) {
 		
 		super();
-		
 		this.membershipId = new SimpleIntegerProperty(membershipId);
 		this.f_name = new SimpleStringProperty(f_name);
 		this.l_name = new SimpleStringProperty(l_name);
-		// TODO Auto-generated constructor stub
 	}
 
 	public final IntegerProperty membershipIdProperty() {
 		return this.membershipId;
 	}
-	
 
 	public final int getMembershipId() {
 		return this.membershipIdProperty().get();
@@ -44,35 +34,28 @@ public class PaidDuesDTO extends MoneyDTO {
 	public final void setMembershipId(final int membershipId) {
 		this.membershipIdProperty().set(membershipId);
 	}
-	
 
 	public final StringProperty f_nameProperty() {
 		return this.f_name;
 	}
-	
 
 	public final String getF_name() {
 		return this.f_nameProperty().get();
 	}
-	
 
 	public final void setF_name(final String f_name) {
 		this.f_nameProperty().set(f_name);
 	}
-	
 
 	public final StringProperty l_nameProperty() {
 		return this.l_name;
 	}
-	
 
 	public final String getL_name() {
 		return this.l_nameProperty().get();
 	}
-	
 
 	public final void setL_name(final String l_name) {
 		this.l_nameProperty().set(l_name);
 	}
-
 }

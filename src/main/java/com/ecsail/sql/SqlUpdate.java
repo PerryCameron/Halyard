@@ -1,30 +1,28 @@
 package com.ecsail.sql;
 
-import java.math.BigDecimal;
+import com.ecsail.gui.dialogues.Dialogue_CustomErrorMessage;
+import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
+import com.ecsail.main.BoxConsole;
+import com.ecsail.main.ConnectDatabase;
+import com.ecsail.main.HalyardPaths;
+import com.ecsail.main.Main;
+import com.ecsail.sql.select.SqlMembershipList;
+import com.ecsail.sql.select.SqlPerson;
+import com.ecsail.structures.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 import java.time.LocalDate;
-
-import com.ecsail.main.BoxConsole;
-import com.ecsail.main.ConnectDatabase;
-import com.ecsail.main.Main;
-import com.ecsail.main.HalyardPaths;
-import com.ecsail.sql.select.SqlMembershipList;
-import com.ecsail.sql.select.SqlPerson;
-import com.ecsail.structures.*;
-import com.ecsail.gui.dialogues.*;
-
-import javafx.collections.ObservableList;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 
 public class SqlUpdate {
 	
 	static Alert alert = new Alert(AlertType.ERROR);
 
 	
-	public static final void updateBoat(String field, int boat_id, String attribute) {
+	public static void updateBoat(String field, int boat_id, String attribute) {
 		try {			
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			if(attribute == null) 
@@ -44,7 +42,7 @@ public class SqlUpdate {
 		}
 	}
 	
-	public static final void updateBoat(int boat_id, Boolean hasTrailer) {
+	public static void updateBoat(int boat_id, Boolean hasTrailer) {
 		Statement stmt;
 		try {
 			stmt = ConnectDatabase.sqlConnection.createStatement();
@@ -57,7 +55,7 @@ public class SqlUpdate {
 		}
 	}
 
-	public static final void updateBoat(int boat_id, String keel) {
+	public static void updateBoat(int boat_id, String keel) {
 		Statement stmt;
 		try {
 			stmt = ConnectDatabase.sqlConnection.createStatement();
@@ -121,42 +119,9 @@ public class SqlUpdate {
 		}
 		membership.setZip(zip);
 	}
-	
-	public static void updateMembershipPrimary(int ms_id, int pid) {
-		try {
-			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("UPDATE membership SET p_id=" + pid
-					+ " WHERE ms_id='" + ms_id + "';"));
-			Main.edits.setMembershipEdits(Main.edits.getMembershipEdits() + 1);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
-		}
-	}
-	
-	public static Boolean updateMembership(String field, int ms_id, String attribute) {
-		Boolean noError = true;
-		Statement stmt;
-		try {
-			stmt = ConnectDatabase.sqlConnection.createStatement();
-			if(attribute.equals("")) {
-			stmt.execute(Main.console.setRegexColor(
-						"UPDATE membership SET " + field + "= null WHERE ms_id='" + ms_id + "';"));	
-			} else {
-			stmt.execute(Main.console.setRegexColor(
-					"UPDATE membership SET " + field + "=\"" + attribute + "\" WHERE ms_id='" + ms_id + "';"));
-			}
-			Main.edits.setMembershipEdits(Main.edits.getMembershipEdits() + 1);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			noError = false;
-			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
-		}
-		return noError;
-	}
-	
+
 	public static Boolean updateMembership(int ms_id, String field, LocalDate date) {
-		Boolean noError = true;
+		boolean noError = true;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor(
@@ -171,7 +136,7 @@ public class SqlUpdate {
 	}
 	
 	public static Boolean updateDeposit(String field, int deposit_id, LocalDate date) {
-		Boolean noError = true;
+		boolean noError = true;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor(
@@ -237,7 +202,7 @@ public class SqlUpdate {
 		}
 	}
 	
-	public static final void updateEmail(int email_id, String email) {
+	public static void updateEmail(int email_id, String email) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE email SET email=\"" + email + "\" WHERE email_id='" + email_id + "';"));
@@ -360,18 +325,7 @@ public class SqlUpdate {
 			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
 	}
-	
-	public static void updatePerson(int p_id, String field, int attribute) { // updates active/inactive
-		try {
-			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("UPDATE person SET " + field + "=" + attribute + " WHERE p_id='" + p_id + "';"));
-			Main.edits.setPeopleEdits(Main.edits.getPeopleEdits() + 1);  // update edits tracking
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
-		}
-	}
-	
+
 	public static void updateSlip(int ms_id, MembershipListDTO membership) {  // ms_id in this case came from the text field and is converted from membership_id
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
@@ -426,7 +380,7 @@ public class SqlUpdate {
 		}
 	}
 	
-	public static final void commitFiscalRecord(int money_id, Boolean commit) {
+	public static void commitFiscalRecord(int money_id, Boolean commit) {
 		Statement stmt;
 		try {
 			stmt = ConnectDatabase.sqlConnection.createStatement();
@@ -438,20 +392,8 @@ public class SqlUpdate {
 			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
 	}
-	
-	public static final void updateField(BigDecimal newValue, String table, String field, ObservableList<MoneyDTO> fiscals, int rowIndex)  {
-		try {
-			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("UPDATE " + table + " SET " + field + "=\"" + newValue
-					+ "\" WHERE money_id='" + fiscals.get(rowIndex).getMoney_id() + "';"));
-			Main.edits.setMoniesEdits(Main.edits.getMoniesEdits() + 1);  // update edits tracking
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
-		}
-	}
-	
-	public static final void updateMoney(MoneyDTO money) {
+
+	public static void updateMoney(MoneyDTO money) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			String query = "UPDATE money SET extra_key="
@@ -487,7 +429,7 @@ public class SqlUpdate {
 		}
 	}
 	
-	public static final void updateWorkCredit(WorkCreditDTO swcy)  {
+	public static void updateWorkCredit(WorkCreditDTO swcy)  {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE work_credit SET racing=" + swcy.getRacing()
@@ -500,7 +442,7 @@ public class SqlUpdate {
 		}
 	}
 	
-	public static final void updateMoneyBatch(int money_id, int batchNumber) {
+	public static void updateMoneyBatch(int money_id, int batchNumber) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE money SET batch=\"" + batchNumber
@@ -512,7 +454,7 @@ public class SqlUpdate {
 		}
 	}
 	
-	public static final void updateMoneyClosed(int money_id, Boolean closed) {
+	public static void updateMoneyClosed(int money_id, Boolean closed) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE money SET closed=" + closed
@@ -548,7 +490,7 @@ public class SqlUpdate {
 	}
 	
 	public static Boolean updateMembershipId(MembershipIdDTO thisId, String field, String attribute) {
-		Boolean noError = true;
+		boolean noError = true;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE membership_id SET " + field + "=\"" + attribute + "\" WHERE mid=" + thisId.getMid()));
@@ -568,7 +510,7 @@ public class SqlUpdate {
 	}
 
 	public static Boolean updateAux(String boatId, Boolean value) {
-		Boolean noError = true;
+		boolean noError = true;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("update boat set aux=" + value + " where BOAT_ID=" + boatId));
@@ -582,7 +524,7 @@ public class SqlUpdate {
 	}
 	
 	public static Boolean updateMembershipId(int ms_id, int year, boolean value) {
-		Boolean noError = true;
+		boolean noError = true;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("update membership_id set renew=" + value + " where fiscal_year='" + year + "' and ms_id='" + ms_id +"'"));
@@ -596,7 +538,7 @@ public class SqlUpdate {
 	}
 	
 	public static Boolean updateMembershipId(int mid, String field, Boolean attribute) {
-		Boolean noError = true;
+		boolean noError = true;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("UPDATE membership_id SET " + field + "=" + attribute + " WHERE mid=" + mid));
@@ -608,21 +550,10 @@ public class SqlUpdate {
 		}
 		return noError;
 	}
-	
-	
-	public static void updateDefinedFee(String year, String field, String attribute) {
-		try {
-			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("UPDATE defined_fee SET " + field + "=" + attribute + " WHERE fiscal_year=" + year + ";"));
-			Main.edits.setDefinedFeesEdits(Main.edits.getDefinedFeesEdits() + 1);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
-		}
-	}
+
 
 	public static void updateDefinedFeeRecord(DefinedFeeDTO d) {
-		String query = null;
+		String query;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			query = "UPDATE defined_fee SET " +

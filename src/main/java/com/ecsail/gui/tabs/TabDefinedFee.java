@@ -244,11 +244,7 @@ public class TabDefinedFee extends Tab {
 			if (oldValue) updateTextField(workCreditTextField);
 		});
 
-		group.selectedToggleProperty().addListener((ov, old_toggle, new_toggle) -> {
-//			System.out.println("ov=" + ov + " old_toggle=" + old_toggle + " new_toggle" + new_toggle) ;
-//			if(new_toggle == duesFamilyRadioButton) System.out.println("WE HAVE A MATCH");
-			updateChart();
-		});
+		group.selectedToggleProperty().addListener((ov, old_toggle, new_toggle) -> updateChart());
 
 		//////////////// SET CONTENT /////////////////////////
 
