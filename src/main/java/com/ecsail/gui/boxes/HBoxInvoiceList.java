@@ -1,18 +1,16 @@
 package com.ecsail.gui.boxes;
 
-import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.Comparator;
-
-import com.ecsail.main.Note;
 import com.ecsail.main.HalyardPaths;
+import com.ecsail.main.Note;
 import com.ecsail.sql.SqlDelete;
 import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.SqlInsert;
 import com.ecsail.sql.select.SqlDefinedFee;
 import com.ecsail.sql.select.SqlMoney;
-import com.ecsail.structures.*;
-
+import com.ecsail.structures.DefinedFeeDTO;
+import com.ecsail.structures.MembershipDTO;
+import com.ecsail.structures.MoneyDTO;
+import com.ecsail.structures.PersonDTO;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -23,6 +21,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
+import java.math.BigDecimal;
+import java.util.Comparator;
+
 public class HBoxInvoiceList extends HBox {
 	
 	private static ObservableList<MoneyDTO> fiscals = null;
@@ -30,15 +31,13 @@ public class HBoxInvoiceList extends HBox {
 	private static MembershipDTO membership;
 	private static ObservableList<PersonDTO> people;
 	private static Note note;
-	private static TextField duesText;
-	
+
 	String currentYear;
 
-	public HBoxInvoiceList(MembershipDTO membership, TabPane t, ObservableList<PersonDTO> p, Note n, TextField dt) {
+	public HBoxInvoiceList(MembershipDTO membership, TabPane t, ObservableList<PersonDTO> p, Note n) {
 		super();
 		HBoxInvoiceList.membership = membership;
 		this.currentYear = HalyardPaths.getYear();
-		HBoxInvoiceList.duesText = dt;
 		HBoxInvoiceList.note = n;
 		HBoxInvoiceList.parentTabPane = t;
 		HBoxInvoiceList.people = p;
@@ -50,37 +49,32 @@ public class HBoxInvoiceList extends HBox {
         HBox deleteButtonHBox = new HBox();
 		Button addFiscalRecord = new Button("Add");
 		Button deleteFiscalRecord = new Button("Delete");
-//		final Spinner<Integer> yearSpinner = new Spinner<Integer>();
-//		SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 2100, Integer.parseInt(currentYear));
 		HBoxInvoiceList.fiscals = SqlMoney.getMoniesByMsid(membership.getMsid());
-//		Object_DefinedFee definedFees = SqlSelect.selectDefinedFees(Integer.parseInt(currentYear));
-		TableView<MoneyDTO> fiscalTableView = new TableView<MoneyDTO>();
-		TableColumn<MoneyDTO, Integer> Col1 = new TableColumn<MoneyDTO, Integer>("Year");
-		TableColumn<MoneyDTO, Integer> Col2 = new TableColumn<MoneyDTO, Integer>("Fees");
-		TableColumn<MoneyDTO, Integer> Col3 = new TableColumn<MoneyDTO, Integer>("Credit");
-		TableColumn<MoneyDTO, Integer> Col4 = new TableColumn<MoneyDTO, Integer>("Paid");
-		TableColumn<MoneyDTO, Integer> Col5 = new TableColumn<MoneyDTO, Integer>("Balance");
-		ComboBox<Integer> comboBox = new ComboBox();
+		TableView<MoneyDTO> fiscalTableView = new TableView<>();
+		TableColumn<MoneyDTO, Integer> Col1 = new TableColumn<>("Year");
+		TableColumn<MoneyDTO, Integer> Col2 = new TableColumn<>("Fees");
+		TableColumn<MoneyDTO, Integer> Col3 = new TableColumn<>("Credit");
+		TableColumn<MoneyDTO, Integer> Col4 = new TableColumn<>("Paid");
+		TableColumn<MoneyDTO, Integer> Col5 = new TableColumn<>("Balance");
+		ComboBox<Integer> comboBox = new ComboBox<>();
 		for(int i = Integer.parseInt(HalyardPaths.getYear()) + 1; i > 1969; i--) {
 			comboBox.getItems().add(i);
 		}
 		comboBox.getSelectionModel().select(1);
 		///////////////////// SORT ///////////////////////////////////////////
-		Collections.sort(HBoxInvoiceList.fiscals, (p1, p2) -> Integer.compare(p2.getFiscal_year(), (p1.getFiscal_year())));
+		HBoxInvoiceList.fiscals.sort((p1, p2) -> Integer.compare(p2.getFiscal_year(), (p1.getFiscal_year())));
 		
 		///////////////////// ATTRIBUTES /////////////////////////////////////
 
 		fiscalTableView.setEditable(false);
 		fiscalTableView.setFixedCellSize(30);
-		//fiscalTableView.minHeightProperty().bind(vboxGrey.prefHeightProperty());
-		//fiscalTableView.maxHeightProperty().bind(vboxGrey.prefHeightProperty());
 		fiscalTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY );
 		
-		Col1.setCellValueFactory(new PropertyValueFactory<MoneyDTO, Integer>("fiscal_year"));
-		Col2.setCellValueFactory(new PropertyValueFactory<MoneyDTO, Integer>("total"));
-		Col3.setCellValueFactory(new PropertyValueFactory<MoneyDTO, Integer>("credit"));
-		Col4.setCellValueFactory(new PropertyValueFactory<MoneyDTO, Integer>("paid"));
-		Col5.setCellValueFactory(new PropertyValueFactory<MoneyDTO, Integer>("balance"));
+		Col1.setCellValueFactory(new PropertyValueFactory<>("fiscal_year"));
+		Col2.setCellValueFactory(new PropertyValueFactory<>("total"));
+		Col3.setCellValueFactory(new PropertyValueFactory<>("credit"));
+		Col4.setCellValueFactory(new PropertyValueFactory<>("paid"));
+		Col5.setCellValueFactory(new PropertyValueFactory<>("balance"));
 
 		Col2.setStyle( "-fx-alignment: CENTER;");
 		Col2.setStyle( "-fx-alignment: CENTER-RIGHT;");
@@ -119,9 +113,6 @@ public class HBoxInvoiceList extends HBox {
 		HBox.setHgrow(fiscalTableView, Priority.ALWAYS);
 		HBox.setHgrow(vboxGrey, Priority.ALWAYS);
 		HBox.setHgrow(vboxPink, Priority.ALWAYS);
-		
-		
-//		yearSpinner.setValueFactory(valueFactory);
 
         ////////////////  LISTENERS ///////////////////
 		addFiscalRecord.setOnAction((event) -> {
@@ -185,7 +176,7 @@ public class HBoxInvoiceList extends HBox {
 	
 	private BigDecimal getDues(int year) {  // takes the membership type and gets the dues
 		DefinedFeeDTO selectedDefinedFee = SqlDefinedFee.getDefinedFeeByYear(String.valueOf(year));
-		BigDecimal dues = BigDecimal.valueOf(0);
+		BigDecimal dues;
 		if(membership.getMemType() != null) {
 		  switch(membership.getMemType()) 
 	        { 
@@ -200,14 +191,8 @@ public class HBoxInvoiceList extends HBox {
 	                break; 
 	            case "LA": 
 	            	dues = selectedDefinedFee.getDues_lake_associate();
-	                break; 
-	            case "LM": 
-	            	dues = BigDecimal.valueOf(0);  // life members have no dues
-	                break; 
-	            case "SM": 
-	            	dues = BigDecimal.valueOf(0);  // purdue sailing club dues
-	                break; 
-	            default: 
+	                break;
+				default:
 	            	dues = BigDecimal.valueOf(0);
 	        } 
 		} else dues = BigDecimal.valueOf(0);
@@ -229,7 +214,7 @@ public class HBoxInvoiceList extends HBox {
 		parentTabPane.getTabs().add(newTab);
 		// find the index value of the correct Object_Money in fiscals ArrayList
 		int fiscalsIndex = getFiscalIndexByYear(money.getFiscal_year());
-		// add appropritate invoice to the tab using the index of fiscals
+		// add appropriate invoice to the tab using the index of fiscals
 		newTab.setContent(new HBoxInvoice(membership, people, fiscals, fiscalsIndex, note));
 		// open the correct tab
 		parentTabPane.getSelectionModel().select(newTab);

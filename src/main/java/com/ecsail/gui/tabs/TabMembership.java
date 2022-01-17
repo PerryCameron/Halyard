@@ -117,7 +117,7 @@ public class TabMembership extends Tab {
 		peopleTabPane.getTabs().add(new Tab("Add", new VBoxAddPerson(peopleTabPane, note, membership)));
 		fiscalTabPane.getTabs().add(new Tab("Slip", new HBoxSlip(membership, this)));
 		fiscalTabPane.getTabs().add(new Tab("History", new HBoxHistory(membership, labels)));
-		fiscalTabPane.getTabs().add(new Tab("Payments", new HBoxInvoiceList(membership, fiscalTabPane, people, note, duesText)));
+		fiscalTabPane.getTabs().add(new Tab("Payments", new HBoxInvoiceList(membership, fiscalTabPane, people, note)));
 		informationTabPane.getTabs().add(new Tab("Boats", new HBoxBoat(membership)));
 		informationTabPane.getTabs().add(new Tab("Notes", new HBoxMembershipNotes(note)));
 		informationTabPane.getTabs().add(new Tab("Properties", new HBoxProperties(membership, this)));
