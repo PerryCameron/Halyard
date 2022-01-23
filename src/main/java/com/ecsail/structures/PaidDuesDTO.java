@@ -17,7 +17,36 @@ public class PaidDuesDTO extends MoneyDTO {
 					   String credit, String balance, String dues, Boolean committed, Boolean closed, String other, String initiation,
 					   Boolean supplemental, Integer work_credit, String other_credit, String f_name, String l_name, Integer membershipId) {
 		
-		super();
+		super(money_id,
+				ms_id,
+				fiscal_year,
+				batch,
+				officer_credit,
+				extra_key,
+				kayak_shed_key,
+				sail_loft_key,
+				sail_school_loft_key,
+				beach,
+				wet_slip,
+				kayak_rack,
+				kayak_beach_rack,
+				kayak_shed,
+				sail_loft,
+				sail_school_laser_loft,
+				winter_storage,
+				ysc_donation,
+				paid,
+				total,
+				credit,
+				balance,
+				dues,
+				committed,
+				closed,
+				other,
+				initiation,
+				supplemental,
+				work_credit,
+				other_credit);
 		this.membershipId = new SimpleIntegerProperty(membershipId);
 		this.f_name = new SimpleStringProperty(f_name);
 		this.l_name = new SimpleStringProperty(l_name);
@@ -57,5 +86,14 @@ public class PaidDuesDTO extends MoneyDTO {
 
 	public final void setL_name(final String l_name) {
 		this.l_nameProperty().set(l_name);
+	}
+
+	@Override
+	public String toString() {
+		return "PaidDuesDTO{" +
+				"f_name=" + f_name +
+				", l_name=" + l_name +
+				", membershipId=" + membershipId +
+				"} " + super.toString();
 	}
 }

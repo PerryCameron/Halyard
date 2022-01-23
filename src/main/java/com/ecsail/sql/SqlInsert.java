@@ -59,7 +59,8 @@ public class SqlInsert {
 					+ op.getMoney_id() + "," + op.getCheckNumber() + ",'" + op.getPaymentType() + "','"
 					+ op.getPaymentDate() + "','" + op.getPaymentAmount() + "','" + op.getDeposit_id() + "');"));
 		} catch (SQLException e) {
-			new Dialogue_ErrorSQL(e,"Unable to create new row","See below for details");
+			e.printStackTrace();
+//			new Dialogue_ErrorSQL(e,"Unable to create new row","See below for details");
 		}
 	}
 	
@@ -129,7 +130,7 @@ public class SqlInsert {
 			+ "," + m.getSail_loft() + "," + m.getSail_school_laser_loft() + "," + m.getWinter_storage() 
 			+ "," + m.getYsc_donation() + "," + m.getPaid() + "," + m.getTotal() 
 			+ "," + m.getCredit() + "," + m.getBalance() + "," + m.getDues() 
-			+  "," + m.isCommitted() + "," + m.isClosed() + "," + m.getOther() + "," + m.getInitiation() + "," + m.isSupplemental() + "," + m.getWork_credit() + "," + m.getOther_credit() + ");"));
+			+  "," + m.isCommitted() + "," + m.isClosed() + "," + m.getOther() + "," + m.getInitiation() + "," + m.isSupplemental() + "," + m.getWork_credit() + "," + m.getOther_credit() + "," + m.getKayak_beach_rack() + ");"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"Unable to create new row","See below for details");
@@ -181,8 +182,8 @@ public class SqlInsert {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Main.console.setRegexColor("INSERT INTO deposit () VALUES (" + d.getDeposit_id() + ",'" + d.getDepositDate() + "','" + d.getFiscalYear() + "'," + d.getBatch() + ");"));
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			new Dialogue_ErrorSQL(e,"Unable to create new row","See below for details");
+e.printStackTrace();
+//new Dialogue_ErrorSQL(e,"Unable to create new row","See below for details");
 		}
 	}
 	

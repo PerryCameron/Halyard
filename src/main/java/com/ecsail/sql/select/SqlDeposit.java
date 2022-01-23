@@ -65,26 +65,49 @@ public class SqlDeposit {
     }
 
     public static ObservableList<PaidDuesDTO> getPaidDues(String selectedYear) {
-        String query = "SELECT id.MEMBERSHIP_ID, mo .*, p.l_name, p.f_name FROM money mo "
+        String query = "SELECT id.MEMBERSHIP_ID, mo.*, p.l_name, p.f_name FROM money mo "
                 + "INNER JOIN membership_id id on mo.MS_ID=id.MS_ID and mo.FISCAL_YEAR=id.FISCAL_YEAR "
                 + "INNER JOIN membership me on mo.MS_ID=me.MS_ID "
-                + "INNER JOIN person p ON me.P_ID=p.P_ID WHERE mo.FISCAL_YEAR='" + selectedYear + "' AND mo.COMMITED=true ORDER BY id.MEMBERSHIP_ID";
+                + "INNER JOIN person p ON me.P_ID=p.P_ID WHERE mo.FISCAL_YEAR=" + selectedYear + " AND mo.COMMITED=true ORDER BY id.MEMBERSHIP_ID";
         ObservableList<PaidDuesDTO> theseFiscals = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(query + ";"));
+            ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(query));
             while (rs.next()) {
-                theseFiscals.add(new PaidDuesDTO(rs.getInt("MONEY_ID"), rs.getInt("MS_ID"),
-                        rs.getInt("FISCAL_YEAR"), rs.getInt("BATCH"), rs.getString("OFFICER_CREDIT"), rs.getInt("EXTRA_KEY"),
-                        rs.getInt("KAYAK_SHED_KEY"), rs.getInt("SAIL_LOFT_KEY"),
-                        rs.getInt("SAIL_SCHOOL_LOFT_KEY"), rs.getInt("BEACH"),
-                        rs.getString("WET_SLIP"), rs.getInt("KAYAK_RACK"),rs.getInt("KAYAK_BEACH_RACK"), rs.getInt("KAYAK_SHED"),
-                        rs.getInt("SAIL_LOFT"), rs.getInt("SAIL_SCHOOL_LASER_LOFT"), rs.getInt("WINTER_STORAGE"),
-                        rs.getString("YSC_DONATION"), rs.getString("PAID"), rs.getString("TOTAL"), rs.getString("CREDIT"),
-                        rs.getString("BALANCE"), rs.getString("DUES"), rs.getBoolean("COMMITED"), rs.getBoolean("CLOSED"),
-                        rs.getString("OTHER"), rs.getString("INITIATION"), rs.getBoolean("SUPPLEMENTAL"), rs.getInt("WORK_CREDIT")
-                        , rs.getString("OTHER_CREDIT"), rs.getString("F_NAME"),
-                        rs.getString("L_NAME"), rs.getInt("MEMBERSHIP_ID")));
+                theseFiscals.add(new PaidDuesDTO(
+                        rs.getInt("MONEY_ID"),
+                        rs.getInt("MS_ID"),
+                        rs.getInt("FISCAL_YEAR"),
+                        rs.getInt("BATCH"),
+                        rs.getString("OFFICER_CREDIT"),
+                        rs.getInt("EXTRA_KEY"),
+                        rs.getInt("KAYAK_SHED_KEY"),
+                        rs.getInt("SAIL_LOFT_KEY"),
+                        rs.getInt("SAIL_SCHOOL_LOFT_KEY"),
+                        rs.getInt("BEACH"),
+                        rs.getString("WET_SLIP"),
+                        rs.getInt("KAYAK_RACK"),
+                        rs.getInt("KAYAK_BEACH_RACK"),
+                        rs.getInt("KAYAK_SHED"),
+                        rs.getInt("SAIL_LOFT"),
+                        rs.getInt("SAIL_SCHOOL_LASER_LOFT"),
+                        rs.getInt("WINTER_STORAGE"),
+                        rs.getString("YSC_DONATION"),
+                        rs.getString("PAID"),
+                        rs.getString("TOTAL"),
+                        rs.getString("CREDIT"),
+                        rs.getString("BALANCE"),
+                        rs.getString("DUES"),
+                        rs.getBoolean("COMMITED"),
+                        rs.getBoolean("CLOSED"),
+                        rs.getString("OTHER"),
+                        rs.getString("INITIATION"),
+                        rs.getBoolean("SUPPLEMENTAL"),
+                        rs.getInt("WORK_CREDIT"),
+                        rs.getString("OTHER_CREDIT"),
+                        rs.getString("F_NAME"),
+                        rs.getString("L_NAME"),
+                        rs.getInt("MEMBERSHIP_ID")));
             }
         } catch (SQLException e) {
             // TODO Auto-generated catch block

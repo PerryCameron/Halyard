@@ -54,13 +54,17 @@ import javafx.scene.text.Text;
 import javafx.util.Callback;
 
 public class TabDeposits extends Tab {
-	private ObservableList<PaidDuesDTO> paidDues; // starts with all paid dues for a given year, then can change to
-														// dues for a selected deposit
-	private DefinedFeeDTO currentDefinedFee; // containes all the defined fees for a given year
-	private DepositDTO currentDeposit; // contains deposit number, date, year for a selected deposit
-	private DepositSummaryTextDTO summaryText = new DepositSummaryTextDTO(); // object of text objects for																				// display
-	private DepositSummaryDTO summaryTotals = new DepositSummaryDTO(); // will hold the totals of all at first
-																				// and then for a selected deposit
+	// starts with all paid dues for a given year, then can change to dues for a selected deposit
+	private ObservableList<PaidDuesDTO> paidDues;
+	// containes all the defined fees for a given year
+	private DefinedFeeDTO currentDefinedFee;
+	// contains deposit number, date, year for a selected deposit
+	private DepositDTO currentDeposit;
+	// object of text objects to simplify method parameters
+	private DepositSummaryTextDTO summaryText = new DepositSummaryTextDTO();
+	// will hold the totals of all at first and then for a selected deposit
+	private DepositSummaryDTO summaryTotals = new DepositSummaryDTO();
+
 	Text numberOfRecords = new Text("0");
 	String currentDate;
 	String selectedYear;
@@ -200,38 +204,30 @@ public class TabDeposits extends Tab {
 			public ObservableValue<Boolean> call(CellDataFeatures<PaidDuesDTO, Boolean> param) {
 				PaidDuesDTO thisPaidDues = param.getValue();
 				SimpleBooleanProperty booleanProp = new SimpleBooleanProperty(thisPaidDues.isClosed());
-				booleanProp.addListener(new ChangeListener<Boolean>() {
-
-					@Override
-					public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue,
-							Boolean newValue) {
-						thisPaidDues.setClosed(newValue); // sets checkbox value in table
-						if (newValue) { // if checked
-							setBatchAndClose(thisPaidDues, summaryTotals.getDepositNumber(), true);
-//							System.out.println(thisPaidDues.toString());
-							addDepositIdToPayment(thisPaidDues); // does lots of stuff
-						} else { // if unchecked
-							setBatchAndClose(thisPaidDues, 0, false);
-						}
-						summaryTotals.clear();
-						updateSummaryTotals();
-						// updateCurrentMoneyTotals(); // need error check if batch doesn't exist
-						updateMoneyTotals();
-						updateNonRenewed(nonRenewed);
+				booleanProp.addListener((observable, oldValue, newValue) -> {
+					thisPaidDues.setClosed(newValue); // sets checkbox value in table
+					if (newValue) { // if checked
+						setBatchAndClose(thisPaidDues, summaryTotals.getDepositNumber(), true);
+						System.out.println("batch=" + thisPaidDues.getBatch());
+						addDepositIdToPayment(thisPaidDues); // does lots of stuff
+					} else { // if unchecked
+						setBatchAndClose(thisPaidDues, 0, false);
 					}
+					summaryTotals.clear();
+					updateSummaryTotals();
+					// updateCurrentMoneyTotals(); // need error check if batch doesn't exist
+					updateMoneyTotals();
+					updateNonRenewed(nonRenewed);
 				});
 				return booleanProp;
 			}
 		});
 
-		Col1.setCellFactory(new Callback<TableColumn<PaidDuesDTO, Boolean>, //
-				TableCell<PaidDuesDTO, Boolean>>() {
-			@Override
-			public TableCell<PaidDuesDTO, Boolean> call(TableColumn<PaidDuesDTO, Boolean> p) {
-				CheckBoxTableCell<PaidDuesDTO, Boolean> cell = new CheckBoxTableCell<PaidDuesDTO, Boolean>();
-				cell.setAlignment(Pos.CENTER);
-				return cell;
-			}
+		//
+		Col1.setCellFactory(p -> {
+			CheckBoxTableCell<PaidDuesDTO, Boolean> cell = new CheckBoxTableCell<>();
+			cell.setAlignment(Pos.CENTER);
+			return cell;
 		});
 
 		TableColumn<PaidDuesDTO, Integer> Col2 = new TableColumn<PaidDuesDTO, Integer>("Batch");
@@ -434,7 +430,7 @@ public class TabDeposits extends Tab {
 		controlsVBox.getChildren().addAll(yearBatchHBox, selectionHBox, comboBoxHBox, gridHBox, buttonHBox,
 				remaindingRenewalHBox);
 		paidDuesTableView.getColumns()
-				.addAll(Arrays.asList(Col1, Col2, Col9, Col3, Col4, Col10, Col5, Col6, Col7, Col8, Col11));
+				.addAll(Col1, Col2, Col9, Col3, Col4, Col10, Col5, Col6, Col7, Col8, Col11);
 		mainHBox.getChildren().addAll(paidDuesTableView, controlsHBox);
 		vboxGrey.getChildren().add(mainHBox);
 		vboxBlue.getChildren().add(vboxPink);
