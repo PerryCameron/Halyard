@@ -26,7 +26,7 @@ public class EmailLinkBuilder {
 
         PersonDTO primaryMember = null;
         PersonDTO secondaryMember = null;
-        MoneyDTO mo = SqlMoney.getMonies(ml.getMsid(),selectedYear);
+        MoneyDTO mo = SqlMoney.getMoneyRecordByMsidAndYear(ml.getMsid(),selectedYear);
         System.out.println("Using money record from " + mo.getFiscal_year());
         System.out.println("Work Credits=" + mo.getWork_credit());
 

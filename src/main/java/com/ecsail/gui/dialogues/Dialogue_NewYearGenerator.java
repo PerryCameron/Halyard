@@ -161,10 +161,10 @@ public class Dialogue_NewYearGenerator extends Stage {
 		int lastYear = selectedYear - 1;
 		for (MembershipListDTO membership : memberships) {
 			if (SqlExists.moneyExists(membership.getMsid(), String.valueOf(selectedYear))) { // preserve values incase supplemental overwright
-				currentMoney = SqlMoney.getMonies(membership.getMsid(), String.valueOf(selectedYear));
+				currentMoney = SqlMoney.getMoneyRecordByMsidAndYear(membership.getMsid(), String.valueOf(selectedYear));
 			}
 			if (SqlExists.moneyExists(membership.getMsid(), lastYear + "")) { // last years record exists
-				oldMoney = SqlMoney.getMonies(membership.getMsid(), lastYear + "");
+				oldMoney = SqlMoney.getMoneyRecordByMsidAndYear(membership.getMsid(), lastYear + "");
 				newMoney = setNewMoneyValues(oldMoney, currentMoney, membership);  // newMoney/oldMoney for clarity
 				updateSql(newMoney, membership);
 			} else {  // last years money record does not exist

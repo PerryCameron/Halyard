@@ -194,7 +194,7 @@ public class PDF_Renewal_Form {
 		membership = SqlMembershipList.getMembershipFromList(ms_id,year);
 		System.out.println(membership.getMsid());
 		last_membership_id = SqlMembership_Id.getMembershipId((Integer.parseInt(year) -1) +"" , membership.getMsid());
-		dues = SqlMoney.getMonies(ms_id, year);
+		dues = SqlMoney.getMoneyRecordByMsidAndYear(ms_id, year);
 		boats = SqlBoat.getBoats(ms_id);
 		boats.add(0, new BoatDTO(0, 0, "Manufacturer", "Year", "Registration", "Model", "Boat Name", "Sail #", true, "Length", "Header", "Keel Type", "PHRF", "Draft", "Beam", "LWL",false));
 		boats.add(new BoatDTO(0, 0, "", "", "", "", "", "", false, "", "Blank", "", "","","","",false));

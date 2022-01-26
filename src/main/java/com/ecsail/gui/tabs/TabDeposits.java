@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.Date;
 
 import com.ecsail.gui.dialogues.Dialogue_DepositPDF;
@@ -22,7 +21,6 @@ import com.ecsail.structures.DepositSummaryTextDTO;
 
 import javafx.beans.Observable;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -38,7 +36,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.Tab;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -357,15 +354,15 @@ public class TabDeposits extends Tab {
 		gridPane.add(summaryText.getBeachSpotMoneyText(), 2, 3);
 		GridPane.setHalignment(summaryText.getBeachSpotMoneyText(), HPos.RIGHT);
 		gridPane.add(new Text("Outside Kayac Storage:"), 0, 4);
-		gridPane.add(summaryText.getKayacRackNumberText(), 1, 4);
-		GridPane.setHalignment(summaryText.getKayacRackNumberText(), HPos.CENTER);
-		gridPane.add(summaryText.getKayacRackMoneyText(), 2, 4);
-		GridPane.setHalignment(summaryText.getKayacRackMoneyText(), HPos.RIGHT);
+		gridPane.add(summaryText.getKayakRackNumberText(), 1, 4);
+		GridPane.setHalignment(summaryText.getKayakRackNumberText(), HPos.CENTER);
+		gridPane.add(summaryText.getKayakRackMoneyText(), 2, 4);
+		GridPane.setHalignment(summaryText.getKayakRackMoneyText(), HPos.RIGHT);
 		gridPane.add(new Text("Inside Kayac Storage:"), 0, 5);
-		gridPane.add(summaryText.getKayacShedNumberText(), 1, 5);
-		GridPane.setHalignment(summaryText.getKayacShedNumberText(), HPos.CENTER);
-		gridPane.add(summaryText.getKayacShedMoneyText(), 2, 5);
-		GridPane.setHalignment(summaryText.getKayacShedMoneyText(), HPos.RIGHT);
+		gridPane.add(summaryText.getKayakShedNumberText(), 1, 5);
+		GridPane.setHalignment(summaryText.getKayakShedNumberText(), HPos.CENTER);
+		gridPane.add(summaryText.getKayakShedMoneyText(), 2, 5);
+		GridPane.setHalignment(summaryText.getKayakShedMoneyText(), HPos.RIGHT);
 		gridPane.add(new Text("Sail Loft Access:"), 0, 6);
 		gridPane.add(summaryText.getSailLoftNumberText(), 1, 6);
 		GridPane.setHalignment(summaryText.getSailLoftNumberText(), HPos.CENTER);
@@ -523,11 +520,11 @@ public class TabDeposits extends Tab {
 		summaryText.getBeachSpotNumberText().setText(summaryTotals.getBeachNumber() + "");
 		summaryText.getBeachSpotMoneyText().setText("$" + summaryTotals.getBeach());
 
-		summaryText.getKayacRackNumberText().setText(summaryTotals.getKayak_rackNumber() + "");
-		summaryText.getKayacRackMoneyText().setText("$" + summaryTotals.getKayak_rack());
+		summaryText.getKayakRackNumberText().setText(summaryTotals.getKayak_rackNumber() + "");
+		summaryText.getKayakRackMoneyText().setText("$" + summaryTotals.getKayak_rack());
 
-		summaryText.getKayacShedNumberText().setText(summaryTotals.getKayak_shedNumber() + "");
-		summaryText.getKayacShedMoneyText().setText("$" + summaryTotals.getKayak_shed());
+		summaryText.getKayakShedNumberText().setText(summaryTotals.getKayak_shedNumber() + "");
+		summaryText.getKayakShedMoneyText().setText("$" + summaryTotals.getKayak_shed());
 
 		summaryText.getSailLoftNumberText().setText(summaryTotals.getSail_loftNumber() + "");
 		summaryText.getSailLoftMoneyText().setText("$" + summaryTotals.getSail_loft());

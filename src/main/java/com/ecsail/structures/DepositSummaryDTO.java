@@ -1,9 +1,13 @@
 package com.ecsail.structures;
 
 
+import com.ecsail.sql.select.SqlDefinedFee;
+import com.ecsail.sql.select.SqlMoney;
+
 import java.math.BigDecimal;
 
 public class DepositSummaryDTO {
+	private DefinedFeeDTO currentDefinedFee;
 
 	private BigDecimal officer_credit;
 	private BigDecimal gate_key;
@@ -13,6 +17,7 @@ public class DepositSummaryDTO {
 	private BigDecimal beach;
 	private BigDecimal wet_slip;
 	private BigDecimal kayak_rack;
+	private BigDecimal kayak_beach_rack;
 	private BigDecimal kayak_shed;
 	private BigDecimal sail_loft;
 	private BigDecimal sail_school_laser_loft;
@@ -22,6 +27,7 @@ public class DepositSummaryDTO {
 	private BigDecimal dues;
 	private BigDecimal other;
 	private BigDecimal initiation;
+	private BigDecimal balance;
 	private int officer_creditNumber;
 	private int gate_keyNumber; 
 	private int kayac_shed_keyNumber;
@@ -30,6 +36,7 @@ public class DepositSummaryDTO {
 	private int beachNumber;
 	private int wet_slipNumber;
 	private int kayak_rackNumber;
+	private int beach_kayak_rackNumber;
 	private int kayak_shedNumber;
 	private int sail_loftNumber; 
 	private int sail_school_laser_loftNumber;
@@ -44,12 +51,51 @@ public class DepositSummaryDTO {
 	private String depositDate;
 	private BigDecimal total;
 	private BigDecimal paid;
-	
-	
+
+	public DepositSummaryDTO(BigDecimal total, BigDecimal paid, BigDecimal balance, BigDecimal officer_credit, BigDecimal wet_slip, BigDecimal ysc_donation, BigDecimal credit, BigDecimal dues, BigDecimal other, BigDecimal initiation, int gate_keyNumber, int kayac_shed_keyNumber, int sail_loft_keyNumber, int sail_school_loft_keyNumber, int beachNumber, int kayak_rackNumber, int beach_kayak_rackNumber, int kayak_shedNumber, int sail_loftNumber, int sail_school_laser_loftNumber, int winter_storageNumber) {
+		this.currentDefinedFee = SqlDefinedFee.getDefinedFeeByYear("2022");
+		this.total = total;
+		this.paid = paid;
+		this.balance = balance;
+		this.officer_credit = officer_credit;
+		this.wet_slip = wet_slip;
+		this.ysc_donation = ysc_donation;
+		this.credit = credit;
+		this.dues = dues;
+		this.other = other;
+		this.initiation = initiation;
+		this.gate_keyNumber = gate_keyNumber;
+		this.kayac_shed_keyNumber = kayac_shed_keyNumber;
+		this.sail_loft_keyNumber = sail_loft_keyNumber;
+		this.sail_school_loft_keyNumber = sail_school_loft_keyNumber;
+		this.beachNumber = beachNumber;
+		this.kayak_rackNumber = kayak_rackNumber;
+		this.beach_kayak_rackNumber = beach_kayak_rackNumber;
+		this.kayak_shedNumber = kayak_shedNumber;
+		this.sail_loftNumber = sail_loftNumber;
+		this.sail_school_laser_loftNumber = sail_school_laser_loftNumber;
+		this.winter_storageNumber = winter_storageNumber;
+
+	}
+
+	public void calculateVariables() {
+		this.duesNumber = SqlMoney.getNumberOfMemberDues("2022", "2");
+		this.beach = currentDefinedFee.getBeach().multiply(BigDecimal.valueOf(beachNumber));
+		this.wet_slipNumber = SqlMoney.getNumberOfMemberDues("2022", "2");
+	}
+
 	public DepositSummaryDTO() {
 		clear();  // initialized them to 0 except date and number
 		this.depositNumber = 0;
 		this.depositDate = "";
+	}
+
+	public BigDecimal getKayak_beach_rack() {
+		return kayak_beach_rack;
+	}
+
+	public void setKayak_beach_rack(BigDecimal kayak_beach_rack) {
+		this.kayak_beach_rack = kayak_beach_rack;
 	}
 
 	public BigDecimal getOfficer_credit() {
@@ -88,9 +134,7 @@ public class DepositSummaryDTO {
 		return sail_school_loft_key;
 	}
 
-	public void setSail_school_loft_key(BigDecimal sail_school_loft_key) {
-		this.sail_school_loft_key = sail_school_loft_key;
-	}
+	public void setSail_school_loft_key(BigDecimal sail_school_loft_key) { this.sail_school_loft_key = sail_school_loft_key; }
 
 	public BigDecimal getBeach() {
 		return beach;
@@ -248,6 +292,14 @@ public class DepositSummaryDTO {
 		return kayak_rackNumber;
 	}
 
+	public int getBeach_kayak_rackNumber() {
+		return beach_kayak_rackNumber;
+	}
+
+	public void setBeach_kayak_rackNumber(int beach_kayak_rackNumber) {
+		this.beach_kayak_rackNumber = beach_kayak_rackNumber;
+	}
+
 	public void setKayak_rackNumber(int kayak_rackNumber) {
 		this.kayak_rackNumber = kayak_rackNumber;
 	}
@@ -373,6 +425,7 @@ public class DepositSummaryDTO {
 		this.beach = BigDecimal.valueOf(0.00);
 		this.wet_slip = BigDecimal.valueOf(0.00);
 		this.kayak_rack = BigDecimal.valueOf(0.00);
+		this.kayak_beach_rack = BigDecimal.valueOf(0.00);
 		this.kayak_shed = BigDecimal.valueOf(0.00);
 		this.sail_loft = BigDecimal.valueOf(0.00);
 		this.sail_school_laser_loft = BigDecimal.valueOf(0.00);
@@ -406,24 +459,49 @@ public class DepositSummaryDTO {
 		this.total = BigDecimal.valueOf(0.00);;
 	}
 
-
 	@Override
 	public String toString() {
-		return "Object_DepositSummary [officer_credit=" + officer_credit + ", gate_key=" + gate_key
-				+ ", kayac_shed_key=" + kayac_shed_key + ", sail_loft_key=" + sail_loft_key + ", sail_school_loft_key="
-				+ sail_school_loft_key + ", beach=" + beach + ", wet_slip=" + wet_slip + ", kayac_rack=" + kayak_rack
-				+ ", kayac_shed=" + kayak_shed + ", sail_loft=" + sail_loft + ", sail_school_laser_loft="
-				+ sail_school_laser_loft + ", winter_storage=" + winter_storage + ", ysc_donation=" + ysc_donation
-				+ ", credit=" + credit + ", dues=" + dues + ", other=" + other + ", initiation=" + initiation
-				+ ", officer_creditNumber=" + officer_creditNumber + ", gate_keyNumber=" + gate_keyNumber
-				+ ", kayac_shed_keyNumber=" + kayac_shed_keyNumber + ", sail_loft_keyNumber=" + sail_loft_keyNumber
-				+ ", sail_school_loft_keyNumber=" + sail_school_loft_keyNumber + ", beachNumber=" + beachNumber
-				+ ", wet_slipNumber=" + wet_slipNumber + ", kayac_rackNumber=" + kayak_rackNumber
-				+ ", kayac_shedNumber=" + kayak_shedNumber + ", sail_loftNumber=" + sail_loftNumber
-				+ ", sail_school_laser_loftNumber=" + sail_school_laser_loftNumber + ", winter_storageNumber="
-				+ winter_storageNumber + ", ysc_donationNumber=" + ysc_donationNumber + ", creditNumber=" + creditNumber
-				+ ", duesNumber=" + duesNumber + ", otherNumber=" + otherNumber + ", initiationNumber="
-				+ initiationNumber + ", numberOfRecords=" + numberOfRecords + ", depositNumber=" + depositNumber
-				+ ", depositDate=" + depositDate + ", total=" + total + ", paid=" + paid + "]";
+		return "DepositSummaryDTO{" +
+				"officer_credit=" + officer_credit +
+				", gate_key=" + gate_key +
+				", kayac_shed_key=" + kayac_shed_key +
+				", sail_loft_key=" + sail_loft_key +
+				", sail_school_loft_key=" + sail_school_loft_key +
+				", beach=" + beach +
+				", wet_slip=" + wet_slip +
+				", kayak_rack=" + kayak_rack +
+				", kayak_beach_rack=" + kayak_beach_rack +
+				", kayak_shed=" + kayak_shed +
+				", sail_loft=" + sail_loft +
+				", sail_school_laser_loft=" + sail_school_laser_loft +
+				", winter_storage=" + winter_storage +
+				", ysc_donation=" + ysc_donation +
+				", credit=" + credit +
+				", dues=" + dues +
+				", other=" + other +
+				", initiation=" + initiation +
+				", officer_creditNumber=" + officer_creditNumber +
+				", gate_keyNumber=" + gate_keyNumber +
+				", kayac_shed_keyNumber=" + kayac_shed_keyNumber +
+				", sail_loft_keyNumber=" + sail_loft_keyNumber +
+				", sail_school_loft_keyNumber=" + sail_school_loft_keyNumber +
+				", beachNumber=" + beachNumber +
+				", wet_slipNumber=" + wet_slipNumber +
+				", kayak_rackNumber=" + kayak_rackNumber +
+				", kayak_shedNumber=" + kayak_shedNumber +
+				", sail_loftNumber=" + sail_loftNumber +
+				", sail_school_laser_loftNumber=" + sail_school_laser_loftNumber +
+				", winter_storageNumber=" + winter_storageNumber +
+				", ysc_donationNumber=" + ysc_donationNumber +
+				", creditNumber=" + creditNumber +
+				", duesNumber=" + duesNumber +
+				", otherNumber=" + otherNumber +
+				", initiationNumber=" + initiationNumber +
+				", numberOfRecords=" + numberOfRecords +
+				", depositNumber=" + depositNumber +
+				", depositDate='" + depositDate + '\'' +
+				", total=" + total +
+				", paid=" + paid +
+				'}';
 	}
 }

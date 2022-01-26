@@ -10,8 +10,9 @@ public class DepositSummaryTextDTO {
 	Text sailSchoolLoftKeyNumberText = new Text();
 	Text kayakShedKeyNumberText = new Text();
 	Text wetSlipNumberText = new Text();
-	Text kayacRackNumberText = new Text();
-	Text KayacShedNumberText = new Text();
+	Text kayakRackNumberText = new Text();
+	Text kayakBeachRackNumberText = new Text();
+	Text KayakShedNumberText = new Text();
 	Text sailLoftNumberText = new Text();
 	Text sailSchoolLoftNumberText = new Text();
 	Text winterStorageNumberText = new Text();
@@ -27,8 +28,8 @@ public class DepositSummaryTextDTO {
 	Text sailSchoolLoftKeyMoneyText = new Text();
 	Text kayakShedKeyMoneyText = new Text();		
 	Text wetSlipMoneyText = new Text();
-	Text kayacRackMoneyText = new Text();
-	Text kayacShedMoneyText = new Text();
+	Text kayakRackMoneyText = new Text();
+	Text kayakShedMoneyText = new Text();
 	Text sailLoftMoneyText = new Text();
 	Text sailSchoolLoftMoneyText = new Text();
 	Text winterStorageMoneyText = new Text();
@@ -45,8 +46,9 @@ public class DepositSummaryTextDTO {
 		this.sailSchoolLoftKeyNumberText.setText("0");
 		this.kayakShedKeyNumberText.setText("0");
 		this.wetSlipNumberText.setText("0");
-		this.kayacRackNumberText.setText("0");
-		this.KayacShedNumberText.setText("0");
+		this.kayakRackNumberText.setText("0");
+		this.kayakBeachRackNumberText.setText("0");
+		this.KayakShedNumberText.setText("0");
 		this.sailLoftNumberText.setText("0");
 		this.winterStorageNumberText.setText("0");
 		this.beachSpotNumberText.setText("0");
@@ -60,8 +62,8 @@ public class DepositSummaryTextDTO {
 		this.sailSchoolLoftKeyMoneyText.setText("0");
 		this.kayakShedKeyMoneyText.setText("0");
 		this.wetSlipMoneyText.setText("0");
-		this.kayacRackMoneyText.setText("0");
-		this.kayacShedMoneyText.setText("0");
+		this.kayakRackMoneyText.setText("0");
+		this.kayakShedMoneyText.setText("0");
 		this.sailLoftMoneyText.setText("0");
 		this.winterStorageMoneyText.setText("0");
 		this.beachSpotMoneyText.setText("0");
@@ -71,6 +73,14 @@ public class DepositSummaryTextDTO {
 		this.totalMoneyText.setText("0");
 		this.sailSchoolLoftMoneyText.setText("0");
 		this.sailSchoolLoftNumberText.setText("0");
+	}
+
+	public Text getKayakBeachRackNumberText() {
+		return kayakBeachRackNumberText;
+	}
+
+	public void setKayakBeachRackNumberText(Text kayakBeachRackNumberText) {
+		this.kayakBeachRackNumberText = kayakBeachRackNumberText;
 	}
 
 	public Text getDuesNumberText() {
@@ -97,12 +107,12 @@ public class DepositSummaryTextDTO {
 		return wetSlipNumberText;
 	}
 
-	public Text getKayacRackNumberText() {
-		return kayacRackNumberText;
+	public Text getKayakRackNumberText() {
+		return kayakRackNumberText;
 	}
 
-	public Text getKayacShedNumberText() {
-		return KayacShedNumberText;
+	public Text getKayakShedNumberText() {
+		return KayakShedNumberText;
 	}
 
 	public Text getSailLoftNumberText() {
@@ -157,12 +167,12 @@ public class DepositSummaryTextDTO {
 		return wetSlipMoneyText;
 	}
 
-	public Text getKayacRackMoneyText() {
-		return kayacRackMoneyText;
+	public Text getKayakRackMoneyText() {
+		return kayakRackMoneyText;
 	}
 
-	public Text getKayacShedMoneyText() {
-		return kayacShedMoneyText;
+	public Text getKayakShedMoneyText() {
+		return kayakShedMoneyText;
 	}
 
 	public Text getSailLoftMoneyText() {
@@ -200,6 +210,5 @@ public class DepositSummaryTextDTO {
 	public Text getSailSchoolLoftMoneyText() {
 		return sailSchoolLoftMoneyText;
 	}
-	
-	
+
 }
