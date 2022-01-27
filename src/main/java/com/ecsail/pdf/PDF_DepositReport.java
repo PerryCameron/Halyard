@@ -26,7 +26,6 @@ import java.awt.*;
 import java.io.*;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
-import java.util.Collections;
 import java.util.Comparator;
 
 public class PDF_DepositReport {
@@ -245,12 +244,12 @@ public class PDF_DepositReport {
 			if (other.compareTo(BigDecimal.ZERO) != 0)
 				addItemRow(detailTable, "Other", other, 0);
 			addItemRow(detailTable, "Total Fees", total, 0);
-			if (credit.compareTo(BigDecimal.ZERO) != 0) addCreditRow(detailTable, "Credit", credit, 0);
+			if (credit.compareTo(BigDecimal.ZERO) != 0) addCreditRow(detailTable, credit);
 			addItemRow(detailTable, "Total Due", total.subtract(credit), 0);
 			// prints row of amount paid
 			addItemPaidRow(detailTable, paid);
 			if (balance.compareTo(BigDecimal.ZERO) != 0) {
-				addBalanceRow(detailTable, "Balance", balance, 0);
+				addBalanceRow(detailTable, balance, 0);
 				addNoteRow(detailTable, "Balance: ",getNote(dues,"B"));
 			}
 			if (other.compareTo(BigDecimal.ZERO) != 0)
@@ -312,10 +311,10 @@ public class PDF_DepositReport {
 		}
 	}
 
-	private void addBalanceRow(Table detailTable, String label, BigDecimal money, int numberOf) {
+	private void addBalanceRow(Table detailTable, BigDecimal money, int numberOf) {
 		detailTable.addCell(new Cell().setBorder(Border.NO_BORDER));
 		detailTable.addCell(new Cell().setBorder(Border.NO_BORDER));
-		detailTable.addCell(new Cell().setBorder(Border.NO_BORDER).add(new Paragraph(label)).setFontSize(10));
+		detailTable.addCell(new Cell().setBorder(Border.NO_BORDER).add(new Paragraph("Balance")).setFontSize(10));
 		if(numberOf == 0) {
 		detailTable.addCell(new Cell().setBorder(Border.NO_BORDER));	
 		} else {
@@ -336,15 +335,11 @@ public class PDF_DepositReport {
 		detailTable.addCell(new Cell().setTextAlignment(TextAlignment.RIGHT).setBorder(Border.NO_BORDER).add(new Paragraph(addDollarSign() + df.format(money))).setFontSize(10));
 	}
 	
-	private void addCreditRow(Table detailTable, String label, BigDecimal money, int numberOf) {
+	private void addCreditRow(Table detailTable, BigDecimal money) {
 		detailTable.addCell(new Cell().setBorder(Border.NO_BORDER));
 		detailTable.addCell(new Cell().setBorder(Border.NO_BORDER));
-		detailTable.addCell(new Cell().setBorder(Border.NO_BORDER).add(new Paragraph(label)).setFontSize(10));
-		if(numberOf == 0) {
-		detailTable.addCell(new Cell().setBorder(Border.NO_BORDER));	
-		} else {
-			detailTable.addCell(new Cell().setTextAlignment(TextAlignment.CENTER).setBorder(Border.NO_BORDER).add(new Paragraph("" + numberOf)).setFontSize(10));	
-		}
+		detailTable.addCell(new Cell().setBorder(Border.NO_BORDER).add(new Paragraph("Credit")).setFontSize(10));
+		detailTable.addCell(new Cell().setBorder(Border.NO_BORDER));
 		detailTable.addCell(new Cell().setTextAlignment(TextAlignment.RIGHT).setBorder(Border.NO_BORDER).add(new Paragraph("-" + addDollarSign() + money.setScale(2).toPlainString())).setFontSize(10));
 	}
 
@@ -424,7 +419,7 @@ public class PDF_DepositReport {
 		}
 		if (totals.getCredit().compareTo(BigDecimal.ZERO) != 0) {
 			// 0 for number of removes count in PDF
-			addSummaryRow(mainTable, "Credit" , 0, totals.getCredit());
+			addSummaryRow(mainTable, "Credit" , "", totals.getCredit());
 		}
 
 		
@@ -597,11 +592,7 @@ public class PDF_DepositReport {
 	}
 	
     public static void sortByMembershipId() {
-		  Collections.sort(paidDuesForDeposit, new Comparator<PaidDuesDTO>() {
-		        @Override public int compare(PaidDuesDTO p1, PaidDuesDTO p2) {
-		            return p1.getMembershipId() - p2.getMembershipId(); // Ascending
-		        }
-		    });
+		  paidDuesForDeposit.sort(Comparator.comparingInt(PaidDuesDTO::getMembershipId));
     }
     
 	public Table headerPdfTable(String summary) {
@@ -614,14 +605,11 @@ public class PDF_DepositReport {
 		return mainTable;
 	}
 	
-	private void addSummaryRow(Table mainTable, String label, int numberOf, BigDecimal money) {
+	private <T> void addSummaryRow(Table mainTable, String label, T numberOf, BigDecimal money) {
 		mainTable.addCell(new Cell());
 		mainTable.addCell(new Cell());
 		mainTable.addCell(new Cell().add(new Paragraph(label)).setFontSize(10));
-		if(numberOf==0) // If we don't want to show a number
-			mainTable.addCell(new Cell().add(new Paragraph("")).setFontSize(10));
-		else
-			mainTable.addCell(new Cell().add(new Paragraph(numberOf + "")).setFontSize(10));
+		mainTable.addCell(new Cell().add(new Paragraph(numberOf + "")).setFontSize(10));
 		mainTable.addCell(new Cell().add(new Paragraph(addDollarSign() + df.format(money)).setFontSize(10)).setTextAlignment(TextAlignment.RIGHT));
 	}
 	

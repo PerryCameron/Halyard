@@ -34,7 +34,7 @@ public class HBoxInvoice extends HBox {
 	private final ObservableList<MoneyDTO> fiscals;
 	private ObservableList<PaymentDTO> payments;
 	private final MoneyDTO invoice;
-	private final InvoiceDTO fnode;
+	private final InvoiceDTO invoiceDTO;
 	MembershipDTO membership;
 	DefinedFeeDTO definedFees;
 	WorkCreditDTO selectedWorkCreditYear;
@@ -54,7 +54,7 @@ public class HBoxInvoice extends HBox {
 		this.fiscals = o;
 		this.definedFees = SqlDefinedFee.getDefinedFeeByYear(String.valueOf(fiscals.get(rowIndex).getFiscal_year()));
 		this.invoice = fiscals.get(rowIndex);
-		this.fnode = new InvoiceDTO(invoice, definedFees, paymentTableView);
+		this.invoiceDTO = new InvoiceDTO(invoice, definedFees, paymentTableView);
 		this.selectedWorkCreditYear = SqlMoney.getWorkCredit(fiscals.get(rowIndex).getMoney_id());
 		this.hasOfficer = membershipHasOfficer();
 		this.isCommitted = fiscals.get(rowIndex).isCommitted();
@@ -88,7 +88,7 @@ public class HBoxInvoice extends HBox {
 					SqlUpdate.updatePayment(pay_id, "amount", String.valueOf(amount.setScale(2, RoundingMode.HALF_UP)));
 					// SQL Query getTotalAmount() adds all the payments for us
 					BigDecimal totalPaidAmount = BigDecimal.valueOf(SqlMoney.getTotalAmount(fiscals.get(rowIndex).getMoney_id()));
-					fnode.getTotalPaymentText().setText(String.valueOf(totalPaidAmount.setScale(2, RoundingMode.HALF_UP)));
+					invoiceDTO.getTotalPaymentText().setText(String.valueOf(totalPaidAmount.setScale(2, RoundingMode.HALF_UP)));
 					fiscals.get(rowIndex).setPaid(String.valueOf(totalPaidAmount.setScale(2, RoundingMode.HALF_UP)));
 					updateBalance();
 				}
@@ -177,28 +177,28 @@ public class HBoxInvoice extends HBox {
 		paymentTableView.setEditable(!fiscals.get(rowIndex).isCommitted());
 
 		//////////////// LISTENER //////////////////
-		fnode.getButtonAdd().setOnAction(e -> {
+		invoiceDTO.getButtonAdd().setOnAction(e -> {
 			int pay_id = SqlPayment.getNumberOfPayments() + 1; // get last pay_id number
 			payments.add(new PaymentDTO(pay_id,fiscals.get(rowIndex).getMoney_id(),null,"CH",date, "0",1)); // let's add it to our GUI
 			SqlInsert.addPaymentRecord(payments.get(payments.size() -1));
 		});
 
-		fnode.getButtonDelete().setOnAction(e -> {
+		invoiceDTO.getButtonDelete().setOnAction(e -> {
 			int selectedIndex = paymentTableView.getSelectionModel().getSelectedIndex();
 			if(selectedIndex >= 0) // is something selected?
 			SqlDelete.deletePayment(payments.get(selectedIndex));
 			paymentTableView.getItems().remove(selectedIndex); // remove it from our GUI
 			// SQL Query getTotalAmount() recalculates the payments for us
 			BigDecimal totalPaidAmount = BigDecimal.valueOf(SqlMoney.getTotalAmount(fiscals.get(rowIndex).getMoney_id()));
-			fnode.getTotalPaymentText().setText(String.valueOf(totalPaidAmount.setScale(2, RoundingMode.HALF_UP)));
+			invoiceDTO.getTotalPaymentText().setText(String.valueOf(totalPaidAmount.setScale(2, RoundingMode.HALF_UP)));
 			fiscals.get(rowIndex).setPaid(String.valueOf(totalPaidAmount.setScale(2, RoundingMode.HALF_UP)));
 			updateBalance();
 		});
 
 		// this is only called if you change membership type or open a record or manually type in
-		fnode.getDuesTextField().textProperty().addListener((observable, oldValue, newValue) -> {
+		invoiceDTO.getDuesTextField().textProperty().addListener((observable, oldValue, newValue) -> {
 			if (!SqlMoney.isCommitted(fiscals.get(rowIndex).getMoney_id())) {
-				fnode.getDuesText().setText(newValue);
+				invoiceDTO.getDuesText().setText(newValue);
 //				System.out.println("Dues text field set to " + newValue);
 				fiscals.get(rowIndex).setDues(newValue);
 				updateBalance();
@@ -207,225 +207,223 @@ public class HBoxInvoice extends HBox {
 			}
 		});
 		
-		fnode.getDuesTextField().focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+		invoiceDTO.getDuesTextField().focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
 	            //focus out
 	            if (oldValue) {  // we have focused and unfocused
-	            	if(!isNumeric(fnode.getDuesTextField().getText())) {
-						fnode.getDuesTextField().setText("0");
+	            	if(!isNumeric(invoiceDTO.getDuesTextField().getText())) {
+						invoiceDTO.getDuesTextField().setText("0");
 	            	}
-	            	BigDecimal dues = new BigDecimal(fnode.getDuesTextField().getText());
+	            	BigDecimal dues = new BigDecimal(invoiceDTO.getDuesTextField().getText());
 	            	updateItem(dues,"dues");
-					fnode.getDuesTextField().setText(String.valueOf(dues.setScale(2, RoundingMode.HALF_UP)));
+					invoiceDTO.getDuesTextField().setText(String.valueOf(dues.setScale(2, RoundingMode.HALF_UP)));
 	            	updateBalance();
 	            }
 	        });
 
 		SpinnerValueFactory<Integer> beachValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 5, fiscals.get(rowIndex).getBeach());
-		fnode.getBeachSpinner().setValueFactory(beachValueFactory);
-		fnode.getBeachSpinner().valueProperty().addListener((observable, oldValue, newValue) -> {
+		invoiceDTO.getBeachSpinner().setValueFactory(beachValueFactory);
+		invoiceDTO.getBeachSpinner().valueProperty().addListener((observable, oldValue, newValue) -> {
 			fiscals.get(rowIndex).setBeach(newValue);
-			fnode.getBeachText().setText(String.valueOf(definedFees.getBeach().multiply(BigDecimal.valueOf(newValue))));
+			invoiceDTO.getBeachText().setText(String.valueOf(definedFees.getBeach().multiply(BigDecimal.valueOf(newValue))));
 			updateBalance();
 		});
 
 		SpinnerValueFactory<Integer> kayakRackValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 5, fiscals.get(rowIndex).getKayac_rack());
-		fnode.getKayakRackSpinner().setValueFactory(kayakRackValueFactory);
-		fnode.getKayakRackSpinner().valueProperty().addListener((observable, oldValue, newValue) -> {
+		invoiceDTO.getKayakRackSpinner().setValueFactory(kayakRackValueFactory);
+		invoiceDTO.getKayakRackSpinner().valueProperty().addListener((observable, oldValue, newValue) -> {
 			fiscals.get(rowIndex).setKayac_rack(newValue);
-			fnode.getKayakRackText().setText(String.valueOf(definedFees.getKayak_rack().multiply(BigDecimal.valueOf(newValue))));
+			invoiceDTO.getKayakRackText().setText(String.valueOf(definedFees.getKayak_rack().multiply(BigDecimal.valueOf(newValue))));
 			updateBalance();
 		});
 
 		SpinnerValueFactory<Integer> kayakBeachRackValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 5, fiscals.get(rowIndex).getKayak_beach_rack());
-		fnode.getKayakBeachRackSpinner().setValueFactory(kayakBeachRackValueFactory);
-		fnode.getKayakBeachRackSpinner().valueProperty().addListener((observable, oldValue, newValue) -> {
+		invoiceDTO.getKayakBeachRackSpinner().setValueFactory(kayakBeachRackValueFactory);
+		invoiceDTO.getKayakBeachRackSpinner().valueProperty().addListener((observable, oldValue, newValue) -> {
 			System.out.println(fiscals.get(rowIndex));
 			System.out.println("newValue= " + newValue);
 			fiscals.get(rowIndex).setKayak_beach_rack(newValue);
 			System.out.println("Set kayak beach rack to money object =" + fiscals.get(rowIndex).getKayak_beach_rack());
-			fnode.getKayakBeachRackText().setText(String.valueOf(definedFees.getKayak_beach_rack().multiply(BigDecimal.valueOf(newValue))));
+			invoiceDTO.getKayakBeachRackText().setText(String.valueOf(definedFees.getKayak_beach_rack().multiply(BigDecimal.valueOf(newValue))));
 			updateBalance();
 		});
 
 		SpinnerValueFactory<Integer> kayakShedValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 5, fiscals.get(rowIndex).getKayac_shed());
-		fnode.getKayakShedSpinner().setValueFactory(kayakShedValueFactory);
-		fnode.getKayakShedSpinner().valueProperty().addListener((observable, oldValue, newValue) -> {
+		invoiceDTO.getKayakShedSpinner().setValueFactory(kayakShedValueFactory);
+		invoiceDTO.getKayakShedSpinner().valueProperty().addListener((observable, oldValue, newValue) -> {
 			fiscals.get(rowIndex).setKayac_shed(newValue);
-			fnode.getKayakShedText().setText(String.valueOf(definedFees.getKayak_shed().multiply(BigDecimal.valueOf(newValue))));
+			invoiceDTO.getKayakShedText().setText(String.valueOf(definedFees.getKayak_shed().multiply(BigDecimal.valueOf(newValue))));
 			updateBalance();
 		});
 
 		SpinnerValueFactory<Integer> sailLoftValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1, fiscals.get(rowIndex).getSail_loft());
-		fnode.getSailLoftSpinner().setValueFactory(sailLoftValueFactory);
-		fnode.getSailLoftSpinner().valueProperty().addListener((observable, oldValue, newValue) -> {
+		invoiceDTO.getSailLoftSpinner().setValueFactory(sailLoftValueFactory);
+		invoiceDTO.getSailLoftSpinner().valueProperty().addListener((observable, oldValue, newValue) -> {
 			fiscals.get(rowIndex).setSail_loft(newValue);
-			fnode.getSailLoftText().setText(String.valueOf(definedFees.getSail_loft().multiply(BigDecimal.valueOf(newValue))));
+			invoiceDTO.getSailLoftText().setText(String.valueOf(definedFees.getSail_loft().multiply(BigDecimal.valueOf(newValue))));
 			updateBalance();
 		});
 
 		SpinnerValueFactory<Integer> sailSchoolLoftValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1, fiscals.get(rowIndex).getSail_school_laser_loft());
-		fnode.getSailSchoolLoftSpinner().setValueFactory(sailSchoolLoftValueFactory);
-		fnode.getSailSchoolLoftSpinner().valueProperty().addListener((observable, oldValue, newValue) -> {
+		invoiceDTO.getSailSchoolLoftSpinner().setValueFactory(sailSchoolLoftValueFactory);
+		invoiceDTO.getSailSchoolLoftSpinner().valueProperty().addListener((observable, oldValue, newValue) -> {
 			fiscals.get(rowIndex).setSail_school_laser_loft(newValue);
-			fnode.getSailSchoolLoftText().setText(String.valueOf(definedFees.getSail_school_laser_loft().multiply(BigDecimal.valueOf(newValue))));
+			invoiceDTO.getSailSchoolLoftText().setText(String.valueOf(definedFees.getSail_school_laser_loft().multiply(BigDecimal.valueOf(newValue))));
 			updateBalance();
 		});
 
 		SpinnerValueFactory<Integer> wetSlipValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1, getInitialWetSlipValue(fiscals.get(rowIndex).getWet_slip()));
-		fnode.getWetSlipSpinner().setValueFactory(wetSlipValueFactory);
-		fnode.getWetSlipSpinner().valueProperty().addListener((observable, oldValue, newValue) -> {
-			String wetSlip = String.valueOf(new BigDecimal(fnode.getWetslipTextFee().getText()).multiply(BigDecimal.valueOf(newValue)));
+		invoiceDTO.getWetSlipSpinner().setValueFactory(wetSlipValueFactory);
+		invoiceDTO.getWetSlipSpinner().valueProperty().addListener((observable, oldValue, newValue) -> {
+			String wetSlip = String.valueOf(new BigDecimal(invoiceDTO.getWetslipTextFee().getText()).multiply(BigDecimal.valueOf(newValue)));
 			fiscals.get(rowIndex).setWet_slip(wetSlip);
-			fnode.getWetSlipText().setText(wetSlip);
+			invoiceDTO.getWetSlipText().setText(wetSlip);
 			updateBalance();
 		});
 
 		// this is for changing the value from default
-		fnode.getWetslipTextField().focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+		invoiceDTO.getWetslipTextField().focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
 			//focus out
 			if (oldValue) {  // we have focused and unfocused
-				if(!isNumeric(fnode.getWetslipTextField().getText())) {
-					fnode.getWetslipTextField().setText("0.00");
+				if(!isNumeric(invoiceDTO.getWetslipTextField().getText())) {
+					invoiceDTO.getWetslipTextField().setText("0.00");
 				}
-				BigDecimal slip = new BigDecimal(fnode.getWetslipTextField().getText());
-				fnode.getWetSlipText().setText(String.valueOf(slip.multiply(BigDecimal.valueOf(fnode.getWetSlipSpinner().getValue()))));
-//				updateItem(slip,"wetslip");
-				fnode.getWetslipTextField().setText(String.valueOf(slip.setScale(2, RoundingMode.HALF_UP)));
-				fnode.getWetslipTextFee().setText(String.valueOf(slip.setScale(2, RoundingMode.HALF_UP)));
-				String wetSlip = String.valueOf(new BigDecimal(fnode.getWetslipTextFee().getText()).multiply(BigDecimal.valueOf(fnode.getWetSlipSpinner().getValue())));
+				BigDecimal slip = new BigDecimal(invoiceDTO.getWetslipTextField().getText());
+				invoiceDTO.getWetSlipText().setText(String.valueOf(slip.multiply(BigDecimal.valueOf(invoiceDTO.getWetSlipSpinner().getValue()))));
+				invoiceDTO.getWetslipTextField().setText(String.valueOf(slip.setScale(2, RoundingMode.HALF_UP)));
+				invoiceDTO.getWetslipTextFee().setText(String.valueOf(slip.setScale(2, RoundingMode.HALF_UP)));
+				String wetSlip = String.valueOf(new BigDecimal(invoiceDTO.getWetslipTextFee().getText()).multiply(BigDecimal.valueOf(invoiceDTO.getWetSlipSpinner().getValue())));
 				invoice.setWet_slip(wetSlip);
 				updateBalance();
-				fnode.getVboxWetSlipFee().getChildren().clear();
-				fnode.getVboxWetSlipFee().getChildren().add(fnode.getWetslipTextFee());
+				invoiceDTO.getVboxWetSlipFee().getChildren().clear();
+				invoiceDTO.getVboxWetSlipFee().getChildren().add(invoiceDTO.getWetslipTextFee());
 			}
 		});
 
 		SpinnerValueFactory<Integer> winterStorageValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 5, fiscals.get(rowIndex).getWinter_storage());
-		fnode.getWinterStorageSpinner().setValueFactory(winterStorageValueFactory);
-		fnode.getWinterStorageSpinner().valueProperty().addListener((observable, oldValue, newValue) -> {
+		invoiceDTO.getWinterStorageSpinner().setValueFactory(winterStorageValueFactory);
+		invoiceDTO.getWinterStorageSpinner().valueProperty().addListener((observable, oldValue, newValue) -> {
 			fiscals.get(rowIndex).setWinter_storage(newValue);
-			fnode.getWinterStorageText().setText(String.valueOf(definedFees.getWinter_storage().multiply(BigDecimal.valueOf(newValue))));
+			invoiceDTO.getWinterStorageText().setText(String.valueOf(definedFees.getWinter_storage().multiply(BigDecimal.valueOf(newValue))));
 			updateBalance();
 		});
 
 		SpinnerValueFactory<Integer> gateKeyValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 15, fiscals.get(rowIndex).getExtra_key());
-		fnode.getGateKeySpinner().setValueFactory(gateKeyValueFactory);
-		fnode.getGateKeySpinner().valueProperty().addListener((observable, oldValue, newValue) -> {
-			fnode.getGateKeyText().setText(String.valueOf(definedFees.getMain_gate_key().multiply(BigDecimal.valueOf(newValue))));
+		invoiceDTO.getGateKeySpinner().setValueFactory(gateKeyValueFactory);
+		invoiceDTO.getGateKeySpinner().valueProperty().addListener((observable, oldValue, newValue) -> {
+			invoiceDTO.getGateKeyText().setText(String.valueOf(definedFees.getMain_gate_key().multiply(BigDecimal.valueOf(newValue))));
 			fiscals.get(rowIndex).setExtra_key(newValue);
 			updateBalance();
 		});
 
 		SpinnerValueFactory<Integer> sailLKeyValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 15, fiscals.get(rowIndex).getSail_loft_key());
-		fnode.getSailLKeySpinner().setValueFactory(sailLKeyValueFactory);
-		fnode.getSailLKeySpinner().valueProperty().addListener((observable, oldValue, newValue) -> {
-			fnode.getSailLKeyText().setText(String.valueOf(definedFees.getSail_loft_key().multiply(BigDecimal.valueOf(newValue))));
+		invoiceDTO.getSailLKeySpinner().setValueFactory(sailLKeyValueFactory);
+		invoiceDTO.getSailLKeySpinner().valueProperty().addListener((observable, oldValue, newValue) -> {
+			invoiceDTO.getSailLKeyText().setText(String.valueOf(definedFees.getSail_loft_key().multiply(BigDecimal.valueOf(newValue))));
 			fiscals.get(rowIndex).setSail_loft_key(newValue);
 			updateBalance();
 		});
 
 		SpinnerValueFactory<Integer> kayakSKeyValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 15, fiscals.get(rowIndex).getKayac_shed_key());
-		fnode.getKayakSKeySpinner().setValueFactory(kayakSKeyValueFactory);
-		fnode.getKayakSKeySpinner().valueProperty().addListener((observable, oldValue, newValue) -> {
-			fnode.getKayakSKeyText().setText(String.valueOf(definedFees.getKayak_shed_key().multiply(BigDecimal.valueOf(newValue))));
+		invoiceDTO.getKayakSKeySpinner().setValueFactory(kayakSKeyValueFactory);
+		invoiceDTO.getKayakSKeySpinner().valueProperty().addListener((observable, oldValue, newValue) -> {
+			invoiceDTO.getKayakSKeyText().setText(String.valueOf(definedFees.getKayak_shed_key().multiply(BigDecimal.valueOf(newValue))));
 			fiscals.get(rowIndex).setKayac_shed_key(newValue);
 			updateBalance();
 		});
 
 		SpinnerValueFactory<Integer> sailSSLKeyValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 15, fiscals.get(rowIndex).getSail_school_loft_key());
-		fnode.getSailSSLKeySpinner().setValueFactory(sailSSLKeyValueFactory);
-		fnode.getSailSSLKeySpinner().valueProperty().addListener((observable, oldValue, newValue) -> {
-			fnode.getSailSSLKeyText().setText(String.valueOf(definedFees.getSail_school_loft_key().multiply(BigDecimal.valueOf(newValue))));
+		invoiceDTO.getSailSSLKeySpinner().setValueFactory(sailSSLKeyValueFactory);
+		invoiceDTO.getSailSSLKeySpinner().valueProperty().addListener((observable, oldValue, newValue) -> {
+			invoiceDTO.getSailSSLKeyText().setText(String.valueOf(definedFees.getSail_school_loft_key().multiply(BigDecimal.valueOf(newValue))));
 			fiscals.get(rowIndex).setSail_school_loft_key(newValue);
 			updateBalance();
 		});
 
-		fnode.getYscTextField().focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+		invoiceDTO.getYscTextField().focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
 			//focus out
 			if (oldValue) {  // we have focused and unfocused
-				if(!isNumeric(fnode.getYscTextField().getText())) {
-					fnode.getYscTextField().setText("0.00");
+				if(!isNumeric(invoiceDTO.getYscTextField().getText())) {
+					invoiceDTO.getYscTextField().setText("0.00");
 				}
-				BigDecimal ysc = new BigDecimal(fnode.getYscTextField().getText());
-				fnode.getYspText().setText(String.valueOf(ysc.setScale(2, RoundingMode.HALF_UP)));
+				BigDecimal ysc = new BigDecimal(invoiceDTO.getYscTextField().getText());
+				invoiceDTO.getYspText().setText(String.valueOf(ysc.setScale(2, RoundingMode.HALF_UP)));
 				updateItem(ysc.setScale(2, RoundingMode.HALF_UP), "ysc");
-				fnode.getYscTextField().setText(String.valueOf(ysc.setScale(2, RoundingMode.HALF_UP)));
+				invoiceDTO.getYscTextField().setText(String.valueOf(ysc.setScale(2, RoundingMode.HALF_UP)));
 				updateBalance();
 			}
 		});
 
-		fnode.getInitiationTextField().focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+		invoiceDTO.getInitiationTextField().focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
 			//focus out
 			if (oldValue) {  // we have focused and unfocused
-				if(!isNumeric(fnode.getInitiationTextField().getText())) {
-					fnode.getInitiationTextField().setText("0.00");
+				if(!isNumeric(invoiceDTO.getInitiationTextField().getText())) {
+					invoiceDTO.getInitiationTextField().setText("0.00");
 				}
-				BigDecimal initiation = new BigDecimal(fnode.getInitiationTextField().getText());
+				BigDecimal initiation = new BigDecimal(invoiceDTO.getInitiationTextField().getText());
 				updateItem(initiation.setScale(2, RoundingMode.HALF_UP), "initiation");
-				fnode.getInitiationTextField().setText(String.valueOf(initiation.setScale(2, RoundingMode.HALF_UP)));
-				fnode.getInitiationText().setText(String.valueOf(initiation.setScale(2, RoundingMode.HALF_UP)));
+				invoiceDTO.getInitiationTextField().setText(String.valueOf(initiation.setScale(2, RoundingMode.HALF_UP)));
+				invoiceDTO.getInitiationText().setText(String.valueOf(initiation.setScale(2, RoundingMode.HALF_UP)));
 				updateBalance();
 			}
 		});
 
-		fnode.getOtherTextField().focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+		invoiceDTO.getOtherTextField().focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
 			//focus out
 			if (oldValue) {  // we have focused and unfocused
-				if(!isNumeric(fnode.getOtherTextField().getText())) {
-					fnode.getOtherTextField().setText("0.00");
+				if(!isNumeric(invoiceDTO.getOtherTextField().getText())) {
+					invoiceDTO.getOtherTextField().setText("0.00");
 				}
-				BigDecimal other = new BigDecimal(fnode.getOtherTextField().getText());
-				fnode.getOtherTextField().setText(String.valueOf(other.setScale(2, RoundingMode.HALF_UP)));
+				BigDecimal other = new BigDecimal(invoiceDTO.getOtherTextField().getText());
+				invoiceDTO.getOtherTextField().setText(String.valueOf(other.setScale(2, RoundingMode.HALF_UP)));
 				updateItem(other.setScale(2, RoundingMode.HALF_UP),"other");
 				updateBalance();
 			}
 		});
 
-		fnode.getComboBox().getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
+		invoiceDTO.getComboBox().getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
 			fiscals.get(rowIndex).setWork_credit(newValue);
 			String workCredits = String.valueOf(definedFees.getWork_credit().multiply(BigDecimal.valueOf(newValue)));
-			fnode.getWorkCreditsText().setText(workCredits);
+			invoiceDTO.getWorkCreditsText().setText(workCredits);
 			updateBalance();
 		});
 
 
 
-		fnode.getOtherCreditTextField().focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+		invoiceDTO.getOtherCreditTextField().focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
 			//focus out
 			if (oldValue) {  // we have focused and unfocused
-				if(!isNumeric(fnode.getOtherCreditTextField().getText())) {
-					fnode.getOtherCreditTextField().setText("0.00");
+				if(!isNumeric(invoiceDTO.getOtherCreditTextField().getText())) {
+					invoiceDTO.getOtherCreditTextField().setText("0.00");
 				}
-				BigDecimal otherCredit = new BigDecimal(fnode.getOtherCreditTextField().getText());
-				fnode.getOtherCreditTextField().setText(String.valueOf(otherCredit.setScale(2, RoundingMode.HALF_UP)));
+				BigDecimal otherCredit = new BigDecimal(invoiceDTO.getOtherCreditTextField().getText());
+				invoiceDTO.getOtherCreditTextField().setText(String.valueOf(otherCredit.setScale(2, RoundingMode.HALF_UP)));
 				fiscals.get(rowIndex).setOther_credit(String.valueOf(otherCredit));
-				fnode.getOtherCreditTextField().setText(String.valueOf(otherCredit.setScale(2, RoundingMode.HALF_UP)));
+				invoiceDTO.getOtherCreditTextField().setText(String.valueOf(otherCredit.setScale(2, RoundingMode.HALF_UP)));
 				updateBalance();
 			}
 		});
 
-		fnode.getOtherCreditTextField().focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+		invoiceDTO.getOtherCreditTextField().focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
 			//focus out
 			if (oldValue) {  // we have focused and unfocused
-				if(!isNumeric(fnode.getOtherCreditTextField().getText())) {
-					fnode.getOtherCreditTextField().setText("0.00");
+				if(!isNumeric(invoiceDTO.getOtherCreditTextField().getText())) {
+					invoiceDTO.getOtherCreditTextField().setText("0.00");
 				}
-				BigDecimal otherCredit = new BigDecimal(fnode.getOtherCreditTextField().getText());
-//				updateItem(otherCredit.setScale(2, RoundingMode.HALF_UP), "other_credit");
-				fnode.getOtherCreditTextField().setText(String.valueOf(otherCredit.setScale(2, RoundingMode.HALF_UP)));
-				fnode.getOtherCreditText().setText(String.valueOf(otherCredit.setScale(2, RoundingMode.HALF_UP)));
+				BigDecimal otherCredit = new BigDecimal(invoiceDTO.getOtherCreditTextField().getText());
+				invoiceDTO.getOtherCreditTextField().setText(String.valueOf(otherCredit.setScale(2, RoundingMode.HALF_UP)));
+				invoiceDTO.getOtherCreditText().setText(String.valueOf(otherCredit.setScale(2, RoundingMode.HALF_UP)));
 				updateBalance();
 			}
 		});
 
-		fnode.getCommitButton().setOnAction((event) -> {
+		invoiceDTO.getCommitButton().setOnAction((event) -> {
 			if (!fiscals.get(rowIndex).isCommitted()) {
-				if (!fnode.getTotalBalanceText().getText().equals("0.00")) {
-					fnode.getTotalBalanceText().setStyle("-fx-background-color: #f23a50");
+				if (!invoiceDTO.getTotalBalanceText().getText().equals("0.00")) {
+					invoiceDTO.getTotalBalanceText().setStyle("-fx-background-color: #f23a50");
 					note.addMemoAndReturnId("Non-Zero Balance: ",date,fiscals.get(rowIndex).getMoney_id(),"B");
 				}
 				SqlUpdate.commitFiscalRecord(fiscals.get(rowIndex).getMoney_id(), true);// this could be placed in line above
-				SqlUpdate.updateMembershipId(fiscals.get(rowIndex).getMs_id(), fiscals.get(rowIndex).getFiscal_year(), fnode.getRenewCheckBox().isSelected());
+				SqlUpdate.updateMembershipId(fiscals.get(rowIndex).getMs_id(), fiscals.get(rowIndex).getFiscal_year(), invoiceDTO.getRenewCheckBox().isSelected());
 				fiscals.get(rowIndex).setCommitted(true);
 
 				// if we put an amount in other we need to make a note
@@ -442,17 +440,17 @@ public class HBoxInvoice extends HBox {
 			}
 		});
 
-		fnode.getWetslipTextFee().setOnMouseClicked(e -> {
-			fnode.getVboxWetSlipFee().getChildren().clear();
-			fnode.getVboxWetSlipFee().getChildren().add(fnode.getWetslipTextField());
+		invoiceDTO.getWetslipTextFee().setOnMouseClicked(e -> {
+			invoiceDTO.getVboxWetSlipFee().getChildren().clear();
+			invoiceDTO.getVboxWetSlipFee().getChildren().add(invoiceDTO.getWetslipTextField());
 		});
 
-		fnode.getWetslipTextFee().setFill(Color.BLUE);
-		fnode.getWetslipTextFee().setOnMouseEntered(en -> fnode.getWetslipTextFee().setFill(Color.RED));
-		fnode.getWetslipTextFee().setOnMouseExited(ex -> fnode.getWetslipTextFee().setFill(Color.BLUE));
+		invoiceDTO.getWetslipTextFee().setFill(Color.BLUE);
+		invoiceDTO.getWetslipTextFee().setOnMouseEntered(en -> invoiceDTO.getWetslipTextFee().setFill(Color.RED));
+		invoiceDTO.getWetslipTextFee().setOnMouseExited(ex -> invoiceDTO.getWetslipTextFee().setFill(Color.BLUE));
 
 		if (fiscals.get(rowIndex).isSupplemental()) { // have we already created a record for this year?
-			fnode.getDuesTextField().setEditable(true);
+			invoiceDTO.getDuesTextField().setEditable(true);
 			//duesTextField.setText("0");
 		} else {
 			if (hasOfficer) { // has officer and not
@@ -468,38 +466,38 @@ public class HBoxInvoice extends HBox {
 		}
 		updateBalance(); // updates and saves
 		//////////////// SETTING CONTENT //////////////
-		fnode.getDuesText().setText(String.valueOf(fiscals.get(rowIndex).getDues()));
-		fnode.getDuesTextField().setText(String.valueOf(fiscals.get(rowIndex).getDues()));
-		fnode.getYscTextField().setText(String.valueOf(fiscals.get(rowIndex).getYsc_donation()));
-		fnode.getOtherTextField().setText(String.valueOf(fiscals.get(rowIndex).getOther()));
-		fnode.getInitiationTextField().setText(String.valueOf(fiscals.get(rowIndex).getInitiation()));
-		fnode.getWetslipTextField().setText(String.valueOf(definedFees.getWet_slip()));
-		fnode.getOtherCreditTextField().setText(String.valueOf(fiscals.get(rowIndex).getOther_credit()));
-		fnode.getYspText().setText(fiscals.get(rowIndex).getYsc_donation());
-		fnode.getInitiationText().setText(fiscals.get(rowIndex).getInitiation());
-		fnode.getOtherFeeText().setText(fiscals.get(rowIndex).getOther());
-		fnode.getWorkCreditsText().setText(String.valueOf(countWorkCredits()));
-		fnode.getOtherCreditText().setText(fiscals.get(rowIndex).getOther_credit());
-		fnode.getTotalBalanceText().setText(fiscals.get(rowIndex).getCredit());
-		fnode.getTotalCreditText().setText(fiscals.get(rowIndex).getCredit());
-		fnode.getTotalPaymentText().setText(fiscals.get(rowIndex).getPaid());
-		fnode.getWetslipTextFee().setText(String.valueOf(definedFees.getWet_slip()));
-		fnode.getBeachText().setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getBeach()).multiply(definedFees.getBeach())));
+		invoiceDTO.getDuesText().setText(String.valueOf(fiscals.get(rowIndex).getDues()));
+		invoiceDTO.getDuesTextField().setText(String.valueOf(fiscals.get(rowIndex).getDues()));
+		invoiceDTO.getYscTextField().setText(String.valueOf(fiscals.get(rowIndex).getYsc_donation()));
+		invoiceDTO.getOtherTextField().setText(String.valueOf(fiscals.get(rowIndex).getOther()));
+		invoiceDTO.getInitiationTextField().setText(String.valueOf(fiscals.get(rowIndex).getInitiation()));
+		invoiceDTO.getWetslipTextField().setText(String.valueOf(definedFees.getWet_slip()));
+		invoiceDTO.getOtherCreditTextField().setText(String.valueOf(fiscals.get(rowIndex).getOther_credit()));
+		invoiceDTO.getYspText().setText(fiscals.get(rowIndex).getYsc_donation());
+		invoiceDTO.getInitiationText().setText(fiscals.get(rowIndex).getInitiation());
+		invoiceDTO.getOtherFeeText().setText(fiscals.get(rowIndex).getOther());
+		invoiceDTO.getWorkCreditsText().setText(String.valueOf(countWorkCredits()));
+		invoiceDTO.getOtherCreditText().setText(fiscals.get(rowIndex).getOther_credit());
+		invoiceDTO.getTotalBalanceText().setText(fiscals.get(rowIndex).getCredit());
+		invoiceDTO.getTotalCreditText().setText(fiscals.get(rowIndex).getCredit());
+		invoiceDTO.getTotalPaymentText().setText(fiscals.get(rowIndex).getPaid());
+		invoiceDTO.getWetslipTextFee().setText(String.valueOf(definedFees.getWet_slip()));
+		invoiceDTO.getBeachText().setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getBeach()).multiply(definedFees.getBeach())));
 
-		fnode.getKayakRackText().setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getKayac_rack()).multiply(definedFees.getKayak_rack())));
+		invoiceDTO.getKayakRackText().setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getKayac_rack()).multiply(definedFees.getKayak_rack())));
 
-		fnode.getKayakBeachRackText().setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getKayak_beach_rack()).multiply(definedFees.getKayak_beach_rack())));
+		invoiceDTO.getKayakBeachRackText().setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getKayak_beach_rack()).multiply(definedFees.getKayak_beach_rack())));
 
-		fnode.getKayakShedText().setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getKayac_shed()).multiply(definedFees.getKayak_shed())));
-		fnode.getSailLoftText().setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getSail_loft()).multiply(definedFees.getSail_loft())));
-		fnode.getSailSchoolLoftText().setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getSail_school_laser_loft()).multiply(definedFees.getSail_school_laser_loft())));
-		fnode.getWetSlipText().setText(fiscals.get(rowIndex).getWet_slip());
-		fnode.getWinterStorageText().setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getWinter_storage()).multiply(definedFees.getWinter_storage())));
-		fnode.getGateKeyText().setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getExtra_key()).multiply(definedFees.getMain_gate_key())));
-		fnode.getSailLKeyText().setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getSail_loft_key()).multiply(definedFees.getSail_loft_key())));
-		fnode.getKayakSKeyText().setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getKayac_shed_key()).multiply(definedFees.getKayak_shed_key())));
-		fnode.getSailSSLKeyText().setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getSail_school_loft_key()).multiply(definedFees.getSail_school_loft_key())));
-		fnode.getPositionCreditText().setText(fiscals.get(rowIndex).getOfficer_credit());
+		invoiceDTO.getKayakShedText().setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getKayac_shed()).multiply(definedFees.getKayak_shed())));
+		invoiceDTO.getSailLoftText().setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getSail_loft()).multiply(definedFees.getSail_loft())));
+		invoiceDTO.getSailSchoolLoftText().setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getSail_school_laser_loft()).multiply(definedFees.getSail_school_laser_loft())));
+		invoiceDTO.getWetSlipText().setText(fiscals.get(rowIndex).getWet_slip());
+		invoiceDTO.getWinterStorageText().setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getWinter_storage()).multiply(definedFees.getWinter_storage())));
+		invoiceDTO.getGateKeyText().setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getExtra_key()).multiply(definedFees.getMain_gate_key())));
+		invoiceDTO.getSailLKeyText().setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getSail_loft_key()).multiply(definedFees.getSail_loft_key())));
+		invoiceDTO.getKayakSKeyText().setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getKayac_shed_key()).multiply(definedFees.getKayak_shed_key())));
+		invoiceDTO.getSailSSLKeyText().setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getSail_school_loft_key()).multiply(definedFees.getSail_school_loft_key())));
+		invoiceDTO.getPositionCreditText().setText(fiscals.get(rowIndex).getOfficer_credit());
 
 
 		setEditable(!fiscals.get(rowIndex).isCommitted());
@@ -507,7 +505,7 @@ public class HBoxInvoice extends HBox {
 		updateBalance();
 
 		paymentTableView.getColumns().addAll(Arrays.asList(col1,col2,col3,col4));
-		scrollPane.setContent(fnode.getGridPane());
+		scrollPane.setContent(invoiceDTO.getGridPane());
 		mainVbox.getChildren().addAll(scrollPane);  // add error HBox in first
 		vboxGrey.getChildren().addAll(mainVbox);
 		getChildren().addAll(vboxGrey);
@@ -563,17 +561,17 @@ public class HBoxInvoice extends HBox {
 	}
 	
 	private void setEditable(boolean isEditable) {
-		fnode.clearGridPane();
+		invoiceDTO.clearGridPane();
 		if(isEditable)  {
-			fnode.populateUncommitted();
-			fnode.getCommitButton().setText("Commit");
-			fnode.getVboxCommitButton().getChildren().clear();
-			fnode.getVboxCommitButton().getChildren().addAll(fnode.getRenewCheckBox(),fnode.getCommitButton());
+			invoiceDTO.populateUncommitted();
+			invoiceDTO.getCommitButton().setText("Commit");
+			invoiceDTO.getVboxCommitButton().getChildren().clear();
+			invoiceDTO.getVboxCommitButton().getChildren().addAll(invoiceDTO.getRenewCheckBox(), invoiceDTO.getCommitButton());
 		} else {
-			fnode.populateCommitted();
-			fnode.getCommitButton().setText("Edit");
-			fnode.getVboxCommitButton().getChildren().clear();
-			fnode.getVboxCommitButton().getChildren().add(fnode.getCommitButton());
+			invoiceDTO.populateCommitted();
+			invoiceDTO.getCommitButton().setText("Edit");
+			invoiceDTO.getVboxCommitButton().getChildren().clear();
+			invoiceDTO.getVboxCommitButton().getChildren().add(invoiceDTO.getCommitButton());
 		}
 		System.out.println("setting committed");
 	}
@@ -582,15 +580,15 @@ public class HBoxInvoice extends HBox {
 		  // updates total to the selected money object
 		  fiscals.get(rowIndex).setTotal(String.valueOf(updateTotalFeeField()));
 		  // updates gui with the newly calculated total
-		  fnode.getTotalFeesText().setText(String.valueOf(fiscals.get(rowIndex).getTotal()));
+		  invoiceDTO.getTotalFeesText().setText(String.valueOf(fiscals.get(rowIndex).getTotal()));
 		  // updates credit to the selected money object
 		  fiscals.get(rowIndex).setCredit(String.valueOf(countTotalCredit()));
 		  // updates gui with the newly calculated credit
-		  fnode.getTotalCreditText().setText(fiscals.get(rowIndex).getCredit());
+		  invoiceDTO.getTotalCreditText().setText(fiscals.get(rowIndex).getCredit());
 		  // updates balance to the selected money object
 		  fiscals.get(rowIndex).setBalance(String.valueOf(getBalance()));
 		  // updates gui with the newly calculated balance
-		  fnode.getTotalBalanceText().setText(fiscals.get(rowIndex).getBalance());
+		  invoiceDTO.getTotalBalanceText().setText(fiscals.get(rowIndex).getBalance());
 		  // updates sql using selected money object
 		  SqlUpdate.updateMoney(fiscals.get(rowIndex));  // saves to database
 	}

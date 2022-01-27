@@ -3,19 +3,7 @@ package com.ecsail.main;
 import com.ecsail.gui.boxes.HBoxWelcome;
 import com.ecsail.gui.dialogues.Dialogue_EnvelopePDF;
 import com.ecsail.gui.dialogues.Dialogue_RenewalForm;
-import com.ecsail.gui.tabs.TabRoster;
-import com.ecsail.gui.tabs.TabDeposits;
-import com.ecsail.gui.tabs.TabLogin;
-import com.ecsail.gui.tabs.TabBoardMembers;
-import com.ecsail.gui.tabs.TabBoatView;
-import com.ecsail.gui.tabs.TabBoats;
-import com.ecsail.gui.tabs.TabDefinedFee;
-import com.ecsail.gui.tabs.TabMembership;
-import com.ecsail.gui.tabs.TabNotes;
-import com.ecsail.gui.tabs.TabPeople;
-import com.ecsail.gui.tabs.TabSlips;
-import com.ecsail.gui.tabs.TabStub;
-import com.ecsail.gui.tabs.TabWelcome;
+import com.ecsail.gui.tabs.*;
 import com.ecsail.pdf.PDF_BoatReport;
 import com.ecsail.sql.select.SqlMembershipList;
 import com.ecsail.sql.select.SqlMembership_Id;
@@ -58,8 +46,12 @@ static TabPane tabPane;
 	}
 	
 	public static void openFeeTab() {
-		System.out.println("this is the defined fee tab");
 		tabPane.getTabs().add(new TabDefinedFee("Fees"));
+		tabPane.getSelectionModel().select(getTabIndex("Fees"));
+	}
+
+	public static void openFeeTab2() {
+		tabPane.getTabs().add(new TabFee("Fees"));
 		tabPane.getSelectionModel().select(getTabIndex("Fees"));
 	}
 	

@@ -36,6 +36,7 @@ public class VBoxToolBar extends VBox {
 		MenuItem m3_1 = new MenuItem("New Membership");
 		MenuItem m3_2 = new MenuItem("New Year Generator");
 		MenuItem m3_4 = new MenuItem("Fees");
+		MenuItem m3_4b = new MenuItem("Fees (experimental)");
 		MenuItem m3_5 = new MenuItem("Membership by MSID");
 		
 		
@@ -87,6 +88,7 @@ public class VBoxToolBar extends VBox {
             	new Dialogue_NewYearGenerator();
             });
         m3_4.setOnAction((event) -> Launcher.openFeeTab());
+		m3_4b.setOnAction((event) -> Launcher.openFeeTab2());
 		m3_5.setOnAction((event) -> new Dialogue_Msid());
         
         m1_2.setOnAction((event) ->  {
@@ -107,7 +109,7 @@ public class VBoxToolBar extends VBox {
         m4_1.getItems().addAll(m4_1_1,m4_1_2,m4_1_3,m4_1_4,m4_1_5,m4_1_6,m4_1_8,m4_1_9,m4_1_10);
         m3_3.getItems().addAll(m3_3_1,m3_3_2,m3_3_3,m3_3_4,m3_3_5,m3_3_6);  // add list items
         menu1.getItems().addAll(m1_1,m1_2,m1_3,m1_4);
-        menu3.getItems().addAll(m3_1,m3_2,m3_3,m3_4,m3_5);
+        menu3.getItems().addAll(m3_1,m3_2,m3_3,m3_4,m3_4b,m3_5);
         menu4.getItems().add(m4_1);
 
         menuBar.getMenus().addAll(menu1,menu2,menu3,menu4,menu5);
