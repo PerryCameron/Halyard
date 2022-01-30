@@ -11,6 +11,7 @@ import com.ecsail.structures.MemoDTO;
 
 public class SqlDelete {
 
+
 	public static boolean deleteStatistics() {
 	    boolean noError = false;
     	Statement stmt;
@@ -35,6 +36,16 @@ public class SqlDelete {
 				new Dialogue_ErrorSQL(e,"Unable to Delete","See below for details");
 			}
 	    return noError;
+	}
+
+	public static void deleteFee(FeeDTO f) {
+		Statement stmt;
+		try {
+			stmt = ConnectDatabase.sqlConnection.createStatement();
+			stmt.execute(Main.console.setRegexColor("delete from fee where fee_id='" + f.getFeeId() + "';"));
+		} catch (SQLException e) {
+			new Dialogue_ErrorSQL(e,"Unable to Delete","See below for details");
+		}
 	}
 	
 	public static boolean deletePhone(PhoneDTO phone) {

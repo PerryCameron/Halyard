@@ -3,9 +3,9 @@ package com.ecsail.datacheck;
 import java.math.BigDecimal;
 
 
-public class BigDecimalCheck {
+public class NumberCheck {
 
-    public BigDecimalCheck() {
+    public NumberCheck() {
     }
 
     public BigDecimal StringToBigDecimal(String number) {
