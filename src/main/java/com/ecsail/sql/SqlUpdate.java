@@ -551,6 +551,22 @@ public class SqlUpdate {
 		return noError;
 	}
 
+	public static void updateFeeRecord(FeeDTO feeDTO) {
+		try {
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
+			stmt.execute(Main.console.setRegexColor("UPDATE fee SET FIELD_NAME='" + feeDTO.getFieldName()
+					+ "', FIELD_VALUE=" + feeDTO.getFieldValue()
+					+ ", FIELD_QTY=" + feeDTO.getFieldQuantity()
+					+ ", FEE_YEAR=" + feeDTO.getFeeYear()
+					+ ", DESCRIPTION='" + feeDTO.getDescription()
+					+ "' WHERE FEE_ID=" + feeDTO.getFeeId()));
+			Main.edits.setIdEdits(Main.edits.getIdEdits() + 1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+//			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
+		}
+	}
+
 
 	public static void updateDefinedFeeRecord(DefinedFeeDTO d) {
 		String query;

@@ -252,4 +252,15 @@ e.printStackTrace();
 			new Dialogue_ErrorSQL(e,"Unable to create new row","See below for details");
 		}
 	}
+
+	public static void addNewFee(FeeDTO feeDTO) {
+		try {
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
+			stmt.execute(Main.console.setRegexColor("INSERT INTO fee () VALUES (" + feeDTO.getFeeId() + ",'" + feeDTO.getFieldName() + "'," + feeDTO.getFieldValue()
+					+ "," + feeDTO.getFieldQuantity() + "," + feeDTO.getFeeYear() + ",'" + feeDTO.getDescription() + "')"));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			new Dialogue_ErrorSQL(e,"Unable to create new row","See below for details");
+		}
+	}
 }

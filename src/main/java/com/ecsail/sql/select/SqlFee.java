@@ -25,7 +25,7 @@ public class SqlFee {
                             rs.getBigDecimal("FIELD_VALUE"),
                             rs.getInt("FIELD_QTY"),
                             rs.getInt("FEE_YEAR"),
-                            rs.getString("FEE_DESCRIPTION")
+                            rs.getString("DESCRIPTION")
                     ));
                 }
             } catch (SQLException e) {

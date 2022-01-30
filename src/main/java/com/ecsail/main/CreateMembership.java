@@ -33,10 +33,10 @@ public class CreateMembership {
 		// makes sure we don't have a New Membership tab open
 		if (!Launcher.tabOpen("New Membership")) {
 			// int ms_id = SqlSelect.getMSIDCount() + 1;
-			int ms_id = SqlSelect.getCount("membership", "ms_id") + 1;
+			int ms_id = SqlSelect.getNextAvailablePrimaryKey("membership", "ms_id") + 1;
 			// int membership_id = SqlSelect.getMembershipIDCount() +1;
 			int membership_id = SqlMembership_Id.getHighestMembershipId(HalyardPaths.getYear()) + 1;
-			int mid = SqlSelect.getCount("membership_id", "mid") + 1;
+			int mid = SqlSelect.getNextAvailablePrimaryKey("membership_id", "mid") + 1;
 
 			int pid = SqlPerson.getCount() + 1;
 			Note newMemNote = new Note();

@@ -304,7 +304,7 @@ public class Dialogue_NewYearGenerator extends Stage {
 	
 	private void createNewNumbers() {
 		int count = 1;
-		int mid = SqlSelect.getCount("membership_id", "mid") + 1;
+		int mid = SqlSelect.getNextAvailablePrimaryKey("membership_id", "mid") + 1;
 		Collections.sort(memberships, Comparator.comparing(MembershipListDTO::getMembershipId));
 		for (MembershipListDTO ml : memberships) {
 			if(!SqlExists.memberShipIdExists(ml.getMsid(), String.valueOf(selectedYear))) {
@@ -321,7 +321,7 @@ public class Dialogue_NewYearGenerator extends Stage {
 	
 	private void createOldNumbers() {
 		System.out.println("memberships size= " + memberships.size());
-		int mid = SqlSelect.getCount("membership_id", "mid") + 1;
+		int mid = SqlSelect.getNextAvailablePrimaryKey("membership_id", "mid") + 1;
 		Collections.sort(memberships, Comparator.comparing(MembershipListDTO::getMembershipId));
 		for (MembershipListDTO ml : memberships) {
 			if (!SqlExists.memberShipIdExists(ml.getMsid(), String.valueOf(selectedYear))) {

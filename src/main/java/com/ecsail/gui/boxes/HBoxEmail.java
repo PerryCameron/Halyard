@@ -181,7 +181,7 @@ public class HBoxEmail extends HBox {
 
 	        emailAdd.setOnAction((event) -> {
 				// get the next available primary key for table email
-				int email_id = SqlSelect.getCount("email","email_id") + 1; // gets last memo_id number
+				int email_id = SqlSelect.getNextAvailablePrimaryKey("email","email_id") + 1; // gets last memo_id number
 				// add record to SQL and return sucess or not
 				if(SqlInsert.addEmailRecord(email_id,person.getP_id(),true,"new email",true))
 					// if we have added it to SQL we need to create a new row in tableview to match

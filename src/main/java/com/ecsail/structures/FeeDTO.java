@@ -4,26 +4,18 @@ import java.math.BigDecimal;
 
 public class FeeDTO {
     private int feeId;
-    private String feeName;
-    private BigDecimal feeValue;
-    private int feeQuantity;
+    private String fieldName;
+    private BigDecimal fieldValue;
+    private int fieldQuantity;
     private int feeYear;
     private String description;
 
-    public FeeDTO(int feeId, String feeName, BigDecimal feeValue, int feeQuantity, int feeYear, String description) {
+    public FeeDTO(int feeId, String fieldName, BigDecimal fieldValue, int fieldQuantity, int feeYear, String description) {
         this.feeId = feeId;
-        this.feeName = feeName;
-        this.feeValue = feeValue;
-        this.feeQuantity = feeQuantity;
+        this.fieldName = fieldName;
+        this.fieldValue = fieldValue;
+        this.fieldQuantity = fieldQuantity;
         this.feeYear = feeYear;
-        this.description = description;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
         this.description = description;
     }
 
@@ -35,28 +27,28 @@ public class FeeDTO {
         this.feeId = feeId;
     }
 
-    public String getFeeName() {
-        return feeName;
+    public String getFieldName() {
+        return fieldName;
     }
 
-    public void setFeeName(String feeName) {
-        this.feeName = feeName;
+    public void setFieldName(String fieldName) {
+        this.fieldName = fieldName;
     }
 
-    public BigDecimal getFeeValue() {
-        return feeValue;
+    public BigDecimal getFieldValue() {
+        return fieldValue;
     }
 
-    public void setFeeValue(BigDecimal feeValue) {
-        this.feeValue = feeValue;
+    public void setFieldValue(BigDecimal fieldValue) {
+        this.fieldValue = fieldValue;
     }
 
-    public int getFeeQuantity() {
-        return feeQuantity;
+    public int getFieldQuantity() {
+        return fieldQuantity;
     }
 
-    public void setFeeQuantity(int feeQuantity) {
-        this.feeQuantity = feeQuantity;
+    public void setFieldQuantity(int fieldQuantity) {
+        this.fieldQuantity = fieldQuantity;
     }
 
     public int getFeeYear() {
@@ -65,5 +57,13 @@ public class FeeDTO {
 
     public void setFeeYear(int feeYear) {
         this.feeYear = feeYear;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

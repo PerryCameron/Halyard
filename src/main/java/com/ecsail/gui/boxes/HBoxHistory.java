@@ -274,7 +274,7 @@ public class HBoxHistory extends HBox {
 
 		idAdd.setOnAction((event) -> {
 			// gets next available id for membership_id table
-			int mid = SqlSelect.getCount("membership_id", "mid") + 1; // get last mid number add 1
+			int mid = SqlSelect.getNextAvailablePrimaryKey("membership_id", "mid") + 1; // get last mid number add 1
 			//	if tuple of year=0 and memId=0 exists anywhere in SQL not belonging to this membership then delete it
 			if(SqlExists.membershipIdBlankRowExists(String.valueOf(membership.getMsid())))
 				SqlDelete.deleteBlankMembershipIdRow();

@@ -9,7 +9,7 @@ import java.sql.Statement;
 
 public class SqlSelect {
 
-	public static int getCount(String table, String column) {  // example-> "email","email_id"
+	public static int getNextAvailablePrimaryKey(String table, String column) {  // example-> "email","email_id"
 		int result = 0;
 		Statement stmt;
 		try {

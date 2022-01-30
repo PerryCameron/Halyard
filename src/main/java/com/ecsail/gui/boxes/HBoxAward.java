@@ -133,7 +133,7 @@ public class HBoxAward extends HBox {
 	    	    
 	        awardAdd.setOnAction((event) -> {
 				// get next primary key for awards table
-				int awards_id = SqlSelect.getCount("awards","award_id") + 1; // gets last memo_id number
+				int awards_id = SqlSelect.getNextAvailablePrimaryKey("awards","award_id") + 1; // gets last memo_id number
 				// Create new award object
 				AwardDTO a = new AwardDTO(awards_id,person.getP_id(),currentYear,"New Award");
 				// Add info from award object to SQL database
