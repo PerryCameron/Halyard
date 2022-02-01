@@ -46,6 +46,13 @@ Everything about a membership can be viewed and edited from this screen for ease
 
 Slips can be easily viewed.  PDF creation of slips are also just a button click away.
 
+## Fees Page
+<p>
+    <img src="https://raw.githubusercontent.com/PerryCameron/ECSC/master/src/main/resources/screenshots/Fee_SS.png"  />
+</p>
+
+Fees and credits can be defined for each year here.
+
 ## Local or cloud based login
 <p>
     <img src="https://raw.githubusercontent.com/PerryCameron/ECSC/master/src/main/resources/screenshots/Login_SS.png"  />

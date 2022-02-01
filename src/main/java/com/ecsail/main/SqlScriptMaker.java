@@ -36,6 +36,7 @@ public class SqlScriptMaker {
 	static ArrayList<WaitListDTO> waitlist;
 	static ArrayList<AwardDTO>awards;
 	static ArrayList<HashDTO>hash;
+	static ArrayList<FeeDTO>fees;
 	
 	private static final int ALL = 0;
 	
@@ -65,6 +66,7 @@ public class SqlScriptMaker {
 		waitlist = SqlWaitList.getWaitLists();
 		awards = SqlAward.getAwards();
 		hash = HashSeSQL.getAllHash();
+		fees = SqlFee.getAllFees();
 		HalyardPaths.checkPath(HalyardPaths.SQLBACKUP + "/" + HalyardPaths.getYear());
 		readFromFile(HalyardPaths.SQLBACKUP + "/ecsc_create.sql");
 		calculateSums();
@@ -115,6 +117,8 @@ public class SqlScriptMaker {
 				writer.write(getAwardsString(oa));
 			for (HashDTO hd: hash)
 				writer.write(getHashString(hd));
+			for (FeeDTO fe: fees)
+				writer.write(getFeeString(fe));
 
 			clearMemory();
 			writer.close();
@@ -123,9 +127,6 @@ public class SqlScriptMaker {
 			e.printStackTrace();
 		}
 	}
-
-
-
 
 	public static void clearMemory() {
 		tableCreation.clear();
@@ -182,6 +183,17 @@ public class SqlScriptMaker {
 		newTupleCount.setDefinedFeesSize(definedfees.size());
 	//	System.out.println(workcredits.size() + " workcredits written");
 		newTupleCount.setWorkCreditsSize(workcredits.size());
+	}
+
+	private static String getFeeString(FeeDTO fe) {
+		return
+		"INSERT INTO fee () VALUES("
+		+ fe.getFeeId() + ","
+		+ getCorrectString(fe.getFieldName()) + ","
+		+ fe.getFieldValue() + ","
+		+ fe.getFieldQuantity() + ","
+		+ fe.getFeeYear() + ","
+		+ getCorrectString(fe.getDescription()) + ");\n";
 	}
 
 	private static String getHashString(HashDTO hd) {
