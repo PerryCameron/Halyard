@@ -248,12 +248,15 @@ public class PDF_DepositReport {
 			addItemRow(detailTable, "Total Due", total.subtract(credit), 0);
 			// prints row of amount paid
 			addItemPaidRow(detailTable, paid);
+			// will never get used because our treasurer is a nut
 			if (balance.compareTo(BigDecimal.ZERO) != 0) {
 				addBalanceRow(detailTable, balance, 0);
 				addNoteRow(detailTable, "Balance: ",getNote(dues,"B"));
 			}
 			if (other.compareTo(BigDecimal.ZERO) != 0)
-				addNoteRow(detailTable, "Other: ",getNote(dues,"O"));
+				addNoteRow(detailTable, " ",getNote(dues,"O"));
+			if (SqlExists.memoExists(dues.getMoney_id(), "I"))
+				addNoteRow(detailTable, " ",getNote(dues,"I"));
 		}
 		return detailTable;
 	}
@@ -276,11 +279,11 @@ public class PDF_DepositReport {
 		detailTable.addCell(cell);
 	}
 
-	private String getNote(PaidDuesDTO dues, String catagory) {
+	private String getNote(PaidDuesDTO dues, String category) {
 		String thisMemo;
 		// make sure the memo exists
-		if(SqlExists.memoExists(dues.getMoney_id())) {
-		thisMemo = SqlMemos.getMemos(dues, catagory).getMemo();
+		if(SqlExists.memoExists(dues.getMoney_id(), category)) {
+		thisMemo = SqlMemos.getMemos(dues, category).getMemo();
 		} else {
 		thisMemo = "No note for this entry";
 		}
@@ -621,7 +624,6 @@ public class PDF_DepositReport {
 	}
 	
 	public static byte[] toByteArray(InputStream in)  { // for taking inputStream and returning byte array
-		// InputStream is = new BufferedInputStream(System.in);
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		byte[] buffer = new byte[1024];
 		int len;

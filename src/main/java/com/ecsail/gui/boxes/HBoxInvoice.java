@@ -177,6 +177,10 @@ public class HBoxInvoice extends HBox {
 		paymentTableView.setEditable(!fiscals.get(rowIndex).isCommitted());
 
 		//////////////// LISTENER //////////////////
+		invoiceDTO.getButtonAddNote().setOnAction(e -> {
+			note.addMemoAndReturnId("Invoice Note: ",date,fiscals.get(rowIndex).getMoney_id(),"I");
+		});
+
 		invoiceDTO.getButtonAdd().setOnAction(e -> {
 			int pay_id = SqlPayment.getNumberOfPayments() + 1; // get last pay_id number
 			payments.add(new PaymentDTO(pay_id,fiscals.get(rowIndex).getMoney_id(),null,"CH",date, "0",1)); // let's add it to our GUI
@@ -428,8 +432,9 @@ public class HBoxInvoice extends HBox {
 
 				// if we put an amount in other we need to make a note
 				if(new BigDecimal(fiscals.get(rowIndex).getOther()).compareTo(BigDecimal.ZERO) != 0) {
+					System.out.println("Found an other field");
 					// make sure the memo doesn't already exist
-					if(!SqlExists.memoExists(fiscals.get(rowIndex).getMoney_id()))
+					if(!SqlExists.memoExists(fiscals.get(rowIndex).getMoney_id(), "O"))
 						note.addMemoAndReturnId("Other expense: ",date,fiscals.get(rowIndex).getMoney_id(),"O");
 				}
 				setEditable(false);
@@ -483,11 +488,8 @@ public class HBoxInvoice extends HBox {
 		invoiceDTO.getTotalPaymentText().setText(fiscals.get(rowIndex).getPaid());
 		invoiceDTO.getWetslipTextFee().setText(String.valueOf(definedFees.getWet_slip()));
 		invoiceDTO.getBeachText().setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getBeach()).multiply(definedFees.getBeach())));
-
 		invoiceDTO.getKayakRackText().setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getKayac_rack()).multiply(definedFees.getKayak_rack())));
-
 		invoiceDTO.getKayakBeachRackText().setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getKayak_beach_rack()).multiply(definedFees.getKayak_beach_rack())));
-
 		invoiceDTO.getKayakShedText().setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getKayac_shed()).multiply(definedFees.getKayak_shed())));
 		invoiceDTO.getSailLoftText().setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getSail_loft()).multiply(definedFees.getSail_loft())));
 		invoiceDTO.getSailSchoolLoftText().setText(String.valueOf(BigDecimal.valueOf(fiscals.get(rowIndex).getSail_school_laser_loft()).multiply(definedFees.getSail_school_laser_loft())));
@@ -571,7 +573,7 @@ public class HBoxInvoice extends HBox {
 			invoiceDTO.populateCommitted();
 			invoiceDTO.getCommitButton().setText("Edit");
 			invoiceDTO.getVboxCommitButton().getChildren().clear();
-			invoiceDTO.getVboxCommitButton().getChildren().add(invoiceDTO.getCommitButton());
+			invoiceDTO.getVboxCommitButton().getChildren().addAll(invoiceDTO.getCommitButton(),invoiceDTO.getButtonAddNote());
 		}
 		System.out.println("setting committed");
 	}
@@ -679,5 +681,4 @@ public class HBoxInvoice extends HBox {
 		col.setCellFactory(column -> EditCell.createStringEditCell());
 		return col ;
 	}
-	
 }

@@ -59,13 +59,13 @@ public class SqlExists {
 		return answer;
 	}
 	
-	public static Boolean memoExists(int money_id) {
+	public static Boolean memoExists(int money_id, String category) {
 		boolean answer = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT EXISTS(SELECT * FROM memo WHERE MONEY_ID=" + money_id + ");"));
+			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT EXISTS(SELECT * FROM memo WHERE CATEGORY='" + category + "' and MONEY_ID=" + money_id + ") AS memoExists"));
 			rs.next();
-		    answer = rs.getBoolean("EXISTS(SELECT * FROM memo WHERE MONEY_ID=" + money_id + ")");
+		    answer = rs.getBoolean("memoExists");
 		} catch (SQLException e) {
 			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
 		}

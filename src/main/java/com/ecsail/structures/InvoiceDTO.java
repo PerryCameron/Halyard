@@ -112,6 +112,7 @@ public class InvoiceDTO {
     private Button buttonAdd;
     private Button buttonDelete;
     private Button commitButton;
+    private Button buttonAddNote;
     private CheckBox renewCheckBox;
     private ComboBox<Integer> comboBox;
 
@@ -128,6 +129,7 @@ public class InvoiceDTO {
         this.buttonAdd = new Button("Add");
         this.buttonDelete = new Button("Delete");
         this.commitButton = new Button("Commit");
+        this.buttonAddNote = new Button("Add Note");
         this.renewCheckBox = new CheckBox("Renew");
         this.definedFees = definedFees;
         this.gridPane = new GridPane();
@@ -271,6 +273,7 @@ public class InvoiceDTO {
 
         renewCheckBox.setSelected(true);
         buttonAdd.setPrefWidth(60);
+
         buttonDelete.setPrefWidth(60);
 
         vboxDues.getChildren().add(duesText);
@@ -1112,6 +1115,14 @@ public class InvoiceDTO {
 
     public void setVboxBeachKayakFee(VBox vboxBeachKayakFee) {
         this.vboxBeachKayakFee = vboxBeachKayakFee;
+    }
+
+    public Button getButtonAddNote() {
+        return buttonAddNote;
+    }
+
+    public void setButtonAddNote(Button buttonAddNote) {
+        this.buttonAddNote = buttonAddNote;
     }
 
     public static <T, E, F> int addCommittedRow(int row, GridPane gridPane, T name, E quantity, F total ) {
