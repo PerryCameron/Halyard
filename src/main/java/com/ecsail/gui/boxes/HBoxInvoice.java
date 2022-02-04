@@ -573,7 +573,10 @@ public class HBoxInvoice extends HBox {
 			invoiceDTO.populateCommitted();
 			invoiceDTO.getCommitButton().setText("Edit");
 			invoiceDTO.getVboxCommitButton().getChildren().clear();
-			invoiceDTO.getVboxCommitButton().getChildren().addAll(invoiceDTO.getCommitButton(),invoiceDTO.getButtonAddNote());
+			HBox hboxButtons = new HBox();
+			hboxButtons.setSpacing(5);
+			hboxButtons.getChildren().addAll(invoiceDTO.getButtonAddNote(), invoiceDTO.getCommitButton());
+			invoiceDTO.getVboxCommitButton().getChildren().addAll(hboxButtons);
 		}
 		System.out.println("setting committed");
 	}
@@ -659,8 +662,6 @@ public class HBoxInvoice extends HBox {
 			// if the primary or secondary member is an officer this flags true
 			if(isOfficer) {
 				finalResult = true;
-				// store the member who is an officer in DTO
-//				this.officer = SqlOfficer.getOfficer(per.getP_id(),fiscals.get(rowIndex).getFiscal_year()); // don't think we need this
 			}
 		}
 		return finalResult;
