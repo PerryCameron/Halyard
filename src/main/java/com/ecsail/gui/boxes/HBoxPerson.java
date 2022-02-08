@@ -33,11 +33,10 @@ import javafx.scene.layout.VBox;
 
 
 public class HBoxPerson extends HBox {
-	private PersonDTO person;
-	private MembershipListDTO membership;
-	private ObservableList<PersonDTO> people;  // this is only for updating people list when in people list mode
-	private ImageView photo;
-	
+	private final PersonDTO person;
+	private final MembershipListDTO membership;
+	private final ObservableList<PersonDTO> people;  // this is only for updating people list when in people list mode
+
 	public HBoxPerson(PersonDTO p, MembershipListDTO me, TabPane personTabPane) {
 		this.person = p;
 		this.membership = me;
@@ -47,8 +46,8 @@ public class HBoxPerson extends HBox {
 		} else {
 			this.people = null;
 		}
-		
-		this.photo = getMemberPhoto();
+
+		ImageView photo = getMemberPhoto();
 		///////////// OBJECTS /////////////////
 		
 		VBox vboxGrey = new VBox();  // this is the vbox for organizing all the widgets
@@ -167,9 +166,7 @@ public class HBoxPerson extends HBox {
 		this.setId("box-blue");
 		vboxGrey.setId("box-grey");
 
-		if(person.getBirthday() == null) {
-			// do nothing because why not?
-		} else {
+		if(person.getBirthday() != null) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		LocalDate date = LocalDate.parse(person.getBirthday(), formatter);
 		birthdayDatePicker.setValue(date);
@@ -233,20 +230,14 @@ public class HBoxPerson extends HBox {
 			}
 		});
 		
-		photo.setOnMouseExited(ex -> {
-			hboxPictureFrame.setStyle("-fx-background-color: #9fc0c7;");
-		});
+		photo.setOnMouseExited(ex -> hboxPictureFrame.setStyle("-fx-background-color: #9fc0c7;"));
 		
-		photo.setOnMouseEntered(en -> {
-			hboxPictureFrame.setStyle("-fx-background-color: #201ac9;");
-		});
+		photo.setOnMouseEntered(en -> hboxPictureFrame.setStyle("-fx-background-color: #201ac9;"));
 
-		EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent e) {
-				// get the date picker value
-				LocalDate i = birthdayDatePicker.getValue();
-					SqlUpdate.updateBirthday(i, person);
-			}
+		EventHandler<ActionEvent> event = e -> {
+			// get the date picker value
+			LocalDate i = birthdayDatePicker.getValue();
+				SqlUpdate.updateBirthday(i, person);
 		};
 		
 		birthdayDatePicker.setOnAction(event);
@@ -293,8 +284,7 @@ public class HBoxPerson extends HBox {
 	
 	private ImageView getMemberPhoto() {
 		Image memberPhoto = new Image(getClass().getResourceAsStream(HalyardPaths.DEFAULTPHOTO));
-		ImageView photo = new ImageView(memberPhoto);
-		return photo;
+		return new ImageView(memberPhoto);
 	}
 	
 }  // class end
