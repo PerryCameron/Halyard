@@ -147,14 +147,12 @@ public class HBoxAward extends HBox {
 				awardTableView.edit(0, Col1);
 	        });
 	        
-	        awardDelete.setOnAction(new EventHandler<ActionEvent>() {
-	            @Override public void handle(ActionEvent e) {
-	            	int selectedIndex = awardTableView.getSelectionModel().getSelectedIndex();
-	            	if(selectedIndex >= 0)
-						if(SqlDelete.deleteAward(award.get(selectedIndex)))
-							awardTableView.getItems().remove(selectedIndex);
-	            }
-	        });
+	        awardDelete.setOnAction(e -> {
+				int selectedIndex = awardTableView.getSelectionModel().getSelectedIndex();
+				if(selectedIndex >= 0)
+					if(SqlDelete.deleteAward(award.get(selectedIndex)))
+						awardTableView.getItems().remove(selectedIndex);
+			});
 	        
 	        /////////////////// SET CONTENT //////////////////
 	        
