@@ -1,56 +1,41 @@
 package com.ecsail.gui.boxes;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.function.Function;
-
 import com.ecsail.main.EditCell;
 import com.ecsail.sql.SqlDelete;
 import com.ecsail.sql.SqlInsert;
+import com.ecsail.sql.SqlUpdate;
 import com.ecsail.sql.select.SqlEmail;
 import com.ecsail.sql.select.SqlSelect;
-import com.ecsail.sql.SqlUpdate;
 import com.ecsail.structures.EmailDTO;
 import com.ecsail.structures.PersonDTO;
-
 import javafx.beans.Observable;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.StringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TableColumn.CellDataFeatures;
-import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.util.Callback;
+
+import java.util.Comparator;
+import java.util.function.Function;
 
 public class HBoxEmail extends HBox {
 	
-	private PersonDTO person;
-	private ObservableList<EmailDTO> email;
-	private TableView<EmailDTO> emailTableView;
+	private final PersonDTO person;
+	private final ObservableList<EmailDTO> email;
+	private final TableView<EmailDTO> emailTableView;
 	
 	@SuppressWarnings("unchecked")
 	public HBoxEmail(PersonDTO p) {
 		this.person = p;
-		this.email =  FXCollections.observableArrayList(new Callback<EmailDTO, Observable[]>() {
-			@Override
-			public Observable[] call(EmailDTO param) {
-				return new Observable[] { param.isPrimaryUseProperty() };
-				
-			}
-		});
+		this.email =  FXCollections.observableArrayList(param -> new Observable[] { param.isPrimaryUseProperty() });
 		this.email.addAll(SqlEmail.getEmail(person.getP_id()));
 		
 		//////////////// OBJECTS //////////////////////
@@ -58,9 +43,9 @@ public class HBoxEmail extends HBox {
 		Button emailAdd = new Button("Add");
 		Button emailDelete = new Button("Delete");
 		VBox vboxButtons = new VBox(); // holds email buttons
-		HBox hboxGrey = new HBox(); // this is here for the grey background to make nice apperence
+		HBox hboxGrey = new HBox(); // this is here for the grey background to make nice appearance
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
-		emailTableView = new TableView<EmailDTO>();
+		emailTableView = new TableView<>();
 
 		/////////////////  ATTRIBUTES  /////////////////////
 		emailAdd.setPrefWidth(60);
@@ -80,7 +65,7 @@ public class HBoxEmail extends HBox {
 		this.setId("box-blue");		
 		
 		hboxGrey.setPadding(new Insets(5,5,5,5));  // spacing around table and buttons
-		vboxPink.setPadding(new Insets(2,2,2,2)); // spacing to make pink fram around table
+		vboxPink.setPadding(new Insets(2,2,2,2)); // spacing to make pink frame around table
 
 		
 		///////////////// TABLE VIEW ///////////////////////
@@ -93,84 +78,59 @@ public class HBoxEmail extends HBox {
 			
 			TableColumn<EmailDTO, String> Col1 = createColumn("Email", EmailDTO::emailProperty);
 			Col1.setPrefWidth(137);
-			Col1.setOnEditCommit(new EventHandler<CellEditEvent<EmailDTO, String>>() {
-				@Override
-				public void handle(CellEditEvent<EmailDTO, String> t) {
-					((EmailDTO) t.getTableView().getItems().get(t.getTablePosition().getRow()))
-							.setEmail(t.getNewValue());
-					int email_id = ((EmailDTO) t.getTableView().getItems().get(t.getTablePosition().getRow()))
-							.getEmail_id();
-					SqlUpdate.updateEmail(email_id, t.getNewValue());
-				}
+			Col1.setOnEditCommit(t -> {
+				t.getTableView().getItems().get(t.getTablePosition().getRow())
+						.setEmail(t.getNewValue());
+				int email_id = t.getTableView().getItems().get(t.getTablePosition().getRow())
+						.getEmail_id();
+				SqlUpdate.updateEmail(email_id, t.getNewValue());
 			});
 			
 			// example for this column found at https://o7planning.org/en/11079/javafx-tableview-tutorial
-			TableColumn<EmailDTO, Boolean> Col2 = new TableColumn<EmailDTO, Boolean>("Primary");
-			Col2.setCellValueFactory(new Callback<CellDataFeatures<EmailDTO, Boolean>, ObservableValue<Boolean>>() {
-	            @Override
-	            public ObservableValue<Boolean> call(CellDataFeatures<EmailDTO, Boolean> param) {
-	            	EmailDTO email = param.getValue();
-	                SimpleBooleanProperty booleanProp = new SimpleBooleanProperty(email.isIsPrimaryUse());
-	                // Note: singleCol.setOnEditCommit(): Not work for
-	                // CheckBoxTableCell.
-	 
-	                // When "Primary Use?" column change.
-	                booleanProp.addListener(new ChangeListener<Boolean>() {
-	 
-	                    @Override
-	                    public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue,
-	                            Boolean newValue) {
-	                        email.setIsPrimaryUse(newValue);
-	                        SqlUpdate.updateEmail("primary_use",email.getEmail_id(), newValue);
-	                    }
-	                });
-	                return booleanProp;
-	            }
-	        });
-	 
-			Col2.setCellFactory(new Callback<TableColumn<EmailDTO, Boolean>, //
-	        TableCell<EmailDTO, Boolean>>() {
-	            @Override
-	            public TableCell<EmailDTO, Boolean> call(TableColumn<EmailDTO, Boolean> p) {
-	                CheckBoxTableCell<EmailDTO, Boolean> cell = new CheckBoxTableCell<EmailDTO, Boolean>();
-	                cell.setAlignment(Pos.CENTER);
-	                return cell;
-	            }
-	        });
+			TableColumn<EmailDTO, Boolean> Col2 = new TableColumn<>("Primary");
+			Col2.setCellValueFactory(param -> {
+				EmailDTO email = param.getValue();
+				SimpleBooleanProperty booleanProp = new SimpleBooleanProperty(email.isIsPrimaryUse());
+				// Note: singleCol.setOnEditCommit(): Not work for
+				// CheckBoxTableCell.
+
+				// When "Primary Use?" column change.
+				booleanProp.addListener((observable, oldValue, newValue) -> {
+					email.setIsPrimaryUse(newValue);
+					SqlUpdate.updateEmail("primary_use",email.getEmail_id(), newValue);
+				});
+				return booleanProp;
+			});
+
+		//
+		Col2.setCellFactory(p1 -> {
+			CheckBoxTableCell<EmailDTO, Boolean> cell = new CheckBoxTableCell<>();
+			cell.setAlignment(Pos.CENTER);
+			return cell;
+		});
 			
 			// example for this column found at https://o7planning.org/en/11079/javafx-tableview-tutorial
-			TableColumn<EmailDTO, Boolean> Col3 = new TableColumn<EmailDTO, Boolean>("Listed");
-			Col3.setCellValueFactory(new Callback<CellDataFeatures<EmailDTO, Boolean>, ObservableValue<Boolean>>() {
-	            @Override
-	            public ObservableValue<Boolean> call(CellDataFeatures<EmailDTO, Boolean> param) {
-	            	EmailDTO email = param.getValue();
-	                SimpleBooleanProperty booleanProp = new SimpleBooleanProperty(email.isIsListed());
-	                // Note: singleCol.setOnEditCommit(): Not work for
-	                // CheckBoxTableCell.
-	 
-	                // When "Listed?" column change.
-	                booleanProp.addListener(new ChangeListener<Boolean>() {
-	 
-	                    @Override
-	                    public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue,
-	                            Boolean newValue) {
-	                        email.setIsListed(newValue);
-	                        SqlUpdate.updateEmail("email_listed",email.getEmail_id(), newValue);
-	                    }
-	                });
-	                return booleanProp;
-	            }
-	        });
-	 
-			Col3.setCellFactory(new Callback<TableColumn<EmailDTO, Boolean>, //
-	        TableCell<EmailDTO, Boolean>>() {
-	            @Override
-	            public TableCell<EmailDTO, Boolean> call(TableColumn<EmailDTO, Boolean> p) {
-	                CheckBoxTableCell<EmailDTO, Boolean> cell = new CheckBoxTableCell<EmailDTO, Boolean>();
-	                cell.setAlignment(Pos.CENTER);
-	                return cell;
-	            }
-	        });
+			TableColumn<EmailDTO, Boolean> Col3 = new TableColumn<>("Listed");
+			Col3.setCellValueFactory(param -> {
+				EmailDTO email = param.getValue();
+				SimpleBooleanProperty booleanProp = new SimpleBooleanProperty(email.isIsListed());
+				// Note: singleCol.setOnEditCommit(): Not work for
+				// CheckBoxTableCell.
+
+				// When "Listed?" column change.
+				booleanProp.addListener((observable, oldValue, newValue) -> {
+					email.setIsListed(newValue);
+					SqlUpdate.updateEmail("email_listed",email.getEmail_id(), newValue);
+				});
+				return booleanProp;
+			});
+
+		//
+		Col3.setCellFactory(p12 -> {
+			CheckBoxTableCell<EmailDTO, Boolean> cell = new CheckBoxTableCell<>();
+			cell.setAlignment(Pos.CENTER);
+			return cell;
+		});
 			
 			/// sets width of columns by percentage
 			Col1.setMaxWidth( 1f * Integer.MAX_VALUE * 50);   // Phone
@@ -182,12 +142,12 @@ public class HBoxEmail extends HBox {
 	        emailAdd.setOnAction((event) -> {
 				// get the next available primary key for table email
 				int email_id = SqlSelect.getNextAvailablePrimaryKey("email","email_id") + 1; // gets last memo_id number
-				// add record to SQL and return sucess or not
+				// add record to SQL and return success or not
 				if(SqlInsert.addEmailRecord(email_id,person.getP_id(),true,"new email",true))
 					// if we have added it to SQL we need to create a new row in tableview to match
 	            	email.add(new EmailDTO(email_id,person.getP_id(),true,"new email",true));
 				// Now we will sort it to the top
-				Collections.sort(email, Comparator.comparing(EmailDTO::getEmail_id).reversed());
+				email.sort(Comparator.comparing(EmailDTO::getEmail_id).reversed());
 				// this line prevents strange buggy behaviour
 				emailTableView.layout();
 				// edit the phone number cell after creating
