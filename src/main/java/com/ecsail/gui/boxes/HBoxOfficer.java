@@ -85,8 +85,7 @@ public class HBoxOfficer extends HBox {
 						SqlUpdate.updateOfficer("off_year",t.getRowValue().getOfficer_id(), t.getNewValue());  // have to get by money id and pid eventually
 					}
 			);
-	        
-	        
+
 	        ObservableList<Officer> officerList = FXCollections.observableArrayList(Officer.values());
 	    	final TableColumn<OfficerDTO, Officer> Col2 = new TableColumn<>("Officers, Chairs and Board");
 	        Col2.setCellValueFactory(param -> {
@@ -127,8 +126,8 @@ public class HBoxOfficer extends HBox {
 				int officer_id = SqlSelect.getNextAvailablePrimaryKey("officer","o_id") + 1; // gets last memo_id number
 				// insert a new officer row into SQL and return true on success
 				if(SqlInsert.addOfficerRecord(officer_id,person.getP_id(),"0","new officer",Integer.parseInt(currentYear)))
-					// add a new row to the tableView to match new SQL entry
-					officer.add(new OfficerDTO(officer_id,person.getP_id(),"0","new officer",currentYear));
+				// add a new row to the tableView to match new SQL entry
+				officer.add(new OfficerDTO(officer_id,person.getP_id(),"0","new officer",currentYear));
 				// Now we will sort it to the top
 				officer.sort(Comparator.comparing(OfficerDTO::getOfficer_id).reversed());
 				// this line prevents strange buggy behaviour
