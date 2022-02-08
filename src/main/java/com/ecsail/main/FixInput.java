@@ -1,5 +1,7 @@
 package com.ecsail.main;
 
+import java.math.BigDecimal;
+
 public class FixInput {
 
 	public static String changeEmptyStringToZero(String input) {
@@ -22,6 +24,15 @@ public class FixInput {
 	        return false;
 	    }
 	    return true;
+	}
+
+	public static boolean isBigDecimal(String str) {
+		try {
+			new BigDecimal(str);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 	
 }

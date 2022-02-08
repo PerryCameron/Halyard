@@ -2,6 +2,7 @@ package com.ecsail.gui.boxes;
 
 import com.ecsail.enums.PaymentType;
 import com.ecsail.main.EditCell;
+import com.ecsail.main.FixInput;
 import com.ecsail.main.Note;
 import com.ecsail.sql.*;
 import com.ecsail.sql.select.*;
@@ -177,9 +178,7 @@ public class HBoxInvoice extends HBox {
 		paymentTableView.setEditable(!fiscals.get(rowIndex).isCommitted());
 
 		//////////////// LISTENER //////////////////
-		invoiceDTO.getButtonAddNote().setOnAction(e -> {
-			note.addMemoAndReturnId("Invoice Note: ",date,fiscals.get(rowIndex).getMoney_id(),"I");
-		});
+		invoiceDTO.getButtonAddNote().setOnAction(e -> note.addMemoAndReturnId("Invoice Note: ",date,fiscals.get(rowIndex).getMoney_id(),"I"));
 
 		invoiceDTO.getButtonAdd().setOnAction(e -> {
 			int pay_id = SqlPayment.getNumberOfPayments() + 1; // get last pay_id number
@@ -214,7 +213,7 @@ public class HBoxInvoice extends HBox {
 		invoiceDTO.getDuesTextField().focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
 	            //focus out
 	            if (oldValue) {  // we have focused and unfocused
-	            	if(!isNumeric(invoiceDTO.getDuesTextField().getText())) {
+	            	if(!FixInput.isBigDecimal(invoiceDTO.getDuesTextField().getText())) {
 						invoiceDTO.getDuesTextField().setText("0");
 	            	}
 	            	BigDecimal dues = new BigDecimal(invoiceDTO.getDuesTextField().getText());
@@ -288,7 +287,7 @@ public class HBoxInvoice extends HBox {
 		invoiceDTO.getWetslipTextField().focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
 			//focus out
 			if (oldValue) {  // we have focused and unfocused
-				if(!isNumeric(invoiceDTO.getWetslipTextField().getText())) {
+				if(!FixInput.isBigDecimal(invoiceDTO.getWetslipTextField().getText())) {
 					invoiceDTO.getWetslipTextField().setText("0.00");
 				}
 				BigDecimal slip = new BigDecimal(invoiceDTO.getWetslipTextField().getText());
@@ -346,7 +345,7 @@ public class HBoxInvoice extends HBox {
 		invoiceDTO.getYscTextField().focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
 			//focus out
 			if (oldValue) {  // we have focused and unfocused
-				if(!isNumeric(invoiceDTO.getYscTextField().getText())) {
+				if(!FixInput.isBigDecimal(invoiceDTO.getYscTextField().getText())) {
 					invoiceDTO.getYscTextField().setText("0.00");
 				}
 				BigDecimal ysc = new BigDecimal(invoiceDTO.getYscTextField().getText());
@@ -360,7 +359,7 @@ public class HBoxInvoice extends HBox {
 		invoiceDTO.getInitiationTextField().focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
 			//focus out
 			if (oldValue) {  // we have focused and unfocused
-				if(!isNumeric(invoiceDTO.getInitiationTextField().getText())) {
+				if(!FixInput.isBigDecimal(invoiceDTO.getInitiationTextField().getText())) {
 					invoiceDTO.getInitiationTextField().setText("0.00");
 				}
 				BigDecimal initiation = new BigDecimal(invoiceDTO.getInitiationTextField().getText());
@@ -374,7 +373,7 @@ public class HBoxInvoice extends HBox {
 		invoiceDTO.getOtherTextField().focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
 			//focus out
 			if (oldValue) {  // we have focused and unfocused
-				if(!isNumeric(invoiceDTO.getOtherTextField().getText())) {
+				if(!FixInput.isBigDecimal(invoiceDTO.getOtherTextField().getText())) {
 					invoiceDTO.getOtherTextField().setText("0.00");
 				}
 				BigDecimal other = new BigDecimal(invoiceDTO.getOtherTextField().getText());
@@ -396,7 +395,7 @@ public class HBoxInvoice extends HBox {
 		invoiceDTO.getOtherCreditTextField().focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
 			//focus out
 			if (oldValue) {  // we have focused and unfocused
-				if(!isNumeric(invoiceDTO.getOtherCreditTextField().getText())) {
+				if(!FixInput.isBigDecimal(invoiceDTO.getOtherCreditTextField().getText())) {
 					invoiceDTO.getOtherCreditTextField().setText("0.00");
 				}
 				BigDecimal otherCredit = new BigDecimal(invoiceDTO.getOtherCreditTextField().getText());
@@ -410,7 +409,7 @@ public class HBoxInvoice extends HBox {
 		invoiceDTO.getOtherCreditTextField().focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
 			//focus out
 			if (oldValue) {  // we have focused and unfocused
-				if(!isNumeric(invoiceDTO.getOtherCreditTextField().getText())) {
+				if(!FixInput.isBigDecimal(invoiceDTO.getOtherCreditTextField().getText())) {
 					invoiceDTO.getOtherCreditTextField().setText("0.00");
 				}
 				BigDecimal otherCredit = new BigDecimal(invoiceDTO.getOtherCreditTextField().getText());
@@ -665,15 +664,6 @@ public class HBoxInvoice extends HBox {
 			}
 		}
 		return finalResult;
-	}
-
-	public static boolean isNumeric(String str) {
-		try {
-			new BigDecimal(str);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
 	}
 
 	private <T> TableColumn<T, String> createColumn(String title, Function<T, StringProperty> property) {

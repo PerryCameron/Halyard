@@ -1,12 +1,12 @@
 package com.ecsail.gui.tabs;
 
 import com.ecsail.charts.FeesLineChart;
-import com.ecsail.gui.boxes.HBoxInvoice;
+import com.ecsail.main.FixInput;
 import com.ecsail.main.HalyardPaths;
 import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.SqlInsert;
-import com.ecsail.sql.select.SqlDefinedFee;
 import com.ecsail.sql.SqlUpdate;
+import com.ecsail.sql.select.SqlDefinedFee;
 import com.ecsail.structures.DefinedFeeDTO;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -269,7 +269,7 @@ public class TabDefinedFee extends Tab {
 
 	private void updateTextField(TextField textField) {
 		// if not a proper number reset to 0
-		if(!HBoxInvoice.isNumeric(textField.getText())) {
+		if(!FixInput.isBigDecimal(textField.getText())) {
 			textField.setText("0.00");
 		}
 		// put value in variable
