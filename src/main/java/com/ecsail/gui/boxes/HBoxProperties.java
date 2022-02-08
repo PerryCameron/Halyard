@@ -1,32 +1,25 @@
 package com.ecsail.gui.boxes;
 
-import java.util.Optional;
-
 import com.ecsail.main.Launcher;
 import com.ecsail.sql.SqlDelete;
 import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.select.SqlPerson;
 import com.ecsail.structures.MembershipListDTO;
 import com.ecsail.structures.PersonDTO;
-
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
+import java.util.Optional;
+
 ///  this class is for the properties tab in membership view
 public class HBoxProperties extends HBox {
-	private MembershipListDTO membership;
+	private final MembershipListDTO membership;
 	//private TextField duesText;
 	public HBoxProperties(MembershipListDTO m, Tab membershipTab) {
 		super();
@@ -37,7 +30,7 @@ public class HBoxProperties extends HBox {
 		VBox leftVBox = new VBox(); // contains viewable children
 		VBox rightVBox = new VBox();
         HBox hbox1 = new HBox();  // holds membershipID, Type and Active
-        HBox hbox2 = new HBox();  // holds PersonVBoxes (2 instances require a genereic HBox
+        HBox hbox2 = new HBox();  // holds PersonVBoxes (2 instances require a generic HBox
         HBox hbox3 = new HBox();  // holds address, city, state, zip
         HBox hbox4 = new HBox();  // holds membership type
         HBox hbox5 = new HBox();  // holds delete membership
@@ -68,17 +61,15 @@ public class HBoxProperties extends HBox {
 		
 		///////////// LISTENERS ////////////
 
-		removeMembershipButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-        		alert.setTitle("Remove Membership");
-        		alert.setHeaderText("Membership " + membership.getMsid());
-        		alert.setContentText("Are sure you want to delete this membership?");
-        		Optional<ButtonType> result = alert.showAndWait();
-        		if (result.get() == ButtonType.OK){
-        		   deleteMembership(membership.getMsid());
-        		} 
-            }
-        });
+		removeMembershipButton.setOnAction(e -> {
+			alert.setTitle("Remove Membership");
+			alert.setHeaderText("Membership " + membership.getMsid());
+			alert.setContentText("Are sure you want to delete this membership?");
+			Optional<ButtonType> result = alert.showAndWait();
+			if (result.get() == ButtonType.OK){
+			   deleteMembership(membership.getMsid());
+			}
+		});
 		
 		///////////// SET CONTENT ////////////////////
 

@@ -23,6 +23,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.function.Function;
 
@@ -31,8 +32,7 @@ public class HBoxEmail extends HBox {
 	private final PersonDTO person;
 	private final ObservableList<EmailDTO> email;
 	private final TableView<EmailDTO> emailTableView;
-	
-	@SuppressWarnings("unchecked")
+
 	public HBoxEmail(PersonDTO p) {
 		this.person = p;
 		this.email =  FXCollections.observableArrayList(param -> new Observable[] { param.isPrimaryUseProperty() });
@@ -164,7 +164,7 @@ public class HBoxEmail extends HBox {
 	        ///////////////////  SET CONTENT ////////////////////
 	        
 			vboxButtons.getChildren().addAll(emailAdd, emailDelete);
-			emailTableView.getColumns().addAll(Col1,Col2,Col3);
+			emailTableView.getColumns().addAll(Arrays.asList(Col1,Col2,Col3));
 			vboxPink.getChildren().add(emailTableView);
 			hboxGrey.getChildren().addAll(vboxPink,vboxButtons);
 			getChildren().add(hboxGrey);
