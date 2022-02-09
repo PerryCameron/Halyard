@@ -303,15 +303,18 @@
     -fx-border-width: 0 0 2 0; /* its make really one-pixel-border */
     -fx-border-color: black;
 }
-/*-fx-selection-bar-text@font-face {*/
-/*    font-family: 'fredoka';*/
-/*    src: url('FredokaOne-Regular.ttf');*/
-/*}*/
 
-/*#bigtext {*/
-/*    -fx-font-family: "fredoka";*/
-/*    -fx-font-weight: bold;*/
-/*    -fx-font-size : 28pt;*/
-/*}*/
 #dues .chart-series-line { -fx-stroke: blue }
 #init .chart-series-line { -fx-stroke: green }
+
+.dialog-pane {
+    -fx-background-color: #61a2b1;
+}
+
+.dialog-pane .label {
+    -fx-text-fill: #dfdada;
+}
+
+.dialog-pane:header .header-panel {
+    -fx-background-color: #61a2b1;
+}

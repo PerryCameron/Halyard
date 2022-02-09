@@ -1,5 +1,7 @@
 package com.ecsail.gui.boxes;
 
+import com.ecsail.gui.dialogues.HalyardAlert;
+import com.ecsail.gui.dialogues.HalyardAlert.AlertType;
 import com.ecsail.main.Launcher;
 import com.ecsail.sql.SqlDelete;
 import com.ecsail.sql.SqlExists;
@@ -10,7 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.control.Alert.AlertType;
+
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -35,7 +37,10 @@ public class HBoxProperties extends HBox {
         HBox hbox4 = new HBox();  // holds membership type
         HBox hbox5 = new HBox();  // holds delete membership
 		Button removeMembershipButton = new Button("Delete");
-		Alert alert = new Alert(AlertType.CONFIRMATION);
+		HalyardAlert alert = new HalyardAlert(HalyardAlert.AlertType.CONFIRMATION);
+		DialogPane dialogPane = alert.getDialogPane();
+
+//		HalyardAlert alert = new HalyardAlert(AlertType.INFORMATION);
 
 		/////////////  ATTRIBUTES /////////////
 
@@ -63,8 +68,8 @@ public class HBoxProperties extends HBox {
 
 		removeMembershipButton.setOnAction(e -> {
 			alert.setTitle("Remove Membership");
-			alert.setHeaderText("Membership " + membership.getMsid());
-			alert.setContentText("Are sure you want to delete this membership?");
+			alert.setHeaderText("Membership " + membership.getMembershipId());
+			alert.setContentText("Are sure you want to delete membership " + membership.getMembershipId() + "?");
 			Optional<ButtonType> result = alert.showAndWait();
 			if (result.get() == ButtonType.OK){
 			   deleteMembership(membership.getMsid());
@@ -100,7 +105,7 @@ public class HBoxProperties extends HBox {
 			System.out.println("Deleting Membership.");
 		} else {
 			// do not delete the membership
-			Alert alert = new Alert(AlertType.INFORMATION);
+			Alert alert = new Alert(Alert.AlertType.INFORMATION);
 			alert.setTitle("There is a problem");
 			alert.setHeaderText("This membership contains payment entries");
 			alert.setContentText("Before deleting this membership you need to manually remove the payment entries.");
