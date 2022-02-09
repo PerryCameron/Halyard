@@ -1,5 +1,6 @@
 package com.ecsail.gui.boxes;
 
+import com.ecsail.gui.dialogues.HalyardAlert;
 import com.ecsail.main.HalyardPaths;
 import com.ecsail.main.Note;
 import com.ecsail.sql.SqlDelete;
@@ -24,6 +25,7 @@ import javafx.scene.layout.VBox;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Optional;
 
 public class HBoxInvoiceList extends HBox {
 	
@@ -57,6 +59,7 @@ public class HBoxInvoiceList extends HBox {
 		TableColumn<MoneyDTO, Integer> Col3 = new TableColumn<>("Credit");
 		TableColumn<MoneyDTO, Integer> Col4 = new TableColumn<>("Paid");
 		TableColumn<MoneyDTO, Integer> Col5 = new TableColumn<>("Balance");
+		HalyardAlert conformation = new HalyardAlert(HalyardAlert.AlertType.CONFIRMATION);
 		ComboBox<Integer> comboBox = new ComboBox<>();
 		for(int i = Integer.parseInt(HalyardPaths.getYear()) + 1; i > 1969; i--) {
 			comboBox.getItems().add(i);
@@ -141,12 +144,18 @@ public class HBoxInvoiceList extends HBox {
 		});
         
 		deleteFiscalRecord.setOnAction((event) -> {
-				int selectedIndex = fiscalTableView.getSelectionModel().getSelectedIndex();
+			int selectedIndex = fiscalTableView.getSelectionModel().getSelectedIndex();
+			conformation.setTitle("Remove Invoice");
+			conformation.setHeaderText("Invoice #" + fiscals.get(selectedIndex).getMoney_id());
+			conformation.setContentText("Are sure you want to delete this " + fiscals.get(selectedIndex).getFiscal_year() + " invoice?");
+			Optional<ButtonType> result = conformation.showAndWait();
+			if (result.get() == ButtonType.OK){
 				System.out.println("deleting fiscal record " + selectedIndex);
 				SqlDelete.deletePaymentByMoneyID(fiscals.get(selectedIndex).getMoney_id());
 				SqlDelete.deleteWorkCreditsByMoneyID(fiscals.get(selectedIndex).getMoney_id());
 				SqlDelete.deleteMoneyByMoneyID(fiscals.get(selectedIndex).getMoney_id());
 				fiscals.remove(selectedIndex);
+			}
 		});
 		
 		fiscalTableView.setRowFactory(tv -> {
