@@ -1,6 +1,7 @@
 package com.ecsail.gui.boxes;
 
 import com.ecsail.enums.KeelType;
+import com.ecsail.gui.dialogues.HalyardAlert;
 import com.ecsail.main.EditCell;
 import com.ecsail.main.Launcher;
 import com.ecsail.sql.SqlDelete;
@@ -29,6 +30,7 @@ import javafx.scene.layout.VBox;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Optional;
 import java.util.function.Function;
 
 public class HBoxBoat extends HBox{
@@ -251,10 +253,20 @@ private final TableView<BoatDTO> boatTableView;
     });
     
     boatDelete.setOnAction((event) -> {
-        	int selectedIndex = boatTableView.getSelectionModel().getSelectedIndex();
-        		if(selectedIndex >= 0) // is a row selected?
-        			if(SqlDelete.deleteBoatOwner(boats.get(selectedIndex).getBoat_id(), membership.getMsid())) // if we successfully delete from DB
-        				boatTableView.getItems().remove(selectedIndex); // remove from GUI
+        // get the index that is selected
+        int selectedIndex = boatTableView.getSelectionModel().getSelectedIndex();
+            // is a row selected?
+            if(selectedIndex >= 0) {
+                // get the result of the conformation dialogue
+                Optional<ButtonType> result = createConformation();
+                // user pushed ok
+                if (result.get() == ButtonType.OK) {
+                    // delete boat from database
+                    SqlDelete.deleteBoatOwner(boats.get(selectedIndex).getBoat_id(), membership.getMsid());
+                    // remove from GUI
+                    boatTableView.getItems().remove(selectedIndex);
+                }
+            }
     });
     
     boatView.setOnAction((event) -> {
@@ -282,6 +294,14 @@ private final TableView<BoatDTO> boatTableView;
 	}
 	
 	///////////////// CLASS METHODS /////////////////
+
+    private Optional<ButtonType> createConformation() {
+        HalyardAlert conformation = new HalyardAlert(HalyardAlert.AlertType.CONFIRMATION);
+        conformation.setTitle("Remove Invoice");
+        conformation.setHeaderText("Invoice #" );
+        conformation.setContentText("Are sure you want to delete this invoice?");
+        return conformation.showAndWait();
+    }
 
     private <T> TableColumn<T, String> createColumn(String title, Function<T, StringProperty> property) {
         TableColumn<T, String> col = new TableColumn<>(title);

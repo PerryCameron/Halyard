@@ -11,6 +11,7 @@ import com.ecsail.gui.boxes.HBoxMembershipNotes;
 import com.ecsail.gui.boxes.HBoxPerson;
 import com.ecsail.gui.boxes.HBoxProperties;
 import com.ecsail.gui.boxes.HBoxSlip;
+import com.ecsail.gui.dialogues.HalyardAlert;
 import com.ecsail.main.CreateMembership;
 import com.ecsail.main.Note;
 import com.ecsail.sql.select.SqlMemos;
@@ -22,6 +23,7 @@ import com.ecsail.structures.PersonDTO;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
@@ -29,6 +31,8 @@ import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+
+import java.util.Optional;
 
 public class TabMembership extends Tab {
 	private MembershipListDTO membership;
@@ -131,6 +135,8 @@ public class TabMembership extends Tab {
 	}
 	
 	///////////////////////// 	CLASS METHODS //////////////////////////////
+
+
 	
 	private void addDependentTabs(TabPane peopleTabPane) {
 		int count = 0;
