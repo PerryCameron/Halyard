@@ -61,6 +61,14 @@ public class HalyardPaths {
 		    recordsDir.mkdirs();
 		}
 	}
+	
+	public static boolean fileExists(String file) {
+		File f = new File(file);
+		if(f.exists() && !f.isDirectory()) { 
+		    return true;
+		}
+		return false;
+	}
 
 	
 	public static String getYear() {

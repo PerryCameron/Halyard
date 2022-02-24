@@ -4,6 +4,7 @@ import java.sql.SQLException;
 
 import com.ecsail.gui.boxes.VBoxToolBar;
 import com.ecsail.structures.MembershipListDTO;
+import com.ecsail.structures.Object_Login;
 import com.ecsail.structures.Object_TupleCount;
 
 import com.jcraft.jsch.JSchException;
@@ -36,7 +37,11 @@ VBox toolbar = new VBoxToolBar();
 public static void main(String[] args) throws SQLException {
 	System.out.println("Starting application...");
 	Main.selectedYear = HalyardPaths.getYear();
+	// does our object exist  ... why did i name this tuplecounts??
+	if(HalyardPaths.fileExists(HalyardPaths.TUPLECOUNTS)) {
+	// it exists so open it
 	Main.edits = FileIO.openTupleCountObject();
+	}
 	setUpForFirstTime();
 	console = new BoxConsole();
 	launch(args);

@@ -55,13 +55,17 @@ public class ConnectDatabase {
 	TextField passWord;
 
 	public ConnectDatabase(Stage primaryStage) {
-		if (FileIO.hostFileExists()) {
+		if (FileIO.hostFileExists()) 
 			FileIO.openLoginObjects();
+		else 
+			// we are starting application for the first time
+			FileIO.logins.add(new Object_Login("", "", "", "", "", "", false, false));
+			// our default login will be the first in the array
 			this.currentLogon = FileIO.logins.get(0);
 			this.port = currentLogon.getPort();
 			loadHostsInComboBox();
-		}
-		Launcher.openLoginTab(); // makes it look nice, tab not for anything useful
+		// makes it look nice, tab not for anything useful
+		Launcher.openLoginTab(); 
 		displayLogOn(primaryStage);
 	}
 	
@@ -306,7 +310,7 @@ public class ConnectDatabase {
         		String loopback = "127.0.0.1";
         		// create ssh tunnel
         		if(currentLogon.isSshForward()) {
-        			System.out.println("SSH tunnel enabled - test");
+        			System.out.println("SSH tunnel enabled");
         			this.sshConnection = new PortForwardingL(host,loopback,3306,3306,sUser,sPass); 
         		} else System.out.println("SSH connection is not being used");
         		// create mysql login
@@ -345,8 +349,11 @@ public class ConnectDatabase {
         
 		// saves changes to existing login object
         saveButton2.setOnAction((event) -> {
-            	int element = FileIO.getSelectedHost(currentLogon.getHost());  // get element number
-            	String oldHost = currentLogon.getHost(); // save hostname for later
+        		System.out.println(currentLogon.getHost());
+        		// get element number
+            	int element = FileIO.getSelectedHost(currentLogon.getHost());  
+            	// save hostname for later
+            	String oldHost = currentLogon.getHost(); 
             	if(element >= 0) {  // the element exists, why wouldn't it exist
             		// change the specific login in the login list
             		FileIO.logins.get(element).setHost(hostNameField.getText());
