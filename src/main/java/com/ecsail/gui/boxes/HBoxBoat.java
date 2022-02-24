@@ -258,7 +258,7 @@ private final TableView<BoatDTO> boatTableView;
             // is a row selected?
             if(selectedIndex >= 0) {
                 // get the result of the conformation dialogue
-                Optional<ButtonType> result = createConformation();
+                Optional<ButtonType> result = createConformation(selectedIndex);
                 // user pushed ok
                 if (result.get() == ButtonType.OK) {
                     // delete boat from database
@@ -295,11 +295,11 @@ private final TableView<BoatDTO> boatTableView;
 	
 	///////////////// CLASS METHODS /////////////////
 
-    private Optional<ButtonType> createConformation() {
+    private Optional<ButtonType> createConformation(int selectedIndex) {
         HalyardAlert conformation = new HalyardAlert(HalyardAlert.AlertType.CONFIRMATION);
-        conformation.setTitle("Remove Invoice");
-        conformation.setHeaderText("Invoice #" );
-        conformation.setContentText("Are sure you want to delete this invoice?");
+        conformation.setTitle("Remove Boat");
+        conformation.setHeaderText("Boat #" + boats.get(selectedIndex).getBoat_id());
+        conformation.setContentText("Are sure you want to delete this boat?");
         return conformation.showAndWait();
     }
 
