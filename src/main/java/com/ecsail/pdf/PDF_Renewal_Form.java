@@ -1922,7 +1922,7 @@ public class PDF_Renewal_Form {
 		
 		cell = new Cell();
 		cell.setBorder(Border.NO_BORDER);
-        p = new Paragraph("Due February 29, " + year);
+        p = new Paragraph("Due February 28, " + year);
         p.setTextAlignment(TextAlignment.CENTER);
         //p.setFontSize(12).setBold().setFont(font);
         p.setFontSize(12).setBold();
