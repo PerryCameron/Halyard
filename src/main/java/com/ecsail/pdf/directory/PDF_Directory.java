@@ -18,7 +18,7 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.AreaBreak;
 import com.itextpdf.layout.element.Paragraph;
-import com.itextpdf.layout.property.AreaBreakType;
+import com.itextpdf.layout.properties.AreaBreakType;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.scene.control.TextArea;

@@ -4,7 +4,7 @@ import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
-import com.itextpdf.layout.property.HorizontalAlignment;
+import com.itextpdf.layout.properties.HorizontalAlignment;
 
 public class PDF_CommodoreMessage extends Table {
 
