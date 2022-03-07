@@ -14,8 +14,8 @@ import com.itextpdf.layout.element.ListItem;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.element.Text;
-import com.itextpdf.layout.property.VerticalAlignment;
-import com.itextpdf.layout.property.TextAlignment;
+import com.itextpdf.layout.properties.VerticalAlignment;
+import com.itextpdf.layout.properties.TextAlignment;
 
 
 public class PDF_Renewal_Form_Back {

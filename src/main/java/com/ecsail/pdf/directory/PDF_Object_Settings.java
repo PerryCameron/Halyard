@@ -70,7 +70,9 @@ public class PDF_Object_Settings {
 		
 		try {
 			FontProgram fontProgram = FontProgramFactory.createFont(HEADINGS);
-			pdfFont = PdfFontFactory.createFont(fontProgram, PdfEncodings.WINANSI, true);
+			// updating library forced me to remove the true below to work
+			// pdfFont = PdfFontFactory.createFont(fontProgram, PdfEncodings.WINANSI, true);
+			pdfFont = PdfFontFactory.createFont(fontProgram, PdfEncodings.WINANSI);
 
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block

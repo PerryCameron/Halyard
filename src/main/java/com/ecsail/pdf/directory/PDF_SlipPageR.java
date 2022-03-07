@@ -2,7 +2,7 @@ package com.ecsail.pdf.directory;
 import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Table;
-import com.itextpdf.layout.property.HorizontalAlignment;
+import com.itextpdf.layout.properties.HorizontalAlignment;
 
 public class PDF_SlipPageR extends Table {
 	PDF_Object_Settings set;
