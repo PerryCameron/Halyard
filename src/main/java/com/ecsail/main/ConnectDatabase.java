@@ -414,14 +414,16 @@ public class ConnectDatabase {
 		loginPane.getChildren().add(vboxBlue);
 		logonStage.setScene(secondScene);
 		logonStage.show();
-		float windowsOffsetHeight = 0.0f;
-		if(HalyardPaths.isWindows()) {
-			windowsOffsetHeight = -10.0f;
-			vboxBlue.setPrefWidth(width - windowsOffsetHeight);
-		}
+//      This caused the login window to look strange on my copy of windows on my work computer
+//		float windowsOffsetHeight = 0.0f;
+//		if(HalyardPaths.isWindows()) {
+//			windowsOffsetHeight = -10.0f;
+//			vboxBlue.setPrefWidth(width - windowsOffsetHeight);
+//		}
 		System.out.println(HalyardPaths.getOperatingSystem());
 		this.titleBarHeight = logonStage.getHeight() - secondScene.getHeight();
-		logonStage.setHeight(vboxBlue.getHeight() + titleBarHeight + windowsOffsetHeight);
+//		logonStage.setHeight(vboxBlue.getHeight() + titleBarHeight + windowsOffsetHeight);
+		logonStage.setHeight(vboxBlue.getHeight() + titleBarHeight);
 		logonStage.setResizable(false);
 	}
 	
