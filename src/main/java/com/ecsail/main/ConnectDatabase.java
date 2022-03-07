@@ -420,8 +420,10 @@ public class ConnectDatabase {
 //			windowsOffsetHeight = -10.0f;
 //			vboxBlue.setPrefWidth(width - windowsOffsetHeight);
 //		}
+		
 		System.out.println(HalyardPaths.getOperatingSystem());
 		this.titleBarHeight = logonStage.getHeight() - secondScene.getHeight();
+//      this was also part of the code above
 //		logonStage.setHeight(vboxBlue.getHeight() + titleBarHeight + windowsOffsetHeight);
 		logonStage.setHeight(vboxBlue.getHeight() + titleBarHeight);
 		logonStage.setResizable(false);
