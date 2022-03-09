@@ -17,6 +17,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class Dialogue_EnvelopePDF extends Stage {
@@ -36,6 +37,10 @@ public class Dialogue_EnvelopePDF extends Stage {
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
 		VBox vboxColumn1 = new VBox();
 		VBox vboxColumn2 = new VBox();
+		VBox vboxNumberToPrint = new VBox();
+		VBox vBoxEnvelopeSize = new VBox();
+		VBox vboxMembershipID = new VBox();
+
 		TextField memberidTextField = new TextField();
 		
 		Scene scene = new Scene(vboxBlue, 600, 300);
@@ -51,6 +56,14 @@ public class Dialogue_EnvelopePDF extends Stage {
         t2r1.setToggleGroup(tg2); 
         t2r2.setToggleGroup(tg2); 
         t2r1.setSelected(true);
+
+		vBoxEnvelopeSize.setSpacing(5);
+		vboxColumn1.setPadding(new Insets(0,0,0,15));
+		vboxColumn2.setPadding(new Insets(35,0,0,35));
+		vBoxEnvelopeSize.setPadding(new Insets(20,0,0,0));
+		vboxNumberToPrint.setPadding(new Insets(20,0,15,0));
+		vboxNumberToPrint.setSpacing(5);
+		vboxColumn1.setSpacing(15);
 
         //batchSpinner.setPadding(new Insets(0,0,0,10));
         hboxGrey.setPadding(new Insets(5,0,0,5));
@@ -87,7 +100,10 @@ public class Dialogue_EnvelopePDF extends Stage {
 		});
 		
 		//////////////// ADD CONTENT ///////////////////
-		vboxColumn1.getChildren().addAll(t1r1,t1r2,memberidTextField,t2r1,t2r2);
+		vBoxEnvelopeSize.getChildren().addAll(t2r1,t2r2);
+		vboxNumberToPrint.getChildren().addAll(t1r1,t1r2);
+		vboxMembershipID.getChildren().addAll(new Text(""),memberidTextField);
+		vboxColumn1.getChildren().addAll(vboxNumberToPrint,vboxMembershipID,vBoxEnvelopeSize);
 		vboxColumn2.getChildren().addAll(pdfImage,createPDFbutton);
 		hboxGrey.getChildren().addAll(vboxColumn1,vboxColumn2);
 		vboxBlue.getChildren().add(vboxPink);

@@ -85,7 +85,7 @@ public class HBoxWelcome extends HBox {
 		slipListButton.setOnAction((event) -> Launcher.openSlipsTab());
 		bodButton.setOnAction((event) -> Launcher.openBoardTab());
 		newButton.setOnAction((event) -> CreateMembership.Create());
-		batchesButton.setOnAction((event) -> Launcher.openTabBatchedPaidDues());
+		batchesButton.setOnAction((event) -> Launcher.openDepositsTab());
 
 		////////////////  SET CONTENT ////////////////////////
 		vboxRight.getChildren().addAll(rosterButton,peopleListButton,slipListButton,bodButton,newButton,batchesButton,boatsButton,notesButton);
