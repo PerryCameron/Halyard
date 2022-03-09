@@ -152,7 +152,7 @@ static TabPane tabPane;
 		tabPane.getTabs().add(new TabStub("Stub Tab"));
 	}
 	
-	public static void openTabBatchedPaidDues() {
+	public static void openDepositsTab() {
 		tabPane.getTabs().add(new TabDeposits("Deposits"));
 		tabPane.getSelectionModel().select(getTabIndex("Deposits"));
 	}
@@ -251,4 +251,5 @@ static TabPane tabPane;
     public static void createBoatReport() {
 		new PDF_BoatReport();
     }
+
 }

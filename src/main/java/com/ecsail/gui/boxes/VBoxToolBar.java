@@ -3,7 +3,6 @@ package com.ecsail.gui.boxes;
 import com.ecsail.gui.dialogues.*;
 import com.ecsail.main.*;
 import com.ecsail.excel.Xls_email_list;
-import com.jcraft.jsch.JSchException;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -11,8 +10,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
-import java.sql.SQLException;
 
 public class VBoxToolBar extends VBox {
 
@@ -69,8 +66,8 @@ public class VBoxToolBar extends VBox {
 		Menu subMenu4_1 = new Menu("Create");
 		MenuItem m4_1_2 = new MenuItem("Boat Report");
 		MenuItem m4_1_4 = new MenuItem("Email List");
-		MenuItem m4_1_5 = new MenuItem("Window Stub");
-		MenuItem m4_1_6 = new MenuItem("Tab Stub");
+//		MenuItem m4_1_5 = new MenuItem("Window Stub");
+//		MenuItem m4_1_6 = new MenuItem("Tab Stub");
 		MenuItem m4_1_8 = new MenuItem("Renewal Forms");
 
 		MenuItem m4_1_10 = new MenuItem("Directory");
@@ -88,10 +85,11 @@ public class VBoxToolBar extends VBox {
 		m3_3.setOnAction((event) ->  new Dialogue_NewYearGenerator());
 		// Sub menu "Membership > Tabs"
 			m3_1_1.setOnAction((event) -> Launcher.openRosterTab());
+			m3_1_2.setOnAction((event -> Launcher.openBoardTab()));
 			m3_1_3.setOnAction((event) -> Launcher.openPeopleTab());
 			m3_1_4.setOnAction((event) -> Launcher.openBoatsTab());
 			m3_1_5.setOnAction((event) -> Launcher.openSlipsTab());
-			m3_1_6.setOnAction((event) -> Launcher.openBoardTab());
+			m3_1_6.setOnAction((event) -> Launcher.openDepositsTab());
 			m3_1_7.setOnAction((event) -> Launcher.openFeeTab());
 			m3_1_8.setOnAction((event) -> Launcher.openFeeTab2());
 			m3_1_9.setOnAction((event) -> Launcher.openNotesTab());
@@ -99,8 +97,8 @@ public class VBoxToolBar extends VBox {
 			m4_1_2.setOnAction((event) -> Launcher.createBoatReport());
 //			m4_1_3.setOnAction((event) -> Launcher.openTabBatchedPaidDues());
 			m4_1_4.setOnAction((event) -> Xls_email_list.createSpreadSheet());
-			m4_1_5.setOnAction((event) -> new Dialogue_Stub());
-			m4_1_6.setOnAction((event) -> Launcher.openTabStub());
+//			m4_1_5.setOnAction((event) -> new Dialogue_Stub());
+//			m4_1_6.setOnAction((event) -> Launcher.openTabStub());
 			m4_1_8.setOnAction((event) -> Launcher.createRenewalForms());
 			m3_2_2.setOnAction((event) -> Launcher.openEnvelopesDialogue());
         
@@ -109,7 +107,7 @@ public class VBoxToolBar extends VBox {
         subMenu1_1.getItems().addAll(m1_1_1);
         subMenu3_1.getItems().addAll(m3_1_1,m3_1_2,m3_1_3,m3_1_4,m3_1_5,m3_1_6,m3_1_7,m3_1_8,m3_1_9);  // add list items
 		subMenu3_2.getItems().addAll(m3_2_1,m3_2_2);
-		subMenu4_1.getItems().addAll(m4_1_2,m4_1_4,m4_1_5,m4_1_6,m4_1_8,m4_1_10);
+		subMenu4_1.getItems().addAll(m4_1_2,m4_1_4,m4_1_8,m4_1_10);
 
         menu1.getItems().addAll(subMenu1_1,m1_2,m1_3,m1_4);
 		menu2.getItems().addAll(m2_1,m2_2);
