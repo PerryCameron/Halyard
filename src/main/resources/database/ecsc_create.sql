@@ -1,9 +1,6 @@
-drop
-database if exists ECSC_SQL;
-create
-database if not exists ECSC_SQL;
-use
-ECSC_SQL;
+drop database if exists ECSC_SQL;
+create database if not exists ECSC_SQL;
+use ECSC_SQL;
 
 create table boat
 (
@@ -26,13 +23,15 @@ ALTER TABLE ECSC_SQL.boat
 ALTER TABLE ECSC_SQL.boat
     ADD BEAM varchar(20) NULL;
 ALTER TABLE ECSC_SQL.boat
-    MODIFY COLUMN `LENGTH` varchar (20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL;
+    MODIFY COLUMN `LENGTH` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL;
 ALTER TABLE ECSC_SQL.boat
-    MODIFY COLUMN WEIGHT varchar (15) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL;
+    MODIFY COLUMN WEIGHT varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL;
 ALTER TABLE ECSC_SQL.boat
     ADD LWL varchar(20) NULL;
 ALTER TABLE ECSC_SQL.boat
-    MODIFY COLUMN MANUFACTURER varchar (40) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL;
+    MODIFY COLUMN MANUFACTURER varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL;
+ALTER TABLE ECSC_SQL.boat ADD AUX TINYINT(1) DEFAULT 0 NOT NULL;
+
 
 create table boat_memo
 (
@@ -69,11 +68,9 @@ create table membership
     P_ID      int UNIQUE NOT NULL,
     JOIN_DATE date,
     MEM_TYPE  varchar(4),
-    #         ACTIVE_MEMBERSHIP boolean,
-    #         this may be redundant because of money
-        ADDRESS varchar (40),
-    #         each membership has the same address
-        CITY varchar (20),
+    # ACTIVE_MEMBERSHIP boolean, # this may be redundant because of money
+        ADDRESS   varchar(40), # each membership has the same address
+        CITY      varchar(20),
     STATE     varchar(4),
     ZIP       varchar(15)
 );
@@ -110,6 +107,16 @@ create table slip
     foreign key (MS_ID) references membership (MS_ID)
 );
 
+CREATE TABLE fee
+(
+    FEE_ID int NOT NULL auto_increment primary key,
+    FIELD_NAME varchar(40),
+    FIELD_VALUE DECIMAL(10,2),
+    FIELD_QTY int,
+    FEE_YEAR int NOT NULL
+);
+ALTER TABLE ECSC_SQL.fee ADD Description varchar(40) NULL
+
 create table memo
 (
     MEMO_ID   int         NOT NULL auto_increment primary key,
@@ -123,18 +130,16 @@ create table memo
 
 create table person
 (
-    P_ID       int NOT NULL auto_increment primary key,
-    MS_ID      int,
-    #          attaches person to membership
-        MEMBER_TYPE int,
-    # 1 for primary 2 for secondary 3 for children
-        F_NAME varchar (20),
-    L_NAME     varchar(20),
-    BIRTHDAY   date,
-    OCCUPATION varchar(50),
-    BUISNESS   varchar(50),
-    IS_ACTIVE  boolean,
-    PICTURE    blob,
+    P_ID        int NOT NULL auto_increment primary key,
+    MS_ID       int, # attaches person to membership
+        MEMBER_TYPE int, # 1 for primary 2 for secondary 3 for children
+        F_NAME      varchar(20),
+    L_NAME      varchar(20),
+    BIRTHDAY    date,
+    OCCUPATION  varchar(50),
+    BUISNESS    varchar(50),
+    IS_ACTIVE   boolean,
+    PICTURE     blob,
     foreign key (MS_ID) references membership (MS_ID)
 );
 ALTER TABLE ECSC_SQL.person
@@ -153,9 +158,8 @@ create table email
 create table phone
 (
     PHONE_ID     int NOT NULL auto_increment primary key,
-    P_ID         int NOT NULL,
-    #            determines who phone number belongs to
-        PHONE varchar (30),
+    P_ID         int NOT NULL, --# determines who phone number belongs to
+        PHONE        varchar(30),
     PHONE_TYPE   varchar(30),
     PHONE_LISTED boolean,
     foreign key (P_ID) references person (P_ID)
@@ -170,10 +174,8 @@ create table boat_owner
 );
 
 ALTER TABLE ECSC_SQL.boat_owner
-DROP
-FOREIGN KEY boat_owner_ibfk_2;
-#We
-want to change this to be a key but not prevent deletions, so make sure boat exists only for creation
+DROP FOREIGN KEY boat_owner_ibfk_2;
+-- #We want to change this to be a key but not prevent deletions, so make sure boat exists only for creation
 
 create table deposit
 (
@@ -196,9 +198,8 @@ create table money
     MS_ID                  int NOT NULL,
     FISCAL_YEAR            numeric(4, 0),
     BATCH                  numeric(2, 0),
-    OFFICER_CREDIT         numeric(4, 0),
-    #this is the dues and gets derived.
-        EXTRA_KEY numeric (2, 0),
+    OFFICER_CREDIT         numeric(4, 0), #this is the dues and gets derived.
+        EXTRA_KEY              numeric(2, 0),
     KAYAK_SHED_KEY         numeric(4, 0),
     SAIL_LOFT_KEY          numeric(4, 0),
     SAIL_SCHOOL_LOFT_KEY   numeric(4, 0),
@@ -235,20 +236,20 @@ ALTER TABLE ECSC_SQL.money MODIFY COLUMN KAYAK_SHED INTEGER NULL;
 ALTER TABLE ECSC_SQL.money MODIFY COLUMN SAIL_LOFT INTEGER NULL;
 ALTER TABLE ECSC_SQL.money MODIFY COLUMN SAIL_SCHOOL_LASER_LOFT INTEGER NULL;
 ALTER TABLE ECSC_SQL.money MODIFY COLUMN WINTER_STORAGE INTEGER NULL;
-ALTER TABLE ECSC_SQL.money MODIFY COLUMN OFFICER_CREDIT DECIMAL (10,2) NULL;
-ALTER TABLE ECSC_SQL.money MODIFY COLUMN WET_SLIP DECIMAL (10,2) NULL;
-ALTER TABLE ECSC_SQL.money MODIFY COLUMN YSC_DONATION DECIMAL (10,2) NULL;
-ALTER TABLE ECSC_SQL.money MODIFY COLUMN PAID DECIMAL (10,2) NULL;
-ALTER TABLE ECSC_SQL.money MODIFY COLUMN TOTAL DECIMAL (10,2) NULL;
-ALTER TABLE ECSC_SQL.money MODIFY COLUMN CREDIT DECIMAL (10,2) NULL;
-ALTER TABLE ECSC_SQL.money MODIFY COLUMN BALANCE DECIMAL (10,2) NULL;
-ALTER TABLE ECSC_SQL.money MODIFY COLUMN DUES DECIMAL (10,2) NULL;
-ALTER TABLE ECSC_SQL.money MODIFY COLUMN OTHER DECIMAL (10,2) NULL;
-ALTER TABLE ECSC_SQL.money MODIFY COLUMN INITIATION DECIMAL (10,2) NULL;
-ALTER TABLE ECSC_SQL.money
-    ADD WORK_CREDIT INT NULL;
-ALTER TABLE ECSC_SQL.money
-    ADD OTHER_CREDIT DECIMAL(10, 2) NULL;
+ALTER TABLE ECSC_SQL.money MODIFY COLUMN OFFICER_CREDIT DECIMAL(10,2) NULL;
+ALTER TABLE ECSC_SQL.money MODIFY COLUMN WET_SLIP DECIMAL(10,2) NULL;
+ALTER TABLE ECSC_SQL.money MODIFY COLUMN YSC_DONATION DECIMAL(10,2) NULL;
+ALTER TABLE ECSC_SQL.money MODIFY COLUMN PAID DECIMAL(10,2) NULL;
+ALTER TABLE ECSC_SQL.money MODIFY COLUMN TOTAL DECIMAL(10,2) NULL;
+ALTER TABLE ECSC_SQL.money MODIFY COLUMN CREDIT DECIMAL(10,2) NULL;
+ALTER TABLE ECSC_SQL.money MODIFY COLUMN BALANCE DECIMAL(10,2) NULL;
+ALTER TABLE ECSC_SQL.money MODIFY COLUMN DUES DECIMAL(10,2) NULL;
+ALTER TABLE ECSC_SQL.money MODIFY COLUMN OTHER DECIMAL(10,2) NULL;
+ALTER TABLE ECSC_SQL.money MODIFY COLUMN INITIATION DECIMAL(10,2) NULL;
+ALTER TABLE ECSC_SQL.money ADD WORK_CREDIT INT NULL;
+ALTER TABLE ECSC_SQL.money ADD OTHER_CREDIT DECIMAL(10,2) NULL;
+ALTER TABLE ECSC_SQL.money ADD KAYAK_BEACH_RACK DECIMAL(4,0) DEFAULT 0 NULL;
+
 
 create table payment
 (
@@ -263,20 +264,17 @@ create table payment
     foreign key (MONEY_ID) references money (MONEY_ID)
 );
 ALTER TABLE ECSC_SQL.payment
-    MODIFY COLUMN CHECKNUMBER VARCHAR (20) NULL;
-ALTER TABLE ECSC_SQL.payment MODIFY COLUMN AMOUNT DECIMAL (10,2) NOT NULL;
+    MODIFY COLUMN CHECKNUMBER VARCHAR(20) NULL;
+ALTER TABLE ECSC_SQL.payment MODIFY COLUMN AMOUNT DECIMAL(10,2) NOT NULL;
 
-#
-should attach to money_id, if put in early, just create
-money_id along with it
+# should attach to money_id, if put in early, just create money_id along with it
 create table officer
 (
     O_ID       int NOT NULL auto_increment primary key,
     P_ID       int NOT NULL,
     BOARD_YEAR numeric(4, 0),
     OFF_TYPE   varchar(20),
-    OFF_YEAR   numeric(4, 0),
-    #          This maintains the record forever
+    OFF_YEAR   numeric(4, 0), # This maintains the record forever
         foreign key (P_ID) references person (P_ID),
     unique (P_ID, OFF_YEAR, OFF_TYPE)
 );
@@ -310,24 +308,24 @@ create table defined_fee
 );
 
 ALTER TABLE ECSC_SQL.defined_fee MODIFY COLUMN FISCAL_YEAR INTEGER NOT NULL;
-ALTER TABLE ECSC_SQL.defined_fee MODIFY COLUMN DUES_REGULAR DECIMAL (10,2) NULL;
-ALTER TABLE ECSC_SQL.defined_fee MODIFY COLUMN DUES_FAMILY DECIMAL (10,2) NULL;
-ALTER TABLE ECSC_SQL.defined_fee MODIFY COLUMN DUES_LAKE_ASSOCIATE DECIMAL (10,2) NULL;
-ALTER TABLE ECSC_SQL.defined_fee MODIFY COLUMN DUES_SOCIAL DECIMAL (10,2) NULL;
-ALTER TABLE ECSC_SQL.defined_fee MODIFY COLUMN INITIATION DECIMAL (10,2) NULL;
-ALTER TABLE ECSC_SQL.defined_fee MODIFY COLUMN WET_SLIP DECIMAL (10,2) NULL;
-ALTER TABLE ECSC_SQL.defined_fee MODIFY COLUMN BEACH DECIMAL (10,2) NULL;
-ALTER TABLE ECSC_SQL.defined_fee MODIFY COLUMN WINTER_STORAGE DECIMAL (10,2) NULL;
-ALTER TABLE ECSC_SQL.defined_fee MODIFY COLUMN MAIN_GATE_KEY DECIMAL (10,2) NULL;
-ALTER TABLE ECSC_SQL.defined_fee MODIFY COLUMN SAIL_LOFT DECIMAL (10,2) NULL;
-ALTER TABLE ECSC_SQL.defined_fee MODIFY COLUMN SAIL_LOFT_KEY DECIMAL (10,2) NULL;
-ALTER TABLE ECSC_SQL.defined_fee MODIFY COLUMN SAIL_SCHOOL_LASER_LOFT DECIMAL (10,2) NULL;
-ALTER TABLE ECSC_SQL.defined_fee MODIFY COLUMN SAIL_SCHOOL_LOFT_KEY DECIMAL (10,2) NULL;
-ALTER TABLE ECSC_SQL.defined_fee MODIFY COLUMN KAYAK_RACK DECIMAL (10,2) NULL;
-ALTER TABLE ECSC_SQL.defined_fee MODIFY COLUMN KAYAK_SHED DECIMAL (10,2) NULL;
-ALTER TABLE ECSC_SQL.defined_fee MODIFY COLUMN KAYAK_SHED_KEY DECIMAL (10,2) NULL;
-ALTER TABLE ECSC_SQL.defined_fee MODIFY COLUMN WORK_CREDIT DECIMAL (10,2) NULL;
-
+ALTER TABLE ECSC_SQL.defined_fee MODIFY COLUMN DUES_REGULAR DECIMAL(10,2) NULL;
+ALTER TABLE ECSC_SQL.defined_fee MODIFY COLUMN DUES_FAMILY DECIMAL(10,2) NULL;
+ALTER TABLE ECSC_SQL.defined_fee MODIFY COLUMN DUES_LAKE_ASSOCIATE DECIMAL(10,2) NULL;
+ALTER TABLE ECSC_SQL.defined_fee MODIFY COLUMN DUES_SOCIAL DECIMAL(10,2) NULL;
+ALTER TABLE ECSC_SQL.defined_fee MODIFY COLUMN INITIATION DECIMAL(10,2) NULL;
+ALTER TABLE ECSC_SQL.defined_fee MODIFY COLUMN WET_SLIP DECIMAL(10,2) NULL;
+ALTER TABLE ECSC_SQL.defined_fee MODIFY COLUMN BEACH DECIMAL(10,2) NULL;
+ALTER TABLE ECSC_SQL.defined_fee MODIFY COLUMN WINTER_STORAGE DECIMAL(10,2) NULL;
+ALTER TABLE ECSC_SQL.defined_fee MODIFY COLUMN MAIN_GATE_KEY DECIMAL(10,2) NULL;
+ALTER TABLE ECSC_SQL.defined_fee MODIFY COLUMN SAIL_LOFT DECIMAL(10,2) NULL;
+ALTER TABLE ECSC_SQL.defined_fee MODIFY COLUMN SAIL_LOFT_KEY DECIMAL(10,2) NULL;
+ALTER TABLE ECSC_SQL.defined_fee MODIFY COLUMN SAIL_SCHOOL_LASER_LOFT DECIMAL(10,2) NULL;
+ALTER TABLE ECSC_SQL.defined_fee MODIFY COLUMN SAIL_SCHOOL_LOFT_KEY DECIMAL(10,2) NULL;
+ALTER TABLE ECSC_SQL.defined_fee MODIFY COLUMN KAYAK_RACK DECIMAL(10,2) NULL;
+ALTER TABLE ECSC_SQL.defined_fee MODIFY COLUMN KAYAK_SHED DECIMAL(10,2) NULL;
+ALTER TABLE ECSC_SQL.defined_fee MODIFY COLUMN KAYAK_SHED_KEY DECIMAL(10,2) NULL;
+ALTER TABLE ECSC_SQL.defined_fee MODIFY COLUMN WORK_CREDIT DECIMAL(10,2) NULL;
+ALTER TABLE ECSC_SQL.defined_fee ADD KAYAK_BEACH_RACK DECIMAL(10,2) NULL;
 
 CREATE TABLE stats
 (
@@ -360,8 +358,7 @@ CREATE TABLE awards
     foreign key (P_ID) references person (P_ID)
 );
 
-#
-one-to-one relation with money
+-- # one-to-one relation with money
 create table work_credit
 (
     MONEY_ID int NOT NULL primary key unique,
@@ -382,8 +379,7 @@ ALTER TABLE ECSC_SQL.work_credit
     MODIFY COLUMN OTHER INTEGER NULL;
 
 
-#one
--to-one relation with membership
+-- #one-to-one relation with membership
 create table waitlist
 (
     MS_ID          int NOT NULL primary key unique,

@@ -8,11 +8,9 @@ import com.ecsail.pdf.PDF_Envelope;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -39,7 +37,9 @@ public class Dialogue_EnvelopePDF extends Stage {
 		VBox vboxColumn2 = new VBox();
 		VBox vboxNumberToPrint = new VBox();
 		VBox vBoxEnvelopeSize = new VBox();
-		VBox vboxMembershipID = new VBox();
+		HBox hboxMembershipID = new HBox();
+		//Horizontal separator
+		Separator separator1 = new Separator();
 
 		TextField memberidTextField = new TextField();
 		
@@ -64,10 +64,10 @@ public class Dialogue_EnvelopePDF extends Stage {
 		vboxNumberToPrint.setPadding(new Insets(20,0,15,0));
 		vboxNumberToPrint.setSpacing(5);
 		vboxColumn1.setSpacing(15);
-
+		hboxMembershipID.setSpacing(5);
         //batchSpinner.setPadding(new Insets(0,0,0,10));
         hboxGrey.setPadding(new Insets(5,0,0,5));
-        memberidTextField.setPrefWidth(60);
+        memberidTextField.setPrefWidth(50);
         vboxColumn1.setSpacing(5);
         vboxColumn2.setSpacing(15);
 		vboxBlue.setId("box-blue");
@@ -78,6 +78,8 @@ public class Dialogue_EnvelopePDF extends Stage {
 		hboxGrey.setPrefHeight(688);
 		scene.getStylesheets().add("stylesheet.css");
 		setTitle("Print to PDF");
+		hboxMembershipID.setAlignment(Pos.CENTER_LEFT);
+		vboxColumn1.setPrefWidth(300);
 		////////////  Check to see if batch exists first////////////
 		
 		
@@ -102,8 +104,8 @@ public class Dialogue_EnvelopePDF extends Stage {
 		//////////////// ADD CONTENT ///////////////////
 		vBoxEnvelopeSize.getChildren().addAll(t2r1,t2r2);
 		vboxNumberToPrint.getChildren().addAll(t1r1,t1r2);
-		vboxMembershipID.getChildren().addAll(new Text(""),memberidTextField);
-		vboxColumn1.getChildren().addAll(vboxNumberToPrint,vboxMembershipID,vBoxEnvelopeSize);
+		hboxMembershipID.getChildren().addAll(new Text("Membership ID"),memberidTextField);
+		vboxColumn1.getChildren().addAll(hboxMembershipID,vboxNumberToPrint,separator1,vBoxEnvelopeSize);
 		vboxColumn2.getChildren().addAll(pdfImage,createPDFbutton);
 		hboxGrey.getChildren().addAll(vboxColumn1,vboxColumn2);
 		vboxBlue.getChildren().add(vboxPink);
