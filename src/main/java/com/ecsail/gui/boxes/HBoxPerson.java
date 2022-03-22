@@ -30,7 +30,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
-
+// TODO need to add ability to switch primary and secondary
 
 public class HBoxPerson extends HBox {
 	private final PersonDTO person;
