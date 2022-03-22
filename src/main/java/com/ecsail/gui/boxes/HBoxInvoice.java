@@ -175,6 +175,7 @@ public class HBoxInvoice extends HBox {
 		vboxGrey.setId("box-grey");
 		HBox.setHgrow(vboxGrey, Priority.ALWAYS);
 
+		// not editable if record is committed
 		paymentTableView.setEditable(!fiscals.get(rowIndex).isCommitted());
 
 		//////////////// LISTENER //////////////////
@@ -453,21 +454,7 @@ public class HBoxInvoice extends HBox {
 		invoiceDTO.getWetslipTextFee().setOnMouseEntered(en -> invoiceDTO.getWetslipTextFee().setFill(Color.RED));
 		invoiceDTO.getWetslipTextFee().setOnMouseExited(ex -> invoiceDTO.getWetslipTextFee().setFill(Color.BLUE));
 
-		if (fiscals.get(rowIndex).isSupplemental()) { // have we already created a record for this year?
-			invoiceDTO.getDuesTextField().setEditable(true);
-			//duesTextField.setText("0");
-		} else {
-			if (hasOfficer) { // has officer and not
-				System.out.println("Member is an officer");
-				fiscals.get(rowIndex).setOfficer_credit(String.valueOf(definedFees.getDues_regular()));
-				if(!SqlMoney.isCommitted(fiscals.get(rowIndex).getMoney_id()))	{	// is not committed
-					System.out.println("Record is not committed");
-				}
-			} else {
-				System.out.println("Member is not an officer of the club");
-				fiscals.get(rowIndex).setOfficer_credit("0.00");
-			}
-		}
+		checkIfRecordHasOfficer();
 		updateBalance(); // updates and saves
 		//////////////// SETTING CONTENT //////////////
 		invoiceDTO.getDuesText().setText(String.valueOf(fiscals.get(rowIndex).getDues()));
@@ -510,6 +497,24 @@ public class HBoxInvoice extends HBox {
 		mainVbox.getChildren().addAll(scrollPane);  // add error HBox in first
 		vboxGrey.getChildren().addAll(mainVbox);
 		getChildren().addAll(vboxGrey);
+	}
+
+	private void checkIfRecordHasOfficer() {
+		if (fiscals.get(rowIndex).isSupplemental()) { // have we already created a record for this year?
+			invoiceDTO.getDuesTextField().setEditable(true);
+			//duesTextField.setText("0");
+		} else {
+			if (hasOfficer) { // has officer and not
+				System.out.println("Member is an officer");
+				fiscals.get(rowIndex).setOfficer_credit(String.valueOf(definedFees.getDues_regular()));
+				if(!SqlMoney.isCommitted(fiscals.get(rowIndex).getMoney_id()))	{	// is not committed
+					System.out.println("Record is not committed");
+				}
+			} else {
+				System.out.println("Member is not an officer of the club");
+				fiscals.get(rowIndex).setOfficer_credit("0.00");
+			}
+		}
 	}
 
 	//////////////////////  CLASS METHODS ///////////////////////////

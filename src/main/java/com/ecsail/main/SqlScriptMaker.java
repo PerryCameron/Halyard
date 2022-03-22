@@ -1,13 +1,10 @@
 package com.ecsail.main;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.stream.Collectors;
 
 import com.ecsail.gui.dialogues.Dialogue_DatabaseBackup;
 import com.ecsail.sql.select.*;
@@ -68,7 +65,6 @@ public class SqlScriptMaker {
 		hash = HashSeSQL.getAllHash();
 		fees = SqlFee.getAllFees();
 		HalyardPaths.checkPath(HalyardPaths.SQLBACKUP + "/" + HalyardPaths.getYear());
-		readFromFile(HalyardPaths.SQLBACKUP + "/ecsc_create.sql");
 		calculateSums();
 		new Dialogue_DatabaseBackup(newTupleCount);
 		writeToFile(HalyardPaths.SQLBACKUP + "/" + HalyardPaths.getYear() + "/ecsc_sql_" + stringDate + ".sql");
@@ -78,9 +74,8 @@ public class SqlScriptMaker {
 		try {
 			File file = new File(filename);
 			FileWriter writer = new FileWriter(file, true);
-			// writer.write("use ECSC_SQL;" + System.lineSeparator());
-			for (String tabe : tableCreation)
-				writer.write(tabe + System.lineSeparator());
+			// writes the schema from ecsc_create.sql located in resources/database/
+			writer.write(writeSchema());
 			for (MembershipDTO mem : memberships)
 				writer.write(getMembershipString(mem));
 			for(MembershipIdDTO mid : ids)
@@ -467,20 +462,13 @@ public class SqlScriptMaker {
 					+ getCorrectString(mem.getState()) + ","
 					+ getCorrectString(mem.getZip()) + ");\n";
 	}
-	
-	public static void readFromFile(String filename) {
-		  File file = new File(filename); 
-		try {
-			BufferedReader br;
-			br = new BufferedReader(new FileReader(file));
-			String st; 
-		  while ((st = br.readLine()) != null) {
-			  tableCreation.add(new String(st));		  
-		  }
-		  br.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
+
+	// reads schema from resources and returns a string
+	public static String writeSchema() {
+		ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+		InputStream io = classloader.getResourceAsStream("database/ecsc_create.sql");
+		BufferedReader reader = new BufferedReader(new InputStreamReader(io));
+		String result = reader.lines().collect(Collectors.joining(System.lineSeparator()));
+		return result;
 	}
 }

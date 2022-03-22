@@ -155,6 +155,21 @@ public static List<Object_Login> logins = new ArrayList<Object_Login>();
 		}
 		return count;
 	}
-	
-	
+
+	// this was used to read schema from a file outsite of source code
+//	public static void readFromFile(String filename) {
+//		  File file = new File(filename);
+//		try {
+//			BufferedReader br;
+//			br = new BufferedReader(new FileReader(file));
+//			String st;
+//		  while ((st = br.readLine()) != null) {
+//			  tableCreation.add(new String(st));
+//		  }
+//		  br.close();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
 }

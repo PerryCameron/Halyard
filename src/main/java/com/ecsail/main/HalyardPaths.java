@@ -21,7 +21,7 @@ public class HalyardPaths {
 	public static final String SLIPCHART = System.getProperty("user.home") + "/Documents/ECSC/SlipCharts";
 	public static final String BOATDIR = System.getProperty("user.home") + "/Documents/ECSC/Boats";
  	public static final String DEFAULTPHOTO = "/personimg.png";
-	 public static final String BOATLISTS = System.getProperty("user.home") + "/Documents/ECSC/BoatLists";
+	public static final String BOATLISTS = System.getProperty("user.home") + "/Documents/ECSC/BoatLists";
 	// "C:\\Users\\pcame\\Documents\\email.xlsx"
 	
  	private static boolean isDirEmpty(final Path directory) throws IOException {

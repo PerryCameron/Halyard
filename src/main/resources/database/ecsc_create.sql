@@ -115,7 +115,7 @@ CREATE TABLE fee
     FIELD_QTY int,
     FEE_YEAR int NOT NULL
 );
-ALTER TABLE ECSC_SQL.fee ADD Description varchar(40) NULL
+ALTER TABLE ECSC_SQL.fee ADD Description varchar(40) NULL;
 
 create table memo
 (
@@ -158,8 +158,8 @@ create table email
 create table phone
 (
     PHONE_ID     int NOT NULL auto_increment primary key,
-    P_ID         int NOT NULL, --# determines who phone number belongs to
-        PHONE        varchar(30),
+    P_ID         int NOT NULL,
+    PHONE        varchar(30),
     PHONE_TYPE   varchar(30),
     PHONE_LISTED boolean,
     foreign key (P_ID) references person (P_ID)

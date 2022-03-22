@@ -1,5 +1,6 @@
 package com.ecsail.structures;
 
+import com.ecsail.sql.select.SqlPayment;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -375,10 +376,6 @@ public class InvoiceDTO {
 
     public MoneyDTO getInvoice() {
         return invoice;
-    }
-
-    public VBox getVboxTitleFee() {
-        return vboxTitleFee;
     }
 
     public VBox getVboxTitleQty() {
@@ -885,184 +882,92 @@ public class InvoiceDTO {
         return duesText;
     }
 
-    public void setDuesText(Text duesText) {
-        this.duesText = duesText;
-    }
-
     public Text getBeachText() {
         return beachText;
-    }
-
-    public void setBeachText(Text beachText) {
-        this.beachText = beachText;
     }
 
     public Text getKayakRackText() {
         return kayakRackText;
     }
 
-    public void setKayakRackText(Text kayakRackText) {
-        this.kayakRackText = kayakRackText;
-    }
-
     public Text getKayakShedText() {
         return kayakShedText;
-    }
-
-    public void setKayakShedText(Text kayakShedText) {
-        this.kayakShedText = kayakShedText;
     }
 
     public Text getSailLoftText() {
         return sailLoftText;
     }
 
-    public void setSailLoftText(Text sailLoftText) {
-        this.sailLoftText = sailLoftText;
-    }
-
     public Text getSailSchoolLoftText() {
         return sailSchoolLoftText;
-    }
-
-    public void setSailSchoolLoftText(Text sailSchoolLoftText) {
-        this.sailSchoolLoftText = sailSchoolLoftText;
     }
 
     public Text getWetSlipText() {
         return wetSlipText;
     }
 
-    public void setWetSlipText(Text wetSlipText) {
-        this.wetSlipText = wetSlipText;
-    }
-
     public Text getWinterStorageText() {
         return winterStorageText;
-    }
-
-    public void setWinterStorageText(Text winterStorageText) {
-        this.winterStorageText = winterStorageText;
     }
 
     public Text getYspText() {
         return yspText;
     }
 
-    public void setYspText(Text yspText) {
-        this.yspText = yspText;
-    }
-
     public Text getInitiationText() {
         return initiationText;
-    }
-
-    public void setInitiationText(Text initiationText) {
-        this.initiationText = initiationText;
     }
 
     public Text getOtherFeeText() {
         return otherFeeText;
     }
 
-    public void setOtherFeeText(Text otherFeeText) {
-        this.otherFeeText = otherFeeText;
-    }
-
     public Text getWorkCreditsText() {
         return workCreditsText;
-    }
-
-    public void setWorkCreditsText(Text workCreditsText) {
-        this.workCreditsText = workCreditsText;
     }
 
     public Text getGateKeyText() {
         return gateKeyText;
     }
 
-    public void setGateKeyText(Text gateKeyText) {
-        this.gateKeyText = gateKeyText;
-    }
-
     public Text getSailLKeyText() {
         return sailLKeyText;
-    }
-
-    public void setSailLKeyText(Text sailLKeyText) {
-        this.sailLKeyText = sailLKeyText;
     }
 
     public Text getKayakSKeyText() {
         return kayakSKeyText;
     }
 
-    public void setKayakSKeyText(Text kayakSKeyText) {
-        this.kayakSKeyText = kayakSKeyText;
-    }
-
     public Text getSailSSLKeyText() {
         return sailSSLKeyText;
-    }
-
-    public void setSailSSLKeyText(Text sailSSLKeyText) {
-        this.sailSSLKeyText = sailSSLKeyText;
     }
 
     public Text getOtherCreditText() {
         return otherCreditText;
     }
 
-    public void setOtherCreditText(Text otherCreditText) {
-        this.otherCreditText = otherCreditText;
-    }
-
     public Text getPositionCreditText() {
         return positionCreditText;
-    }
-
-    public void setPositionCreditText(Text positionCreditText) {
-        this.positionCreditText = positionCreditText;
     }
 
     public Text getWetslipTextFee() {
         return wetslipTextFee;
     }
 
-    public void setWetslipTextFee(Text wetslipTextFee) {
-        this.wetslipTextFee = wetslipTextFee;
-    }
-
     public Text getTotalFeesText() {
         return totalFeesText;
-    }
-
-    public void setTotalFeesText(Text totalFeesText) {
-        this.totalFeesText = totalFeesText;
     }
 
     public Text getTotalCreditText() {
         return totalCreditText;
     }
 
-    public void setTotalCreditText(Text totalCreditText) {
-        this.totalCreditText = totalCreditText;
-    }
-
     public Text getTotalPaymentText() {
         return totalPaymentText;
     }
 
-    public void setTotalPaymentText(Text totalPaymentText) {
-        this.totalPaymentText = totalPaymentText;
-    }
-
     public Text getTotalBalanceText() {
         return totalBalanceText;
-    }
-
-    public void setTotalBalanceText(Text totalBalanceText) {
-        this.totalBalanceText = totalBalanceText;
     }
 
     public void clearGridPane() {
@@ -1073,57 +978,14 @@ public class InvoiceDTO {
         return kayakBeachRackSpinner;
     }
 
-    public void setKayakBeachRackSpinner(Spinner<Integer> kayakBeachRackSpinner) {
-        this.kayakBeachRackSpinner = kayakBeachRackSpinner;
-    }
-
     public Text getKayakBeachRackText() {
         return kayakBeachRackText;
-    }
-
-    public void setKayakBeachRackText(Text kayakBeachRackText) {
-        this.kayakBeachRackText = kayakBeachRackText;
-    }
-
-    public VBox getVboxKayakBeach() {
-        return vboxBeachKayak;
-    }
-
-    public void setVboxKayakBeach(VBox vboxKayakBeach) {
-        this.vboxBeachKayak = vboxKayakBeach;
-    }
-
-    public VBox getVboxKayakBeachFee() {
-        return vboxBeachKayakFee;
-    }
-
-    public void setVboxKayakBeachFee(VBox vboxKayakBeachFee) {
-        this.vboxBeachKayakFee = vboxKayakBeachFee;
-    }
-
-    public VBox getVboxBeachKayak() {
-        return vboxBeachKayak;
-    }
-
-    public void setVboxBeachKayak(VBox vboxBeachKayak) {
-        this.vboxBeachKayak = vboxBeachKayak;
-    }
-
-    public VBox getVboxBeachKayakFee() {
-        return vboxBeachKayakFee;
-    }
-
-    public void setVboxBeachKayakFee(VBox vboxBeachKayakFee) {
-        this.vboxBeachKayakFee = vboxBeachKayakFee;
     }
 
     public Button getButtonAddNote() {
         return buttonAddNote;
     }
 
-    public void setButtonAddNote(Button buttonAddNote) {
-        this.buttonAddNote = buttonAddNote;
-    }
 
     public static <T, E, F> int addCommittedRow(int row, GridPane gridPane, T name, E quantity, F total ) {
         gridPane.add((Node) name, 0, row, 1, 1);
@@ -1145,9 +1007,6 @@ public class InvoiceDTO {
             row = addCommittedRow(row,gridPane,new Label("Kayak Rack:"), new Text(String.valueOf(invoice.getKayac_rack())), vboxKayak);
         if(invoice.getKayak_beach_rack() != 0)
             row = addCommittedRow(row,gridPane,new Label("Kayak Beach Rack:"), new Text(String.valueOf(invoice.getKayak_beach_rack())), vboxBeachKayak);
-
-
-
         if(invoice.getKayac_shed() != 0)
             row = addCommittedRow(row,gridPane,new Label("Kayak Shed:"), new Text(String.valueOf(invoice.getKayac_shed())), vboxKayakShed);
         if(invoice.getSail_loft() != 0)
@@ -1171,6 +1030,7 @@ public class InvoiceDTO {
         if(!invoice.getInitiation().equals("0.00"))
             row = addCommittedRow(row,gridPane,new Label("Initiation:"), new Text(""), vboxInitiation);
         if(!invoice.getOther().equals("0.00"))
+            // TODO when first introduced "other" does not show the amount, but does so when tab is reopened
             row = addCommittedRow(row,gridPane,new Label("Other Fee:"), new Text(""), vboxOther);
         if(invoice.getWork_credit() != 0)
             row = addCommittedRow(row,gridPane,new Label("Work Credits:"), new Text(String.valueOf(invoice.getWork_credit())), vboxWorkCredits);
@@ -1186,6 +1046,11 @@ public class InvoiceDTO {
             row = addCommittedRow(row,gridPane,new Label("Payment:"), new Text(""), vboxTotalPayment);
             row = addCommittedRow(row,gridPane,new Label("Balance:"), new Text(""), vboxTotalBalance);
         row++;
+        // TODO This will only print the last payment, if there are 2 payments may want to add a list here
+        PaymentDTO thisPayment = SqlPayment.getPayment(invoice.getMoney_id());
+        gridPane.add(new Text("Payment Date: " + thisPayment.getPaymentDate()), 0,row,3,1);
+        row++;
+        // TODO Make it so if you click on the deposit number the deposit window will open up to that deposit
         gridPane.add(new Text("Deposit Number: " + invoice.getBatch()) , 0, row, 1, 2);
         gridPane.add(vboxCommitButton , 2, row, 1, 1);
     }
