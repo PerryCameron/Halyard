@@ -401,3 +401,10 @@ create table msid_hash
 );
 
 ALTER TABLE ECSC_SQL.msid_hash MODIFY COLUMN HASH BIGINT NOT NULL;
+
+CREATE TABLE id_change
+(
+    CHANGE_ID   int         NOT NULL auto_increment primary key,
+    ID_YEAR     int         NOT NULL unique,
+    CHANGED      boolean
+);
