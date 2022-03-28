@@ -89,7 +89,7 @@ public class PDF_Renewal_Form {
 	private void makeManyMembershipsIntoOnePDF() throws IOException {
 		filenm = HalyardPaths.RENEWALFORM + "/" + year + "/" + year + "_Renewal_Forms.pdf";
 		Document document = createDocument(filenm);
-		ids = SqlMembership_Id.getMembershipIds(year);
+		ids = SqlMembership_Id.getAllMembershipIdsByYear(year);
 		Collections.sort(ids, Comparator.comparing(MembershipIdDTO::getMembership_id));
 		for (MembershipIdDTO id : ids) {
 			current_membership_id = id.getMembership_id();
@@ -104,7 +104,7 @@ public class PDF_Renewal_Form {
 	}
 	
 	private void makeManyMembershipsIntoManyPDF() throws IOException {
-		ids = SqlMembership_Id.getMembershipIds(year);
+		ids = SqlMembership_Id.getAllMembershipIdsByYear(year);
 		Collections.sort(ids, Comparator.comparing(MembershipIdDTO::getMembership_id));
 		for (MembershipIdDTO id : ids) {
 			current_membership_id = id.getMembership_id();

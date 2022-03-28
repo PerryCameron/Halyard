@@ -34,6 +34,7 @@ public class SqlScriptMaker {
 	static ArrayList<AwardDTO>awards;
 	static ArrayList<HashDTO>hash;
 	static ArrayList<FeeDTO>fees;
+	static ArrayList<IdChangeDTO>idChanges;
 	
 	private static final int ALL = 0;
 	
@@ -64,6 +65,7 @@ public class SqlScriptMaker {
 		awards = SqlAward.getAwards();
 		hash = HashSeSQL.getAllHash();
 		fees = SqlFee.getAllFees();
+		idChanges = SqlIdChange.getAllChangedIds();
 		HalyardPaths.checkPath(HalyardPaths.SQLBACKUP + "/" + HalyardPaths.getYear());
 		calculateSums();
 		new Dialogue_DatabaseBackup(newTupleCount);
@@ -76,6 +78,7 @@ public class SqlScriptMaker {
 			FileWriter writer = new FileWriter(file, true);
 			// writes the schema from ecsc_create.sql located in resources/database/
 			writer.write(writeSchema());
+			writer.write("\n\n");
 			for (MembershipDTO mem : memberships)
 				writer.write(getMembershipString(mem));
 			for(MembershipIdDTO mid : ids)
@@ -114,6 +117,8 @@ public class SqlScriptMaker {
 				writer.write(getHashString(hd));
 			for (FeeDTO fe: fees)
 				writer.write(getFeeString(fe));
+			for (IdChangeDTO idc: idChanges)
+				writer.write(getIdChangeString(idc));
 
 			clearMemory();
 			writer.close();
@@ -122,6 +127,8 @@ public class SqlScriptMaker {
 			e.printStackTrace();
 		}
 	}
+
+
 
 	public static void clearMemory() {
 		tableCreation.clear();
@@ -142,6 +149,8 @@ public class SqlScriptMaker {
 		workcredits.clear();
 		waitlist.clear();
 		awards.clear();
+		fees.clear();
+		idChanges.clear();
 	}
 	
 	// this is to calculate changes to display everytime you back up the database.
@@ -178,6 +187,14 @@ public class SqlScriptMaker {
 		newTupleCount.setDefinedFeesSize(definedfees.size());
 	//	System.out.println(workcredits.size() + " workcredits written");
 		newTupleCount.setWorkCreditsSize(workcredits.size());
+	}
+
+	private static String getIdChangeString(IdChangeDTO idc) {
+		return
+		"INSERT INTO id_change () VALUES("
+		+ idc.getChangeId() + ","
+		+ idc.getIdYear() + ","
+		+ idc.isChanged() + ");\n";
 	}
 
 	private static String getFeeString(FeeDTO fe) {

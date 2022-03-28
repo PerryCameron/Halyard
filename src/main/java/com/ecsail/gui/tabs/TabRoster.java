@@ -303,15 +303,15 @@ public class TabRoster extends Tab {
 					ObservableList<MembershipListDTO> keepers = FXCollections.observableArrayList();
 					setListType("return");
 					rosters.clear();
-					rosters.addAll(SqlMembershipList.getFullNewMemberRoster(selectedYear));
-					for (MembershipListDTO roster : rosters) {
-						if (!SqlExists.paidLate(roster)) {
-							keepers.add(roster);
-						}
-					}
-					rosters.clear();
-					rosters.addAll(keepers);
-					keepers.clear();
+					rosters.addAll(SqlMembershipList.getReturnMembers(Integer.parseInt(selectedYear)));
+//					for (MembershipListDTO roster : rosters) {
+//						if (!SqlExists.paidLate(roster)) {
+//							keepers.add(roster);
+//						}
+//					}
+//					rosters.clear();
+//					rosters.addAll(keepers);
+//					keepers.clear();
 					records.setText(rosters.size() + " Records");
 					//rosterTableView.sort();
 					rosters.sort(Comparator.comparing(MembershipListDTO::getMembershipId));
@@ -514,6 +514,4 @@ public class TabRoster extends Tab {
 			break;
 		}
 	}
-
-
 }

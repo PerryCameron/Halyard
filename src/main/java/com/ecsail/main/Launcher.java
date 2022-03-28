@@ -252,4 +252,8 @@ static TabPane tabPane;
 		new PDF_BoatReport();
     }
 
+    public static void createNonRenews() {
+		tabPane.getTabs().add(new TabNonRenewCreator("Non Renew Creator"));
+		tabPane.getSelectionModel().select(getTabIndex("Non Renew Creator"));
+    }
 }

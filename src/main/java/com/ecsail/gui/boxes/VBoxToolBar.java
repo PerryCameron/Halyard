@@ -54,7 +54,8 @@ public class VBoxToolBar extends VBox {
 			MenuItem m3_1_8 = new MenuItem("Fees (experimental)");
 			MenuItem m3_1_9 = new MenuItem("Notes");
 
-			MenuItem m3_3 = new MenuItem("New Year Generator");
+		MenuItem m3_3 = new MenuItem("New Year Generator");
+		MenuItem m3_4 = new MenuItem("Create non renew members");
 
 		// submenu
 		Menu subMenu3_2 = new Menu("Create");
@@ -101,6 +102,7 @@ public class VBoxToolBar extends VBox {
 //			m4_1_6.setOnAction((event) -> Launcher.openTabStub());
 			m4_1_8.setOnAction((event) -> Launcher.createRenewalForms());
 			m3_2_2.setOnAction((event) -> Launcher.openEnvelopesDialogue());
+			m3_4.setOnAction((event) -> Launcher.createNonRenews());
         
         m4_1_10.setOnAction((event) -> new Dialogue_DirectoryCreation());
         
@@ -111,7 +113,7 @@ public class VBoxToolBar extends VBox {
 
         menu1.getItems().addAll(subMenu1_1,m1_2,m1_3,m1_4);
 		menu2.getItems().addAll(m2_1,m2_2);
-        menu3.getItems().addAll(subMenu3_1,subMenu3_2,m3_3);
+        menu3.getItems().addAll(subMenu3_1,subMenu3_2,m3_3,m3_4);
         menu4.getItems().add(subMenu4_1);
 
         menuBar.getMenus().addAll(menu1,menu2,menu3,menu4,menu5);

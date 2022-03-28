@@ -107,7 +107,7 @@ public class PDF_Envelope {
 		doc.add(new Paragraph(new Text("\n\n\n\n\n")));
 		doc.add(createAddress());
 		} else {
-			ids = SqlMembership_Id.getMembershipIds(year);
+			ids = SqlMembership_Id.getAllMembershipIdsByYear(year);
 			Collections.sort(ids, Comparator.comparing(MembershipIdDTO::getMembership_id));
 
 			for(MembershipIdDTO id: ids) {
@@ -142,7 +142,7 @@ public class PDF_Envelope {
 		doc.add(new Paragraph(new Text("\n\n\n\n\n\n\n\n\n")));
 		doc.add(createAddress());
 		} else {
-			ids = SqlMembership_Id.getMembershipIds(year);
+			ids = SqlMembership_Id.getAllMembershipIdsByYear(year);
 			Collections.sort(ids, Comparator.comparing(MembershipIdDTO::getMembership_id));
 			for(MembershipIdDTO id: ids) {
 				current_membership_id = id.getMembership_id();

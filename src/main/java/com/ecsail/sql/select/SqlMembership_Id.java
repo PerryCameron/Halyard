@@ -232,12 +232,12 @@ public class SqlMembership_Id {
         return number;
     }
 
-    public static ObservableList<MembershipIdDTO> getMembershipIds(String year) {
+    public static ObservableList<MembershipIdDTO> getAllMembershipIdsByYear(String year) {
 		ObservableList<MembershipIdDTO> theseIds = FXCollections.observableArrayList();
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 		    ResultSet rs;
-			rs = stmt.executeQuery(Main.console.setRegexColor("select * from membership_id where fiscal_year=" + year));
+			rs = stmt.executeQuery(Main.console.setRegexColor("select * from membership_id where fiscal_year=" + year + " order by MEMBERSHIP_ID"));
 		while (rs.next()) {
 			theseIds.add(new MembershipIdDTO(
 					rs.getInt("MID"),
@@ -256,6 +256,31 @@ public class SqlMembership_Id {
 		}
 		return theseIds;
 	}
+
+    public static ObservableList<MembershipIdDTO> getActiveMembershipIdsByYear(String year) {
+        ObservableList<MembershipIdDTO> theseIds = FXCollections.observableArrayList();
+        try {
+            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
+            ResultSet rs;
+            rs = stmt.executeQuery(Main.console.setRegexColor("select * from membership_id where fiscal_year=" + year + " and renew=true order by MEMBERSHIP_ID"));
+            while (rs.next()) {
+                theseIds.add(new MembershipIdDTO(
+                        rs.getInt("MID"),
+                        rs.getString("FISCAL_YEAR"),
+                        rs.getInt("MS_ID"),
+                        rs.getString("MEMBERSHIP_ID"),
+                        rs.getBoolean("RENEW"),
+                        rs.getString("MEM_TYPE"),
+                        rs.getBoolean("SELECTED"),
+                        rs.getBoolean("LATE_RENEW")));
+            }
+            stmt.close();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
+        }
+        return theseIds;
+    }
 
     public static int getNonRenewNumber(String year) {
         int number = 0;
