@@ -79,7 +79,9 @@ public class VBoxToolBar extends VBox {
 		m1_3.setOnAction((event) -> new Dialogue_StatisticsStatusBar());
 		m1_4.setOnAction((event) -> closeConnection());
 		//// Menu 2 "Search" Listeners ///
+		m2_1.setOnAction((event -> new Dialogue_MembershipIdSearch()));
 		m2_2.setOnAction((event) -> new Dialogue_Msid());
+
 		//// Menu 3 "Membership" Listeners ///
 
 		m3_2_1.setOnAction((event) -> CreateMembership.Create());

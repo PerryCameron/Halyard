@@ -292,7 +292,23 @@ public class SqlMembership_Id {
             number = rs.getInt("count(*)");
 
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
+            new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
+        }
+        //System.out.println(number);
+        return number;
+    }
+
+    public static int getMsidFromYearAndMembershipId(int year, String membershipId) {
+        int number = 0;
+        ResultSet rs;
+        try {
+            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
+            rs = stmt.executeQuery("select MS_ID from membership_id where FISCAL_YEAR=" + year
+                   + " and MEMBERSHIP_ID=" + membershipId);
+            rs.next();
+            number = rs.getInt("MS_ID");
+
+        } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
         //System.out.println(number);

@@ -1,9 +1,12 @@
 package com.ecsail.gui.dialogues;
 
+import com.ecsail.main.HalyardPaths;
 import com.ecsail.main.Launcher;
+import com.ecsail.sql.select.SqlMembership_Id;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
@@ -18,7 +21,7 @@ public class Dialogue_MembershipIdSearch extends Stage {
 		VBox vboxGrey = new VBox(); // this is the vbox for organizing all the widgets
 		VBox vboxBlue = new VBox();
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
-		Scene scene = new Scene(vboxBlue, 300, 100);
+		Scene scene = new Scene(vboxBlue, 290, 100);
 		HBox hboxControls = new HBox();
 		/////////////////// ATTRIBUTES ///////////////////
 		vboxBlue.setId("box-blue");
@@ -28,13 +31,18 @@ public class Dialogue_MembershipIdSearch extends Stage {
 
 		TextField msidTextField = new TextField();
 		Button submitButton = new Button("Submit");
+		ComboBox<Integer> comboBox = new ComboBox<>();
+		for(int i = Integer.parseInt(HalyardPaths.getYear()) + 1; i > 1969; i--) {
+			comboBox.getItems().add(i);
+		}
+		comboBox.getSelectionModel().select(1);
 		// vboxGrey.setId("slip-box");
 		VBox.setVgrow(vboxGrey, Priority.ALWAYS);
 		VBox.setVgrow(vboxPink, Priority.ALWAYS);
 		HBox.setHgrow(vboxPink, Priority.ALWAYS);
 		scene.getStylesheets().add("stylesheet.css");
 
-		setTitle("By MSID");
+		setTitle("By Membership ID");
 		Image mainIcon = new Image(getClass().getResourceAsStream("/ECSC64.png"));
 		msidTextField.setPrefWidth(70);
 		hboxControls.setSpacing(7);
@@ -42,11 +50,12 @@ public class Dialogue_MembershipIdSearch extends Stage {
 		/////////////// Listener ///////////////////
 
 		submitButton.setOnAction((event) -> {
-			Launcher.createMembershipTabFromPeopleList(Integer.parseInt(msidTextField.getText()));
+			int msid = SqlMembership_Id.getMsidFromYearAndMembershipId(comboBox.getValue(), msidTextField.getText());
+			Launcher.createMembershipTabForRoster(Integer.parseInt(msidTextField.getText()), msid);
 		});
 		
 		//////////////// ADD CONTENT ///////////////////
-		hboxControls.getChildren().addAll(msidTextField,submitButton);
+		hboxControls.getChildren().addAll(msidTextField,comboBox, submitButton);
 		vboxGrey.getChildren().addAll(hboxControls);
 		vboxBlue.getChildren().add(vboxPink);
 		vboxPink.getChildren().add(vboxGrey);
