@@ -193,7 +193,7 @@ e.printStackTrace();
 			stmt.execute(Main.console.setRegexColor("INSERT INTO membership_id () VALUES (" + id.getMid() + ",'" + id.getFiscal_Year() + "','" + id.getMs_id() 
 			+ "'," + id.getMembership_id() + "," + id.isRenew() + ",'" + id.getMem_type()+ "'," + id.isSelected() + "," + id.isLateRenew() + ")"));
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			System.out.println("Unable to create row for msid=" + id.getMs_id() + " With memID=" +id.getMembership_id());
 			new Dialogue_ErrorSQL(e,"Unable to create new row","See below for details");
 		}
 	}

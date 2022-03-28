@@ -81,30 +81,35 @@ public class TabNonRenewCreator extends Tab {
 		vboxBlue.getChildren().add(vboxPink);
 		vboxPink.getChildren().add(vboxGrey);
 		setContent(vboxBlue);
-		
 	}
 
 	private void getNonRenewListOnChangedYear(Integer year) {
 		ObservableList<MembershipIdDTO> oldYear = SqlMembership_Id.getActiveMembershipIdsByYear(String.valueOf(year -1));
 		ObservableList<MembershipIdDTO> newYear = SqlMembership_Id.getAllMembershipIdsByYear(String.valueOf(year));
+		int mid = SqlSelect.getNextAvailablePrimaryKey("membership_id","mid") + 1;
 		System.out.println("old year=" + (year - 1));
-		// must compact old to match new
+
 
 		boolean matches = false;
+		int count = 1;
 		for(MembershipIdDTO id: oldYear) {
+			id.setMembership_id(String.valueOf(count)); // set membership numbers to changed year
+			count++;
 			for(MembershipIdDTO newId: newYear) {
 				if(id.getMs_id() == newId.getMs_id()) {
 					matches = true;
 				}
 			}
 			if(!matches) { // there was not a match so we add to list
-				id.setMem_type("NR");
+				id.setMem_type("NR"); // set as non renew
+				id.setMid(mid); // put in appropriate mid
+				mid++;
+				id.setIsRenew(false); // make non-renew
 				id.setFiscal_Year(String.valueOf(year));
 				ids.add(id);
 			}
 			matches = false;
 		}
-
 	}
 
 

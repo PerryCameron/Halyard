@@ -1,13 +1,9 @@
 package com.ecsail.gui.dialogues;
 
 import com.ecsail.main.Launcher;
-import com.ecsail.pdf.PDF_Envelope;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
@@ -15,17 +11,14 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
+public class Dialogue_MembershipIdSearch extends Stage {
 
-public class Dialogue_Msid extends Stage {
-
-	public Dialogue_Msid() {
+	public Dialogue_MembershipIdSearch() {
 
 		VBox vboxGrey = new VBox(); // this is the vbox for organizing all the widgets
 		VBox vboxBlue = new VBox();
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
-		Scene scene = new Scene(vboxBlue, 200, 100);
+		Scene scene = new Scene(vboxBlue, 300, 100);
 		HBox hboxControls = new HBox();
 		/////////////////// ATTRIBUTES ///////////////////
 		vboxBlue.setId("box-blue");
