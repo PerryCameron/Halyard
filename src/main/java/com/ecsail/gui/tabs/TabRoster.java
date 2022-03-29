@@ -300,18 +300,9 @@ public class TabRoster extends Tab {
 		rb.getRadioReturnMembers().selectedProperty().addListener((ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected,
 					Boolean isNowSelected) -> {
 				if (isNowSelected) {
-					ObservableList<MembershipListDTO> keepers = FXCollections.observableArrayList();
 					setListType("return");
 					rosters.clear();
 					rosters.addAll(SqlMembershipList.getReturnMembers(Integer.parseInt(selectedYear)));
-//					for (MembershipListDTO roster : rosters) {
-//						if (!SqlExists.paidLate(roster)) {
-//							keepers.add(roster);
-//						}
-//					}
-//					rosters.clear();
-//					rosters.addAll(keepers);
-//					keepers.clear();
 					records.setText(rosters.size() + " Records");
 					//rosterTableView.sort();
 					rosters.sort(Comparator.comparing(MembershipListDTO::getMembershipId));

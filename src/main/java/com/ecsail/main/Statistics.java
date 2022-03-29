@@ -27,7 +27,7 @@ public class Statistics {
 
 	public static void updateStats(Dialogue_StatisticsStatusBar statBar) {
 			int statId = 0;
-			int selectedYear = 2000;
+			int selectedYear = 1970;
 			StatsDTO stats;
 			SqlDelete.deleteStatistics();
 			int numberOfYears = Integer.parseInt(HalyardPaths.getYear()) - selectedYear + 1;

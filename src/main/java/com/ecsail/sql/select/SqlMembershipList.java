@@ -324,20 +324,38 @@ public class SqlMembershipList {
         return rosters;
     }
 
-    public static ObservableList<MembershipListDTO> getReturnMembers(int fiscalYear) { // and those who lost their membership number
-        int lastYear = fiscalYear - 1;
+    public static ObservableList<MembershipListDTO> getReturnMembers(int year) { // and those who lost their membership number
+        int lastYear = year - 1;
         ObservableList<MembershipListDTO> rosters = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
-                    "select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,id.FISCAL_YEAR,m.JOIN_DATE,id.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip "
-                    + "from membership_id id left join membership m on m.MS_ID=id.MS_ID "
-                    + "left join person p on p.P_ID=m.P_ID left join slip s on s.MS_ID=m.MS_ID "
-                    + "where id.FISCAL_YEAR='" + fiscalYear + "' and YEAR(m.JOIN_DATE) < "+ fiscalYear +" and id.MEMBERSHIP_ID > ("
-                    + "select membership_id from membership_id where FISCAL_YEAR='" + fiscalYear + "' and MS_ID=("
-                    + "select MS_ID from membership_id where FISCAL_YEAR='" + lastYear + "' and membership_id=("
-                    + "select max(membership_id) from membership_id where FISCAL_YEAR='" + lastYear + "' and membership_id < 500 and id.renew=1))) "
-                    + " and id.MEMBERSHIP_ID < 500 and id.LATE_RENEW=0;"));
+                    "SELECT m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,id.FISCAL_YEAR,m.JOIN_DATE,id.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip\n" +
+                            "FROM membership_id id\n" +
+                            "LEFT JOIN membership m on id.MS_ID=m.MS_ID\n" +
+                            "LEFT JOIN person p on p.P_ID=m.P_ID \n" +
+                            "LEFT JOIN slip s on s.MS_ID=m.MS_ID\n" +
+                            "WHERE FISCAL_YEAR="+year+"\n" +
+                            "and id.MEMBERSHIP_ID > \n" +
+                            "(\n" +
+                            "  select MEMBERSHIP_ID from membership_id where FISCAL_YEAR="+year+" and MS_ID=(\n" +
+                            "     select MS_ID \n" +
+                            "     from membership_id \n" +
+                            "     where MEMBERSHIP_ID=(\n" +
+                            "        select max(membership_id) \n" +
+                            "        from membership_id where FISCAL_YEAR="+lastYear+" and membership_id < 500 and renew=1\n" +
+                            "        ) \n" +
+                            "     and FISCAL_YEAR="+lastYear+"\n" +
+                            "  )\n" +
+                            ")\n" +
+                            "and id.MEMBERSHIP_ID < 500\n" +
+                            "and YEAR(m.JOIN_DATE)!="+year+" \n" +
+                            "and (SELECT NOT EXISTS(select mid \n" +
+                            "\t\t\t\t\t\tfrom membership_id \n" +
+                            "\t\t\t\t\t\twhere FISCAL_YEAR="+lastYear+" \n" +
+                            "\t\t\t\t\t\tand RENEW=1 \n" +
+                            "\t\t\t\t\t\tand MS_ID=id.MS_ID)\n" +
+                            "\t)"));
             queryToArrayList(rosters, rs);
             stmt.close();
         } catch (SQLException e) {
