@@ -6,6 +6,7 @@ import java.util.concurrent.Executors;
 import com.ecsail.main.HalyardPaths;
 import com.ecsail.sql.SqlDelete;
 import com.ecsail.sql.SqlInsert;
+import com.ecsail.sql.select.SqlStats;
 import com.ecsail.structures.StatsDTO;
 
 import javafx.beans.value.ObservableValue;
@@ -117,9 +118,10 @@ public class Dialogue_StatisticsStatusBar extends Stage {
 	        @Override
 	        protected String call() {
 	        for (int i = 0; i < numberOfYears; i++) {
-	        StatsDTO stats = new StatsDTO(startYear);
-			stats.setStatId(statId);
-			stats.refreshStatsForYear(); // built in function for the object to update itself.
+	        StatsDTO stats = SqlStats.createStatDTO(startYear,statId);
+//			stats.setStatId(statId);
+//			stats.refreshStatsForYear(); // built in function for the object to update itself.
+
 			SqlInsert.addStatRecord(stats);
 			System.out.print(startYear + " ");
 			startYear++;

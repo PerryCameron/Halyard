@@ -48,7 +48,26 @@ public class RosterRadioButtonsDTO {
 	}
 	
 	public RosterRadioButtonsDTO() {
-		// default constructor
+		setSameToggleGroup();
+		setUserData();
+	}
+
+	public void setUserData () {
+		radioAll.setUserData("all");
+		radioActive.setUserData("active");
+		radioNonRenew.setUserData("non-renew");
+		radioNewMembers.setUserData("new-members");
+		radioReturnMembers.setUserData("return");
+		radioLatePaymentMembers.setUserData("late");
+		radioSlipWaitList.setUserData("slip-waitlist");
+		radioSlip.setUserData("ownes slip");
+		radioWantsToSublease.setUserData("wants to sublease");
+		radioOpenSlips.setUserData("available slips");
+		radioSlipChange.setUserData("wants slip change");
+		radioSubLeasedSlips.setUserData("subleased slips");
+		radioKayakRackWaitList.setUserData("kayak rack waitlist");
+		radioShedWaitList.setUserData("kayak shed waitlist");
+		radioShedOwner.setUserData("owns shed spot");
 	}
 	
 	public void setSameToggleGroup () {
@@ -74,128 +93,68 @@ public class RosterRadioButtonsDTO {
 		return radioAll;
 	}
 
-	public void setRadioAll(RadioButton radioAll) {
-		this.radioAll = radioAll;
-	}
-
 	public RadioButton getRadioActive() {
 		return radioActive;
-	}
-
-	public void setRadioActive(RadioButton radioActive) {
-		this.radioActive = radioActive;
 	}
 
 	public RadioButton getRadioNonRenew() {
 		return radioNonRenew;
 	}
 
-	public void setRadioNonRenew(RadioButton radioNonRenew) {
-		this.radioNonRenew = radioNonRenew;
-	}
-
 	public RadioButton getRadioNewMembers() {
 		return radioNewMembers;
-	}
-
-	public void setRadioNewMembers(RadioButton radioNewMembers) {
-		this.radioNewMembers = radioNewMembers;
 	}
 
 	public RadioButton getRadioReturnMembers() {
 		return radioReturnMembers;
 	}
 
-	public void setRadioReturnMembers(RadioButton radioNewReturnMembers) {
-		this.radioReturnMembers = radioNewReturnMembers;
-	}
-
 	public RadioButton getRadioSlipWaitList() {
 		return radioSlipWaitList;
-	}
-
-	public void setRadioSlipWaitList(RadioButton radioSlipWaitList) {
-		this.radioSlipWaitList = radioSlipWaitList;
 	}
 
 	public RadioButton getRadioSlip() {
 		return radioSlip;
 	}
 
-	public void setRadioSlip(RadioButton radioSlip) {
-		this.radioSlip = radioSlip;
-	}
-
 	public RadioButton getRadioWantsToSublease() {
 		return radioWantsToSublease;
-	}
-
-	public void setRadioWantsToSublease(RadioButton radioWantsToSublease) {
-		this.radioWantsToSublease = radioWantsToSublease;
 	}
 
 	public RadioButton getRadioOpenSlips() {
 		return radioOpenSlips;
 	}
 
-	public void setRadioOpenSlips(RadioButton radioOpenSlips) {
-		this.radioOpenSlips = radioOpenSlips;
-	}
-
 	public RadioButton getRadioSlipChange() {
 		return radioSlipChange;
-	}
-
-	public void setRadioSlipChange(RadioButton radioSlipChange) {
-		this.radioSlipChange = radioSlipChange;
 	}
 
 	public RadioButton getRadioSubLeasedSlips() {
 		return radioSubLeasedSlips;
 	}
 
-	public void setRadioSubLeasedSlips(RadioButton radioSubLeasedSlips) {
-		this.radioSubLeasedSlips = radioSubLeasedSlips;
-	}
-
 	public RadioButton getRadioKayakRackWaitList() {
 		return radioKayakRackWaitList;
-	}
-
-	public void setRadioKayakRackWaitList(RadioButton radioKayakRackWaitList) {
-		this.radioKayakRackWaitList = radioKayakRackWaitList;
 	}
 
 	public RadioButton getRadioKayakRackOwners() {
 		return radioKayakRackOwners;
 	}
 
-	public void setRadioKayakRackOwners(RadioButton radioKayakRackOwners) {
-		this.radioKayakRackOwners = radioKayakRackOwners;
-	}
-
 	public RadioButton getRadioShedWaitList() {
 		return radioShedWaitList;
-	}
-
-	public void setRadioShedWaitList(RadioButton radioShedWaitList) {
-		this.radioShedWaitList = radioShedWaitList;
 	}
 
 	public RadioButton getRadioShedOwner() {
 		return radioShedOwner;
 	}
 
-	public void setRadioShedOwner(RadioButton radioShedOwner) {
-		this.radioShedOwner = radioShedOwner;
-	}
-
 	public RadioButton getRadioLatePaymentMembers() {
 		return radioLatePaymentMembers;
 	}
 
-	public void setRadioLatePaymentMembers(RadioButton radioAllActiveMembers) {
-		this.radioLatePaymentMembers = radioAllActiveMembers;
+	public ToggleGroup getTg1() {
+		return tg1;
 	}
 
 	@Override
@@ -205,7 +164,4 @@ public class RosterRadioButtonsDTO {
 				+ radioReturnMembers + ", radioAllActiveMembers=" + radioLatePaymentMembers + ", radioSlipWaitList="
 				+ radioSlipWaitList + "]";
 	}
-	
-	
-	
 }

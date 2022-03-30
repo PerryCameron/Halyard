@@ -10,6 +10,7 @@ import com.ecsail.main.rosterContextMenu;
 import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.select.SqlMembershipList;
 import com.ecsail.structures.*;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -36,6 +37,7 @@ public class TabRoster extends Tab {
 	private final RosterSelectDTO printChoices;
 	private final RosterRadioButtonsDTO rb;
 	String selectedYear;
+	Label records = new Label();
 
 	public TabRoster(ObservableList<MembershipListDTO> a, String sy) {
 		super();
@@ -63,7 +65,7 @@ public class TabRoster extends Tab {
 		HBox controlsHbox = new HBox();
 		TitledPane titledPane = new TitledPane();
 		TabPane tabPane = new TabPane();
-		Label records = new Label();
+
 		CheckBox c1 = new CheckBox("Membership Id");
 		CheckBox c2 = new CheckBox("Last Name");
 		CheckBox c3 = new CheckBox("First Name");
@@ -172,10 +174,27 @@ public class TabRoster extends Tab {
 		comboBox.getStyleClass().add("bigbox");
 		//////////////////// LISTENERS //////////////////////////
 
+		/// this listens for a focus on the slips tab and refreshes data everytime.
+		this.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+			if (newValue) {  // focus Gained
+				makeListByRadioButtonChoice();
+				// sets up printing choices for excel export
+				setListType(rb.getTg1().getSelectedToggle().getUserData().toString());			}
+		});
+
+		// makes change when a radio button is selected
+		rb.getTg1().selectedToggleProperty().addListener((ov, old_toggle, new_toggle) -> {
+			if (rb.getTg1().getSelectedToggle() != null) {
+				makeListByRadioButtonChoice();
+				// sets up printing choices for excel export
+				setListType(rb.getTg1().getSelectedToggle().getUserData().toString());
+			}
+		});
+
 		comboBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
 				selectedYear = newValue.toString();
 				printChoices.setYear(selectedYear);
-				changeSelectedRoster();
+			    makeListByRadioButtonChoice();
 				titledPane.setText("Roster " + selectedYear);
 				records.setText(rosters.size() + " Records");
 				rosterTableView.sort();
@@ -251,174 +270,6 @@ public class TabRoster extends Tab {
 			return row;
 		});
 
-
-		rb.getRadioActive().selectedProperty().addListener((obs, wasPreviouslySelected, isNowSelected) -> {
-			if (isNowSelected) {
-				setListType("active");
-				rosters.clear();
-				rosters.addAll(SqlMembershipList.getRoster(selectedYear, true));
-
-				records.setText(rosters.size() + " Records");
-				//rosterTableView.sort();
-				rosters.sort(Comparator.comparing(MembershipListDTO::getMembershipId));
-			}
-		});
-
-		rb.getRadioAll().selectedProperty().addListener((obs, wasPreviouslySelected, isNowSelected) -> {
-			if (isNowSelected) {
-				setListType("all");
-				rosters.clear();
-				rosters.addAll(SqlMembershipList.getRosterOfAll(selectedYear));
-				records.setText(rosters.size() + " Records");
-				//rosterTableView.sort();
-				rosters.sort(Comparator.comparing(MembershipListDTO::getMembershipId));
-			}
-		});
-
-		rb.getRadioNonRenew().selectedProperty().addListener((obs, wasPreviouslySelected, isNowSelected) -> {
-			if (isNowSelected) {
-				setListType("non-renew");
-				rosters.clear();
-				rosters.addAll(SqlMembershipList.getRoster(selectedYear, false));
-				records.setText(rosters.size() + " Records");
-				//rosterTableView.sort();
-				rosters.sort(Comparator.comparing(MembershipListDTO::getMembershipId));
-			}
-		});
-
-		rb.getRadioNewMembers().selectedProperty().addListener((obs, wasPreviouslySelected, isNowSelected) -> {
-			if (isNowSelected) {
-				setListType("new-members");
-				rosters.clear();
-				rosters.addAll(SqlMembershipList.getNewMemberRoster(selectedYear));
-				records.setText(rosters.size() + " Records");
-				//rosterTableView.sort();
-				rosters.sort(Comparator.comparing(MembershipListDTO::getMembershipId));
-			}
-		});
-
-		rb.getRadioReturnMembers().selectedProperty().addListener((ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected,
-					Boolean isNowSelected) -> {
-				if (isNowSelected) {
-					setListType("return");
-					rosters.clear();
-					rosters.addAll(SqlMembershipList.getReturnMembers(Integer.parseInt(selectedYear)));
-					records.setText(rosters.size() + " Records");
-					//rosterTableView.sort();
-					rosters.sort(Comparator.comparing(MembershipListDTO::getMembershipId));
-				}
-		});
-
-		rb.getRadioSlipWaitList().selectedProperty().addListener((obs, wasPreviouslySelected, isNowSelected) -> {
-			if (isNowSelected) {
-				setListType("slip-waitlist");
-				rosters.clear();
-				rosters.addAll(SqlMembershipList.getWaitListRoster("slipwait"));
-				records.setText(rosters.size() + " Records");
-				//rosterTableView.sort();
-				rosters.sort(Comparator.comparing(MembershipListDTO::getMembershipId));
-			}
-		});
-
-		rb.getRadioOpenSlips().selectedProperty().addListener((obs, wasPreviouslySelected, isNowSelected) -> {
-			if (isNowSelected) {
-				setListType("wantsrelease");
-				rosters.clear();
-				rosters.addAll(SqlMembershipList.getWaitListRoster("wantrelease"));
-				records.setText(rosters.size() + " Records");
-				//rosterTableView.sort();
-				rosters.sort(Comparator.comparing(MembershipListDTO::getMembershipId));
-			}
-		});
-
-		rb.getRadioSlip().selectedProperty().addListener((obs, wasPreviouslySelected, isNowSelected) -> {
-			if (isNowSelected) {
-				setListType("slipOwners");
-				rosters.clear();
-				rosters.addAll(SqlMembershipList.getRosterOfSlipOwners(HalyardPaths.getYear()));
-				records.setText(rosters.size() + " Records");
-				//rosterTableView.sort();
-				rosters.sort(Comparator.comparing(MembershipListDTO::getMembershipId));
-			}
-		});
-
-		rb.getRadioWantsToSublease().selectedProperty().addListener((obs, wasPreviouslySelected, isNowSelected) -> {
-			if (isNowSelected) {
-				setListType("wantsublease");
-				rosters.clear();
-				rosters.addAll(SqlMembershipList.getWaitListRoster("wantsublease"));
-				records.setText(rosters.size() + " Records");
-				//rosterTableView.sort();
-				rosters.sort(Comparator.comparing(MembershipListDTO::getMembershipId));
-			}
-		});
-
-		rb.getRadioSlipChange().selectedProperty().addListener((obs, wasPreviouslySelected, isNowSelected) -> {
-			if (isNowSelected) {
-				setListType("wantsublease");
-				rosters.clear();
-				rosters.addAll(SqlMembershipList.getWaitListRoster("wantslipchange"));
-				records.setText(rosters.size() + " Records");
-				//rosterTableView.sort();
-				rosters.sort(Comparator.comparing(MembershipListDTO::getMembershipId));
-			}
-		});
-
-		rb.getRadioSubLeasedSlips().selectedProperty().addListener((obs, wasPreviouslySelected, isNowSelected) -> {
-			if (isNowSelected) {
-				setListType("subleasedslips");
-				rosters.clear();
-				rosters.addAll(SqlMembershipList.getRosterOfSubleasedSlips());
-				records.setText(rosters.size() + " Records");
-				//rosterTableView.sort();
-				rosters.sort(Comparator.comparing(MembershipListDTO::getMembershipId));
-			}
-		});
-
-		rb.getRadioShedOwner().selectedProperty().addListener((obs, wasPreviouslySelected, isNowSelected) -> {
-			if (isNowSelected) {
-				setListType("shedowners");
-				rosters.clear();
-				rosters.addAll(SqlMembershipList.getRosterOfKayakShedOwners(HalyardPaths.getYear()));
-				records.setText(rosters.size() + " Records");
-				//rosterTableView.sort();
-				rosters.sort(Comparator.comparing(MembershipListDTO::getMembershipId));
-			}
-		});
-
-		rb.getRadioKayakRackOwners().selectedProperty().addListener((obs, wasPreviouslySelected, isNowSelected) -> {
-			if (isNowSelected) {
-				setListType("rackowners");
-				rosters.clear();
-				rosters.addAll(SqlMembershipList.getRosterOfKayakRackOwners(HalyardPaths.getYear()));
-				records.setText(rosters.size() + " Records");
-				//rosterTableView.sort();
-				rosters.sort(Comparator.comparing(MembershipListDTO::getMembershipId));
-			}
-		});
-
-		rb.getRadioLatePaymentMembers().selectedProperty().addListener((ObservableValue<? extends Boolean> obs, Boolean wasPreviouslySelected,
-				Boolean isNowSelected) -> {
-			if (isNowSelected) {
-				ObservableList<MembershipListDTO> keepers = FXCollections.observableArrayList();
-				setListType("return");
-				rosters.clear();
-				rosters.addAll(SqlMembershipList.getFullNewMemberRoster(selectedYear));
-				for (MembershipListDTO roster : rosters) {
-					// if they didn't pay late
-					if (SqlExists.paidLate(roster)) {
-						keepers.add(roster);
-
-					}
-				}
-				rosters.clear();
-				rosters.addAll(keepers);
-				keepers.clear();
-				records.setText(rosters.size() + " Records");
-				rosters.sort(Comparator.comparing(MembershipListDTO::getMembershipId));
-			}
-	});
-
 		//////////////////// SET CONTENT //////////////////////
 		
 		vboxCheckBox1.getChildren().addAll(c1, c2, c3, c4);
@@ -437,19 +288,37 @@ public class TabRoster extends Tab {
 		setContent(vboxBlue);
 	}
 
-	/// this only changes when the year spinner changes
-	private void changeSelectedRoster() {
+	private void makeListByRadioButtonChoice() {
 		rosters.clear();
-		if (rb.getRadioActive().isSelected())
+		if(rb.getRadioActive().isSelected())
 			rosters.addAll(SqlMembershipList.getRoster(selectedYear, true));
-		if (rb.getRadioNonRenew().isSelected())
-			rosters.addAll(SqlMembershipList.getRoster(selectedYear, false));
-		if (rb.getRadioNewMembers().isSelected())
-			rosters.addAll(SqlMembershipList.getNewMemberRoster(selectedYear));
-		if (rb.getRadioReturnMembers().isSelected())
-			rosters.addAll(SqlMembershipList.getFullNewMemberRoster(selectedYear));
-		if (rb.getRadioAll().isSelected())
+		if(rb.getRadioAll().isSelected())
 			rosters.addAll(SqlMembershipList.getRosterOfAll(selectedYear));
+		if(rb.getRadioNonRenew().isSelected())
+			rosters.addAll(SqlMembershipList.getRoster(selectedYear, false));
+		if(rb.getRadioNewMembers().isSelected())
+			rosters.addAll(SqlMembershipList.getNewMemberRoster(selectedYear));
+		if(rb.getRadioReturnMembers().isSelected())
+			rosters.addAll(SqlMembershipList.getReturnMembers(Integer.parseInt(selectedYear)));
+		if(rb.getRadioSlipWaitList().isSelected())
+			rosters.addAll(SqlMembershipList.getWaitListRoster("slipwait"));
+		if(rb.getRadioOpenSlips().isSelected())
+			rosters.addAll(SqlMembershipList.getWaitListRoster("wantrelease"));
+		if(rb.getRadioSlip().isSelected())
+			rosters.addAll(SqlMembershipList.getRosterOfSlipOwners(HalyardPaths.getYear()));
+		if(rb.getRadioWantsToSublease().isSelected())
+			rosters.addAll(SqlMembershipList.getWaitListRoster("wantsublease"));
+		if(rb.getRadioSlipChange().isSelected())
+			rosters.addAll(SqlMembershipList.getWaitListRoster("wantslipchange"));
+		if(rb.getRadioSubLeasedSlips().isSelected())
+			rosters.addAll(SqlMembershipList.getRosterOfSubleasedSlips());
+		if(rb.getRadioShedOwner().isSelected())
+			rosters.addAll(SqlMembershipList.getRosterOfKayakShedOwners(HalyardPaths.getYear()));
+		if(rb.getRadioKayakRackOwners().isSelected())
+			rosters.addAll(SqlMembershipList.getRosterOfKayakRackOwners(HalyardPaths.getYear()));
+		if(rb.getRadioLatePaymentMembers().isSelected())
+			System.out.println("please rework this shit");
+		records.setText(rosters.size() + " Records");
 		rosters.sort(Comparator.comparing(MembershipListDTO::getMembershipId));
 	}
 
