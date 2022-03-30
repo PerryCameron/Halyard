@@ -45,6 +45,7 @@ public class TabRoster extends Tab {
 		this.selectedYear = sy;
 		this.setText("Roster");
 		this.rb = new RosterRadioButtonsDTO();
+		// TODO this needs a rework, to complex for what it does.
 		this.printChoices = new RosterSelectDTO(sy, false, false, true, false, false, false, false, true, true, true, false,
 				false, false, false, false, false, false, false, false, false);
 
