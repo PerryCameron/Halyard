@@ -1,10 +1,6 @@
 package com.ecsail.structures;
 
 
-import com.ecsail.sql.select.SqlMembership;
-import com.ecsail.sql.select.SqlMembershipList;
-import com.ecsail.sql.select.SqlMembership_Id;
-
 public class StatsDTO {
 	
 int statId;
@@ -49,23 +45,6 @@ public StatsDTO(int statId, int fiscalYear, int activeMemberships, int nonRenewM
 	this.student = student;
 	this.deposits = deposits;
 	this.initiation = initiation;
-}
-
-public StatsDTO(int fiscalYear) {
-	this.fiscalYear = fiscalYear;
-}
-
-public void refreshStatsForYear() {
-	setNonRenewMemberships(SqlMembership_Id.getNumberOfInactiveMembershipsForYear(this.fiscalYear));
-	setNewMemberships(SqlMembership.getNumberOfNewMembershipsForYear(this.fiscalYear));
-	setActiveMemberships(SqlMembership_Id.getNumberOfActiveMembershipsForYear(this.fiscalYear));
-	setReturnMemberships(SqlMembershipList.getNumberOfReturningMembershipsForYear(this.fiscalYear));
-	setFamily(SqlMembership_Id.getNumberOfMembersOfType("FM", this.fiscalYear));
-	setRegular(SqlMembership_Id.getNumberOfMembersOfType("RM", this.fiscalYear));
-	setSocial(SqlMembership_Id.getNumberOfMembersOfType("SO", this.fiscalYear));
-	setLakeAssociates(SqlMembership_Id.getNumberOfMembersOfType("LA", this.fiscalYear));
-	setLifeMembers(SqlMembership_Id.getNumberOfMembersOfType("LM", this.fiscalYear));
-	setStudent(SqlMembership_Id.getNumberOfMembersOfType("SM", this.fiscalYear));
 }
 
 public int getStatId() {
