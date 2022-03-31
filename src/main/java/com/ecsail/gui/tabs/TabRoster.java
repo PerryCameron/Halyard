@@ -318,7 +318,7 @@ public class TabRoster extends Tab {
 		if(rb.getRadioKayakRackOwners().isSelected())
 			rosters.addAll(SqlMembershipList.getRosterOfKayakRackOwners(HalyardPaths.getYear()));
 		if(rb.getRadioLatePaymentMembers().isSelected())
-			System.out.println("please rework this shit");
+			rosters.addAll(SqlMembershipList.getRosterOfMembershipsThatPaidLate(selectedYear));
 		records.setText(rosters.size() + " Records");
 		rosters.sort(Comparator.comparing(MembershipListDTO::getMembershipId));
 	}
