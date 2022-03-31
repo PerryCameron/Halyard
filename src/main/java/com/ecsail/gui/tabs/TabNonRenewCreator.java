@@ -13,6 +13,8 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TextArea;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -31,6 +33,10 @@ public class TabNonRenewCreator extends Tab {
 		VBox vboxBlue = new VBox();
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
 
+		HBox hBoxDivider = new HBox();
+		VBox vBoxLeft = new VBox();
+		VBox vBoxRight = new VBox();
+
 
 
 		ComboBox<Integer> comboBox = new ComboBox<>();
@@ -41,7 +47,7 @@ public class TabNonRenewCreator extends Tab {
 
 		Button button = new Button("Insert Records");
 		Text changedIndicator = new Text("");
-
+		TextArea displayArea = new TextArea();
 		
 		vboxBlue.setId("box-blue");
 		vboxBlue.setPadding(new Insets(10,10,10,10));
@@ -50,8 +56,15 @@ public class TabNonRenewCreator extends Tab {
 		//vboxGrey.setId("slip-box");
 		vboxGrey.setPrefHeight(688);
 		VBox.setVgrow(vboxPink, Priority.ALWAYS);
+		VBox.setVgrow(vboxGrey,Priority.ALWAYS);
+		VBox.setVgrow(displayArea,Priority.ALWAYS);
+		HBox.setHgrow(vBoxRight, Priority.ALWAYS);
+		VBox.setVgrow(vBoxRight,Priority.ALWAYS);
+		VBox.setVgrow(vBoxLeft,Priority.ALWAYS);
+		HBox.setHgrow(displayArea,Priority.ALWAYS);
 		vboxGrey.setSpacing(5);
-
+		vBoxLeft.setPrefWidth(400);
+		vBoxRight.setPadding(new Insets(5,5,5,5));
 
 
 
@@ -66,18 +79,26 @@ public class TabNonRenewCreator extends Tab {
 		comboBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
 			changeId(changedIndicator, newValue);
 			ids.clear();
+			displayArea.clear();
+
 			if(idChanged) {
-				System.out.println("The Numbers Changed for this year");
-				getNonRenewListOnChangedYear(comboBox.getValue());
+				displayArea.setText("***** Membership ID numbers compacted in " + comboBox.getValue() + " *******");
+//				System.out.println("The Numbers Changed for this year");
+//				getNonRenewListOnChangedYear(comboBox.getValue());
 			} else {
-				ids = getNonRenewListOnUnchangedYear(comboBox.getValue());
+				displayArea.setText("***** Membership Id numbers remain the same in " + comboBox.getValue() + " *******");
+//				ids = getNonRenewListOnUnchangedYear(comboBox.getValue());
 			}
-			printResultList();
+//			printResultList();
 		});
 
 		ids = getNonRenewListOnUnchangedYear(comboBox.getValue());
 		changeId(changedIndicator, comboBox.getValue());
-		vboxGrey.getChildren().addAll(changedIndicator,comboBox,button);
+
+		vBoxLeft.getChildren().addAll(changedIndicator,comboBox,button);
+		vBoxRight.getChildren().addAll(displayArea);
+		hBoxDivider.getChildren().addAll(vBoxLeft,vBoxRight);
+		vboxGrey.getChildren().addAll(hBoxDivider);
 		vboxBlue.getChildren().add(vboxPink);
 		vboxPink.getChildren().add(vboxGrey);
 		setContent(vboxBlue);

@@ -1,6 +1,7 @@
 package com.ecsail.gui.tabs;
 
 import com.ecsail.enums.MemberType;
+import com.ecsail.gui.boxes.VBoxPersonMove;
 import com.ecsail.gui.dialogues.Dialogue_Delete;
 import com.ecsail.sql.SqlUpdate;
 import com.ecsail.structures.BooleanDTO;
@@ -12,13 +13,9 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -35,7 +32,8 @@ public class TabPersonProperties extends Tab {
 		
 		//////////// OBJECTS /////////////////
 		HBox hboxMain = new HBox();
-		VBox vbox1 = new VBox(); // holds all content
+		VBox vBoxLeft = new VBox(); // holds all content
+		VBox vBoxRight = new VBox();
 		HBox hboxGrey = new HBox(); // this is here for the grey background to make nice apperence
 		HBox hboxMemberType = new HBox();
 		HBox hboxDelete = new HBox();
@@ -52,11 +50,11 @@ public class TabPersonProperties extends Tab {
 		hboxGrey.setId("box-grey");
 		combo_box.setValue(MemberType.getByCode(person.getMemberType()));
 		
-		hboxGrey.setPadding(new Insets(5,5,5,5));  // spacing around table and buttons
+//		hboxGrey.setPadding(new Insets(5,5,5,5));  // spacing around table and buttons
 		hboxMain.setPadding(new Insets(5, 5, 5, 5));
 		
 		hboxMain.setSpacing(5);
-		vbox1.setSpacing(5);
+		vBoxLeft.setSpacing(5);
 		hboxDelete.setSpacing(5);
 		hboxMemberType.setSpacing(5);
 		hboxGrey.setSpacing(10);  // spacing in between table and buttons
@@ -64,14 +62,16 @@ public class TabPersonProperties extends Tab {
 		hboxMain.setAlignment(Pos.CENTER);
 		hboxDelete.setAlignment(Pos.CENTER_LEFT);
 		hboxMemberType.setAlignment(Pos.CENTER_LEFT);
-		
+
+		vBoxLeft.setId("box-pink");
+		vBoxLeft.setPadding(new Insets(5,5,5,5));
 		//////////  LISTENERS /////
 		
-		delButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent e) {
-            	new Dialogue_Delete(p, isDeleted);
-             }
-          });
+//		delButton.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override public void handle(ActionEvent e) {
+//            	new Dialogue_Delete(p, isDeleted);
+//             }
+//          });
          
         activeCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
@@ -94,14 +94,16 @@ public class TabPersonProperties extends Tab {
 		combo_box.getItems().setAll(MemberType.values());
 		hboxMemberType.getChildren().addAll(new Label("Member Type: "), combo_box);
 		hboxDelete.getChildren().addAll(new Label("Delete Person: "), delButton);
-		vbox1.getChildren().addAll(
+		vBoxLeft.getChildren().addAll(
 				new Label("Person ID: " + person.getP_id()),
-				new Label("MSID: " + person.getMs_id()),
-				hboxMemberType,
-				hboxDelete,
-				activeCheckBox
+				new Label("MSID: " + person.getMs_id())
+//				hboxMemberType
+
+//				hboxDelete,
+//				activeCheckBox
 				);
-		hboxGrey.getChildren().add(vbox1);
+		vBoxRight.getChildren().add(new VBoxPersonMove(person));
+		hboxGrey.getChildren().addAll(vBoxLeft,vBoxRight);
 		hboxMain.getChildren().add(hboxGrey);
 		hboxMain.setId("box-blue");
 		setContent(hboxMain);
@@ -114,24 +116,4 @@ public class TabPersonProperties extends Tab {
 		Tab thisPersonTab = personTabPane.getSelectionModel().getSelectedItem();
 		personTabPane.getTabs().remove(thisPersonTab);
 	}
-	
-
-	////// two methods below are interesting but not used ///////////
-	//public static ArrayList<Node> getAllNodes(Parent root) {
-	//    ArrayList<Node> nodes = new ArrayList<Node>();
-	//    addAllDescendents(root, nodes);
-	//    return nodes;
-	//}
-	
-	//private static void addAllDescendents(Parent parent, ArrayList<Node> nodes) {
-	//    for (Node node : parent.getChildrenUnmodifiable()) {
-	//        nodes.add(node);
-	//        if (node instanceof Parent) {
-	//        	//if (node instanceof TextField) {
-	//            addAllDescendents((Parent)node, nodes);
-	//            System.out.println("node = " + node);
-	//        	//}
-	//        }
-	//    }
-	//}
 }

@@ -144,6 +144,7 @@ create table person
 );
 ALTER TABLE ECSC_SQL.person
     ADD NICK_NAME varchar(30) NULL;
+ALTER TABLE ECSC_SQL.person ADD OLDMSID INT NULL;
 
 create table email
 (

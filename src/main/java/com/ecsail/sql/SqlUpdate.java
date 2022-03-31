@@ -55,6 +55,17 @@ public class SqlUpdate {
 		}
 	}
 
+	public static void removePersonFromMembership(PersonDTO p) {
+		Statement stmt;
+		try {
+			stmt = ConnectDatabase.sqlConnection.createStatement();
+			stmt.execute("update person set MS_ID=null, OLDMSID="+p.getMs_id()+" where P_ID=" + p.getP_id());
+			Main.edits.setBoatEdits(Main.edits.getBoatEdits() + 1);
+		} catch (SQLException e) {
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
+		}
+	}
+
 	public static void updateBoat(int boat_id, String keel) {
 		Statement stmt;
 		try {
