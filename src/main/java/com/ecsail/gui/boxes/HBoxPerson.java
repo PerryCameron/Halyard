@@ -254,10 +254,10 @@ public class HBoxPerson extends HBox {
 		businessTextField.setText(person.getBuisness());
 		occupationTextField.setText(person.getOccupation());
 		nnameTextField.setText(person.getNname());
+		infoTabPane.getTabs().add(propertiesTab);
 		infoTabPane.getTabs().add(new Tab("Phone", hboxPhone));
 		infoTabPane.getTabs().add(new Tab("Email", hboxEmail));
 		infoTabPane.getTabs().add(new Tab("Officer", hboxOfficer));
-		infoTabPane.getTabs().add(propertiesTab);
 		infoTabPane.getTabs().add(new Tab("Awards", hboxAward));
 		vboxInfoGrey.getChildren().add(infoTabPane);
 		vbLnameLabel.getChildren().add(lnameLabel);
