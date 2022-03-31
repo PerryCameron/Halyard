@@ -16,10 +16,7 @@ import com.ecsail.main.CreateMembership;
 import com.ecsail.main.Note;
 import com.ecsail.sql.select.SqlMemos;
 import com.ecsail.sql.select.SqlPerson;
-import com.ecsail.structures.MemLabelsDTO;
-import com.ecsail.structures.MembershipListDTO;
-import com.ecsail.structures.MemoDTO;
-import com.ecsail.structures.PersonDTO;
+import com.ecsail.structures.*;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -113,9 +110,9 @@ public class TabMembership extends Tab {
 
         ////////// SETTING CONTENT /////////////////
         
-		peopleTabPane.getTabs().add(new Tab("Primary Member", getPrimaryMember(peopleTabPane)));
+		peopleTabPane.getTabs().add(new Tab("Primary", getPrimaryMember(peopleTabPane)));
         if(hasPerson(SECONDARY)) 
-        	peopleTabPane.getTabs().add(new Tab("Secondary Member", getSecondaryMember(peopleTabPane)));
+        	peopleTabPane.getTabs().add(new Tab("Secondary", getSecondaryMember(peopleTabPane)));
 		if(hasPerson(DEPENDANT)) 
 			addDependentTabs(peopleTabPane);	
 		peopleTabPane.getTabs().add(new Tab("Add", new VBoxAddPerson(peopleTabPane, note, membership)));

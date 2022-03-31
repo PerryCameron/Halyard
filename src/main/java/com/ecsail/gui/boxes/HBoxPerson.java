@@ -36,17 +36,19 @@ public class HBoxPerson extends HBox {
 	private final PersonDTO person;
 	private final MembershipListDTO membership;
 	private final ObservableList<PersonDTO> people;  // this is only for updating people list when in people list mode
+	TabPersonProperties propertiesTab; // this is here for a getter so I can get to combobox
 
 	public HBoxPerson(PersonDTO p, MembershipListDTO me, TabPane personTabPane) {
 		this.person = p;
 		this.membership = me;
-		
+
 		if(Launcher.tabOpen("People List")) {
 			this.people = TabPeople.people;
 		} else {
 			this.people = null;
 		}
 
+		this.propertiesTab = new TabPersonProperties(p, people, personTabPane);
 		ImageView photo = getMemberPhoto();
 		///////////// OBJECTS /////////////////
 		
@@ -178,7 +180,6 @@ public class HBoxPerson extends HBox {
 		fnameTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
 	            //focus out
 	            if (oldValue) {  // we have focused and unfocused
-
 						SqlUpdate.updateFirstName(fnameTextField.getText(),person);
 						if(person.getMemberType()==1)  // only update table if this is the primary member
 							membership.setFname(fnameTextField.getText());
@@ -256,7 +257,7 @@ public class HBoxPerson extends HBox {
 		infoTabPane.getTabs().add(new Tab("Phone", hboxPhone));
 		infoTabPane.getTabs().add(new Tab("Email", hboxEmail));
 		infoTabPane.getTabs().add(new Tab("Officer", hboxOfficer));
-		infoTabPane.getTabs().add(new TabPersonProperties(p, people, personTabPane));
+		infoTabPane.getTabs().add(propertiesTab);
 		infoTabPane.getTabs().add(new Tab("Awards", hboxAward));
 		vboxInfoGrey.getChildren().add(infoTabPane);
 		vbLnameLabel.getChildren().add(lnameLabel);
@@ -286,5 +287,12 @@ public class HBoxPerson extends HBox {
 		Image memberPhoto = new Image(getClass().getResourceAsStream(HalyardPaths.DEFAULTPHOTO));
 		return new ImageView(memberPhoto);
 	}
-	
+
+	public PersonDTO getPerson() {
+		return person;
+	}
+
+	public TabPersonProperties getPropertiesTab() {
+		return propertiesTab;
+	}
 }  // class end

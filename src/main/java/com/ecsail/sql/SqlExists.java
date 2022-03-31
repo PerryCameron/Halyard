@@ -45,6 +45,20 @@ public class SqlExists {
 		}
 		return answer;
 	}
+
+	public static Boolean memberTypeExists(int memberType, int msid) {
+		boolean answer = false;
+		try {
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
+			ResultSet rs = stmt.executeQuery("select exists(select P_ID from person where MEMBER_TYPE="+memberType+" and MS_ID="+msid+") as memberTypeExists");
+			rs.next();
+			answer = rs.getBoolean("memberTypeExists");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			new Dialogue_ErrorSQL(e,"Unable to check if money record exists","See below for details");
+		}
+		return answer;
+	}
 	
 	public static Boolean paymentsExistForMembership(int ms_id) {
 		boolean answer = false;

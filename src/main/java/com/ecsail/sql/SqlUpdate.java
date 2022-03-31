@@ -169,7 +169,18 @@ public class SqlUpdate {
 					"UPDATE phone SET " + field + "=" + attribute + " WHERE phone_id='" + phone_id + "';"));
 			Main.edits.setPhoneEdits(Main.edits.getPhoneEdits() + 1);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
+		}
+	}
+
+	public static void updatePersonChangeMemberType(PersonDTO person, int newMemType) {
+		Statement stmt;
+		try {
+			stmt = ConnectDatabase.sqlConnection.createStatement();
+			stmt.execute(Main.console.setRegexColor(
+					"UPDATE person SET MEMBER_TYPE=" + newMemType + " WHERE P_ID=" + person.getP_id()));
+			Main.edits.setPhoneEdits(Main.edits.getPhoneEdits() + 1);
+		} catch (SQLException e) {
 			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
 	}
