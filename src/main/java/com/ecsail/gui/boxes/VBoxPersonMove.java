@@ -123,6 +123,7 @@ public class VBoxPersonMove extends VBox {
     }
 
     private void changeMembershipType(TabPane personTabPane, String memberTypeToChangeTo) {
+        // TODO strange bug in here if you go back and fourth too many times, probably doesn't fit any use case though
         if(memberTypeToChangeTo.equals("Primary")) {
             changeToPrimary(personTabPane);
         }
@@ -137,7 +138,7 @@ public class VBoxPersonMove extends VBox {
         if(SqlExists.memberTypeExists(2,person.getMs_id())) {
             Tab secondaryTab = getTab(personTabPane, "Secondary");
             PersonDTO secondary = getPerson(secondaryTab);
-            // change the existing primary to new value, probably secondary
+            // change the existing secondary to new value, probably primary
             SqlUpdate.updatePersonChangeMemberType(secondary, person.getMemberType());
             // sets combobox values for the other member being switched
             setOtherComboBoxValues(secondaryTab,1);
@@ -145,7 +146,15 @@ public class VBoxPersonMove extends VBox {
         }
         // update person to secondary
         SqlUpdate.updatePersonChangeMemberType(person, 2);
-        personTabPane.getSelectionModel().getSelectedItem().setText("Secondary");
+        // create a variable to use
+        Tab thisTab = personTabPane.getSelectionModel().getSelectedItem();
+        thisTab.setText("Secondary");
+        // remove and add the tab in the correct place
+        personTabPane.getTabs().remove(thisTab);
+        personTabPane.getTabs().add(1,thisTab);
+        // select the tab in its new location
+        personTabPane.getSelectionModel().select(1);
+        // set the combo box to hold correct values now that we have changed member type
         setComboBoxValues(2);
     }
 
@@ -156,13 +165,21 @@ public class VBoxPersonMove extends VBox {
             PersonDTO primary = getPerson(primaryTab);
             // change the existing primary to new value, probably secondary
             SqlUpdate.updatePersonChangeMemberType(primary, person.getMemberType());
-            // sets combobox values for the other member being switched
+            // sets combobox values for the other member being switched removing option (a primary shouldn't' have a primary listing)
             setOtherComboBoxValues(primaryTab,2);
             primaryTab.setText("Secondary");
         }
         // update person to primary
         SqlUpdate.updatePersonChangeMemberType(person, 1);
-        personTabPane.getSelectionModel().getSelectedItem().setText("Primary");
+        // create a variable to use
+        Tab thisTab = personTabPane.getSelectionModel().getSelectedItem();
+        thisTab.setText("Primary");
+        // remove and add the tab in the correct place
+        personTabPane.getTabs().remove(thisTab);
+        personTabPane.getTabs().add(0,thisTab);
+        // select the tab in its new location
+        personTabPane.getSelectionModel().select(0);
+        // set the combo box to hold correct values now that we have changed member type
         setComboBoxValues(1);
     }
 
@@ -181,6 +198,7 @@ public class VBoxPersonMove extends VBox {
     return  hBoxPerson.getPerson();
     }
 
+    // sets the combo box values for person on other tab
     private void setOtherComboBoxValues(Tab tab, int value) {
         HBoxPerson hBoxPerson = (HBoxPerson) tab.getContent();
         hBoxPerson.getPropertiesTab().getPersonMove().setComboBoxValues(value);

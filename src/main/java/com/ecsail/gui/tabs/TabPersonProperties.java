@@ -2,6 +2,7 @@ package com.ecsail.gui.tabs;
 
 import com.ecsail.gui.boxes.VBoxPersonMove;
 import com.ecsail.sql.SqlUpdate;
+import com.ecsail.sql.select.SqlPerson;
 import com.ecsail.structures.PersonDTO;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -23,6 +24,7 @@ public class TabPersonProperties extends Tab {
 		this.person = p;
 		this.people = pe;
 		this.personMove = new VBoxPersonMove(person, personTabPane);
+		int age = SqlPerson.getPersonAge(person);
 
 		//////////// OBJECTS /////////////////
 		HBox hboxMain = new HBox();
@@ -67,6 +69,7 @@ public class TabPersonProperties extends Tab {
 
 		//////////////// SET  CONTENT ////////////////
 		vBoxLeft.getChildren().addAll(
+				new Label("Age: " + age),
 				new Label("Person ID: " + person.getP_id()),
 				new Label("MSID: " + person.getMs_id()));
 		vBoxRight.getChildren().add(personMove);

@@ -179,4 +179,19 @@ public class SqlPerson {
         }
         return number;
     }
+
+    public static int getPersonAge(PersonDTO person)  {  // gives the last memo_id number
+        int age = 0;
+        Statement stmt;
+        try {
+            stmt = ConnectDatabase.sqlConnection.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT DATE_FORMAT(FROM_DAYS(DATEDIFF(now(),(select BIRTHDAY from person where P_ID="+person.getP_id()+"))), '%Y')+0 AS AGE;\n");
+            rs.next();
+            age = rs.getInt("AGE");
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
+        }
+        return age;
+    }
 }
