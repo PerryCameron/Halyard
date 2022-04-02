@@ -5,7 +5,7 @@ import java.sql.Statement;
 
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
-import com.ecsail.main.Main;
+import com.ecsail.main.Halyard;
 import com.ecsail.main.SqlScriptMaker;
 import com.ecsail.structures.*;
 
@@ -18,7 +18,7 @@ public class SqlInsert {
 		boolean noError = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("INSERT into phone () VALUES (" + phone_id + "," + pid + ",\"" + phone + "\",'" + type + "'," + listed + ");"));
+			stmt.execute(Halyard.console.setRegexColor("INSERT into phone () VALUES (" + phone_id + "," + pid + ",\"" + phone + "\",'" + type + "'," + listed + ");"));
 			noError = true;
 		} catch (SQLException e) {
 			new Dialogue_ErrorSQL(e,"Unable to create new row","See below for details");
@@ -31,7 +31,7 @@ public class SqlInsert {
 		boolean noError = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("INSERT into email () VALUES (" + email_id + "," + pid + ","
+			stmt.execute(Halyard.console.setRegexColor("INSERT into email () VALUES (" + email_id + "," + pid + ","
 					+ primary + ",\"" + email + "\"," + listed + ");"));
 			noError = true;
 		} catch (SQLException e) {
@@ -44,7 +44,7 @@ public class SqlInsert {
 		boolean noError = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("INSERT into officer () VALUES (" + officer_id + "," + pid + "," + board_year + ",\"" + officer + "\"," + year + ");"));
+			stmt.execute(Halyard.console.setRegexColor("INSERT into officer () VALUES (" + officer_id + "," + pid + "," + board_year + ",\"" + officer + "\"," + year + ");"));
 			noError = true;
 		} catch (SQLException e) {
 			new Dialogue_ErrorSQL(e,"Unable to create new row","See below for details");
@@ -55,7 +55,7 @@ public class SqlInsert {
 	public static void addPaymentRecord(PaymentDTO op) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("INSERT into payment () VALUES (" + op.getPay_id() + ","
+			stmt.execute(Halyard.console.setRegexColor("INSERT into payment () VALUES (" + op.getPay_id() + ","
 					+ op.getMoney_id() + "," + op.getCheckNumber() + ",'" + op.getPaymentType() + "','"
 					+ op.getPaymentDate() + "','" + op.getPaymentAmount() + "','" + op.getDeposit_id() + "');"));
 		} catch (SQLException e) {
@@ -68,7 +68,7 @@ public class SqlInsert {
 		boolean noError = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("INSERT into awards () VALUES (" + a.getAwardId() + ","
+			stmt.execute(Halyard.console.setRegexColor("INSERT into awards () VALUES (" + a.getAwardId() + ","
 					+ a.getPid() + ",'" + a.getAwardYear() + "','" + a.getAwardType() + "')"));
 			noError = true;
 		} catch (SQLException e) {
@@ -81,10 +81,10 @@ public class SqlInsert {
 		boolean noError = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor(
+			stmt.execute(Halyard.console.setRegexColor(
 					"INSERT into boat () VALUES (" + b.getBoat_id() + ",null,null,null,null,null,null,true,null,null,null,null,null,null,null,false);"));
 			stmt.execute(
-					Main.console.setRegexColor("INSERT into boat_owner () VALUES (" + msid + "," + b.getBoat_id() + ");"));
+					Halyard.console.setRegexColor("INSERT into boat_owner () VALUES (" + msid + "," + b.getBoat_id() + ");"));
 			noError = true;
 		} catch (SQLException e) {
 			new Dialogue_ErrorSQL(e,"Unable to create new row","See below for details");
@@ -95,7 +95,7 @@ public class SqlInsert {
 	public static void addPersonRecord(PersonDTO person) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("INSERT INTO person () VALUES (" 
+			stmt.execute(Halyard.console.setRegexColor("INSERT INTO person () VALUES ("
 	    	+ person.getP_id() + "," + person.getMs_id() + ",'" + person.getMemberType() + "',\"" + person.getFname()
 	    	+ "\",\"" + person.getLname() + "\"," + SqlScriptMaker.getCorrectString(person.getBirthday()) 
 	    	+ ",\"" + person.getOccupation() + "\",\"" + person.getBuisness() +"\",true,"+person.getNname()+",'"+person.getNname()+"');"));
@@ -108,7 +108,7 @@ public class SqlInsert {
 	public static void addWorkCreditRecord(int moneyId, MembershipDTO membership) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("INSERT INTO work_credit () VALUES (" 
+			stmt.execute(Halyard.console.setRegexColor("INSERT INTO work_credit () VALUES ("
 					+ moneyId + "," 
 					+ membership.getMsid() + ",0,0,0,0);"));
 			
@@ -122,7 +122,7 @@ public class SqlInsert {
 		//Object_DefinedFee definedFees = selectDefinedFees(year);
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("INSERT INTO money () VALUES (" 
+			stmt.execute(Halyard.console.setRegexColor("INSERT INTO money () VALUES ("
 			+ m.getMoney_id() + "," + m.getMs_id() + "," + m.getFiscal_year() + "," + m.getBatch()
 			+ "," + m.getOfficer_credit() + "," + m.getExtra_key() + "," + m.getKayac_shed_key() 
 			+ "," + m.getSail_loft_key() + "," + m.getSail_school_loft_key() + "," + m.getBeach() 
@@ -141,7 +141,7 @@ public class SqlInsert {
 		//Object_DefinedFee definedFees = selectDefinedFees(year);
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("INSERT INTO defined_fee () VALUES (" 
+			stmt.execute(Halyard.console.setRegexColor("INSERT INTO defined_fee () VALUES ("
 			 + d.getFiscal_year() + "," + d.getDues_regular() + "," + d.getDues_family() + "," + d.getDues_lake_associate() 
 			 + "," + d.getDues_social() + "," + d.getInitiation() + "," + d.getWet_slip() + "," + d.getBeach()
 			 + "," + d.getWinter_storage() + "," + d.getMain_gate_key() + "," + d.getSail_loft() + "," + d.getSail_loft_key()
@@ -158,7 +158,7 @@ public class SqlInsert {
 		boolean updateIsSucessful = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("INSERT INTO membership () VALUES (" + nm.getMsid() + ",'" + nm.getPid() + "','" + nm.getJoinDate() + "','FM','','','IN','');")); 
+			stmt.execute(Halyard.console.setRegexColor("INSERT INTO membership () VALUES (" + nm.getMsid() + ",'" + nm.getPid() + "','" + nm.getJoinDate() + "','FM','','','IN','');"));
 			updateIsSucessful = true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -170,7 +170,7 @@ public class SqlInsert {
 	public static void addMemo(MemoDTO m) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("INSERT INTO memo () VALUES (" + m.getMemo_id() + "," + m.getMsid() + ",'" + m.getMemo_date() + "',\"" + m.getMemo() + "\"," + m.getMoney_id() + ",\"" + m.getCategory() + "\");"));
+			stmt.execute(Halyard.console.setRegexColor("INSERT INTO memo () VALUES (" + m.getMemo_id() + "," + m.getMsid() + ",'" + m.getMemo_date() + "',\"" + m.getMemo() + "\"," + m.getMoney_id() + ",\"" + m.getCategory() + "\");"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"Unable to create new row","See below for details");
@@ -180,7 +180,7 @@ public class SqlInsert {
 	public static void addDeposit(DepositDTO d) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("INSERT INTO deposit () VALUES (" + d.getDeposit_id() + ",'" + d.getDepositDate() + "','" + d.getFiscalYear() + "'," + d.getBatch() + ");"));
+			stmt.execute(Halyard.console.setRegexColor("INSERT INTO deposit () VALUES (" + d.getDeposit_id() + ",'" + d.getDepositDate() + "','" + d.getFiscalYear() + "'," + d.getBatch() + ");"));
 		} catch (SQLException e) {
 e.printStackTrace();
 //new Dialogue_ErrorSQL(e,"Unable to create new row","See below for details");
@@ -190,7 +190,7 @@ e.printStackTrace();
 	public static void addMembershipId(MembershipIdDTO id) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("INSERT INTO membership_id () VALUES (" + id.getMid() + ",'" + id.getFiscal_Year() + "','" + id.getMs_id() 
+			stmt.execute(Halyard.console.setRegexColor("INSERT INTO membership_id () VALUES (" + id.getMid() + ",'" + id.getFiscal_Year() + "','" + id.getMs_id()
 			+ "'," + id.getMembership_id() + "," + id.isRenew() + ",'" + id.getMem_type()+ "'," + id.isSelected() + "," + id.isLateRenew() + ")"));
 		} catch (SQLException e) {
 			System.out.println("Unable to create row for msid=" + id.getMs_id() + " With memID=" +id.getMembership_id());
@@ -201,7 +201,7 @@ e.printStackTrace();
 	public static void addWaitList(WaitListDTO w) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("INSERT INTO waitlist () VALUES (" 
+			stmt.execute(Halyard.console.setRegexColor("INSERT INTO waitlist () VALUES ("
 			+ w.getMs_id() + "," 
 			+ w.isSlipWait() + "," 
 			+ w.isKayakWait() + "," 
@@ -218,7 +218,7 @@ e.printStackTrace();
 	public static void addStatRecord(StatsDTO s) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("INSERT INTO stats () VALUES (" 
+			stmt.execute(Halyard.console.setRegexColor("INSERT INTO stats () VALUES ("
 			+ s.getStatId() + "," 
 			+ s.getFiscalYear() + "," 
 			+ s.getActiveMemberships() + "," 
@@ -246,7 +246,7 @@ e.printStackTrace();
 	public static void addBoatOwner(int boat_id,int ms_id) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("INSERT INTO boat_owner () VALUES (" + ms_id + "," + boat_id +")"));
+			stmt.execute(Halyard.console.setRegexColor("INSERT INTO boat_owner () VALUES (" + ms_id + "," + boat_id +")"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"Unable to create new row","See below for details");
@@ -256,7 +256,7 @@ e.printStackTrace();
 	public static void addNewFee(FeeDTO feeDTO) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("INSERT INTO fee () VALUES (" + feeDTO.getFeeId() + ",'" + feeDTO.getFieldName() + "'," + feeDTO.getFieldValue()
+			stmt.execute(Halyard.console.setRegexColor("INSERT INTO fee () VALUES (" + feeDTO.getFeeId() + ",'" + feeDTO.getFieldName() + "'," + feeDTO.getFieldValue()
 					+ "," + feeDTO.getFieldQuantity() + "," + feeDTO.getFeeYear() + ",'" + feeDTO.getDescription() + "')"));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

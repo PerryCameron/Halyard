@@ -3,7 +3,7 @@ package com.ecsail.sql.select;
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.HalyardPaths;
-import com.ecsail.main.Main;
+import com.ecsail.main.Halyard;
 import com.ecsail.structures.MembershipIdDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -111,7 +111,7 @@ public class SqlMembership_Id {
         Statement stmt;
         try {
             stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select membership_id from membership_id where ms_id='" + msid + "' and fiscal_year=" + HalyardPaths.getYear() +";"));
+            ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor("select membership_id from membership_id where ms_id='" + msid + "' and fiscal_year=" + HalyardPaths.getYear() +";"));
             while(rs.next()) {
             result = rs.getInt("MEMBERSHIP_ID");
             }
@@ -127,7 +127,7 @@ public class SqlMembership_Id {
         Statement stmt;
         try {
             stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select ms_id from membership_id where fiscal_year='" + HalyardPaths.getYear() + "' and membership_id='" + membership_id + "';"));
+            ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor("select ms_id from membership_id where fiscal_year='" + HalyardPaths.getYear() + "' and membership_id='" + membership_id + "';"));
             while(rs.next()) {
             result = rs.getInt("ms_id");
             }
@@ -144,7 +144,7 @@ public class SqlMembership_Id {
 
         try {
             stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select membership_id from membership_id where fiscal_year='" + year + "' and ms_id='" + ms_id + "'"));
+            ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor("select membership_id from membership_id where fiscal_year='" + year + "' and ms_id='" + ms_id + "'"));
             if (!rs.next()) {
                 id = "none";
             } else {
@@ -205,7 +205,7 @@ public class SqlMembership_Id {
         Statement stmt;
         try {
             stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select RENEW from membership_id where fiscal_year='" + year + "' and ms_id=" + ms_id));
+            ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor("select RENEW from membership_id where fiscal_year='" + year + "' and ms_id=" + ms_id));
             rs.next();
             renew = rs.getBoolean("RENEW");
         } catch (SQLException e) {
@@ -237,7 +237,7 @@ public class SqlMembership_Id {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 		    ResultSet rs;
-			rs = stmt.executeQuery(Main.console.setRegexColor("select * from membership_id where fiscal_year=" + year + " order by MEMBERSHIP_ID"));
+			rs = stmt.executeQuery(Halyard.console.setRegexColor("select * from membership_id where fiscal_year=" + year + " order by MEMBERSHIP_ID"));
 		while (rs.next()) {
 			theseIds.add(new MembershipIdDTO(
 					rs.getInt("MID"),
@@ -262,7 +262,7 @@ public class SqlMembership_Id {
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
-            rs = stmt.executeQuery(Main.console.setRegexColor("select * from membership_id where fiscal_year=" + year + " and renew=true order by MEMBERSHIP_ID"));
+            rs = stmt.executeQuery(Halyard.console.setRegexColor("select * from membership_id where fiscal_year=" + year + " and renew=true order by MEMBERSHIP_ID"));
             while (rs.next()) {
                 theseIds.add(new MembershipIdDTO(
                         rs.getInt("MID"),
@@ -337,7 +337,7 @@ public class SqlMembership_Id {
         boolean result = false;
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("Select renew from membership_id where FISCAL_YEAR='"+year+"' and MS_ID='"+ms_id+"'"));
+            ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor("Select renew from membership_id where FISCAL_YEAR='"+year+"' and MS_ID='"+ms_id+"'"));
             while(rs.next()) {
             result = rs.getBoolean("renew");
             }

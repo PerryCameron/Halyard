@@ -4,7 +4,7 @@ package com.ecsail.sql;
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.HalyardPaths;
-import com.ecsail.main.Main;
+import com.ecsail.main.Halyard;
 import com.ecsail.structures.MembershipDTO;
 import com.ecsail.structures.MembershipListDTO;
 import com.ecsail.structures.PersonDTO;
@@ -21,7 +21,7 @@ public class SqlExists {
 		boolean answer = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT EXISTS(select * from person INNER JOIN membership ON person.MS_ID = membership.MS_ID where membership.MS_ID ="
+			ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor("SELECT EXISTS(select * from person INNER JOIN membership ON person.MS_ID = membership.MS_ID where membership.MS_ID ="
 						+ ms_id + " AND person.MEMBER_TYPE=" + type + ") AS personexists"));
 			rs.next();
 		    answer = rs.getBoolean("personexists");
@@ -36,7 +36,7 @@ public class SqlExists {
 		boolean answer = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT EXISTS(SELECT * FROM payment WHERE MONEY_ID=" + money_id + ");"));
+			ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor("SELECT EXISTS(SELECT * FROM payment WHERE MONEY_ID=" + money_id + ");"));
 			rs.next();
 		    answer = rs.getBoolean("EXISTS(SELECT * FROM payment WHERE MONEY_ID=" + money_id + ")");
 		} catch (SQLException e) {
@@ -64,7 +64,7 @@ public class SqlExists {
 		boolean answer = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT EXISTS(SELECT * FROM money WHERE MS_ID=" + ms_id + ") AS paymentexists"));
+			ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor("SELECT EXISTS(SELECT * FROM money WHERE MS_ID=" + ms_id + ") AS paymentexists"));
 			rs.next();
 		    answer = rs.getBoolean("paymentexists");
 		} catch (SQLException e) {
@@ -77,7 +77,7 @@ public class SqlExists {
 		boolean answer = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT EXISTS(SELECT * FROM memo WHERE CATEGORY='" + category + "' and MONEY_ID=" + money_id + ") AS memoExists"));
+			ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor("SELECT EXISTS(SELECT * FROM memo WHERE CATEGORY='" + category + "' and MONEY_ID=" + money_id + ") AS memoExists"));
 			rs.next();
 		    answer = rs.getBoolean("memoExists");
 		} catch (SQLException e) {
@@ -90,7 +90,7 @@ public class SqlExists {
 		boolean result = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT EXISTS(select * from membership WHERE ms_id='" + ms_id + "')"));
+			ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor("SELECT EXISTS(select * from membership WHERE ms_id='" + ms_id + "')"));
 			while(rs.next()) {
 			result = rs.getBoolean("EXISTS(select * from membership WHERE ms_id='" + ms_id + "')");
 			}
@@ -105,7 +105,7 @@ public class SqlExists {
 		boolean result = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT EXISTS(select * from membership_id WHERE ms_id='" + ms_id + "')"));
+			ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor("SELECT EXISTS(select * from membership_id WHERE ms_id='" + ms_id + "')"));
 			while(rs.next()) {
 			result = rs.getBoolean("EXISTS(select * from membership_id WHERE ms_id='" + ms_id + "')");
 			}
@@ -120,7 +120,7 @@ public class SqlExists {
 		boolean result = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT EXISTS(select * from membership_id where fiscal_year=0 and MEMBERSHIP_ID=0 and MS_ID!="+msid+") AS newtuple"));
+			ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor("SELECT EXISTS(select * from membership_id where fiscal_year=0 and MEMBERSHIP_ID=0 and MS_ID!="+msid+") AS newtuple"));
 			while(rs.next()) {
 			result = rs.getBoolean("newtuple");
 			}
@@ -134,7 +134,7 @@ public class SqlExists {
 		boolean result = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT EXISTS(select * from membership_id WHERE ms_id='" + ms_id + "' and FISCAL_YEAR='" + year + "')"));
+			ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor("SELECT EXISTS(select * from membership_id WHERE ms_id='" + ms_id + "' and FISCAL_YEAR='" + year + "')"));
 			while(rs.next()) {
 			result = rs.getBoolean("EXISTS(select * from membership_id WHERE ms_id='" + ms_id + "' and FISCAL_YEAR='" + year + "')");
 			}
@@ -148,7 +148,7 @@ public class SqlExists {
 		boolean result = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select exists(select * from person where MS_ID=" + ms_id + " and MEMBER_TYPE=" + member_type + " and is_active=true)"));
+			ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor("select exists(select * from person where MS_ID=" + ms_id + " and MEMBER_TYPE=" + member_type + " and is_active=true)"));
 			while(rs.next()) {
 			result = rs.getBoolean("exists(select * from person where MS_ID=" + ms_id + " and MEMBER_TYPE=" + member_type + " and is_active=true)");
 			}
@@ -163,7 +163,7 @@ public class SqlExists {
 		boolean result = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select exists(select * from defined_fee where FISCAL_YEAR='" + year + "')"));
+			ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor("select exists(select * from defined_fee where FISCAL_YEAR='" + year + "')"));
 			while(rs.next()) {
 			result = rs.getBoolean("exists(select * from defined_fee where FISCAL_YEAR='" + year + "')");
 			}
@@ -178,7 +178,7 @@ public class SqlExists {
 		boolean result = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select exists(select * from email where P_ID=" + p.getP_id() + " and PRIMARY_USE=true) AS emailexists"));
+			ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor("select exists(select * from email where P_ID=" + p.getP_id() + " and PRIMARY_USE=true) AS emailexists"));
 			while(rs.next()) {
 			result = rs.getBoolean("emailexists");
 			}
@@ -193,7 +193,7 @@ public class SqlExists {
 		boolean result = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT EXISTS(SELECT * FROM phone WHERE P_ID=" + p.getP_id() + " AND PHONE_LISTED=true AND PHONE_TYPE='" + type + "') AS phoneexists"));
+			ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor("SELECT EXISTS(SELECT * FROM phone WHERE P_ID=" + p.getP_id() + " AND PHONE_LISTED=true AND PHONE_TYPE='" + type + "') AS phoneexists"));
 			while(rs.next()) {
 			result = rs.getBoolean("phoneexists");
 			}
@@ -207,7 +207,7 @@ public class SqlExists {
 		boolean result = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT EXISTS(SELECT * FROM phone WHERE P_ID=" + pid + " AND PHONE_TYPE='" + type + "') AS phoneexists"));
+			ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor("SELECT EXISTS(SELECT * FROM phone WHERE P_ID=" + pid + " AND PHONE_TYPE='" + type + "') AS phoneexists"));
 			while(rs.next()) {
 				result = rs.getBoolean("phoneexists");
 			}
@@ -221,7 +221,7 @@ public class SqlExists {
 		boolean result = false;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select Exists(select * FROM money where MS_ID=" + ms.getMsid() + " and FISCAL_YEAR='" + year + "');"));
+			ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor("select Exists(select * FROM money where MS_ID=" + ms.getMsid() + " and FISCAL_YEAR='" + year + "');"));
 			while(rs.next()) {
 			result = rs.getBoolean("Exists(select * FROM money where MS_ID=" + ms.getMsid() + " and FISCAL_YEAR='" + year + "')");
 			}
@@ -240,7 +240,7 @@ public class SqlExists {
 		  // we must convert here (this is getting crazy!)
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT EXISTS(select * from slip WHERE ms_id='" + ms_id + "')"));
+			ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor("SELECT EXISTS(select * from slip WHERE ms_id='" + ms_id + "')"));
 			while(rs.next()) {
 			result = rs.getBoolean("EXISTS(select * from slip WHERE ms_id='" + ms_id + "')");
 			}
@@ -256,7 +256,7 @@ public class SqlExists {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery(
-					Main.console.setRegexColor("SELECT EXISTS(select * from slip WHERE subleased_to='" + subMsid + "')"));
+					Halyard.console.setRegexColor("SELECT EXISTS(select * from slip WHERE subleased_to='" + subMsid + "')"));
 			while (rs.next()) {
 				result = rs.getBoolean("EXISTS(select * from slip WHERE subleased_to='" + subMsid + "')");
 			}
@@ -273,7 +273,7 @@ public class SqlExists {
 		  // we must convert here (this is getting crazy!)
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT EXISTS(select * from money WHERE ms_id='" + membership.getMsid() + "' and fiscal_year='" + year + "')"));
+			ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor("SELECT EXISTS(select * from money WHERE ms_id='" + membership.getMsid() + "' and fiscal_year='" + year + "')"));
 			while(rs.next()) {
 			result = rs.getBoolean("EXISTS(select * from money WHERE ms_id='" + membership.getMsid() + "' and fiscal_year='" + year + "')");
 			}
@@ -289,7 +289,7 @@ public class SqlExists {
 		try {  
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt
-					.executeQuery(Main.console.setRegexColor("select exists(select * from money where ms_id='"+ms_id+"' and fiscal_year='"+year+"');"));
+					.executeQuery(Halyard.console.setRegexColor("select exists(select * from money where ms_id='"+ms_id+"' and fiscal_year='"+year+"');"));
 			while (rs.next()) {
 				result = rs.getBoolean(
 						"exists(select * from money where ms_id='"+ms_id+"' and fiscal_year='"+year+"')");
@@ -306,7 +306,7 @@ public class SqlExists {
 		try {  
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt
-					.executeQuery(Main.console.setRegexColor("select exists(select * from money where money_id=" + money_id + ")"));
+					.executeQuery(Halyard.console.setRegexColor("select exists(select * from money where money_id=" + money_id + ")"));
 			while (rs.next()) {
 				result = rs.getBoolean(
 						"exists(select * from money where money_id=" + money_id + ")");
@@ -324,7 +324,7 @@ public class SqlExists {
 		  // we must convert here (this is getting crazy!)
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT EXISTS(SELECT * FROM deposit WHERE FISCAL_YEAR=" + year + " and BATCH=" + batch +");"));
+			ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor("SELECT EXISTS(SELECT * FROM deposit WHERE FISCAL_YEAR=" + year + " and BATCH=" + batch +");"));
 			while(rs.next()) {
 			result = rs.getBoolean("EXISTS(SELECT * FROM deposit WHERE FISCAL_YEAR=" + year + " and BATCH="+ batch +")");
 			}
@@ -341,7 +341,7 @@ public class SqlExists {
 		try {  
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt
-					.executeQuery(Main.console.setRegexColor("SELECT EXISTS(select * from officer WHERE p_id='"
+					.executeQuery(Halyard.console.setRegexColor("SELECT EXISTS(select * from officer WHERE p_id='"
 							+ per.getP_id() + "' AND off_year='" + year + "' and OFF_TYPE != 'BM')"));
 			while (rs.next()) {
 				result = rs.getBoolean(
@@ -360,7 +360,7 @@ public class SqlExists {
 		try {  
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt
-					.executeQuery(Main.console.setRegexColor("select exists(select * from work_credit where money_id=" + money_id + ");"));
+					.executeQuery(Halyard.console.setRegexColor("select exists(select * from work_credit where money_id=" + money_id + ");"));
 			while (rs.next()) {
 				result = rs.getBoolean(
 						"exists(select * from work_credit where money_id=" + money_id + ")");
@@ -376,7 +376,7 @@ public class SqlExists {
 		try {  
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt
-					.executeQuery(Main.console.setRegexColor("select exists(select * from membership_id where fiscal_year='" + HalyardPaths.getYear() + "' and ms_id=" + ms_id + ")"));
+					.executeQuery(Halyard.console.setRegexColor("select exists(select * from membership_id where fiscal_year='" + HalyardPaths.getYear() + "' and ms_id=" + ms_id + ")"));
 			while (rs.next()) {
 				result = rs.getBoolean(
 						"exists(select * from membership_id where fiscal_year='" + HalyardPaths.getYear() + "' and ms_id=" + ms_id + ")");
@@ -392,7 +392,7 @@ public class SqlExists {
 		try {  
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt
-					.executeQuery(Main.console.setRegexColor("select exists(select * from waitlist where ms_id="+ms_id+")"));
+					.executeQuery(Halyard.console.setRegexColor("select exists(select * from waitlist where ms_id="+ms_id+")"));
 			while (rs.next()) {
 				result = rs.getBoolean(
 						"exists(select * from waitlist where ms_id="+ms_id+")");
@@ -408,7 +408,7 @@ public class SqlExists {
 		try {  
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt
-					.executeQuery(Main.console.setRegexColor("select exists(select * from membership_id where fiscal_year='" + r.getSelectedYear() + "' and MS_ID=" + r.getMsid() + " and LATE_RENEW=true)"));
+					.executeQuery(Halyard.console.setRegexColor("select exists(select * from membership_id where fiscal_year='" + r.getSelectedYear() + "' and MS_ID=" + r.getMsid() + " and LATE_RENEW=true)"));
 			while (rs.next()) {
 				result = rs.getBoolean(
 						"exists(select * from membership_id where fiscal_year='" + r.getSelectedYear() + "' and MS_ID=" + r.getMsid() + " and LATE_RENEW=true)");
@@ -424,7 +424,7 @@ public class SqlExists {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs = stmt
-					.executeQuery(Main.console.setRegexColor("SELECT EXISTS(SELECT * FROM person WHERE MS_ID=" + msid + " AND MEMBER_TYPE=" + type + ") AS personexist"));
+					.executeQuery(Halyard.console.setRegexColor("SELECT EXISTS(SELECT * FROM person WHERE MS_ID=" + msid + " AND MEMBER_TYPE=" + type + ") AS personexist"));
 			while (rs.next()) {
 				result = rs.getBoolean(
 						"personexist");

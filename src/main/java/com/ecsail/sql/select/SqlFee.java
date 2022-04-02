@@ -2,7 +2,7 @@ package com.ecsail.sql.select;
 
 
 import com.ecsail.main.ConnectDatabase;
-import com.ecsail.main.Main;
+import com.ecsail.main.Halyard;
 import com.ecsail.structures.FeeDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,7 +19,7 @@ public class SqlFee {
             try {
                 Statement stmt = ConnectDatabase.sqlConnection.createStatement();
                 ResultSet rs = stmt
-                        .executeQuery(Main.console.setRegexColor("select * from fee where FEE_YEAR=" + year));
+                        .executeQuery(Halyard.console.setRegexColor("select * from fee where FEE_YEAR=" + year));
                 while (rs.next()) {
                     thisAwards.add(new FeeDTO(
                             rs.getInt("FEE_ID"),
@@ -41,7 +41,7 @@ public class SqlFee {
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs = stmt
-                    .executeQuery(Main.console.setRegexColor("select * from fee"));
+                    .executeQuery(Halyard.console.setRegexColor("select * from fee"));
             while (rs.next()) {
                 thisAwards.add(new FeeDTO(
                         rs.getInt("FEE_ID"),
@@ -63,7 +63,7 @@ public class SqlFee {
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs = stmt
-                    .executeQuery(Main.console.setRegexColor("select * from fee where description='" + description + "'"));
+                    .executeQuery(Halyard.console.setRegexColor("select * from fee where description='" + description + "'"));
             while (rs.next()) {
                 feeDTOS.add(new FeeDTO(
                         rs.getInt("FEE_ID"),

@@ -1,8 +1,7 @@
 package com.ecsail.sql.select;
 
 import com.ecsail.main.ConnectDatabase;
-import com.ecsail.main.Main;
-import com.ecsail.structures.FeeDTO;
+import com.ecsail.main.Halyard;
 import com.ecsail.structures.IdChangeDTO;
 
 import java.sql.ResultSet;
@@ -16,7 +15,7 @@ public class SqlIdChange {
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs = stmt
-                    .executeQuery(Main.console.setRegexColor("select * from id_change"));
+                    .executeQuery(Halyard.console.setRegexColor("select * from id_change"));
             while (rs.next()) {
                 thisAwards.add(new IdChangeDTO(
                         rs.getInt("CHANGE_ID"),

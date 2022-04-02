@@ -13,7 +13,7 @@ public class SaveFileChooser {
         fileChooser.getExtensionFilters().addAll(new ExtensionFilter(Description, extention));
         fileChooser.setInitialDirectory(new File(directory + "/"));
         fileChooser.setInitialFileName(fileName);
-        this.file = fileChooser.showSaveDialog(Main.getPrimaryStage());  
+        this.file = fileChooser.showSaveDialog(Halyard.getPrimaryStage());
 	}
 
 	public File getFile() {

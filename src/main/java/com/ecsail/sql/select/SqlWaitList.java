@@ -2,7 +2,7 @@ package com.ecsail.sql.select;
 
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
-import com.ecsail.main.Main;
+import com.ecsail.main.Halyard;
 import com.ecsail.structures.WaitListDTO;
 
 import java.sql.ResultSet;
@@ -16,7 +16,7 @@ public class SqlWaitList {
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
-            rs = stmt.executeQuery(Main.console.setRegexColor("select * from waitlist where ms_id=" + ms_id));
+            rs = stmt.executeQuery(Halyard.console.setRegexColor("select * from waitlist where ms_id=" + ms_id));
             while (rs.next()) {
                 thisWaitList = new WaitListDTO(
                         rs.getInt("MS_ID"),
@@ -40,7 +40,7 @@ public class SqlWaitList {
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
-            rs = stmt.executeQuery(Main.console.setRegexColor("select * from waitlist"));
+            rs = stmt.executeQuery(Halyard.console.setRegexColor("select * from waitlist"));
             while (rs.next()) {
                 thisWaitList.add(new WaitListDTO(
                         rs.getInt("MS_ID"),

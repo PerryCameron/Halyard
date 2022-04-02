@@ -2,7 +2,7 @@ package com.ecsail.sql.select;
 
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
-import com.ecsail.main.Main;
+import com.ecsail.main.Halyard;
 import com.ecsail.structures.PaymentDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,7 +17,7 @@ public class SqlPayment {
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
-            rs = stmt.executeQuery(Main.console.setRegexColor("select * from payment;"));
+            rs = stmt.executeQuery(Halyard.console.setRegexColor("select * from payment;"));
             while (rs.next()) {
                 thisPayments.add(new PaymentDTO(
                         rs.getInt("PAY_ID"),
@@ -41,7 +41,7 @@ public class SqlPayment {
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
-            rs = stmt.executeQuery(Main.console.setRegexColor("select * from payment where money_id=" + money_id));
+            rs = stmt.executeQuery(Halyard.console.setRegexColor("select * from payment where money_id=" + money_id));
             while (rs.next()) {
                 thisPayments.add(new PaymentDTO(
                         rs.getInt("PAY_ID"),
@@ -65,7 +65,7 @@ public class SqlPayment {
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
-            rs = stmt.executeQuery(Main.console.setRegexColor("select * from payment where money_id=" + money_id));
+            rs = stmt.executeQuery(Halyard.console.setRegexColor("select * from payment where money_id=" + money_id));
             while (rs.next()) {
                 thisPayment = new PaymentDTO(
                         rs.getInt("PAY_ID"),

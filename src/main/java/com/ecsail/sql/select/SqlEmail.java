@@ -3,7 +3,7 @@ package com.ecsail.sql.select;
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.HalyardPaths;
-import com.ecsail.main.Main;
+import com.ecsail.main.Halyard;
 import com.ecsail.structures.EmailDTO;
 import com.ecsail.structures.Email_InformationDTO;
 import com.ecsail.structures.PersonDTO;
@@ -20,7 +20,7 @@ public class SqlEmail {
 
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
+            ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor(
                     "select id.MEMBERSHIP_ID,m.JOIN_DATE,p.L_NAME,p.F_NAME,EMAIL,PRIMARY_USE "
                     + "from email e "
                     + "inner join person p ON p.P_ID=e.P_ID "

@@ -2,7 +2,7 @@ package com.ecsail.sql.select;
 
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
-import com.ecsail.main.Main;
+import com.ecsail.main.Halyard;
 import com.ecsail.pdf.directory.Object_SlipInfo;
 import com.ecsail.structures.SlipDTO;
 import javafx.collections.FXCollections;
@@ -74,7 +74,7 @@ public class SqlSlip {
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
-            rs = stmt.executeQuery(Main.console.setRegexColor("select SLIP_NUM,SUBLEASED_TO,F_NAME,L_NAME  from slip s \n"
+            rs = stmt.executeQuery(Halyard.console.setRegexColor("select SLIP_NUM,SUBLEASED_TO,F_NAME,L_NAME  from slip s \n"
                     + "left join membership m on s.MS_ID=m.MS_ID \n"
                     + "left join person p on m.P_ID=p.P_ID \n"
                     + "where slip_num LIKE '" +dock + "%'"));

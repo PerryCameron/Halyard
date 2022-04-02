@@ -2,7 +2,7 @@ package com.ecsail.sql.select;
 
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
-import com.ecsail.main.Main;
+import com.ecsail.main.Halyard;
 import com.ecsail.structures.StatsDTO;
 
 import java.sql.ResultSet;
@@ -16,7 +16,7 @@ public class SqlStats {
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
-            rs = stmt.executeQuery(Main.console.setRegexColor("select * from stats"));
+            rs = stmt.executeQuery(Halyard.console.setRegexColor("select * from stats"));
         while (rs.next()) {
             stats.add(new StatsDTO(
                     rs.getInt("STAT_ID"),

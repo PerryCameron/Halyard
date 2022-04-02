@@ -16,7 +16,7 @@ import com.ecsail.gui.boxes.HBoxBoatNotes;
 import com.ecsail.gui.dialogues.Dialogue_ChooseMember;
 import com.ecsail.main.ImageViewPane;
 import com.ecsail.main.LoadFileChooser;
-import com.ecsail.main.Main;
+import com.ecsail.main.Halyard;
 import com.ecsail.main.HalyardPaths;
 import com.ecsail.sql.SqlDelete;
 import com.ecsail.sql.SqlUpdate;
@@ -62,7 +62,7 @@ public class TabBoatView extends Tab {
 		super(text);
 		this.b = b;
 		this.boatOwners = SqlMembershipList.getBoatOwnerRoster(b.getBoat_id());
-		this.ftp = Main.getConnect().getForwardedConnection().getFtp();
+		this.ftp = Halyard.getConnect().getForwardedConnection().getFtp();
 		checkRemoteFiles();
 		// make sure directory exists, and create it if it does not
 		HalyardPaths.checkPath(HalyardPaths.BOATDIR + "/" + b.getBoat_id() + "/");

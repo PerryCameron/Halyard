@@ -2,7 +2,7 @@ package com.ecsail.sql.select;
 
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
-import com.ecsail.main.Main;
+import com.ecsail.main.Halyard;
 import com.ecsail.pdf.directory.Object_Sportsmen;
 
 import java.sql.ResultSet;
@@ -16,7 +16,7 @@ public class SqlSportsMan {
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
-            rs = stmt.executeQuery(Main.console.setRegexColor("select AWARD_YEAR,F_NAME,L_Name from awards a left join person p on a.P_ID=p.P_ID"));
+            rs = stmt.executeQuery(Halyard.console.setRegexColor("select AWARD_YEAR,F_NAME,L_Name from awards a left join person p on a.P_ID=p.P_ID"));
             while (rs.next()) {
                 theseOfficers.add(new Object_Sportsmen(
                         rs.getString("AWARD_YEAR"),

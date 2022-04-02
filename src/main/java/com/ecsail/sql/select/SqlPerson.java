@@ -2,7 +2,7 @@ package com.ecsail.sql.select;
 
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
-import com.ecsail.main.Main;
+import com.ecsail.main.Halyard;
 import com.ecsail.structures.MembershipDTO;
 import com.ecsail.structures.PersonDTO;
 import javafx.collections.FXCollections;
@@ -20,7 +20,7 @@ public class SqlPerson {
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
-            rs = stmt.executeQuery(Main.console.setRegexColor(query + ";"));
+            rs = stmt.executeQuery(Halyard.console.setRegexColor(query + ";"));
         while (rs.next()) {
             if(rs.getBoolean("IS_ACTIVE")) {  // only add active people
             thesepeople.add(new PersonDTO(
@@ -50,7 +50,7 @@ public class SqlPerson {
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
-            rs = stmt.executeQuery(Main.console.setRegexColor(query + ";"));
+            rs = stmt.executeQuery(Halyard.console.setRegexColor(query + ";"));
         while (rs.next()) {
             if(rs.getBoolean("IS_ACTIVE")) {  // only add active people
             thesepeople.add(new PersonDTO(
@@ -80,7 +80,7 @@ public class SqlPerson {
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
-            rs = stmt.executeQuery(Main.console.setRegexColor(query + ";"));
+            rs = stmt.executeQuery(Halyard.console.setRegexColor(query + ";"));
         while (rs.next()) {
             thesepeople.add(new PersonDTO(
                     rs.getInt("P_ID"),
@@ -107,7 +107,7 @@ public class SqlPerson {
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs = stmt
-                    .executeQuery(Main.console.setRegexColor("select * from person WHERE p_id= '" + pid + "';"));
+                    .executeQuery(Halyard.console.setRegexColor("select * from person WHERE p_id= '" + pid + "';"));
 
             while (rs.next()) {
                 person = (new PersonDTO(rs.getInt("P_ID"), rs.getInt("MS_ID"), rs.getInt("MEMBER_TYPE"),
@@ -128,7 +128,7 @@ public class SqlPerson {
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs = stmt
-                    .executeQuery(Main.console.setRegexColor("select * from person where MS_ID=" + ms_id + " and MEMBER_TYPE=" + member_type));
+                    .executeQuery(Halyard.console.setRegexColor("select * from person where MS_ID=" + ms_id + " and MEMBER_TYPE=" + member_type));
 
             while (rs.next()) {
                 person = (new PersonDTO(rs.getInt("P_ID"), rs.getInt("MS_ID"), rs.getInt("MEMBER_TYPE"),
@@ -149,7 +149,7 @@ public class SqlPerson {
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs = stmt
-                    .executeQuery(Main.console.setRegexColor("select * from person where MS_ID=(select ms_id from membership_id where MEMBERSHIP_ID="+membershipId+" and FISCAL_YEAR="+year+") and MEMBER_TYPE=1"));
+                    .executeQuery(Halyard.console.setRegexColor("select * from person where MS_ID=(select ms_id from membership_id where MEMBERSHIP_ID="+membershipId+" and FISCAL_YEAR="+year+") and MEMBER_TYPE=1"));
 
             while (rs.next()) {
                 person = (new PersonDTO(rs.getInt("P_ID"), rs.getInt("MS_ID"), rs.getInt("MEMBER_TYPE"),
@@ -170,7 +170,7 @@ public class SqlPerson {
         Statement stmt;
         try {
             stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select * from person ORDER BY p_id DESC LIMIT 1"));
+            ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor("select * from person ORDER BY p_id DESC LIMIT 1"));
             rs.next();
             number = rs.getInt("P_ID");
         } catch (SQLException e) {

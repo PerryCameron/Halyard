@@ -2,7 +2,7 @@ package com.ecsail.sql.select;
 
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
-import com.ecsail.main.Main;
+import com.ecsail.main.Halyard;
 import com.ecsail.structures.DepositDTO;
 import com.ecsail.structures.PaidDuesDTO;
 import javafx.collections.FXCollections;
@@ -18,7 +18,7 @@ public class SqlDeposit {
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
-            rs = stmt.executeQuery(Main.console.setRegexColor("select * from deposit where fiscal_year=" + year + " and batch=" + batch));
+            rs = stmt.executeQuery(Halyard.console.setRegexColor("select * from deposit where fiscal_year=" + year + " and batch=" + batch));
             while (rs.next()) {
                 thisDeposit = new DepositDTO(
                         rs.getInt("DEPOSIT_ID"),
@@ -44,7 +44,7 @@ public class SqlDeposit {
         ObservableList<PaidDuesDTO> theseFiscals = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(query + ";"));
+            ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor(query + ";"));
             while (rs.next()) {
                 theseFiscals.add(new PaidDuesDTO(rs.getInt("MONEY_ID"), rs.getInt("MS_ID"),
                         rs.getInt("FISCAL_YEAR"), rs.getInt("BATCH"), rs.getString("OFFICER_CREDIT"), rs.getInt("EXTRA_KEY"),
@@ -72,7 +72,7 @@ public class SqlDeposit {
         ObservableList<PaidDuesDTO> theseFiscals = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(query));
+            ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor(query));
             while (rs.next()) {
                 theseFiscals.add(new PaidDuesDTO(
                         rs.getInt("MONEY_ID"),
@@ -122,7 +122,7 @@ public class SqlDeposit {
         ObservableList<PaidDuesDTO> theseFiscals = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(query + ";"));
+            ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor(query + ";"));
             while (rs.next()) {
                 theseFiscals.add(new PaidDuesDTO(rs.getInt("MONEY_ID"), rs.getInt("MS_ID"),
                         rs.getInt("FISCAL_YEAR"), rs.getInt("BATCH"), rs.getString("OFFICER_CREDIT"), rs.getInt("EXTRA_KEY"),
@@ -148,7 +148,7 @@ public class SqlDeposit {
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
-            rs = stmt.executeQuery(Main.console.setRegexColor("select * from deposit;"));
+            rs = stmt.executeQuery(Halyard.console.setRegexColor("select * from deposit;"));
             while (rs.next()) {
                 thisDeposits.add(new DepositDTO(
                         rs.getInt("DEPOSIT_ID"),
@@ -169,7 +169,7 @@ public class SqlDeposit {
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
-            rs = stmt.executeQuery(Main.console.setRegexColor("select * from deposit where fiscal_year=" + year + " and batch=" + batch));
+            rs = stmt.executeQuery(Halyard.console.setRegexColor("select * from deposit where fiscal_year=" + year + " and batch=" + batch));
             while (rs.next()) {
             thisDeposit.setDeposit_id(rs.getInt("DEPOSIT_ID"));
             thisDeposit.setDepositDate(rs.getString("DEPOSIT_DATE"));

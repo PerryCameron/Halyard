@@ -20,7 +20,7 @@ public class CreateMembership {
 		int pid = SqlPerson.getCount() + 1;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("INSERT INTO person () VALUES (" + pid  +"," + msid + ",1,'','',null,'','',true,null,null);"));
+			stmt.execute(Halyard.console.setRegexColor("INSERT INTO person () VALUES (" + pid  +"," + msid + ",1,'','',null,'','',true,null,null);"));
 
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -49,7 +49,7 @@ public class CreateMembership {
 					"", "", 0, "", "", "", "", HalyardPaths.getYear());
 			if (SqlInsert.addMembershipIsSucessful(newMembership)) {
 				newMemNote.addMemo(new MemoDTO(note_id, ms_id, date, "Created new membership record", 0, "N"));
-				Main.activememberships.add(newMembership);
+				Halyard.activememberships.add(newMembership);
 				//SqlInsert.addMembershipId(new Object_MembershipId(mid, Paths.getYear(), ms_id, membership_id + "", true,
 				//		"RM", false, false));
 				Launcher.createMembershipTabForRoster(newMembership.getMembershipId(), newMembership.getMsid());

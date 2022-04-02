@@ -3,7 +3,7 @@ package com.ecsail.sql.select;
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.HalyardPaths;
-import com.ecsail.main.Main;
+import com.ecsail.main.Halyard;
 import com.ecsail.structures.MembershipListDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,7 +23,7 @@ public class SqlMembershipList {
         ObservableList<MembershipListDTO> rosters = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
+            ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor(
                     "Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,id.FISCAL_YEAR,id.FISCAL_YEAR,m.JOIN_DATE,id.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip \n"
                     + "from slip s \n"
                     + "right join membership m on m.MS_ID=s.MS_ID \n"
@@ -88,7 +88,7 @@ public class SqlMembershipList {
         ObservableList<MembershipListDTO> rosters = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
+            ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor(
                     "Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,id.FISCAL_YEAR,id.FISCAL_YEAR,m.JOIN_DATE,id.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip \n"
                     + "from slip s \n"
                     + "right join membership m on m.MS_ID=s.MS_ID \n"
@@ -109,7 +109,7 @@ public class SqlMembershipList {
         ObservableList<MembershipListDTO> rosters = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
+            ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor(
                     "Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,id.FISCAL_YEAR,id.FISCAL_YEAR,m.JOIN_DATE,id.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip "
                             + "from slip s "
                             + "right join membership m on m.MS_ID=s.MS_ID "
@@ -129,7 +129,7 @@ public class SqlMembershipList {
         ObservableList<MembershipListDTO> rosters = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
+            ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor(
                     "Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,id.FISCAL_YEAR,m.JOIN_DATE,id.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip "
                             + "from slip s "
                             + "right join membership m on m.MS_ID=s.MS_ID "
@@ -149,7 +149,7 @@ public class SqlMembershipList {
         ObservableList<MembershipListDTO> rosters = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
+            ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor(
                     "Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,id.FISCAL_YEAR,m.JOIN_DATE,id.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip "
                     + "from slip s "
                     + "inner join membership m on s.ms_id=m.ms_id "
@@ -169,7 +169,7 @@ public class SqlMembershipList {
         ObservableList<MembershipListDTO> rosters = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
+            ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor(
                     "Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,id.FISCAL_YEAR,m.JOIN_DATE,id.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip from slip s "
                     + "inner join membership m on s.ms_id=m.ms_id "
                     + "left join membership_id id on m.MS_ID=id.MS_ID "
@@ -187,7 +187,7 @@ public class SqlMembershipList {
         MembershipListDTO thisMembership = null;
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
+            ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor(
                     "Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,id.FISCAL_YEAR,m.JOIN_DATE,"
                     + "id.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,"
                     + "m.zip from slip s right join membership m on m.MS_ID=s.MS_ID left join membership_id "
@@ -221,7 +221,7 @@ public class SqlMembershipList {
         MembershipListDTO thisMembership = null;
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
+            ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor(
                     "Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,id.FISCAL_YEAR,m.JOIN_DATE,"
                     + "id.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,"
                     + "m.zip from slip s right join membership m on m.MS_ID=s.MS_ID left join membership_id "
@@ -254,7 +254,7 @@ public class SqlMembershipList {
         MembershipListDTO thisMembership = null;
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
+            ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor(
                     "Select m.MS_ID,m.P_ID,m.JOIN_DATE,s.SLIP_NUM,p.L_NAME,"
                     + "p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip from slip s right join "
                     + "membership m on m.MS_ID=s.MS_ID left join person p on p.MS_ID=m.MS_ID where m.ms_id=" + ms_id));
@@ -286,7 +286,7 @@ public class SqlMembershipList {
         ObservableList<MembershipListDTO> rosters = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
+            ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor(
                     "Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,id.FISCAL_YEAR,m.JOIN_DATE,id.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip "
                             + "from slip s inner join membership m on s.ms_id=m.ms_id inner join membership_id id on id.ms_id=m.ms_id "
                             + "inner join person p on p.p_id=m.p_id where id.fiscal_year="+year));
@@ -302,7 +302,7 @@ public class SqlMembershipList {
         ObservableList<MembershipListDTO> rosters = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
+            ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor(
                     "Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,id.FISCAL_YEAR,m.JOIN_DATE,id.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip "
                     + "from waitlist w "
                     + "inner join membership m on w.ms_id=m.ms_id "
@@ -323,7 +323,7 @@ public class SqlMembershipList {
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
-            rs = stmt.executeQuery(Main.console.setRegexColor(
+            rs = stmt.executeQuery(Halyard.console.setRegexColor(
                     "select id.membership_id, id.FISCAL_YEAR, m.JOIN_DATE, id.MEM_TYPE, m.ADDRESS, "
                     + "m.CITY, m.state,m.zip, m.p_id, p.l_name, p.f_name,m.MS_ID from membership m "
                     + "inner join person p on m.p_id=p.p_id "
@@ -346,7 +346,7 @@ public class SqlMembershipList {
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
-            rs = stmt.executeQuery(Main.console.setRegexColor(
+            rs = stmt.executeQuery(Halyard.console.setRegexColor(
                     "select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,id.FISCAL_YEAR,m.JOIN_DATE,id.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip\n"
                     + "from membership_id id left join membership m on m.MS_ID=id.MS_ID\n"
                     + "left join person p on p.P_ID=m.P_ID left join slip s on s.MS_ID=m.MS_ID\n"
@@ -371,7 +371,7 @@ public class SqlMembershipList {
         ObservableList<MembershipListDTO> rosters = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
+            ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor(
                     "SELECT m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,id.FISCAL_YEAR,m.JOIN_DATE,id.MEM_TYPE,s.SLIP_NUM,p.L_NAME,p.F_NAME,s.SUBLEASED_TO,m.address,m.city,m.state,m.zip\n" +
                             "FROM membership_id id\n" +
                             "LEFT JOIN membership m on id.MS_ID=m.MS_ID\n" +
@@ -411,7 +411,7 @@ public class SqlMembershipList {
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
-            rs = stmt.executeQuery(Main.console.setRegexColor(
+            rs = stmt.executeQuery(Halyard.console.setRegexColor(
                     "select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,id.FISCAL_YEAR,m.JOIN_DATE,"
                     + "id.MEM_TYPE,p.L_NAME,p.F_NAME,m.address,m.city,m.state,m.zip from "
                     + "membership m left join person p on m.P_ID=p.P_ID left join membership_id "
@@ -445,7 +445,7 @@ public class SqlMembershipList {
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
-            rs = stmt.executeQuery(Main.console.setRegexColor(
+            rs = stmt.executeQuery(Halyard.console.setRegexColor(
                     "Select m.MS_ID,m.P_ID,id.MEMBERSHIP_ID,id.FISCAL_YEAR,id.FISCAL_YEAR,m.JOIN_DATE,id.MEM_TYPE,p.L_NAME,p.F_NAME,m.address,m.city,m.state,m.zip "
                             + "from boat_owner bo "
                             + "left join membership m on bo.MS_ID=m.MS_ID "
@@ -465,7 +465,7 @@ public class SqlMembershipList {
         ObservableList<MembershipListDTO> boatOwners = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(
+            ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor(
                     "select * from boat_owner bo left join membership m on "
                     + "bo.MS_ID=m.MS_ID left join membership_id id on m.MS_ID=id.MS_ID "
                     + "left join person p on m.P_ID=p.P_ID where BOAT_ID="+boat_id+" and id.FISCAL_YEAR='" + HalyardPaths.getYear() + "'"));

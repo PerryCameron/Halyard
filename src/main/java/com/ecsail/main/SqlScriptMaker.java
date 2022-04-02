@@ -40,7 +40,7 @@ public class SqlScriptMaker {
 	
 	public static void createSql() {
 		//SqlScriptMaker.newTupleCount = new Object_TupleCount();
-		SqlScriptMaker.newTupleCount =  Main.edits;
+		SqlScriptMaker.newTupleCount =  Halyard.edits;
 		System.out.println("Creating SQL script....");
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");  
 		Date date = new Date();  

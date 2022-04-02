@@ -2,7 +2,7 @@ package com.ecsail.sql.select;
 
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
-import com.ecsail.main.Main;
+import com.ecsail.main.Halyard;
 import com.ecsail.structures.DefinedFeeDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -28,7 +28,7 @@ public class SqlDefinedFee {
         try {
             System.out.println("Retrieving defined fee for " + year);
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT * FROM defined_fee WHERE fiscal_year=" + year));
+            ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor("SELECT * FROM defined_fee WHERE fiscal_year=" + year));
             while (rs.next()) {
                 definedFee = new DefinedFeeDTO(
                         rs.getInt("FISCAL_YEAR"),
@@ -62,7 +62,7 @@ public class SqlDefinedFee {
 
     private static void queryToObjectArrayList(String query, ObservableList<DefinedFeeDTO> thisDefinedFee) throws SQLException {
         Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-        ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(query));
+        ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor(query));
         while (rs.next()) {
             thisDefinedFee.add(new DefinedFeeDTO(
                     rs.getInt("FISCAL_YEAR"),

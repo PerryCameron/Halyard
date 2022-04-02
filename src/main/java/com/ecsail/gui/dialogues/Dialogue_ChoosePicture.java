@@ -3,7 +3,7 @@ package com.ecsail.gui.dialogues;
 import java.io.File;
 import java.net.MalformedURLException;
 
-import com.ecsail.main.Main;
+import com.ecsail.main.Halyard;
 import com.ecsail.main.HalyardPaths;
 
 import javafx.beans.value.ChangeListener;
@@ -99,7 +99,7 @@ public class Dialogue_ChoosePicture extends Stage {
 		
 		//////////////// LISTENERS ///////////////////
         browseButton.setOnAction((event) -> {
-        	File file = fileChooser.showOpenDialog(Main.getPrimaryStage());
+        	File file = fileChooser.showOpenDialog(Halyard.getPrimaryStage());
     		if (file != null) {
                 String localUrl = null;
 				try {

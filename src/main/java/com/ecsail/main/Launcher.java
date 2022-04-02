@@ -63,7 +63,7 @@ static TabPane tabPane;
 	
 	public static void openRosterTab() {
 		if(!tabOpen("Roster")) // is the tab already open??
-		tabPane.getTabs().add(new TabRoster(Main.activememberships, Main.selectedYear));
+		tabPane.getTabs().add(new TabRoster(Halyard.activememberships, Halyard.selectedYear));
 		tabPane.getSelectionModel().select(getTabIndex("Roster"));
 	}
 	
@@ -189,19 +189,19 @@ static TabPane tabPane;
 	public static void removeMembershipRow(int ms_id) {
 		int count = 0;
 		int element = 0;
-		for(MembershipListDTO mem: Main.activememberships) {
+		for(MembershipListDTO mem: Halyard.activememberships) {
 			if(mem.getMsid() == ms_id) element = count;
 			count++;
 		}
-		Main.activememberships.remove(element);
+		Halyard.activememberships.remove(element);
 	}
 
 	// gets a specific membership with and ms_id
 	public static MembershipListDTO getMembership(int ms_id) {
 		MembershipListDTO membership = null;
 		int element = 0;
-		for(MembershipListDTO mem: Main.activememberships) {
-			if(mem.getMsid() == ms_id) membership = Main.activememberships.get(element);
+		for(MembershipListDTO mem: Halyard.activememberships) {
+			if(mem.getMsid() == ms_id) membership = Halyard.activememberships.get(element);
 			element++;
 		}
 		return membership;
@@ -210,8 +210,8 @@ static TabPane tabPane;
 	public static MembershipListDTO getSubleaser(int ms_id) {  // ms_id here is the subleasee
 		MembershipListDTO membership = null;
 		int element = 0;
-		for(MembershipListDTO mem: Main.activememberships) {
-			if(mem.getSubleaser() == ms_id) membership = Main.activememberships.get(element);
+		for(MembershipListDTO mem: Halyard.activememberships) {
+			if(mem.getSubleaser() == ms_id) membership = Halyard.activememberships.get(element);
 			element++;
 		}
 		return membership;  // returns membership of subleaser

@@ -2,7 +2,7 @@ package com.ecsail.sql.select;
 
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
-import com.ecsail.main.Main;
+import com.ecsail.main.Halyard;
 import com.ecsail.structures.BoatDTO;
 import com.ecsail.structures.BoatListDTO;
 import com.ecsail.structures.BoatOwnerDTO;
@@ -22,7 +22,7 @@ public class SqlBoat {
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
-            rs = stmt.executeQuery(Main.console.setRegexColor("select * from boat_owner;"));
+            rs = stmt.executeQuery(Halyard.console.setRegexColor("select * from boat_owner;"));
             while (rs.next()) {
                 thisBoatOwner.add(new BoatOwnerDTO(
                         rs.getInt("MS_ID"),
@@ -41,7 +41,7 @@ public class SqlBoat {
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
-            rs = stmt.executeQuery(Main.console.setRegexColor("select * from boat;"));
+            rs = stmt.executeQuery(Halyard.console.setRegexColor("select * from boat;"));
             while (rs.next()) {
                 thisBoat.add(new BoatDTO(
                         rs.getInt("BOAT_ID"), 0, // because Object_Boat has a ms-id variable but database does not
@@ -75,7 +75,7 @@ public class SqlBoat {
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
-            rs = stmt.executeQuery(Main.console.setRegexColor(
+            rs = stmt.executeQuery(Halyard.console.setRegexColor(
                     "select id.MEMBERSHIP_ID,id.MS_ID, p.L_NAME, p.F_NAME, "
                     + "b.* from boat b left join boat_owner bo on "
                     + "b.BOAT_ID=bo.BOAT_ID left join membership_id id "
@@ -117,7 +117,7 @@ public class SqlBoat {
         List<BoatDTO> thisBoat = new ArrayList<>();
         try {
         Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-        ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select b.BOAT_ID, bo.MS_ID, b.MANUFACTURER"
+        ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor("select b.BOAT_ID, bo.MS_ID, b.MANUFACTURER"
                 + ", b.MANUFACTURE_YEAR, b.REGISTRATION_NUM, b.MODEL, b.BOAT_NAME, b.SAIL_NUMBER"
                 + ", b.HAS_TRAILER, b.LENGTH, b.WEIGHT, b.KEEL, b.PHRF, b.DRAFT, b.BEAM, b.LWL, b.AUX from boat b inner join boat_owner bo using (boat_id) where ms_id='" + ms_id + "';"));
         while (rs.next()) {
@@ -152,7 +152,7 @@ public class SqlBoat {
         BoatDTO thisBoat = null;
         try {
         Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-        ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select b.BOAT_ID, bo.MS_ID, b.MANUFACTURER"
+        ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor("select b.BOAT_ID, bo.MS_ID, b.MANUFACTURER"
                 + ", b.MANUFACTURE_YEAR, b.REGISTRATION_NUM, b.MODEL, b.BOAT_NAME, b.SAIL_NUMBER"
                 + ", b.HAS_TRAILER, b.LENGTH, b.WEIGHT, b.KEEL, b.PHRF, b.DRAFT, b.BEAM, b.LWL, b.AUX from boat b inner join boat_owner bo using (boat_id) where boat_id='" + boat_id + "';"));
         while (rs.next()) {

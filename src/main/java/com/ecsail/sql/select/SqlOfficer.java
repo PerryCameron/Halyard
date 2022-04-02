@@ -2,7 +2,7 @@ package com.ecsail.sql.select;
 
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
-import com.ecsail.main.Main;
+import com.ecsail.main.Halyard;
 import com.ecsail.pdf.directory.PDF_Object_Officer;
 import com.ecsail.structures.OfficerDTO;
 import com.ecsail.structures.OfficerWithNameDTO;
@@ -29,7 +29,7 @@ public class SqlOfficer {
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
-            rs = stmt.executeQuery(Main.console.setRegexColor(query01));
+            rs = stmt.executeQuery(Halyard.console.setRegexColor(query01));
             while (rs.next()) {
                 thisOfficer.add(new OfficerDTO(
                         rs.getInt("O_ID"),
@@ -49,7 +49,7 @@ public class SqlOfficer {
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
-            rs = stmt.executeQuery(Main.console.setRegexColor(query02 + selectedYear));
+            rs = stmt.executeQuery(Halyard.console.setRegexColor(query02 + selectedYear));
             while (rs.next()) {
                 officers.add(new PDF_Object_Officer(
                         rs.getString("F_NAME"),
@@ -69,7 +69,7 @@ public class SqlOfficer {
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs = stmt
-                    .executeQuery(Main.console.setRegexColor(query03 + field + "='" + attribute + "'"));
+                    .executeQuery(Halyard.console.setRegexColor(query03 + field + "='" + attribute + "'"));
             while (rs.next()) {
                 thisOfficer.add(new OfficerDTO(
                         rs.getInt("O_ID"),
@@ -90,7 +90,7 @@ public class SqlOfficer {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			ResultSet rs;
 
-			rs = stmt.executeQuery(Main.console
+			rs = stmt.executeQuery(Halyard.console
 					.setRegexColor(query04 + p_id + "' and off_year='" + i + "';"));
 			while (rs.next()) {
 				thisOfficer = new OfficerDTO(rs.getInt("O_ID"), rs.getInt("P_ID"), rs.getString("BOARD_YEAR"),
@@ -107,7 +107,7 @@ public class SqlOfficer {
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
-            rs = stmt.executeQuery(Main.console.setRegexColor(query05 +type+ "'"));
+            rs = stmt.executeQuery(Halyard.console.setRegexColor(query05 +type+ "'"));
             while (rs.next()) {
                 theseOfficers.add(new OfficerWithNameDTO(
                         rs.getString("L_NAME"),

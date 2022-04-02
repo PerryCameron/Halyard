@@ -5,7 +5,7 @@ import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.BoxConsole;
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.HalyardPaths;
-import com.ecsail.main.Main;
+import com.ecsail.main.Halyard;
 import com.ecsail.sql.select.SqlMembershipList;
 import com.ecsail.sql.select.SqlPerson;
 import com.ecsail.structures.*;
@@ -26,16 +26,16 @@ public class SqlUpdate {
 		try {			
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			if(attribute == null) 
-				stmt.execute(Main.console.setRegexColor(
+				stmt.execute(Halyard.console.setRegexColor(
 					"UPDATE boat SET " + field + "=null WHERE boat_id='" + boat_id + "';"));
 			else if(attribute.equals("")) 
-				stmt.execute(Main.console.setRegexColor(
+				stmt.execute(Halyard.console.setRegexColor(
 						"UPDATE boat SET " + field + "=null WHERE boat_id='" + boat_id + "';"));
 			else
-			stmt.execute(Main.console.setRegexColor(
+			stmt.execute(Halyard.console.setRegexColor(
 					"UPDATE boat SET " + field + "=\"" + attribute + "\" WHERE boat_id='" + boat_id + "';"));
 
-			Main.edits.setBoatEdits(Main.edits.getBoatEdits() + 1);  // count number of edits.
+			Halyard.edits.setBoatEdits(Halyard.edits.getBoatEdits() + 1);  // count number of edits.
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
@@ -46,9 +46,9 @@ public class SqlUpdate {
 		Statement stmt;
 		try {
 			stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console
+			stmt.execute(Halyard.console
 					.setRegexColor("UPDATE boat SET has_trailer=" + hasTrailer + " WHERE boat_id='" + boat_id + "';"));
-			Main.edits.setBoatEdits(Main.edits.getBoatEdits() + 1);
+			Halyard.edits.setBoatEdits(Halyard.edits.getBoatEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
@@ -60,7 +60,7 @@ public class SqlUpdate {
 		try {
 			stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute("update person set MS_ID=null, OLDMSID="+p.getMs_id()+" where P_ID=" + p.getP_id());
-			Main.edits.setBoatEdits(Main.edits.getBoatEdits() + 1);
+			Halyard.edits.setBoatEdits(Halyard.edits.getBoatEdits() + 1);
 		} catch (SQLException e) {
 			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
@@ -70,8 +70,8 @@ public class SqlUpdate {
 		Statement stmt;
 		try {
 			stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("UPDATE boat SET keel=\"" + keel + "\" WHERE boat_id='" + boat_id + "';"));
-			Main.edits.setBoatEdits(Main.edits.getBoatEdits() + 1);
+			stmt.execute(Halyard.console.setRegexColor("UPDATE boat SET keel=\"" + keel + "\" WHERE boat_id='" + boat_id + "';"));
+			Halyard.edits.setBoatEdits(Halyard.edits.getBoatEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
@@ -81,9 +81,9 @@ public class SqlUpdate {
 	public static void updateAddress(String address, MembershipListDTO membership) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("UPDATE membership SET address=\"" + address
+			stmt.execute(Halyard.console.setRegexColor("UPDATE membership SET address=\"" + address
 					+ "\" WHERE ms_id='" + membership.getMsid() + "';"));
-			Main.edits.setMembershipEdits(Main.edits.getMembershipEdits() + 1);
+			Halyard.edits.setMembershipEdits(Halyard.edits.getMembershipEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
@@ -94,9 +94,9 @@ public class SqlUpdate {
 	public static void updateCity(String city, MembershipListDTO membership) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("UPDATE membership SET city=\"" + city
+			stmt.execute(Halyard.console.setRegexColor("UPDATE membership SET city=\"" + city
 					+ "\" WHERE ms_id='" + membership.getMsid() + "';"));
-			Main.edits.setMembershipEdits(Main.edits.getMembershipEdits() + 1);
+			Halyard.edits.setMembershipEdits(Halyard.edits.getMembershipEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
@@ -107,10 +107,10 @@ public class SqlUpdate {
 	public static void updateState(String state, MembershipListDTO membership) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("UPDATE membership SET state=\"" + state
+			stmt.execute(Halyard.console.setRegexColor("UPDATE membership SET state=\"" + state
 				+ "\" WHERE ms_id='" + membership.getMsid() + "';"));
 			membership.setState(state);
-			Main.edits.setMembershipEdits(Main.edits.getMembershipEdits() + 1);
+			Halyard.edits.setMembershipEdits(Halyard.edits.getMembershipEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
@@ -121,9 +121,9 @@ public class SqlUpdate {
 	public static void updateZipcode(String zip, MembershipListDTO membership) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("UPDATE membership SET zip=\"" + zip
+			stmt.execute(Halyard.console.setRegexColor("UPDATE membership SET zip=\"" + zip
 					+ "\" WHERE ms_id='" + membership.getMsid() + "';"));
-			Main.edits.setMembershipEdits(Main.edits.getMembershipEdits() + 1);
+			Halyard.edits.setMembershipEdits(Halyard.edits.getMembershipEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
@@ -135,9 +135,9 @@ public class SqlUpdate {
 		boolean noError = true;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor(
+			stmt.execute(Halyard.console.setRegexColor(
 					"UPDATE membership SET " + field + "=\"" + date + "\" WHERE ms_id='" + ms_id + "';"));
-			Main.edits.setMembershipEdits(Main.edits.getMembershipEdits() + 1);
+			Halyard.edits.setMembershipEdits(Halyard.edits.getMembershipEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			noError = false;
@@ -150,9 +150,9 @@ public class SqlUpdate {
 		boolean noError = true;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor(
+			stmt.execute(Halyard.console.setRegexColor(
 					"UPDATE deposit SET " + field + "=\"" + date + "\" WHERE deposit_id='" + deposit_id + "';"));
-			Main.edits.setDepositsEdits(Main.edits.getDepositsEdits() + 1);
+			Halyard.edits.setDepositsEdits(Halyard.edits.getDepositsEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			noError = false;
@@ -165,9 +165,9 @@ public class SqlUpdate {
 		Statement stmt;
 		try {
 			stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor(
+			stmt.execute(Halyard.console.setRegexColor(
 					"UPDATE phone SET " + field + "=" + attribute + " WHERE phone_id='" + phone_id + "';"));
-			Main.edits.setPhoneEdits(Main.edits.getPhoneEdits() + 1);
+			Halyard.edits.setPhoneEdits(Halyard.edits.getPhoneEdits() + 1);
 		} catch (SQLException e) {
 			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
@@ -177,9 +177,9 @@ public class SqlUpdate {
 		Statement stmt;
 		try {
 			stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor(
+			stmt.execute(Halyard.console.setRegexColor(
 					"UPDATE person SET MEMBER_TYPE=" + newMemType + " WHERE P_ID=" + person.getP_id()));
-			Main.edits.setPhoneEdits(Main.edits.getPhoneEdits() + 1);
+			Halyard.edits.setPhoneEdits(Halyard.edits.getPhoneEdits() + 1);
 		} catch (SQLException e) {
 			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
@@ -189,9 +189,9 @@ public class SqlUpdate {
 		Statement stmt;
 		try {
 			stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor(
+			stmt.execute(Halyard.console.setRegexColor(
 					"UPDATE waitlist SET " + field + "=" + attribute + " WHERE ms_id='" + ms_id + "';"));
-			Main.edits.setPhoneEdits(Main.edits.getPhoneEdits() + 1);
+			Halyard.edits.setPhoneEdits(Halyard.edits.getPhoneEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
@@ -202,9 +202,9 @@ public class SqlUpdate {
 		Statement stmt;
 		try {
 			stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor(
+			stmt.execute(Halyard.console.setRegexColor(
 					"UPDATE phone SET " + field + "=\"" + attribute + "\" WHERE phone_id='" + phone_id + "';"));
-			Main.edits.setPhoneEdits(Main.edits.getPhoneEdits() + 1);
+			Halyard.edits.setPhoneEdits(Halyard.edits.getPhoneEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
@@ -215,9 +215,9 @@ public class SqlUpdate {
 		Statement stmt;
 		try {
 			stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor(
+			stmt.execute(Halyard.console.setRegexColor(
 					"UPDATE email SET " + field + "=" + attribute + " WHERE email_id='" + email_id + "';"));
-			Main.edits.setEmailEdits(Main.edits.getEmailEdits() + 1);
+			Halyard.edits.setEmailEdits(Halyard.edits.getEmailEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
@@ -227,8 +227,8 @@ public class SqlUpdate {
 	public static void updateEmail(int email_id, String email) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("UPDATE email SET email=\"" + email + "\" WHERE email_id='" + email_id + "';"));
-			Main.edits.setEmailEdits(Main.edits.getEmailEdits() + 1);
+			stmt.execute(Halyard.console.setRegexColor("UPDATE email SET email=\"" + email + "\" WHERE email_id='" + email_id + "';"));
+			Halyard.edits.setEmailEdits(Halyard.edits.getEmailEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
@@ -238,8 +238,8 @@ public class SqlUpdate {
 	public static void updateOfficer(String field, int officer_id, String attribute) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("UPDATE officer SET " + field + "=\"" + attribute + "\" WHERE o_id='" + officer_id + "';"));
-			Main.edits.setOfficersEdits(Main.edits.getOfficersEdits() + 1);  // update edits tracking
+			stmt.execute(Halyard.console.setRegexColor("UPDATE officer SET " + field + "=\"" + attribute + "\" WHERE o_id='" + officer_id + "';"));
+			Halyard.edits.setOfficersEdits(Halyard.edits.getOfficersEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			//new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
@@ -253,8 +253,8 @@ public class SqlUpdate {
 	public static void updateAward(String field, int awardId, String attribute) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("UPDATE awards SET " + field + "=\"" + attribute + "\" WHERE award_id='" + awardId + "';"));
-			Main.edits.setOfficersEdits(Main.edits.getOfficersEdits() + 1);  // update edits tracking
+			stmt.execute(Halyard.console.setRegexColor("UPDATE awards SET " + field + "=\"" + attribute + "\" WHERE award_id='" + awardId + "';"));
+			Halyard.edits.setOfficersEdits(Halyard.edits.getOfficersEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			//new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
@@ -268,9 +268,9 @@ public class SqlUpdate {
 	public static void updateBirthday(LocalDate date, PersonDTO person) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("UPDATE person SET birthday=\"" + date
+			stmt.execute(Halyard.console.setRegexColor("UPDATE person SET birthday=\"" + date
 					+ "\" WHERE p_id='" + person.getP_id() + "';"));
-			Main.edits.setPeopleEdits(Main.edits.getPeopleEdits() + 1);  // update edits tracking
+			Halyard.edits.setPeopleEdits(Halyard.edits.getPeopleEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
@@ -280,9 +280,9 @@ public class SqlUpdate {
 	public static void updateNickName(String nname, PersonDTO person) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("UPDATE person SET NICK_NAME=\"" + nname
+			stmt.execute(Halyard.console.setRegexColor("UPDATE person SET NICK_NAME=\"" + nname
 					+ "\" WHERE p_id='" + person.getP_id() + "';"));
-			Main.edits.setPeopleEdits(Main.edits.getPeopleEdits() + 1);  // update edits tracking
+			Halyard.edits.setPeopleEdits(Halyard.edits.getPeopleEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"Unable to save nickname","");
@@ -292,9 +292,9 @@ public class SqlUpdate {
 	public static void updateBuisness(String buisness, PersonDTO person ) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("UPDATE person SET buisness=\"" + buisness
+			stmt.execute(Halyard.console.setRegexColor("UPDATE person SET buisness=\"" + buisness
 					+ "\" WHERE p_id='" + person.getP_id() + "';"));
-			Main.edits.setPeopleEdits(Main.edits.getPeopleEdits() + 1);  // update edits tracking
+			Halyard.edits.setPeopleEdits(Halyard.edits.getPeopleEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
@@ -304,9 +304,9 @@ public class SqlUpdate {
 	public static void updateOccupation(String occupation, PersonDTO person) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("UPDATE person SET occupation=\"" + occupation
+			stmt.execute(Halyard.console.setRegexColor("UPDATE person SET occupation=\"" + occupation
 					+ "\" WHERE p_id='" + person.getP_id() + "';"));
-			Main.edits.setPeopleEdits(Main.edits.getPeopleEdits() + 1);  // update edits tracking
+			Halyard.edits.setPeopleEdits(Halyard.edits.getPeopleEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
@@ -316,9 +316,9 @@ public class SqlUpdate {
 	public static void updateLastName(String lname, PersonDTO person)  { // Business
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("UPDATE person SET l_name=\"" + lname
+			stmt.execute(Halyard.console.setRegexColor("UPDATE person SET l_name=\"" + lname
 					+ "\" WHERE p_id='" + person.getP_id() + "';"));
-			Main.edits.setPeopleEdits(Main.edits.getPeopleEdits() + 1);  // update edits tracking
+			Halyard.edits.setPeopleEdits(Halyard.edits.getPeopleEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
@@ -328,9 +328,9 @@ public class SqlUpdate {
 	public static void updateFirstName(String fname, PersonDTO person) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("UPDATE person SET f_name=\"" + fname
+			stmt.execute(Halyard.console.setRegexColor("UPDATE person SET f_name=\"" + fname
 					+ "\" WHERE p_id='" + person.getP_id() + "';"));
-			Main.edits.setPeopleEdits(Main.edits.getPeopleEdits() + 1);  // update edits tracking
+			Halyard.edits.setPeopleEdits(Halyard.edits.getPeopleEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
@@ -340,8 +340,8 @@ public class SqlUpdate {
 	public static void updatePerson(String field, int p_id, Boolean attribute) { // updates active/inactive
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("UPDATE person SET " + field + "=" + attribute + " WHERE p_id='" + p_id + "';"));
-			Main.edits.setPeopleEdits(Main.edits.getPeopleEdits() + 1);  // update edits tracking
+			stmt.execute(Halyard.console.setRegexColor("UPDATE person SET " + field + "=" + attribute + " WHERE p_id='" + p_id + "';"));
+			Halyard.edits.setPeopleEdits(Halyard.edits.getPeopleEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
@@ -351,9 +351,9 @@ public class SqlUpdate {
 	public static void updateSlip(int ms_id, MembershipListDTO membership) {  // ms_id in this case came from the text field and is converted from membership_id
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("update slip set subleased_to='" + ms_id + "' where ms_id='" + membership.getMsid() + "';"));
+			stmt.execute(Halyard.console.setRegexColor("update slip set subleased_to='" + ms_id + "' where ms_id='" + membership.getMsid() + "';"));
 			membership.setSubleaser(ms_id);
-			Main.edits.setSlipsEdits(Main.edits.getSlipsEdits() + 1);  // update edits tracking
+			Halyard.edits.setSlipsEdits(Halyard.edits.getSlipsEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
@@ -363,10 +363,10 @@ public class SqlUpdate {
 	public static void releaseSlip(MembershipListDTO membership) {  // this releases the slip using the slip owners ms_id
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("update slip set subleased_to=null where ms_id='" + membership.getMsid() + "';"));
+			stmt.execute(Halyard.console.setRegexColor("update slip set subleased_to=null where ms_id='" + membership.getMsid() + "';"));
 			BoxConsole.setInfoLine("Released sublease for slip owner " + membership.getMsid(), "orange");
 			membership.setSubleaser(0);
-			Main.edits.setSlipsEdits(Main.edits.getSlipsEdits() + 1);  // update edits tracking
+			Halyard.edits.setSlipsEdits(Halyard.edits.getSlipsEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
@@ -376,11 +376,11 @@ public class SqlUpdate {
 	public static void subleaserReleaseSlip(int subleasee) {  // this releases the slip using the subleasee ms_id
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("update slip set subleased_to=null where subleased_to='" + subleasee + "';"));
+			stmt.execute(Halyard.console.setRegexColor("update slip set subleased_to=null where subleased_to='" + subleasee + "';"));
 			BoxConsole.setInfoLine("Released sublease for subleaser " + subleasee, "orange");
 			MembershipListDTO ownerMembership = SqlMembershipList.getMembershipFromList(subleasee, HalyardPaths.getYear());
 			ownerMembership.setSubleaser(0);
-			Main.edits.setSlipsEdits(Main.edits.getSlipsEdits() + 1);  // update edits tracking
+			Halyard.edits.setSlipsEdits(Halyard.edits.getSlipsEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
@@ -390,12 +390,12 @@ public class SqlUpdate {
 	public static void reAssignSlip(int ms_id, MembershipListDTO membership) {  // this reassignes the slip using the subleasee ms_id (came from text field)
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("update slip set ms_id='" + ms_id + "' where ms_id='" + membership.getMsid() + "';"));
+			stmt.execute(Halyard.console.setRegexColor("update slip set ms_id='" + ms_id + "' where ms_id='" + membership.getMsid() + "';"));
 			String slip = membership.getSlip();
 			membership.setSlip("0");
 			MembershipListDTO newSlipOwnerMembership = SqlMembershipList.getMembershipFromList(ms_id, HalyardPaths.getYear());
 			newSlipOwnerMembership.setSlip(slip);
-			Main.edits.setSlipsEdits(Main.edits.getSlipsEdits() + 1);  // update edits tracking
+			Halyard.edits.setSlipsEdits(Halyard.edits.getSlipsEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
@@ -406,9 +406,9 @@ public class SqlUpdate {
 		Statement stmt;
 		try {
 			stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console
+			stmt.execute(Halyard.console
 					.setRegexColor("UPDATE money SET commited=" + commit + " WHERE money_id='" + money_id + "';"));
-			Main.edits.setMoniesEdits(Main.edits.getMoniesEdits() + 1);  // update edits tracking
+			Halyard.edits.setMoniesEdits(Halyard.edits.getMoniesEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
@@ -442,9 +442,9 @@ public class SqlUpdate {
 					+ ",other_credit=" + money.getOther_credit()
 					+ ",kayak_beach_rack=" + money.getKayak_beach_rack()
 					+ " WHERE money_id=" + money.getMoney_id() + ";";
-			stmt.execute(Main.console.setRegexColor(query));
+			stmt.execute(Halyard.console.setRegexColor(query));
 //			System.out.println(query);
-			Main.edits.setMoniesEdits(Main.edits.getMoniesEdits() + 1);  // update edits tracking
+			Halyard.edits.setMoniesEdits(Halyard.edits.getMoniesEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 		e.printStackTrace();
 		new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
@@ -454,10 +454,10 @@ public class SqlUpdate {
 	public static void updateWorkCredit(WorkCreditDTO swcy)  {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("UPDATE work_credit SET racing=" + swcy.getRacing()
+			stmt.execute(Halyard.console.setRegexColor("UPDATE work_credit SET racing=" + swcy.getRacing()
 					+ ",harbor=" + swcy.getHarbor() + ",social=" + swcy.getSocial() + ",other=" + swcy.getOther() 
 					+ " WHERE money_id=" + swcy.getMoney_id() + ";"));
-			Main.edits.setWorkCreditsEdits(Main.edits.getWorkCreditsEdits() + 1);  // update edits tracking
+			Halyard.edits.setWorkCreditsEdits(Halyard.edits.getWorkCreditsEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
@@ -467,9 +467,9 @@ public class SqlUpdate {
 	public static void updateMoneyBatch(int money_id, int batchNumber) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("UPDATE money SET batch=\"" + batchNumber
+			stmt.execute(Halyard.console.setRegexColor("UPDATE money SET batch=\"" + batchNumber
 					+ "\" WHERE money_id='" + money_id + "';"));
-			Main.edits.setMoniesEdits(Main.edits.getMoniesEdits() + 1);  // update edits tracking
+			Halyard.edits.setMoniesEdits(Halyard.edits.getMoniesEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
@@ -479,9 +479,9 @@ public class SqlUpdate {
 	public static void updateMoneyClosed(int money_id, Boolean closed) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("UPDATE money SET closed=" + closed
+			stmt.execute(Halyard.console.setRegexColor("UPDATE money SET closed=" + closed
 					+ " WHERE money_id='" + money_id + "';"));
-			Main.edits.setMoniesEdits(Main.edits.getMoniesEdits() + 1);  // update edits tracking
+			Halyard.edits.setMoniesEdits(Halyard.edits.getMoniesEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
@@ -491,8 +491,8 @@ public class SqlUpdate {
 	public static void updateMemo(int memo_id, String field, String attribute)  {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("UPDATE memo SET " + field + "=\"" + attribute + "\" WHERE memo_id='" + memo_id + "';"));
-			Main.edits.setMemosEdits(Main.edits.getMemosEdits() + 1);  // update edits tracking
+			stmt.execute(Halyard.console.setRegexColor("UPDATE memo SET " + field + "=\"" + attribute + "\" WHERE memo_id='" + memo_id + "';"));
+			Halyard.edits.setMemosEdits(Halyard.edits.getMemosEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
@@ -502,8 +502,8 @@ public class SqlUpdate {
 	public static void updatePayment(int pay_id, String field, String attribute) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("UPDATE payment SET " + field + "=\"" + attribute + "\" WHERE pay_id='" + pay_id + "';"));
-			Main.edits.setPaymentsEdits(Main.edits.getPaymentsEdits() + 1);
+			stmt.execute(Halyard.console.setRegexColor("UPDATE payment SET " + field + "=\"" + attribute + "\" WHERE pay_id='" + pay_id + "';"));
+			Halyard.edits.setPaymentsEdits(Halyard.edits.getPaymentsEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
@@ -515,8 +515,8 @@ public class SqlUpdate {
 		boolean noError = true;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("UPDATE membership_id SET " + field + "=\"" + attribute + "\" WHERE mid=" + thisId.getMid()));
-			Main.edits.setIdEdits(Main.edits.getIdEdits() + 1);
+			stmt.execute(Halyard.console.setRegexColor("UPDATE membership_id SET " + field + "=\"" + attribute + "\" WHERE mid=" + thisId.getMid()));
+			Halyard.edits.setIdEdits(Halyard.edits.getIdEdits() + 1);
 		} catch (SQLIntegrityConstraintViolationException IV) {
 			PersonDTO accountHolder = SqlPerson.getPersonFromMembershipID(thisId.getMembership_id(), thisId.getFiscal_Year());
 			String errorMessage = "The entry for the year " + thisId.getFiscal_Year() + " with a membership ID of " + thisId.getMembership_id() 
@@ -535,8 +535,8 @@ public class SqlUpdate {
 		boolean noError = true;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("update boat set aux=" + value + " where BOAT_ID=" + boatId));
-			Main.edits.setIdEdits(Main.edits.getBoatEdits() + 1);
+			stmt.execute(Halyard.console.setRegexColor("update boat set aux=" + value + " where BOAT_ID=" + boatId));
+			Halyard.edits.setIdEdits(Halyard.edits.getBoatEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
@@ -549,8 +549,8 @@ public class SqlUpdate {
 		boolean noError = true;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("update membership_id set renew=" + value + " where fiscal_year='" + year + "' and ms_id='" + ms_id +"'"));
-			Main.edits.setIdEdits(Main.edits.getIdEdits() + 1);
+			stmt.execute(Halyard.console.setRegexColor("update membership_id set renew=" + value + " where fiscal_year='" + year + "' and ms_id='" + ms_id +"'"));
+			Halyard.edits.setIdEdits(Halyard.edits.getIdEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
@@ -563,8 +563,8 @@ public class SqlUpdate {
 		boolean noError = true;
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("UPDATE membership_id SET " + field + "=" + attribute + " WHERE mid=" + mid));
-			Main.edits.setIdEdits(Main.edits.getIdEdits() + 1);
+			stmt.execute(Halyard.console.setRegexColor("UPDATE membership_id SET " + field + "=" + attribute + " WHERE mid=" + mid));
+			Halyard.edits.setIdEdits(Halyard.edits.getIdEdits() + 1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
@@ -576,13 +576,13 @@ public class SqlUpdate {
 	public static void updateFeeRecord(FeeDTO feeDTO) {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("UPDATE fee SET FIELD_NAME='" + feeDTO.getFieldName()
+			stmt.execute(Halyard.console.setRegexColor("UPDATE fee SET FIELD_NAME='" + feeDTO.getFieldName()
 					+ "', FIELD_VALUE=" + feeDTO.getFieldValue()
 					+ ", FIELD_QTY=" + feeDTO.getFieldQuantity()
 					+ ", FEE_YEAR=" + feeDTO.getFeeYear()
 					+ ", DESCRIPTION='" + feeDTO.getDescription()
 					+ "' WHERE FEE_ID=" + feeDTO.getFeeId()));
-			Main.edits.setIdEdits(Main.edits.getIdEdits() + 1);
+			Halyard.edits.setIdEdits(Halyard.edits.getIdEdits() + 1);
 		} catch (SQLException e) {
 			e.printStackTrace();
 //			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
@@ -614,8 +614,8 @@ public class SqlUpdate {
 					"KAYAK_SHED_KEY=" + d.getKayak_shed_key() + "," +
 					"WORK_CREDIT=" + d.getWork_credit() +
 					" WHERE fiscal_year=" + d.getFiscal_year() + ";";
-			stmt.execute(Main.console.setRegexColor(query));
-			Main.edits.setDefinedFeesEdits(Main.edits.getDefinedFeesEdits() + 1);
+			stmt.execute(Halyard.console.setRegexColor(query));
+			Halyard.edits.setDefinedFeesEdits(Halyard.edits.getDefinedFeesEdits() + 1);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			//			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
@@ -625,7 +625,7 @@ public class SqlUpdate {
 	public static void updateStatRecord(StatsDTO s)  {
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Main.console.setRegexColor("UPDATE stats SET " +
+			stmt.execute(Halyard.console.setRegexColor("UPDATE stats SET " +
 			"ACTIVE_MEMBERSHIPS=" + s.getActiveMemberships() + "," +
 			"NON_RENEW=" + s.getNonRenewMemberships() + "," +
 			"RETURN_MEMBERS=" + s.getReturnMemberships() + "," +
@@ -642,7 +642,7 @@ public class SqlUpdate {
 			"DEPOSITS=" + s.getDeposits() + "," +
 			"INIATION="  + s.getInitiation() + 
 			" WHERE FISCAL_YEAR='" + s.getFiscalYear() + "'"));
-			Main.edits.setMemosEdits(Main.edits.getMemosEdits() + 1);  // update edits tracking
+			Halyard.edits.setMemosEdits(Halyard.edits.getMemosEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");

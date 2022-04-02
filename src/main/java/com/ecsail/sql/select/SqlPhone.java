@@ -2,7 +2,7 @@ package com.ecsail.sql.select;
 
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
-import com.ecsail.main.Main;
+import com.ecsail.main.Halyard;
 import com.ecsail.structures.PersonDTO;
 import com.ecsail.structures.PhoneDTO;
 import javafx.collections.FXCollections;
@@ -22,7 +22,7 @@ public class SqlPhone {
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
-            rs = stmt.executeQuery(Main.console.setRegexColor(query + ";"));
+            rs = stmt.executeQuery(Halyard.console.setRegexColor(query + ";"));
             while (rs.next()) {
                 thisPhone.add(new PhoneDTO(rs.getInt("PHONE_ID"), rs.getInt("P_ID"), rs.getBoolean("PHONE_LISTED"),
                         rs.getString("PHONE"), rs.getString("PHONE_TYPE")));
@@ -38,7 +38,7 @@ public class SqlPhone {
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
-            rs = stmt.executeQuery(Main.console.setRegexColor("SELECT * from phone Where P_ID=" + p.getP_id()));
+            rs = stmt.executeQuery(Halyard.console.setRegexColor("SELECT * from phone Where P_ID=" + p.getP_id()));
             while (rs.next()) {
                 thisPhone.add(new PhoneDTO(rs.getInt("PHONE_ID"), rs.getInt("P_ID"), rs.getBoolean("PHONE_LISTED"),
                         rs.getString("PHONE"), rs.getString("PHONE_TYPE")));
@@ -54,7 +54,7 @@ public class SqlPhone {
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
-            rs = stmt.executeQuery(Main.console.setRegexColor("select * from phone where P_ID=" + p.getP_id() + " and PHONE_LISTED=true and PHONE_TYPE='" + type + "'"));
+            rs = stmt.executeQuery(Halyard.console.setRegexColor("select * from phone where P_ID=" + p.getP_id() + " and PHONE_LISTED=true and PHONE_TYPE='" + type + "'"));
             rs.next();
             phone = rs.getString("PHONE");
 
@@ -69,7 +69,7 @@ public class SqlPhone {
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
-            rs = stmt.executeQuery(Main.console.setRegexColor("select * from phone where P_ID=" + pid + " and PHONE_TYPE='" + type + "'"));
+            rs = stmt.executeQuery(Halyard.console.setRegexColor("select * from phone where P_ID=" + pid + " and PHONE_TYPE='" + type + "'"));
             rs.next();
             phone = rs.getString("PHONE");
 

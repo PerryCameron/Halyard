@@ -14,7 +14,7 @@ public class LoadFileChooser {
         //fileChooser.getExtensionFilters().addAll(new ExtensionFilter(Description, extention));
         fileChooser.setInitialDirectory(new File(directory + "/"));
         //fileChooser.setInitialFileName(fileName);
-        this.file = fileChooser.showOpenDialog(Main.getPrimaryStage());  
+        this.file = fileChooser.showOpenDialog(Halyard.getPrimaryStage());
 	}
 
 	public File getFile() {

@@ -315,7 +315,7 @@ public class ConnectDatabase {
         		} else System.out.println("SSH connection is not being used");
         		// create mysql login
         		if(createConnection(user, pass, loopback, port)) {
-        		Main.activememberships = SqlMembershipList.getRoster(Main.selectedYear, true);
+        		Halyard.activememberships = SqlMembershipList.getRoster(Halyard.selectedYear, true);
         		logonStage.close();
         		primaryStage.setTitle("ECSC Membership Database (connected) " + host);
         		} else {
@@ -497,10 +497,10 @@ public class ConnectDatabase {
 			sucessful = true;
 			// Creating a Statement object
 		} catch (ClassNotFoundException e) {
-			Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, e);
+			Logger.getLogger(Halyard.class.getName()).log(Level.SEVERE, null, e);
 			exception = e.toString();
 		} catch (SQLException e) {
-			Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, e);
+			Logger.getLogger(Halyard.class.getName()).log(Level.SEVERE, null, e);
 			//e.printStackTrace();
 			exception = e.toString();
 		}

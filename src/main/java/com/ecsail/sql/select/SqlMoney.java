@@ -2,7 +2,7 @@ package com.ecsail.sql.select;
 
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
-import com.ecsail.main.Main;
+import com.ecsail.main.Halyard;
 import com.ecsail.structures.DepositSummaryDTO;
 import com.ecsail.structures.MoneyDTO;
 import com.ecsail.structures.WorkCreditDTO;
@@ -18,7 +18,7 @@ public class SqlMoney {
         ObservableList<MoneyDTO> theseFiscals = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT * FROM money WHERE ms_id=" + ms_id + ";"));
+            ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor("SELECT * FROM money WHERE ms_id=" + ms_id + ";"));
             while (rs.next()) {
                 theseFiscals.add(new MoneyDTO(rs.getInt("MONEY_ID"), rs.getInt("MS_ID"),
                         rs.getInt("FISCAL_YEAR"),
@@ -61,7 +61,7 @@ public class SqlMoney {
         ObservableList<MoneyDTO> theseFiscals = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("SELECT * FROM money"));
+            ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor("SELECT * FROM money"));
             while (rs.next()) {
                 theseFiscals.add(new MoneyDTO(rs.getInt("MONEY_ID"), rs.getInt("MS_ID"),
                         rs.getInt("FISCAL_YEAR"),
@@ -105,7 +105,7 @@ public class SqlMoney {
         MoneyDTO thisFiscal = null;
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(query + ";"));
+            ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor(query + ";"));
             while (rs.next()) {
                 thisFiscal = new MoneyDTO(rs.getInt("MONEY_ID"), rs.getInt("MS_ID"),
                         rs.getInt("FISCAL_YEAR"), rs.getInt("BATCH"), rs.getString("OFFICER_CREDIT"), rs.getInt("EXTRA_KEY"),
@@ -224,7 +224,7 @@ public class SqlMoney {
         DepositSummaryDTO thisFiscal = null;
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt.executeQuery(Main.console.setRegexColor(query + ";"));
+            ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor(query + ";"));
             while (rs.next()) {
                 thisFiscal = new DepositSummaryDTO(
                         rs.getBigDecimal("sum(TOTAL)"),
@@ -264,7 +264,7 @@ public class SqlMoney {
         try {
             stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs = stmt.executeQuery(
-                    Main.console.setRegexColor("select * from work_credit WHERE money_id='" + moneyID + "';"));
+                    Halyard.console.setRegexColor("select * from work_credit WHERE money_id='" + moneyID + "';"));
             // if(Main.consoleVerbose) ;
             while (rs.next()) {
                 workCredits = new WorkCreditDTO(rs.getInt("MONEY_ID"), rs.getInt("MS_ID"),rs.getInt("RACING"), rs.getInt("HARBOR"),
@@ -298,7 +298,7 @@ public class SqlMoney {
         Statement stmt;
         try {
             stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select SUM(amount) from payment where money_id=" + money_id));
+            ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor("select SUM(amount) from payment where money_id=" + money_id));
             rs.next();
             number = rs.getInt("SUM(amount)");
         } catch (SQLException e) {
@@ -314,7 +314,7 @@ public class SqlMoney {
         Statement stmt;
         try {
             stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select count(*) from money where FISCAL_YEAR="+year+" and BATCH="+batch+" and DUES > 0"));
+            ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor("select count(*) from money where FISCAL_YEAR="+year+" and BATCH="+batch+" and DUES > 0"));
             rs.next();
             number = rs.getInt("count(*)");
         } catch (SQLException e) {
@@ -329,7 +329,7 @@ public class SqlMoney {
         Statement stmt;
         try {
             stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt.executeQuery(Main.console.setRegexColor("select count(*) from money where FISCAL_YEAR="+year+" and BATCH="+batch+" and WET_SLIP > 0"));
+            ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor("select count(*) from money where FISCAL_YEAR="+year+" and BATCH="+batch+" and WET_SLIP > 0"));
             rs.next();
             number = rs.getInt("count(*)");
         } catch (SQLException e) {

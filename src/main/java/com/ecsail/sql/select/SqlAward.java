@@ -2,7 +2,7 @@ package com.ecsail.sql.select;
 
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
-import com.ecsail.main.Main;
+import com.ecsail.main.Halyard;
 import com.ecsail.structures.AwardDTO;
 import com.ecsail.structures.PersonDTO;
 import javafx.collections.FXCollections;
@@ -19,7 +19,7 @@ public class SqlAward {
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs = stmt
-                    .executeQuery(Main.console.setRegexColor("select * from awards where P_ID=" + p.getP_id()));
+                    .executeQuery(Halyard.console.setRegexColor("select * from awards where P_ID=" + p.getP_id()));
             while (rs.next()) {
                 thisAwards.add(new AwardDTO(
                         rs.getInt("AWARD_ID"),
@@ -39,7 +39,7 @@ public class SqlAward {
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
-            rs = stmt.executeQuery(Main.console.setRegexColor("select * from awards"));
+            rs = stmt.executeQuery(Halyard.console.setRegexColor("select * from awards"));
             while (rs.next()) {
                 theseAwards.add(new AwardDTO(
                         rs.getInt("AWARD_ID"),

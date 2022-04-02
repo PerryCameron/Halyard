@@ -4,7 +4,6 @@ import java.sql.SQLException;
 
 import com.ecsail.gui.boxes.VBoxToolBar;
 import com.ecsail.structures.MembershipListDTO;
-import com.ecsail.structures.Object_Login;
 import com.ecsail.structures.Object_TupleCount;
 
 import com.jcraft.jsch.JSchException;
@@ -21,7 +20,7 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 
-public class Main extends Application {
+public class Halyard extends Application {
 static ConnectDatabase connect;  // mysql and ssh connection
 public static Object_TupleCount edits = new Object_TupleCount();
 public static ObservableList<MembershipListDTO> activememberships;
@@ -36,11 +35,11 @@ VBox toolbar = new VBoxToolBar();
 
 public static void main(String[] args) throws SQLException {
 	System.out.println("Starting application...");
-	Main.selectedYear = HalyardPaths.getYear();
+	Halyard.selectedYear = HalyardPaths.getYear();
 	// does our object exist  ... why did i name this tuplecounts??
 	if(HalyardPaths.fileExists(HalyardPaths.TUPLECOUNTS)) {
 	// it exists so open it
-	Main.edits = FileIO.openTupleCountObject();
+	Halyard.edits = FileIO.openTupleCountObject();
 	}
 	setUpForFirstTime();
 	console = new BoxConsole();
@@ -56,7 +55,7 @@ public static void main(String[] args) throws SQLException {
 		pStage = primaryStage;
 		//Pane topPane = new Pane();
 		Image mainIcon = new Image(getClass().getResourceAsStream("/ECSC64.png"));
-		Main.mainScene = new Scene(mainPane, 1028, 830, Color.GREEN);
+		Halyard.mainScene = new Scene(mainPane, 1028, 830, Color.GREEN);
 		
 		/////////////////  LISTENERS ///////////////////////
 
@@ -121,7 +120,7 @@ public static void main(String[] args) throws SQLException {
 	}
 
 	public static void setConnect(ConnectDatabase connect) {
-		Main.connect = connect;
+		Halyard.connect = connect;
 	}
 
 	public static void closeDatabaseConnection() {
@@ -132,11 +131,11 @@ public static void main(String[] args) throws SQLException {
 			e.printStackTrace();
 		}
 		// if ssh is connected then disconnect
-		if(Main.getConnect().getSshConnection() != null)
-			if(Main.getConnect().getSshConnection().getSession().isConnected()) {
+		if(Halyard.getConnect().getSshConnection() != null)
+			if(Halyard.getConnect().getSshConnection().getSession().isConnected()) {
 				try {
-					Main.getConnect().getSshConnection().getSession().delPortForwardingL(3306);
-					Main.getConnect().getSshConnection().getSession().disconnect();
+					Halyard.getConnect().getSshConnection().getSession().delPortForwardingL(3306);
+					Halyard.getConnect().getSshConnection().getSession().disconnect();
 					System.out.println("SSH: port forwarding closed");
 				} catch (JSchException e) {
 					e.printStackTrace();

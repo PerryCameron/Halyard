@@ -124,9 +124,9 @@ public class VBoxToolBar extends VBox {
 	}
 
 	private void closeConnection() {
-		Main.closeDatabaseConnection();
+		Halyard.closeDatabaseConnection();
 		Launcher.closeTabs();
-		Main.connectDatabase();
+		Halyard.connectDatabase();
 	}
 
 	private void openConsole() {
@@ -134,7 +134,7 @@ public class VBoxToolBar extends VBox {
 		StackPane secondaryLayout = new StackPane();
 		Scene secondScene = new Scene(secondaryLayout, 1024, 500);
 		Stage newWindow = new Stage();
-		secondaryLayout.getChildren().add(Main.console);
+		secondaryLayout.getChildren().add(Halyard.console);
 		newWindow.setTitle("Console");
 		newWindow.setScene(secondScene);
 		newWindow.show();
