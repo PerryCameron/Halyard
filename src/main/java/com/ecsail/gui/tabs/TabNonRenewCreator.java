@@ -3,7 +3,6 @@ package com.ecsail.gui.tabs;
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.HalyardPaths;
-import com.ecsail.sql.SqlInsert;
 import com.ecsail.sql.select.SqlMembership_Id;
 import com.ecsail.sql.select.SqlSelect;
 import com.ecsail.structures.MembershipIdDTO;
@@ -37,8 +36,6 @@ public class TabNonRenewCreator extends Tab {
 		VBox vBoxLeft = new VBox();
 		VBox vBoxRight = new VBox();
 
-
-
 		ComboBox<Integer> comboBox = new ComboBox<>();
 		for(int i = Integer.parseInt(HalyardPaths.getYear()) + 1; i > 1969; i--) {
 			comboBox.getItems().add(i);
@@ -46,7 +43,6 @@ public class TabNonRenewCreator extends Tab {
 		comboBox.getSelectionModel().select(1);
 
 		Button button = new Button("Insert Records");
-		Text changedIndicator = new Text("");
 		TextArea displayArea = new TextArea();
 		
 		vboxBlue.setId("box-blue");
@@ -66,36 +62,30 @@ public class TabNonRenewCreator extends Tab {
 		vBoxLeft.setPrefWidth(400);
 		vBoxRight.setPadding(new Insets(5,5,5,5));
 
-
-
 		/// LISTENERS ///
 		button.setOnAction((event) -> {
-			for(MembershipIdDTO id: ids) {
-				SqlInsert.addMembershipId(id);
-				System.out.println("added " + id.getMembership_id() + " with msid=" + id.getMs_id());
-			}
+
+			System.out.println(ids.size());
 		} );
 
 		comboBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
-			changeId(changedIndicator, newValue);
 			ids.clear();
 			displayArea.clear();
-
+			idChanged = numberWasChangedForThisYear(newValue);
 			if(idChanged) {
-				displayArea.setText("***** Membership ID numbers compacted in " + comboBox.getValue() + " *******");
-//				System.out.println("The Numbers Changed for this year");
-//				getNonRenewListOnChangedYear(comboBox.getValue());
+				displayArea.setText("***** Membership ID numbers compacted in " + comboBox.getValue() + " *******\n");
+				getNonRenewListOnChangedYear(comboBox.getValue());
 			} else {
-				displayArea.setText("***** Membership Id numbers remain the same in " + comboBox.getValue() + " *******");
-//				ids = getNonRenewListOnUnchangedYear(comboBox.getValue());
+				displayArea.setText("***** Membership Id numbers remain the same in " + comboBox.getValue() + " *******\n");
+				ids = getNonRenewListOnUnchangedYear(comboBox.getValue());
 			}
-//			printResultList();
+			for(MembershipIdDTO id: ids) {
+				displayArea.appendText(id.toString() + "\n");
+			}
 		});
 
 		ids = getNonRenewListOnUnchangedYear(comboBox.getValue());
-		changeId(changedIndicator, comboBox.getValue());
-
-		vBoxLeft.getChildren().addAll(changedIndicator,comboBox,button);
+		vBoxLeft.getChildren().addAll(comboBox,button);
 		vBoxRight.getChildren().addAll(displayArea);
 		hBoxDivider.getChildren().addAll(vBoxLeft,vBoxRight);
 		vboxGrey.getChildren().addAll(hBoxDivider);
@@ -133,8 +123,6 @@ public class TabNonRenewCreator extends Tab {
 		}
 	}
 
-
-
 	private void printResultList() {
 		for(MembershipIdDTO id: ids) {
 			System.out.print("MID:" + id.getMid());
@@ -150,10 +138,6 @@ public class TabNonRenewCreator extends Tab {
 
 	//////////////////////// CLASS METHODS //////////////////////////
 
-	private void changeId(Text changedIndicator, Integer newValue) {
-		idChanged = numberWasChangedForThisYear(newValue);
-		changedIndicator.setText("Year Change: " + idChanged);
-	}
 
 	private ObservableList<MembershipIdDTO> getNonRenewListOnUnchangedYear(Integer year) {
 		int mid = SqlSelect.getNextAvailablePrimaryKey("membership_id","mid") + 1;
@@ -179,7 +163,6 @@ public class TabNonRenewCreator extends Tab {
 				mid++;
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
 		}
 		return ids;
@@ -194,7 +177,6 @@ public class TabNonRenewCreator extends Tab {
 			answer = rs.getBoolean("CHANGED");
 		} catch (SQLException e) {
 			new Dialogue_ErrorSQL(e,"Unable to check if exists","See below for details");
-
 		}
 		return answer;
 	}

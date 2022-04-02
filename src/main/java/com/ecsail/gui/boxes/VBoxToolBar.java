@@ -27,10 +27,10 @@ public class VBoxToolBar extends VBox {
 		/////// Menu 1 "File" ///////
 
 		Menu subMenu1_1 = new Menu("Export");
-		MenuItem m1_1_1 = new MenuItem("Create SQL Script");
-		MenuItem m1_2 = new MenuItem("Console");
-		MenuItem m1_3 = new MenuItem("Update Statistics");
-		MenuItem m1_4 = new MenuItem("Close connection");
+			MenuItem m1_1_1 = new MenuItem("Create SQL Script");
+			MenuItem m1_2 = new MenuItem("Console");
+			MenuItem m1_3 = new MenuItem("Update Statistics");
+			MenuItem m1_4 = new MenuItem("Close connection");
 
 
 //		MenuItem m3_5 = new MenuItem("Membership by MSID");
@@ -53,25 +53,23 @@ public class VBoxToolBar extends VBox {
 			MenuItem m3_1_7 = new MenuItem("Fees");
 			MenuItem m3_1_8 = new MenuItem("Fees (experimental)");
 			MenuItem m3_1_9 = new MenuItem("Notes");
+		// submenu
+		Menu subMenu3_2 = new Menu("Create");
+			MenuItem m3_2_1 = new MenuItem("New Membership");
+			MenuItem m3_2_2 = new MenuItem("Envelopes");
 
 		MenuItem m3_3 = new MenuItem("New Year Generator");
 		MenuItem m3_4 = new MenuItem("Create non renew members");
 
-		// submenu
-		Menu subMenu3_2 = new Menu("Create");
-
-		MenuItem m3_2_1 = new MenuItem("New Membership");
-		MenuItem m3_2_2 = new MenuItem("Envelopes");
 		/////// Menu 4 "Reports" ///////
 		
 		Menu subMenu4_1 = new Menu("Create");
-		MenuItem m4_1_2 = new MenuItem("Boat Report");
-		MenuItem m4_1_4 = new MenuItem("Email List");
-//		MenuItem m4_1_5 = new MenuItem("Window Stub");
-//		MenuItem m4_1_6 = new MenuItem("Tab Stub");
-		MenuItem m4_1_8 = new MenuItem("Renewal Forms");
-
-		MenuItem m4_1_10 = new MenuItem("Directory");
+			MenuItem m4_1_2 = new MenuItem("Boat Report");
+			MenuItem m4_1_4 = new MenuItem("Email List");
+//			MenuItem m4_1_5 = new MenuItem("Window Stub");
+//			MenuItem m4_1_6 = new MenuItem("Tab Stub");
+			MenuItem m4_1_8 = new MenuItem("Renewal Forms");
+			MenuItem m4_1_10 = new MenuItem("Directory");
 
 		//// Menu 1 "File" Listeners ///
 		m1_1_1.setOnAction((event) -> SqlScriptMaker.createSql());
