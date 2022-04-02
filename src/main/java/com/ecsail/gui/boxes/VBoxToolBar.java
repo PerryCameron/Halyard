@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 
 public class VBoxToolBar extends VBox {
 
-	public VBoxToolBar() {
+	public VBoxToolBar(Stage primaryStage) {
 		
 		//HBox toolBar = new HBox();
 		MenuBar menuBar = new MenuBar();
@@ -75,7 +75,7 @@ public class VBoxToolBar extends VBox {
 		m1_1_1.setOnAction((event) -> SqlScriptMaker.createSql());
 		m1_2.setOnAction((event) ->  openConsole());
 		m1_3.setOnAction((event) -> new Dialogue_StatisticsStatusBar());
-		m1_4.setOnAction((event) -> closeConnection());
+		m1_4.setOnAction((event) -> closeConnection(primaryStage));
 		//// Menu 2 "Search" Listeners ///
 		m2_1.setOnAction((event -> new Dialogue_MembershipIdSearch()));
 		m2_2.setOnAction((event) -> new Dialogue_Msid());
@@ -123,9 +123,10 @@ public class VBoxToolBar extends VBox {
 		getChildren().addAll(menuBar);	
 	}
 
-	private void closeConnection() {
+	private void closeConnection(Stage primaryStage) {
 		Halyard.closeDatabaseConnection();
 		Launcher.closeTabs();
+		primaryStage.setTitle("ECSC Membership Database (not connected)");
 		Halyard.connectDatabase();
 	}
 

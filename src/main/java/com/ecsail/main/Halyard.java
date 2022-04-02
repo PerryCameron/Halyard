@@ -31,7 +31,7 @@ public static BoxConsole console;
 private static Stage pStage;
 private static Scene mainScene;
 static String ipaddress;
-VBox toolbar = new VBoxToolBar();
+
 
 public static void main(String[] args) throws SQLException {
 	System.out.println("Starting application...");
@@ -48,11 +48,11 @@ public static void main(String[] args) throws SQLException {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		
 		//////////////////  OBJECTS  //////////////////////
 		mainPane = new BorderPane();
 		vboxMain = new Launcher();  // This one is for a single membership
 		pStage = primaryStage;
+		VBox toolbar = new VBoxToolBar(primaryStage);
 		//Pane topPane = new Pane();
 		Image mainIcon = new Image(getClass().getResourceAsStream("/ECSC64.png"));
 		Halyard.mainScene = new Scene(mainPane, 1028, 830, Color.GREEN);
@@ -71,17 +71,12 @@ public static void main(String[] args) throws SQLException {
 				});
 			}
 		});
-				
-		//mainScene.heightProperty().addListener((obs, oldVal, newVal) -> {
-		//	System.out.println("Scene height=" + newVal);
-		//	System.out.println("TabPane height=" + Launcher.getTabPane().getHeight());
-		//});  /// 545 start height
 		
 		/////////////////   ATTRIBUTES /////////////////////
 		vboxMain.setStyle("-fx-background-color: #e83115;");  // red
 		mainPane.setStyle("-fx-background-color: #feffab;");  // yellow
 		mainScene.getStylesheets().add("stylesheet.css");
-		toolbar.setPrefWidth(1029);
+//		toolbar.setPrefWidth(1029);
 		toolbar.setId("toolbar-box");
 		toolbar.setPrefHeight(10);
 		primaryStage.setTitle("ECSC Membership Database (not connected)");
