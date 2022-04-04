@@ -28,14 +28,14 @@ public class TabWelcome extends Tab {
 		VBox.setVgrow(vboxBlue, Priority.ALWAYS);		
 		
 		/// this reloads the charts when welcome tab is selected
-		this.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-		    if (newValue) {  // focus Gained
-		    	boxWelcome.getVboxLeft().getChildren().clear();
-		    	boxWelcome.getDbStats().reload();
-		    	boxWelcome.getVboxLeft().getChildren().addAll(new MembershipStackedBarChart(boxWelcome.getDbStats().getStats()),new MembershipLineChart(boxWelcome.getDbStats().getStats()));
-		    	
-		    }
-		});
+//		this.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+//		    if (newValue) {  // focus Gained
+//		    	boxWelcome.getVboxLeft().getChildren().clear();
+//		    	boxWelcome.getDbStats().reload();
+//		    	boxWelcome.getVboxLeft().getChildren().addAll(new MembershipStackedBarChart(boxWelcome.getDbStats().getStats()),new MembershipLineChart(boxWelcome.getDbStats().getStats()));
+//
+//		    }
+//		});
 
 		vboxPink.getChildren().add(boxWelcome);
 		vboxBlue.getChildren().add(vboxPink);

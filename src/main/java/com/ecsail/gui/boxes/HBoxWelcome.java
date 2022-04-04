@@ -1,27 +1,25 @@
 package com.ecsail.gui.boxes;
 
-import com.ecsail.charts.MembershipLineChart;
-import com.ecsail.charts.MembershipStackedBarChart;
 import com.ecsail.main.CreateMembership;
 import com.ecsail.main.Launcher;
-import com.ecsail.main.Statistics;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+
 // this is the contents inside tabWelcome() launched from ConnectDatabase() about line 229
 public class HBoxWelcome extends HBox {
-	private VBox vboxLeft;
-	private Statistics dbStats;
+
 	
 	public HBoxWelcome() {
-		this.dbStats = new Statistics();
-		this.vboxLeft = new VBox();
+		System.out.println("Got to VBoxWelcome");
+
 		
 		int width = 400;
 		int height = 70;
-		
+
+		VBox vboxLeft = new VBoxCharts();
 		VBox vboxRight = new VBox();
 		Button peopleListButton = new Button("People");
 		Button slipListButton = new Button("Slips");
@@ -31,19 +29,14 @@ public class HBoxWelcome extends HBox {
 		Button rosterButton = new Button("Rosters");
 		Button boatsButton = new Button("Boats");
 		Button notesButton = new Button("Notes");
-		MembershipStackedBarChart membershipsByYearChart = new MembershipStackedBarChart(dbStats.getStats());
-		MembershipLineChart membershipStatisticsChart = new MembershipLineChart(dbStats.getStats());
+
 		
 		////////////////  ATTRIBUTES //////////////////////////////
 		//vboxLeft.setStyle("-fx-background-color: #e83115;");  // red
 		//vboxRight.setStyle("-fx-background-color: #feffab;");  // purble
 		vboxRight.setPrefWidth(width);
 		vboxRight.setMinWidth(350);
-		vboxLeft.setMinWidth(350);
-		vboxLeft.setMaxWidth(1400);
-		vboxLeft.setPrefWidth(Double.MAX_VALUE);
-		vboxLeft.setPrefHeight(1200);
-		membershipsByYearChart.setMaxHeight(700);
+
 		notesButton.setId("bigbuttontext");
 		boatsButton.setId("bigbuttontext");
 		newButton.setId("bigbuttontext");
@@ -88,23 +81,10 @@ public class HBoxWelcome extends HBox {
 		batchesButton.setOnAction((event) -> Launcher.openDepositsTab());
 
 		////////////////  SET CONTENT ////////////////////////
-		vboxRight.getChildren().addAll(rosterButton,peopleListButton,slipListButton,bodButton,newButton,batchesButton,boatsButton,notesButton);
-		vboxLeft.getChildren().addAll(membershipsByYearChart,membershipStatisticsChart);
 
-		//vboxLeft.getChildren().addAll(Charts.getLineChart());
+		vboxRight.getChildren().addAll(rosterButton,peopleListButton,slipListButton,bodButton,newButton,batchesButton,boatsButton,notesButton);
 		getChildren().addAll(vboxLeft,vboxRight);
 	}
 
-	public VBox getVboxLeft() {
-		return vboxLeft;
-	}
-
-	public void setVboxLeft(VBox vboxLeft) {
-		this.vboxLeft = vboxLeft;
-	}
-
-	public Statistics getDbStats() {
-		return dbStats;
-	}
 }
 

@@ -74,7 +74,7 @@ public class VBoxToolBar extends VBox {
 		//// Menu 1 "File" Listeners ///
 		m1_1_1.setOnAction((event) -> SqlScriptMaker.createSql());
 		m1_2.setOnAction((event) ->  openConsole());
-		m1_3.setOnAction((event) -> new Dialogue_StatisticsStatusBar());
+//		m1_3.setOnAction((event) -> new Dialogue_StatisticsStatusBar());
 		m1_4.setOnAction((event) -> closeConnection(primaryStage));
 		//// Menu 2 "Search" Listeners ///
 		m2_1.setOnAction((event -> new Dialogue_MembershipIdSearch()));
@@ -117,9 +117,6 @@ public class VBoxToolBar extends VBox {
         menu4.getItems().add(subMenu4_1);
 
         menuBar.getMenus().addAll(menu1,menu2,menu3,menu4,menu5);
-
-        //toolBar.setAlignment(Pos.CENTER_LEFT);
-		//toolBar.getChildren().addAll(searchField,membershipList,peopleList,boatList,reports,console,addNewMembership);
 		getChildren().addAll(menuBar);	
 	}
 

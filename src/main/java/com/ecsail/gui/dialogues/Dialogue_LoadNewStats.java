@@ -1,52 +1,40 @@
 package com.ecsail.gui.dialogues;
 
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-
 import com.ecsail.main.HalyardPaths;
 import com.ecsail.sql.SqlDelete;
 import com.ecsail.sql.SqlInsert;
 import com.ecsail.sql.select.SqlStats;
 import com.ecsail.structures.StatsDTO;
-
-import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class Dialogue_StatisticsStatusBar extends Stage {
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+
+public class Dialogue_LoadNewStats extends Stage {
 	final ProgressBar pb;
 	private int statId = 0;
 	private int startYear;
 	private int stopYear;
-	Button closeButton = new Button("Close");
-	HBox hboxButtonHold = new HBox();
-	
-	public Dialogue_StatisticsStatusBar() {
+
+	public Dialogue_LoadNewStats() {
 		stopYear=Integer.parseInt(HalyardPaths.getYear());
-		startYear=2000;
+		startYear=1970;
 		
 		VBox vboxGrey = new VBox(); // this is the vbox for organizing all the widgets
 		VBox vboxBlue = new VBox();
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
-		
-		
-		Scene scene = new Scene(vboxBlue, 400, 200);
-		Button startButton = new Button("Start");
-		
-		
+
+		Scene scene = new Scene(vboxBlue, 400, 100);
+
 		HBox hboxYearChoose = new HBox();
-        TextField startYearTextField = new TextField();
-        TextField stopYearTextField = new TextField();
 		pb = new ProgressBar(0);
 
 		/////////////////// ATTRIBUTES ///////////////////
@@ -60,52 +48,21 @@ public class Dialogue_StatisticsStatusBar extends Stage {
 		// vboxGrey.setId("slip-box");
 		
 		pb.setPrefSize(300, 30);
-		startYearTextField.setPrefWidth(80);
-		stopYearTextField.setPrefWidth(80);
 		vboxGrey.setPrefHeight(688);
-		hboxButtonHold.setAlignment(Pos.CENTER);
 		vboxGrey.setAlignment(Pos.CENTER);
 		hboxYearChoose.setAlignment(Pos.CENTER);
 		scene.getStylesheets().add("stylesheet.css");
 
 		setTitle("Updating Statistics");
 		Image mainIcon = new Image(getClass().getResourceAsStream("/ECSC64.png"));
-		startYearTextField.setText(startYear + "");
-		stopYearTextField.setText(stopYear + "");
-		//////////////// LISTENERS ///////////////////
-		
-		startYearTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            //focus out
-            if (oldValue) {  // we have focused and unfocused
-            	startYear = Integer.parseInt(startYearTextField.getText());	
-            }
-        });
-		
-		stopYearTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-            //focus out
-            if (oldValue) {  // we have focused and unfocused
-            	stopYear = Integer.parseInt(stopYearTextField.getText());	
-            }
-        });
-		
-		closeButton.setOnAction((event) -> {
-			this.close();
-		});
-		
-		startButton.setOnAction((event) -> {
-			updateStats();
-		});
 
-		//////////////// ADD CONTENT ///////////////////
-		hboxButtonHold.getChildren().add(startButton);
-		hboxYearChoose.getChildren().addAll(startYearTextField, new Label("-"), stopYearTextField);
-		vboxGrey.getChildren().addAll(new Label("Date Range:"),hboxYearChoose,pb,hboxButtonHold);
-
+		vboxGrey.getChildren().addAll(pb);
 		vboxBlue.getChildren().add(vboxPink);
 		vboxPink.getChildren().add(vboxGrey);
 		getIcons().add(mainIcon);
 		setScene(scene);
 		show();
+		updateStats();
 	}
 
 	public void updateStats() {
@@ -119,9 +76,6 @@ public class Dialogue_StatisticsStatusBar extends Stage {
 	        protected String call() {
 	        for (int i = 0; i < numberOfYears; i++) {
 	        StatsDTO stats = SqlStats.createStatDTO(startYear,statId);
-//			stats.setStatId(statId);
-//			stats.refreshStatsForYear(); // built in function for the object to update itself.
-
 			SqlInsert.addStatRecord(stats);
 			System.out.print(startYear + " ");
 			startYear++;
@@ -130,16 +84,16 @@ public class Dialogue_StatisticsStatusBar extends Stage {
 			pb.setProgress((double)statId/statNumber);
 		}
 			return null;
-	        		
 	        }
 	    };
-	    task.setOnSucceeded(e -> { 
-	    	//textArea.setText((String) e.getSource().getValue()); 
-	    	System.out.println("Finished updating Statistics");});
+
+	    task.setOnSucceeded(e -> {
+	    	System.out.println("Finished updating Statistics");
+			this.close();
+		});
+
 	    task.setOnFailed(e -> { System.out.println("Was unable to compile stats"); });
 	    exec.execute(task);
-		hboxButtonHold.getChildren().clear();
-		hboxButtonHold.getChildren().add(closeButton);
 	}
 	
 	private final Executor exec = Executors.newCachedThreadPool(runnable -> {
@@ -147,5 +101,4 @@ public class Dialogue_StatisticsStatusBar extends Stage {
 	    t.setDaemon(true);
 	    return t ;
 	});
-
 }

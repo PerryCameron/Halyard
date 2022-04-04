@@ -40,7 +40,6 @@ public class SqlStats {
         }
         stmt.close();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
         return stats;

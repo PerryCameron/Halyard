@@ -1,47 +1,77 @@
 package com.ecsail.charts;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import com.ecsail.structures.StatsDTO;
-
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.StackedBarChart;
-import javafx.scene.chart.XYChart;
+
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MembershipStackedBarChart extends StackedBarChart<String,Number> {
 	ArrayList<StatsDTO> stats;
-	
+	ObservableList<StackedBarChart.Data<String,Number>> familyData = FXCollections.observableArrayList();
+	ObservableList<StackedBarChart.Data<String,Number>> regularData = FXCollections.observableArrayList();
+	ObservableList<StackedBarChart.Data<String,Number>> socialData = FXCollections.observableArrayList();
+	ObservableList<StackedBarChart.Data<String,Number>> lakeAssociateData = FXCollections.observableArrayList();
+	ObservableList<StackedBarChart.Data<String,Number>> lifeMemberData = FXCollections.observableArrayList();
+
+	StackedBarChart.Series<String,Number> seriesFamily = new StackedBarChart.Series<>();
+	StackedBarChart.Series<String,Number> seriesRegular = new StackedBarChart.Series<>();
+	StackedBarChart.Series<String,Number> seriesSocial = new StackedBarChart.Series<>();
+	StackedBarChart.Series<String,Number> seriesLakeAssociate = new StackedBarChart.Series<>();
+	StackedBarChart.Series<String,Number> seriesLifeMember = new StackedBarChart.Series<>();
+
 	public MembershipStackedBarChart(ArrayList<StatsDTO> stats) {
 		super(new CategoryAxis(), new NumberAxis());
 		this.stats = stats;
-		//this.setAnimated(true);
 	        setTitle("Active Memberships By Year");
-			XYChart.Series<String,Number> seriesFamily = new Series<String, Number>();
-			XYChart.Series<String,Number> seriesRegular = new Series<String, Number>();
-			XYChart.Series<String,Number> seriesSocial = new Series<String, Number>();
-			XYChart.Series<String,Number> seriesLakeAssociate = new Series<String, Number>();
-			XYChart.Series<String,Number> seriesLifeMember = new Series<String, Number>();
-			seriesFamily.setName("Family");
-			seriesRegular.setName("Regular");
-			seriesSocial.setName("Social");
-			seriesLakeAssociate.setName("Lake Associate");
-			seriesLifeMember.setName("Life Member");
-	        for (StatsDTO s: stats) {
-	    		seriesFamily.getData().add(new XYChart.Data<>(s.getFiscalYear() + "",s.getFamily()));
-	    		seriesRegular.getData().add(new XYChart.Data<>(s.getFiscalYear() + "",s.getRegular()));
-	    		seriesSocial.getData().add(new XYChart.Data<>(s.getFiscalYear() + "",s.getSocial()));
-	    		seriesLakeAssociate.getData().add(new XYChart.Data<>(s.getFiscalYear() + "",s.getLakeAssociates()));
-	    		seriesLifeMember.getData().add(new XYChart.Data<>(s.getFiscalYear() + "",s.getLifeMembers()));
-	        }
-	        ////////////////  LISTENERS  ///////////////
-	        //seriesFamily.getNode().setOnMouseClicked(e -> 
-            //System.out.println(seriesFamily.getData()));
-	        //////////////// SET CONTENT /////////////
-	        
-	        getData().addAll(Arrays.asList(seriesFamily,seriesRegular,seriesSocial,seriesLakeAssociate,seriesLifeMember));
+			setNames();
+			addData();
+		getData().addAll(Arrays.asList(seriesFamily,seriesRegular,seriesSocial,seriesLakeAssociate,seriesLifeMember));
+	}
 
-	
+	public void setNames() {
+		seriesFamily.setName("Family");
+		seriesRegular.setName("Regular");
+		seriesSocial.setName("Social");
+		seriesLakeAssociate.setName("Lake Associate");
+		seriesLifeMember.setName("Life Member");
+	}
+
+	public void addData() {
+		for (StatsDTO s: stats) {
+			familyData.add(new StackedBarChart.Data<String,Number>(String.valueOf(s.getFiscalYear()),s.getFamily()));
+			regularData.add(new StackedBarChart.Data<String,Number>(String.valueOf(s.getFiscalYear()),s.getRegular()));
+			socialData.add(new StackedBarChart.Data<String,Number>(String.valueOf(s.getFiscalYear()),s.getSocial()));
+			lakeAssociateData.add(new StackedBarChart.Data<String,Number>(String.valueOf(s.getFiscalYear()),s.getLakeAssociates()));
+			lifeMemberData.add(new StackedBarChart.Data<String,Number>(String.valueOf(s.getFiscalYear()),s.getLifeMembers()));
+		}
+		setData();
+	}
+
+	private void setData() {
+		seriesFamily.setData(familyData);
+		seriesRegular.setData(regularData);
+		seriesSocial.setData(socialData);
+		seriesLakeAssociate.setData(lakeAssociateData);
+		seriesLifeMember.setData(lifeMemberData);
+	}
+
+	public void clearData() {
+			familyData.clear();
+			regularData.clear();
+			socialData.clear();
+			lakeAssociateData.clear();
+			lifeMemberData.clear();
+	}
+
+	public void refreshChart() {
+		clearData();
+		addData();
+		setData(FXCollections.observableArrayList(seriesFamily,seriesRegular,seriesSocial,seriesLakeAssociate,seriesLifeMember));
 	}
 }
