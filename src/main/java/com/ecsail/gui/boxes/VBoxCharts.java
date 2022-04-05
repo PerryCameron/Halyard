@@ -1,7 +1,6 @@
 package com.ecsail.gui.boxes;
 
 import com.ecsail.charts.MembershipBarChart;
-import com.ecsail.charts.MembershipLineChart;
 import com.ecsail.charts.MembershipStackedBarChart;
 import com.ecsail.gui.dialogues.Dialogue_LoadNewStats;
 import com.ecsail.main.HalyardPaths;
@@ -27,19 +26,20 @@ public class VBoxCharts extends VBox {
     public ArrayList<StatsDTO> stats;
     int currentYear;
     int startYear = 2002;
-    int numbOfYears = 22;
+    int defaultNumbOfYears = 20;
+    int totalNumbOfYears;
 
     public VBoxCharts() {
         this.currentYear = Integer.parseInt(HalyardPaths.getYear());
         this.startYear = currentYear - 20;
-        this.stats = SqlStats.getStatistics(startYear, startYear + numbOfYears);
+        this.stats = SqlStats.getStatistics(startYear, startYear + defaultNumbOfYears);
+        this.totalNumbOfYears = SqlStats.getNumberOfStatYears();
         MembershipStackedBarChart membershipsByYearChart = new MembershipStackedBarChart(stats);
-        MembershipLineChart membershipStatisticsChart = new MembershipLineChart(stats);
+//        MembershipLineChart membershipStatisticsChart = new MembershipLineChart(stats);
         MembershipBarChart membershipBarChart = new MembershipBarChart(new CategoryAxis(),new NumberAxis(),stats,1);
         HBox hBoxControlBar = new HBox();
         VBox vBoxCharts = new VBox();
         Button refreshButton = new Button("Refresh Data");
-        Button populateCharte = new Button("Populate");
         ComboBox<Integer> comboBoxStartYear = new ComboBox<>();
         ComboBox<Integer> comboBoxYears = new ComboBox<>();
         ComboBox<String> comboBoxBottomChartSelection = new ComboBox<>();
@@ -57,11 +57,11 @@ public class VBoxCharts extends VBox {
         this.setPrefWidth(Double.MAX_VALUE);
         this.setPrefHeight(1200);
         comboBoxStartYear.setValue(startYear);
-        comboBoxYears.setValue(numbOfYears);
+        comboBoxYears.setValue(defaultNumbOfYears);
         comboBoxBottomChartSelection.setValue("Non-Renew");
         hBoxControlBar.setPadding(new Insets(5,0,5,5));
         comboBoxStartYear.setValue(startYear);
-        comboBoxYears.setValue(15);
+        comboBoxYears.setValue(defaultNumbOfYears);
         hBoxStart.setSpacing(5);
         hBoxStop.setSpacing(5);
         hBoxStart.setAlignment(Pos.CENTER_LEFT);
@@ -72,17 +72,6 @@ public class VBoxCharts extends VBox {
         hBoxControlBar.setAlignment(Pos.CENTER);
 
         ///////// LISTENERS ////////////
-        refreshButton.setOnAction((event)-> {
-            System.out.println("Start " + stats.size());
-            new Dialogue_LoadNewStats();
-
-            System.out.println("Stop " + stats.size());
-        });
-
-        populateCharte.setOnAction((event) -> {
-            membershipsByYearChart.refreshChart();
-            membershipStatisticsChart.refreshChart();
-        });
 
         comboBoxBottomChartSelection.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
             switch (newValue) {
@@ -98,49 +87,54 @@ public class VBoxCharts extends VBox {
         });
 
         comboBoxYears.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
-            numbOfYears = newValue;
+            defaultNumbOfYears = newValue;
             reloadStats();
-            membershipsByYearChart.refreshChart();
-            membershipBarChart.refreshChart();
+            refreshCharts(membershipsByYearChart, membershipBarChart);
         });
 
         comboBoxStartYear.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
             startYear = newValue;
             reloadStats();
-            membershipsByYearChart.refreshChart();
-            membershipBarChart.refreshChart();
+            refreshCharts(membershipsByYearChart, membershipBarChart);
         });
 
-
+        refreshButton.setOnAction((event)-> {
+            new Dialogue_LoadNewStats();
+            // this ends up reloading before Diologue_LoadNewStats completes, need to wait for it to finish
+//            reloadStats();
+//            refreshCharts(membershipsByYearChart, membershipBarChart);
+        });
 
         hBoxStart.getChildren().addAll(new Label("Start"),comboBoxStartYear);
         hBoxStop.getChildren().addAll(new Label("Year Span"),comboBoxYears);
         hBoxTop.getChildren().addAll(new Label("Bottom"),comboBoxBottomChartSelection);
         hBoxControlBar.getChildren().addAll(hBoxStart,hBoxStop,hBoxTop,refreshButton);
-//        vBoxCharts.getChildren().addAll(membershipsByYearChart,membershipStatisticsChart);
         vBoxCharts.getChildren().addAll(membershipsByYearChart,membershipBarChart);
 
         this.getChildren().addAll(vBoxCharts,hBoxControlBar);
     }
 
+    private void refreshCharts(MembershipStackedBarChart membershipsByYearChart, MembershipBarChart membershipBarChart) {
+        membershipsByYearChart.refreshChart();
+        membershipBarChart.refreshChart();
+    }
+
     private void reloadStats() {
-        int endYear = startYear + numbOfYears;
+        int endYear = startYear + defaultNumbOfYears -1;
         if(endYear > currentYear) endYear = currentYear;
         this.stats.clear();
         this.stats.addAll(SqlStats.getStatistics(startYear, endYear));
     }
 
     private void populateComboBoxWithYears(ComboBox<Integer> comboBox) {
-        for(int i = Integer.parseInt(HalyardPaths.getYear()) + 1; i > 1969; i--) {
+        for(int i = currentYear -10; i > 1969; i--) {
             comboBox.getItems().add(i);
         }
     }
 
     private void populateComboBoxWithNumberOfYears(ComboBox<Integer> comboBox) {
-        for(int i = 1; i < 50; i++) {
+        for(int i = 10; i < totalNumbOfYears; i++) {
             comboBox.getItems().add(i);
         }
     }
-
-
 }

@@ -3,6 +3,7 @@ package com.ecsail.sql.select;
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.Halyard;
+import com.ecsail.structures.PersonDTO;
 import com.ecsail.structures.StatsDTO;
 
 import java.sql.ResultSet;
@@ -124,5 +125,19 @@ public class SqlStats {
                         "FROM membership_id id\n" +
                         "LEFT JOIN membership m on id.MS_ID=m.MS_ID \n" +
                         "WHERE FISCAL_YEAR=" + year;
+    }
+
+    public static int getNumberOfStatYears()  {  // gives the last memo_id number
+        int statCount = 0;
+        Statement stmt;
+        try {
+            stmt = ConnectDatabase.sqlConnection.createStatement();
+            ResultSet rs = stmt.executeQuery("select COUNT(STAT_ID) from stats\n");
+            rs.next();
+            statCount = rs.getInt("COUNT(STAT_ID)");
+        } catch (SQLException e) {
+            new Dialogue_ErrorSQL(e,"Unable to retrieve stat count","See below for details");
+        }
+        return statCount;
     }
 }
