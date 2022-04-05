@@ -6,6 +6,8 @@ import com.ecsail.gui.dialogues.Dialogue_LoadNewStats;
 import com.ecsail.main.HalyardPaths;
 import com.ecsail.sql.select.SqlStats;
 import com.ecsail.structures.StatsDTO;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.chart.CategoryAxis;
@@ -25,14 +27,15 @@ public class VBoxCharts extends VBox {
     public static final int RETURNMEMBER = 3;
     public ArrayList<StatsDTO> stats;
     int currentYear;
-    int startYear = 2002;
+    int defaultStartYear = 2002;
     int defaultNumbOfYears = 20;
     int totalNumbOfYears;
+    BooleanProperty dataBaseStatisticsRefreshed = new SimpleBooleanProperty(false);
 
     public VBoxCharts() {
         this.currentYear = Integer.parseInt(HalyardPaths.getYear());
-        this.startYear = currentYear - 20;
-        this.stats = SqlStats.getStatistics(startYear, startYear + defaultNumbOfYears);
+        this.defaultStartYear = currentYear - 20;
+        this.stats = SqlStats.getStatistics(defaultStartYear, defaultStartYear + defaultNumbOfYears);
         this.totalNumbOfYears = SqlStats.getNumberOfStatYears();
         MembershipStackedBarChart membershipsByYearChart = new MembershipStackedBarChart(stats);
 //        MembershipLineChart membershipStatisticsChart = new MembershipLineChart(stats);
@@ -56,11 +59,11 @@ public class VBoxCharts extends VBox {
         this.setMaxWidth(1400);
         this.setPrefWidth(Double.MAX_VALUE);
         this.setPrefHeight(1200);
-        comboBoxStartYear.setValue(startYear);
+        comboBoxStartYear.setValue(defaultStartYear);
         comboBoxYears.setValue(defaultNumbOfYears);
         comboBoxBottomChartSelection.setValue("Non-Renew");
         hBoxControlBar.setPadding(new Insets(5,0,5,5));
-        comboBoxStartYear.setValue(startYear);
+        comboBoxStartYear.setValue(defaultStartYear);
         comboBoxYears.setValue(defaultNumbOfYears);
         hBoxStart.setSpacing(5);
         hBoxStop.setSpacing(5);
@@ -93,16 +96,22 @@ public class VBoxCharts extends VBox {
         });
 
         comboBoxStartYear.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
-            startYear = newValue;
+            defaultStartYear = newValue;
             reloadStats();
             refreshCharts(membershipsByYearChart, membershipBarChart);
         });
 
         refreshButton.setOnAction((event)-> {
-            new Dialogue_LoadNewStats();
-            // this ends up reloading before Diologue_LoadNewStats completes, need to wait for it to finish
-//            reloadStats();
-//            refreshCharts(membershipsByYearChart, membershipBarChart);
+            new Dialogue_LoadNewStats(dataBaseStatisticsRefreshed);
+        });
+
+        // this waits for the database to update on another thread then refreshes the charts
+        dataBaseStatisticsRefreshed.addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                reloadStats();
+                refreshCharts(membershipsByYearChart, membershipBarChart);
+                setDataBaseStatisticsRefreshed(false);
+            }
         });
 
         hBoxStart.getChildren().addAll(new Label("Start"),comboBoxStartYear);
@@ -120,10 +129,10 @@ public class VBoxCharts extends VBox {
     }
 
     private void reloadStats() {
-        int endYear = startYear + defaultNumbOfYears -1;
+        int endYear = defaultStartYear + defaultNumbOfYears -1;
         if(endYear > currentYear) endYear = currentYear;
         this.stats.clear();
-        this.stats.addAll(SqlStats.getStatistics(startYear, endYear));
+        this.stats.addAll(SqlStats.getStatistics(defaultStartYear, endYear));
     }
 
     private void populateComboBoxWithYears(ComboBox<Integer> comboBox) {
@@ -136,5 +145,9 @@ public class VBoxCharts extends VBox {
         for(int i = 10; i < totalNumbOfYears; i++) {
             comboBox.getItems().add(i);
         }
+    }
+
+    public void setDataBaseStatisticsRefreshed(boolean dataBaseStatisticsRefreshed) {
+        this.dataBaseStatisticsRefreshed.set(dataBaseStatisticsRefreshed);
     }
 }

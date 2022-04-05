@@ -5,6 +5,7 @@ import com.ecsail.sql.SqlDelete;
 import com.ecsail.sql.SqlInsert;
 import com.ecsail.sql.select.SqlStats;
 import com.ecsail.structures.StatsDTO;
+import javafx.beans.property.BooleanProperty;
 import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -23,8 +24,10 @@ public class Dialogue_LoadNewStats extends Stage {
 	private int statId = 0;
 	private int startYear;
 	private int stopYear;
+	BooleanProperty dataBaseStatisticsRefreshed;
 
-	public Dialogue_LoadNewStats() {
+	public Dialogue_LoadNewStats(BooleanProperty dataBaseStatisticsRefreshed) {
+		this.dataBaseStatisticsRefreshed = dataBaseStatisticsRefreshed;
 		stopYear=Integer.parseInt(HalyardPaths.getYear());
 		startYear=1970;
 		
@@ -89,6 +92,7 @@ public class Dialogue_LoadNewStats extends Stage {
 
 	    task.setOnSucceeded(e -> {
 	    	System.out.println("Finished updating Statistics");
+			dataBaseStatisticsRefreshed.set(true);
 			this.close();
 		});
 
