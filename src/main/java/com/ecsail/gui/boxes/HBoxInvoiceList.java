@@ -61,9 +61,7 @@ public class HBoxInvoiceList extends HBox {
 		TableColumn<MoneyDTO, Integer> Col5 = new TableColumn<>("Balance");
 		HalyardAlert conformation = new HalyardAlert(HalyardAlert.AlertType.CONFIRMATION);
 		ComboBox<Integer> comboBox = new ComboBox<>();
-		for(int i = Integer.parseInt(HalyardPaths.getYear()) + 1; i > 1969; i--) {
-			comboBox.getItems().add(i);
-		}
+		populateComboBox(comboBox);
 		comboBox.getSelectionModel().select(1);
 		///////////////////// SORT ///////////////////////////////////////////
 		HBoxInvoiceList.fiscals.sort((p1, p2) -> Integer.compare(p2.getFiscal_year(), (p1.getFiscal_year())));
@@ -178,12 +176,13 @@ public class HBoxInvoiceList extends HBox {
 		getChildren().addAll(vboxGrey);	
 	}
 
-
-
 	/////////////////////  CLASS METHODS /////////////////////////////
+	private void populateComboBox(ComboBox<Integer> comboBox) {
+		for(int i = Integer.parseInt(HalyardPaths.getYear()) + 1; i > 1969; i--) {
+			comboBox.getItems().add(i);
+		}
+	}
 
-
-	
 	private BigDecimal getDues(int year) {  // takes the membership type and gets the dues
 		DefinedFeeDTO selectedDefinedFee = SqlDefinedFee.getDefinedFeeByYear(String.valueOf(year));
 		BigDecimal dues;

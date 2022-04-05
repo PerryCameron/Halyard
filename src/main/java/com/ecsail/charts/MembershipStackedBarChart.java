@@ -31,6 +31,7 @@ public class MembershipStackedBarChart extends StackedBarChart<String,Number> {
 	        setTitle("Active Memberships By Year");
 			setNames();
 			addData();
+			setAnimated(false);
 		getData().addAll(Arrays.asList(seriesFamily,seriesRegular,seriesSocial,seriesLakeAssociate,seriesLifeMember));
 	}
 

@@ -11,12 +11,12 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class SqlStats {
-    public static ArrayList<StatsDTO> getStatistics() {
+    public static ArrayList<StatsDTO> getStatistics(int startYear , int stopYear) {
         ArrayList<StatsDTO> stats = new ArrayList<>();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
             ResultSet rs;
-            rs = stmt.executeQuery(Halyard.console.setRegexColor("select * from stats"));
+            rs = stmt.executeQuery(Halyard.console.setRegexColor("select * from stats where FISCAL_YEAR > "+(startYear -1)+" and FISCAL_YEAR < " + (stopYear +1)));
         while (rs.next()) {
             stats.add(new StatsDTO(
                     rs.getInt("STAT_ID"),
