@@ -12,6 +12,7 @@ import com.ecsail.gui.boxes.HBoxWelcome;
 import com.ecsail.sql.select.SqlMembershipList;
 import com.ecsail.structures.Object_Login;
 
+import com.jcraft.jsch.JSchException;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -311,7 +312,11 @@ public class ConnectDatabase {
         		// create ssh tunnel
         		if(currentLogon.isSshForward()) {
         			System.out.println("SSH tunnel enabled");
-        			this.sshConnection = new PortForwardingL(host,loopback,3306,3306,sUser,sPass); 
+
+
+        			this.sshConnection = new PortForwardingL(host,loopback,3306,3306,sUser,sPass);
+					setServerAliveInterval(240);
+					System.out.println("Server Alive interval: " + sshConnection.getSession().getServerAliveInterval());
         		} else System.out.println("SSH connection is not being used");
         		// create mysql login
         		if(createConnection(user, pass, loopback, port)) {
@@ -428,7 +433,15 @@ public class ConnectDatabase {
 		logonStage.setHeight(vboxBlue.getHeight() + titleBarHeight);
 		logonStage.setResizable(false);
 	}
-	
+
+	private void setServerAliveInterval(int seconds) {
+		try {
+			sshConnection.getSession().setServerAliveInterval(seconds);
+		} catch (JSchException e) {
+			e.printStackTrace();
+		}
+	}
+
 	///////////////  CLASS METHODS ///////////////////
 	private void populateFields() {
 		userName.setText(currentLogon.getUser());

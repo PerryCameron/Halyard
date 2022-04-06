@@ -3,6 +3,9 @@ package com.ecsail.main;
 import com.ecsail.connection.Sftp;
 import com.jcraft.jsch.*;
 import javax.swing.*;
+import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
 
 // https://dentrassi.de/2015/07/13/programmatically-adding-a-host-key-with-jsch/
 public class PortForwardingL {
@@ -72,6 +75,23 @@ public class PortForwardingL {
 			/// put in a JavaFX message display here.
 		}
 
+	}
+
+	public boolean checkSSHConnection() throws Exception {
+		Socket socket;
+		try {
+			socket = new Socket("localhost", 7);
+
+			if (socket.isConnected()) {
+				socket.close();
+				return true;
+			}
+		} catch (UnknownHostException e) {
+			// nothing special
+		} catch (IOException e) {
+			// nothing special
+		}
+		return false;
 	}
 
 	public void closeSession() {
