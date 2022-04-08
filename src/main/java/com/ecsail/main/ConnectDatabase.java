@@ -315,7 +315,7 @@ public class ConnectDatabase {
 
 
         			this.sshConnection = new PortForwardingL(host,loopback,3306,3306,sUser,sPass);
-					setServerAliveInterval(240);
+					setServerAliveInterval();
 					System.out.println("Server Alive interval: " + sshConnection.getSession().getServerAliveInterval());
         		} else System.out.println("SSH connection is not being used");
         		// create mysql login
@@ -419,27 +419,20 @@ public class ConnectDatabase {
 		loginPane.getChildren().add(vboxBlue);
 		logonStage.setScene(secondScene);
 		logonStage.show();
-//      This caused the login window to look strange on my copy of windows on my work computer
-//		float windowsOffsetHeight = 0.0f;
-//		if(HalyardPaths.isWindows()) {
-//			windowsOffsetHeight = -10.0f;
-//			vboxBlue.setPrefWidth(width - windowsOffsetHeight);
-//		}
 		
 		System.out.println(HalyardPaths.getOperatingSystem());
 		this.titleBarHeight = logonStage.getHeight() - secondScene.getHeight();
-//      this was also part of the code above
-//		logonStage.setHeight(vboxBlue.getHeight() + titleBarHeight + windowsOffsetHeight);
 		logonStage.setHeight(vboxBlue.getHeight() + titleBarHeight);
 		logonStage.setResizable(false);
 	}
 
-	private void setServerAliveInterval(int seconds) {
-		try {
-			sshConnection.getSession().setServerAliveInterval(seconds);
-		} catch (JSchException e) {
-			e.printStackTrace();
-		}
+	private void setServerAliveInterval() {
+//		try {
+//			sshConnection.getSession().setServerAliveInterval(60);
+//			sshConnection.getSession().setServerAliveCountMax(10);
+//		} catch (JSchException e) {
+//			e.printStackTrace();
+//		}
 	}
 
 	///////////////  CLASS METHODS ///////////////////
