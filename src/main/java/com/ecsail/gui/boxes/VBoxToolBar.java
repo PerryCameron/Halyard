@@ -53,6 +53,7 @@ public class VBoxToolBar extends VBox {
 			MenuItem m3_1_7 = new MenuItem("Fees");
 			MenuItem m3_1_8 = new MenuItem("Fees (experimental)");
 			MenuItem m3_1_9 = new MenuItem("Notes");
+			MenuItem m3_2_0 = new MenuItem("Jotform");
 		// submenu
 		Menu subMenu3_2 = new Menu("Create");
 			MenuItem m3_2_1 = new MenuItem("New Membership");
@@ -94,6 +95,7 @@ public class VBoxToolBar extends VBox {
 			m3_1_7.setOnAction((event) -> Launcher.openFeeTab());
 			m3_1_8.setOnAction((event) -> Launcher.openFeeTab2());
 			m3_1_9.setOnAction((event) -> Launcher.openNotesTab());
+			m3_2_0.setOnAction((event) -> Launcher.openJotFormTab());
 		// submenu "Reports > Create"
 			m4_1_2.setOnAction((event) -> Launcher.createBoatReport());
 //			m4_1_3.setOnAction((event) -> Launcher.openTabBatchedPaidDues());
@@ -107,7 +109,7 @@ public class VBoxToolBar extends VBox {
         m4_1_10.setOnAction((event) -> new Dialogue_DirectoryCreation());
         
         subMenu1_1.getItems().addAll(m1_1_1);
-        subMenu3_1.getItems().addAll(m3_1_1,m3_1_2,m3_1_3,m3_1_4,m3_1_5,m3_1_6,m3_1_7,m3_1_8,m3_1_9);  // add list items
+        subMenu3_1.getItems().addAll(m3_1_1,m3_1_2,m3_1_3,m3_1_4,m3_1_5,m3_1_6,m3_1_7,m3_1_8,m3_1_9,m3_2_0);  // add list items
 		subMenu3_2.getItems().addAll(m3_2_1,m3_2_2);
 		subMenu4_1.getItems().addAll(m4_1_2,m4_1_4,m4_1_8,m4_1_10);
 

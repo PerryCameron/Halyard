@@ -2,6 +2,7 @@ package com.ecsail.gui.tabs;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Tab;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
 
@@ -18,7 +19,7 @@ public class TabStub extends Tab {
 		vboxBlue.setPadding(new Insets(10,10,10,10));
 		vboxPink.setPadding(new Insets(3,3,3,3)); // spacing to make pink from around table
 		vboxPink.setId("box-pink");
-		//vboxGrey.setId("slip-box");
+		VBox.setVgrow(vboxPink, Priority.ALWAYS);
 		vboxGrey.setPrefHeight(688);
 		
 		vboxGrey.getChildren().add(new Label("Stubbed in Tab"));

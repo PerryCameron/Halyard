@@ -256,4 +256,9 @@ static TabPane tabPane;
 		tabPane.getTabs().add(new TabNonRenewCreator("Non Renew Creator"));
 		tabPane.getSelectionModel().select(getTabIndex("Non Renew Creator"));
     }
+
+    public static void openJotFormTab() {
+		tabPane.getTabs().add(new TabJotForm("JotForm"));
+		tabPane.getSelectionModel().select(getTabIndex("JotForm"));
+    }
 }
