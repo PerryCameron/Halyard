@@ -409,3 +409,11 @@ CREATE TABLE id_change
     ID_YEAR     int         NOT NULL unique,
     CHANGED      boolean
 );
+
+CREATE TABLE api_key
+(
+    API_ID   int         	NOT NULL auto_increment primary key,
+    NAME     varchar(50)    NOT NULL unique,
+    APIKEY   varchar(50)	NOT NULL unique,
+    ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+)
