@@ -201,10 +201,10 @@ public class JotFormSubmissionListDTO {
         return this.postal;
     }
     public final String getPostal() {
-        return this.getStateProperty().get();
+        return this.getPostalProperty().get();
     }
     public final void setPostal(final String postal) {
-        this.getStateProperty().set(postal);
+        this.getPostalProperty().set(postal);
     }
 
 }
