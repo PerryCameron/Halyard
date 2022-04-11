@@ -25,13 +25,8 @@ public class MembershipListDTO extends MembershipDTO {
 		this.selectedYear = new SimpleStringProperty(selectedYear);
 	}
 
-	
-
 	public MembershipListDTO() {
-		// TODO Auto-generated constructor stub
 	}
-
-
 
 	public void setLname(StringProperty lname) {
 		this.lname = lname;

@@ -26,16 +26,10 @@ public class AwardDTO {
 	public final IntegerProperty awardIdProperty() {
 		return this.awardId;
 	}
-	
-
-
 
 	public final int getAwardId() {
 		return this.awardIdProperty().get();
 	}
-	
-
-
 
 	public final void setAwardId(final int awardId) {
 		this.awardIdProperty().set(awardId);
