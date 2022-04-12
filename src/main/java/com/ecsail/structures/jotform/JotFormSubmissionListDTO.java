@@ -3,7 +3,7 @@ package com.ecsail.structures.jotform;
 import javafx.beans.property.*;
 
 public class JotFormSubmissionListDTO {
-    BooleanProperty isRead;
+    BooleanProperty isNew;
     BooleanProperty isFlagged;
     StringProperty notes;
     StringProperty updatedAt;
@@ -14,7 +14,7 @@ public class JotFormSubmissionListDTO {
     StringProperty status;
     StringProperty primaryFirstName;
     StringProperty primaryLastName;
-    StringProperty addrLine1;
+    StringProperty address;
     StringProperty addrLine2;
     StringProperty city;
     StringProperty state;
@@ -22,7 +22,7 @@ public class JotFormSubmissionListDTO {
     StringProperty memType;
 
     public JotFormSubmissionListDTO(Boolean isRead, Boolean isFlagged, String notes, String updatedAt, String ip, Long formId, String createdAt, Long submissionId, String status, String primaryFirstName, String primaryLastName, String addrLine1, String addrLine2, String city, String state, String postal, String memType) {
-        this.isRead = new SimpleBooleanProperty(isRead);
+        this.isNew = new SimpleBooleanProperty(isRead);
         this.isFlagged = new SimpleBooleanProperty(isFlagged);
         this.notes = new SimpleStringProperty(notes);
         this.updatedAt = new SimpleStringProperty(updatedAt);
@@ -33,7 +33,7 @@ public class JotFormSubmissionListDTO {
         this.status = new SimpleStringProperty(status);
         this.primaryFirstName = new SimpleStringProperty(primaryFirstName);
         this.primaryLastName = new SimpleStringProperty(primaryLastName);
-        this.addrLine1 = new SimpleStringProperty(addrLine1);
+        this.address = new SimpleStringProperty(addrLine1);
         this.addrLine2 = new SimpleStringProperty(addrLine2);
         this.city = new SimpleStringProperty(city);
         this.state = new SimpleStringProperty(state);
@@ -51,12 +51,12 @@ public class JotFormSubmissionListDTO {
         this.memTypeProperty().set(memType);
     }
 
-    public final BooleanProperty isReadProperty() {return this.isRead;}
-    public final Boolean getIsRead() {
-        return this.isReadProperty().get();
+    public final BooleanProperty isNewProperty() {return this.isNew;}
+    public final Boolean getIsNew() {
+        return this.isNewProperty().get();
     }
-    public final void setIsRead(final Boolean isRead) {
-        this.isReadProperty().set(isRead);
+    public final void setIsNew(final Boolean isNew) {
+        this.isNewProperty().set(isNew);
     }
 
     public final BooleanProperty isFlaggedProperty() {return this.isFlagged;}
@@ -157,14 +157,14 @@ public class JotFormSubmissionListDTO {
         this.getPrimaryLastNameProperty().set(primaryLastName);
     }
 
-    public final StringProperty getAddressLine1Property() {
-        return this.addrLine1;
+    public final StringProperty getAddressProperty() {
+        return this.address;
     }
-    public final String getAddressLine1() {
-        return this.getAddressLine1Property().get();
+    public final String getAddress() {
+        return this.getAddressProperty().get();
     }
-    public final void setAddressLine1(final String addrLine1) {
-        this.getAddressLine1Property().set(addrLine1);
+    public final void setAddress(final String address) {
+        this.getAddressProperty().set(address);
     }
 
     public final StringProperty getAddressLine2Property() {
@@ -207,4 +207,26 @@ public class JotFormSubmissionListDTO {
         this.getPostalProperty().set(postal);
     }
 
+    @Override
+    public String toString() {
+        return "JotFormSubmissionListDTO{" +
+                "isNew=" + isNew +
+                ", isFlagged=" + isFlagged +
+                ", notes=" + notes +
+                ", updatedAt=" + updatedAt +
+                ", ip=" + ip +
+                ", formId=" + formId +
+                ", createdAt=" + createdAt +
+                ", submissionId=" + submissionId +
+                ", status=" + status +
+                ", primaryFirstName=" + primaryFirstName +
+                ", primaryLastName=" + primaryLastName +
+                ", address=" + address +
+                ", addrLine2=" + addrLine2 +
+                ", city=" + city +
+                ", state=" + state +
+                ", postal=" + postal +
+                ", memType=" + memType +
+                '}';
+    }
 }

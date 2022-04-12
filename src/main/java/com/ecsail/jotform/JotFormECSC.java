@@ -11,8 +11,16 @@ public class JotFormECSC {
     public JotFormECSC() {
     }
 
+    public boolean getBool(String bool) {
+        if(bool.equals("0")) return false;
+        return true;
+    }
+
     public JotFormSubmissionListDTO addSubmissionAnswersIntoDTO(JSONObject formSubmission) {
-        JotFormSubmissionListDTO jotFormSubmissionDTO = new JotFormSubmissionListDTO(false,false,"",
+        JotFormSubmissionListDTO jotFormSubmissionDTO = new JotFormSubmissionListDTO(
+                getBool(String.valueOf(formSubmission.get("new"))),
+                getBool(String.valueOf(formSubmission.get("flag"))),
+                String.valueOf(formSubmission.get("notes")),
                 String.valueOf(formSubmission.get("created_at")),
                 String.valueOf(formSubmission.get("ip")),
                 Long.parseLong((String) formSubmission.get("form_id")),
@@ -30,17 +38,17 @@ public class JotFormECSC {
             }
             if (hasAnswer) {
                 if(x.get("name").equals("membershipType")) {
-                    jotFormSubmissionDTO.setMemType(String.valueOf(x.get("answer")));
+                    jotFormSubmissionDTO.setMemType(String.valueOf(x.get("answer")).trim());
                 } else if(x.get("name").equals("primaryMember")) {
                     JSONObject name = (JSONObject) x.get("answer");
-                    jotFormSubmissionDTO.setPrimaryFirstName(String.valueOf(name.get("first")));
-                    jotFormSubmissionDTO.setPrimaryLastName(String.valueOf(name.get("last")));
+                    jotFormSubmissionDTO.setPrimaryFirstName(String.valueOf(name.get("first")).trim());
+                    jotFormSubmissionDTO.setPrimaryLastName(String.valueOf(name.get("last")).trim());
                 } else if (x.get("name").equals("address")) {
                     JSONObject address = (JSONObject) x.get("answer");
-                    jotFormSubmissionDTO.setAddressLine1(String.valueOf(address.get("addr_line1")));
-                    jotFormSubmissionDTO.setCity(String.valueOf(address.get("city")));
-                    jotFormSubmissionDTO.setState(String.valueOf(address.get("state")));
-                    jotFormSubmissionDTO.setPostal(String.valueOf(address.get("postal")));
+                    jotFormSubmissionDTO.setAddress(String.valueOf(address.get("addr_line1")).trim());
+                    jotFormSubmissionDTO.setCity(String.valueOf(address.get("city")).trim());
+                    jotFormSubmissionDTO.setState(String.valueOf(address.get("state")).trim());
+                    jotFormSubmissionDTO.setPostal(String.valueOf(address.get("postal")).trim());
                 }
                 hasAnswer = false;
             }
