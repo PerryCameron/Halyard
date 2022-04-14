@@ -27,7 +27,7 @@ public class VBoxCharts extends VBox {
     public static final int RETURNMEMBER = 3;
     public ArrayList<StatsDTO> stats;
     int currentYear;
-    int defaultStartYear = 2002;
+    int defaultStartYear;
     int defaultNumbOfYears = 20;
     int totalNumbOfYears;
     BooleanProperty dataBaseStatisticsRefreshed = new SimpleBooleanProperty(false);
@@ -38,7 +38,6 @@ public class VBoxCharts extends VBox {
         this.stats = SqlStats.getStatistics(defaultStartYear, defaultStartYear + defaultNumbOfYears);
         this.totalNumbOfYears = SqlStats.getNumberOfStatYears();
         MembershipStackedBarChart membershipsByYearChart = new MembershipStackedBarChart(stats);
-//        MembershipLineChart membershipStatisticsChart = new MembershipLineChart(stats);
         MembershipBarChart membershipBarChart = new MembershipBarChart(new CategoryAxis(),new NumberAxis(),stats,1);
         HBox hBoxControlBar = new HBox();
         VBox vBoxCharts = new VBox();
@@ -54,17 +53,15 @@ public class VBoxCharts extends VBox {
 
         populateComboBoxWithYears(comboBoxStartYear);
         populateComboBoxWithNumberOfYears(comboBoxYears);
-//        membershipsByYearChart.setMaxHeight(700);
         this.setMinWidth(350);
         this.setMaxWidth(1400);
         this.setPrefWidth(Double.MAX_VALUE);
         this.setPrefHeight(1200);
         comboBoxStartYear.setValue(defaultStartYear);
-        comboBoxYears.setValue(defaultNumbOfYears);
+        comboBoxYears.setValue(defaultNumbOfYears +1);
         comboBoxBottomChartSelection.setValue("Non-Renew");
         hBoxControlBar.setPadding(new Insets(5,0,5,5));
         comboBoxStartYear.setValue(defaultStartYear);
-        comboBoxYears.setValue(defaultNumbOfYears);
         hBoxStart.setSpacing(5);
         hBoxStop.setSpacing(5);
         hBoxStart.setAlignment(Pos.CENTER_LEFT);
