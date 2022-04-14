@@ -35,7 +35,10 @@ public class VBoxCharts extends VBox {
     public VBoxCharts() {
         this.currentYear = Integer.parseInt(HalyardPaths.getYear());
         this.defaultStartYear = currentYear - 20;
+        // todo I think this needs to be changed to reload stats
         this.stats = SqlStats.getStatistics(defaultStartYear, defaultStartYear + defaultNumbOfYears);
+        // problem is that the object hasn't been created yet
+//        reloadStats();
         this.totalNumbOfYears = SqlStats.getNumberOfStatYears();
         MembershipStackedBarChart membershipsByYearChart = new MembershipStackedBarChart(stats);
         MembershipBarChart membershipBarChart = new MembershipBarChart(new CategoryAxis(),new NumberAxis(),stats,1);
