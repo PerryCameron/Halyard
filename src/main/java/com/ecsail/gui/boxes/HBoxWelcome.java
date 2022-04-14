@@ -29,6 +29,7 @@ public class HBoxWelcome extends HBox {
 		Button rosterButton = new Button("Rosters");
 		Button boatsButton = new Button("Boats");
 		Button notesButton = new Button("Notes");
+		Button jotFormButton = new Button("JotForm");
 
 		
 		////////////////  ATTRIBUTES //////////////////////////////
@@ -45,8 +46,9 @@ public class HBoxWelcome extends HBox {
 		slipListButton.setId("bigbuttontext");
 		batchesButton.setId("bigbuttontext");
 		rosterButton.setId("bigbuttontext");
+		jotFormButton.setId("bigbuttontext");
 		vboxRight.setSpacing(10);
-		vboxRight.setPadding(new Insets(30,0,0,0));
+		vboxRight.setPadding(new Insets(15,0,0,0));
 		this.setPadding(new Insets(0,10,0,0));
 		this.setSpacing(10);
 		VBox.setVgrow(vboxRight, Priority.ALWAYS);
@@ -59,6 +61,7 @@ public class HBoxWelcome extends HBox {
 		newButton.setMaxWidth(Double.MAX_VALUE);
 		batchesButton.setMaxWidth(Double.MAX_VALUE);
 		rosterButton.setMaxWidth(Double.MAX_VALUE);
+		jotFormButton.setMaxWidth(Double.MAX_VALUE);
 		
 		notesButton.setPrefHeight(height);
 		boatsButton.setPrefHeight(height);
@@ -68,6 +71,7 @@ public class HBoxWelcome extends HBox {
 		newButton.setPrefHeight(height);
 		batchesButton.setPrefHeight(height);
 		rosterButton.setPrefHeight(height);
+		jotFormButton.setPrefHeight(height);
 		
 		///////////////// LISTENERS  /////////////////////////
 
@@ -79,10 +83,11 @@ public class HBoxWelcome extends HBox {
 		bodButton.setOnAction((event) -> Launcher.openBoardTab());
 		newButton.setOnAction((event) -> CreateMembership.Create());
 		batchesButton.setOnAction((event) -> Launcher.openDepositsTab());
+		jotFormButton.setOnAction((event)-> Launcher.openJotFormTab());
 
 		////////////////  SET CONTENT ////////////////////////
 
-		vboxRight.getChildren().addAll(rosterButton,peopleListButton,slipListButton,bodButton,newButton,batchesButton,boatsButton,notesButton);
+		vboxRight.getChildren().addAll(rosterButton,peopleListButton,slipListButton,bodButton,newButton,batchesButton,boatsButton,notesButton,jotFormButton);
 		getChildren().addAll(vboxLeft,vboxRight);
 	}
 

@@ -143,7 +143,4 @@ public class TableViewCreator {
         textContainer.setSpacing(3);
         return textContainer;
     }
-
-
-
 }
