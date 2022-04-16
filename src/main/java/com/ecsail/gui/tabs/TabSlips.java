@@ -40,7 +40,6 @@ public class TabSlips extends Tab {
 
 	// starting point for each colume x-axis
 	private int col[] = { 20,125,280,385,540,643,800,902 };
-
 	
 	private int row1 = 19; // d40
 	private int row2 = 45;  // d38
@@ -66,77 +65,77 @@ public class TabSlips extends Tab {
 	private int row22 = row20 + 42; // a01
 	private int row23 = row21 + 42; // b50
 	private int row24 = row22 + 42; // b48
-	
 
-	
 	public TabSlips(String text) {
 		super(text);
 		this.slipmemberships = SqlMembershipList.getSlipRoster(HalyardPaths.getYear());
 		this.subleaserMemberships = FXCollections.observableArrayList();
 		this.slips = SqlSlip.getSlips();
-		for(SlipDTO s: slips) {
-			slipsHash.put(s.getSlipNumber(),new Text(""));
-		}
 
 
-		fillSlips(); // must be filled the first time.
 		Pane screenPane = new Pane();
+		Button createPdfButton = new Button("Create PDF");
 		VBox vboxGrey = new VBox();  // this is the vbox for organizing all the widgets
 		VBox vboxBlue = new VBox();
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
-		Button createPdfButton = new Button("Create PDF");
+
 		
 		///// LISTENERS //////
 		/// this listens for a focus on the slips tab and refreshes data everytime.
 		this.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
 		    if (newValue) {  // focus Gained
-		    	screenPane.getChildren().clear();
-		    	fillSlips();
-		    	screenPane.getChildren().add(addDocks(10,10,col[0]));
-		    	screenPane.getChildren().add(addDocks(7,11,col[2]));
-		    	screenPane.getChildren().add(addDocks(11,12,col[4]));
-		    	screenPane.getChildren().add(addDocks(11,11,col[6]));
-		    	screenPane.getChildren().add(createPdfButton);
-				slipsHash.forEach((k,v) -> screenPane.getChildren().add(v));
+				populateNames();
 		    }
 		});
 		
-		createPdfButton.setOnAction((event) -> {
-        	new PDF_SlipChart(HalyardPaths.getYear());
-        });
+		createPdfButton.setOnAction((event) -> new PDF_SlipChart(HalyardPaths.getYear()));
 				
 		///////////////// ATTRIBUTES /////////////////
 		
 		createPdfButton.setId("mediumbuttontext");
 		vboxBlue.setId("box-blue");
 		screenPane.setId("slip-fonts");
-		vboxBlue.setPadding(new Insets(10,10,10,10));
-		vboxPink.setPadding(new Insets(3,3,3,3)); // spacing to make pink fram around table
 		vboxPink.setId("box-pink");
 		vboxGrey.setId("slip-box");
-		
-		//vboxGrey.setPrefHeight(688);
-		//rotatef1.setAngle(314);
-		
+		vboxBlue.setPadding(new Insets(10,10,10,10));
+		vboxPink.setPadding(new Insets(3,3,3,3)); // spacing to make pink fram around table
 		HBox.setHgrow(vboxGrey, Priority.ALWAYS);
 		VBox.setVgrow(vboxGrey, Priority.ALWAYS);
 		HBox.setHgrow(vboxPink, Priority.ALWAYS);
 		VBox.setVgrow(vboxPink, Priority.ALWAYS);
-		
-		setRotation();
-
 		createPdfButton.setLayoutX(750);
 		createPdfButton.setLayoutY(600);
-		
+
+		///////// ACTIONS ////////
+		// assigns Text() objects to a hashmap with the slip number as the key
+		assignTextObjectsToHashMapWithSlipNumberAsKey();
+		// creates text objects, sets text to slip number and adds coordinates for text object
+		createSlipsAsTextObjects();
+		// overwrites setText method on Text Objects by putting in the Name of person in slip
+		populateNames();
+		// sets rotation for f docks
+		setRotation();
+		slipsHash.get("B50").setText("B50 Racing");
+		slipsHash.get("B48").setText("B48 Racing");
 		//////////////////  SET CONTENT ///////////////
+		screenPane.getChildren().add(addDocks(10,10,col[0]));
+		screenPane.getChildren().add(addDocks(7,11,col[2]));
+		screenPane.getChildren().add(addDocks(11,12,col[4]));
+		screenPane.getChildren().add(addDocks(11,11,col[6]));
+		screenPane.getChildren().add(createPdfButton);
+		// adds all Text() objects to screenPane
+		slipsHash.forEach((k,v) -> screenPane.getChildren().add(v));
 		vboxGrey.getChildren().add(screenPane);
 		vboxBlue.getChildren().add(vboxPink);
 		vboxPink.getChildren().add(vboxGrey);
 		setContent(vboxBlue);
-
 	}
 
-
+	private void assignTextObjectsToHashMapWithSlipNumberAsKey() {
+		for(SlipDTO s: slips) {
+			slipsHash.put(s.getSlipNumber(),new Text(""));
+		}
+	}
 
 	private void rotate45(int i, int i2, String f03) {
 		Rotate rotate;
@@ -146,7 +145,6 @@ public class TabSlips extends Tab {
 		rotate.setPivotY(i2);
 		slipsHash.get(f03).getTransforms().addAll(rotate);
 	}
-
 
 	// places all Text() objects, in a method so it can be refreshed.
 	private Group addDocks(int leftDock, int rightDock, int start) {
@@ -241,7 +239,7 @@ public class TabSlips extends Tab {
 		}
 	}
 
-	private void fillSlips() {
+	private void createSlipsAsTextObjects() {
 		for (SlipDTO mem : slips) {
 			switch (mem.getSlipNumber()) {
 				case "D40":
@@ -627,7 +625,6 @@ public class TabSlips extends Tab {
 					break;
 				case "A06":
 					placeText(col[3], row17, "A06");
-					;
 					break;
 				case "B61":
 					placeText(col[4], row17, "B61");
@@ -777,42 +774,43 @@ public class TabSlips extends Tab {
 	}
 
 	private void setRotation() {
-		String fDocks[] = {"F10","F09","F08","F07","F06","F05","F04","F03","F02","F01"};
+		String[] fDocks = {"F10","F09","F08","F07","F06","F05","F04","F03","F02","F01"};
 		for(String s: fDocks) {
 			rotate45((int) slipsHash.get(s).getX(), (int) slipsHash.get(s).getY(), s);
 		}
 	}
 
 	private void placeText(int col, int row, String slip) {
-//		if(mem.getSubleaser() != 0) {  /// this slip is subleased
-//			subleaserMemberships.add(SqlMembershipList.getMembershipFromList(mem.getSubleaser(), HalyardPaths.getYear()));
-//			slipsHash.get(slip).setText(slip + " " + subleaserMemberships.get(subleaserMemberships.size() - 1).getLname());
-//		} else {
-//			slipsHash.get(slip).setText(slip + " " + mem.getLname());
-//		}
-//		setMouseListener(slipsHash.get(slip), mem.getMsid(), mem.getSubleaser());
 		slipsHash.get(slip).setX(col);
 		slipsHash.get(slip).setY(row);
 		slipsHash.get(slip).setText(slip);
 	}
 
+	private void populateNames() {
+		for(MembershipListDTO m: slipmemberships) {
+			addNameToSlip(m);
+		}
+	}
 
-	
+	private void addNameToSlip(MembershipListDTO m) {
+		if(m.getSubleaser() != 0) {  /// this slip is subleased
+			subleaserMemberships.add(SqlMembershipList.getMembershipFromList(m.getSubleaser(), HalyardPaths.getYear()));
+			slipsHash.get(m.getSlip()).setText(m.getSlip() + " " + subleaserMemberships.get(subleaserMemberships.size() - 1).getLname());
+			slipsHash.get(m.getSlip()).setFill(Color.CORNFLOWERBLUE);
+		} else {
+			slipsHash.get(m.getSlip()).setText(m.getSlip() + " " + m.getLname());
+		}
+		setMouseListener(slipsHash.get(m.getSlip()), m.getMsid(), m.getSubleaser());
+	}
+
 	private void setMouseListener(Text text, int msid, int submsid) {
 		Color color = (Color) text.getFill();
 		if (color == Color.CORNFLOWERBLUE) {  // blue if it is a sublease
-			text.setOnMouseExited(ex -> {
-				text.setFill(Color.CORNFLOWERBLUE);
-			});
+			text.setOnMouseExited(ex -> text.setFill(Color.CORNFLOWERBLUE));
 		} else {
-			text.setOnMouseExited(ex -> {
-				text.setFill(Color.BLACK);
-			});
+			text.setOnMouseExited(ex -> text.setFill(Color.BLACK));
 		}
-		text.setOnMouseEntered(en -> {
-			text.setFill(Color.RED);
-		});
-
+		text.setOnMouseEntered(en -> text.setFill(Color.RED));
 		text.setOnMouseClicked(e -> {
 			if (e.getClickCount() == 2) {
 				if (color == Color.CORNFLOWERBLUE) {
