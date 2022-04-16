@@ -9,8 +9,5 @@ public class BigButton extends Button {
         setMaxWidth(Double.MAX_VALUE);
         setPrefHeight(70);
         setId("bigbuttontext");
-
     }
-
-
 }

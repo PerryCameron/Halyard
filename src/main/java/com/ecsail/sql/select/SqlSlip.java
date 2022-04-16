@@ -5,8 +5,6 @@ import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.Halyard;
 import com.ecsail.pdf.directory.Object_SlipInfo;
 import com.ecsail.structures.SlipDTO;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,11 +12,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class SqlSlip {
-    public static ObservableList<SlipDTO> getSlips() {
-        ObservableList<SlipDTO> slips = FXCollections.observableArrayList();
+    public static ArrayList<SlipDTO> getSlips() {
+        ArrayList<SlipDTO> slips = new ArrayList<>();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt.executeQuery("select * from slip;");
+            ResultSet rs = stmt.executeQuery("select * from slip");
             while (rs.next()) {
                 slips.add(new SlipDTO(rs.getInt("SLIP_ID")
                         , rs.getInt("MS_ID")
@@ -26,7 +24,6 @@ public class SqlSlip {
                         rs.getInt("SUBLEASED_TO")));
             }
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
         return slips;

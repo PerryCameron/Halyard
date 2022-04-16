@@ -36,7 +36,6 @@ public class HBoxWelcome extends HBox {
 		////////////////  ATTRIBUTES //////////////////////////////
 		vboxRight.setPrefWidth(width);
 		vboxRight.setMinWidth(350);
-
 		vboxRight.setSpacing(10);
 		vboxRight.setPadding(new Insets(15,0,0,0));
 		this.setPadding(new Insets(0,10,0,0));

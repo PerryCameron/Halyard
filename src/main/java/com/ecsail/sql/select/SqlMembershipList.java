@@ -5,12 +5,14 @@ import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.HalyardPaths;
 import com.ecsail.main.Halyard;
 import com.ecsail.structures.MembershipListDTO;
+import com.ecsail.structures.SlipDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class SqlMembershipList {
     /// not a pure SQL FUNCTION was having difficulties narrowing it down pure SQL.
@@ -297,6 +299,8 @@ public class SqlMembershipList {
         }
         return rosters;
     }
+
+
 
     public static ObservableList<MembershipListDTO> getWaitListRoster(String waitlist) {
         ObservableList<MembershipListDTO> rosters = FXCollections.observableArrayList();

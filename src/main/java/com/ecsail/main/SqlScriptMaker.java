@@ -21,7 +21,7 @@ public class SqlScriptMaker {
 	static ObservableList<PhoneDTO> phones;
 	static ObservableList<BoatDTO> boats;
 	static ObservableList<BoatOwnerDTO> boatowners;
-	static ObservableList<SlipDTO> slips;
+	static ArrayList<SlipDTO> slips;
 	static ObservableList<MemoDTO> memos;
 	static ObservableList<EmailDTO> email;
 	static ObservableList<MoneyDTO> monies;
@@ -81,7 +81,7 @@ public class SqlScriptMaker {
 			writer.write("\n\n");
 			for (MembershipDTO mem : memberships)
 				writer.write(getMembershipString(mem));
-			for(MembershipIdDTO mid : ids)
+			for (MembershipIdDTO mid : ids)
 				writer.write(getMembershipIdString(mid));
 			for (PersonDTO peo : people)
 				writer.write(getPeopleString(peo));

@@ -26,6 +26,7 @@ public class MembershipListDTO extends MembershipDTO {
 	}
 
 	public MembershipListDTO() {
+		super();
 	}
 
 	public void setLname(StringProperty lname) {
