@@ -77,11 +77,6 @@ public class PDF_Dock extends Table {
         if (dock.equals("F")) {
             buildTopRow();
             buildFDocks();
-            buildClubDock("48 Hour");
-            buildBlankRowDock();
-            buildClubDock("48 Hour");
-            buildBlankRowDock();
-            buildClubDock("48 Hour");
             buildBottomRow();
         }
 
@@ -186,6 +181,12 @@ public class PDF_Dock extends Table {
         addCell(createRightDockOnly(rowSpot + 0));
         buildBlankRowDock();
         addCell(createRightDockOnly(rowSpot + 2));
+        buildBlankRowDock();
+        addCell(createRightDockOnly(rowSpot + 4));
+        buildBlankRowDock();
+        addCell(createRightDockOnly(rowSpot + 6));
+        buildBlankRowDock();
+        addCell(createRightDockOnly(rowSpot + 8));
         buildBlankRowDock();
     }
 
