@@ -101,7 +101,7 @@ ALTER TABLE ECSC_SQL.membership_id
 create table slip
 (
     SLIP_ID      int               NOT NULL auto_increment primary key,
-    MS_ID        int unique        NOT NULL,
+    MS_ID        int unique,
     SLIP_NUM     varchar(4) unique NOT NULL,
     SUBLEASED_TO int unique,
     foreign key (MS_ID) references membership (MS_ID)
