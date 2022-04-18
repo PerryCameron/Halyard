@@ -34,7 +34,6 @@ public class PDF_SlipChart {
 			try {
 				desktop.open(fileToOpen);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -49,7 +48,6 @@ public class PDF_SlipChart {
 			try {
 				writer = new PdfWriter(file);
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			// Initialize PDF document
