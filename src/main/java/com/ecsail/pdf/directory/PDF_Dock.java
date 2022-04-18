@@ -222,9 +222,9 @@ public class PDF_Dock extends Table {
         String name = slips.get(element + offset).getlName() + ", " + returnInitial(slips.get(element + offset).getfName());
 
         boolean isSublease = false;
-        /// find out if this is a sublease and put there name in if they are.
+        /// find out if this is a sublease and put their name in if they are.
         if (slips.get(element + offset).getSubleaseMsID() != 0) {
-            MembershipListDTO subleaser = new MembershipListDTO();
+            MembershipListDTO subleaser;
             subleaser = SqlMembershipList.getMembershipList(slips.get(element + offset).getSubleaseMsID(), set.getSelectedYear());
             name = subleaser.getLname() + " " + returnInitial(subleaser.getFname());
             isSublease = true;
@@ -251,7 +251,6 @@ public class PDF_Dock extends Table {
     private Cell createRightDock(int element) {
         Cell cell;
         Paragraph p;
-
         cell = new Cell();
         cell.setWidth(dockWidth);
         cell.setBorder(Border.NO_BORDER);
