@@ -185,6 +185,8 @@ public class SqlMembershipList {
         return rosters;
     }
 
+    // I added the p.MEMBER_TYPE=1 into the query because it was causing subleases to have the wrong first name
+    // if you are here looking for problems, keep this in mind. (this may be redundant to getRoster)
     public static MembershipListDTO getMembershipList(int ms_id, String year) {
         MembershipListDTO thisMembership = null;
         try {
