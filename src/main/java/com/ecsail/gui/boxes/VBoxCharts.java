@@ -129,7 +129,7 @@ public class VBoxCharts extends VBox {
     }
 
     private void reloadStats() {
-        int endYear = defaultStartYear + defaultNumbOfYears -1;
+        int endYear = defaultStartYear + defaultNumbOfYears;
         if(endYear > currentYear) endYear = currentYear;
         this.stats.clear();
         this.stats.addAll(SqlStats.getStatistics(defaultStartYear, endYear));

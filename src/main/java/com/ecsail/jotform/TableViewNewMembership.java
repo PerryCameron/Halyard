@@ -1,4 +1,4 @@
-package com.ecsail.gui.jotform;
+package com.ecsail.jotform;
 
 import com.ecsail.gui.customwidgets.RoundCheckBox;
 import com.ecsail.structures.jotform.JotFormSubmissionListDTO;
@@ -23,17 +23,17 @@ import javafx.scene.text.Text;
 import java.util.Arrays;
 
 
-public class TableViewCreator {
+public class TableViewNewMembership {
     ObservableList<JotFormSubmissionListDTO> list;
 
-    public TableViewCreator(ObservableList<JotFormSubmissionListDTO> list)  {
+    public TableViewNewMembership(ObservableList<JotFormSubmissionListDTO> list)  {
         this.list = list;
     }
 
     public TableView<JotFormSubmissionListDTO> getContent() {
         TableView<JotFormSubmissionListDTO> tableView = new TableView<>();
         // create columns
-        TableColumn<JotFormSubmissionListDTO, String> Col1 = new TableColumn<>("Created");
+        TableColumn<JotFormSubmissionListDTO, String> CreatedCol = new TableColumn<>("Created");
         TableColumn<JotFormSubmissionListDTO, String> Col2 = new TableColumn<>("Status");
         TableColumn<JotFormSubmissionListDTO, Boolean> newCol = new TableColumn<>("Viewed");
         TableColumn<JotFormSubmissionListDTO, Boolean> flagCol = new TableColumn<>("Flag");
@@ -47,7 +47,7 @@ public class TableViewCreator {
         newCol.setCellValueFactory(cellData -> cellData.getValue().isNewProperty());
         flagCol.setCellValueFactory(cellData -> cellData.getValue().isNewProperty());
 
-        Col1.setCellValueFactory(new PropertyValueFactory<>("createdAt"));
+        CreatedCol.setCellValueFactory(new PropertyValueFactory<>("createdAt"));
         Col2.setCellValueFactory(new PropertyValueFactory<>("status"));
 
         newCol.setCellFactory(col -> {
@@ -78,7 +78,7 @@ public class TableViewCreator {
             return cell;
         });
 
-        Col1.setCellFactory(col -> {
+        CreatedCol.setCellFactory(col -> {
             TableCell<JotFormSubmissionListDTO, String> cell = new TableCell<>();
             cell.itemProperty().addListener((obs, old, newVal) -> {
                 if (newVal != null) {
@@ -89,8 +89,6 @@ public class TableViewCreator {
             });
             return cell;
         });
-
-
 
         flagCol.setCellValueFactory(new PropertyValueFactory<>("isFlagged"));
         Col5.setCellValueFactory(new PropertyValueFactory<>("primaryFirstName"));
@@ -106,7 +104,7 @@ public class TableViewCreator {
         VBox.setVgrow(tableView, Priority.ALWAYS);
 
         /// sets width of columns by percentage
-        Col1.setMaxWidth( 1f * Integer.MAX_VALUE * 15 );   // Created
+        CreatedCol.setMaxWidth( 1f * Integer.MAX_VALUE * 15 );   // Created
         Col2.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );  // Status
         newCol.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );   // new?
         flagCol.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );   // flagged?
@@ -117,7 +115,6 @@ public class TableViewCreator {
         Col9.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );  // State
         Col10.setMaxWidth( 1f * Integer.MAX_VALUE * 10 ); // Zip
 
-
         tableView.setRowFactory(tv -> {
             TableRow<JotFormSubmissionListDTO> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
@@ -126,15 +123,12 @@ public class TableViewCreator {
                     JotFormSubmissionListDTO clickedRow = row.getItem();
                     System.out.println(clickedRow.getAddress());
                 }
-//                if (!row.isEmpty() && event.getButton() == MouseButton.SECONDARY && event.getClickCount() == 1) {
-//                    row.setContextMenu(new rosterContextMenu(row.getItem(), selectedYear));
-//                }
             });
             return row;
         });
 
         tableView.getColumns()
-                .addAll(Arrays.asList(newCol, flagCol, Col1, Col2,  Col5, Col6, Col7, Col8, Col9, Col10));
+                .addAll(Arrays.asList(newCol, flagCol, CreatedCol, Col2,  Col5, Col6, Col7, Col8, Col9, Col10));
         return tableView;
     }
 
@@ -163,11 +157,23 @@ public class TableViewCreator {
     private Node createText(String text) {
         String[] result = text.split(" ");
         HBox textContainer = new HBox();
+        VBox vBoxDate = new VBox();
+        VBox vBoxTime = new VBox();
+
         Text dateText = new Text(result[0]);
         Text timeText = new Text(result[1]);
         dateText.setFill(Color.BLUE);
 //        timeText.setFill(Color.CORNFLOWERBLUE);
-        textContainer.getChildren().addAll(dateText,timeText);
+        vBoxDate.getChildren().add(dateText);
+        vBoxTime.getChildren().add(timeText);
+        vBoxDate.setPrefWidth(100);
+        vBoxTime.setPrefWidth(90);
+        vBoxDate.setAlignment(Pos.CENTER_LEFT);
+        vBoxTime.setAlignment(Pos.CENTER_LEFT);
+        textContainer.setSpacing(5);
+//        vBoxDate.setStyle("-fx-background-color: grey;");
+//        textContainer.setStyle("-fx-background-color: white;");
+        textContainer.getChildren().addAll(vBoxDate,vBoxTime);
         textContainer.setAlignment(Pos.CENTER);
         textContainer.setSpacing(3);
         return textContainer;

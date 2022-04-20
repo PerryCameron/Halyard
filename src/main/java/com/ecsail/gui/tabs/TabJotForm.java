@@ -1,8 +1,8 @@
 package com.ecsail.gui.tabs;
 
-import com.ecsail.gui.jotform.TableViewCreator;
 import com.ecsail.jotform.JotForm;
 import com.ecsail.jotform.JotFormECSC;
+import com.ecsail.jotform.TableViewNewMembership;
 import com.ecsail.sql.select.SqlApi_key;
 import com.ecsail.structures.ApiKeyDTO;
 import com.ecsail.structures.jotform.JotFormSubmissionListDTO;
@@ -20,6 +20,7 @@ import java.util.ArrayList;
 
 public class TabJotForm extends Tab {
 
+
 	public TabJotForm(String text) {
 		super(text);
 		ApiKeyDTO thisApi = SqlApi_key.getApiKeyByName("Jotform API");
@@ -28,7 +29,7 @@ public class TabJotForm extends Tab {
 		VBox vboxBlue = new VBox();
 		VBox vboxPink = new VBox(); // this creates a pink border around the table
 		ObservableList<JotFormSubmissionListDTO> list = FXCollections.observableArrayList();
-		TableViewCreator tableViewCreater = new TableViewCreator(list);
+
 		JotFormECSC jotFormECSC = new JotFormECSC();
 		vboxBlue.setId("box-blue");
 		vboxBlue.setPadding(new Insets(10,10,10,10));
@@ -38,15 +39,16 @@ public class TabJotForm extends Tab {
 		vboxGrey.setPrefHeight(688);
 		Button listButton = new Button("List");
 
-		listButton.setOnAction((event) -> {
-			JSONObject submissions = client.getFormSubmissions(213494856046160L);
-			ArrayList<JSONObject> formSubmissions = jotFormECSC.addFormSubmissionsIntoArray(submissions);
-			for(JSONObject a: formSubmissions) {
-				list.add(jotFormECSC.addSubmissionAnswersIntoDTO(a));
-			}
-			TableView<JotFormSubmissionListDTO> tableView = tableViewCreater.getContent();
-			vboxGrey.getChildren().add(tableView);
-		});
+		TableViewNewMembership tableViewNewMembership = new TableViewNewMembership(list);
+		TableView<JotFormSubmissionListDTO> tableView;
+		JSONObject submissions = client.getFormSubmissions(213494856046160L);
+		ArrayList<JSONObject> formSubmissions = jotFormECSC.addFormSubmissionsIntoArray(submissions);
+		for(JSONObject a: formSubmissions) {
+			list.add(jotFormECSC.addSubmissionAnswersIntoDTO(a));
+		}
+		tableView = tableViewNewMembership.getContent();
+		vboxGrey.getChildren().add(tableView);
+
 		vboxGrey.getChildren().add(listButton);
 		vboxBlue.getChildren().add(vboxPink);
 		vboxPink.getChildren().add(vboxGrey);
