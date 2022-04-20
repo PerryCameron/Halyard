@@ -1,5 +1,6 @@
 package com.ecsail.gui.jotform;
 
+import com.ecsail.gui.customwidgets.RoundCheckBox;
 import com.ecsail.structures.jotform.JotFormSubmissionListDTO;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
@@ -35,7 +36,7 @@ public class TableViewCreator {
         TableColumn<JotFormSubmissionListDTO, String> Col1 = new TableColumn<>("Created");
         TableColumn<JotFormSubmissionListDTO, String> Col2 = new TableColumn<>("Status");
         TableColumn<JotFormSubmissionListDTO, Boolean> newCol = new TableColumn<>("Viewed");
-        TableColumn<JotFormSubmissionListDTO, Boolean> flagCol = new TableColumn<>("Flagged");
+        TableColumn<JotFormSubmissionListDTO, Boolean> flagCol = new TableColumn<>("Flag");
         TableColumn<JotFormSubmissionListDTO, String> Col5 = new TableColumn<>("First Name");
         TableColumn<JotFormSubmissionListDTO, String> Col6 = new TableColumn<>("Last Name");
         TableColumn<JotFormSubmissionListDTO, String> Col7 = new TableColumn<>("Address");
@@ -56,10 +57,27 @@ public class TableViewCreator {
                     Node centreBox = createPriorityGraphic(newVal);
                     cell.graphicProperty().bind(Bindings.when(cell.emptyProperty()).then((Node) null).otherwise(centreBox));
                 }
+            });
+            return cell;
+        });
+
+        flagCol.setCellFactory(col -> {
+            TableCell<JotFormSubmissionListDTO, Boolean> cell = new TableCell<>();
+            cell.itemProperty().addListener((obs, old, newVal) -> {
+                if (newVal != null) {
+                    RoundCheckBox centreBox = createFlagChecks(newVal);
+                    centreBox.isSelectedProperty().addListener((observableValue, aBoolean, t1) -> {
+                        JotFormSubmissionListDTO line = (JotFormSubmissionListDTO) cell.getTableRow().getItem();
+                        System.out.println(t1 + " " + line.getAddress());
+                        // now that you have the correct object do something here
+                    });
+                    cell.graphicProperty().bind(Bindings.when(cell.emptyProperty()).then((RoundCheckBox) null).otherwise(centreBox));
+                }
 
             });
             return cell;
         });
+
         Col1.setCellFactory(col -> {
             TableCell<JotFormSubmissionListDTO, String> cell = new TableCell<>();
             cell.itemProperty().addListener((obs, old, newVal) -> {
@@ -71,6 +89,9 @@ public class TableViewCreator {
             });
             return cell;
         });
+
+
+
         flagCol.setCellValueFactory(new PropertyValueFactory<>("isFlagged"));
         Col5.setCellValueFactory(new PropertyValueFactory<>("primaryFirstName"));
         Col6.setCellValueFactory(new PropertyValueFactory<>("primaryLastName"));
@@ -113,8 +134,16 @@ public class TableViewCreator {
         });
 
         tableView.getColumns()
-                .addAll(Arrays.asList(newCol, Col1, Col2, flagCol, Col5, Col6, Col7, Col8, Col9, Col10));
+                .addAll(Arrays.asList(newCol, flagCol, Col1, Col2,  Col5, Col6, Col7, Col8, Col9, Col10));
         return tableView;
+    }
+
+    private RoundCheckBox createFlagChecks(Boolean isFlagged) {
+        RoundCheckBox roundCheckBox = new RoundCheckBox();
+        if(isFlagged) {
+            roundCheckBox.setSelected(true);
+        }
+        return roundCheckBox;
     }
 
     private Node createPriorityGraphic(Boolean isPriority){

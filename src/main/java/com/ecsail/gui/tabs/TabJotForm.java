@@ -47,14 +47,9 @@ public class TabJotForm extends Tab {
 			TableView<JotFormSubmissionListDTO> tableView = tableViewCreater.getContent();
 			vboxGrey.getChildren().add(tableView);
 		});
-
 		vboxGrey.getChildren().add(listButton);
 		vboxBlue.getChildren().add(vboxPink);
 		vboxPink.getChildren().add(vboxGrey);
 		setContent(vboxBlue);
 	}
-
-
-
-
 }
