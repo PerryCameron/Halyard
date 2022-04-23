@@ -66,6 +66,7 @@ public class PDF_Directory {
 	    Task<String> task = new Task<String>(){
 	        @Override
 	        protected String call() {
+				System.out.println("Started task");
 	    		doc.add(new PDF_Cover(1, set));
 	    		doc.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
 	    		textArea.appendText("Created Cover\n");
@@ -126,7 +127,7 @@ public class PDF_Directory {
 	    task.setOnSucceeded(e -> { 
 	    	textArea.setText((String) e.getSource().getValue()); 
 	    	System.out.println("Finished making directory");});
-	    task.setOnFailed(e -> { System.out.println("This failed"); });
+	    task.setOnFailed(e -> { System.out.println("This failed" + e.getSource().getMessage()); });
 	    exec.execute(task);
 
 	}

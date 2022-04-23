@@ -1,5 +1,6 @@
 package com.ecsail.gui.dialogues;
 
+import com.ecsail.main.HalyardPaths;
 import com.ecsail.pdf.directory.PDF_Directory;
 
 import javafx.geometry.Insets;
@@ -36,7 +37,7 @@ public class Dialogue_DirectoryCreation extends Stage {
 		Image mainIcon = new Image(getClass().getResourceAsStream("/ECSC64.png"));
 		
 		//////////////// LISTENERS ////////////////
-		createDirectory.setOnAction((event) -> new PDF_Directory("2021",textArea));
+		createDirectory.setOnAction((event) -> new PDF_Directory(HalyardPaths.getYear(),textArea));
 		
 		//////////////// ADD CONTENT ///////////////////
 		getIcons().add(mainIcon);
