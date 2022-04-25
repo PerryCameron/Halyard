@@ -102,6 +102,7 @@ public class PDF_BoardOfDirectors extends Table {
 		addOfficerToTable(chairTable, "HM");
 		addOfficerToTable(chairTable, "AH");
 		addOfficerToTable(chairTable, "MS");
+		addOfficerToTable(chairTable, "AM");
 		addOfficerToTable(chairTable, "PU");
 		addOfficerToTable(chairTable, "RA");
 		addOfficerToTable(chairTable, "AR");
@@ -203,22 +204,24 @@ public class PDF_BoardOfDirectors extends Table {
 	}
 
 	private void addOfficerToTable(Table mainTable, String type) {
-		Cell cell;
-		Paragraph p;
-		cell = new Cell();
-		p = new Paragraph(Officer.getNameByCode(type) + ":");
-		p.setFontSize(set.getNormalFontSize());
-		p.setFont(set.getColumnHead());
-		p.setFixedLeading(set.getFixedLeading() - 15);  // sets spacing between lines of text	
-		cell.setBorder(Border.NO_BORDER).add(p).setHorizontalAlignment(HorizontalAlignment.CENTER);
-		mainTable.addCell(cell);
-		
-		cell = new Cell();
-		p = new Paragraph(getOfficer(type));
-		p.setFontSize(set.getNormalFontSize());
-		p.setFixedLeading(set.getFixedLeading() - 15);  // sets spacing between lines of text	
-		cell.setBorder(Border.NO_BORDER).add(p).setHorizontalAlignment(HorizontalAlignment.CENTER);
-		mainTable.addCell(cell);
+		if(!getOfficer(type).equals("")) { // if it doesn't exist don't print it
+			Cell cell;
+			Paragraph p;
+			cell = new Cell();
+			p = new Paragraph(Officer.getNameByCode(type) + ":");
+			p.setFontSize(set.getNormalFontSize());
+			p.setFont(set.getColumnHead());
+			p.setFixedLeading(set.getFixedLeading() - 15);  // sets spacing between lines of text
+			cell.setBorder(Border.NO_BORDER).add(p).setHorizontalAlignment(HorizontalAlignment.CENTER);
+			mainTable.addCell(cell);
+
+			cell = new Cell();
+			p = new Paragraph(getOfficer(type));
+			p.setFontSize(set.getNormalFontSize());
+			p.setFixedLeading(set.getFixedLeading() - 15);  // sets spacing between lines of text
+			cell.setBorder(Border.NO_BORDER).add(p).setHorizontalAlignment(HorizontalAlignment.CENTER);
+			mainTable.addCell(cell);
+		}
 	}
 	
 	public String getOfficer(String type) {
