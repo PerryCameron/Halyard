@@ -73,6 +73,7 @@ public class PDF_BoardOfDirectors extends Table {
 		addOfficerToTable(officerTable, "CO");
 		addOfficerToTable(officerTable, "VC");
 		addOfficerToTable(officerTable, "PC");
+		addOfficerToTable(officerTable, "FM");
 		addOfficerToTable(officerTable, "TR");
 		addOfficerToTable(officerTable, "SE");
 		return officerTable;
