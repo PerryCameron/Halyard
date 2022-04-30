@@ -596,7 +596,9 @@ public class JotForm {
      * @param submission New submission data with question IDs.
      * @return Returns status of request.
      */
-    public JSONObject editSubmission(long sid, HashMap<String, String> submission ) {
+//    public void editSubmission(long sid, HashMap<String, String> submission ) {
+
+        public JSONObject editSubmission(long sid, HashMap<String, String> submission ) {
     	HashMap<String, String> parameters = new HashMap<String, String>();
     	
     	Set<String> keys = submission.keySet();
@@ -608,7 +610,7 @@ public class JotForm {
     			parameters.put("submission[" + key + "]", submission.get(key));
     		}
     	}
-    	
+//    	System.out.println("/submission/" + sid + parameters);
         return executePostRequest("/submission/" + sid, parameters);
     }
     

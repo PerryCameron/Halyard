@@ -39,7 +39,7 @@ public class TabJotForm extends Tab {
 		vboxGrey.setPrefHeight(688);
 		Button listButton = new Button("List");
 
-		TableViewNewMembership tableViewNewMembership = new TableViewNewMembership(list);
+		TableViewNewMembership tableViewNewMembership = new TableViewNewMembership(list, client);
 		TableView<JotFormSubmissionListDTO> tableView;
 		JSONObject submissions = client.getFormSubmissions(213494856046160L);
 		ArrayList<JSONObject> formSubmissions = jotFormECSC.addFormSubmissionsIntoArray(submissions);

@@ -21,13 +21,16 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import java.util.Arrays;
+import java.util.HashMap;
 
 
 public class TableViewNewMembership {
     ObservableList<JotFormSubmissionListDTO> list;
+    JotForm client;
+    public TableViewNewMembership(ObservableList<JotFormSubmissionListDTO> list, JotForm client)  {
 
-    public TableViewNewMembership(ObservableList<JotFormSubmissionListDTO> list)  {
         this.list = list;
+        this.client = client;
     }
 
     public TableView<JotFormSubmissionListDTO> getContent() {
@@ -68,8 +71,9 @@ public class TableViewNewMembership {
                     RoundCheckBox centreBox = createFlagChecks(newVal);
                     centreBox.isSelectedProperty().addListener((observableValue, aBoolean, t1) -> {
                         JotFormSubmissionListDTO line = (JotFormSubmissionListDTO) cell.getTableRow().getItem();
-                        System.out.println(t1 + " " + line.getAddress());
-                        // now that you have the correct object do something here
+                        HashMap<String,String> hash = new HashMap<>();
+                        hash.put("flag",booleanToStringNumnber(t1));
+                        client.editSubmission(line.getSubmissionId(),hash);
                     });
                     cell.graphicProperty().bind(Bindings.when(cell.emptyProperty()).then((RoundCheckBox) null).otherwise(centreBox));
                 }
@@ -122,6 +126,9 @@ public class TableViewNewMembership {
                     // int rowIndex = row.getIndex();
                     JotFormSubmissionListDTO clickedRow = row.getItem();
                     System.out.println(clickedRow.getAddress());
+                    HashMap<String,String> hash = new HashMap<>();
+                    hash.put("flag","1");
+                    client.editSubmission(clickedRow.getSubmissionId(),hash);
                 }
             });
             return row;
@@ -130,6 +137,11 @@ public class TableViewNewMembership {
         tableView.getColumns()
                 .addAll(Arrays.asList(newCol, flagCol, CreatedCol, Col2,  Col5, Col6, Col7, Col8, Col9, Col10));
         return tableView;
+    }
+
+    private String booleanToStringNumnber(Boolean t1) {
+        if (t1) return "1";
+        return "0";
     }
 
     private RoundCheckBox createFlagChecks(Boolean isFlagged) {
