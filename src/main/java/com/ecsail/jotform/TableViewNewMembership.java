@@ -19,6 +19,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import org.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -27,6 +28,7 @@ import java.util.HashMap;
 public class TableViewNewMembership {
     ObservableList<JotFormSubmissionListDTO> list;
     JotForm client;
+    JSONObject response = null;
     public TableViewNewMembership(ObservableList<JotFormSubmissionListDTO> list, JotForm client)  {
 
         this.list = list;
@@ -34,10 +36,12 @@ public class TableViewNewMembership {
     }
 
     public TableView<JotFormSubmissionListDTO> getContent() {
+        HashMap<String,String> hash = new HashMap<>();
+        hash.put("flag","0");
         TableView<JotFormSubmissionListDTO> tableView = new TableView<>();
         // create columns
-        TableColumn<JotFormSubmissionListDTO, String> CreatedCol = new TableColumn<>("Created");
-        TableColumn<JotFormSubmissionListDTO, String> Col2 = new TableColumn<>("Status");
+        TableColumn<JotFormSubmissionListDTO, String> createdCol = new TableColumn<>("Created");
+        TableColumn<JotFormSubmissionListDTO, String> statusCol = new TableColumn<>("Status");
         TableColumn<JotFormSubmissionListDTO, Boolean> newCol = new TableColumn<>("Viewed");
         TableColumn<JotFormSubmissionListDTO, Boolean> flagCol = new TableColumn<>("Flag");
         TableColumn<JotFormSubmissionListDTO, String> Col5 = new TableColumn<>("First Name");
@@ -49,9 +53,14 @@ public class TableViewNewMembership {
         // set cell factories for content
         newCol.setCellValueFactory(cellData -> cellData.getValue().isNewProperty());
         flagCol.setCellValueFactory(cellData -> cellData.getValue().isNewProperty());
-
-        CreatedCol.setCellValueFactory(new PropertyValueFactory<>("createdAt"));
-        Col2.setCellValueFactory(new PropertyValueFactory<>("status"));
+        createdCol.setCellValueFactory(new PropertyValueFactory<>("createdAt"));
+        statusCol.setCellValueFactory(new PropertyValueFactory<>("status"));
+        Col5.setCellValueFactory(new PropertyValueFactory<>("primaryFirstName"));
+        Col6.setCellValueFactory(new PropertyValueFactory<>("primaryLastName"));
+        Col7.setCellValueFactory(new PropertyValueFactory<>("address"));
+        Col8.setCellValueFactory(new PropertyValueFactory<>("city"));
+        Col9.setCellValueFactory(new PropertyValueFactory<>("state"));
+        Col10.setCellValueFactory(new PropertyValueFactory<>("postal"));
 
         newCol.setCellFactory(col -> {
             TableCell<JotFormSubmissionListDTO, Boolean> cell = new TableCell<>();
@@ -68,21 +77,25 @@ public class TableViewNewMembership {
             TableCell<JotFormSubmissionListDTO, Boolean> cell = new TableCell<>();
             cell.itemProperty().addListener((obs, old, newVal) -> {
                 if (newVal != null) {
-                    RoundCheckBox centreBox = createFlagChecks(newVal);
-                    centreBox.isSelectedProperty().addListener((observableValue, aBoolean, t1) -> {
+                    RoundCheckBox roundCheckBox = createFlagChecks(newVal);
+                    roundCheckBox.isSelectedProperty().addListener((observableValue, aBoolean, checkBoxSelected) -> {
+                        // gets the data object from the row we are clicking on
                         JotFormSubmissionListDTO line = (JotFormSubmissionListDTO) cell.getTableRow().getItem();
-                        HashMap<String,String> hash = new HashMap<>();
-                        hash.put("flag",booleanToStringNumnber(t1));
-                        client.editSubmission(line.getSubmissionId(),hash);
+                        // changes flag to either 0 or 1
+                        hash.replace("flag",booleanToStringNumnber(checkBoxSelected));
+                        // sends out the http POST request to change variable
+                        response = client.editSubmission(line.getSubmissionId(),hash);
+                        // makes sure it changed at server before changing circleCheckBox
+                        roundCheckBox.setResponseCode(String.valueOf(response.get("responseCode")));
                     });
-                    cell.graphicProperty().bind(Bindings.when(cell.emptyProperty()).then((RoundCheckBox) null).otherwise(centreBox));
+                    cell.graphicProperty().bind(Bindings.when(cell.emptyProperty()).then((RoundCheckBox) null).otherwise(roundCheckBox));
                 }
 
             });
             return cell;
         });
 
-        CreatedCol.setCellFactory(col -> {
+        createdCol.setCellFactory(col -> {
             TableCell<JotFormSubmissionListDTO, String> cell = new TableCell<>();
             cell.itemProperty().addListener((obs, old, newVal) -> {
                 if (newVal != null) {
@@ -94,13 +107,7 @@ public class TableViewNewMembership {
             return cell;
         });
 
-        flagCol.setCellValueFactory(new PropertyValueFactory<>("isFlagged"));
-        Col5.setCellValueFactory(new PropertyValueFactory<>("primaryFirstName"));
-        Col6.setCellValueFactory(new PropertyValueFactory<>("primaryLastName"));
-        Col7.setCellValueFactory(new PropertyValueFactory<>("address"));
-        Col8.setCellValueFactory(new PropertyValueFactory<>("city"));
-        Col9.setCellValueFactory(new PropertyValueFactory<>("state"));
-        Col10.setCellValueFactory(new PropertyValueFactory<>("postal"));
+
 
         tableView.setItems(list);
         tableView.setFixedCellSize(30);
@@ -108,8 +115,8 @@ public class TableViewNewMembership {
         VBox.setVgrow(tableView, Priority.ALWAYS);
 
         /// sets width of columns by percentage
-        CreatedCol.setMaxWidth( 1f * Integer.MAX_VALUE * 15 );   // Created
-        Col2.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );  // Status
+        createdCol.setMaxWidth( 1f * Integer.MAX_VALUE * 15 );   // Created
+        statusCol.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );  // Status
         newCol.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );   // new?
         flagCol.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );   // flagged?
         Col5.setMaxWidth( 1f * Integer.MAX_VALUE * 10 );   // First Name
@@ -126,16 +133,13 @@ public class TableViewNewMembership {
                     // int rowIndex = row.getIndex();
                     JotFormSubmissionListDTO clickedRow = row.getItem();
                     System.out.println(clickedRow.getAddress());
-                    HashMap<String,String> hash = new HashMap<>();
-                    hash.put("flag","1");
-                    client.editSubmission(clickedRow.getSubmissionId(),hash);
                 }
             });
             return row;
         });
 
         tableView.getColumns()
-                .addAll(Arrays.asList(newCol, flagCol, CreatedCol, Col2,  Col5, Col6, Col7, Col8, Col9, Col10));
+                .addAll(Arrays.asList(newCol, flagCol, createdCol, statusCol,  Col5, Col6, Col7, Col8, Col9, Col10));
         return tableView;
     }
 

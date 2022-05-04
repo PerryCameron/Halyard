@@ -15,6 +15,7 @@ public class RoundCheckBox extends HBox {
     Circle circle2 = new Circle(10,135,8);
     BooleanProperty isSelected = new SimpleBooleanProperty(false);
     String text;
+    String responseCode = "200";
 
     public RoundCheckBox() {
         makeCircles();
@@ -51,13 +52,16 @@ public class RoundCheckBox extends HBox {
         );
 
         isSelectedProperty().addListener((observableValue, aBoolean, t1) -> {
-            if(t1) {
-                stackPane.getChildren().add(circle2);
-            }
-            if(!t1) {
-                // this forces a redraw because of a bug that was never fixed.
-                circle2.toBack();
-                stackPane.getChildren().remove(circle2);
+            // makes sure it changed it at the server
+            if(responseCode.equals("200")) {
+                if (t1) {
+                    stackPane.getChildren().add(circle2);
+                }
+                if (!t1) {
+                    // this forces a redraw because of a bug that was never fixed.
+                    circle2.toBack();
+                    stackPane.getChildren().remove(circle2);
+                }
             }
         });
         HBox.setHgrow(this, Priority.ALWAYS);
@@ -83,5 +87,13 @@ public class RoundCheckBox extends HBox {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public String getResponseCode() {
+        return responseCode;
+    }
+
+    public void setResponseCode(String responseCode) {
+        this.responseCode = responseCode;
     }
 }

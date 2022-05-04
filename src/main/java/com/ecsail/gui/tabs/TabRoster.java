@@ -11,11 +11,14 @@ import com.ecsail.sql.select.SqlMembershipList;
 import com.ecsail.structures.MembershipListDTO;
 import com.ecsail.structures.RosterRadioButtonsDTO;
 import com.ecsail.structures.RosterSelectDTO;
+import com.ecsail.structures.jotform.JotFormSubmissionListDTO;
+import javafx.beans.binding.Bindings;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Side;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -23,6 +26,8 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -147,15 +152,27 @@ public class TabRoster extends Tab {
 		Col9.setCellValueFactory(new PropertyValueFactory<>("state"));
 		Col10.setCellValueFactory(new PropertyValueFactory<>("zip"));
 		Col11.setCellValueFactory(new PropertyValueFactory<>("msid"));
+
+//		Col4.setCellFactory(col -> {
+//			TableCell<MembershipListDTO, String> cell = new TableCell<>();
+//			cell.itemProperty().addListener((obs, old, newVal) -> {
+//				if (newVal != null) {
+//					System.out.println(newVal);
+//					Node centreBox = createSlipText(newVal);
+//					cell.graphicProperty().bind(Bindings.when(cell.emptyProperty()).then((Node) null).otherwise(centreBox));
+//				}
+//			});
+//			return cell;
+//		});
 		
 		/// sets width of columns by percentage
 		Col1.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );   // Mem 5%
-		Col2.setMaxWidth( 1f * Integer.MAX_VALUE * 15 );  // Join Date 15%
+		Col2.setMaxWidth( 1f * Integer.MAX_VALUE * 10 );  // Join Date 15%
 		Col3.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );   // Type
 		Col4.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );   // Slip
 		Col5.setMaxWidth( 1f * Integer.MAX_VALUE * 10 );   // First Name
 		Col6.setMaxWidth( 1f * Integer.MAX_VALUE * 10 );  // Last Name
-		Col7.setMaxWidth( 1f * Integer.MAX_VALUE * 20 );  // Address
+		Col7.setMaxWidth( 1f * Integer.MAX_VALUE * 25 );  // Address
 		Col8.setMaxWidth( 1f * Integer.MAX_VALUE * 10 );  // City
 		Col9.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );  // State
 		Col10.setMaxWidth( 1f * Integer.MAX_VALUE * 10 ); // Zip
@@ -322,54 +339,44 @@ public class TabRoster extends Tab {
 
 	//// Class Methods ////
 	private void setListType(String type) {
+		setChoicesFalse();
 		switch (type) {
 		case "all":
 			printChoices.setAll(true);
-			printChoices.setActive(false);
-			printChoices.setNonRenew(false);
-			printChoices.setNewMembers(false);
-			printChoices.setNewAndReturnd(false);
-			printChoices.setSlipwait(false);
 		case "active":
-			printChoices.setAll(false);
 			printChoices.setActive(true);
-			printChoices.setNonRenew(false);
-			printChoices.setNewMembers(false);
-			printChoices.setNewAndReturnd(false);
-			printChoices.setSlipwait(false);
 			break;
 		case "non-renew":
-			printChoices.setAll(false);
-			printChoices.setActive(false);
 			printChoices.setNonRenew(true);
-			printChoices.setNewMembers(false);
-			printChoices.setNewAndReturnd(false);
-			printChoices.setSlipwait(false);
 			break;
 		case "new-members":
-			printChoices.setAll(false);
-			printChoices.setActive(false);
-			printChoices.setNonRenew(false);
 			printChoices.setNewMembers(true);
-			printChoices.setNewAndReturnd(false);
-			printChoices.setSlipwait(false);
 			break;
 		case "return":
-			printChoices.setAll(false);
-			printChoices.setActive(false);
-			printChoices.setNonRenew(false);
-			printChoices.setNewMembers(false);
 			printChoices.setNewAndReturnd(true);
-			printChoices.setSlipwait(false);
 			break;
 		case "slip-waitlist":
-			printChoices.setAll(false);
-			printChoices.setActive(false);
-			printChoices.setNonRenew(false);
-			printChoices.setNewMembers(false);
-			printChoices.setNewAndReturnd(false);
 			printChoices.setSlipwait(true);
 			break;
 		}
+	}
+
+	private void setChoicesFalse() {
+		printChoices.setAll(false);
+		printChoices.setActive(false);
+		printChoices.setNonRenew(false);
+		printChoices.setNewMembers(false);
+		printChoices.setNewAndReturnd(false);
+		printChoices.setSlipwait(false);
+	}
+
+	private Node createSlipText(String text) {
+		HBox textContainer = new HBox();
+		Text slip = new Text(text);
+		slip.setFill(Color.BLUE);
+		textContainer.getChildren().add(slip);
+		textContainer.setAlignment(Pos.CENTER);
+		textContainer.setSpacing(3);
+		return textContainer;
 	}
 }
