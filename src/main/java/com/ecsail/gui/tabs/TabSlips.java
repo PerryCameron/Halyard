@@ -92,6 +92,8 @@ public class TabSlips extends Tab {
 		setRotation();
 		slipsHash.get("B50").setText("B50 Racing");
 		slipsHash.get("B48").setText("B48 Racing");
+		slipsHash.get("F01").setText("F01 48-hour");
+		slipsHash.get("F02").setText("F02 48-hour");
 		//////////////////  SET CONTENT ///////////////
 		screenPane.getChildren().add(addDocks(10,10,col[0]));
 		screenPane.getChildren().add(addDocks(7,11,col[2]));
@@ -153,8 +155,8 @@ public class TabSlips extends Tab {
 
 		// draw angled right dock
 		int x = 50;
-		//int ay = 546; //587
-		for(int ay = 546; ay < 711; ay+=41) {
+		// increasing final number (752) by 41 adds another dock
+		for(int ay = 546; ay < 752; ay+=41) {
 			rect = new Rectangle(x + dockWidth + stemWidth, ay, dockWidth, dockHeight);  // y position always starts at 23
 			rect.setFill(Color.BLACK);
 			rect.setStroke(Color.BLACK);
@@ -174,7 +176,8 @@ public class TabSlips extends Tab {
 	    // draw angled stem
 	    x = 130;
 	    y = 505;
-	    rect = new Rectangle(x,y,stemWidth,230);  // y position always starts at 23
+		// increasing height lengthens dock
+	    rect = new Rectangle(x,y,stemWidth,280);  // y position always starts at 23
 	    rect.setFill(Color.BLACK);
 	    rect.setStroke(Color.BLACK);
 	    rotate.setAngle(315);
@@ -712,35 +715,54 @@ public class TabSlips extends Tab {
 				case "B48":
 					placeText(col[5], row[23], "B48");
 					break;
+//				col		row
+//				176		511
+//				194	18	529	18
+//				205	11	540	11
+//				223	18	558	18
+//				234	11	569	11
+//				252	18	587	18
+//				263	11	598	11
+//				281	18	616	18
+//				292	11	627	11
+//				310	18	645	18
+//				321	11	656 11
+//				339	18	674 18
+				case "F12":
+					placeText(176, 511, "F12");
+					break;
+				case "F11":
+					placeText(194, 529, "F11");
+					break;
 				case "F10":
-					placeText(176, 511, "F10");
+					placeText(205, 540, "F10");
 					break;
 				case "F09":
-					placeText(194, 529, "F09");
+					placeText(223, 558, "F09");
 					break;
 				case "F08":
-					placeText(205, 540, "F08");
+					placeText(234, 569, "F08");
 					break;
 				case "F07":
-					placeText(223, 558, "F07");
+					placeText(252, 587, "F07");
 					break;
 				case "F06":
-					placeText(234, 569, "F06");
+					placeText(263, 598, "F06");
 					break;
 				case "F05":
-					placeText(252, 587, "F05");
+					placeText(281, 616, "F05");
 					break;
 				case "F04":
-					placeText(263, 598, "F04");
+					placeText(292, 627, "F04");
 					break;
 				case "F03":
-					placeText(281, 616, "F03");
+					placeText(310, 645, "F03");
 					break;
 				case "F02":
-					placeText(292, 627, "F02");
+					placeText(321, 656, "F02");
 					break;
 				case "F01":
-					placeText(310, 645, "F01");
+					placeText(339, 674, "F01");
 					break;
 				default:
 					break;
@@ -749,16 +771,20 @@ public class TabSlips extends Tab {
 	}
 
 	private void setRotation() {
-		String[] fDocks = {"F10","F09","F08","F07","F06","F05","F04","F03","F02","F01"};
+		String[] fDocks = {"F12","F11","F10","F09","F08","F07","F06","F05","F04","F03","F02","F01"};
 		for(String s: fDocks) {
 			rotate45((int) slipsHash.get(s).getX(), (int) slipsHash.get(s).getY(), s);
 		}
 	}
 
 	private void placeText(int col, int row, String slip) {
-		slipsHash.get(slip).setX(col);
-		slipsHash.get(slip).setY(row);
-		slipsHash.get(slip).setText(slip);
+		if(slipsHash.get(slip) == null) {
+			System.out.println("There is no entry in the hash for slip " + slip);
+		} else {
+			slipsHash.get(slip).setX(col);
+			slipsHash.get(slip).setY(row);
+			slipsHash.get(slip).setText(slip);
+		}
 	}
 
 	private void populateNames() {
