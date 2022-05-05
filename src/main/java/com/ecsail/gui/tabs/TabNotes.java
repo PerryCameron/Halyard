@@ -11,18 +11,14 @@ import com.ecsail.structures.Memo2DTO;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TitledPane;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
+import javafx.util.Callback;
 
 public class TabNotes extends Tab {
 	private TableView<Memo2DTO> notesTableView = new TableView<>();
@@ -90,10 +86,41 @@ public class TabNotes extends Tab {
 		TableColumn<Memo2DTO, String> Col4 = new TableColumn<Memo2DTO, String>("NOTE");
 		Col4.setCellValueFactory(new PropertyValueFactory<Memo2DTO, String>("memo"));
 
+		TableColumn<Memo2DTO, Boolean> colBtn = new TableColumn<>("exp");
+		Callback<TableColumn<Memo2DTO, Boolean>, TableCell<Memo2DTO, Boolean>> cellFactory = new Callback<TableColumn<Memo2DTO, Boolean>, TableCell<Memo2DTO, Boolean>>() {
+			@Override
+			public TableCell<Memo2DTO, Boolean> call(final TableColumn<Memo2DTO, Boolean> param) {
+				final TableCell<Memo2DTO, Boolean> cell = new TableCell<Memo2DTO, Boolean>() {
+
+					private final Button btn = new Button("Action");
+
+					{
+						btn.setOnAction((ActionEvent event) -> {
+							Memo2DTO data = getTableView().getItems().get(getIndex());
+							System.out.println("selectedData: " + data);
+						});
+					}
+
+					@Override
+					public void updateItem(Boolean item, boolean empty) {
+						super.updateItem(item, empty);
+						if (empty) {
+							setGraphic(null);
+						} else {
+							setGraphic(btn);
+						}
+					}
+				};
+				return cell;
+			}
+		};
+
+
 		Col1.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );   // Mem 5%
 		Col2.setMaxWidth( 1f * Integer.MAX_VALUE * 10 );  // Join Date 15%
 		Col3.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );   // Type
-		Col4.setMaxWidth( 1f * Integer.MAX_VALUE * 80 );   // Slip
+		Col4.setMaxWidth( 1f * Integer.MAX_VALUE * 75 );   // Slip
+		colBtn.setMaxWidth( 1f * Integer.MAX_VALUE * 5 );   // Slip
 
 		Collections.sort(memos, Comparator.comparing(Memo2DTO::getMemo_date).reversed());
 
@@ -125,7 +152,7 @@ public class TabNotes extends Tab {
             }
         });
 		
-		notesTableView.getColumns().addAll(Arrays.asList(Col1, Col2, Col3, Col4));
+		notesTableView.getColumns().addAll(Arrays.asList(Col1, Col2, Col3, Col4, colBtn));
 		controlsHbox.getChildren().addAll(yearSpinner,nCheckBox,oCheckBox,pCheckBox);
 		titledPane.setContent(controlsHbox);
 		vboxGrey.getChildren().addAll(titledPane,notesTableView);
@@ -155,5 +182,7 @@ public class TabNotes extends Tab {
 		System.out.println(result);
 		return result;
 	}
+
+
 	
 }

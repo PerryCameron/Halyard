@@ -42,7 +42,7 @@ public class PDF_BoardOfDirectors extends Table {
 		
 		cell = new Cell();
 		cell.setBorder(Border.NO_BORDER);
-		Paragraph p = new Paragraph("\u00a9Eagle Creek Sailking club 1969-"+set.getSelectedYear()+" - This directory may not be used for commercial purposes");
+		Paragraph p = new Paragraph("\u00a9Eagle Creek Sailing club 1969-"+set.getSelectedYear()+" - This directory may not be used for commercial purposes");
 		p.setTextAlignment(TextAlignment.CENTER);
 		cell.add(p);
 		addCell(cell);
