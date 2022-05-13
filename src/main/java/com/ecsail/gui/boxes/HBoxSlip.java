@@ -318,7 +318,7 @@ public class HBoxSlip extends HBox {
 	}
 	
 	private void setSlipAsNone() { // for displayInformation()
-		slip = new SlipDTO(0,membership.getMsid(),"none",0);
+		slip = new SlipDTO(0,membership.getMsid(),"none",0,"");
 		hbox1.getChildren().addAll(new Label("Slip Number:"), noSlipLabel);
 		setRadioButtonVisibility(false, false, false);
 		hbox3.setVisible(false);

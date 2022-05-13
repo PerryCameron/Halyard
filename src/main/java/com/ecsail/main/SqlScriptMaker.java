@@ -389,7 +389,9 @@ public class SqlScriptMaker {
 				+ sli.getSlip_id() + ","
 				+ sli.getMs_id() + ",\""
 				+ sli.getSlipNumber() + "\","
-				+ getCorrectString(sli.getSubleased_to()) + ");\n";
+				+ getCorrectString(sli.getSubleased_to()) + ","
+				+ getCorrectString(sli.getAltText())
+				+ ");\n";
 	}
 	
 	public static String getBoatOwnerString(BoatOwnerDTO bos) {
@@ -436,7 +438,7 @@ public class SqlScriptMaker {
 		if(example == 0) {  // if actually null print null
 			result = "null";
 		}  else {
-			result = example + ""; // print "string"
+			result =  String.valueOf(example); // print "string"
 		}
 		return result;
 	}

@@ -784,6 +784,7 @@ public class TabSlips extends Tab {
 			slipsHash.get(slip).setX(col);
 			slipsHash.get(slip).setY(row);
 			slipsHash.get(slip).setText(slip);
+
 		}
 	}
 
@@ -796,10 +797,10 @@ public class TabSlips extends Tab {
 	private void addNameToSlip(MembershipListDTO m) {
 		if(m.getSubleaser() != 0) {  /// this slip is subleased
 			subleaserMemberships.add(SqlMembershipList.getMembershipFromList(m.getSubleaser(), HalyardPaths.getYear()));
-			slipsHash.get(m.getSlip()).setText(m.getSlip() + " " + subleaserMemberships.get(subleaserMemberships.size() - 1).getLname());
+			slipsHash.get(m.getSlip()).setText(m.getSlip() + " " + subleaserMemberships.get(subleaserMemberships.size() - 1).getLname() + " " + subleaserMemberships.get(subleaserMemberships.size() - 1).getFname().charAt(0) + ".");
 			slipsHash.get(m.getSlip()).setFill(Color.CORNFLOWERBLUE);
-		} else {
-			slipsHash.get(m.getSlip()).setText(m.getSlip() + " " + m.getLname());
+		} else { // this slip is owned
+			slipsHash.get(m.getSlip()).setText(m.getSlip() + " " + m.getLname() + " " + m.getFname().charAt(0) + ".");
 		}
 		setMouseListener(slipsHash.get(m.getSlip()), m.getMsid(), m.getSubleaser());
 	}

@@ -20,8 +20,10 @@ public class SqlSlip {
             while (rs.next()) {
                 slips.add(new SlipDTO(rs.getInt("SLIP_ID")
                         , rs.getInt("MS_ID")
-                        , rs.getString("SLIP_NUM"),
-                        rs.getInt("SUBLEASED_TO")));
+                        , rs.getString("SLIP_NUM")
+                        , rs.getInt("SUBLEASED_TO")
+                        , rs.getString("ALT_TEXT")
+                ));
             }
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
@@ -37,8 +39,10 @@ public class SqlSlip {
             while (rs.next()) {
                 thisSlip = new SlipDTO(rs.getInt("SLIP_ID")
                         , rs.getInt("MS_ID")
-                        , rs.getString("SLIP_NUM"),
-                        rs.getInt("SUBLEASED_TO"));
+                        , rs.getString("SLIP_NUM")
+                        , rs.getInt("SUBLEASED_TO")
+                        , rs.getString("ALT_TEXT")
+                );
             }
         } catch (SQLException e) {
             // TODO Auto-generated catch block
@@ -57,7 +61,9 @@ public class SqlSlip {
                         rs.getInt("SLIP_ID"),
                         rs.getInt("MS_ID"),
                         rs.getString("SLIP_NUM"),
-                        rs.getInt("SUBLEASED_TO"));
+                        rs.getInt("SUBLEASED_TO"),
+                        rs.getString("ALT_TEXT")
+                );
             }
         } catch (SQLException e) {
             // TODO Auto-generated catch block
