@@ -46,6 +46,7 @@ public class TabSlips extends Tab {
 		super(text);
 		this.slipmemberships = SqlMembershipList.getSlipRoster(HalyardPaths.getYear());
 		this.subleaserMemberships = FXCollections.observableArrayList();
+		// gets all slips
 		this.slips = SqlSlip.getSlips();
 
 
@@ -90,10 +91,6 @@ public class TabSlips extends Tab {
 		populateNames();
 		// sets rotation for f docks
 		setRotation();
-		slipsHash.get("B50").setText("B50 Racing");
-		slipsHash.get("B48").setText("B48 Racing");
-		slipsHash.get("F01").setText("F01 48-hour");
-		slipsHash.get("F02").setText("F02 48-hour");
 		//////////////////  SET CONTENT ///////////////
 		screenPane.getChildren().add(addDocks(10,10,col[0]));
 		screenPane.getChildren().add(addDocks(7,11,col[2]));
@@ -110,7 +107,7 @@ public class TabSlips extends Tab {
 
 	private void assignTextObjectsToHashMapWithSlipNumberAsKey() {
 		for(SlipDTO s: slips) {
-			slipsHash.put(s.getSlipNumber(),new Text(""));
+			slipsHash.put(s.getSlipNumber(),new Text(s.getSlipNumber() + " " + s.getAltText()));
 		}
 	}
 
@@ -783,8 +780,6 @@ public class TabSlips extends Tab {
 		} else {
 			slipsHash.get(slip).setX(col);
 			slipsHash.get(slip).setY(row);
-			slipsHash.get(slip).setText(slip);
-
 		}
 	}
 
