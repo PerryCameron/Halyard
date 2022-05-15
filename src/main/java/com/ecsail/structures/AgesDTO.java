@@ -1,4 +1,4 @@
-package com.ecsail.structures.jotform;
+package com.ecsail.structures;
 
 import java.util.Objects;
 
