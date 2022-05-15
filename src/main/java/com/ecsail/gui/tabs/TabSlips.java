@@ -31,16 +31,16 @@ import java.util.HashMap;
 public class TabSlips extends Tab {
 
 	//private ObservableList<Object_Slip> slips;
-	private ObservableList<MembershipListDTO> slipmemberships;
-	private ObservableList<MembershipListDTO> subleaserMemberships;
-	private MembershipListDTO blankObject = new MembershipListDTO(0,0,0,"","","","Racing","",0,"","","","","");
+	private final ObservableList<MembershipListDTO> slipmemberships;
+	private final ObservableList<MembershipListDTO> subleaserMemberships;
+//	private final MembershipListDTO blankObject = new MembershipListDTO(0,0,0,"","","","Racing","",0,"","","","","");
 	// a list of all the slips
-	private ArrayList<SlipDTO> slips;
-	private HashMap<String,Text> slipsHash = new HashMap<>();
+	private final ArrayList<SlipDTO> slips;
+	private final HashMap<String,Text> slipsHash = new HashMap<>();
 
 	// starting point for each colume x-axis
-	private int col[] = { 20,125,280,385,540,643,800,902 };
-	private int row[] = { 19,45,61,87,103,129,145,171,187,213,229,255,271,297,313,339,355,381,397,423,439,465,481,507 };
+	private final int[] col = { 20,125,280,385,540,643,800,902 };
+	private final int[] row = { 19,45,61,87,103,129,145,171,187,213,229,255,271,297,313,339,355,381,397,423,439,465,481,507 };
 
 	public TabSlips(String text) {
 		super(text);
@@ -201,17 +201,6 @@ public class TabSlips extends Tab {
 	                Math.cos(angle) * radius + centerY // y coordinate of the corner
 	        );
 	    }
-	}
-
-	private void createAngledText(Pane screenPane, int x, int y) {
-		Text staticDock;
-		for(int i = 0; i < 3; i++) {
-			staticDock = new Text(x, y, "48 Hour dock");
-			staticDock.setRotate(-45);
-			screenPane.getChildren().add(staticDock);
-			x+=29;
-			y+=29;
-		}
 	}
 
 	private void createSlipsAsTextObjects() {
