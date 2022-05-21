@@ -33,7 +33,10 @@ public class SqlPerson {
                     rs.getString("OCCUPATION"),
                     rs.getString("BUISNESS"),
                     rs.getBoolean("IS_ACTIVE"),
-                    rs.getString("NICK_NAME")));
+                    rs.getString("NICK_NAME"),
+                    rs.getInt("OLDMSID")
+
+            ));
             }
         }
         stmt.close();
@@ -63,7 +66,8 @@ public class SqlPerson {
                     rs.getString("OCCUPATION"),
                     rs.getString("BUISNESS"),
                     rs.getBoolean("IS_ACTIVE"),
-                    rs.getString("NICK_NAME")));
+                    rs.getString("NICK_NAME"),
+                    rs.getInt("OLDMSID")));
             }
         }
         stmt.close();
@@ -92,7 +96,8 @@ public class SqlPerson {
                     rs.getString("OCCUPATION"),
                     rs.getString("BUISNESS"),
                     rs.getBoolean("IS_ACTIVE"),
-                    rs.getString("NICK_NAME")));
+                    rs.getString("NICK_NAME"),
+                    rs.getInt("OLDMSID")));
         }
         stmt.close();
         } catch (SQLException e) {
@@ -112,7 +117,7 @@ public class SqlPerson {
             while (rs.next()) {
                 person = (new PersonDTO(rs.getInt("P_ID"), rs.getInt("MS_ID"), rs.getInt("MEMBER_TYPE"),
                         rs.getString("F_NAME"), rs.getString("L_NAME"), rs.getString("BIRTHDAY"),
-                        rs.getString("OCCUPATION"), rs.getString("BUISNESS"), rs.getBoolean("IS_ACTIVE"),rs.getString("NICK_NAME")));
+                        rs.getString("OCCUPATION"), rs.getString("BUISNESS"), rs.getBoolean("IS_ACTIVE"),rs.getString("NICK_NAME"),rs.getInt("OLDMSID")));
             }
             stmt.close();
         } catch (SQLException e) {
@@ -133,7 +138,7 @@ public class SqlPerson {
             while (rs.next()) {
                 person = (new PersonDTO(rs.getInt("P_ID"), rs.getInt("MS_ID"), rs.getInt("MEMBER_TYPE"),
                         rs.getString("F_NAME"), rs.getString("L_NAME"), rs.getString("BIRTHDAY"),
-                        rs.getString("OCCUPATION"), rs.getString("BUISNESS"), rs.getBoolean("IS_ACTIVE"),rs.getString("NICK_NAME")));
+                        rs.getString("OCCUPATION"), rs.getString("BUISNESS"), rs.getBoolean("IS_ACTIVE"),rs.getString("NICK_NAME"),rs.getInt("OLDMSID")));
             }
             stmt.close();
         } catch (SQLException e) {
@@ -154,7 +159,7 @@ public class SqlPerson {
             while (rs.next()) {
                 person = (new PersonDTO(rs.getInt("P_ID"), rs.getInt("MS_ID"), rs.getInt("MEMBER_TYPE"),
                         rs.getString("F_NAME"), rs.getString("L_NAME"), rs.getString("BIRTHDAY"),
-                        rs.getString("OCCUPATION"), rs.getString("BUISNESS"), rs.getBoolean("IS_ACTIVE"),rs.getString("NICK_NAME")));
+                        rs.getString("OCCUPATION"), rs.getString("BUISNESS"), rs.getBoolean("IS_ACTIVE"),rs.getString("NICK_NAME"),rs.getInt("OLDMSID")));
             }
             stmt.close();
         } catch (SQLException e) {

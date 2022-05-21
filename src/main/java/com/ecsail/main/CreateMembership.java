@@ -26,7 +26,7 @@ public class CreateMembership {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return new PersonDTO(pid,msid,1,"","",null,"","",true,null);
+		return new PersonDTO(pid,msid,1,"","",null,"","",true,null,null);
 	}
 	
 	public static void Create() { // create a membership

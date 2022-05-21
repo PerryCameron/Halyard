@@ -18,9 +18,10 @@ public class PersonDTO {
 	private StringProperty birthday;
 	private BooleanProperty active;
 	private StringProperty nname;
+	private IntegerProperty oldMsid;
 
 	public PersonDTO(Integer pid, Integer ms_id, Integer mt, String fn, String ln, String birthday, String oc,
-					 String bu, Boolean active, String nn) {
+					 String bu, Boolean active, String nn, Integer oldMsid) {
 		this.p_id = new SimpleIntegerProperty(pid);
 		this.ms_id = new SimpleIntegerProperty(ms_id);
 		this.memberType = new SimpleIntegerProperty(mt);
@@ -31,10 +32,19 @@ public class PersonDTO {
 		this.buisness = new SimpleStringProperty(bu);
 		this.active = new SimpleBooleanProperty(active);
 		this.nname = new SimpleStringProperty(nn);
+		this.oldMsid = new SimpleIntegerProperty(oldMsid);
 	}
 
 	public PersonDTO() { // default constructor
 
+	}
+
+	public final IntegerProperty oldMsidProperty( ) { return this.oldMsid; }
+	public final int getOldMsid() {
+		return this.oldMsidProperty().get();
+	}
+	public final void setOldMsid(final int oldMsid) {
+		this.oldMsidProperty().set(oldMsid);
 	}
 
 	public final IntegerProperty p_idProperty() {
