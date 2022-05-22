@@ -466,7 +466,8 @@ public class SqlScriptMaker {
 				+ getCorrectString(peo.getBuisness()) + ","
 				+ peo.isActive() + ","
 				+ "null," 
-				+ getCorrectString(peo.getNname()) + ");\n";  // this will be a picture or link to eventually
+				+ getCorrectString(peo.getNname()) + ","
+				+ getCorrectString(peo.getOldMsid()) + ");\n";  // this will be a picture or link to eventually
 	}
 	
 	public static String getMembershipString(MembershipDTO mem) {  // change back once done
