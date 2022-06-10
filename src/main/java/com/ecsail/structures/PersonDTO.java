@@ -39,10 +39,14 @@ public class PersonDTO {
 
 	}
 
-	public final IntegerProperty oldMsidProperty( ) { return this.oldMsid; }
+	public final IntegerProperty oldMsidProperty( ) {
+		return this.oldMsid;
+	}
+
 	public final int getOldMsid() {
 		return this.oldMsidProperty().get();
 	}
+
 	public final void setOldMsid(final int oldMsid) {
 		this.oldMsidProperty().set(oldMsid);
 	}
