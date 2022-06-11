@@ -65,7 +65,6 @@ public class VBoxPersonMove extends VBox {
 
         submit.setOnAction((event) -> {
             if(rb0.isSelected()) {
-               // TODO change membership type
                 changeMembershipType(personTabPane, combo_box.getValue().toString());
             }
             if(rb1.isSelected()) {
@@ -74,6 +73,7 @@ public class VBoxPersonMove extends VBox {
                 // user pushed ok
                 if (result.get() == ButtonType.OK) {
                     SqlUpdate.removePersonFromMembership(person);
+                    // TODO error check to make sure we are in membership view
                     removeThisTab(personTabPane);
                 }
             }
@@ -81,11 +81,22 @@ public class VBoxPersonMove extends VBox {
                 Optional<ButtonType> result = createConformationForDeletingPerson();
                 if (result.get() == ButtonType.OK) {
                     SqlDelete.deletePerson(person);
+                    // TODO error check to make sure we are in membership view
                     removeThisTab(personTabPane);
                 }
             }
             if(rb3.isSelected()) {
                 // TODO move to another msid
+                int oldMsid = person.getMs_id();
+                // set membertype to 3 as default
+                person.setMemberType(3);
+                person.setOldMsid(oldMsid);
+                // TODO make sure it is an integer and that this membership exists
+                person.setMs_id(Integer.valueOf(msidTextField.getText()));
+                System.out.println("Moving " + person.getFname() + " " + person.getLname() + " to " + person.getMs_id());
+                SqlUpdate.updatePerson(person);
+                // TODO error check to make sure we are in membership view
+                removeThisTab(personTabPane);
             }
         });
 

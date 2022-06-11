@@ -61,7 +61,7 @@ public class TabPersonProperties extends Tab {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                //activeCheckBox.setSelected(!newValue);
-            	SqlUpdate.updatePerson("IS_ACTIVE",person.getP_id(),newValue);
+            	SqlUpdate.updatePersonField("IS_ACTIVE",person.getP_id(),newValue);
             	if(people != null)  // this updates the people list if in people mode
         			people.get(TabPeople.getIndexByPid(person.getP_id())).setActive(newValue);
             }

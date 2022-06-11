@@ -337,13 +337,33 @@ public class SqlUpdate {
 		}
 	}
 	
-	public static void updatePerson(String field, int p_id, Boolean attribute) { // updates active/inactive
+	public static void updatePersonField(String field, int p_id, Boolean attribute) { // updates active/inactive
 		try {
 			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 			stmt.execute(Halyard.console.setRegexColor("UPDATE person SET " + field + "=" + attribute + " WHERE p_id='" + p_id + "';"));
 			Halyard.edits.setPeopleEdits(Halyard.edits.getPeopleEdits() + 1);  // update edits tracking
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
+			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
+		}
+	}
+
+	public static void updatePerson(PersonDTO p) { // updates active/inactive
+		try {
+			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
+			stmt.execute(Halyard.console.setRegexColor("UPDATE person SET MEMBER_TYPE=" + p.getMemberType()
+					+ ", MS_ID=" + p.getMs_id()
+					+ ", F_NAME='" + p.getFname()
+					+ "', L_NAME='" +p.getLname()
+//					+ "', BIRTHDAY='" + p.getBirthday()
+					+ "', OCCUPATION='" + p.getOccupation()
+					+ "', BUISNESS='" + p.getBuisness()
+					+ "', IS_ACTIVE=" + p.isActive()
+					+ ", NICK_NAME='" + p.getNname()
+					+ "' ,OLDMSID=" +  p.getOldMsid()
+					+ " WHERE p_id=" + p.getP_id()));
+			Halyard.edits.setPeopleEdits(Halyard.edits.getPeopleEdits() + 1);  // update edits tracking
+		} catch (SQLException e) {
 			new Dialogue_ErrorSQL(e,"There was a problem with the Update","");
 		}
 	}
