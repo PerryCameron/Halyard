@@ -104,6 +104,7 @@ create table slip
     MS_ID        int unique,
     SLIP_NUM     varchar(4) unique NOT NULL,
     SUBLEASED_TO int unique,
+    ALT_TEXT     varchar(20),
     foreign key (MS_ID) references membership (MS_ID)
 );
 
