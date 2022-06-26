@@ -13,6 +13,7 @@ import com.ecsail.sql.select.SqlMembershipList;
 import com.ecsail.structures.Object_Login;
 
 import com.jcraft.jsch.JSchException;
+import com.mysql.cj.jdbc.StatementImpl;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -533,12 +534,15 @@ public class ConnectDatabase {
 		}
 		stmt.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		// Retrieving the data
 	}
 
+	public ResultSet executeSelectQuery(Statement stmt, String query) throws SQLException {
+		System.out.println(query);
+		return stmt.executeQuery(query);
+	}
 
 	public boolean isConnectionSucess() {
 		return connectionSucess;
@@ -563,6 +567,5 @@ public class ConnectDatabase {
 	public void setForwardedConnection(PortForwardingL forwardedConnection) {
 		this.sshConnection = forwardedConnection;
 	}
-	
-	
+
 }
