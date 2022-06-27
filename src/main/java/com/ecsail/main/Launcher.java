@@ -226,7 +226,6 @@ static TabPane tabPane;
 	}
 
 	public static int getTabIndex(String tabName) {
-		System.out.println("Tab name is '" + tabName + "'");
 		int result = 0;
 		int count = 0;
 		for(Tab tab: tabPane.getTabs()) {

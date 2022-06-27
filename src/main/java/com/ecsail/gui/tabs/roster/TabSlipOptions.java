@@ -41,7 +41,6 @@ public class TabSlipOptions extends Tab {
 		hboxMain.getChildren().addAll(vboxRadioButton1,vboxRadioButton2);
 		hboxFrame.getChildren().add(hboxMain);
 		setContent(hboxFrame);
-		System.out.println(hboxFrame.getWidth() + " is the width");
 	}
 
 }

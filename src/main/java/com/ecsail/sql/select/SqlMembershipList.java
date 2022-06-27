@@ -2,17 +2,15 @@ package com.ecsail.sql.select;
 
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
-import com.ecsail.main.HalyardPaths;
 import com.ecsail.main.Halyard;
+import com.ecsail.main.HalyardPaths;
 import com.ecsail.structures.MembershipListDTO;
-import com.ecsail.structures.SlipDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 
 public class SqlMembershipList {
     /// not a pure SQL FUNCTION was having difficulties narrowing it down pure SQL.
@@ -38,7 +36,7 @@ public class SqlMembershipList {
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to select roster","See below for details");
         }
-        System.out.println("Creating Roster list for " + year + "...");
+        Halyard.getLogger().info("Creating Roster list kayak rack spaces for " + year + "...");
         return rosters;
     }
 
@@ -82,7 +80,7 @@ public class SqlMembershipList {
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to select roster","See below for details");
         }
-        System.out.println("Creating Roster list for " + year + "...");
+        Halyard.getLogger().info("Creating Roster list late payments for " + year + "...");
         return rosters;
     }
 
@@ -103,7 +101,7 @@ public class SqlMembershipList {
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to select roster","See below for details");
         }
-        System.out.println("Creating Roster list for " + year + "...");
+        Halyard.getLogger().info("Creating Roster list Kayak Shed Spaces for " + year + "...");
         return rosters;
     }
 
@@ -123,7 +121,7 @@ public class SqlMembershipList {
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to select roster","See below for details");
         }
-        System.out.println("Creating Roster list for " + year + "...");
+        Halyard.getLogger().info("Creating Active Roster list for " + year + "...");
         return rosters;
     }
 
@@ -143,7 +141,7 @@ public class SqlMembershipList {
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to select roster","See below for details");
         }
-        System.out.println("Creating Roster list for " + year + "...");
+        Halyard.getLogger().info("Creating Roster list of all for " + year + "...");
         return rosters;
     }
 
@@ -163,7 +161,7 @@ public class SqlMembershipList {
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to select roster","See below for details");
         }
-        System.out.println("Creating Roster list for " + year + "...");
+        Halyard.getLogger().info("Creating Roster list of slip owners for " + year + "...");
         return rosters;
     }
 
@@ -182,6 +180,7 @@ public class SqlMembershipList {
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to select roster","See below for details");
         }
+
         return rosters;
     }
 
@@ -320,6 +319,7 @@ public class SqlMembershipList {
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to select roster","See below for details");
         }
+        Halyard.getLogger().info("Creating Roster list for slip wait list");
         return rosters;
     }
 
@@ -339,7 +339,7 @@ public class SqlMembershipList {
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to select roster","See below for details");
         }
-        System.out.println("Creating New Member Roster list for " + year + "...");
+        Halyard.getLogger().info("Creating Roster list New Members for " + year + "...");
         return rosters;
     }
 
