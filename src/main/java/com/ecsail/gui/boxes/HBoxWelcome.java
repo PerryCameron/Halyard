@@ -2,6 +2,7 @@ package com.ecsail.gui.boxes;
 
 import com.ecsail.gui.customwidgets.BigButton;
 import com.ecsail.main.CreateMembership;
+import com.ecsail.main.Halyard;
 import com.ecsail.main.Launcher;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -14,9 +15,7 @@ public class HBoxWelcome extends HBox {
 
 	
 	public HBoxWelcome() {
-		System.out.println("Got to VBoxWelcome");
-
-		
+		Halyard.getLogger().info("Opening welcome tab");
 		int width = 400;
 
 		VBox vboxLeft = new VBoxCharts();

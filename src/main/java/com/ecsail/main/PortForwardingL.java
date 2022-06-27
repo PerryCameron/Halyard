@@ -21,27 +21,27 @@ public class PortForwardingL {
 		try {
 
 			jsch.setKnownHosts(System.getProperty("user.home") + "/.ssh/known_hosts");
-
 			HostKeyRepository hkr = jsch.getHostKeyRepository();
 			HostKey[] hks = hkr.getHostKey();
 			if (hks != null) {
-				System.out.println("Host keys in " + hkr.getKnownHostsRepositoryID());
-				for (int i = 0; i < hks.length; i++) {
-					HostKey hk = hks[i];
-					System.out.println(hk.getHost() + " " + hk.getType() + " " + hk.getFingerPrint(jsch));
-				}
-				System.out.println("");
+				Halyard.getLogger().info("Host keys exist");
+				// This will print out the keys
+//				for (int i = 0; i < hks.length; i++) {
+//					HostKey hk = hks[i];
+//					System.out.println(hk.getHost() + " " + hk.getType() + " " + hk.getFingerPrint(jsch));
+//				}
+//				System.out.println("");
 			}
 
 			session = jsch.getSession(user, host, 22);
 			UserInfo ui = new MyUserInfo();
 			session.setUserInfo(ui);
 			session.connect();
-			int assinged_port = session.setPortForwardingL(lport, rhost, rport);
-			System.out.println("localhost:" + assinged_port + " -> " + rhost + ":" + rport);
+			int assingedPort = session.setPortForwardingL(lport, rhost, rport);
+			Halyard.getLogger().info("localhost:" + assingedPort + " -> " + rhost + ":" + rport);
 			this.ftp = new Sftp(jsch, session);
 		} catch (Exception e) {
-			System.out.println(e);
+			e.printStackTrace();
 		}
 	}
 
@@ -77,7 +77,7 @@ public class PortForwardingL {
 
 	}
 
-	public boolean checkSSHConnection() throws Exception {
+	public boolean checkSSHConnection() {
 		Socket socket;
 		try {
 			socket = new Socket("localhost", 7);

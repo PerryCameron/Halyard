@@ -56,7 +56,7 @@ public class HalyardPaths {
 		File recordsDir = new File(path);
 
 		if (!recordsDir.exists()) {
-			System.out.println("Creating dir: " + path); // USERFILETEMPLATE
+			Halyard.getLogger().info("Creating dir: " + path);
 		    recordsDir.mkdirs();
 		}
 	}

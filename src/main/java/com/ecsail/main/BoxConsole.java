@@ -43,7 +43,7 @@ public class BoxConsole extends HBox {
 	}
 	
 	public String setRegexColor(String line) {
-		System.out.println(line);
+//		System.out.println(line);
 //		int count = 0;
 //		String regex2 = "\"([^\"]*)\"";  // matches any word surrounded by double quotes
 //		String regex3 = "'([^\"]*)'";  // matches any word surronded by single quotes

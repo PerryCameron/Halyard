@@ -19,8 +19,13 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.stage.WindowEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 
 public class Halyard extends Application {
+private static Logger logger = LoggerFactory.getLogger(Halyard.class);
 static ConnectDatabase connect;  // mysql and ssh connection
 public static Object_TupleCount edits = new Object_TupleCount();
 public static ObservableList<MembershipListDTO> activememberships;
@@ -28,13 +33,18 @@ public static String selectedYear;
 static BorderPane mainPane;
 static Launcher vboxMain;
 public static BoxConsole console;
-private static Stage pStage;
+
+	public static Logger getLogger() {
+		return logger;
+	}
+
+	private static Stage pStage;
 private static Scene mainScene;
 static String ipaddress;
 
 
 public static void main(String[] args) throws SQLException {
-	System.out.println("Starting application...");
+	logger.info("Starting application...");
 	Halyard.selectedYear = HalyardPaths.getYear();
 	// does our object exist  ... why did i name this tuplecounts??
 	if(HalyardPaths.fileExists(HalyardPaths.TUPLECOUNTS)) {
@@ -53,7 +63,6 @@ public static void main(String[] args) throws SQLException {
 		vboxMain = new Launcher();  // This one is for a single membership
 		pStage = primaryStage;
 		VBox toolbar = new VBoxToolBar(primaryStage);
-		//Pane topPane = new Pane();
 		Image mainIcon = new Image(getClass().getResourceAsStream("/ECSC64.png"));
 		Halyard.mainScene = new Scene(mainPane, 1028, 830, Color.GREEN);
 		
@@ -76,7 +85,6 @@ public static void main(String[] args) throws SQLException {
 		vboxMain.setStyle("-fx-background-color: #e83115;");  // red
 		mainPane.setStyle("-fx-background-color: #feffab;");  // yellow
 		mainScene.getStylesheets().add("stylesheet.css");
-//		toolbar.setPrefWidth(1029);
 		toolbar.setId("toolbar-box");
 		toolbar.setPrefHeight(10);
 		primaryStage.setTitle("ECSC Membership Database (not connected)");
@@ -88,7 +96,6 @@ public static void main(String[] args) throws SQLException {
 		mainPane.setTop(toolbar);
 		primaryStage.setScene(mainScene);
 		primaryStage.show();
-//		connect = new ConnectDatabase(primaryStage);
 		connectDatabase();
 	}
 	
@@ -121,7 +128,7 @@ public static void main(String[] args) throws SQLException {
 	public static void closeDatabaseConnection() {
 		try {
 			ConnectDatabase.getSqlConnection().close();
-			System.out.println("SQL: Connection closed");
+			logger.info("SQL: Connection closed");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -131,7 +138,7 @@ public static void main(String[] args) throws SQLException {
 				try {
 					Halyard.getConnect().getSshConnection().getSession().delPortForwardingL(3306);
 					Halyard.getConnect().getSshConnection().getSession().disconnect();
-					System.out.println("SSH: port forwarding closed");
+					logger.info("SSH: port forwarding closed");
 				} catch (JSchException e) {
 					e.printStackTrace();
 				}

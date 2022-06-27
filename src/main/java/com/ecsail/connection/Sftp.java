@@ -1,5 +1,6 @@
 package com.ecsail.connection;
 
+import com.ecsail.main.Halyard;
 import com.jcraft.jsch.*;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ public class Sftp{
 	  this.jsch = jsch;
 	  this.session = session;
 	  connectSession();
-	  System.out.println("session=" + session);
+	  Halyard.getLogger().info("Sftp Session Started: " + session);
   }
   
 	public void connectSession() {
@@ -26,7 +27,8 @@ public class Sftp{
 			channel.connect();
 			this.c = (ChannelSftp) channel;
 		} catch (JSchException e) {
-			// TODO Auto-generated catch block
+			Halyard.getLogger().error("There was a problem starting the sftp session");
+			Halyard.getLogger().error(e.getMessage());
 			e.printStackTrace();
 		}
 	}

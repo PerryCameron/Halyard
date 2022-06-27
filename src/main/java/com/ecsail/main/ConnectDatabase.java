@@ -34,6 +34,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.slf4j.LoggerFactory;
 
 public class ConnectDatabase {
 
@@ -57,6 +58,7 @@ public class ConnectDatabase {
 	TextField passWord;
 
 	public ConnectDatabase(Stage primaryStage) {
+
 		if (FileIO.hostFileExists()) 
 			FileIO.openLoginObjects();
 		else 
@@ -232,8 +234,7 @@ public class ConnectDatabase {
 		
 		vboxBlue.heightProperty().addListener((obs, oldVal, newVal) -> {
 			logonStage.setHeight((double)newVal + titleBarHeight);
-			//System.out.println("vboxBlue=" + newVal + " set stage to" + logonStage.getHeight() + "scene=" + secondScene.getHeight());
-		});  
+		});
 		
 		setMouseListener(newConnectText);
 		
@@ -306,19 +307,19 @@ public class ConnectDatabase {
         		String user = userName.getText();
         		String pass = passWord.getText();
         		String host = hostName.getValue();
-        		System.out.println("Host is " + host);
+				Halyard.getLogger().info("Host is " + host);
         		String sUser = sshUser.getText();
         		String sPass = sshPass.getText();
         		String loopback = "127.0.0.1";
         		// create ssh tunnel
         		if(currentLogon.isSshForward()) {
-        			System.out.println("SSH tunnel enabled");
-
+					Halyard.getLogger().info("SSH tunnel enabled");
 
         			this.sshConnection = new PortForwardingL(host,loopback,3306,3306,sUser,sPass);
-					setServerAliveInterval();
-					System.out.println("Server Alive interval: " + sshConnection.getSession().getServerAliveInterval());
-        		} else System.out.println("SSH connection is not being used");
+//					setServerAliveInterval();
+					Halyard.getLogger().info("Server Alive interval: " + sshConnection.getSession().getServerAliveInterval());
+        		} else
+					Halyard.getLogger().info("SSH connection is not being used");
         		// create mysql login
         		if(createConnection(user, pass, loopback, port)) {
         		Halyard.activememberships = SqlMembershipList.getRoster(Halyard.selectedYear, true);
@@ -326,7 +327,7 @@ public class ConnectDatabase {
         		primaryStage.setTitle("ECSC Membership Database (connected) " + host);
         		} else {
         			primaryStage.setTitle("ECSC Membership Database (not connected)");
-        			System.out.println(exception);
+					Halyard.getLogger().error(exception);
         		}
         });
         
@@ -355,7 +356,7 @@ public class ConnectDatabase {
         
 		// saves changes to existing login object
         saveButton2.setOnAction((event) -> {
-        		System.out.println(currentLogon.getHost());
+			Halyard.getLogger().info(currentLogon.getHost());
         		// get element number
             	int element = FileIO.getSelectedHost(currentLogon.getHost());  
             	// save hostname for later
@@ -420,21 +421,21 @@ public class ConnectDatabase {
 		loginPane.getChildren().add(vboxBlue);
 		logonStage.setScene(secondScene);
 		logonStage.show();
-		
-		System.out.println(HalyardPaths.getOperatingSystem());
+
+		Halyard.getLogger().info(HalyardPaths.getOperatingSystem() + " Detected");
 		this.titleBarHeight = logonStage.getHeight() - secondScene.getHeight();
 		logonStage.setHeight(vboxBlue.getHeight() + titleBarHeight);
 		logonStage.setResizable(false);
 	}
 
-	private void setServerAliveInterval() {
-//		try {
-//			sshConnection.getSession().setServerAliveInterval(60);
-//			sshConnection.getSession().setServerAliveCountMax(10);
-//		} catch (JSchException e) {
-//			e.printStackTrace();
-//		}
-	}
+//	private void setServerAliveInterval() {
+////		try {
+////			sshConnection.getSession().setServerAliveInterval(60);
+////			sshConnection.getSession().setServerAliveCountMax(10);
+////		} catch (JSchException e) {
+////			e.printStackTrace();
+////		}
+//	}
 
 	///////////////  CLASS METHODS ///////////////////
 	private void populateFields() {
@@ -486,7 +487,6 @@ public class ConnectDatabase {
 	private void loadHostsInComboBox() {
 		for (Object_Login l : FileIO.logins) {
 			this.choices.add(l.getHost());
-			//System.out.println("added: " + l);
 		}
 	}
 
@@ -495,7 +495,7 @@ public class ConnectDatabase {
 		String server = "jdbc:mysql://" + ip + ":" + port + "/ECSC_SQL?autoReconnect=true&useSSL=true&serverTimezone=UTC";
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			System.out.println("Connection: " + server);
+			Halyard.getLogger().info("Connection: " + server);
 			sqlConnection = DriverManager.getConnection(server, user, password);
 			Launcher.closeActiveTab();
 			//vboxGrey.getChildren().add();
@@ -529,8 +529,7 @@ public class ConnectDatabase {
 			stmt = sqlConnection.createStatement();
 			ResultSet rs = stmt.executeQuery("SHOW SESSION STATUS LIKE \'Ssl_cipher\'");
 		while (rs.next()) {
-			System.out.print("Using " + rs.getString(2) + " encryption");
-			System.out.println();
+			Halyard.getLogger().info("Using " + rs.getString(2) + " encryption");
 		}
 		stmt.close();
 		} catch (SQLException e) {
@@ -541,6 +540,8 @@ public class ConnectDatabase {
 
 	public ResultSet executeSelectQuery(Statement stmt, String query) throws SQLException {
 		System.out.println(query);
+		if(sshConnection.checkSSHConnection())
+			Halyard.getLogger().info("SSH Connection is still good");
 		return stmt.executeQuery(query);
 	}
 
