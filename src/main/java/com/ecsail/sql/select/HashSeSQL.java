@@ -64,6 +64,7 @@ public class HashSeSQL {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        System.out.println(hashDTO);
         return hashDTO;
     }
 }
