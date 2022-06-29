@@ -16,10 +16,10 @@ import java.util.ArrayList;
 public class SqlAward {
     public static ObservableList<AwardDTO> getAwards(PersonDTO p) {  //p_id
         ObservableList<AwardDTO> thisAwards = FXCollections.observableArrayList();
+        String query = "select * from awards where P_ID=" + p.getP_id();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt
-                    .executeQuery(Halyard.console.setRegexColor("select * from awards where P_ID=" + p.getP_id()));
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
             while (rs.next()) {
                 thisAwards.add(new AwardDTO(
                         rs.getInt("AWARD_ID"),
@@ -27,8 +27,8 @@ public class SqlAward {
                         rs.getString("AWARD_YEAR"),
                         rs.getString("AWARD_TYPE")));
             }
+            stmt.close();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
         return thisAwards;
@@ -36,10 +36,10 @@ public class SqlAward {
 
     public static ArrayList<AwardDTO> getAwards() {
         ArrayList<AwardDTO> theseAwards = new ArrayList<>();
+        String query = "select * from awards";
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs;
-            rs = stmt.executeQuery(Halyard.console.setRegexColor("select * from awards"));
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
             while (rs.next()) {
                 theseAwards.add(new AwardDTO(
                         rs.getInt("AWARD_ID"),
@@ -48,8 +48,8 @@ public class SqlAward {
                         rs.getString("AWARD_TYPE")
                         ));
             }
+            stmt.close();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
         return theseAwards;
