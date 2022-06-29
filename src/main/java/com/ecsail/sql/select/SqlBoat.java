@@ -19,10 +19,10 @@ public class SqlBoat {
     // was a list
     public static ObservableList<BoatOwnerDTO> getBoatOwners() {
         ObservableList<BoatOwnerDTO> thisBoatOwner = FXCollections.observableArrayList();
+        String query = "select * from boat_owner";
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs;
-            rs = stmt.executeQuery(Halyard.console.setRegexColor("select * from boat_owner;"));
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
             while (rs.next()) {
                 thisBoatOwner.add(new BoatOwnerDTO(
                         rs.getInt("MS_ID"),
@@ -30,7 +30,6 @@ public class SqlBoat {
             }
             stmt.close();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
         return thisBoatOwner;
@@ -38,10 +37,10 @@ public class SqlBoat {
 
     public static ObservableList<BoatDTO> getBoats() {
         ObservableList<BoatDTO> thisBoat = FXCollections.observableArrayList();
+        String query = "select * from boat";
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs;
-            rs = stmt.executeQuery(Halyard.console.setRegexColor("select * from boat;"));
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
             while (rs.next()) {
                 thisBoat.add(new BoatDTO(
                         rs.getInt("BOAT_ID"), 0, // because Object_Boat has a ms-id variable but database does not
@@ -64,7 +63,6 @@ public class SqlBoat {
             }
             stmt.close();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
         return thisBoat;
@@ -72,16 +70,15 @@ public class SqlBoat {
 
     public static ObservableList<BoatListDTO> getBoatsWithOwners() {
         ObservableList<BoatListDTO> thisBoat = FXCollections.observableArrayList();
+        String query = "select id.MEMBERSHIP_ID,id.MS_ID, p.L_NAME, p.F_NAME, "
+                + "b.* from boat b left join boat_owner bo on "
+                + "b.BOAT_ID=bo.BOAT_ID left join membership_id id "
+                + "on bo.MS_ID=id.MS_ID left join membership m on "
+                + "id.MS_ID=m.MS_ID left join person p on m.P_ID=p.P_ID "
+                + "where id.RENEW=true and id.FISCAL_YEAR='2021'";
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs;
-            rs = stmt.executeQuery(Halyard.console.setRegexColor(
-                    "select id.MEMBERSHIP_ID,id.MS_ID, p.L_NAME, p.F_NAME, "
-                    + "b.* from boat b left join boat_owner bo on "
-                    + "b.BOAT_ID=bo.BOAT_ID left join membership_id id "
-                    + "on bo.MS_ID=id.MS_ID left join membership m on "
-                    + "id.MS_ID=m.MS_ID left join person p on m.P_ID=p.P_ID "
-                    + "where id.RENEW=true and id.FISCAL_YEAR='2021'"));
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
             while (rs.next()) {
                 thisBoat.add(new BoatListDTO(
                         rs.getInt("BOAT_ID"),
@@ -107,7 +104,6 @@ public class SqlBoat {
             }
             stmt.close();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
         return thisBoat;
@@ -115,12 +111,13 @@ public class SqlBoat {
 
     public static List<BoatDTO> getBoats(int ms_id) { // overload but must be separate
         List<BoatDTO> thisBoat = new ArrayList<>();
+        String query = "select b.BOAT_ID, bo.MS_ID, b.MANUFACTURER"
+                + ", b.MANUFACTURE_YEAR, b.REGISTRATION_NUM, b.MODEL, b.BOAT_NAME, b.SAIL_NUMBER"
+                + ", b.HAS_TRAILER, b.LENGTH, b.WEIGHT, b.KEEL, b.PHRF, b.DRAFT, b.BEAM, b.LWL, b.AUX from boat b inner join boat_owner bo using (boat_id) where ms_id='" + ms_id + "';";
         try {
         Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-        ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor("select b.BOAT_ID, bo.MS_ID, b.MANUFACTURER"
-                + ", b.MANUFACTURE_YEAR, b.REGISTRATION_NUM, b.MODEL, b.BOAT_NAME, b.SAIL_NUMBER"
-                + ", b.HAS_TRAILER, b.LENGTH, b.WEIGHT, b.KEEL, b.PHRF, b.DRAFT, b.BEAM, b.LWL, b.AUX from boat b inner join boat_owner bo using (boat_id) where ms_id='" + ms_id + "';"));
-        while (rs.next()) {
+        ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            while (rs.next()) {
             thisBoat.add(new BoatDTO(
                     rs.getInt("BOAT_ID"),
                     rs.getInt("MS_ID"),
@@ -142,7 +139,6 @@ public class SqlBoat {
         }
         stmt.close();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
         return thisBoat;
@@ -150,12 +146,13 @@ public class SqlBoat {
 
     public static BoatDTO getBoatbyBoatId(int boat_id) { // overload but must be separate
         BoatDTO thisBoat = null;
+        String query = "select b.BOAT_ID, bo.MS_ID, b.MANUFACTURER"
+                + ", b.MANUFACTURE_YEAR, b.REGISTRATION_NUM, b.MODEL, b.BOAT_NAME, b.SAIL_NUMBER"
+                + ", b.HAS_TRAILER, b.LENGTH, b.WEIGHT, b.KEEL, b.PHRF, b.DRAFT, b.BEAM, b.LWL, b.AUX from boat b inner join boat_owner bo using (boat_id) where boat_id='" + boat_id + "';";
         try {
         Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-        ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor("select b.BOAT_ID, bo.MS_ID, b.MANUFACTURER"
-                + ", b.MANUFACTURE_YEAR, b.REGISTRATION_NUM, b.MODEL, b.BOAT_NAME, b.SAIL_NUMBER"
-                + ", b.HAS_TRAILER, b.LENGTH, b.WEIGHT, b.KEEL, b.PHRF, b.DRAFT, b.BEAM, b.LWL, b.AUX from boat b inner join boat_owner bo using (boat_id) where boat_id='" + boat_id + "';"));
-        while (rs.next()) {
+        ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            while (rs.next()) {
             thisBoat = new BoatDTO(
                     rs.getInt("BOAT_ID"),
                     rs.getInt("MS_ID"),
@@ -177,7 +174,6 @@ public class SqlBoat {
         }
         stmt.close();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
 //            new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
             e.printStackTrace();
         }
