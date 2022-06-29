@@ -15,11 +15,10 @@ public class SqlBoard {
     // select p.P_ID, p.MS_ID, o.O_ID, p.F_NAME, p.L_NAME, o.OFF_YEAR, o.BOARD_YEAR, o.OFF_TYPE  from person p inner join officer o on p.p_id = o.p_id where o.off_year='2020';
     public static ObservableList<BoardDTO> getBoard(String currentYear) {  //p_id
         ObservableList<BoardDTO> thisBoardMember = FXCollections.observableArrayList();
+        String query = "Halyard.console.setRegexColor(\"select p.P_ID, p.MS_ID, o.O_ID, p.F_NAME, p.L_NAME, o.OFF_YEAR, o.BOARD_YEAR, o.OFF_TYPE  from person p inner join officer o on p.p_id = o.p_id where o.off_year='\" + currentYear + \"';\"";
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt
-                    .executeQuery(Halyard.console.setRegexColor("select p.P_ID, p.MS_ID, o.O_ID, p.F_NAME, p.L_NAME, o.OFF_YEAR, o.BOARD_YEAR, o.OFF_TYPE  from person p inner join officer o on p.p_id = o.p_id where o.off_year='" + currentYear + "';"));
-
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
             while (rs.next()) {
                 thisBoardMember.add(new BoardDTO(
                         rs.getInt("P_ID"),
@@ -31,8 +30,8 @@ public class SqlBoard {
                         rs.getString("BOARD_YEAR"),
                         rs.getString("OFF_TYPE")));
             }
+            stmt.close();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
         return thisBoardMember;
