@@ -15,10 +15,10 @@ import java.sql.Statement;
 public class SqlDeposit {
     public static DepositDTO getDeposit(String year, int batch) {
         DepositDTO thisDeposit = null;
+        String query = "select * from deposit where fiscal_year=" + year + " and batch=" + batch;
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs;
-            rs = stmt.executeQuery(Halyard.console.setRegexColor("select * from deposit where fiscal_year=" + year + " and batch=" + batch));
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt, query);
             while (rs.next()) {
                 thisDeposit = new DepositDTO(
                         rs.getInt("DEPOSIT_ID"),
@@ -27,24 +27,24 @@ public class SqlDeposit {
                         rs.getInt("BATCH")
                 );
             }
+            stmt.close();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             new Dialogue_ErrorSQL(e, "Unable to retrieve information", "See below for details");
         }
         return thisDeposit;
     }
 
     public static ObservableList<PaidDuesDTO> getPaidDues(DepositDTO currentDeposit) {
+        ObservableList<PaidDuesDTO> theseFiscals = FXCollections.observableArrayList();
         String query = "SELECT id.MEMBERSHIP_ID, mo.*, p.l_name, p.f_name FROM money mo "
                 + "INNER JOIN membership_id id on mo.MS_ID=id.MS_ID and mo.FISCAL_YEAR=id.FISCAL_YEAR "
                 + "INNER JOIN membership me on mo.MS_ID=me.MS_ID "
                 + "INNER JOIN person p ON me.P_ID=p.P_ID  WHERE mo.FISCAL_YEAR='" + currentDeposit.getFiscalYear()
                 + "' AND mo.COMMITED=true AND mo.BATCH=" + currentDeposit.getBatch() + " "
                 + "ORDER BY id.MEMBERSHIP_ID";
-        ObservableList<PaidDuesDTO> theseFiscals = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor(query + ";"));
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt, query);
             while (rs.next()) {
                 theseFiscals.add(new PaidDuesDTO(rs.getInt("MONEY_ID"), rs.getInt("MS_ID"),
                         rs.getInt("FISCAL_YEAR"), rs.getInt("BATCH"), rs.getString("OFFICER_CREDIT"), rs.getInt("EXTRA_KEY"),
@@ -57,8 +57,8 @@ public class SqlDeposit {
                         rs.getString("OTHER"), rs.getString("INITIATION"), rs.getBoolean("SUPPLEMENTAL"), rs.getInt("WORK_CREDIT"), rs.getString("OTHER_CREDIT"), rs.getString("F_NAME"),
                         rs.getString("L_NAME"), rs.getInt("MEMBERSHIP_ID")));
             }
+            stmt.close();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             new Dialogue_ErrorSQL(e, "Unable to retrieve information", "See below for details");
         }
         return theseFiscals;
@@ -72,7 +72,7 @@ public class SqlDeposit {
         ObservableList<PaidDuesDTO> theseFiscals = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor(query));
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt, query);
             while (rs.next()) {
                 theseFiscals.add(new PaidDuesDTO(
                         rs.getInt("MONEY_ID"),
@@ -109,20 +109,19 @@ public class SqlDeposit {
                         rs.getString("L_NAME"),
                         rs.getInt("MEMBERSHIP_ID")));
             }
+            stmt.close();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             new Dialogue_ErrorSQL(e, "Unable to retrieve information", "See below for details");
         }
         return theseFiscals;
     }
 
     public static ObservableList<PaidDuesDTO> getPaidDues(String selectedYear, int batch) { // overload
-        //  SELECT mo.*, id.MEMBERSHIP_ID, p.l_name, p.f_name from membership_id id INNER JOIN membership m ON m.MS_ID=id.MS_ID LEFT JOIN person p ON m.P_ID=p.P_ID INNER JOIN money mo ON mo.MS_ID=m.MS_ID Where id.FISCAL_YEAR='2019' AND mo.BATCH=2 AND mo.FISCAL_YEAR='2019';
         String query = "SELECT mo.*, id.MEMBERSHIP_ID, p.l_name, p.f_name FROM membership_id id INNER JOIN membership m ON m.MS_ID=id.MS_ID LEFT JOIN person p ON m.P_ID=p.P_ID INNER JOIN money mo ON mo.MS_ID=m.MS_ID WHERE id.FISCAL_YEAR=" + selectedYear + " AND mo.BATCH=" + batch + " AND mo.FISCAL_YEAR=" + selectedYear;
         ObservableList<PaidDuesDTO> theseFiscals = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor(query + ";"));
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt, query);
             while (rs.next()) {
                 theseFiscals.add(new PaidDuesDTO(rs.getInt("MONEY_ID"), rs.getInt("MS_ID"),
                         rs.getInt("FISCAL_YEAR"), rs.getInt("BATCH"), rs.getString("OFFICER_CREDIT"), rs.getInt("EXTRA_KEY"),
@@ -136,8 +135,8 @@ public class SqlDeposit {
                         rs.getString("OTHER_CREDIT"), rs.getString("F_NAME"),
                         rs.getString("L_NAME"), rs.getInt("MEMBERSHIP_ID")));
             }
+            stmt.close();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             new Dialogue_ErrorSQL(e, "Unable to retrieve information", "See below for details");
         }
         return theseFiscals;
@@ -145,10 +144,10 @@ public class SqlDeposit {
 
     public static ObservableList<DepositDTO> getDeposits() {
         ObservableList<DepositDTO> thisDeposits = FXCollections.observableArrayList();
+        String query = "select * from deposit";
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs;
-            rs = stmt.executeQuery(Halyard.console.setRegexColor("select * from deposit;"));
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt, query);
             while (rs.next()) {
                 thisDeposits.add(new DepositDTO(
                         rs.getInt("DEPOSIT_ID"),
@@ -157,8 +156,8 @@ public class SqlDeposit {
                         rs.getInt("BATCH")
                         ));
             }
+            stmt.close();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
         return thisDeposits;
@@ -166,10 +165,10 @@ public class SqlDeposit {
 
     // can do this with a regular object but not properties for some reason
     public static void  updateDeposit(String year, int batch, DepositDTO thisDeposit) {
+        String query = "select * from deposit where fiscal_year=" + year + " and batch=" + batch;
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs;
-            rs = stmt.executeQuery(Halyard.console.setRegexColor("select * from deposit where fiscal_year=" + year + " and batch=" + batch));
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt, query);
             while (rs.next()) {
             thisDeposit.setDeposit_id(rs.getInt("DEPOSIT_ID"));
             thisDeposit.setDepositDate(rs.getString("DEPOSIT_DATE"));
@@ -177,22 +176,20 @@ public class SqlDeposit {
             thisDeposit.setBatch(rs.getInt("BATCH"));
             }
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
     }
 
     public static int getNumberOfDeposits() {
         int number = 0;
-        ResultSet rs;
+        String query = "select deposit_id from deposit ORDER BY deposit_id DESC LIMIT 1";
         try { // select PAY_ID from payment ORDER BY pay_id DESC LIMIT 1
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            rs = stmt.executeQuery("select deposit_id from deposit ORDER BY deposit_id DESC LIMIT 1;");
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt, query);
             rs.next();
             number = rs.getInt("deposit_id");
 
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
         return number;
@@ -200,15 +197,14 @@ public class SqlDeposit {
 
     public static int getNumberOfDepositBatches(String year) {
         int number = 0;
-        ResultSet rs;
+        String query = "select max(batch) from deposit where FISCAL_YEAR=" + year;
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            rs = stmt.executeQuery("select max(batch) from deposit where FISCAL_YEAR=" + year);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt, query);
             rs.next();
             number = rs.getInt("max(batch)");
 
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
         return number;
