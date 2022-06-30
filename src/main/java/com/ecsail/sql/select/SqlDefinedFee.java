@@ -14,10 +14,36 @@ import java.sql.Statement;
 public class SqlDefinedFee {
     public static ObservableList<DefinedFeeDTO> getDefinedFees() {
         ObservableList<DefinedFeeDTO> thisDefinedFee = FXCollections.observableArrayList();
+        String query = "select * from defined_fee";
         try {
-            queryToObjectArrayList("select * from defined_fee", thisDefinedFee);
+            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt, query);
+            while (rs.next()) {
+                thisDefinedFee.add(new DefinedFeeDTO(
+                        rs.getInt("FISCAL_YEAR"),
+                        rs.getBigDecimal("DUES_REGULAR"),
+                        rs.getBigDecimal("DUES_FAMILY"),
+                        rs.getBigDecimal("DUES_LAKE_ASSOCIATE"),
+                        rs.getBigDecimal("DUES_SOCIAL"),
+                        rs.getBigDecimal("INITIATION"),
+                        rs.getBigDecimal("WET_SLIP"),
+                        rs.getBigDecimal("BEACH"),
+                        rs.getBigDecimal("WINTER_STORAGE"),
+                        rs.getBigDecimal("MAIN_GATE_KEY"),
+                        rs.getBigDecimal("SAIL_LOFT"),
+                        rs.getBigDecimal("SAIL_LOFT_KEY"),
+                        rs.getBigDecimal("SAIL_SCHOOL_LASER_LOFT"),
+                        rs.getBigDecimal("SAIL_SCHOOL_LOFT_KEY"),
+                        rs.getBigDecimal("KAYAK_RACK"),
+                        rs.getBigDecimal("KAYAK_BEACH_RACK"),
+                        rs.getBigDecimal("KAYAK_SHED"),
+                        rs.getBigDecimal("KAYAK_SHED_KEY"),
+                        rs.getBigDecimal("WORK_CREDIT")
+                ));
+            }
+            stmt.close();
         } catch (SQLException e) {
-            new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
+            new Dialogue_ErrorSQL(e, "Unable to retrieve information", "See below for details");
         }
         return thisDefinedFee;
     }
@@ -25,10 +51,10 @@ public class SqlDefinedFee {
     // to create a single defined fee object and fille it with a selected year
     public static DefinedFeeDTO getDefinedFeeByYear(String year) {
         DefinedFeeDTO definedFee = null;
+        String query = "SELECT * FROM defined_fee WHERE fiscal_year=" + year;
         try {
-            System.out.println("Retrieving defined fee for " + year);
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor("SELECT * FROM defined_fee WHERE fiscal_year=" + year));
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt, query);
             while (rs.next()) {
                 definedFee = new DefinedFeeDTO(
                         rs.getInt("FISCAL_YEAR"),
@@ -51,41 +77,11 @@ public class SqlDefinedFee {
                         rs.getBigDecimal("kAYAK_SHED_KEY"),
                         rs.getBigDecimal("WORK_CREDIT"));
             }
+            stmt.close();
         } catch (SQLException e) {
-            new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
+            new Dialogue_ErrorSQL(e, "Unable to retrieve information", "See below for details");
         }
         return definedFee;
     }
-
-    //////////////////////////////// QUERIES /////////////////////////////////////////////////
-
-
-    private static void queryToObjectArrayList(String query, ObservableList<DefinedFeeDTO> thisDefinedFee) throws SQLException {
-        Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-        ResultSet rs = stmt.executeQuery(Halyard.console.setRegexColor(query));
-        while (rs.next()) {
-            thisDefinedFee.add(new DefinedFeeDTO(
-                    rs.getInt("FISCAL_YEAR"),
-                    rs.getBigDecimal("DUES_REGULAR"),
-                    rs.getBigDecimal("DUES_FAMILY"),
-                    rs.getBigDecimal("DUES_LAKE_ASSOCIATE"),
-                    rs.getBigDecimal("DUES_SOCIAL"),
-                    rs.getBigDecimal("INITIATION"),
-                    rs.getBigDecimal("WET_SLIP"),
-                    rs.getBigDecimal("BEACH"),
-                    rs.getBigDecimal("WINTER_STORAGE"),
-                    rs.getBigDecimal("MAIN_GATE_KEY"),
-                    rs.getBigDecimal("SAIL_LOFT"),
-                    rs.getBigDecimal("SAIL_LOFT_KEY"),
-                    rs.getBigDecimal("SAIL_SCHOOL_LASER_LOFT"),
-                    rs.getBigDecimal("SAIL_SCHOOL_LOFT_KEY"),
-                    rs.getBigDecimal("KAYAK_RACK"),
-                    rs.getBigDecimal("KAYAK_BEACH_RACK"),
-                    rs.getBigDecimal("KAYAK_SHED"),
-                    rs.getBigDecimal("KAYAK_SHED_KEY"),
-                    rs.getBigDecimal("WORK_CREDIT")
-            ));
-        }
-        System.out.println("updated definedfee");
-    }
 }
+
