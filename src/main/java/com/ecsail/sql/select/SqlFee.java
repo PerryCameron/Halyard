@@ -16,10 +16,10 @@ public class SqlFee {
 
         public static ArrayList<FeeDTO> getFeesFromYear(String year) {  //p_id
             ArrayList<FeeDTO> thisAwards = new ArrayList<>();
+            String query = "select * from fee where FEE_YEAR=" + year;
             try {
                 Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-                ResultSet rs = stmt
-                        .executeQuery(Halyard.console.setRegexColor("select * from fee where FEE_YEAR=" + year));
+                ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt, query);
                 while (rs.next()) {
                     thisAwards.add(new FeeDTO(
                             rs.getInt("FEE_ID"),
@@ -30,6 +30,7 @@ public class SqlFee {
                             rs.getString("DESCRIPTION")
                     ));
                 }
+                stmt.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -38,10 +39,10 @@ public class SqlFee {
 
     public static ArrayList<FeeDTO> getAllFees() {  //p_id
         ArrayList<FeeDTO> thisAwards = new ArrayList<>();
+        String query = "select * from fee";
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt
-                    .executeQuery(Halyard.console.setRegexColor("select * from fee"));
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt, query);
             while (rs.next()) {
                 thisAwards.add(new FeeDTO(
                         rs.getInt("FEE_ID"),
@@ -52,6 +53,7 @@ public class SqlFee {
                         rs.getString("DESCRIPTION")
                 ));
             }
+            stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -60,10 +62,10 @@ public class SqlFee {
 
     public static ObservableList<FeeDTO> getAllFeesByDescription(String description) {  //p_id
         ObservableList<FeeDTO> feeDTOS = FXCollections.observableArrayList();
+        String query = "select * from fee where description='" + description + "'";
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt
-                    .executeQuery(Halyard.console.setRegexColor("select * from fee where description='" + description + "'"));
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt, query);
             while (rs.next()) {
                 feeDTOS.add(new FeeDTO(
                         rs.getInt("FEE_ID"),
@@ -74,6 +76,7 @@ public class SqlFee {
                         rs.getString("DESCRIPTION")
                 ));
             }
+            stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

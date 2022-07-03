@@ -9,7 +9,6 @@ import com.ecsail.structures.Email_InformationDTO;
 import com.ecsail.structures.PersonDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -43,7 +42,7 @@ public class SqlEmail {
     public static ObservableList<EmailDTO> getEmail(int p_id) {
         String query = "SELECT * FROM email";
         if(p_id != 0)
-            query += " WHERE p_id='" + p_id + "'";
+            query += " WHERE p_id=" + p_id;
         ObservableList<EmailDTO> email = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
