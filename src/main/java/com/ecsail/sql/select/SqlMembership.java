@@ -15,10 +15,10 @@ public class SqlMembership {
 
     public static ObservableList<MembershipDTO> getMemberships() {  /// for SQL Script Maker
         ObservableList<MembershipDTO> memberships = FXCollections.observableArrayList();
+        String query = "select * from membership";
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs;
-            rs = stmt.executeQuery(Halyard.console.setRegexColor("select * from membership;"));
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
             while (rs.next()) {
                 memberships.add(new MembershipDTO(
                         rs.getInt("MS_ID"),
@@ -39,17 +39,15 @@ public class SqlMembership {
 
     public static int getNumberOfNewMembershipsForYear(int year) {
         int number = 0;
-        ResultSet rs;
+        String query = "select count(*) from membership m " +
+                "inner join membership_id id on id.ms_id=m.ms_id " +
+                "where YEAR(JOIN_DATE)="+year+" and id.FISCAL_YEAR=" + year;
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            rs = stmt.executeQuery("select count(*) from membership m " +
-                    "inner join membership_id id on id.ms_id=m.ms_id " +
-                    "where YEAR(JOIN_DATE)="+year+" and id.FISCAL_YEAR=" + year);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
             rs.next();
             number = rs.getInt("count(*)");
-
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
         return number;
