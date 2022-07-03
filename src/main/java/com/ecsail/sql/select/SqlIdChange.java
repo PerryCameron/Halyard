@@ -12,10 +12,10 @@ import java.util.ArrayList;
 public class SqlIdChange {
     public static ArrayList<IdChangeDTO> getAllChangedIds() {  //p_id
         ArrayList<IdChangeDTO> thisAwards = new ArrayList<>();
+        String query = "select * from id_change";
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt
-                    .executeQuery(Halyard.console.setRegexColor("select * from id_change"));
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt, query);
             while (rs.next()) {
                 thisAwards.add(new IdChangeDTO(
                         rs.getInt("CHANGE_ID"),
@@ -23,6 +23,7 @@ public class SqlIdChange {
                         rs.getBoolean("CHANGED")
                 ));
             }
+            stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
