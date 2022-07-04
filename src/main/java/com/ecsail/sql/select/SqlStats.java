@@ -14,10 +14,9 @@ import java.util.ArrayList;
 public class SqlStats {
     public static ArrayList<StatsDTO> getStatistics(int startYear , int stopYear) {
         ArrayList<StatsDTO> stats = new ArrayList<>();
+        String query = "select * from stats where FISCAL_YEAR > "+(startYear -1)+" and FISCAL_YEAR < " + (stopYear +1);
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs;
-            rs = stmt.executeQuery(Halyard.console.setRegexColor("select * from stats where FISCAL_YEAR > "+(startYear -1)+" and FISCAL_YEAR < " + (stopYear +1)));
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
         while (rs.next()) {
             stats.add(new StatsDTO(
                     rs.getInt("STAT_ID"),
@@ -39,7 +38,7 @@ public class SqlStats {
                     rs.getDouble("DEPOSITS"),
                     rs.getDouble("INIATION")));
         }
-        stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
@@ -49,9 +48,7 @@ public class SqlStats {
     public static StatsDTO createStatDTO(int year, int statID) {
         StatsDTO stat = null;
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs;
-            rs = stmt.executeQuery(getStatQuery(year));
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(getStatQuery(year));
             while (rs.next()) {
                 stat = new StatsDTO(
                         statID,
@@ -61,10 +58,7 @@ public class SqlStats {
                         rs.getInt("RETURN_MEMBERS"),
                         rs.getInt("NEW_MEMBERS"),
                         0,
-//                        rs.getInt("SECONDARY_MEMBERS"),
                         0,
-//                        rs.getInt("DEPENDANTS"),
-//                        rs.getInt("NUMBER_OF_BOATS"),
                         0,
                         rs.getInt("FAMILY"),
                         rs.getInt("REGULAR"),
@@ -73,12 +67,10 @@ public class SqlStats {
                         rs.getInt("LIFEMEMBERS"),
                         rs.getInt("RACEFELLOWS"),
                         rs.getInt("STUDENT"),
-//                        rs.getDouble("DEPOSITS"),
                         0,
-//                        rs.getDouble("INIATION"));
                         0);
             }
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
@@ -129,12 +121,12 @@ public class SqlStats {
 
     public static int getNumberOfStatYears()  {  // gives the last memo_id number
         int statCount = 0;
-        Statement stmt;
+        String query = "select COUNT(STAT_ID) from stats\n";
         try {
-            stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt.executeQuery("select COUNT(STAT_ID) from stats\n");
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             rs.next();
             statCount = rs.getInt("COUNT(STAT_ID)");
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve stat count","See below for details");
         }

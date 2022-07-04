@@ -13,10 +13,9 @@ import java.util.ArrayList;
 public class SqlSportsMan {
     public static ArrayList<Object_Sportsmen> getSportsManAwardNames() {
         ArrayList<Object_Sportsmen> theseOfficers = new ArrayList<>();
+        String query = "select AWARD_YEAR,F_NAME,L_Name from awards a left join person p on a.P_ID=p.P_ID";
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs;
-            rs = stmt.executeQuery(Halyard.console.setRegexColor("select AWARD_YEAR,F_NAME,L_Name from awards a left join person p on a.P_ID=p.P_ID"));
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 theseOfficers.add(new Object_Sportsmen(
                         rs.getString("AWARD_YEAR"),
@@ -24,6 +23,7 @@ public class SqlSportsMan {
                         rs.getString("L_NAME")
                 ));
             }
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             new Dialogue_ErrorSQL(e, "Unable to retrieve information", "See below for details");
