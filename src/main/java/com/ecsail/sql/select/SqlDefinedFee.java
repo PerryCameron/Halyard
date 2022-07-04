@@ -16,8 +16,7 @@ public class SqlDefinedFee {
         ObservableList<DefinedFeeDTO> thisDefinedFee = FXCollections.observableArrayList();
         String query = "select * from defined_fee";
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt, query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 thisDefinedFee.add(new DefinedFeeDTO(
                         rs.getInt("FISCAL_YEAR"),
@@ -41,7 +40,7 @@ public class SqlDefinedFee {
                         rs.getBigDecimal("WORK_CREDIT")
                 ));
             }
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e, "Unable to retrieve information", "See below for details");
         }
@@ -53,8 +52,7 @@ public class SqlDefinedFee {
         DefinedFeeDTO definedFee = null;
         String query = "SELECT * FROM defined_fee WHERE fiscal_year=" + year;
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt, query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 definedFee = new DefinedFeeDTO(
                         rs.getInt("FISCAL_YEAR"),
@@ -77,7 +75,7 @@ public class SqlDefinedFee {
                         rs.getBigDecimal("kAYAK_SHED_KEY"),
                         rs.getBigDecimal("WORK_CREDIT"));
             }
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e, "Unable to retrieve information", "See below for details");
         }

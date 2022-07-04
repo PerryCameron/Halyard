@@ -17,8 +17,7 @@ public class SqlBoard {
         ObservableList<BoardDTO> thisBoardMember = FXCollections.observableArrayList();
         String query = "select p.P_ID, p.MS_ID, o.O_ID, p.F_NAME, p.L_NAME, o.OFF_YEAR, o.BOARD_YEAR, o.OFF_TYPE  from person p inner join officer o on p.p_id = o.p_id where o.off_year='" + currentYear + "'";
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 thisBoardMember.add(new BoardDTO(
                         rs.getInt("P_ID"),
@@ -30,7 +29,7 @@ public class SqlBoard {
                         rs.getString("BOARD_YEAR"),
                         rs.getString("OFF_TYPE")));
             }
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }

@@ -21,14 +21,13 @@ public class SqlBoat {
         ObservableList<BoatOwnerDTO> thisBoatOwner = FXCollections.observableArrayList();
         String query = "select * from boat_owner";
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 thisBoatOwner.add(new BoatOwnerDTO(
                         rs.getInt("MS_ID"),
                         rs.getInt("BOAT_ID")));
             }
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
@@ -39,8 +38,7 @@ public class SqlBoat {
         ObservableList<BoatDTO> thisBoat = FXCollections.observableArrayList();
         String query = "select * from boat";
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 thisBoat.add(new BoatDTO(
                         rs.getInt("BOAT_ID"), 0, // because Object_Boat has a ms-id variable but database does not
@@ -59,9 +57,8 @@ public class SqlBoat {
                         rs.getString("BEAM"),
                         rs.getString("LWL"),
                         rs.getBoolean("AUX")));
-
             }
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
@@ -77,8 +74,8 @@ public class SqlBoat {
                 + "id.MS_ID=m.MS_ID left join person p on m.P_ID=p.P_ID "
                 + "where id.RENEW=true and id.FISCAL_YEAR='2021'";
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 thisBoat.add(new BoatListDTO(
                         rs.getInt("BOAT_ID"),
@@ -102,7 +99,7 @@ public class SqlBoat {
                         rs.getString("L_NAME"),
                         rs.getString("F_NAME")));
             }
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
@@ -115,8 +112,7 @@ public class SqlBoat {
                 + ", b.MANUFACTURE_YEAR, b.REGISTRATION_NUM, b.MODEL, b.BOAT_NAME, b.SAIL_NUMBER"
                 + ", b.HAS_TRAILER, b.LENGTH, b.WEIGHT, b.KEEL, b.PHRF, b.DRAFT, b.BEAM, b.LWL, b.AUX from boat b inner join boat_owner bo using (boat_id) where ms_id='" + ms_id + "';";
         try {
-        Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-        ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+        ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
             thisBoat.add(new BoatDTO(
                     rs.getInt("BOAT_ID"),
@@ -137,7 +133,7 @@ public class SqlBoat {
                     rs.getString("LWL"),
                     rs.getBoolean("AUX")));
         }
-        stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
@@ -150,8 +146,7 @@ public class SqlBoat {
                 + ", b.MANUFACTURE_YEAR, b.REGISTRATION_NUM, b.MODEL, b.BOAT_NAME, b.SAIL_NUMBER"
                 + ", b.HAS_TRAILER, b.LENGTH, b.WEIGHT, b.KEEL, b.PHRF, b.DRAFT, b.BEAM, b.LWL, b.AUX from boat b inner join boat_owner bo using (boat_id) where boat_id='" + boat_id + "';";
         try {
-        Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-        ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+        ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
             thisBoat = new BoatDTO(
                     rs.getInt("BOAT_ID"),
@@ -172,7 +167,7 @@ public class SqlBoat {
                     rs.getString("LWL"),
                     rs.getBoolean("AUX"));
         }
-        stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
 //            new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
             e.printStackTrace();

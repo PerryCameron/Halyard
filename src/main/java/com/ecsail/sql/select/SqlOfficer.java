@@ -20,8 +20,7 @@ public class SqlOfficer {
         ObservableList<OfficerDTO> thisOfficer = FXCollections.observableArrayList();
         String query = "select * from officer";
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 thisOfficer.add(new OfficerDTO(
                         rs.getInt("O_ID"),
@@ -30,7 +29,7 @@ public class SqlOfficer {
                         rs.getString("OFF_TYPE"),
                         rs.getString("OFF_YEAR")));
             }
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
@@ -41,8 +40,7 @@ public class SqlOfficer {
         ArrayList<PDF_Object_Officer> officers = new ArrayList<>();
         String query = "select * from officer o left join person p on o.P_ID=p.P_ID where OFF_YEAR=" + selectedYear;
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 officers.add(new PDF_Object_Officer(
                         rs.getString("F_NAME"),
@@ -51,7 +49,7 @@ public class SqlOfficer {
                         rs.getString("BOARD_YEAR"), // beginning of board term
                         rs.getString("OFF_YEAR")));
             }
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
@@ -62,8 +60,7 @@ public class SqlOfficer {
         ObservableList<OfficerDTO> thisOfficer = FXCollections.observableArrayList();
         String query = "select * from officer WHERE " + field + "='" + attribute + "'";
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 thisOfficer.add(new OfficerDTO(
                         rs.getInt("O_ID"),
@@ -72,7 +69,7 @@ public class SqlOfficer {
                         rs.getString("OFF_TYPE"),
                         rs.getString("OFF_YEAR")));
             }
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
@@ -83,8 +80,7 @@ public class SqlOfficer {
         ArrayList<OfficerWithNameDTO> theseOfficers = new ArrayList<>();
         String query = "select F_NAME,L_NAME,OFF_YEAR from officer o left join person p on o.P_ID=p.P_ID where OFF_TYPE='"+type+"'";
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 theseOfficers.add(new OfficerWithNameDTO(
                         rs.getString("L_NAME"),
@@ -92,7 +88,7 @@ public class SqlOfficer {
                         rs.getString("OFF_YEAR")
                         ));
             }
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }

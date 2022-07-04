@@ -1,12 +1,10 @@
 package com.ecsail.sql.select;
 
-import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.Halyard;
 import com.ecsail.structures.IdChangeDTO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 
 public class SqlIdChange {
@@ -14,8 +12,7 @@ public class SqlIdChange {
         ArrayList<IdChangeDTO> thisAwards = new ArrayList<>();
         String query = "select * from id_change";
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt, query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 thisAwards.add(new IdChangeDTO(
                         rs.getInt("CHANGE_ID"),
@@ -23,7 +20,7 @@ public class SqlIdChange {
                         rs.getBoolean("CHANGED")
                 ));
             }
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -18,8 +18,7 @@ public class SqlFee {
             ArrayList<FeeDTO> thisAwards = new ArrayList<>();
             String query = "select * from fee where FEE_YEAR=" + year;
             try {
-                Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-                ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt, query);
+                ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
                 while (rs.next()) {
                     thisAwards.add(new FeeDTO(
                             rs.getInt("FEE_ID"),
@@ -30,7 +29,7 @@ public class SqlFee {
                             rs.getString("DESCRIPTION")
                     ));
                 }
-                stmt.close();
+                Halyard.getConnect().closeResultSet(rs);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -41,8 +40,7 @@ public class SqlFee {
         ArrayList<FeeDTO> thisAwards = new ArrayList<>();
         String query = "select * from fee";
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt, query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 thisAwards.add(new FeeDTO(
                         rs.getInt("FEE_ID"),
@@ -53,7 +51,7 @@ public class SqlFee {
                         rs.getString("DESCRIPTION")
                 ));
             }
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -64,8 +62,7 @@ public class SqlFee {
         ObservableList<FeeDTO> feeDTOS = FXCollections.observableArrayList();
         String query = "select * from fee where description='" + description + "'";
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt, query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 feeDTOS.add(new FeeDTO(
                         rs.getInt("FEE_ID"),
@@ -76,11 +73,10 @@ public class SqlFee {
                         rs.getString("DESCRIPTION")
                 ));
             }
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return feeDTOS;
     }
-    
 }

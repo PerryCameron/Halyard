@@ -17,8 +17,7 @@ public class SqlMembership {
         ObservableList<MembershipDTO> memberships = FXCollections.observableArrayList();
         String query = "select * from membership";
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 memberships.add(new MembershipDTO(
                         rs.getInt("MS_ID"),
@@ -30,26 +29,10 @@ public class SqlMembership {
                         rs.getString("STATE"),
                         rs.getString("ZIP")));
             }
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to select roster","See below for details");
         }
         return memberships;
-    }
-
-    public static int getNumberOfNewMembershipsForYear(int year) {
-        int number = 0;
-        String query = "select count(*) from membership m " +
-                "inner join membership_id id on id.ms_id=m.ms_id " +
-                "where YEAR(JOIN_DATE)="+year+" and id.FISCAL_YEAR=" + year;
-        try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
-            rs.next();
-            number = rs.getInt("count(*)");
-        } catch (SQLException e) {
-            new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
-        }
-        return number;
     }
 }

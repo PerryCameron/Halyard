@@ -16,14 +16,13 @@ public class HashSeSQL {
         HashDTO hashDTO = new HashDTO();
         String query = "select * from msid_hash where MS_ID=" + msid;
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                         hashDTO.setHash_id(rs.getInt("HASH_ID"));
                         hashDTO.setHash(rs.getLong("HASH"));
                         hashDTO.setMsid(rs.getInt("MS_ID"));
             }
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -34,15 +33,14 @@ public class HashSeSQL {
         ArrayList<HashDTO> hashDTOList = new ArrayList<>();
         String query = "select * from msid_hash";
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 hashDTOList.add(new HashDTO(
                 rs.getInt("HASH_ID"),
                 rs.getLong("HASH"),
                 rs.getInt("MS_ID")));
             }
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -53,14 +51,13 @@ public class HashSeSQL {
         HashDTO hashDTO = new HashDTO();
         String query = "select * from msid_hash where HASH=" + hash;
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 hashDTO.setHash_id(rs.getInt("HASH_ID"));
                 hashDTO.setHash(rs.getLong("HASH"));
                 hashDTO.setMsid(rs.getInt("MS_ID"));
             }
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -18,8 +18,7 @@ public class SqlAward {
         ObservableList<AwardDTO> thisAwards = FXCollections.observableArrayList();
         String query = "select * from awards where P_ID=" + p.getP_id();
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 thisAwards.add(new AwardDTO(
                         rs.getInt("AWARD_ID"),
@@ -27,7 +26,7 @@ public class SqlAward {
                         rs.getString("AWARD_YEAR"),
                         rs.getString("AWARD_TYPE")));
             }
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
@@ -38,8 +37,7 @@ public class SqlAward {
         ArrayList<AwardDTO> theseAwards = new ArrayList<>();
         String query = "select * from awards";
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 theseAwards.add(new AwardDTO(
                         rs.getInt("AWARD_ID"),
@@ -48,7 +46,7 @@ public class SqlAward {
                         rs.getString("AWARD_TYPE")
                         ));
             }
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }

@@ -18,8 +18,7 @@ public class SqlMoney {
         ObservableList<MoneyDTO> theseFiscals = FXCollections.observableArrayList();
         String query = "SELECT * FROM money WHERE ms_id=" + ms_id;
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 theseFiscals.add(new MoneyDTO(rs.getInt("MONEY_ID"), rs.getInt("MS_ID"),
                         rs.getInt("FISCAL_YEAR"),
@@ -51,7 +50,7 @@ public class SqlMoney {
                         rs.getInt("WORK_CREDIT"),
                         rs.getString("OTHER_CREDIT")));
             }
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
@@ -62,8 +61,7 @@ public class SqlMoney {
         ObservableList<MoneyDTO> theseFiscals = FXCollections.observableArrayList();
         String query = "SELECT * FROM money";
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 theseFiscals.add(new MoneyDTO(rs.getInt("MONEY_ID"), rs.getInt("MS_ID"),
                         rs.getInt("FISCAL_YEAR"),
@@ -95,7 +93,7 @@ public class SqlMoney {
                         rs.getInt("WORK_CREDIT"),
                         rs.getString("OTHER_CREDIT")));
             }
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
@@ -106,8 +104,7 @@ public class SqlMoney {
         String query = "SELECT * FROM money WHERE ms_id=" + ms_id + " and fiscal_year=" + fiscalYear;
         MoneyDTO thisFiscal = null;
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 thisFiscal = new MoneyDTO(rs.getInt("MONEY_ID"), rs.getInt("MS_ID"),
                         rs.getInt("FISCAL_YEAR"), rs.getInt("BATCH"), rs.getString("OFFICER_CREDIT"), rs.getInt("EXTRA_KEY"),
@@ -120,7 +117,7 @@ public class SqlMoney {
                         rs.getString("OTHER"),rs.getString("INITIATION"),rs.getBoolean("SUPPLEMENTAL"), rs.getInt("WORK_CREDIT"),
                         rs.getString("OTHER_CREDIT"));
             }
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
@@ -155,8 +152,7 @@ public class SqlMoney {
                 "from money where FISCAL_YEAR=" + year + " and BATCH=" + batch;
         DepositSummaryDTO thisFiscal = null;
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+           ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 thisFiscal = new DepositSummaryDTO(
                         rs.getBigDecimal("sum(TOTAL)"),
@@ -181,7 +177,7 @@ public class SqlMoney {
                         rs.getInt("sum(SAIL_SCHOOL_LASER_LOFT)"),
                         rs.getInt("sum(WINTER_STORAGE)"));
             }
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             e.printStackTrace();
             //            new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
@@ -195,12 +191,11 @@ public class SqlMoney {
         WorkCreditDTO workCredits = null;
         String query = "select * from work_credit WHERE money_id=" + moneyID;
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             rs.next();
             workCredits = new WorkCreditDTO(rs.getInt("MONEY_ID"), rs.getInt("MS_ID"),rs.getInt("RACING"), rs.getInt("HARBOR"),
                         rs.getInt("SOCIAL"), rs.getInt("OTHER"));
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
@@ -211,11 +206,10 @@ public class SqlMoney {
         boolean committed = false;
         String query = "select commited from money where money_id=" + money_id;
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             rs.next();
             committed = rs.getBoolean("commited");
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
@@ -226,27 +220,24 @@ public class SqlMoney {
         int number = 0;
         String query = "select SUM(amount) from payment where money_id=" + money_id;
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             rs.next();
             number = rs.getInt("SUM(amount)");
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
         return number;
-
     }
 
     public static int getNumberOfMemberDues(String year, String batch) {
         int number = 0;
         String query = "select count(*) from money where FISCAL_YEAR="+year+" and BATCH="+batch+" and DUES > 0";
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             rs.next();
             number = rs.getInt("count(*)");
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
@@ -257,11 +248,10 @@ public class SqlMoney {
         int number = 0;
         String query = "SELECT MAX(batch) FROM money WHERE commited=true and fiscal_year='"+year+"'";
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             rs.next();
             number = rs.getInt("MAX(batch)");
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
@@ -272,12 +262,11 @@ public class SqlMoney {
         int result = 0;
         String query = "select * from money ORDER BY " + type + " DESC LIMIT 1;";
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             boolean hasResult = rs.next();
             if (hasResult)
                 result = rs.getInt(type);
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }

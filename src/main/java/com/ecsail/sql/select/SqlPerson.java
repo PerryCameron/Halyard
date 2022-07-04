@@ -24,8 +24,7 @@ public class SqlPerson {
         String query = "SELECT * FROM person WHERE ms_id=" + ms_id;
         ObservableList<PersonDTO> thesePeople = FXCollections.observableArrayList();
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
         while (rs.next()) {
             if(rs.getBoolean("IS_ACTIVE")) {  // only add active people
             thesePeople.add(new PersonDTO(
@@ -40,11 +39,10 @@ public class SqlPerson {
                     rs.getBoolean("IS_ACTIVE"),
                     rs.getString("NICK_NAME"),
                     rs.getInt("OLDMSID")
-
             ));
             }
         }
-        stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
@@ -61,8 +59,7 @@ public class SqlPerson {
         String query = "SELECT * FROM person WHERE ms_id= '" + m.getMsid() + "' and MEMBER_TYPE=3";
         ArrayList<PersonDTO> thesepeople = new ArrayList<>();
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
         while (rs.next()) {
             if(rs.getBoolean("IS_ACTIVE")) {  // only add active people
             thesepeople.add(new PersonDTO(
@@ -79,7 +76,7 @@ public class SqlPerson {
                     rs.getInt("OLDMSID")));
             }
         }
-        stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
@@ -94,8 +91,7 @@ public class SqlPerson {
         String query = "SELECT * FROM person";
         ObservableList<PersonDTO> thesePeople = FXCollections.observableArrayList();
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
         while (rs.next()) {
             thesePeople.add(new PersonDTO(
                     rs.getInt("P_ID"),
@@ -110,7 +106,7 @@ public class SqlPerson {
                     rs.getString("NICK_NAME"),
                     rs.getInt("OLDMSID")));
         }
-        stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
@@ -127,8 +123,7 @@ public class SqlPerson {
         PersonDTO person = null;
         String query = "select * from person WHERE p_id=" + pid;
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             if(rs.next()) {
                 person = (new PersonDTO(rs.getInt("P_ID"), rs.getInt("MS_ID"), rs.getInt("MEMBER_TYPE"),
                         rs.getString("F_NAME"), rs.getString("L_NAME"), rs.getString("BIRTHDAY"),
@@ -136,7 +131,7 @@ public class SqlPerson {
             } else {
                 System.out.println("There were no results for SqlPerson.getPersonByPid(int pid)");
             }
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
@@ -154,8 +149,7 @@ public class SqlPerson {
         PersonDTO person = null;
         String query = "select * from person where MS_ID=" + ms_id + " and MEMBER_TYPE=" + member_type;
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             if(rs.next()) {
                 person = (new PersonDTO(rs.getInt("P_ID"), rs.getInt("MS_ID"), rs.getInt("MEMBER_TYPE"),
                         rs.getString("F_NAME"), rs.getString("L_NAME"), rs.getString("BIRTHDAY"),
@@ -163,7 +157,7 @@ public class SqlPerson {
             } else {
                 System.out.println("There were no results for getPerson(int ms_id, int member_type)");
             }
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
@@ -182,8 +176,7 @@ public class SqlPerson {
         PersonDTO person = null;
         String query = "select * from person where MS_ID=(select ms_id from membership_id where MEMBERSHIP_ID="+membershipId+" and FISCAL_YEAR="+year+") and MEMBER_TYPE=1";
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             if(rs.next()) {
                 person = (new PersonDTO(rs.getInt("P_ID"), rs.getInt("MS_ID"), rs.getInt("MEMBER_TYPE"),
                         rs.getString("F_NAME"), rs.getString("L_NAME"), rs.getString("BIRTHDAY"),
@@ -191,7 +184,7 @@ public class SqlPerson {
             } else {
                 System.out.println("There were no results for getPersonFromMembershipID(String membershipId, String year)");
             }
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
@@ -207,10 +200,11 @@ public class SqlPerson {
         int number = 0;
         String query = "select * from person ORDER BY p_id DESC LIMIT 1";
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             rs.next();
             number = rs.getInt("P_ID");
+            rs.getStatement().close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
@@ -226,10 +220,10 @@ public class SqlPerson {
         int age = 0;
         String query = "SELECT DATE_FORMAT(FROM_DAYS(DATEDIFF(now(),(select BIRTHDAY from person where P_ID=" + person.getP_id() + "))), '%Y')+0 AS AGE;\n";
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             rs.next();
             age = rs.getInt("AGE");
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }

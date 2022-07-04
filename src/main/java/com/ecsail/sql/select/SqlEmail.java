@@ -1,17 +1,16 @@
 package com.ecsail.sql.select;
 
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
-import com.ecsail.main.ConnectDatabase;
-import com.ecsail.main.HalyardPaths;
 import com.ecsail.main.Halyard;
+import com.ecsail.main.HalyardPaths;
 import com.ecsail.structures.EmailDTO;
 import com.ecsail.structures.Email_InformationDTO;
 import com.ecsail.structures.PersonDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class SqlEmail {
     public static ObservableList<Email_InformationDTO> getEmailInfo() {
@@ -25,14 +24,13 @@ public class SqlEmail {
                 + "' and id.renew=true"
                 + " order by id.MEMBERSHIP_ID";
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt, query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 thisEmailInfo.add(new Email_InformationDTO(rs.getInt("MEMBERSHIP_ID"), rs.getString("JOIN_DATE"),
                         rs.getString("L_NAME"), rs.getString("F_NAME"), rs.getString("EMAIL"),
                         rs.getBoolean("PRIMARY_USE")));
             }
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
@@ -45,8 +43,7 @@ public class SqlEmail {
             query += " WHERE p_id=" + p_id;
         ObservableList<EmailDTO> email = FXCollections.observableArrayList();
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt, query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 email.add(new EmailDTO(
                         rs.getInt("EMAIL_ID")
@@ -55,7 +52,7 @@ public class SqlEmail {
                         ,rs.getString("EMAIL")
                         ,rs.getBoolean("EMAIL_LISTED")));
             }
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
@@ -67,8 +64,7 @@ public class SqlEmail {
         String returnEmail = "";
         String query = "select * from email where P_ID=" + person.getP_id() + " and PRIMARY_USE=true";
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt, query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             rs.next();
                 email = new EmailDTO(
                         rs.getInt("EMAIL_ID")
@@ -76,8 +72,7 @@ public class SqlEmail {
                         ,rs.getBoolean("PRIMARY_USE")
                         ,rs.getString("EMAIL")
                         ,rs.getBoolean("EMAIL_LISTED"));
-
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }

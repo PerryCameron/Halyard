@@ -17,8 +17,7 @@ public class SqlMembership_Id {
         ObservableList<MembershipIdDTO> ids = FXCollections.observableArrayList();
         String query = "select * from membership_id";
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 ids.add(new MembershipIdDTO(
                         rs.getInt("MID")
@@ -30,7 +29,7 @@ public class SqlMembership_Id {
                         , rs.getBoolean("SELECTED")
                         , rs.getBoolean("LATE_RENEW")));
             }
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
@@ -41,8 +40,7 @@ public class SqlMembership_Id {
         ObservableList<MembershipIdDTO> ids = FXCollections.observableArrayList();
         String query = "select * from membership_id where ms_id=" +ms_id;
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 ids.add(new MembershipIdDTO(
                         rs.getInt("MID")
@@ -54,7 +52,7 @@ public class SqlMembership_Id {
                         , rs.getBoolean("SELECTED")
                         , rs.getBoolean("LATE_RENEW")));
             }
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
@@ -65,8 +63,7 @@ public class SqlMembership_Id {
         MembershipIdDTO id = null;
         String query = "select * from membership_id where ms_id=" +ms_id + ";";
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 id = new MembershipIdDTO(
                         rs.getInt("MID")
@@ -78,7 +75,7 @@ public class SqlMembership_Id {
                         , rs.getBoolean("SELECTED")
                         , rs.getBoolean("LATE_RENEW"));
             }
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
@@ -89,11 +86,10 @@ public class SqlMembership_Id {
         int result = 0;
         String query = "select membership_id from membership_id where ms_id=" + msid + " and fiscal_year=" + HalyardPaths.getYear();
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             rs.next();
             result = rs.getInt("MEMBERSHIP_ID");
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
@@ -104,11 +100,10 @@ public class SqlMembership_Id {
         int result = 0;
         String query = "select ms_id from membership_id where fiscal_year='" + HalyardPaths.getYear() + "' and membership_id='" + membership_id + "'";
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             rs.next();
             result = rs.getInt("ms_id");
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
@@ -119,8 +114,7 @@ public class SqlMembership_Id {
         String id = "";
         String query = "select membership_id from membership_id where fiscal_year='" + year + "' and ms_id=" + ms_id;
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             if (!rs.next()) {
                 id = "none";
             } else {
@@ -128,7 +122,7 @@ public class SqlMembership_Id {
                     id = rs.getString("membership_id");
                 } while (rs.next());
             }
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
@@ -139,8 +133,7 @@ public class SqlMembership_Id {
         MembershipIdDTO id = null;
         String query = "select * from membership_id where mid="  + mid;
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             rs.next();
                 id = new MembershipIdDTO(
                         rs.getInt("MID")
@@ -151,7 +144,7 @@ public class SqlMembership_Id {
                         , rs.getString("MEM_TYPE")
                         , rs.getBoolean("SELECTED")
                         , rs.getBoolean("LATE_RENEW"));
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
@@ -162,11 +155,10 @@ public class SqlMembership_Id {
         int result = 0;
         String query = "select Max(membership_id) from membership_id where fiscal_year='" + year + "'";
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             rs.next();
             result =  rs.getInt("Max(membership_id)");
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
@@ -178,11 +170,10 @@ public class SqlMembership_Id {
         boolean renew = false;
         String query = "select RENEW from membership_id where fiscal_year='" + year + "' and ms_id=" + ms_id;
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             rs.next();
             renew = rs.getBoolean("RENEW");
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"membership id record does not exist for ms_id " + ms_id + " for year " + year,"See below for details");
         }
@@ -195,8 +186,7 @@ public class SqlMembership_Id {
 		ObservableList<MembershipIdDTO> theseIds = FXCollections.observableArrayList();
         String query = "select * from membership_id where fiscal_year=" + year + " order by MEMBERSHIP_ID";
 		try {
-			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
 		while (rs.next()) {
 			theseIds.add(new MembershipIdDTO(
 					rs.getInt("MID"),
@@ -208,7 +198,7 @@ public class SqlMembership_Id {
 					rs.getBoolean("SELECTED"),
 				    rs.getBoolean("LATE_RENEW")));
 		}
-		stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
 		} catch (SQLException e) {
 			new Dialogue_ErrorSQL(e,"Unable to retrieve information membership_id info for " + year,"See below for details");
 		}
@@ -219,8 +209,7 @@ public class SqlMembership_Id {
         ObservableList<MembershipIdDTO> theseIds = FXCollections.observableArrayList();
         String query = "select * from membership_id where fiscal_year=" + year + " and renew=true order by MEMBERSHIP_ID";
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 theseIds.add(new MembershipIdDTO(
                         rs.getInt("MID"),
@@ -232,7 +221,7 @@ public class SqlMembership_Id {
                         rs.getBoolean("SELECTED"),
                         rs.getBoolean("LATE_RENEW")));
             }
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
@@ -243,11 +232,10 @@ public class SqlMembership_Id {
         int number = 0;
         String query = "select count(*) from membership_id where FISCAL_YEAR='" + year + "' and RENEW=false";
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             rs.next();
             number = rs.getInt("count(*)");
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
@@ -259,11 +247,10 @@ public class SqlMembership_Id {
         String query = "select MS_ID from membership_id where FISCAL_YEAR=" + year
                    + " and MEMBERSHIP_ID=" + membershipId;
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             rs.next();
             number = rs.getInt("MS_ID");
-            stmt.close();
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
