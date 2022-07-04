@@ -2,6 +2,7 @@ package com.ecsail.sql.select;
 
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.ConnectDatabase;
+import com.ecsail.main.Halyard;
 import com.ecsail.structures.MemoDTO;
 import com.ecsail.structures.Memo2DTO;
 import com.ecsail.structures.PaidDuesDTO;
@@ -20,8 +21,7 @@ public class SqlMemos {
         ObservableList<MemoDTO> theseMemos = FXCollections.observableArrayList();
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs;
-            rs = stmt.executeQuery(query + ";");
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
             while (rs.next()) {
                 theseMemos.add(new MemoDTO( // why do I keep gettin a nullpointer exception here?
                         rs.getInt("MEMO_ID"),
@@ -33,7 +33,6 @@ public class SqlMemos {
             }
             return theseMemos;
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
         return theseMemos;
@@ -41,12 +40,12 @@ public class SqlMemos {
 
     public static ObservableList<Memo2DTO> getAllMemosForTabNotes(String year, String category) {
         ObservableList<Memo2DTO> theseMemos = FXCollections.observableArrayList();
+        String query = "select * from memo "
+                + "left join membership_id id on memo.ms_id=id.ms_id "
+                + "where year(memo_date)='"+year+"' and id.fiscal_year='"+year+"' and memo.CATEGORY IN("+category+")";
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs;
-            rs = stmt.executeQuery("select * from memo \n"
-                    + "left join membership_id id on memo.ms_id=id.ms_id\n"
-                    + "where year(memo_date)='"+year+"' and id.fiscal_year='"+year+"' and memo.CATEGORY IN("+category+")");
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
             while (rs.next()) {
                 theseMemos.add(new Memo2DTO( // why do I keep gettin a nullpointer exception here?
                         rs.getString("MEMBERSHIP_ID"),
@@ -57,9 +56,8 @@ public class SqlMemos {
                         rs.getInt("MONEY_ID"),
                         rs.getString("CATEGORY")));
             }
-            return theseMemos;
+            stmt.close();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
         return theseMemos;
@@ -67,13 +65,11 @@ public class SqlMemos {
 
     public static MemoDTO getMemos(PaidDuesDTO dues, String category) {
         String query = "select * from memo where money_id=" + dues.getMoney_id() + " and category='" + category + "'";
-        System.out.println("select * from memo where money_id=" + dues.getMoney_id());
         MemoDTO thisMemo = null;
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs;
-            rs = stmt.executeQuery(query + ";");
-            while (rs.next()) {
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
+            rs.next();
                 thisMemo = new MemoDTO( // why do I keep gettin a nullpointer exception here?
                         rs.getInt("MEMO_ID"),
                         rs.getInt("MS_ID"),
@@ -81,12 +77,10 @@ public class SqlMemos {
                         rs.getString("MEMO"),
                         rs.getInt("MONEY_ID"),
                         rs.getString("CATEGORY"));
-            }
+            stmt.close();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
-        //System.out.println(thisMemo);
         return thisMemo;
     }
 }

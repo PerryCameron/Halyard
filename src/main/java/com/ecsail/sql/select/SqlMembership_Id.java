@@ -85,30 +85,6 @@ public class SqlMembership_Id {
         return id.getMembership_id();
     }
 
-    public static MembershipIdDTO getCount(int ms_id) {
-        MembershipIdDTO thisId = null; // new Object_MembershipId();
-        String query = "select MID, MIN(FISCAL_YEAR), MS_ID, MAX(MEMBERSHIP_ID), RENEW from membership_id where MS_ID=" + ms_id;
-        try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
-            while (rs.next()) {
-                thisId = new MembershipIdDTO(
-                rs.getInt("MID")
-                , rs.getString("MIN(FISCAL_YEAR)")
-                , rs.getInt("MS_ID")
-                , rs.getString("MAX(MEMBERSHIP_ID)")
-                , rs.getBoolean("RENEW")
-                , rs.getString("MEM_TYPE")
-                , rs.getBoolean("SELECTED")
-                , rs.getBoolean("LATE_RENEW"));
-            }
-            stmt.close();
-        } catch (SQLException e) {
-            new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
-        }
-        return thisId;
-    }
-
     public static int getMembershipIDfromMsid(int msid)  {
         int result = 0;
         String query = "select membership_id from membership_id where ms_id=" + msid + " and fiscal_year=" + HalyardPaths.getYear();
