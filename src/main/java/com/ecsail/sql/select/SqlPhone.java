@@ -20,13 +20,12 @@ public class SqlPhone {
             query += " WHERE p_id='" + p_id + "'";
         ObservableList<PhoneDTO> thisPhone = FXCollections.observableArrayList();
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs;
-            rs = stmt.executeQuery(Halyard.console.setRegexColor(query + ";"));
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 thisPhone.add(new PhoneDTO(rs.getInt("PHONE_ID"), rs.getInt("P_ID"), rs.getBoolean("PHONE_LISTED"),
                         rs.getString("PHONE"), rs.getString("PHONE_TYPE")));
             }
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
@@ -35,14 +34,14 @@ public class SqlPhone {
 
     public static ArrayList<PhoneDTO> getPhoneByPerson(PersonDTO p) {  // if p_id = 0 then select all
         ArrayList<PhoneDTO> thisPhone = new ArrayList<>();
+        String query = "SELECT * from phone Where P_ID=" + p.getP_id();
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs;
-            rs = stmt.executeQuery(Halyard.console.setRegexColor("SELECT * from phone Where P_ID=" + p.getP_id()));
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 thisPhone.add(new PhoneDTO(rs.getInt("PHONE_ID"), rs.getInt("P_ID"), rs.getBoolean("PHONE_LISTED"),
                         rs.getString("PHONE"), rs.getString("PHONE_TYPE")));
             }
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
@@ -51,13 +50,12 @@ public class SqlPhone {
 
     public static String getListedPhoneByType(PersonDTO p, String type) {  // if p_id = 0 then select all
         String phone = "";
+        String query = "select * from phone where P_ID=" + p.getP_id() + " and PHONE_LISTED=true and PHONE_TYPE='" + type + "'";
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs;
-            rs = stmt.executeQuery(Halyard.console.setRegexColor("select * from phone where P_ID=" + p.getP_id() + " and PHONE_LISTED=true and PHONE_TYPE='" + type + "'"));
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             rs.next();
             phone = rs.getString("PHONE");
-
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
@@ -66,13 +64,12 @@ public class SqlPhone {
 
     public static String getPhoneByType(String pid, String type) {  // if p_id = 0 then select all
         String phone = "";
+        String query = "select * from phone where P_ID=" + pid + " and PHONE_TYPE='" + type + "'";
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs;
-            rs = stmt.executeQuery(Halyard.console.setRegexColor("select * from phone where P_ID=" + pid + " and PHONE_TYPE='" + type + "'"));
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             rs.next();
             phone = rs.getString("PHONE");
-
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
