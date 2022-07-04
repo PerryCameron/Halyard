@@ -16,20 +16,12 @@ import java.util.ArrayList;
 
 public class SqlOfficer {
 
-    /////////////////////////// QUERIES //////////////////////////////////
-    static String query01 = "select * from officer";
-    static String query02 = "select * from officer o left join person p on o.P_ID=p.P_ID where OFF_YEAR=";
-    static String query03 = "select * from officer WHERE ";
-    static String query04 = "select * from officer WHERE p_id='";
-    static String query05 = "select F_NAME,L_NAME,OFF_YEAR from officer o left join person p on o.P_ID=p.P_ID where OFF_TYPE='";
-
-
     public static ObservableList<OfficerDTO> getOfficers() {
         ObservableList<OfficerDTO> thisOfficer = FXCollections.observableArrayList();
+        String query = "select * from officer";
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs;
-            rs = stmt.executeQuery(Halyard.console.setRegexColor(query01));
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
             while (rs.next()) {
                 thisOfficer.add(new OfficerDTO(
                         rs.getInt("O_ID"),
@@ -38,6 +30,7 @@ public class SqlOfficer {
                         rs.getString("OFF_TYPE"),
                         rs.getString("OFF_YEAR")));
             }
+            stmt.close();
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
@@ -46,10 +39,10 @@ public class SqlOfficer {
 
     public static ArrayList<PDF_Object_Officer> getOfficersByYear(String selectedYear) {
         ArrayList<PDF_Object_Officer> officers = new ArrayList<>();
+        String query = "select * from officer o left join person p on o.P_ID=p.P_ID where OFF_YEAR=" + selectedYear;
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs;
-            rs = stmt.executeQuery(Halyard.console.setRegexColor(query02 + selectedYear));
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
             while (rs.next()) {
                 officers.add(new PDF_Object_Officer(
                         rs.getString("F_NAME"),
@@ -58,6 +51,7 @@ public class SqlOfficer {
                         rs.getString("BOARD_YEAR"), // beginning of board term
                         rs.getString("OFF_YEAR")));
             }
+            stmt.close();
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
@@ -66,10 +60,10 @@ public class SqlOfficer {
 
     public static ObservableList<OfficerDTO> getOfficer(String field, int attribute) {  //p_id
         ObservableList<OfficerDTO> thisOfficer = FXCollections.observableArrayList();
+        String query = "select * from officer WHERE " + field + "='" + attribute + "'";
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs = stmt
-                    .executeQuery(Halyard.console.setRegexColor(query03 + field + "='" + attribute + "'"));
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
             while (rs.next()) {
                 thisOfficer.add(new OfficerDTO(
                         rs.getInt("O_ID"),
@@ -78,36 +72,19 @@ public class SqlOfficer {
                         rs.getString("OFF_TYPE"),
                         rs.getString("OFF_YEAR")));
             }
+            stmt.close();
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
         return thisOfficer;
     }
 
-    public static OfficerDTO getOfficer(int p_id, int i) {
-		OfficerDTO thisOfficer = null;
-		try {
-			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			ResultSet rs;
-
-			rs = stmt.executeQuery(Halyard.console
-					.setRegexColor(query04 + p_id + "' and off_year='" + i + "';"));
-			while (rs.next()) {
-				thisOfficer = new OfficerDTO(rs.getInt("O_ID"), rs.getInt("P_ID"), rs.getString("BOARD_YEAR"),
-						rs.getString("OFF_TYPE"), rs.getString("OFF_YEAR"));
-			}
-		} catch (SQLException e) {
-			new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
-		}
-		return thisOfficer;
-	}
-
     public static ArrayList<OfficerWithNameDTO> getOfficersWithNames(String type) {
         ArrayList<OfficerWithNameDTO> theseOfficers = new ArrayList<>();
+        String query = "select F_NAME,L_NAME,OFF_YEAR from officer o left join person p on o.P_ID=p.P_ID where OFF_TYPE='"+type+"'";
         try {
             Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs;
-            rs = stmt.executeQuery(Halyard.console.setRegexColor(query05 +type+ "'"));
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(stmt,query);
             while (rs.next()) {
                 theseOfficers.add(new OfficerWithNameDTO(
                         rs.getString("L_NAME"),
@@ -115,6 +92,7 @@ public class SqlOfficer {
                         rs.getString("OFF_YEAR")
                         ));
             }
+            stmt.close();
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
