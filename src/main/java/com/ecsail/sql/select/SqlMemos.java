@@ -31,7 +31,7 @@ public class SqlMemos {
                         rs.getInt("MONEY_ID"),
                         rs.getString("CATEGORY")));
             }
-            return theseMemos;
+            stmt.close();
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }

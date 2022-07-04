@@ -134,10 +134,13 @@ public class HBoxInvoiceList extends HBox {
 				// insert the work credit information (This may be deprecated. I haven't made up my mind yet)
 				SqlInsert.addWorkCreditRecord(moneyId, membership);
 				// add new money row to tableview
+				System.out.println("the size of the Arraylist before inserting record=" + fiscals.size());
 				fiscals.add(newMoney);
+				System.out.println("the size of the Arraylist after inserting record=" + fiscals.size());
 				// send new money row to top
 				fiscals.sort(Comparator.comparing(MoneyDTO::getFiscal_year).reversed());
 				// open a tab for the year we just created
+				System.out.println("calling method createTabByYear and passing ");
 				createTabByYear(newMoney);
 		});
         
@@ -217,6 +220,7 @@ public class HBoxInvoiceList extends HBox {
 	}
 
 	private static void createTabByYear(MoneyDTO money) {
+		System.out.println("inside method createTabByYear");
 		// create a tab with the correct year
 		Tab newTab = new Tab(String.valueOf(money.getFiscal_year()));
 		// add tab to pane
