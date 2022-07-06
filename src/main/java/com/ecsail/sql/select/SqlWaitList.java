@@ -1,22 +1,19 @@
 package com.ecsail.sql.select;
 
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
-import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.Halyard;
 import com.ecsail.structures.WaitListDTO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 
 public class SqlWaitList {
     public static WaitListDTO getWaitList(int ms_id) {
         WaitListDTO thisWaitList = null;
+        String query = "select * from waitlist where ms_id=" + ms_id;
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs;
-            rs = stmt.executeQuery(Halyard.console.setRegexColor("select * from waitlist where ms_id=" + ms_id));
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 thisWaitList = new WaitListDTO(
                         rs.getInt("MS_ID"),
@@ -28,8 +25,8 @@ public class SqlWaitList {
                         rs.getBoolean("WANTSLIPCHANGE")
                         );
             }
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
         return thisWaitList;
@@ -37,10 +34,9 @@ public class SqlWaitList {
 
     public static ArrayList<WaitListDTO> getWaitLists() {
         ArrayList<WaitListDTO> thisWaitList = new ArrayList<>();
+        String query = "select * from waitlist";
         try {
-            Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-            ResultSet rs;
-            rs = stmt.executeQuery(Halyard.console.setRegexColor("select * from waitlist"));
+            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 thisWaitList.add(new WaitListDTO(
                         rs.getInt("MS_ID"),
@@ -52,8 +48,8 @@ public class SqlWaitList {
                         rs.getBoolean("WANTSLIPCHANGE")
                         ));
             }
+            Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
         return thisWaitList;

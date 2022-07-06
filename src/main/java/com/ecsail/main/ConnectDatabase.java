@@ -541,10 +541,19 @@ public class ConnectDatabase {
 	public ResultSet executeSelectQuery(String query) throws SQLException {
 		Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 		System.out.println(query);
-		if(sshConnection.checkSSHConnection())
-			Halyard.getLogger().info("SSH Connection is still good");
+//		if(sshConnection.checkSSHConnection())
+//			Halyard.getLogger().info("SSH Connection is still good");
 		ResultSet rs = stmt.executeQuery(query);
 		return rs;
+	}
+
+	public void executeQuery(String query) throws SQLException {
+		Statement stmt = ConnectDatabase.sqlConnection.createStatement();
+		System.out.println(query);
+//		if(sshConnection.checkSSHConnection())
+//			Halyard.getLogger().info("SSH Connection is still good");
+		stmt.execute(query);
+		stmt.close();
 	}
 
 	public void closeResultSet(ResultSet rs) throws SQLException {
