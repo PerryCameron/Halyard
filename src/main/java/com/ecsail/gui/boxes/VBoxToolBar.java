@@ -28,7 +28,6 @@ public class VBoxToolBar extends VBox {
 
 		Menu subMenu1_1 = new Menu("Export");
 			MenuItem m1_1_1 = new MenuItem("Create SQL Script");
-			MenuItem m1_2 = new MenuItem("Console");
 			MenuItem m1_3 = new MenuItem("Update Statistics");
 			MenuItem m1_4 = new MenuItem("Close connection");
 
@@ -74,7 +73,6 @@ public class VBoxToolBar extends VBox {
 
 		//// Menu 1 "File" Listeners ///
 		m1_1_1.setOnAction((event) -> SqlScriptMaker.createSql());
-		m1_2.setOnAction((event) ->  openConsole());
 //		m1_3.setOnAction((event) -> new Dialogue_StatisticsStatusBar());
 		m1_4.setOnAction((event) -> closeConnection(primaryStage));
 		//// Menu 2 "Search" Listeners ///
@@ -113,7 +111,7 @@ public class VBoxToolBar extends VBox {
 		subMenu3_2.getItems().addAll(m3_2_1,m3_2_2);
 		subMenu4_1.getItems().addAll(m4_1_2,m4_1_4,m4_1_8,m4_1_10);
 
-        menu1.getItems().addAll(subMenu1_1,m1_2,m1_3,m1_4);
+        menu1.getItems().addAll(subMenu1_1,m1_3,m1_4);
 		menu2.getItems().addAll(m2_1,m2_2);
         menu3.getItems().addAll(subMenu3_1,subMenu3_2,m3_3,m3_4);
         menu4.getItems().add(subMenu4_1);
@@ -127,16 +125,5 @@ public class VBoxToolBar extends VBox {
 		Launcher.closeTabs();
 		primaryStage.setTitle("ECSC Membership Database (not connected)");
 		Halyard.connectDatabase();
-	}
-
-	private void openConsole() {
-		////////// OBJECTS /////////
-		StackPane secondaryLayout = new StackPane();
-		Scene secondScene = new Scene(secondaryLayout, 1024, 500);
-		Stage newWindow = new Stage();
-		secondaryLayout.getChildren().add(Halyard.console);
-		newWindow.setTitle("Console");
-		newWindow.setScene(secondScene);
-		newWindow.show();
 	}
 }

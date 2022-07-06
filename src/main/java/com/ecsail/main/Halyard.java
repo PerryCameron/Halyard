@@ -32,7 +32,7 @@ public static ObservableList<MembershipListDTO> activememberships;
 public static String selectedYear; 
 static BorderPane mainPane;
 static Launcher vboxMain;
-public static BoxConsole console;
+
 
 	public static Logger getLogger() {
 		return logger;
@@ -52,7 +52,6 @@ public static void main(String[] args) throws SQLException {
 	Halyard.edits = FileIO.openTupleCountObject();
 	}
 	setUpForFirstTime();
-	console = new BoxConsole();
 	launch(args);
 }
 

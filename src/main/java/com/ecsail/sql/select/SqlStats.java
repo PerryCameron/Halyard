@@ -14,13 +14,13 @@ import java.util.ArrayList;
 public class SqlStats {
     public static ArrayList<StatsDTO> getStatistics(int startYear , int stopYear) {
         ArrayList<StatsDTO> stats = new ArrayList<>();
-        String query = "select * from stats where FISCAL_YEAR > "+(startYear -1)+" and FISCAL_YEAR < " + (stopYear +1);
+        String query = "SELECT * FROM stats WHERE fiscal_year > "+(startYear -1)+" AND fiscal_year < " + (stopYear +1);
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
         while (rs.next()) {
             stats.add(new StatsDTO(
                     rs.getInt("STAT_ID"),
-                    rs.getInt("FISCAL_YEAR"),
+                    rs.getInt("fiscal_year"),
                     rs.getInt("ACTIVE_MEMBERSHIPS"),
                     rs.getInt("NON_RENEW"),
                     rs.getInt("RETURN_MEMBERS"),
@@ -81,47 +81,47 @@ public class SqlStats {
         int lastYear = year -1;
         return
                 "SELECT \n" +
-                        "id.FISCAL_YEAR AS 'YEAR',\n" +
-                        "COUNT(DISTINCT IF(id.MEM_TYPE = 'RM' and id.RENEW=true,id.MEMBERSHIP_ID , NULL)) AS 'REGULAR',\n" +
-                        "COUNT(DISTINCT IF(id.MEM_TYPE = 'FM' and id.RENEW=true,id.MEMBERSHIP_ID , NULL)) AS 'FAMILY',\n" +
-                        "COUNT(DISTINCT IF(id.MEM_TYPE = 'SO' and id.RENEW=true,id.MEMBERSHIP_ID , NULL)) AS 'SOCIAL',\n" +
-                        "COUNT(DISTINCT IF(id.MEM_TYPE = 'LA' and id.RENEW=true,id.MEMBERSHIP_ID , NULL)) AS 'LAKEASSOCIATES',\n" +
-                        "COUNT(DISTINCT IF(id.MEM_TYPE = 'LM' and id.RENEW=true,id.MEMBERSHIP_ID , NULL)) AS 'LIFEMEMBERS',\n" +
-                        "COUNT(DISTINCT IF(id.MEM_TYPE = 'SM' and id.RENEW=true,id.MEMBERSHIP_ID , NULL)) AS 'STUDENT',\n" +
-                        "COUNT(DISTINCT IF(id.MEM_TYPE = 'RF' and id.RENEW=true,id.MEMBERSHIP_ID , NULL)) AS 'RACEFELLOWS',\n" +
-                        "COUNT(DISTINCT IF(YEAR(m.JOIN_DATE)='"+year+"',id.MEMBERSHIP_ID, NULL)) AS 'NEW_MEMBERS',\n" +
-                        "COUNT(DISTINCT IF(id.MEMBERSHIP_ID > \n" +
+                        "id.fiscal_year AS 'YEAR',\n" +
+                        "COUNT(DISTINCT IF(id.mem_type = 'RM' AND id.RENEW=true,id.membership_id , NULL)) AS 'REGULAR',\n" +
+                        "COUNT(DISTINCT IF(id.mem_type = 'FM' AND id.RENEW=true,id.membership_id , NULL)) AS 'FAMILY',\n" +
+                        "COUNT(DISTINCT IF(id.mem_type = 'SO' AND id.RENEW=true,id.membership_id , NULL)) AS 'SOCIAL',\n" +
+                        "COUNT(DISTINCT IF(id.mem_type = 'LA' AND id.RENEW=true,id.membership_id , NULL)) AS 'LAKEASSOCIATES',\n" +
+                        "COUNT(DISTINCT IF(id.mem_type = 'LM' AND id.RENEW=true,id.membership_id , NULL)) AS 'LIFEMEMBERS',\n" +
+                        "COUNT(DISTINCT IF(id.mem_type = 'SM' AND id.RENEW=true,id.membership_id , NULL)) AS 'STUDENT',\n" +
+                        "COUNT(DISTINCT IF(id.mem_type = 'RF' AND id.RENEW=true,id.membership_id , NULL)) AS 'RACEFELLOWS',\n" +
+                        "COUNT(DISTINCT IF(YEAR(m.JOIN_DATE)='"+year+"',id.membership_id, NULL)) AS 'NEW_MEMBERS',\n" +
+                        "COUNT(DISTINCT IF(id.membership_id > \n" +
                         "  (\n" +
-                        "  select MEMBERSHIP_ID \n" +
-                        "  from membership_id \n" +
-                        "  where FISCAL_YEAR="+year+" and MS_ID=\n" +
+                        "  SELECT membership_id \n" +
+                        "  FROM membership_id \n" +
+                        "  WHERE fiscal_year="+year+" AND MS_ID=\n" +
                         "     (\n" +
-                        "     select MS_ID \n" +
-                        "     from membership_id \n" +
-                        "     where MEMBERSHIP_ID=\n" +
+                        "     SELECT MS_ID \n" +
+                        "     FROM membership_id \n" +
+                        "     WHERE membership_id=\n" +
                         "        (\n" +
-                        "        select max(membership_id) \n" +
-                        "        from membership_id \n" +
-                        "        where FISCAL_YEAR=" + lastYear +
-                        "        and membership_id < 500 \n" +
-                        "        and renew=1\n" +
+                        "        SELECT max(membership_id) \n" +
+                        "        FROM membership_id \n" +
+                        "        WHERE fiscal_year=" + lastYear +
+                        "        AND membership_id < 500 \n" +
+                        "        AND renew=1\n" +
                         "        ) \n" +
-                        "     and FISCAL_YEAR=" + lastYear +
+                        "     AND fiscal_year=" + lastYear +
                         "     )\n" +
                         "   ) \n" +
-                        "and id.MEMBERSHIP_ID < 500 \n" +
-                        "and YEAR(m.JOIN_DATE)!='"+year+"' \n" +
-                        "and (SELECT NOT EXISTS(select mid from membership_id where FISCAL_YEAR="+lastYear+" and RENEW=1 and MS_ID=id.MS_ID)), id.MEMBERSHIP_ID, NULL)) AS 'RETURN_MEMBERS', \n" +
+                        "AND id.membership_id < 500 \n" +
+                        "AND YEAR(m.JOIN_DATE)!='"+year+"' \n" +
+                        "AND (SELECT NOT EXISTS(SELECT mid FROM membership_id WHERE fiscal_year="+lastYear+" AND RENEW=1 AND MS_ID=id.MS_ID)), id.membership_id, NULL)) AS 'RETURN_MEMBERS', \n" +
                         "SUM(NOT RENEW) as 'NON_RENEW',\n" +
                         "SUM(RENEW) as 'ACTIVE_MEMBERSHIPS'\n" +
                         "FROM membership_id id\n" +
                         "LEFT JOIN membership m on id.MS_ID=m.MS_ID \n" +
-                        "WHERE FISCAL_YEAR=" + year;
+                        "WHERE fiscal_year=" + year;
     }
 
     public static int getNumberOfStatYears()  {  // gives the last memo_id number
         int statCount = 0;
-        String query = "select COUNT(STAT_ID) from stats\n";
+        String query = "SELECT COUNT(STAT_ID) FROM stats";
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             rs.next();

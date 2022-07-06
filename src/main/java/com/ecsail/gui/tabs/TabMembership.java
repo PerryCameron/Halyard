@@ -14,6 +14,7 @@ import com.ecsail.gui.boxes.HBoxSlip;
 import com.ecsail.gui.dialogues.HalyardAlert;
 import com.ecsail.main.CreateMembership;
 import com.ecsail.main.Note;
+import com.ecsail.sql.SqlInsert;
 import com.ecsail.sql.select.SqlMemos;
 import com.ecsail.sql.select.SqlPerson;
 import com.ecsail.structures.*;
@@ -175,7 +176,7 @@ public class TabMembership extends Tab {
 	private HBoxPerson getPrimaryMember(TabPane peopleTabPane) {
 		HBoxPerson primaryMember;
 		if (isNewMembership()) 
-			primaryMember = new HBoxPerson(CreateMembership.createUser(membership.getMsid()), membership,peopleTabPane);// create new primary
+			primaryMember = new HBoxPerson(SqlInsert.createUser(membership.getMsid()), membership,peopleTabPane);// create new primary
 		else
 			primaryMember = new HBoxPerson(people.get(getPerson(PRIMARY)), membership,peopleTabPane); // load the primary member
 		return primaryMember;

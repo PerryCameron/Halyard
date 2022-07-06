@@ -15,20 +15,6 @@ import com.ecsail.structures.PersonDTO;
 
 public class CreateMembership {
 
-	public static PersonDTO createUser(int msid) {
-		// create a main person for the membership
-		int pid = SqlPerson.getCount() + 1;
-		try {
-			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			stmt.execute(Halyard.console.setRegexColor("INSERT INTO person () VALUES (" + pid  +"," + msid + ",1,'','',null,'','',true,null,null,null);"));
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return new PersonDTO(pid,msid,1,"","",null,"","",true,null,0);
-	}
-	
 	public static void Create() { // create a membership
 		// makes sure we don't have a New Membership tab open
 		if (!Launcher.tabOpen("New Membership")) {

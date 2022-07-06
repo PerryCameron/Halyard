@@ -1,11 +1,14 @@
 package com.ecsail.sql;
 
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
+import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.Halyard;
 import com.ecsail.main.SqlScriptMaker;
+import com.ecsail.sql.select.SqlPerson;
 import com.ecsail.structures.*;
 
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class SqlInsert {
 	
@@ -14,7 +17,7 @@ public class SqlInsert {
 	// add phone record
 	public static boolean addPhoneRecord(int phone_id, int pid , Boolean listed, String phone, String type) {
 		boolean noError = false;
-		String query = "INSERT into phone () VALUES (" + phone_id + "," + pid + ",'" + phone + "','" + type + "'," + listed + ")";
+		String query = "INSERT INTO phone () VALUES (" + phone_id + "," + pid + ",'" + phone + "','" + type + "'," + listed + ")";
 		try {
 			Halyard.getConnect().executeQuery(query);
 			noError = true;
@@ -28,7 +31,7 @@ public class SqlInsert {
 	// add email record
 	public static boolean addEmailRecord(int email_id, int pid, Boolean primary, String email, Boolean listed) {
 		boolean noError = false;
-		String query = "INSERT into email () VALUES (" + email_id + "," + pid + ","
+		String query = "INSERT INTO email () VALUES (" + email_id + "," + pid + ","
 				+ primary + ",'" + email + "'," + listed + ")";
 		try {
 			Halyard.getConnect().executeQuery(query);
@@ -42,7 +45,7 @@ public class SqlInsert {
 	
 	public static boolean addOfficerRecord(int officer_id, int pid , String board_year, String officer, int year) {
 		boolean noError = false;
-		String query = "INSERT into officer () VALUES (" + officer_id + "," + pid + "," + board_year + ",\"" + officer + "\"," + year + ")";
+		String query = "INSERT INTO officer () VALUES (" + officer_id + "," + pid + "," + board_year + ",\"" + officer + "\"," + year + ")";
 		try {
 			Halyard.getConnect().executeQuery(query);
 			noError = true;
@@ -54,7 +57,7 @@ public class SqlInsert {
 	}
 	
 	public static void addPaymentRecord(PaymentDTO op) {
-		String query = "INSERT into payment () VALUES (" + op.getPay_id() + ","
+		String query = "INSERT INTO payment () VALUES (" + op.getPay_id() + ","
 				+ op.getMoney_id() + "," + op.getCheckNumber() + ",'" + op.getPaymentType() + "','"
 				+ op.getPaymentDate() + "','" + op.getPaymentAmount() + "','" + op.getDeposit_id() + "')";
 		try {
@@ -66,7 +69,7 @@ public class SqlInsert {
 	}
 	
 	public static void addAwardRecord(AwardDTO a) {
-		String query = "INSERT into awards () VALUES (" + a.getAwardId() + ","
+		String query = "INSERT INTO awards () VALUES (" + a.getAwardId() + ","
 				+ a.getPid() + ",'" + a.getAwardYear() + "','" + a.getAwardType() + "')";
 		try {
 			Halyard.getConnect().executeQuery(query);
@@ -78,8 +81,8 @@ public class SqlInsert {
 	
 	public static boolean addBoatRecord(BoatDTO b, int msid) {
 		boolean noError = false;
-		String query = "INSERT into boat () VALUES (" + b.getBoat_id() + ",null,null,null,null,null,null,true,null,null,null,null,null,null,null,false)";
-		String query1 = "INSERT into boat_owner () VALUES (" + msid + "," + b.getBoat_id() + ")";
+		String query = "INSERT INTO boat () VALUES (" + b.getBoat_id() + ",null,null,null,null,null,null,true,null,null,null,null,null,null,null,false)";
+		String query1 = "INSERT INTO boat_owner () VALUES (" + msid + "," + b.getBoat_id() + ")";
 		try {
 			Halyard.getConnect().executeQuery(query);
 			Halyard.getConnect().executeQuery(query1);
@@ -250,5 +253,17 @@ public class SqlInsert {
 		 } catch (SQLException e) {
 			new Dialogue_ErrorSQL(e,"Unable to create new row","See below for details");
 		}
+	}
+
+	public static PersonDTO createUser(int msid) {
+		// create a main person for the membership
+		int pid = SqlPerson.getCount() + 1;
+		String query = "INSERT INTO person () VALUES (" + pid  +"," + msid + ",1,'','',null,'','',true,null,null,null)";
+		try {
+			Halyard.getConnect().executeQuery(query);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return new PersonDTO(pid,msid,1,"","",null,"","",true,null,0);
 	}
 }

@@ -14,12 +14,12 @@ import java.sql.Statement;
 public class SqlPayment {
     public static ObservableList<PaymentDTO> getPayments() {
         ObservableList<PaymentDTO> thisPayments = FXCollections.observableArrayList();
-        String query = "select * from payment";
+        String query = "SELECT * FROM payment";
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 thisPayments.add(new PaymentDTO(
-                        rs.getInt("PAY_ID"),
+                        rs.getInt("pay_id"),
                         rs.getInt("MONEY_ID"),
                         rs.getString("CHECKNUMBER"),
                         rs.getString("PAYMENT_TYPE"),
@@ -37,12 +37,12 @@ public class SqlPayment {
 
     public static ObservableList<PaymentDTO> getPayments(int money_id) {
         ObservableList<PaymentDTO> thisPayments = FXCollections.observableArrayList();
-        String query = "select * from payment where money_id=" + money_id;
+        String query = "SELECT * FROM payment WHERE money_id=" + money_id;
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 thisPayments.add(new PaymentDTO(
-                        rs.getInt("PAY_ID"),
+                        rs.getInt("pay_id"),
                         rs.getInt("MONEY_ID"),
                         rs.getString("CHECKNUMBER"),
                         rs.getString("PAYMENT_TYPE"),
@@ -60,12 +60,12 @@ public class SqlPayment {
 
     public static PaymentDTO getPayment(int money_id) {
         PaymentDTO thisPayment = null;
-        String query = "select * from payment where money_id=" + money_id;
+        String query = "SELECT * FROM payment WHERE money_id=" + money_id;
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 thisPayment = new PaymentDTO(
-                        rs.getInt("PAY_ID"),
+                        rs.getInt("pay_id"),
                         rs.getInt("MONEY_ID"),
                         rs.getString("CHECKNUMBER"),
                         rs.getString("PAYMENT_TYPE"),
@@ -83,10 +83,11 @@ public class SqlPayment {
 
     public static int getNumberOfPayments() {
         int number = 0;
-        String query = "select PAY_ID from payment ORDER BY pay_id DESC LIMIT 1";
+        String query = "SELECT pay_id FROM payment ORDER BY pay_id DESC LIMIT 1";
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
-            number = rs.getInt("PAY_ID");
+            rs.next();
+            number = rs.getInt("pay_id");
             Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
