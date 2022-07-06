@@ -63,7 +63,7 @@ public class SqlScriptMaker {
 		deposits = SqlDeposit.getDeposits();
 		waitlist = SqlWaitList.getWaitLists();
 		awards = SqlAward.getAwards();
-		hash = HashSeSQL.getAllHash();
+		hash = SqlHash.getAllHash();
 		fees = SqlFee.getAllFees();
 		idChanges = SqlIdChange.getAllChangedIds();
 		HalyardPaths.checkPath(HalyardPaths.SQLBACKUP + "/" + HalyardPaths.getYear());

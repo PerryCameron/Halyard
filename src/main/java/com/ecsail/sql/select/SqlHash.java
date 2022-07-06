@@ -1,16 +1,14 @@
 package com.ecsail.sql.select;
 
 
-import com.ecsail.main.ConnectDatabase;
 import com.ecsail.main.Halyard;
 import com.ecsail.structures.HashDTO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 
-public class HashSeSQL {
+public class SqlHash {
 
     public static HashDTO getHashFromMsid(int msid) {
         HashDTO hashDTO = new HashDTO();
