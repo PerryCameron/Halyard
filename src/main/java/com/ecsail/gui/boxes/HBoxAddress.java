@@ -123,34 +123,30 @@ public class HBoxAddress extends HBox {
         memAddressTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
 	            //focus out
 	            if (oldValue) {  // we have focused and unfocused
-	            		SqlUpdate.updateAddress(memAddressTextField.getText(),membership);
+                        membership.setAddress(memAddressTextField.getText());
+	            		SqlUpdate.updateAddress(membership);
 	            }
 	        });
                 
         memCityTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
 	            //focus out
 	            if (oldValue) {  // we have focused and unfocused
-	            		SqlUpdate.updateCity(memCityTextField.getText(),membership);
+                        membership.setCity(memCityTextField.getText());
+	            		SqlUpdate.updateCity(membership);
 	            }
 	        });
   
         memZipcodeTextField.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
 	            //focus out
 	            if (oldValue) {  // we have focused and unfocused
-	            		SqlUpdate.updateZipcode(memZipcodeTextField.getText(),membership);
+                        membership.setZip(memZipcodeTextField.getText());
+	            		SqlUpdate.updateZipcode(membership);
 	            }
 	        });
         
-        //stateComboBox.valueProperty().addListener(new ChangeListener<String>() {
-        //    @Override 
-        //    public void changed(ObservableValue ov, String oldValue, String newValue) {
-        //        	SqlUpdate.updateState(newValue,membership);
-        //    }    
-        //});
-        
         stateComboBox.getSelectionModel().selectedItemProperty().addListener( (options, oldValue, newValue) -> {
-        	SqlUpdate.updateState(newValue,membership);
-            System.out.println(newValue);
+            membership.setState(newValue);
+        	SqlUpdate.updateState(membership);
         }); 
         
 		///////////// SET CONTENT ////////////////////
