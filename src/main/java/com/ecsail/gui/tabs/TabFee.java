@@ -149,7 +149,7 @@ public class TabFee extends Tab {
 		// clear the current list
 		feeDTOS.clear();
 		// get next available primary key
-		int key = SqlSelect.getNextAvailablePrimaryKey("fee","FEE_ID") + 1;
+		int key = SqlSelect.getNextAvailablePrimaryKey("fee","FEE_ID");
 		// choose year to copy
 		int copyYear = Integer.parseInt(selectedYear) + 1;
 		// populate that list with objects from copy year
@@ -238,7 +238,7 @@ public class TabFee extends Tab {
 
 	private void addNewRow() {
 		// get next key
-		int key = SqlSelect.getNextAvailablePrimaryKey("fee","FEE_ID") + 1;
+		int key = SqlSelect.getNextAvailablePrimaryKey("fee","FEE_ID");
 		// make DTO object
 		FeeDTO feeDTO = new FeeDTO(key,"",new BigDecimal(0),0,Integer.parseInt(selectedYear),"Enter Description");
 		// add object to database

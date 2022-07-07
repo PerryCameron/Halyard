@@ -176,20 +176,6 @@ public class SqlDeposit {
         }
     }
 
-    public static int getNumberOfDeposits() {
-        int number = 0;
-        String query = "SELECT deposit_id FROM deposit ORDER BY deposit_id DESC LIMIT 1";
-        try { // select PAY_ID from payment ORDER BY pay_id DESC LIMIT 1
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
-            rs.next();
-            number = rs.getInt("deposit_id");
-            Halyard.getConnect().closeResultSet(rs);
-        } catch (SQLException e) {
-            new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
-        }
-        return number;
-    }
-
     public static int getNumberOfDepositBatches(String year) {
         int number = 0;
         String query = "SELECT MAX(batch) FROM deposit WHERE fiscal_year=" + year;

@@ -482,7 +482,7 @@ public class TabDeposits extends Tab {
 	}
 
 	private int createPaymentRecord(PaidDuesDTO thisPaidDues) {
-		int pay_id = SqlPayment.getNumberOfPayments() + 1;
+		int pay_id = SqlSelect.getNextAvailablePrimaryKey("payment","pay_id");
 		PaymentDTO newPayment = new PaymentDTO(pay_id, thisPaidDues.getMoney_id(), "0", "CH", currentDate, "0",
 				1);
 		SqlInsert.addPaymentRecord(newPayment);
@@ -490,7 +490,7 @@ public class TabDeposits extends Tab {
 	}
 
 	private int createDepositRecord() {
-		int deposit_id = SqlDeposit.getNumberOfDeposits() + 1;
+		int deposit_id = SqlSelect.getNextAvailablePrimaryKey("deposit","deposit_id");
 		DepositDTO newDeposit = new DepositDTO(deposit_id, currentDate, selectedYear,
 				summaryTotals.getDepositNumber());
 		SqlInsert.addDeposit(newDeposit);

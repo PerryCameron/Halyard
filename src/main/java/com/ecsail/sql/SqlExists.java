@@ -225,11 +225,11 @@ public class SqlExists {
 	
 	public static boolean fiscalRecordExists(MembershipListDTO ms, int year) {
 		boolean result = false;
-		String query = "SELECT Exists(SELECT * FROM money WHERE ms_id=" + ms.getMsid() + " AND fiscal_year='" + year + "')";
+		String query = "SELECT Exists(SELECT * FROM money WHERE ms_id=" + ms.getMsid() + " AND fiscal_year=" + year + ")";
 		try {
 			ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
 			while(rs.next()) {
-			result = rs.getBoolean("Exists(SELECT * FROM money WHERE ms_id=" + ms.getMsid() + " AND fiscal_year='" + year + "')");
+			result = rs.getBoolean("Exists(SELECT * FROM money WHERE ms_id=" + ms.getMsid() + " AND fiscal_year=" + year + ")");
 			}
 		Halyard.getConnect().closeResultSet(rs); }
 		catch (SQLException e) {
@@ -241,11 +241,11 @@ public class SqlExists {
 	//select exists(select * from person where MS_ID=229 and MEMBER_TYPE=2);
 	public static Boolean slipExists(int ms_id) {
 		boolean result = false;
-		String query = "SELECT EXISTS(SELECT * FROM slip WHERE ms_id='" + ms_id + "')";
+		String query = "SELECT EXISTS(SELECT * FROM slip WHERE ms_id=" + ms_id + ")";
 		try {
 			ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
 			while(rs.next()) {
-			result = rs.getBoolean("EXISTS(SELECT * FROM slip WHERE ms_id='" + ms_id + "')");
+			result = rs.getBoolean("EXISTS(SELECT * FROM slip WHERE ms_id=" + ms_id + ")");
 			}
 		Halyard.getConnect().closeResultSet(rs); }
 		catch (SQLException e) {
@@ -271,11 +271,11 @@ public class SqlExists {
 	
 	public static Boolean moneyExists(String year, MembershipDTO membership) {
 		boolean result = false;
-		String query = "SELECT EXISTS(SELECT * FROM money WHERE ms_id='" + membership.getMsid() + "' AND fiscal_year='" + year + "')";
+		String query = "SELECT EXISTS(SELECT * FROM money WHERE ms_id=" + membership.getMsid() + " AND fiscal_year=" + year + ")";
 		try {
 			ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
 			while(rs.next()) {
-			result = rs.getBoolean("EXISTS(SELECT * FROM money WHERE ms_id='" + membership.getMsid() + "' AND fiscal_year='" + year + "')");
+			result = rs.getBoolean("EXISTS(SELECT * FROM money WHERE ms_id=" + membership.getMsid() + " AND fiscal_year=" + year + ")");
 			}
 		Halyard.getConnect().closeResultSet(rs); }
 		catch (SQLException e) {
@@ -286,12 +286,12 @@ public class SqlExists {
 	
 	public static Boolean moneyExists(int ms_id,String year) {
 		boolean result = false;
-		String query = "SELECT EXISTS(SELECT * FROM money WHERE ms_id='"+ms_id+"' AND fiscal_year='"+year+"')";
+		String query = "SELECT EXISTS(SELECT * FROM money WHERE ms_id="+ms_id+" AND fiscal_year="+year+")";
 		try {
 			ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
 			while (rs.next()) {
 				result = rs.getBoolean(
-						"EXISTS(SELECT * FROM money WHERE ms_id='"+ms_id+"' AND fiscal_year='"+year+"')");
+						"EXISTS(SELECT * FROM money WHERE ms_id="+ms_id+" AND fiscal_year="+year+")");
 			}
 		Halyard.getConnect().closeResultSet(rs); }
 		catch (SQLException e) {
@@ -336,14 +336,14 @@ public class SqlExists {
 	
 	public static Boolean isOfficer(PersonDTO per, int year) {
 		boolean result = false;
-		String query = "SELECT EXISTS(SELECT * FROM officer WHERE p_id='"
-				+ per.getP_id() + "' AND off_year='" + year + "' AND OFF_TYPE != 'BM')";
+		String query = "SELECT EXISTS(SELECT * FROM officer WHERE p_id="
+				+ per.getP_id() + " AND off_year=" + year + " AND OFF_TYPE != 'BM')";
 		try {
 			ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
 			rs.next();
 				result = rs.getBoolean(
-						"EXISTS(SELECT * FROM officer WHERE p_id='"
-							+ per.getP_id() + "' AND off_year='" + year + "' AND OFF_TYPE != 'BM')");
+						"EXISTS(SELECT * FROM officer WHERE p_id="
+							+ per.getP_id() + " AND off_year='" + year + "' AND OFF_TYPE != 'BM')");
 		Halyard.getConnect().closeResultSet(rs); }
 		catch (SQLException e) {
 			new Dialogue_ErrorSQL(e,"Unable to check if EXISTS","See below for details");

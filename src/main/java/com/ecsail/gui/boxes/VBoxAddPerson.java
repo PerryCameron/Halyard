@@ -143,7 +143,7 @@ public class VBoxAddPerson extends VBox {
 		
 		/////////////////  LISTENERS  /////////////////////
 		addButton.setOnAction((event) -> {
-			int pid = SqlSelect.getNextAvailablePrimaryKey("person", "p_id") + 1;
+			int pid = SqlSelect.getNextAvailablePrimaryKey("person", "p_id");
 			person = new PersonDTO(pid, ms_id, memberType.getValue().getCode(), fnameTextField.getText(),
 					lnameTextField.getText(), getBirthday(birthdayDatePicker.getValue()), occupationTextField.getText(),
 					businessTextField.getText(), true, null,null);

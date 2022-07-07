@@ -222,7 +222,7 @@ public class HBoxPhone extends HBox {
         
         phoneAdd.setOnAction((event) -> {
                 // return next key id for phone table
-                int phone_id = SqlSelect.getNextAvailablePrimaryKey("phone", "phone_id") + 1;
+                int phone_id = SqlSelect.getNextAvailablePrimaryKey("phone", "phone_id");
                 // attempt to add a new record and return if it is sucessful
                 if (SqlInsert.addPhoneRecord(phone_id, person.getP_id(), true, "new phone", ""))
                     // if sucessfully added to SQL then add a new row in the tableview

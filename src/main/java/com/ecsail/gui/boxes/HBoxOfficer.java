@@ -123,7 +123,7 @@ public class HBoxOfficer extends HBox {
 	    	    
 	        officerAdd.setOnAction(e -> {
 				// get next available primary key for officer table
-				int officer_id = SqlSelect.getNextAvailablePrimaryKey("officer","o_id") + 1; // gets last memo_id number
+				int officer_id = SqlSelect.getNextAvailablePrimaryKey("officer","o_id"); // gets last memo_id number
 				// insert a new officer row into SQL and return true on success
 				if(SqlInsert.addOfficerRecord(officer_id,person.getP_id(),"0","new officer",Integer.parseInt(currentYear)))
 				// add a new row to the tableView to match new SQL entry

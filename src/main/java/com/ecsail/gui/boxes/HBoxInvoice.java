@@ -182,7 +182,7 @@ public class HBoxInvoice extends HBox {
 		invoiceDTO.getButtonAddNote().setOnAction(e -> note.addMemoAndReturnId("Invoice Note: ",date,fiscals.get(rowIndex).getMoney_id(),"I"));
 
 		invoiceDTO.getButtonAdd().setOnAction(e -> {
-			int pay_id = SqlPayment.getNumberOfPayments() + 1; // get last pay_id number
+			int pay_id = SqlSelect.getNextAvailablePrimaryKey("payment","pay_id");
 			payments.add(new PaymentDTO(pay_id,fiscals.get(rowIndex).getMoney_id(),null,"CH",date, "0",1)); // let's add it to our GUI
 			SqlInsert.addPaymentRecord(payments.get(payments.size() -1));
 		});
@@ -535,7 +535,7 @@ public class HBoxInvoice extends HBox {
 		} else {  // if not create one
 			this.payments = FXCollections.observableArrayList();
 			System.out.println("getPayment(): Creating a new payment entry");
-			int pay_id = SqlPayment.getNumberOfPayments() + 1;
+			int pay_id = SqlSelect.getNextAvailablePrimaryKey("payment","pay_id");
 			payments.add(new PaymentDTO(pay_id,fiscals.get(rowIndex).getMoney_id(),"0","CH",date, "0",1));
 			SqlInsert.addPaymentRecord(payments.get(payments.size() - 1));
 		}

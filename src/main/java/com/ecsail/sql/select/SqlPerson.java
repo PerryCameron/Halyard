@@ -192,26 +192,6 @@ public class SqlPerson {
     }
 
     /**
-     * Counts the number of people in the database and returns that number
-     *
-     * @return the number of people tuples in the database
-     */
-    public static int getCount()  {
-        int number = 0;
-        String query = "SELECT * FROM person ORDER BY p_id DESC LIMIT 1";
-        try {
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
-            rs.next();
-            number = rs.getInt("p_id");
-            rs.getStatement().close();
-            Halyard.getConnect().closeResultSet(rs);
-        } catch (SQLException e) {
-            new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
-        }
-        return number;
-    }
-
-    /**
      *
      * @param person a PersonDTO
      * @return an integer representing the age of the person in the personDTO

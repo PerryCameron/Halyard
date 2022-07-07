@@ -81,17 +81,4 @@ public class SqlPayment {
         return thisPayment;
     }
 
-    public static int getNumberOfPayments() {
-        int number = 0;
-        String query = "SELECT pay_id FROM payment ORDER BY pay_id DESC LIMIT 1";
-        try {
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
-            rs.next();
-            number = rs.getInt("pay_id");
-            Halyard.getConnect().closeResultSet(rs);
-        } catch (SQLException e) {
-            new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
-        }
-        return number;
-    }
 }

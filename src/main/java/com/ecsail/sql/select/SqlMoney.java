@@ -257,19 +257,4 @@ public class SqlMoney {
         }
         return number;
     }
-
-    public static int getCount(String type) { // gives the last memo_id number
-        int result = 0;
-        String query = "SELECT * FROM money ORDER BY " + type + " DESC LIMIT 1;";
-        try {
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
-            boolean hasResult = rs.next();
-            if (hasResult)
-                result = rs.getInt(type);
-            Halyard.getConnect().closeResultSet(rs);
-        } catch (SQLException e) {
-            new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
-        }
-        return result;
-    }
 }

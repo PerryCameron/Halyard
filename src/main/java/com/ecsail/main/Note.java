@@ -8,6 +8,7 @@ import java.util.Comparator;
 import com.ecsail.sql.SqlDelete;
 import com.ecsail.sql.SqlInsert;
 import com.ecsail.sql.SqlUpdate;
+import com.ecsail.sql.select.SqlSelect;
 import com.ecsail.structures.MemoDTO;
 
 import javafx.collections.ObservableList;
@@ -30,27 +31,12 @@ public class Note {
 
 	public int addMemoAndReturnId(String note, String date, int money_id, String category) {
 		//String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date(System.currentTimeMillis()));
-		int memo_id = getCount() + 1;
+		int memo_id = SqlSelect.getNextAvailablePrimaryKey("memo","memo_id");
 		MemoDTO memo = new MemoDTO(memo_id,msid,date,note,money_id,category);
 		memos.add(memo); // add in observable list
 		addMemo(memo); // add in SQL
 		Collections.sort(memos, Comparator.comparing(MemoDTO::getMemo_id).reversed());
 		return memo_id;
-	}
-
-	protected int getCount() { // gives the last memo_id number
-		int count = 0;
-		try {
-			Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-			ResultSet rs;
-			rs = stmt.executeQuery("select * from memo ORDER BY memo_id DESC LIMIT 1");
-			rs.next();
-			count = rs.getInt("memo_id");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return count;
 	}
 	
 	public void addMemo(MemoDTO memo) {

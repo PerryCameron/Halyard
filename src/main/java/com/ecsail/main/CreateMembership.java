@@ -19,17 +19,17 @@ public class CreateMembership {
 		// makes sure we don't have a New Membership tab open
 		if (!Launcher.tabOpen("New Membership")) {
 			// get next available ms_id
-			int ms_id = SqlSelect.getNextAvailablePrimaryKey("membership", "ms_id") + 1;
+			int ms_id = SqlSelect.getNextAvailablePrimaryKey("membership", "ms_id");
 			// get next available membership_id in a roster for a given year (last person on list)
 			int membership_id = SqlMembership_Id.getHighestMembershipId(HalyardPaths.getYear()) + 1;
 			// get the next available primary key for a new membership_id tuple
-			int mid = SqlSelect.getNextAvailablePrimaryKey("membership_id", "mid") + 1;
+			int mid = SqlSelect.getNextAvailablePrimaryKey("membership_id", "mid");
 			// Do we really need to create a person?
-			int pid = SqlPerson.getCount() + 1;
+			int pid = SqlSelect.getNextAvailablePrimaryKey("person","p_id");
 			// creates a note object
 			Note newMemNote = new Note();
 			// gets next available primary key to make a new memo tuple
-			int note_id = newMemNote.getCount() + 1;
+			int note_id = SqlSelect.getNextAvailablePrimaryKey("memo","memo_id");
 			// primary user creation is done in TabMembership();
 			// Create a time stamp
 			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");

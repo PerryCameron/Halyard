@@ -1,31 +1,15 @@
 package com.ecsail.main;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import com.ecsail.gui.boxes.HBoxWelcome;
 import com.ecsail.sql.select.SqlMembershipList;
 import com.ecsail.structures.Object_Login;
-
-import com.jcraft.jsch.JSchException;
-import com.mysql.cj.jdbc.StatementImpl;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -34,7 +18,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import org.slf4j.LoggerFactory;
+
+import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ConnectDatabase {
 
@@ -58,7 +45,10 @@ public class ConnectDatabase {
 	TextField passWord;
 	public static final String BLUE = "\033[0;34m";    // BLUE
 	public static final String RESET = "\033[0m";  // Text Reset
+	Stage primaryStage;
+
 	public ConnectDatabase(Stage primaryStage) {
+		this.primaryStage = primaryStage;
 
 		if (FileIO.hostFileExists()) 
 			FileIO.openLoginObjects();
@@ -430,15 +420,6 @@ public class ConnectDatabase {
 		logonStage.setResizable(false);
 	}
 
-//	private void setServerAliveInterval() {
-////		try {
-////			sshConnection.getSession().setServerAliveInterval(60);
-////			sshConnection.getSession().setServerAliveCountMax(10);
-////		} catch (JSchException e) {
-////			e.printStackTrace();
-////		}
-//	}
-
 	///////////////  CLASS METHODS ///////////////////
 	private void populateFields() {
 		userName.setText(currentLogon.getUser());
@@ -540,12 +521,21 @@ public class ConnectDatabase {
 		// Retrieving the data
 	}
 
+	private void closeConnection() {
+		Halyard.closeDatabaseConnection();
+//		Launcher.closeTabs();
+		primaryStage.setTitle("ECSC Membership Database (not connected)");
+		Halyard.connectDatabase();
+	}
+
 	public ResultSet executeSelectQuery(String query) throws SQLException {
 		Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 //		Halyard.getLogger().info(query);
-		System.out.println(BLUE + query + RESET);
-//		if(sshConnection.checkSSHConnection())
-//			Halyard.getLogger().info("SSH Connection is still good");
+		System.out.println(colorCode(query));
+		if(!sshConnection.getSession().isConnected()) {
+			Halyard.getLogger().error("SSH Connection is no longer connected");
+			closeConnection();
+		}
 		ResultSet rs = stmt.executeQuery(query);
 		return rs;
 	}
@@ -553,12 +543,41 @@ public class ConnectDatabase {
 	public void executeQuery(String query) throws SQLException {
 		Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 //		Halyard.getLogger().info(query);
-		System.out.println(query);
+		System.out.println(colorCode(query));
+		if(!sshConnection.getSession().isConnected()) {
+			Halyard.getLogger().error("SSH Connection is no longer connected");
+			closeConnection();
+		}
 //		if(sshConnection.checkSSHConnection())
 //			Halyard.getLogger().info("SSH Connection is still good");
 		stmt.execute(query);
 		stmt.close();
 	}
+
+	public String colorCode(String query) {
+		String result = "";
+		String[] parts = query.split(" ");
+		for(String p: parts) {
+			if(isUpperCase(p)) {
+				result += BLUE + p + RESET + " ";
+			} else {
+				result += p + " ";
+			}
+		}
+		return result;
+	}
+
+	public boolean isUpperCase(String queryWord) {
+		char[] charArray = queryWord.toCharArray();
+		for(int i=0; i < charArray.length; i++){
+			//if any character is not in upper case, return false
+			if( !Character.isUpperCase( charArray[i] ))
+				return false;
+		}
+		return true;
+	}
+
+
 
 	public void closeResultSet(ResultSet rs) throws SQLException {
 		if (rs.getStatement() != null) {

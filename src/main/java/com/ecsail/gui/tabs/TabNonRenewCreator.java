@@ -97,7 +97,7 @@ public class TabNonRenewCreator extends Tab {
 	private void getNonRenewListOnChangedYear(Integer year) {
 		ObservableList<MembershipIdDTO> oldYear = SqlMembership_Id.getActiveMembershipIdsByYear(String.valueOf(year -1));
 		ObservableList<MembershipIdDTO> newYear = SqlMembership_Id.getAllMembershipIdsByYear(String.valueOf(year));
-		int mid = SqlSelect.getNextAvailablePrimaryKey("membership_id","mid") + 1;
+		int mid = SqlSelect.getNextAvailablePrimaryKey("membership_id","mid");
 		System.out.println("old year=" + (year - 1));
 
 
@@ -140,7 +140,7 @@ public class TabNonRenewCreator extends Tab {
 
 
 	private ObservableList<MembershipIdDTO> getNonRenewListOnUnchangedYear(Integer year) {
-		int mid = SqlSelect.getNextAvailablePrimaryKey("membership_id","mid") + 1;
+		int mid = SqlSelect.getNextAvailablePrimaryKey("membership_id","mid");
 //      #Will give all non-renewed members using previous year if numbers didn't change
 		ObservableList<MembershipIdDTO> ids = FXCollections.observableArrayList();
 		try {

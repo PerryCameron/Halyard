@@ -17,7 +17,7 @@ public class SqlPhone {
     public static ObservableList<PhoneDTO> getPhoneByPid(int p_id) {  // if p_id = 0 then select all
         String query = "SELECT * FROM phone";
         if(p_id != 0)
-            query += " WHERE p_id='" + p_id + "'";
+            query += " WHERE p_id=" + p_id;
         ObservableList<PhoneDTO> thisPhone = FXCollections.observableArrayList();
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);

@@ -4,6 +4,7 @@ import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.Halyard;
 import com.ecsail.main.SqlScriptMaker;
 import com.ecsail.sql.select.SqlPerson;
+import com.ecsail.sql.select.SqlSelect;
 import com.ecsail.structures.*;
 
 import java.sql.SQLException;
@@ -255,7 +256,7 @@ public class SqlInsert {
 
 	public static PersonDTO createUser(int msid) {
 		// create a main person for the membership
-		int pid = SqlPerson.getCount() + 1;
+		int pid = SqlSelect.getNextAvailablePrimaryKey("person","p_id");
 		String query = "INSERT INTO person () VALUES (" + pid  +"," + msid + ",1,'','',null,'','',true,null,null,null)";
 		try {
 			Halyard.getConnect().executeQuery(query);

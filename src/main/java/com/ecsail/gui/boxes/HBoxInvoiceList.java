@@ -8,6 +8,7 @@ import com.ecsail.sql.SqlExists;
 import com.ecsail.sql.SqlInsert;
 import com.ecsail.sql.select.SqlDefinedFee;
 import com.ecsail.sql.select.SqlMoney;
+import com.ecsail.sql.select.SqlSelect;
 import com.ecsail.structures.DefinedFeeDTO;
 import com.ecsail.structures.MembershipDTO;
 import com.ecsail.structures.MoneyDTO;
@@ -119,7 +120,7 @@ public class HBoxInvoiceList extends HBox {
         ////////////////  LISTENERS ///////////////////
 		addFiscalRecord.setOnAction((event) -> {
 				// get the next available key for money_id table
-				int moneyId = SqlMoney.getCount("money_id") + 1;
+				int moneyId = SqlSelect.getNextAvailablePrimaryKey("money","money_id");
 				// create appropriate money object for this membership
 				MoneyDTO newMoney = new MoneyDTO(moneyId, membership.getMsid(),
 						comboBox.getValue(), 0, "0.00", 0, 0, 0, 0, 0, "0.00", 0, 0 ,0, 0, 0,0,

@@ -177,7 +177,7 @@ public class Dialogue_NewYearGenerator extends Stage {
 	private void createSql(MembershipListDTO ml, MoneyDTO currentMoney) {
 		MoneyDTO oldMoney = null;
 		MoneyDTO newMoney = null;
-		int moneyId = SqlMoney.getCount("money_id") + 1;  // need next money_id for new record
+		int moneyId = SqlSelect.getNextAvailablePrimaryKey("money","money_id");
 		oldMoney = new MoneyDTO(moneyId, ml.getMsid(),selectedYear, 0, "0.00", 0, 0, 0, 0, 0, "0.00", 0, 0, 0,0, 0, 0,"0.00", "0.00", "0.00", "0.00", "0.00", "0.00", false, false, "0.00", "0.00", false, 0, "0.00");
 		newMoney = setNewMoneyValues(oldMoney, currentMoney, ml);
 		System.out.print(" No money records for " + (newMoney.getFiscal_year() - 1));
@@ -205,7 +205,7 @@ public class Dialogue_NewYearGenerator extends Stage {
 		if(currentMoney.getMoney_id() != 0) {  // if money record exists lets use its money_id
 		newMoney.setMoney_id(currentMoney.getMoney_id());
 		} else {  // if money record does not exist lets create a new money_id for it
-			newMoney.setMoney_id(SqlMoney.getCount("money_id") + 1);
+			newMoney.setMoney_id(SqlSelect.getNextAvailablePrimaryKey("money","money_id"));
 		}
 		
 		newMoney.setMs_id(oldMoney.getMs_id());
@@ -304,7 +304,7 @@ public class Dialogue_NewYearGenerator extends Stage {
 	
 	private void createNewNumbers() {
 		int count = 1;
-		int mid = SqlSelect.getNextAvailablePrimaryKey("membership_id", "mid") + 1;
+		int mid = SqlSelect.getNextAvailablePrimaryKey("membership_id", "mid");
 		Collections.sort(memberships, Comparator.comparing(MembershipListDTO::getMembershipId));
 		for (MembershipListDTO ml : memberships) {
 			if(!SqlExists.memberShipIdExists(ml.getMsid(), String.valueOf(selectedYear))) {
@@ -321,7 +321,7 @@ public class Dialogue_NewYearGenerator extends Stage {
 	
 	private void createOldNumbers() {
 		System.out.println("memberships size= " + memberships.size());
-		int mid = SqlSelect.getNextAvailablePrimaryKey("membership_id", "mid") + 1;
+		int mid = SqlSelect.getNextAvailablePrimaryKey("membership_id", "mid");
 		Collections.sort(memberships, Comparator.comparing(MembershipListDTO::getMembershipId));
 		for (MembershipListDTO ml : memberships) {
 			if (!SqlExists.memberShipIdExists(ml.getMsid(), String.valueOf(selectedYear))) {
