@@ -12,7 +12,7 @@ public class SqlSelect {
 
 	public static int getNextAvailablePrimaryKey(String table, String column) {  // example-> "email","email_id"
 		int result = 0;
-		String query = "select * from " + table + " ORDER BY " + column + " DESC LIMIT 1";
+		String query = "SELECT * FROM " + table + " ORDER BY " + column + " DESC LIMIT 1";
 		try {
 			ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
 			rs.next();

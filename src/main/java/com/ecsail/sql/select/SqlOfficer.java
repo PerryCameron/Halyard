@@ -18,16 +18,16 @@ public class SqlOfficer {
 
     public static ObservableList<OfficerDTO> getOfficers() {
         ObservableList<OfficerDTO> thisOfficer = FXCollections.observableArrayList();
-        String query = "select * from officer";
+        String query = "SELECT * FROM officer";
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 thisOfficer.add(new OfficerDTO(
                         rs.getInt("O_ID"),
-                        rs.getInt("P_ID"),
+                        rs.getInt("p_id"),
                         rs.getString("BOARD_YEAR"), // beginning of board term
-                        rs.getString("OFF_TYPE"),
-                        rs.getString("OFF_YEAR")));
+                        rs.getString("off_type"),
+                        rs.getString("off_year")));
             }
             Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
@@ -38,16 +38,16 @@ public class SqlOfficer {
 
     public static ArrayList<PDF_Object_Officer> getOfficersByYear(String selectedYear) {
         ArrayList<PDF_Object_Officer> officers = new ArrayList<>();
-        String query = "select * from officer o left join person p on o.P_ID=p.P_ID where OFF_YEAR=" + selectedYear;
+        String query = "SELECT * FROM officer o LEFT JOIN person p ON o.p_id=p.p_id WHERE off_year=" + selectedYear;
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 officers.add(new PDF_Object_Officer(
-                        rs.getString("F_NAME"),
+                        rs.getString("f_name"),
                         rs.getString("L_NAME"),
-                        rs.getString("OFF_TYPE"),
+                        rs.getString("off_type"),
                         rs.getString("BOARD_YEAR"), // beginning of board term
-                        rs.getString("OFF_YEAR")));
+                        rs.getString("off_year")));
             }
             Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
@@ -58,16 +58,16 @@ public class SqlOfficer {
 
     public static ObservableList<OfficerDTO> getOfficer(String field, int attribute) {  //p_id
         ObservableList<OfficerDTO> thisOfficer = FXCollections.observableArrayList();
-        String query = "select * from officer WHERE " + field + "='" + attribute + "'";
+        String query = "SELECT * FROM officer WHERE " + field + "='" + attribute + "'";
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 thisOfficer.add(new OfficerDTO(
                         rs.getInt("O_ID"),
-                        rs.getInt("P_ID"),
+                        rs.getInt("p_id"),
                         rs.getString("BOARD_YEAR"),
-                        rs.getString("OFF_TYPE"),
-                        rs.getString("OFF_YEAR")));
+                        rs.getString("off_type"),
+                        rs.getString("off_year")));
             }
             Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
@@ -78,14 +78,14 @@ public class SqlOfficer {
 
     public static ArrayList<OfficerWithNameDTO> getOfficersWithNames(String type) {
         ArrayList<OfficerWithNameDTO> theseOfficers = new ArrayList<>();
-        String query = "select F_NAME,L_NAME,OFF_YEAR from officer o left join person p on o.P_ID=p.P_ID where OFF_TYPE='"+type+"'";
+        String query = "SELECT f_name,L_NAME,off_year FROM officer o LEFT JOIN person p ON o.p_id=p.p_id WHERE off_type='"+type+"'";
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 theseOfficers.add(new OfficerWithNameDTO(
                         rs.getString("L_NAME"),
-                        rs.getString("F_NAME"),
-                        rs.getString("OFF_YEAR")
+                        rs.getString("f_name"),
+                        rs.getString("off_year")
                         ));
             }
             Halyard.getConnect().closeResultSet(rs);

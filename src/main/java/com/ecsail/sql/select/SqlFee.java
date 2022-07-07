@@ -16,7 +16,7 @@ public class SqlFee {
 
         public static ArrayList<FeeDTO> getFeesFromYear(String year) {  //p_id
             ArrayList<FeeDTO> thisAwards = new ArrayList<>();
-            String query = "select * from fee where FEE_YEAR=" + year;
+            String query = "SELECT * FROM fee WHERE fee_year=" + year;
             try {
                 ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
                 while (rs.next()) {
@@ -25,7 +25,7 @@ public class SqlFee {
                             rs.getString("FIELD_NAME"),
                             rs.getBigDecimal("FIELD_VALUE"),
                             rs.getInt("FIELD_QTY"),
-                            rs.getInt("FEE_YEAR"),
+                            rs.getInt("fee_year"),
                             rs.getString("DESCRIPTION")
                     ));
                 }
@@ -38,7 +38,7 @@ public class SqlFee {
 
     public static ArrayList<FeeDTO> getAllFees() {  //p_id
         ArrayList<FeeDTO> thisAwards = new ArrayList<>();
-        String query = "select * from fee";
+        String query = "SELECT * FROM fee";
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
@@ -47,7 +47,7 @@ public class SqlFee {
                         rs.getString("FIELD_NAME"),
                         rs.getBigDecimal("FIELD_VALUE"),
                         rs.getInt("FIELD_QTY"),
-                        rs.getInt("FEE_YEAR"),
+                        rs.getInt("fee_year"),
                         rs.getString("DESCRIPTION")
                 ));
             }
@@ -60,7 +60,7 @@ public class SqlFee {
 
     public static ObservableList<FeeDTO> getAllFeesByDescription(String description) {  //p_id
         ObservableList<FeeDTO> feeDTOS = FXCollections.observableArrayList();
-        String query = "select * from fee where description='" + description + "'";
+        String query = "SELECT * FROM fee WHERE description='" + description + "'";
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
@@ -69,7 +69,7 @@ public class SqlFee {
                         rs.getString("FIELD_NAME"),
                         rs.getBigDecimal("FIELD_VALUE"),
                         rs.getInt("FIELD_QTY"),
-                        rs.getInt("FEE_YEAR"),
+                        rs.getInt("fee_year"),
                         rs.getString("DESCRIPTION")
                 ));
             }

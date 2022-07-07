@@ -17,7 +17,7 @@ public class SqlExists {
 	// this is used on BoxAddPerson only
 	public static Boolean personExists(int type, int ms_id) {
 		boolean answer = false;
-		String query = "SELECT EXISTS(SELECT * FROM person INNER JOIN membership ON person.MS_ID = membership.MS_ID WHERE membership.MS_ID ="
+		String query = "SELECT EXISTS(SELECT * FROM person INNER JOIN membership ON person.ms_id = membership.ms_id WHERE membership.ms_id ="
 				+ ms_id + " AND person.member_type=" + type + ") AS personexists";
 		try {
 			ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
@@ -48,7 +48,7 @@ public class SqlExists {
 
 	public static Boolean memberTypeExists(int memberType, int msid) {
 		boolean answer = false;
-		String query = "SELECT EXISTS(SELECT P_ID FROM person WHERE member_type="+memberType+" AND MS_ID="+msid+") as memberTypeExists";
+		String query = "SELECT EXISTS(SELECT P_ID FROM person WHERE member_type="+memberType+" AND ms_id="+msid+") as memberTypeExists";
 		try {
 			ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
 			rs.next();
@@ -62,7 +62,7 @@ public class SqlExists {
 	
 	public static Boolean paymentsExistForMembership(int ms_id) {
 		boolean answer = false;
-		String query = "SELECT EXISTS(SELECT * FROM money WHERE MS_ID=" + ms_id + ") AS paymentexists";
+		String query = "SELECT EXISTS(SELECT * FROM money WHERE ms_id=" + ms_id + ") AS paymentexists";
 		try {
 			ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
 			rs.next();
@@ -120,7 +120,7 @@ public class SqlExists {
 	
 	public static boolean membershipIdBlankRowExists(String msid) {
 		boolean result = false;
-		String query = "SELECT EXISTS(SELECT * FROM membership_id WHERE fiscal_year=0 AND MEMBERSHIP_ID=0 AND MS_ID!="+msid+") AS newtuple";
+		String query = "SELECT EXISTS(SELECT * FROM membership_id WHERE fiscal_year=0 AND MEMBERSHIP_ID=0 AND ms_id!="+msid+") AS newtuple";
 		try {
 			ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
 			while(rs.next()) {
@@ -150,11 +150,11 @@ public class SqlExists {
 	
 	public static boolean activePersonExists(int ms_id, int member_type) {
 		boolean result = false;
-		String query = "SELECT EXISTS(SELECT * FROM person WHERE MS_ID=" + ms_id + " AND member_type=" + member_type + " AND is_active=true)";
+		String query = "SELECT EXISTS(SELECT * FROM person WHERE ms_id=" + ms_id + " AND member_type=" + member_type + " AND is_active=true)";
 		try {
 			ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
 			while(rs.next()) {
-			result = rs.getBoolean("EXISTS(SELECT * FROM person WHERE MS_ID=" + ms_id + " AND member_type=" + member_type + " AND is_active=true)");
+			result = rs.getBoolean("EXISTS(SELECT * FROM person WHERE ms_id=" + ms_id + " AND member_type=" + member_type + " AND is_active=true)");
 			}
 		Halyard.getConnect().closeResultSet(rs); }
 		catch (SQLException e) {
@@ -225,11 +225,11 @@ public class SqlExists {
 	
 	public static boolean fiscalRecordExists(MembershipListDTO ms, int year) {
 		boolean result = false;
-		String query = "SELECT Exists(SELECT * FROM money WHERE MS_ID=" + ms.getMsid() + " AND fiscal_year='" + year + "')";
+		String query = "SELECT Exists(SELECT * FROM money WHERE ms_id=" + ms.getMsid() + " AND fiscal_year='" + year + "')";
 		try {
 			ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
 			while(rs.next()) {
-			result = rs.getBoolean("Exists(SELECT * FROM money WHERE MS_ID=" + ms.getMsid() + " AND fiscal_year='" + year + "')");
+			result = rs.getBoolean("Exists(SELECT * FROM money WHERE ms_id=" + ms.getMsid() + " AND fiscal_year='" + year + "')");
 			}
 		Halyard.getConnect().closeResultSet(rs); }
 		catch (SQLException e) {
@@ -350,7 +350,6 @@ public class SqlExists {
 		}
 		return result;
 	}
-
 	
 	public static Boolean workCreditExists(int money_id) {
 		boolean result = false;
@@ -402,12 +401,12 @@ public class SqlExists {
 	
 	public static Boolean paidLate(MembershipListDTO r) {
 		boolean result = false;
-		String query = "SELECT EXISTS(SELECT * FROM membership_id WHERE fiscal_year='" + r.getSelectedYear() + "' AND MS_ID=" + r.getMsid() + " AND LATE_RENEW=true)";
+		String query = "SELECT EXISTS(SELECT * FROM membership_id WHERE fiscal_year='" + r.getSelectedYear() + "' AND ms_id=" + r.getMsid() + " AND late_renew=true)";
 		try {
 			ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
 			while (rs.next()) {
 				result = rs.getBoolean(
-						"EXISTS(SELECT * FROM membership_id WHERE fiscal_year='" + r.getSelectedYear() + "' AND MS_ID=" + r.getMsid() + " AND LATE_RENEW=true)");
+						"EXISTS(SELECT * FROM membership_id WHERE fiscal_year='" + r.getSelectedYear() + "' AND ms_id=" + r.getMsid() + " AND late_renew=true)");
 			}
 		            Halyard.getConnect().closeResultSet(rs);Halyard.getConnect().closeResultSet(rs); } catch (SQLException e) {
 			new Dialogue_ErrorSQL(e,"Unable to check if EXISTS","See below for details");
@@ -417,7 +416,7 @@ public class SqlExists {
 
 	public static Boolean personExistsByType(String msid, String type) {
 		boolean result = false;
-		String query = "SELECT EXISTS(SELECT * FROM person WHERE MS_ID=" + msid + " AND member_type=" + type + ") AS personexist";
+		String query = "SELECT EXISTS(SELECT * FROM person WHERE ms_id=" + msid + " AND member_type=" + type + ") AS personexist";
 		try {
 			ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
 			while (rs.next()) {

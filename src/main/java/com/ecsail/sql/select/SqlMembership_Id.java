@@ -15,16 +15,16 @@ import java.sql.Statement;
 public class SqlMembership_Id {
     public static ObservableList<MembershipIdDTO> getIds() {
         ObservableList<MembershipIdDTO> ids = FXCollections.observableArrayList();
-        String query = "select * from membership_id";
+        String query = "SELECT * FROM membership_id";
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 ids.add(new MembershipIdDTO(
                         rs.getInt("MID")
-                        , rs.getString("FISCAL_YEAR")
-                        , rs.getInt("MS_ID")
-                        , rs.getString("MEMBERSHIP_ID")
-                        , rs.getBoolean("RENEW")
+                        , rs.getString("fiscal_year")
+                        , rs.getInt("ms_id")
+                        , rs.getString("membership_id")
+                        , rs.getBoolean("renew")
                         , rs.getString("MEM_TYPE")
                         , rs.getBoolean("SELECTED")
                         , rs.getBoolean("LATE_RENEW")));
@@ -38,16 +38,16 @@ public class SqlMembership_Id {
 
     public static ObservableList<MembershipIdDTO> getIds(int ms_id) {
         ObservableList<MembershipIdDTO> ids = FXCollections.observableArrayList();
-        String query = "select * from membership_id where ms_id=" +ms_id;
+        String query = "SELECT * FROM membership_id WHERE ms_id=" +ms_id;
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 ids.add(new MembershipIdDTO(
                         rs.getInt("MID")
-                        , rs.getString("FISCAL_YEAR")
-                        , rs.getInt("MS_ID")
-                        , rs.getString("MEMBERSHIP_ID")
-                        , rs.getBoolean("RENEW")
+                        , rs.getString("fiscal_year")
+                        , rs.getInt("ms_id")
+                        , rs.getString("membership_id")
+                        , rs.getBoolean("renew")
                         , rs.getString("MEM_TYPE")
                         , rs.getBoolean("SELECTED")
                         , rs.getBoolean("LATE_RENEW")));
@@ -61,16 +61,16 @@ public class SqlMembership_Id {
 
     public static String getId(int ms_id) {
         MembershipIdDTO id = null;
-        String query = "select * from membership_id where ms_id=" +ms_id + ";";
+        String query = "SELECT * FROM membership_id WHERE ms_id=" +ms_id;
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 id = new MembershipIdDTO(
                         rs.getInt("MID")
-                        , rs.getString("FISCAL_YEAR")
-                        , rs.getInt("MS_ID")
-                        , rs.getString("MEMBERSHIP_ID")
-                        , rs.getBoolean("RENEW")
+                        , rs.getString("fiscal_year")
+                        , rs.getInt("ms_id")
+                        , rs.getString("membership_id")
+                        , rs.getBoolean("renew")
                         , rs.getString("MEM_TYPE")
                         , rs.getBoolean("SELECTED")
                         , rs.getBoolean("LATE_RENEW"));
@@ -84,11 +84,11 @@ public class SqlMembership_Id {
 
     public static int getMembershipIDfromMsid(int msid)  {
         int result = 0;
-        String query = "select membership_id from membership_id where ms_id=" + msid + " and fiscal_year=" + HalyardPaths.getYear();
+        String query = "SELECT membership_id FROM membership_id WHERE ms_id=" + msid + " AND fiscal_year=" + HalyardPaths.getYear();
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             rs.next();
-            result = rs.getInt("MEMBERSHIP_ID");
+            result = rs.getInt("membership_id");
             Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
@@ -98,7 +98,7 @@ public class SqlMembership_Id {
 
     public static int getMsidFromMembershipID(int membership_id)  {
         int result = 0;
-        String query = "select ms_id from membership_id where fiscal_year='" + HalyardPaths.getYear() + "' and membership_id='" + membership_id + "'";
+        String query = "SELECT ms_id FROM membership_id WHERE fiscal_year='" + HalyardPaths.getYear() + "' AND membership_id=" + membership_id;
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             rs.next();
@@ -112,7 +112,7 @@ public class SqlMembership_Id {
 
     public static String getMembershipId(String year, int ms_id) {
         String id = "";
-        String query = "select membership_id from membership_id where fiscal_year='" + year + "' and ms_id=" + ms_id;
+        String query = "SELECT membership_id FROM membership_id WHERE fiscal_year='" + year + "' AND ms_id=" + ms_id;
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             if (!rs.next()) {
@@ -131,16 +131,16 @@ public class SqlMembership_Id {
 
     public static MembershipIdDTO getMembershipIdObject(int mid) {
         MembershipIdDTO id = null;
-        String query = "select * from membership_id where mid="  + mid;
+        String query = "SELECT * FROM membership_id WHERE mid="  + mid;
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             rs.next();
                 id = new MembershipIdDTO(
                         rs.getInt("MID")
-                        , rs.getString("FISCAL_YEAR")
-                        , rs.getInt("MS_ID")
-                        , rs.getString("MEMBERSHIP_ID")
-                        , rs.getBoolean("RENEW")
+                        , rs.getString("fiscal_year")
+                        , rs.getInt("ms_id")
+                        , rs.getString("membership_id")
+                        , rs.getBoolean("renew")
                         , rs.getString("MEM_TYPE")
                         , rs.getBoolean("SELECTED")
                         , rs.getBoolean("LATE_RENEW"));
@@ -153,7 +153,7 @@ public class SqlMembership_Id {
 
     public static int getHighestMembershipId(String year) {  // example-> "email","email_id"
         int result = 0;
-        String query = "select Max(membership_id) from membership_id where fiscal_year='" + year + "'";
+        String query = "SELECT Max(membership_id) FROM membership_id WHERE fiscal_year='" + year + "'";
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             rs.next();
@@ -168,11 +168,11 @@ public class SqlMembership_Id {
     public static boolean isRenewed(int ms_id, String year)
     {
         boolean renew = false;
-        String query = "select RENEW from membership_id where fiscal_year='" + year + "' and ms_id=" + ms_id;
+        String query = "SELECT renew FROM membership_id WHERE fiscal_year='" + year + "' AND ms_id=" + ms_id;
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             rs.next();
-            renew = rs.getBoolean("RENEW");
+            renew = rs.getBoolean("renew");
             Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"membership id record does not exist for ms_id " + ms_id + " for year " + year,"See below for details");
@@ -184,16 +184,16 @@ public class SqlMembership_Id {
 
     public static ObservableList<MembershipIdDTO> getAllMembershipIdsByYear(String year) {
 		ObservableList<MembershipIdDTO> theseIds = FXCollections.observableArrayList();
-        String query = "select * from membership_id where fiscal_year=" + year + " order by MEMBERSHIP_ID";
+        String query = "SELECT * FROM membership_id WHERE fiscal_year=" + year + " ORDER BY membership_id";
 		try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
 		while (rs.next()) {
 			theseIds.add(new MembershipIdDTO(
 					rs.getInt("MID"),
-					rs.getString("FISCAL_YEAR"),
-					rs.getInt("MS_ID"),
-					rs.getString("MEMBERSHIP_ID"),
-					rs.getBoolean("RENEW"),
+					rs.getString("fiscal_year"),
+					rs.getInt("ms_id"),
+					rs.getString("membership_id"),
+					rs.getBoolean("renew"),
 					rs.getString("MEM_TYPE"),
 					rs.getBoolean("SELECTED"),
 				    rs.getBoolean("LATE_RENEW")));
@@ -207,16 +207,16 @@ public class SqlMembership_Id {
 
     public static ObservableList<MembershipIdDTO> getActiveMembershipIdsByYear(String year) {
         ObservableList<MembershipIdDTO> theseIds = FXCollections.observableArrayList();
-        String query = "select * from membership_id where fiscal_year=" + year + " and renew=true order by MEMBERSHIP_ID";
+        String query = "SELECT * FROM membership_id WHERE fiscal_year=" + year + " AND renew=true ORDER BY membership_id";
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 theseIds.add(new MembershipIdDTO(
                         rs.getInt("MID"),
-                        rs.getString("FISCAL_YEAR"),
-                        rs.getInt("MS_ID"),
-                        rs.getString("MEMBERSHIP_ID"),
-                        rs.getBoolean("RENEW"),
+                        rs.getString("fiscal_year"),
+                        rs.getInt("ms_id"),
+                        rs.getString("membership_id"),
+                        rs.getBoolean("renew"),
                         rs.getString("MEM_TYPE"),
                         rs.getBoolean("SELECTED"),
                         rs.getBoolean("LATE_RENEW")));
@@ -230,11 +230,11 @@ public class SqlMembership_Id {
 
     public static int getNonRenewNumber(String year) {
         int number = 0;
-        String query = "select count(*) from membership_id where FISCAL_YEAR='" + year + "' and RENEW=false";
+        String query = "SELECT COUNT(*) FROM membership_id WHERE fiscal_year='" + year + "' AND renew=false";
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             rs.next();
-            number = rs.getInt("count(*)");
+            number = rs.getInt("COUNT(*)");
             Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
@@ -244,12 +244,12 @@ public class SqlMembership_Id {
 
     public static int getMsidFromYearAndMembershipId(int year, String membershipId) {
         int number = 0;
-        String query = "select MS_ID from membership_id where FISCAL_YEAR=" + year
-                   + " and MEMBERSHIP_ID=" + membershipId;
+        String query = "SELECT ms_id FROM membership_id WHERE fiscal_year=" + year
+                   + " AND membership_id=" + membershipId;
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             rs.next();
-            number = rs.getInt("MS_ID");
+            number = rs.getInt("ms_id");
             Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");

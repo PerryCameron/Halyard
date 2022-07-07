@@ -15,7 +15,7 @@ public class SqlMembership {
 
     public static ObservableList<MembershipDTO> getMemberships() {  /// for SQL Script Maker
         ObservableList<MembershipDTO> memberships = FXCollections.observableArrayList();
-        String query = "select * from membership";
+        String query = "SELECT * FROM membership";
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
@@ -31,7 +31,7 @@ public class SqlMembership {
             }
             Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
-            new Dialogue_ErrorSQL(e,"Unable to select roster","See below for details");
+            new Dialogue_ErrorSQL(e,"Unable to SELECT roster","See below for details");
         }
         return memberships;
     }

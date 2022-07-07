@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class SqlWaitList {
     public static WaitListDTO getWaitList(int ms_id) {
         WaitListDTO thisWaitList = null;
-        String query = "select * from waitlist where ms_id=" + ms_id;
+        String query = "SELECT * FROM waitlist WHERE ms_id=" + ms_id;
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
@@ -34,7 +34,7 @@ public class SqlWaitList {
 
     public static ArrayList<WaitListDTO> getWaitLists() {
         ArrayList<WaitListDTO> thisWaitList = new ArrayList<>();
-        String query = "select * from waitlist";
+        String query = "SELECT * FROM waitlist";
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {

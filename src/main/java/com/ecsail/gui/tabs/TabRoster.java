@@ -11,8 +11,6 @@ import com.ecsail.sql.select.SqlMembershipList;
 import com.ecsail.structures.MembershipListDTO;
 import com.ecsail.structures.RosterRadioButtonsDTO;
 import com.ecsail.structures.RosterSelectDTO;
-import com.ecsail.structures.jotform.JotFormSubmissionListDTO;
-import javafx.beans.binding.Bindings;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;

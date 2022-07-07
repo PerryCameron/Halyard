@@ -125,57 +125,57 @@ public class SqlMoney {
     }
 
     public static DepositSummaryDTO getSumTotalsFromYearAndBatch(String year, int batch) { // overload
-        String query = "select\n" +
-                "sum(OFFICER_CREDIT),\n" +
-                "sum(EXTRA_KEY),\n" +
-                "sum(KAYAK_SHED_KEY),\n" +
-                "sum(SAIL_LOFT_KEY),\n" +
-                "sum(SAIL_SCHOOL_LOFT_KEY),\n" +
-                "sum(BEACH),\n" +
-                "sum(WET_SLIP),\n" +
-                "sum(KAYAK_RACK),\n" +
-                "sum(KAYAK_SHED),\n" +
-                "sum(SAIL_LOFT),\n" +
-                "sum(SAIL_SCHOOL_LASER_LOFT),\n" +
-                "sum(WINTER_STORAGE),\n" +
-                "sum(YSC_DONATION),\n" +
-                "sum(PAID),\n" +
-                "sum(TOTAL),\n" +
-                "sum(CREDIT),\n" +
-                "sum(BALANCE),\n" +
-                "sum(DUES),\n" +
-                "sum(OTHER,\n" +
-                "sum(INITIATION),\n" +
-                "sum(WORK_CREDIT),\n" +
-                "sum(OTHER_CREDIT),\n" +
-                "sum(KAYAK_BEACH_RACK)" +
-                "from money where FISCAL_YEAR=" + year + " and BATCH=" + batch;
+        String query = "SELECT\n" +
+                "SUM(OFFICER_CREDIT),\n" +
+                "SUM(EXTRA_KEY),\n" +
+                "SUM(KAYAK_SHED_KEY),\n" +
+                "SUM(SAIL_LOFT_KEY),\n" +
+                "SUM(SAIL_SCHOOL_LOFT_KEY),\n" +
+                "SUM(BEACH),\n" +
+                "SUM(WET_SLIP),\n" +
+                "SUM(KAYAK_RACK),\n" +
+                "SUM(KAYAK_SHED),\n" +
+                "SUM(SAIL_LOFT),\n" +
+                "SUM(SAIL_SCHOOL_LASER_LOFT),\n" +
+                "SUM(WINTER_STORAGE),\n" +
+                "SUM(YSC_DONATION),\n" +
+                "SUM(PAID),\n" +
+                "SUM(TOTAL),\n" +
+                "SUM(CREDIT),\n" +
+                "SUM(BALANCE),\n" +
+                "SUM(DUES),\n" +
+                "SUM(OTHER,\n" +
+                "SUM(INITIATION),\n" +
+                "SUM(WORK_CREDIT),\n" +
+                "SUM(OTHER_CREDIT),\n" +
+                "SUM(KAYAK_BEACH_RACK)" +
+                "FROM money WHERE FISCAL_YEAR=" + year + " and BATCH=" + batch;
         DepositSummaryDTO thisFiscal = null;
         try {
            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 thisFiscal = new DepositSummaryDTO(
-                        rs.getBigDecimal("sum(TOTAL)"),
-                        rs.getBigDecimal("sum(PAID)"),
-                        rs.getBigDecimal("sum(BALANCE)"),
-                        rs.getBigDecimal("sum(OFFICER_CREDIT)"),
-                        rs.getBigDecimal("sum(WET_SLIP)"),
-                        rs.getBigDecimal("sum(YSC_DONATION)"),
-                        rs.getBigDecimal("sum(CREDIT)"),
-                        rs.getBigDecimal("sum(DUES)"),
-                        rs.getBigDecimal("sum(OTHER)"),
-                        rs.getBigDecimal("sum(INITIATION)"),
-                        rs.getInt("sum(EXTRA_KEY)"),
-                        rs.getInt("sum(KAYAK_SHED_KEY)"),
-                        rs.getInt("sum(SAIL_LOFT_KEY)"),
-                        rs.getInt("sum(SAIL_SCHOOL_LOFT_KEY)"),
-                        rs.getInt("sum(BEACH)"),
-                        rs.getInt("sum(KAYAK_RACK)"),
-                        rs.getInt("sum(KAYAK_BEACH_RACK)"),
-                        rs.getInt("sum(KAYAK_SHED)"),
-                        rs.getInt("sum(SAIL_LOFT)"),
-                        rs.getInt("sum(SAIL_SCHOOL_LASER_LOFT)"),
-                        rs.getInt("sum(WINTER_STORAGE)"));
+                        rs.getBigDecimal("SUM(TOTAL)"),
+                        rs.getBigDecimal("SUM(PAID)"),
+                        rs.getBigDecimal("SUM(BALANCE)"),
+                        rs.getBigDecimal("SUM(OFFICER_CREDIT)"),
+                        rs.getBigDecimal("SUM(WET_SLIP)"),
+                        rs.getBigDecimal("SUM(YSC_DONATION)"),
+                        rs.getBigDecimal("SUM(CREDIT)"),
+                        rs.getBigDecimal("SUM(DUES)"),
+                        rs.getBigDecimal("SUM(OTHER)"),
+                        rs.getBigDecimal("SUM(INITIATION)"),
+                        rs.getInt("SUM(EXTRA_KEY)"),
+                        rs.getInt("SUM(KAYAK_SHED_KEY)"),
+                        rs.getInt("SUM(SAIL_LOFT_KEY)"),
+                        rs.getInt("SUM(SAIL_SCHOOL_LOFT_KEY)"),
+                        rs.getInt("SUM(BEACH)"),
+                        rs.getInt("SUM(KAYAK_RACK)"),
+                        rs.getInt("SUM(KAYAK_BEACH_RACK)"),
+                        rs.getInt("SUM(KAYAK_SHED)"),
+                        rs.getInt("SUM(SAIL_LOFT)"),
+                        rs.getInt("SUM(SAIL_SCHOOL_LASER_LOFT)"),
+                        rs.getInt("SUM(WINTER_STORAGE)"));
             }
             Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
@@ -189,7 +189,7 @@ public class SqlMoney {
 
     public static WorkCreditDTO getWorkCredit(int moneyID) {
         WorkCreditDTO workCredits = null;
-        String query = "select * from work_credit WHERE money_id=" + moneyID;
+        String query = "SELECT * FROM work_credit WHERE money_id=" + moneyID;
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             rs.next();
@@ -204,7 +204,7 @@ public class SqlMoney {
 
     public static boolean isCommitted(int money_id) {
         boolean committed = false;
-        String query = "select commited from money where money_id=" + money_id;
+        String query = "SELECT commited FROM money WHERE money_id=" + money_id;
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             rs.next();
@@ -218,7 +218,7 @@ public class SqlMoney {
 
     public static int getTotalAmount(int money_id) {
         int number = 0;
-        String query = "select SUM(amount) from payment where money_id=" + money_id;
+        String query = "SELECT SUM(amount) FROM payment WHERE money_id=" + money_id;
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             rs.next();
@@ -232,11 +232,11 @@ public class SqlMoney {
 
     public static int getNumberOfMemberDues(String year, String batch) {
         int number = 0;
-        String query = "select count(*) from money where FISCAL_YEAR="+year+" and BATCH="+batch+" and DUES > 0";
+        String query = "SELECT COUNT(*) FROM money WHERE FISCAL_YEAR="+year+" and BATCH="+batch+" and DUES > 0";
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             rs.next();
-            number = rs.getInt("count(*)");
+            number = rs.getInt("COUNT(*)");
             Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
@@ -260,7 +260,7 @@ public class SqlMoney {
 
     public static int getCount(String type) { // gives the last memo_id number
         int result = 0;
-        String query = "select * from money ORDER BY " + type + " DESC LIMIT 1;";
+        String query = "SELECT * FROM money ORDER BY " + type + " DESC LIMIT 1;";
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             boolean hasResult = rs.next();

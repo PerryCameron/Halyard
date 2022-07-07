@@ -14,7 +14,7 @@ import java.sql.Statement;
 public class SqlDefinedFee {
     public static ObservableList<DefinedFeeDTO> getDefinedFees() {
         ObservableList<DefinedFeeDTO> thisDefinedFee = FXCollections.observableArrayList();
-        String query = "select * from defined_fee";
+        String query = "SELECT * FROM defined_fee";
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {

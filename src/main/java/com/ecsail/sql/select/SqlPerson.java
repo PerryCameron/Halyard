@@ -28,12 +28,12 @@ public class SqlPerson {
         while (rs.next()) {
             if(rs.getBoolean("IS_ACTIVE")) {  // only add active people
             thesePeople.add(new PersonDTO(
-                    rs.getInt("P_ID"),
+                    rs.getInt("p_id"),
                     rs.getInt("MS_ID"),
-                    rs.getInt("MEMBER_TYPE"),
+                    rs.getInt("member_type"),
                     rs.getString("F_NAME"),
                     rs.getString("L_NAME"),
-                    rs.getString("BIRTHDAY"),
+                    rs.getString("birthday"),
                     rs.getString("OCCUPATION"),
                     rs.getString("BUISNESS"),
                     rs.getBoolean("IS_ACTIVE"),
@@ -56,19 +56,19 @@ public class SqlPerson {
      * @return arraylist of PersonDTO objects
      */
     public static ArrayList<PersonDTO> getDependants(MembershipDTO m) {
-        String query = "SELECT * FROM person WHERE ms_id= '" + m.getMsid() + "' and MEMBER_TYPE=3";
+        String query = "SELECT * FROM person WHERE ms_id= '" + m.getMsid() + "' and member_type=3";
         ArrayList<PersonDTO> thesepeople = new ArrayList<>();
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
         while (rs.next()) {
             if(rs.getBoolean("IS_ACTIVE")) {  // only add active people
             thesepeople.add(new PersonDTO(
-                    rs.getInt("P_ID"),
+                    rs.getInt("p_id"),
                     rs.getInt("MS_ID"),
-                    rs.getInt("MEMBER_TYPE"),
+                    rs.getInt("member_type"),
                     rs.getString("F_NAME"),
                     rs.getString("L_NAME"),
-                    rs.getString("BIRTHDAY"),
+                    rs.getString("birthday"),
                     rs.getString("OCCUPATION"),
                     rs.getString("BUISNESS"),
                     rs.getBoolean("IS_ACTIVE"),
@@ -94,12 +94,12 @@ public class SqlPerson {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
         while (rs.next()) {
             thesePeople.add(new PersonDTO(
-                    rs.getInt("P_ID"),
+                    rs.getInt("p_id"),
                     rs.getInt("MS_ID"),
-                    rs.getInt("MEMBER_TYPE"),
+                    rs.getInt("member_type"),
                     rs.getString("F_NAME"),
                     rs.getString("L_NAME"),
-                    rs.getString("BIRTHDAY"),
+                    rs.getString("birthday"),
                     rs.getString("OCCUPATION"),
                     rs.getString("BUISNESS"),
                     rs.getBoolean("IS_ACTIVE"),
@@ -121,12 +121,12 @@ public class SqlPerson {
      */
     public static PersonDTO getPersonByPid(int pid) {
         PersonDTO person = null;
-        String query = "select * from person WHERE p_id=" + pid;
+        String query = "SELECT * FROM person WHERE p_id=" + pid;
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             if(rs.next()) {
-                person = (new PersonDTO(rs.getInt("P_ID"), rs.getInt("MS_ID"), rs.getInt("MEMBER_TYPE"),
-                        rs.getString("F_NAME"), rs.getString("L_NAME"), rs.getString("BIRTHDAY"),
+                person = (new PersonDTO(rs.getInt("p_id"), rs.getInt("MS_ID"), rs.getInt("member_type"),
+                        rs.getString("F_NAME"), rs.getString("L_NAME"), rs.getString("birthday"),
                         rs.getString("OCCUPATION"), rs.getString("BUISNESS"), rs.getBoolean("IS_ACTIVE"),rs.getString("NICK_NAME"),rs.getInt("OLDMSID")));
             } else {
                 System.out.println("There were no results for SqlPerson.getPersonByPid(int pid)");
@@ -147,12 +147,12 @@ public class SqlPerson {
      */
     public static PersonDTO getPerson(int ms_id, int member_type) {
         PersonDTO person = null;
-        String query = "select * from person where MS_ID=" + ms_id + " and MEMBER_TYPE=" + member_type;
+        String query = "SELECT * FROM person where MS_ID=" + ms_id + " and member_type=" + member_type;
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             if(rs.next()) {
-                person = (new PersonDTO(rs.getInt("P_ID"), rs.getInt("MS_ID"), rs.getInt("MEMBER_TYPE"),
-                        rs.getString("F_NAME"), rs.getString("L_NAME"), rs.getString("BIRTHDAY"),
+                person = (new PersonDTO(rs.getInt("p_id"), rs.getInt("MS_ID"), rs.getInt("member_type"),
+                        rs.getString("F_NAME"), rs.getString("L_NAME"), rs.getString("birthday"),
                         rs.getString("OCCUPATION"), rs.getString("BUISNESS"), rs.getBoolean("IS_ACTIVE"),rs.getString("NICK_NAME"),rs.getInt("OLDMSID")));
             } else {
                 System.out.println("There were no results for getPerson(int ms_id, int member_type)");
@@ -174,12 +174,12 @@ public class SqlPerson {
      */
     public static PersonDTO getPersonFromMembershipID(String membershipId, String year) {
         PersonDTO person = null;
-        String query = "select * from person where MS_ID=(select ms_id from membership_id where MEMBERSHIP_ID="+membershipId+" and FISCAL_YEAR="+year+") and MEMBER_TYPE=1";
+        String query = "SELECT * FROM person where MS_ID=(SELECT ms_id FROM membership_id where MEMBERSHIP_ID="+membershipId+" and fiscal_year="+year+") and member_type=1";
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             if(rs.next()) {
-                person = (new PersonDTO(rs.getInt("P_ID"), rs.getInt("MS_ID"), rs.getInt("MEMBER_TYPE"),
-                        rs.getString("F_NAME"), rs.getString("L_NAME"), rs.getString("BIRTHDAY"),
+                person = (new PersonDTO(rs.getInt("p_id"), rs.getInt("MS_ID"), rs.getInt("member_type"),
+                        rs.getString("F_NAME"), rs.getString("L_NAME"), rs.getString("birthday"),
                         rs.getString("OCCUPATION"), rs.getString("BUISNESS"), rs.getBoolean("IS_ACTIVE"),rs.getString("NICK_NAME"),rs.getInt("OLDMSID")));
             } else {
                 System.out.println("There were no results for getPersonFromMembershipID(String membershipId, String year)");
@@ -198,11 +198,11 @@ public class SqlPerson {
      */
     public static int getCount()  {
         int number = 0;
-        String query = "select * from person ORDER BY p_id DESC LIMIT 1";
+        String query = "SELECT * FROM person ORDER BY p_id DESC LIMIT 1";
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             rs.next();
-            number = rs.getInt("P_ID");
+            number = rs.getInt("p_id");
             rs.getStatement().close();
             Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
@@ -218,7 +218,7 @@ public class SqlPerson {
      */
     public static int getPersonAge(PersonDTO person)  {
         int age = 0;
-        String query = "SELECT DATE_FORMAT(FROM_DAYS(DATEDIFF(now(),(select BIRTHDAY from person where P_ID=" + person.getP_id() + "))), '%Y')+0 AS AGE;\n";
+        String query = "SELECT DATE_FORMAT(FROM_DAYS(DATEDIFF(NOW(),(SELECT birthday FROM person where p_id=" + person.getP_id() + "))), '%Y')+0 AS AGE;";
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             rs.next();

@@ -12,7 +12,7 @@ import java.sql.SQLException;
 public class SqlWorkCredit {
     public static ObservableList<WorkCreditDTO> getWorkCredits() {
         ObservableList<WorkCreditDTO> thisWorkCredit = FXCollections.observableArrayList();
-        String query = "select * from work_credit";
+        String query = "SELECT * FROM work_credit";
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {

@@ -20,7 +20,7 @@ public class SqlMembershipList {
                 + "LEFT JOIN membership_id id ON m.ms_id=id.ms_id\n"
                 + "LEFT JOIN money mo ON m.ms_id=mo.ms_id \n"
                 + "LEFT JOIN person p ON p.ms_id=m.ms_id \n"
-                + "WHERE mo.fiscal_year='"+year+"' AND id.fiscal_year='"+year+"' AND id.renew=1 AND kayak_rack=1 AND p.member_type=1 order by membership_id";
+                + "WHERE mo.fiscal_year='"+year+"' AND id.fiscal_year='"+year+"' AND id.renew=1 AND kayak_rack=1 AND p.member_type=1 ORDER BY membership_id";
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             queryToArrayList(rosters, rs);
@@ -83,7 +83,7 @@ public class SqlMembershipList {
                 + "LEFT JOIN membership_id id ON m.ms_id=id.ms_id "
                 + "LEFT JOIN money mo ON m.ms_id=mo.ms_id "
                 + "LEFT JOIN person p ON p.ms_id=m.ms_id "
-                + "WHERE mo.fiscal_year='"+year+"' AND id.fiscal_year='"+year+"' AND id.renew=1 AND kayak_shed=1 AND p.member_type=1 order by membership_id" ;
+                + "WHERE mo.fiscal_year='"+year+"' AND id.fiscal_year='"+year+"' AND id.renew=1 AND kayak_shed=1 AND p.member_type=1 ORDER BY membership_id" ;
         try {
             
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
@@ -103,7 +103,7 @@ public class SqlMembershipList {
                 + "RIGHT JOIN membership m ON m.ms_id=s.ms_id "
                 + "LEFT JOIN membership_id id ON m.ms_id=id.ms_id "
                 + "LEFT JOIN person p ON p.ms_id=m.ms_id "
-                + "WHERE id.fiscal_year='" + year + "' AND p.member_type=1 AND id.renew=" + isActive + " order by membership_id";
+                + "WHERE id.fiscal_year='" + year + "' AND p.member_type=1 AND id.renew=" + isActive + " ORDER BY membership_id";
         try {
             
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
@@ -123,7 +123,7 @@ public class SqlMembershipList {
                 + "RIGHT JOIN membership m ON m.ms_id=s.ms_id "
                 + "LEFT JOIN membership_id id ON m.ms_id=id.ms_id "
                 + "LEFT JOIN person p ON p.ms_id=m.ms_id "
-                + "WHERE id.fiscal_year='" + year + "' AND p.member_type=1 order by membership_id";
+                + "WHERE id.fiscal_year='" + year + "' AND p.member_type=1 ORDER BY membership_id";
         try {
             
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
@@ -140,7 +140,7 @@ public class SqlMembershipList {
         ObservableList<MembershipListDTO> rosters = FXCollections.observableArrayList();
         String query = "SELECT m.ms_id,m.p_id,id.membership_id,id.fiscal_year,m.join_date,id.mem_type,s.SLIP_NUM,p.l_name,p.f_name,s.subleased_to,m.address,m.city,m.state,m.zip "
                 + "FROM slip s "
-                + "inner join membership m ON s.ms_id=m.ms_id "
+                + "INNER JOIN membership m ON s.ms_id=m.ms_id "
                 + "LEFT JOIN membership_id id ON m.ms_id=id.ms_id "
                 + "LEFT JOIN person p ON p.ms_id=m.ms_id "
                 + "WHERE p.member_type=1 AND fiscal_year="+ HalyardPaths.getYear();
@@ -159,7 +159,7 @@ public class SqlMembershipList {
     public static ObservableList<MembershipListDTO> getRosterOfSubleasedSlips() {
         ObservableList<MembershipListDTO> rosters = FXCollections.observableArrayList();
         String query = "SELECT m.ms_id,m.p_id,id.membership_id,id.fiscal_year,m.join_date,id.mem_type,s.SLIP_NUM,p.l_name,p.f_name,s.subleased_to,m.address,m.city,m.state,m.zip FROM slip s "
-                + "inner join membership m ON s.ms_id=m.ms_id "
+                + "INNER JOIN membership m ON s.ms_id=m.ms_id "
                 + "LEFT JOIN membership_id id ON m.ms_id=id.ms_id "
                 + "LEFT JOIN person p ON p.ms_id=s.subleased_to "
                 + "WHERE subleased_to IS NOT NULL AND p.member_type=1 AND fiscal_year="+ HalyardPaths.getYear();
@@ -278,8 +278,8 @@ public class SqlMembershipList {
     public static ObservableList<MembershipListDTO> getSlipRoster(String year) {
         ObservableList<MembershipListDTO> rosters = FXCollections.observableArrayList();
         String query = "SELECT m.ms_id,m.p_id,id.membership_id,id.fiscal_year,m.join_date,id.mem_type,s.SLIP_NUM,p.l_name,p.f_name,s.subleased_to,m.address,m.city,m.state,m.zip "
-                + "FROM slip s inner join membership m ON s.ms_id=m.ms_id inner join membership_id id ON id.ms_id=m.ms_id "
-                + "inner join person p ON p.p_id=m.p_id WHERE id.fiscal_year="+year;
+                + "FROM slip s INNER JOIN membership m ON s.ms_id=m.ms_id INNER JOIN membership_id id ON id.ms_id=m.ms_id "
+                + "INNER JOIN person p ON p.p_id=m.p_id WHERE id.fiscal_year="+year;
         try {
             
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
@@ -297,7 +297,7 @@ public class SqlMembershipList {
         ObservableList<MembershipListDTO> rosters = FXCollections.observableArrayList();
         String query = "SELECT m.ms_id,m.p_id,id.membership_id,id.fiscal_year,m.join_date,id.mem_type,s.SLIP_NUM,p.l_name,p.f_name,s.subleased_to,m.address,m.city,m.state,m.zip "
                 + "FROM waitlist w "
-                + "inner join membership m ON w.ms_id=m.ms_id "
+                + "INNER JOIN membership m ON w.ms_id=m.ms_id "
                 + "LEFT JOIN membership_id id ON m.ms_id=id.ms_id "
                 + "LEFT JOIN person p ON p.ms_id=m.ms_id "
                 + "LEFT JOIN slip s ON s.ms_id=m.ms_id "
@@ -318,8 +318,8 @@ public class SqlMembershipList {
         ObservableList<MembershipListDTO> rosters = FXCollections.observableArrayList();
         String query = "SELECT id.membership_id, id.fiscal_year, m.join_date, id.mem_type, m.address, "
                 + "m.city, m.state,m.zip, m.p_id, p.l_name, p.f_name,m.ms_id FROM membership m "
-                + "inner join person p ON m.p_id=p.p_id "
-                + "inner join membership_id id ON id.ms_id=m.ms_id "
+                + "INNER JOIN person p ON m.p_id=p.p_id "
+                + "INNER JOIN membership_id id ON id.ms_id=m.ms_id "
                 + "WHERE YEAR(join_date)='" + year + "' AND id.fiscal_year='" + year + "' GROUP BY m.ms_id";
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
@@ -347,7 +347,7 @@ public class SqlMembershipList {
                 + "WHERE fiscal_year=' "+year+ "' "
                 + "AND ms_id=("
                 + "SELECT ms_id FROM membership_id   WHERE fiscal_year='" + lastYear + "' AND membership_id=("
-                + "SELECT max(membership_id) FROM membership_id WHERE fiscal_year='" + lastYear + "' AND membership_id < 500 AND id.renew=1)))";
+                + "SELECT MAX(membership_id) FROM membership_id WHERE fiscal_year='" + lastYear + "' AND membership_id < 500 AND id.renew=1)))";
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             queryToArrayList(rosters, rs);
@@ -373,7 +373,7 @@ public class SqlMembershipList {
                 "     SELECT ms_id \n" +
                 "     FROM membership_id \n" +
                 "     WHERE membership_id=(\n" +
-                "        SELECT max(membership_id) \n" +
+                "        SELECT MAX(membership_id) \n" +
                 "        FROM membership_id WHERE fiscal_year="+lastYear+" AND membership_id < 500 AND renew=1\n" +
                 "        ) \n" +
                 "     AND fiscal_year="+lastYear+"\n" +
@@ -403,7 +403,7 @@ public class SqlMembershipList {
         String query = "SELECT m.ms_id,m.p_id,id.membership_id,id.fiscal_year,m.join_date,"
                 + "id.mem_type,p.l_name,p.f_name,m.address,m.city,m.state,m.zip FROM "
                 + "membership m LEFT JOIN person p ON m.p_id=p.p_id LEFT JOIN membership_id "
-                + "id ON m.ms_id=id.ms_id WHERE id.fiscal_year='2021' AND membership_id='" + membership_id + "'";
+                + "id ON m.ms_id=id.ms_id WHERE id.fiscal_year='"+HalyardPaths.getYear()+"' AND membership_id='" + membership_id + "'";
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {

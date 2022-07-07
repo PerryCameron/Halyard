@@ -56,7 +56,8 @@ public class ConnectDatabase {
 	TextField sshPass;
 	TextField userName;
 	TextField passWord;
-
+	public static final String BLUE = "\033[0;34m";    // BLUE
+	public static final String RESET = "\033[0m";  // Text Reset
 	public ConnectDatabase(Stage primaryStage) {
 
 		if (FileIO.hostFileExists()) 
@@ -322,6 +323,7 @@ public class ConnectDatabase {
 					Halyard.getLogger().info("SSH connection is not being used");
         		// create mysql login
         		if(createConnection(user, pass, loopback, port)) {
+					// will get a null pointer when opening rosters if this is not here
         		Halyard.activememberships = SqlMembershipList.getRoster(Halyard.selectedYear, true);
         		logonStage.close();
         		primaryStage.setTitle("ECSC Membership Database (connected) " + host);
@@ -540,7 +542,8 @@ public class ConnectDatabase {
 
 	public ResultSet executeSelectQuery(String query) throws SQLException {
 		Statement stmt = ConnectDatabase.sqlConnection.createStatement();
-		System.out.println(query);
+//		Halyard.getLogger().info(query);
+		System.out.println(BLUE + query + RESET);
 //		if(sshConnection.checkSSHConnection())
 //			Halyard.getLogger().info("SSH Connection is still good");
 		ResultSet rs = stmt.executeQuery(query);
@@ -549,6 +552,7 @@ public class ConnectDatabase {
 
 	public void executeQuery(String query) throws SQLException {
 		Statement stmt = ConnectDatabase.sqlConnection.createStatement();
+//		Halyard.getLogger().info(query);
 		System.out.println(query);
 //		if(sshConnection.checkSSHConnection())
 //			Halyard.getLogger().info("SSH Connection is still good");

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class SqlIdChange {
     public static ArrayList<IdChangeDTO> getAllChangedIds() {  //p_id
         ArrayList<IdChangeDTO> thisAwards = new ArrayList<>();
-        String query = "select * from id_change";
+        String query = "SELECT * FROM id_change";
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {

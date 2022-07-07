@@ -15,20 +15,20 @@ import java.sql.SQLException;
 public class SqlEmail {
     public static ObservableList<Email_InformationDTO> getEmailInfo() {
         ObservableList<Email_InformationDTO> thisEmailInfo = FXCollections.observableArrayList();
-        String query = "select id.MEMBERSHIP_ID,m.JOIN_DATE,p.L_NAME,p.F_NAME,EMAIL,PRIMARY_USE "
-                + "from email e "
-                + "inner join person p ON p.P_ID=e.P_ID "
-                + "inner join membership m ON m.ms_id=p.ms_id "
-                + "inner join membership_id id ON id.ms_id=m.ms_id "
-                + "where id.fiscal_year='" + HalyardPaths.getYear()
-                + "' and id.renew=true"
-                + " order by id.MEMBERSHIP_ID";
+        String query = "SELECT id.membership_id,m.join_date,p.l_name,p.f_name,email,primary_use "
+                + "FROM email e "
+                + "INNER JOIN person p ON p.p_id=e.p_id "
+                + "INNER JOIN membership m ON m.ms_id=p.ms_id "
+                + "INNER JOIN membership_id id ON id.ms_id=m.ms_id "
+                + "WHERE id.fiscal_year='" + HalyardPaths.getYear()
+                + "' AND id.renew=true"
+                + " order by id.membership_id";
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
-                thisEmailInfo.add(new Email_InformationDTO(rs.getInt("MEMBERSHIP_ID"), rs.getString("JOIN_DATE"),
-                        rs.getString("L_NAME"), rs.getString("F_NAME"), rs.getString("EMAIL"),
-                        rs.getBoolean("PRIMARY_USE")));
+                thisEmailInfo.add(new Email_InformationDTO(rs.getInt("membership_id"), rs.getString("join_date"),
+                        rs.getString("l_name"), rs.getString("f_name"), rs.getString("email"),
+                        rs.getBoolean("primary_use")));
             }
             Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
@@ -47,9 +47,9 @@ public class SqlEmail {
             while (rs.next()) {
                 email.add(new EmailDTO(
                         rs.getInt("EMAIL_ID")
-                        ,rs.getInt("P_ID")
-                        ,rs.getBoolean("PRIMARY_USE")
-                        ,rs.getString("EMAIL")
+                        ,rs.getInt("p_id")
+                        ,rs.getBoolean("primary_use")
+                        ,rs.getString("email")
                         ,rs.getBoolean("EMAIL_LISTED")));
             }
             Halyard.getConnect().closeResultSet(rs);
@@ -62,15 +62,15 @@ public class SqlEmail {
     public static String getEmail(PersonDTO person) {
         EmailDTO email = null;
         String returnEmail = "";
-        String query = "select * from email where P_ID=" + person.getP_id() + " and PRIMARY_USE=true";
+        String query = "SELECT * FROM email WHERE p_id=" + person.getP_id() + " AND primary_use=true";
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             rs.next();
                 email = new EmailDTO(
                         rs.getInt("EMAIL_ID")
-                        ,rs.getInt("P_ID")
-                        ,rs.getBoolean("PRIMARY_USE")
-                        ,rs.getString("EMAIL")
+                        ,rs.getInt("p_id")
+                        ,rs.getBoolean("primary_use")
+                        ,rs.getString("email")
                         ,rs.getBoolean("EMAIL_LISTED"));
             Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {

@@ -13,13 +13,13 @@ import java.util.ArrayList;
 public class SqlSportsMan {
     public static ArrayList<Object_Sportsmen> getSportsManAwardNames() {
         ArrayList<Object_Sportsmen> theseOfficers = new ArrayList<>();
-        String query = "select AWARD_YEAR,F_NAME,L_Name from awards a left join person p on a.P_ID=p.P_ID";
+        String query = "SELECT award_year,f_name,l_name FROM awards a LEFT JOIN person p ON a.p_id=p.p_id";
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             while (rs.next()) {
                 theseOfficers.add(new Object_Sportsmen(
-                        rs.getString("AWARD_YEAR"),
-                        rs.getString("F_NAME"),
+                        rs.getString("award_year"),
+                        rs.getString("f_name"),
                         rs.getString("L_NAME")
                 ));
             }
