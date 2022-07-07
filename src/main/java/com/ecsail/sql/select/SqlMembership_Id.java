@@ -1,16 +1,14 @@
 package com.ecsail.sql.select;
 
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
-import com.ecsail.main.ConnectDatabase;
-import com.ecsail.main.HalyardPaths;
 import com.ecsail.main.Halyard;
+import com.ecsail.main.HalyardPaths;
 import com.ecsail.structures.MembershipIdDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class SqlMembership_Id {
     public static ObservableList<MembershipIdDTO> getIds() {
@@ -79,6 +77,7 @@ public class SqlMembership_Id {
         } catch (SQLException e) {
             new Dialogue_ErrorSQL(e,"Unable to retrieve information","See below for details");
         }
+        assert id != null;
         return id.getMembership_id();
     }
 

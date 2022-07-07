@@ -5,7 +5,6 @@ import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.Halyard;
 import com.ecsail.main.HalyardPaths;
 import com.ecsail.structures.MembershipDTO;
-import com.ecsail.structures.MembershipListDTO;
 import com.ecsail.structures.PersonDTO;
 
 import java.sql.ResultSet;
@@ -13,7 +12,7 @@ import java.sql.SQLException;
 
 public class SqlExists {
 	
-	// this may be a duplicate, for instance it dosent need int pid, and why the inner join
+	// this may be a duplicate, for instance it doesn't need int pid, and why the inner join
 	// this is used on BoxAddPerson only
 	public static Boolean personExists(int type, int ms_id) {
 		boolean answer = false;
@@ -103,21 +102,6 @@ public class SqlExists {
 		return result;
 	}
 	
-	public static boolean memberShipIdExists(int ms_id) {
-		boolean result = false;
-		String query = "SELECT EXISTS(SELECT * FROM membership_id WHERE ms_id='" + ms_id + "')";
-		try {
-			ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
-			while(rs.next()) {
-			result = rs.getBoolean("EXISTS(SELECT * FROM membership_id WHERE ms_id='" + ms_id + "')");
-			}
-		Halyard.getConnect().closeResultSet(rs); }
-		catch (SQLException e) {
-			new Dialogue_ErrorSQL(e,"Unable to verify if a history record EXISTS","See below for details");
-		}
-		return result;
-	}
-	
 	public static boolean membershipIdBlankRowExists(String msid) {
 		boolean result = false;
 		String query = "SELECT EXISTS(SELECT * FROM membership_id WHERE fiscal_year=0 AND MEMBERSHIP_ID=0 AND ms_id!="+msid+") AS newtuple";
@@ -135,11 +119,11 @@ public class SqlExists {
 	
 	public static boolean memberShipIdExists(int ms_id, String year) {
 		boolean result = false;
-		String query = "SELECT EXISTS(SELECT * FROM membership_id WHERE ms_id='" + ms_id + "' AND fiscal_year='" + year + "')";
+		String query = "SELECT EXISTS(SELECT * FROM membership_id WHERE ms_id=" + ms_id + " AND fiscal_year=" + year + ")";
 		try {
 			ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
 			while(rs.next()) {
-			result = rs.getBoolean("EXISTS(SELECT * FROM membership_id WHERE ms_id='" + ms_id + "' AND fiscal_year='" + year + "')");
+			result = rs.getBoolean("EXISTS(SELECT * FROM membership_id WHERE ms_id=" + ms_id + " AND fiscal_year=" + year + ")");
 			}
 		Halyard.getConnect().closeResultSet(rs); }
 		catch (SQLException e) {
@@ -215,21 +199,6 @@ public class SqlExists {
 			ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
 			while(rs.next()) {
 				result = rs.getBoolean("phoneexists");
-			}
-		Halyard.getConnect().closeResultSet(rs); }
-		catch (SQLException e) {
-			new Dialogue_ErrorSQL(e,"Unable to check if EXISTS","See below for details");
-		}
-		return result;
-	}
-	
-	public static boolean fiscalRecordExists(MembershipListDTO ms, int year) {
-		boolean result = false;
-		String query = "SELECT Exists(SELECT * FROM money WHERE ms_id=" + ms.getMsid() + " AND fiscal_year=" + year + ")";
-		try {
-			ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
-			while(rs.next()) {
-			result = rs.getBoolean("Exists(SELECT * FROM money WHERE ms_id=" + ms.getMsid() + " AND fiscal_year=" + year + ")");
 			}
 		Halyard.getConnect().closeResultSet(rs); }
 		catch (SQLException e) {
@@ -394,21 +363,6 @@ public class SqlExists {
 			}
 		Halyard.getConnect().closeResultSet(rs);
 		} catch (SQLException e) {
-			new Dialogue_ErrorSQL(e,"Unable to check if EXISTS","See below for details");
-		}
-		return result;
-	}
-	
-	public static Boolean paidLate(MembershipListDTO r) {
-		boolean result = false;
-		String query = "SELECT EXISTS(SELECT * FROM membership_id WHERE fiscal_year='" + r.getSelectedYear() + "' AND ms_id=" + r.getMsid() + " AND late_renew=true)";
-		try {
-			ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
-			while (rs.next()) {
-				result = rs.getBoolean(
-						"EXISTS(SELECT * FROM membership_id WHERE fiscal_year='" + r.getSelectedYear() + "' AND ms_id=" + r.getMsid() + " AND late_renew=true)");
-			}
-		            Halyard.getConnect().closeResultSet(rs);Halyard.getConnect().closeResultSet(rs); } catch (SQLException e) {
 			new Dialogue_ErrorSQL(e,"Unable to check if EXISTS","See below for details");
 		}
 		return result;

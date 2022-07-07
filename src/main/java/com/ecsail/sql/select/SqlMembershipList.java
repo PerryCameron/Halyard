@@ -332,32 +332,6 @@ public class SqlMembershipList {
         return rosters;
     }
 
-
-
-    public static ObservableList<MembershipListDTO> getFullNewMemberRoster(String year) {
-        int lastYear = Integer.parseInt(year) - 1;
-        ObservableList<MembershipListDTO> rosters = FXCollections.observableArrayList();
-        String query = "SELECT m.ms_id,m.p_id,id.membership_id,id.fiscal_year,m.join_date,id.mem_type,s.SLIP_NUM,p.l_name,p.f_name,s.subleased_to,m.address,m.city,m.state,m.zip "
-                + "FROM membership_id id LEFT JOIN membership m ON m.ms_id=id.ms_id "
-                + "LEFT JOIN person p ON p.p_id=m.p_id LEFT JOIN slip s ON s.ms_id=m.ms_id "
-                + "WHERE id.fiscal_year='"+ year +"' "
-                + "AND YEAR(m.join_date) < "+ year +" "
-                + "AND id.membership_id > ("
-                + "SELECT membership_id FROM membership_id id "
-                + "WHERE fiscal_year=' "+year+ "' "
-                + "AND ms_id=("
-                + "SELECT ms_id FROM membership_id   WHERE fiscal_year='" + lastYear + "' AND membership_id=("
-                + "SELECT MAX(membership_id) FROM membership_id WHERE fiscal_year='" + lastYear + "' AND membership_id < 500 AND id.renew=1)))";
-        try {
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
-            queryToArrayList(rosters, rs);
-            Halyard.getConnect().closeResultSet(rs);
-        } catch (SQLException e) {
-            new Dialogue_ErrorSQL(e,"Unable to SELECT roster","See below for details");
-        }
-        return rosters;
-    }
-
     public static ObservableList<MembershipListDTO> getReturnMembers(int year) { // and those who lost their membership number
         int lastYear = year - 1;
         ObservableList<MembershipListDTO> rosters = FXCollections.observableArrayList();
@@ -428,24 +402,6 @@ public class SqlMembershipList {
             new Dialogue_ErrorSQL(e,"Unable to SELECT roster","See below for details");
         }
         return membership;
-    }
-
-    public static ObservableList<MembershipListDTO> getBoatOwners(int boat_id) {
-        ObservableList<MembershipListDTO> rosters = FXCollections.observableArrayList();
-        String query = "SELECT m.ms_id,m.p_id,id.membership_id,id.fiscal_year,id.fiscal_year,m.join_date,id.mem_type,p.l_name,p.f_name,m.address,m.city,m.state,m.zip "
-                + "FROM boat_owner bo "
-                + "LEFT JOIN membership m ON bo.ms_id=m.ms_id "
-                + "LEFT JOIN membership_id id ON m.ms_id=id.ms_id "
-                + "LEFT JOIN person p ON m.p_id=p.p_id "
-                + "WHERE boat_id='"+ boat_id +"' AND id.fiscal_year='" + HalyardPaths.getYear() + "'";
-        try {
-            ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
-            queryToArrayListConstant(rosters, rs);
-            Halyard.getConnect().closeResultSet(rs);
-        } catch (SQLException e) {
-            new Dialogue_ErrorSQL(e,"Unable to retrieve the owners of this boat","See below for details");
-        }
-        return rosters;
     }
 
     /// may be a duplicate from above

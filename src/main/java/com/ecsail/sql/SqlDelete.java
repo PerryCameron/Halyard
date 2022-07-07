@@ -3,34 +3,27 @@ package com.ecsail.sql;
 import com.ecsail.gui.dialogues.Dialogue_ErrorSQL;
 import com.ecsail.main.Halyard;
 import com.ecsail.structures.*;
-
 import java.sql.SQLException;
 
 public class SqlDelete {
 
 
-	public static boolean deleteStatistics() {
-	    boolean noError = false;
+	public static void deleteStatistics() {
 		String query = "DELETE FROM stats";
 		try {
 			Halyard.getConnect().executeQuery(query);
-			noError = true;
 		} catch (SQLException e) {
 			new Dialogue_ErrorSQL(e,"Unable to DELETE","See below for details");
 		}
-    return noError;
 	}
 	
-	public static boolean deletePerson(PersonDTO p) {
-	    boolean noError = false;
+	public static void deletePerson(PersonDTO p) {
 		String query = "DELETE FROM person WHERE p_id=" + p.getP_id();
 			try {
 				Halyard.getConnect().executeQuery(query);
-				noError = true;
 			} catch (SQLException e) {
 				new Dialogue_ErrorSQL(e,"Unable to DELETE","See below for details");
 			}
-	    return noError;
 	}
 
 	public static void deleteFee(FeeDTO f) {
@@ -54,16 +47,13 @@ public class SqlDelete {
 	    return noError;
 	}
 	
-	public static boolean deleteBlankMembershipIdRow() {
-	    boolean noError = false;
+	public static void deleteBlankMembershipIdRow() {
 		String query = "DELETE FROM membership_id WHERE fiscal_year=0 AND membership_id=0";
 			try {
 				Halyard.getConnect().executeQuery(query);
-				noError = true;
 			} catch (SQLException e) {
 				new Dialogue_ErrorSQL(e,"Unable to DELETE Blank Membership ID Row","See below for details");
 			}
-	    return noError;
 	}
 	
 	public static boolean deleteEmail(EmailDTO email) {
@@ -114,31 +104,13 @@ public class SqlDelete {
 		return noError;
 	}
 	
-	public static boolean deleteBoat(BoatDTO boat, MembershipListDTO membership) {
-		boolean noError = false;
-		String query = "DELETE FROM boat_owner WHERE ms_id=" + membership.getMsid()
-				+ " AND boat_id=" + boat.getBoat_id();
-		String query1 = "DELETE FROM boat WHERE boat_id=" + boat.getBoat_id();
-			try {
-				Halyard.getConnect().executeQuery(query);
-				Halyard.getConnect().executeQuery(query1);
-				noError = true;
-			} catch (SQLException e) {
-				new Dialogue_ErrorSQL(e,"Unable to DELETE","See below for details");
-			}
-			return noError;	
-	}
-	
-	public static boolean deleteBoatOwner(int ms_id) {
-		boolean noError = false;
+	public static void deleteBoatOwner(int ms_id) {
 		String query = "DELETE FROM boat_owner WHERE ms_id=" + ms_id;
 		try {
 			Halyard.getConnect().executeQuery(query);
-			noError = true;
 		} catch (SQLException e) {
 			new Dialogue_ErrorSQL(e,"Unable to DELETE","See below for details");
 		}
-		return noError;	
 	}
 	
 	public static void deleteMemo(MemoDTO memo) {
