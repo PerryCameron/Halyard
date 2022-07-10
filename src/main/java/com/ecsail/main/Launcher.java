@@ -5,6 +5,7 @@ import com.ecsail.gui.dialogues.Dialogue_EnvelopePDF;
 import com.ecsail.gui.dialogues.Dialogue_RenewalForm;
 import com.ecsail.gui.tabs.*;
 import com.ecsail.pdf.PDF_BoatReport;
+import com.ecsail.pdf.directory.PDF_MembershipReport;
 import com.ecsail.sql.select.SqlMembershipList;
 import com.ecsail.sql.select.SqlMembership_Id;
 import com.ecsail.structures.BoatDTO;
@@ -259,5 +260,9 @@ static TabPane tabPane;
     public static void openJotFormTab() {
 		tabPane.getTabs().add(new TabJotForm("JotForm"));
 		tabPane.getSelectionModel().select(getTabIndex("JotForm"));
+    }
+
+    public static void createMembershipReport() {
+		new PDF_MembershipReport();
     }
 }

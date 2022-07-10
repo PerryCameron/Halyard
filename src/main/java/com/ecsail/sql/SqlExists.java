@@ -312,7 +312,7 @@ public class SqlExists {
 			rs.next();
 				result = rs.getBoolean(
 						"EXISTS(SELECT * FROM officer WHERE p_id="
-							+ per.getP_id() + " AND off_year='" + year + "' AND OFF_TYPE != 'BM')");
+							+ per.getP_id() + " AND off_year=" + year + " AND OFF_TYPE != 'BM')");
 		Halyard.getConnect().closeResultSet(rs); }
 		catch (SQLException e) {
 			new Dialogue_ErrorSQL(e,"Unable to check if EXISTS","See below for details");
@@ -338,12 +338,12 @@ public class SqlExists {
 	
 	public static Boolean currentMembershipIdExists(int ms_id) {
 		boolean result = false;
-		String query = "SELECT EXISTS(SELECT * FROM membership_id WHERE fiscal_year='" + HalyardPaths.getYear() + "' AND ms_id=" + ms_id + ")";
+		String query = "SELECT EXISTS(SELECT * FROM membership_id WHERE fiscal_year=" + HalyardPaths.getYear() + " AND ms_id=" + ms_id + ")";
 		try {
 			ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
 			while (rs.next()) {
 				result = rs.getBoolean(
-						"EXISTS(SELECT * FROM membership_id WHERE fiscal_year='" + HalyardPaths.getYear() + "' AND ms_id=" + ms_id + ")");
+						"EXISTS(SELECT * FROM membership_id WHERE fiscal_year=" + HalyardPaths.getYear() + " AND ms_id=" + ms_id + ")");
 			}
 		Halyard.getConnect().closeResultSet(rs);
 		} catch (SQLException e) {

@@ -65,6 +65,7 @@ public class VBoxToolBar extends VBox {
 		
 		Menu subMenu4_1 = new Menu("Create");
 			MenuItem m4_1_2 = new MenuItem("Boat Report");
+			MenuItem m4_1_3 = new MenuItem("Membership Report");
 			MenuItem m4_1_4 = new MenuItem("Email List");
 //			MenuItem m4_1_5 = new MenuItem("Window Stub");
 //			MenuItem m4_1_6 = new MenuItem("Tab Stub");
@@ -96,7 +97,7 @@ public class VBoxToolBar extends VBox {
 			m3_2_0.setOnAction((event) -> Launcher.openJotFormTab());
 		// submenu "Reports > Create"
 			m4_1_2.setOnAction((event) -> Launcher.createBoatReport());
-//			m4_1_3.setOnAction((event) -> Launcher.openTabBatchedPaidDues());
+			m4_1_3.setOnAction((event) -> Launcher.createMembershipReport());
 			m4_1_4.setOnAction((event) -> Xls_email_list.createSpreadSheet());
 //			m4_1_5.setOnAction((event) -> new Dialogue_Stub());
 //			m4_1_6.setOnAction((event) -> Launcher.openTabStub());
@@ -109,7 +110,7 @@ public class VBoxToolBar extends VBox {
         subMenu1_1.getItems().addAll(m1_1_1);
         subMenu3_1.getItems().addAll(m3_1_1,m3_1_2,m3_1_3,m3_1_4,m3_1_5,m3_1_6,m3_1_7,m3_1_8,m3_1_9,m3_2_0);  // add list items
 		subMenu3_2.getItems().addAll(m3_2_1,m3_2_2);
-		subMenu4_1.getItems().addAll(m4_1_2,m4_1_4,m4_1_8,m4_1_10);
+		subMenu4_1.getItems().addAll(m4_1_2,m4_1_3,m4_1_4,m4_1_8,m4_1_10);
 
         menu1.getItems().addAll(subMenu1_1,m1_3,m1_4);
 		menu2.getItems().addAll(m2_1,m2_2);
