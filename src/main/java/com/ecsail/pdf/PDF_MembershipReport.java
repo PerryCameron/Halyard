@@ -1,4 +1,4 @@
-package com.ecsail.pdf.directory;
+package com.ecsail.pdf;
 
 import com.ecsail.main.HalyardPaths;
 import com.ecsail.sql.select.SqlStats;
