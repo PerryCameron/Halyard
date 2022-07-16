@@ -167,7 +167,7 @@ public class SqlMembership_Id {
     public static boolean isRenewed(int ms_id, String year)
     {
         boolean renew = false;
-        String query = "SELECT renew FROM membership_id WHERE fiscal_year='" + year + "' AND ms_id=" + ms_id;
+        String query = "SELECT renew FROM membership_id WHERE fiscal_year=" + year + " AND ms_id=" + ms_id;
         try {
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             rs.next();
