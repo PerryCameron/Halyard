@@ -96,7 +96,7 @@ public class SqlInsert {
 		String query = "INSERT INTO person () VALUES ("
 				+ person.getP_id() + "," + person.getMs_id() + ",'" + person.getMemberType() + "','" + person.getFname()
 				+ "','" + person.getLname() + "'," + SqlScriptMaker.getCorrectString(person.getBirthday())
-				+ ",'" + person.getOccupation() + "','" + person.getBuisness() +"',true,"+person.getNname()+",'"+person.getNname()+"')";
+				+ ",'" + person.getOccupation() + "','" + person.getBuisness() +"',true,"+person.getNname()+",'"+person.getNname()+"',"+person.getOldMsid()+")";
 		try {
 			
 			Halyard.getConnect().executeQuery(query);
