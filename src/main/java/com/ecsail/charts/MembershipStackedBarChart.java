@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class MembershipStackedBarChart extends StackedBarChart<String,Number> {
+
 	ArrayList<StatsDTO> stats;
 	ObservableList<StackedBarChart.Data<String,Number>> familyData = FXCollections.observableArrayList();
 	ObservableList<StackedBarChart.Data<String,Number>> regularData = FXCollections.observableArrayList();
@@ -25,12 +26,16 @@ public class MembershipStackedBarChart extends StackedBarChart<String,Number> {
 	StackedBarChart.Series<String,Number> seriesLakeAssociate = new StackedBarChart.Series<>();
 	StackedBarChart.Series<String,Number> seriesLifeMember = new StackedBarChart.Series<>();
 
-	public MembershipStackedBarChart(ArrayList<StatsDTO> stats) {
-		super(new CategoryAxis(), new NumberAxis());
+	public MembershipStackedBarChart(ArrayList<StatsDTO> stats, CategoryAxis xAxis, NumberAxis yAxis) {
+		super(xAxis,yAxis);
+//		super(new CategoryAxis(), xAxis);
+
 		this.stats = stats;
 	        setTitle("Active Memberships By Year");
+			xAxis.setAutoRanging(true);
 			setNames();
 			addData();
+
 			setAnimated(false);
 		getData().addAll(Arrays.asList(seriesFamily,seriesRegular,seriesSocial,seriesLakeAssociate,seriesLifeMember));
 	}

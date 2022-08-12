@@ -40,7 +40,9 @@ public class VBoxCharts extends VBox {
         // problem is that the object hasn't been created yet
 //        reloadStats();
         this.totalNumbOfYears = SqlStats.getNumberOfStatYears();
-        MembershipStackedBarChart membershipsByYearChart = new MembershipStackedBarChart(stats);
+        final CategoryAxis xAxis = new CategoryAxis();
+        final NumberAxis yAxis = new NumberAxis();
+        MembershipStackedBarChart membershipsByYearChart = new MembershipStackedBarChart(stats, xAxis,yAxis);
         MembershipBarChart membershipBarChart = new MembershipBarChart(new CategoryAxis(),new NumberAxis(),stats,1);
         HBox hBoxControlBar = new HBox();
         VBox vBoxCharts = new VBox();

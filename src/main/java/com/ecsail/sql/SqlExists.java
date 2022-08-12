@@ -377,8 +377,9 @@ public class SqlExists {
 				result = rs.getBoolean(
 						"personexist");
 			}
-		            Halyard.getConnect().closeResultSet(rs); 
-		Halyard.getConnect().closeResultSet(rs); } catch (SQLException e) {
+			Halyard.getConnect().closeResultSet(rs);
+		}
+		catch (SQLException e) {
 			new Dialogue_ErrorSQL(e,"Unable to check if EXISTS","See below for details");
 		}
 		return result;

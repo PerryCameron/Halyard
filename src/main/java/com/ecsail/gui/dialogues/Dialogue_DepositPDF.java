@@ -53,7 +53,7 @@ public class Dialogue_DepositPDF extends Stage {
 		Image pdf = new Image(getClass().getResourceAsStream("/pdf.png"));
 		ImageView pdfImage = new ImageView(pdf);
 		
-		SpinnerValueFactory<Integer> batchSlipValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 50, 0);
+		SpinnerValueFactory<Integer> batchSlipValueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 0);
 		batchSpinner.setValueFactory(batchSlipValueFactory);
 		batchSpinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
 			  if (!newValue) {

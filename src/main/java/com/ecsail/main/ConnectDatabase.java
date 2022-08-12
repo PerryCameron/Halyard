@@ -577,8 +577,6 @@ public class ConnectDatabase {
 		return true;
 	}
 
-
-
 	public void closeResultSet(ResultSet rs) throws SQLException {
 		if (rs.getStatement() != null) {
 			rs.getStatement().close();
