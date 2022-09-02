@@ -92,7 +92,7 @@ static TabPane tabPane;
 	
 	public static void createMembershipTabFromPeopleList(int msid)  {
 		MembershipListDTO membership = SqlMembershipList.getMembershipFromListWithoutMembershipId(msid);
-		 if(!SqlMembership_Id.isRenewed(msid, HalyardPaths.getYear()))
+		 if(!SqlMembership_Id.isRenewedByMsidAndYear(msid, HalyardPaths.getYear()))
 		 Launcher.createInactiveMemberTab(membership);
 		 else
 		 Launcher.createActiveMembershipTab(membership);
@@ -107,7 +107,7 @@ static TabPane tabPane;
 	// used in BoxSlip
 	public static void createTabForBoxSlip(int ms_id) { 
 		MembershipListDTO membership;
-		if(SqlMembership_Id.isRenewed(ms_id, HalyardPaths.getYear())) { // membership is active and in our object tree
+		if(SqlMembership_Id.isRenewedByMsidAndYear(ms_id, HalyardPaths.getYear())) { // membership is active and in our object tree
 		membership = getMembership(ms_id);
 		} else { // membership is not active and needs to be pulled from the SQL Database
 		membership = SqlMembershipList.getMembershipFromList(ms_id, HalyardPaths.getYear());

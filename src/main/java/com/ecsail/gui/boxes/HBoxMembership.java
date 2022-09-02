@@ -63,7 +63,7 @@ public class HBoxMembership extends HBox {
 	
 	private String getStatus() {
 		String result = "not active";
-		if(SqlMembership_Id.isRenewed(membership.getMsid(), HalyardPaths.getYear())) {
+		if(SqlMembership_Id.isRenewedByMsidAndYear(membership.getMsid(), HalyardPaths.getYear())) {
 			result = "active";
 		}
 		return result;

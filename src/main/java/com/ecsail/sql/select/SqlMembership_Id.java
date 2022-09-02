@@ -164,7 +164,7 @@ public class SqlMembership_Id {
         return result;
     }
 
-    public static boolean isRenewed(int ms_id, String year)
+    public static boolean isRenewedByMsidAndYear(int ms_id, String year)
     {
         boolean renew = false;
         String query = "SELECT renew FROM membership_id WHERE fiscal_year=" + year + " AND ms_id=" + ms_id;
@@ -174,10 +174,11 @@ public class SqlMembership_Id {
             renew = rs.getBoolean("renew");
             Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
-            new Dialogue_ErrorSQL(e,"membership id record does not exist for ms_id " + ms_id + " for year " + year,"See below for details");
+//            new Dialogue_ErrorSQL(e,"membership id record does not exist for ms_id " + ms_id + " for year " + year,"See below for details");
         }
         return renew;
     }
+
 
     //////////  FOR CHARTS /////////////
 
