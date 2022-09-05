@@ -101,7 +101,7 @@ ALTER TABLE ECSC_SQL.membership_id
 create table slip
 (
     SLIP_ID      int               NOT NULL auto_increment primary key,
-    MS_ID        int unique,
+    MS_ID        int unique NULL,
     SLIP_NUM     varchar(4) unique NOT NULL,
     SUBLEASED_TO int unique,
     ALT_TEXT     varchar(20),
@@ -417,4 +417,4 @@ CREATE TABLE api_key
     NAME     varchar(50)    NOT NULL unique,
     APIKEY   varchar(50)	NOT NULL unique,
     ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-)
+);

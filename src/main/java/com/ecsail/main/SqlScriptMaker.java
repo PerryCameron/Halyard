@@ -387,7 +387,7 @@ public class SqlScriptMaker {
 		return 
 				"INSERT INTO slip () VALUES ("
 				+ sli.getSlip_id() + ","
-				+ sli.getMs_id() + ",\""
+				+ getCorrectString(sli.getMs_id()) + ",\""
 				+ sli.getSlipNumber() + "\","
 				+ getCorrectString(sli.getSubleased_to()) + ","
 				+ getCorrectString(sli.getAltText())

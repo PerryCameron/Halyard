@@ -174,7 +174,7 @@ public class SqlMembership_Id {
             renew = rs.getBoolean("renew");
             Halyard.getConnect().closeResultSet(rs);
         } catch (SQLException e) {
-//            new Dialogue_ErrorSQL(e,"membership id record does not exist for ms_id " + ms_id + " for year " + year,"See below for details");
+            new Dialogue_ErrorSQL(e,"membership id record does not exist for ms_id " + ms_id + " for year " + year,"See below for details");
         }
         return renew;
     }
