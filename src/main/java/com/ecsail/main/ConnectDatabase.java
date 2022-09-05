@@ -305,7 +305,6 @@ public class ConnectDatabase {
         		// create ssh tunnel
         		if(currentLogon.isSshForward()) {
 					Halyard.getLogger().info("SSH tunnel enabled");
-
         			this.sshConnection = new PortForwardingL(host,loopback,3306,3306,sUser,sPass);
 //					setServerAliveInterval();
 					Halyard.getLogger().info("Server Alive interval: " + sshConnection.getSession().getServerAliveInterval());
@@ -532,9 +531,11 @@ public class ConnectDatabase {
 		Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 //		Halyard.getLogger().info(query);
 		System.out.println(colorCode(query));
-		if(!sshConnection.getSession().isConnected()) {
-			Halyard.getLogger().error("SSH Connection is no longer connected");
-			closeConnection();
+		if (currentLogon.isSshForward()) {
+			if (!sshConnection.getSession().isConnected()) {
+				Halyard.getLogger().error("SSH Connection is no longer connected");
+				closeConnection();
+			}
 		}
 		ResultSet rs = stmt.executeQuery(query);
 		return rs;
