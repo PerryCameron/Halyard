@@ -457,7 +457,7 @@ public class SqlScriptMaker {
 		return 
 				"INSERT INTO person () VALUES ("
 				+ peo.getP_id() + ","
-				+ peo.getMs_id() + ","
+				+ getCorrectString(peo.getMs_id()) + ","
 				+ getCorrectString(peo.getMemberType()) + ","
 				+ getCorrectString(peo.getFname()) + ","
 				+ getCorrectString(peo.getLname()) + ","
