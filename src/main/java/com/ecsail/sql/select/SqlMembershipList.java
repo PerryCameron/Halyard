@@ -164,7 +164,6 @@ public class SqlMembershipList {
                 + "LEFT JOIN person p ON p.ms_id=s.subleased_to "
                 + "WHERE subleased_to IS NOT NULL AND p.member_type=1 AND fiscal_year="+ HalyardPaths.getYear();
         try {
-            
             ResultSet rs = Halyard.getConnect().executeSelectQuery(query);
             queryToArrayList(rosters, rs);
             Halyard.getConnect().closeResultSet(rs);
