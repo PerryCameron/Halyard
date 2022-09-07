@@ -62,8 +62,8 @@ public class TabBoatView extends Tab {
 		super(text);
 		this.b = b;
 		this.boatOwners = SqlMembershipList.getBoatOwnerRoster(b.getBoat_id());
-		this.ftp = Halyard.getConnect().getForwardedConnection().getFtp();
-		checkRemoteFiles();
+//		this.ftp = Halyard.getConnect().getForwardedConnection().getFtp();
+//		checkRemoteFiles();
 		// make sure directory exists, and create it if it does not
 		HalyardPaths.checkPath(HalyardPaths.BOATDIR + "/" + b.getBoat_id() + "/");
 		this.imagePath = new File(HalyardPaths.BOATDIR + "/" + b.getBoat_id() + "/");
@@ -71,7 +71,7 @@ public class TabBoatView extends Tab {
 		Image image = null;
 		if (localImageFiles.size() > 0)
 			image = getImage(HalyardPaths.BOATDIR + "/" + b.getBoat_id() + "/" + localImageFiles.get(pictureNumber));
-		checkIfLocalandRemoteDirectoriesMatch();
+//		checkIfLocalandRemoteDirectoriesMatch();
 
 		TableView<MembershipListDTO> boatOwnerTableView = new TableView<>();
 		VBox vboxGrey = new VBox(); // this is the hbox for holding all content
@@ -588,49 +588,49 @@ public class TabBoatView extends Tab {
 		setContent(vboxBlue);
 	}
 
-	private void checkIfLocalandRemoteDirectoriesMatch() {
-		ArrayList<String> remoteMissingImages = new ArrayList<String>();
-		ArrayList<String> localMissingImages = new ArrayList<String>();
-		for(String l: localImageFiles) {
-			boolean missing = true;
-			for(String r: remoteImageFiles) {		
-				if(l.equals(r)) missing = false;
-			}
-			if(missing) remoteMissingImages.add(l);
-		}
-		for(String r: remoteImageFiles) {
-			boolean missing = true;
-			for(String l: localImageFiles) {		
-				if(r.equals(l)) missing = false;
-			}
-			if(missing) localMissingImages.add(r);
-		}
-		System.out.println("Remote missing images:");
-		for(String rmm: remoteMissingImages) {
-			ftp.sendFile(HalyardPaths.BOATDIR + "/" + b.getBoat_id() + "/" + rmm, "/home/pcameron/Documents/ECSC/Boats/" + b.getBoat_id() + "/" + rmm);
-		}
-		System.out.println("Local missing images:");
-		for(String lmm: localMissingImages) {
-			ftp.getFile("/home/pcameron/Documents/ECSC/Boats/" + b.getBoat_id() + "/" + lmm, HalyardPaths.BOATDIR + "/" + b.getBoat_id() + "/" + lmm);
-			localImageFiles.add(lmm);
-		}
-	}
+//	private void checkIfLocalandRemoteDirectoriesMatch() {
+//		ArrayList<String> remoteMissingImages = new ArrayList<String>();
+//		ArrayList<String> localMissingImages = new ArrayList<String>();
+//		for(String l: localImageFiles) {
+//			boolean missing = true;
+//			for(String r: remoteImageFiles) {
+//				if(l.equals(r)) missing = false;
+//			}
+//			if(missing) remoteMissingImages.add(l);
+//		}
+//		for(String r: remoteImageFiles) {
+//			boolean missing = true;
+//			for(String l: localImageFiles) {
+//				if(r.equals(l)) missing = false;
+//			}
+//			if(missing) localMissingImages.add(r);
+//		}
+//		System.out.println("Remote missing images:");
+//		for(String rmm: remoteMissingImages) {
+//			ftp.sendFile(HalyardPaths.BOATDIR + "/" + b.getBoat_id() + "/" + rmm, "/home/pcameron/Documents/ECSC/Boats/" + b.getBoat_id() + "/" + rmm);
+//		}
+//		System.out.println("Local missing images:");
+//		for(String lmm: localMissingImages) {
+//			ftp.getFile("/home/pcameron/Documents/ECSC/Boats/" + b.getBoat_id() + "/" + lmm, HalyardPaths.BOATDIR + "/" + b.getBoat_id() + "/" + lmm);
+//			localImageFiles.add(lmm);
+//		}
+//	}
 
-	private void checkRemoteFiles() {
-		boolean hasDirectory = false;
-		ArrayList<String> remoteImageDirectories = ftp.ls("/home/pcameron/Documents/ECSC/Boats"); // prints files from directory
-		for(String fn: remoteImageDirectories) {
-			System.out.println(fn);
-			if(fn.equals(b.getBoat_id() + "")) {
-				hasDirectory = true;
-			}
-		}
-		if(!hasDirectory) {  // if the directory doesn't exist create it
-			ftp.mkdir("/home/pcameron/Documents/ECSC/Boats/" + b.getBoat_id());
-		} else {  // else put file names in that directory into a string array
-			remoteImageFiles = ftp.ls("/home/pcameron/Documents/ECSC/Boats/" + b.getBoat_id());
-		}
-	}
+//	private void checkRemoteFiles() {
+//		boolean hasDirectory = false;
+//		ArrayList<String> remoteImageDirectories = ftp.ls("/home/pcameron/Documents/ECSC/Boats"); // prints files from directory
+//		for(String fn: remoteImageDirectories) {
+//			System.out.println(fn);
+//			if(fn.equals(b.getBoat_id() + "")) {
+//				hasDirectory = true;
+//			}
+//		}
+//		if(!hasDirectory) {  // if the directory doesn't exist create it
+//			ftp.mkdir("/home/pcameron/Documents/ECSC/Boats/" + b.getBoat_id());
+//		} else {  // else put file names in that directory into a string array
+//			remoteImageFiles = ftp.ls("/home/pcameron/Documents/ECSC/Boats/" + b.getBoat_id());
+//		}
+//	}
 
 	private String getNewName(File originalFile) {
 		return "B" + b.getBoat_id() + "_IMG_" + (localImageFiles.size() + 1) + HalyardPaths.getFileExtension(originalFile);

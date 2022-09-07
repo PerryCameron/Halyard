@@ -545,9 +545,11 @@ public class ConnectDatabase {
 		Statement stmt = ConnectDatabase.sqlConnection.createStatement();
 //		Halyard.getLogger().info(query);
 		System.out.println(colorCode(query));
-		if(!sshConnection.getSession().isConnected()) {
-			Halyard.getLogger().error("SSH Connection is no longer connected");
-			closeConnection();
+		if (currentLogon.isSshForward()) {
+			if (!sshConnection.getSession().isConnected()) {
+				Halyard.getLogger().error("SSH Connection is no longer connected");
+				closeConnection();
+			}
 		}
 //		if(sshConnection.checkSSHConnection())
 //			Halyard.getLogger().info("SSH Connection is still good");
