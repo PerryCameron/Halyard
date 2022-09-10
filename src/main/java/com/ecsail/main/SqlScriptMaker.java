@@ -210,7 +210,7 @@ public class SqlScriptMaker {
 
 	private static String getHashString(HashDTO hd) {
 		return
-		"INSERT INTO msid_hash () VALUES("
+		"INSERT INTO form_msid_hash () VALUES("
 		+hd.getHash_id() + ","
 		+ hd.getHash() + ","
 		+ hd.getMsid() + ");\n";
