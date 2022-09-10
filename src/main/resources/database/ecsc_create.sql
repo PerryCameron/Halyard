@@ -226,18 +226,6 @@ create table money
     foreign key (MS_ID) references membership (MS_ID)
 );
 
-CREATE TABLE ECSC_SQL.email_auth
-(
-    HOST     varchar(100),
-    PORT     int,
-    USER     varchar(100) primary key unique,
-    PASS     varchar(100),
-    PROTOCOL varchar(20),
-    SMTP_AUTH boolean,
-    TTLS     boolean,
-    DEBUG    boolean
-);
-
 ALTER TABLE ECSC_SQL.money MODIFY COLUMN FISCAL_YEAR INTEGER NULL;
 ALTER TABLE ECSC_SQL.money MODIFY COLUMN BATCH INTEGER NULL;
 ALTER TABLE ECSC_SQL.money MODIFY COLUMN EXTRA_KEY INTEGER NULL;
@@ -406,14 +394,6 @@ create table waitlist
     foreign key (MS_ID) references membership (MS_ID) on DELETE no action on UPDATE no action
 );
 
-create table msid_hash
-(
-    HASH_ID    int        NOT NULL auto_increment primary key,
-    HASH       int unique NOT NULL,
-    MS_ID      int        NOT NULL,
-    foreign key (MS_ID) references membership (MS_ID) on DELETE no action on UPDATE no action
-);
-
 ALTER TABLE ECSC_SQL.msid_hash MODIFY COLUMN HASH BIGINT NOT NULL;
 
 CREATE TABLE id_change
@@ -423,10 +403,59 @@ CREATE TABLE id_change
     CHANGED      boolean
 );
 
+-- not sure what this is for, there are no rows locally
 CREATE TABLE api_key
 (
     API_ID   int         	NOT NULL auto_increment primary key,
     NAME     varchar(50)    NOT NULL unique,
     APIKEY   varchar(50)	NOT NULL unique,
     ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+create table form_msid_hash
+(
+    HASH_ID    int        NOT NULL auto_increment primary key,
+    HASH       int unique NOT NULL,
+    MS_ID      int        NOT NULL,
+    foreign key (MS_ID) references membership (MS_ID) on DELETE no action on UPDATE no action
+);
+
+-- This one row table holds email credentials to send email
+CREATE TABLE ECSC_SQL.form_email_auth
+(
+    HOST     varchar(100),
+    PORT     int,
+    USER     varchar(100) primary key unique,
+    PASS     varchar(100),
+    PROTOCOL varchar(20),
+    SMTP_AUTH boolean,
+    TTLS     boolean,
+    DEBUG    boolean
+);
+
+-- Table to record everytime a has request for a hash is made
+CREATE TABLE ECSC_SQL.form_hash_request
+(
+    FORM_HASH_ID    int NOT NULL auto_increment primary key unique,
+    REQ_DATE        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRI_MEM         varchar(20),
+    LINK			varchar(120),
+    MSID            int NOT NULL,
+    MAILED_TO       varchar(120)
+);
+
+-- Table to record everytime a form request is made
+CREATE TABLE ECSC_SQL.form_request
+(
+    FORM_ID    int NOT NULL auto_increment primary key unique,
+    REQ_DATE        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRI_MEM         varchar(20),
+    SUCCESS			boolean
+);
+
+-- This one row table holds settings for program
+CREATE TABLE ECSC_SQL.form_settings
+(
+    PORT int,
+    LINK varchar(200)
 );
