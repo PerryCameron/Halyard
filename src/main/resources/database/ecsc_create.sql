@@ -226,6 +226,18 @@ create table money
     foreign key (MS_ID) references membership (MS_ID)
 );
 
+CREATE TABLE ECSC_SQL.email_auth
+(
+    HOST     varchar(100),
+    PORT     int,
+    USER     varchar(100) primary key unique,
+    PASS     varchar(100),
+    PROTOCOL varchar(20),
+    SMTP_AUTH boolean,
+    TTLS     boolean,
+    DEBUG    boolean
+);
+
 ALTER TABLE ECSC_SQL.money MODIFY COLUMN FISCAL_YEAR INTEGER NULL;
 ALTER TABLE ECSC_SQL.money MODIFY COLUMN BATCH INTEGER NULL;
 ALTER TABLE ECSC_SQL.money MODIFY COLUMN EXTRA_KEY INTEGER NULL;
