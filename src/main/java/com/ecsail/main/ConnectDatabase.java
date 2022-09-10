@@ -610,5 +610,4 @@ public class ConnectDatabase {
 	public void setForwardedConnection(PortForwardingL forwardedConnection) {
 		this.sshConnection = forwardedConnection;
 	}
-
 }
