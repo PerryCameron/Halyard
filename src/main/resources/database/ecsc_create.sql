@@ -433,24 +433,25 @@ CREATE TABLE ECSC_SQL.form_email_auth
     DEBUG    boolean
 );
 
--- Table to record everytime a has request for a hash is made
+-- Table to record everytime a request for a hash is made
 CREATE TABLE ECSC_SQL.form_hash_request
 (
-    FORM_HASH_ID    int NOT NULL auto_increment primary key unique,
-    REQ_DATE        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRI_MEM         varchar(20),
-    LINK			varchar(120),
-    MSID            int NOT NULL,
-    MAILED_TO       varchar(120)
+    FORM_HASH_ID int       NOT NULL auto_increment primary key unique,
+    REQ_DATE     TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRI_MEM      varchar(20),
+    LINK         varchar(120),
+    MSID         int       NOT NULL,
+    MAILED_TO    varchar(120)
 );
 
 -- Table to record everytime a form request is made
 CREATE TABLE ECSC_SQL.form_request
 (
-    FORM_ID    int NOT NULL auto_increment primary key unique,
-    REQ_DATE        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRI_MEM         varchar(20),
-    SUCCESS			boolean
+    FORM_ID  int       NOT NULL auto_increment primary key unique,
+    REQ_DATE TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRI_MEM  varchar(20),
+    MSID     int       NOT NULL,
+    SUCCESS  boolean
 );
 
 -- This one row table holds settings for program
@@ -459,3 +460,17 @@ CREATE TABLE ECSC_SQL.form_settings
     PORT int,
     LINK varchar(200)
 );
+
+-- user authentication database
+create table users(
+                      username varchar(50) COLLATE UTF8_GENERAL_CI not null primary key,
+                      password varchar(50) COLLATE UTF8_GENERAL_CI not null,
+                      enabled boolean not null
+);
+
+create table authorities (
+                             username varchar(50) COLLATE UTF8_GENERAL_CI not null,
+                             authority varchar(50) COLLATE UTF8_GENERAL_CI not null,
+                             constraint fk_authorities_users foreign key(username) references users(username)
+);
+create unique index ix_auth_username on authorities (username,authority);
