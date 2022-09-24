@@ -1,36 +1,24 @@
 package com.ecsail.gui.tabs;
 
-import com.ecsail.gui.boxes.VBoxAddPerson;
-import com.ecsail.gui.boxes.HBoxAddress;
-import com.ecsail.gui.boxes.HBoxAttachment;
-import com.ecsail.gui.boxes.HBoxBoat;
-import com.ecsail.gui.boxes.HBoxHistory;
-import com.ecsail.gui.boxes.HBoxInvoiceList;
-import com.ecsail.gui.boxes.HBoxMembership;
-import com.ecsail.gui.boxes.HBoxMembershipNotes;
-import com.ecsail.gui.boxes.HBoxPerson;
-import com.ecsail.gui.boxes.HBoxProperties;
-import com.ecsail.gui.boxes.HBoxSlip;
-import com.ecsail.gui.dialogues.HalyardAlert;
-import com.ecsail.main.CreateMembership;
+import com.ecsail.gui.boxes.*;
 import com.ecsail.main.Note;
 import com.ecsail.sql.SqlInsert;
 import com.ecsail.sql.select.SqlMemos;
 import com.ecsail.sql.select.SqlPerson;
-import com.ecsail.structures.*;
+import com.ecsail.structures.MemLabelsDTO;
+import com.ecsail.structures.MembershipListDTO;
+import com.ecsail.structures.MemoDTO;
+import com.ecsail.structures.PersonDTO;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TextField;
 import javafx.scene.control.TabPane.TabClosingPolicy;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-
-import java.util.Optional;
 
 public class TabMembership extends Tab {
 	private MembershipListDTO membership;
@@ -120,7 +108,7 @@ public class TabMembership extends Tab {
 		fiscalTabPane.getTabs().add(new Tab("Invoices", new HBoxInvoiceList(membership, fiscalTabPane, people, note)));
 		informationTabPane.getTabs().add(new Tab("Boats", new HBoxBoat(membership)));
 		informationTabPane.getTabs().add(new Tab("Notes", new HBoxMembershipNotes(note)));
-		informationTabPane.getTabs().add(new Tab("Properties", new HBoxProperties(membership, this)));
+		informationTabPane.getTabs().add(new Tab("Properties", new HBoxProperties(people, membership, this)));
 		informationTabPane.getTabs().add(new Tab("Attachments", new HBoxAttachment(membership)));
 		informationTabPane.getTabs().add(new Tab("Address", new HBoxAddress(membership)));
 		hbox2.getChildren().addAll(peopleTabPane, fiscalTabPane);  // new BoxInformation(membership)

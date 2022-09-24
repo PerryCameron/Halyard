@@ -1,7 +1,8 @@
 package com.ecsail.gui.boxes;
 
 import com.ecsail.gui.dialogues.HalyardAlert;
-import com.ecsail.gui.dialogues.HalyardAlert.AlertType;
+import com.ecsail.main.HalyardPaths;
+import com.ecsail.main.LabelPrinter;
 import com.ecsail.main.Launcher;
 import com.ecsail.sql.SqlDelete;
 import com.ecsail.sql.SqlExists;
@@ -22,10 +23,12 @@ import java.util.Optional;
 ///  this class is for the properties tab in membership view
 public class HBoxProperties extends HBox {
 	private final MembershipListDTO membership;
+	private final ObservableList<PersonDTO> people;
 	//private TextField duesText;
-	public HBoxProperties(MembershipListDTO m, Tab membershipTab) {
+	public HBoxProperties(ObservableList<PersonDTO> people, MembershipListDTO m, Tab membershipTab) {
 		super();
 		this.membership = m;
+		this.people = people;
 		//this.duesText = dt;
 		//////////// OBJECTS ///////////////
 		HBox hboxGrey = new HBox();  // this is the vbox for organizing all the widgets
@@ -37,6 +40,7 @@ public class HBoxProperties extends HBox {
         HBox hbox4 = new HBox();  // holds membership type
         HBox hbox5 = new HBox();  // holds delete membership
 		Button removeMembershipButton = new Button("Delete");
+		Button printLabelsButton = new Button("Print Card Labels");
 		HalyardAlert alert = new HalyardAlert(HalyardAlert.AlertType.CONFIRMATION);
 		DialogPane dialogPane = alert.getDialogPane();
 
@@ -75,10 +79,23 @@ public class HBoxProperties extends HBox {
 			   deleteMembership(membership.getMsid());
 			}
 		});
+
+		printLabelsButton.setOnAction((actionEvent -> {
+			for(PersonDTO p: people) {
+				if(p.getMemberType() < 3) {
+					String lines[] = {p.getFname() + " " + p.getLname()
+							, String.valueOf(membership.getMembershipId())
+							, membership.getMemType()
+							, "03/01/2023}"};
+					LabelPrinter.printMembershipLabel(lines);
+				}
+			}
+
+		}));
 		
 		///////////// SET CONTENT ////////////////////
 
-		hbox5.getChildren().addAll(new Label("Remove Membership"),removeMembershipButton);
+		hbox5.getChildren().addAll(new Label("Remove Membership"),removeMembershipButton, printLabelsButton);
 		leftVBox.getChildren().addAll(hbox2,hbox3,hbox5);
 		hboxGrey.getChildren().addAll(leftVBox,rightVBox);
 		getChildren().add(hboxGrey);
