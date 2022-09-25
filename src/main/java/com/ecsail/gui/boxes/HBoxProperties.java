@@ -81,16 +81,16 @@ public class HBoxProperties extends HBox {
 		});
 
 		printLabelsButton.setOnAction((actionEvent -> {
-			for(PersonDTO p: people) {
-				if(p.getMemberType() < 3) {
-					String lines[] = {p.getFname() + " " + p.getLname()
-							, String.valueOf(membership.getMembershipId())
-							, membership.getMemType()
-							, "03/01/2023}"};
-					LabelPrinter.printMembershipLabel(lines);
-				}
-			}
-
+			people.stream()
+					.filter(personDTO -> personDTO.getMemberType() < 3)
+					.forEach(p -> {
+						String lines[] = {
+								p.getFname() + " " + p.getLname()
+								, String.valueOf(membership.getMembershipId())
+								, membership.getMemType()
+								, "03/01/2023"};
+						LabelPrinter.printMembershipLabel(lines);
+					});
 		}));
 		
 		///////////// SET CONTENT ////////////////////
