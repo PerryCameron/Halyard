@@ -78,10 +78,9 @@ public class TabBoardMembers extends Tab {
 			  selectedYear = newValue.toString();
 			  refreshBoardList();
 			  clearBoard(officerVBox1, officerVBox2, committeeVBox1, committeeVBox2,boardMembersVBox1,boardMembersVBox2,boardMembersVBox3);
-			  addOfficers(officerVBox1, officerVBox2);
-			  addChairmen(committeeVBox1, committeeVBox2);
+			  addOfficers();
+			  addChairmen();
 			  addBoard(boardMembersVBox1,boardMembersVBox2,boardMembersVBox3);
-			  System.out.println("Using image: " + selectedYear + ".png");
 			  Image newImage = null;
 			  try {
 				  newImage = new Image(getClass().getResourceAsStream("/Stickers/" + selectedYear + ".png"));
@@ -96,10 +95,8 @@ public class TabBoardMembers extends Tab {
 	boardMembersVBox1.setPrefWidth(150);
 	boardMembersVBox2.setPrefWidth(150);
 	boardMembersVBox3.setPrefWidth(150);
-//	yearSpinner.setPrefWidth(145);
 	comboBox.setPrefWidth(150);
 	comboBox.setId("bigcombo-box");
-//	comboBox.setStyle("-fx-font-size : 15pt");
 
 	vboxLeft.setAlignment(Pos.TOP_CENTER);
 	officersTitleHBox.setAlignment(Pos.CENTER);
@@ -117,10 +114,6 @@ public class TabBoardMembers extends Tab {
 	officersTitleHBox.getStyleClass().add("title");
 	committeeTitleHBox.getStyleClass().add("title");
 	boardMembersTitleBox.getStyleClass().add("title");
-//	year.getStyleClass().add("title");
-//	chairs.getStyleClass().add("title");
-//	board.getStyleClass().add("title");
-
 
 	vboxLeft.setSpacing(40);
 	officersHBox.setSpacing(120);
@@ -144,18 +137,7 @@ public class TabBoardMembers extends Tab {
 	vboxLeft.setId("box-pink");
 
 	comboBox.getSelectionModel().select(1);
-//	vboxGrey.setId("slip-box");
 
-//	boardMembersHBox.setStyle("-fx-background-color: blue");
-//	committeeHBox.setStyle("-fx-background-color: blue");
-//	officersHBox.setStyle("-fx-background-color: blue");
-
-//	addOfficers(officerVBox1, officerVBox2);
-//	addChairmen(committeeVBox1, committeeVBox2);
-//	addBoard(boardMembersVBox1,boardMembersVBox2,boardMembersVBox3);
-	
-
-	
 	officersHBox.getChildren().addAll(officerVBox1,officerVBox2);
 	committeeHBox.getChildren().addAll(committeeVBox1,committeeVBox2);
 	boardMembersHBox.getChildren().addAll(boardMembersVBox1,boardMembersVBox2,boardMembersVBox3);
@@ -202,33 +184,25 @@ public class TabBoardMembers extends Tab {
 	}
 	
 	
-	private void addOfficers(VBox officerVBox1, VBox officerVBox2) {
-		Boolean start = true;
-		for (Officer off : Officer.values()) {
-			if(start)
-				if (off.getCode().equals("HM"))  /// this is the marker where to stop
-					start = false;
-			if(start) {  // we are only going to use officers
-				if (!off.getCode().equals("BM")) { // except we don't want boardmen
-					String officer = getOfficer(off.getCode()); // so we don't have to iterate this twice
-					if (!officer.equals("")) { // lets get rid of blank ones too
-						officerVBox1.getChildren().add(new Text(off.getText())); // this is our labels
-						officerVBox2.getChildren()
-								.add(setMouseListener(new Text(officer), getOfficerMSID(off.getCode())));
-					}
-				}
-			}
-		}
-	}
-
-
-	private void addChairmen(VBox committeeVBox1, VBox committeeVBox2) {
-		Arrays.stream(Officer.values()).skip(8)
+	private void addOfficers() {
+		Arrays.stream(Officer.values()).limit(8)
 				.filter(offTypes -> !offTypes.equals("BM"))
-				.map(offTypes -> new Pair(offTypes, getOfficer(offTypes.getCode())))
+				.map(offTypes -> new Pair(offTypes.getCode(), getOfficer(offTypes.getCode())))
 				.filter(pair -> !pair.value.equals(""))
 				.forEach(pair -> {
-					committeeVBox1.getChildren().add(new Text(pair.key.toString())); // this is our labels
+						officerVBox1.getChildren().add(new Text(Officer.getNameByCode(pair.key.toString()))); // this is our labels
+						officerVBox2.getChildren()
+								.add(setMouseListener(new Text(pair.value.toString()), getOfficerMSID(pair.key.toString())));
+				});
+	}
+
+	private void addChairmen() {
+		Arrays.stream(Officer.values()).skip(8)
+				.filter(offTypes -> !offTypes.equals("BM"))
+				.map(offTypes -> new Pair(offTypes.getCode(), getOfficer(offTypes.getCode())))
+				.filter(pair -> !pair.value.equals(""))
+				.forEach(pair -> {
+					committeeVBox1.getChildren().add(new Text(Officer.getNameByCode(pair.key.toString()))); // this is our labels
 					committeeVBox2.getChildren()
 							.add(setMouseListener(new Text(pair.value.toString()), getOfficerMSID(pair.key.toString())));
 				});
@@ -307,8 +281,8 @@ public class TabBoardMembers extends Tab {
 					refreshBoardList();
 					clearBoard(officerVBox1, officerVBox2, committeeVBox1, committeeVBox2, boardMembersVBox1,
 							boardMembersVBox2, boardMembersVBox3);
-					addOfficers(officerVBox1, officerVBox2);
-					addChairmen(committeeVBox1, committeeVBox2);
+					addOfficers();
+					addChairmen();
 					addBoard(boardMembersVBox1, boardMembersVBox2, boardMembersVBox3);
 				}
 			});
