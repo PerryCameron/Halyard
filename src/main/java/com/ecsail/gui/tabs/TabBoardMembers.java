@@ -1,9 +1,13 @@
 package com.ecsail.gui.tabs;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.ecsail.enums.Officer;
+import com.ecsail.funinterface.Otos;
 import com.ecsail.main.Launcher;
 import com.ecsail.sql.select.SqlBoard;
 import com.ecsail.structures.BoardDTO;
@@ -18,6 +22,8 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import org.apache.poi.ss.formula.functions.T;
+
 
 public class TabBoardMembers extends Tab {
 	
@@ -214,46 +220,36 @@ public class TabBoardMembers extends Tab {
 			}
 		}
 	}
-	
+
+
 	private void addChairmen(VBox committeeVBox1, VBox committeeVBox2) {
-		Boolean start = false;
-		for (Officer off : Officer.values()) {
-			if (!start) // initial condition
-				if (off.getCode().equals("HM"))
-					start = true; // change condition when we reach HM
-			if (start) { // we are only going to use the chairmen
-				if (!off.getCode().equals("BM")) { // except we don't want boardmen
-					String officer = getOfficer(off.getCode()); // so we don't have to iterate this twice
-					if (!officer.equals("")) { // lets get rid of blank ones too
-						committeeVBox1.getChildren().add(new Text(off.getText())); // this is our labels
-						committeeVBox2.getChildren()
-								.add(setMouseListener(new Text(officer), getOfficerMSID(off.getCode())));
-					}
-				}
-			}
-		}
+		Arrays.stream(Officer.values()).skip(8)
+				.filter(offTypes -> !offTypes.equals("BM"))
+				.map(offTypes -> new Pair(offTypes, getOfficer(offTypes.getCode())))
+				.filter(pair -> !pair.value.equals(""))
+				.forEach(pair -> {
+					committeeVBox1.getChildren().add(new Text(pair.key.toString())); // this is our labels
+					committeeVBox2.getChildren()
+							.add(setMouseListener(new Text(pair.value.toString()), getOfficerMSID(pair.key.toString())));
+				});
 	}
-	
+
+	/**
+	 * Takes an officer type and streams through the board list to find correct officer
+	 * then returns their first and last name as one string
+	 * @param offType
+	 * @return
+	 */
 	private String getOfficer(String offType) {
-		@SuppressWarnings("unused")
-		int count = 0;
-		String officerName = "";
-		for(BoardDTO bm: board) {
-			if(offType.equals(bm.getOfficer_type()))
-				officerName = bm.getFname() + " " + bm.getLname();
-			
-		count++;
-		}	
-		return officerName;
+		return board.stream().filter(o -> o.getOfficer_type().equals(offType))
+				.map(o -> String.join(" ", o.getFname(), o.getLname()))
+				.findFirst().orElse("");
 	}
-	
+
 	private int getOfficerMSID(String offType) {
-		int msid = 0;
-		for(BoardDTO bm: board) {
-			if(offType.equals(bm.getOfficer_type()))
-				msid = bm.getMs_id();
-		}	
-		return msid;
+		return board.stream().filter(bm -> offType.equals(bm.getOfficer_type()))
+				.map(bm -> bm.getMs_id())
+				.findFirst().orElse(0);
 	}
 	
 	private void getBoard(String year, VBox fillHBox) {
@@ -261,10 +257,9 @@ public class TabBoardMembers extends Tab {
 		setMouseListener(yearText);
 		yearText.getStyleClass().add("title");
 		fillHBox.getChildren().add(yearText);
-		for(BoardDTO bm: board) {
-				if(bm.getBoard_year().equals(year))
-					fillHBox.getChildren().add(setMouseListener(new Text((bm.getFname() + " " + bm.getLname())), bm.getMs_id()));
-		}	
+		board.stream().filter(bm -> bm.getBoard_year().equals(year))
+				.forEach(bm -> fillHBox.getChildren()
+						.add(setMouseListener(new Text((bm.getFname() + " " + bm.getLname())), bm.getMs_id())));
 	}
 	
 	private Text setMouseListener(Text text, int msid) {
@@ -319,5 +314,23 @@ public class TabBoardMembers extends Tab {
 			});
 		}
 		return text;
+	}
+
+	class Pair<T1, T2> {
+		private final T1 key;
+		private final T2 value;
+
+		public Pair(T1 first, T2 second) {
+			this.key = first;
+			this.value = second;
+		}
+
+		public T1 getKey() {
+			return key;
+		}
+
+		public T2 getValue() {
+			return value;
+		}
 	}
 }

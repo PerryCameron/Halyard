@@ -2,7 +2,7 @@ package com.ecsail.enums;
 
 public enum Officer {
 		// Officers
-	   COMMODO("CO", "Commodore"), 
+	   COMMODO("CO", "Commodore"),
 	   VICECOM("VC", "Vice Commodore"),
 	   PASTCOM("PC", "Past Commodore"),
 	   CHAIRMA("CB", "Chairman of the Board"),
@@ -28,6 +28,7 @@ public enum Officer {
 	   ASOCIAL("SA", "Assistant Social"),
 	   SHIPSTO("SS", "Ships Store"),
 	   WINTERA("WA", "Winter Activities"),
+
 	   BDMEMBE("BM", "Board Member")
 	   ;
 	 
