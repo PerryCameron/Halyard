@@ -5,6 +5,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class JotFormECSC {
 
@@ -29,6 +30,13 @@ public class JotFormECSC {
                 String.valueOf(formSubmission.get("status")),
                 "","","","","","","","");
         JSONObject answerObject = (JSONObject) formSubmission.get("answers");
+
+//        answerObject.keySet().stream()
+//                .map(key ->  answerObject.get((String) key))
+//                .filter(jsonObj -> jsonObj.keySet).forEach(System.out::println);
+
+
+
         boolean hasAnswer = false;
         for (Object key : answerObject.keySet()) {
             JSONObject x = (JSONObject) answerObject.get((String) key);

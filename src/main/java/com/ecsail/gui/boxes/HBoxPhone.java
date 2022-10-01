@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.function.Function;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import com.ecsail.enums.PhoneType;
 import com.ecsail.main.EditCell;
@@ -98,17 +99,15 @@ public class HBoxPhone extends HBox {
                 new EventHandler<CellEditEvent<PhoneDTO, String>>() {
                     @Override
                     public void handle(CellEditEvent<PhoneDTO, String> t) {
-                        
                         ((PhoneDTO) t.getTableView().getItems().get(
                                 t.getTablePosition().getRow())
                                 ).setPhoneNumber(t.getNewValue());
                         String processedNumber = processNumber(t.getNewValue());        
                         int phone_id = ((PhoneDTO) t.getTableView().getItems().get(t.getTablePosition().getRow())).getPhone_ID();
                             SqlUpdate.updatePhone("phone", phone_id, processedNumber);
-                        // update the observable list so that JavaFX will update the table cell
-                        for(PhoneDTO p: phone) {
-                            if(p.getPhone_ID() == phone_id) p.setPhoneNumber(processedNumber);
-                        }
+                        phone.stream()
+                                .filter(p -> p.getPhone_ID() == phone_id)
+                                .forEach(s -> s.setPhoneNumber(processedNumber));
                     }
 
                     private String processNumber(String newValue) {
@@ -138,19 +137,12 @@ public class HBoxPhone extends HBox {
                     }
 
                     private String addDashes(String newValue) {
-                        char charArray[] = newValue.toCharArray();
-                        String phoneNumber = "";
-                        for(int i = 0; i < charArray.length; i++) {
-                            if(i==3) phoneNumber += "-";
-                            phoneNumber += charArray[i];
-                            if(i==5) phoneNumber += "-";
-                        }
-                        return phoneNumber;
+                        StringBuffer resString = new StringBuffer(newValue);
+                        return resString.insert(3, "-").insert(7,"-").toString();
                     }
 
                     private String keepOnlyNumbers(String newValue) {
-                        String phoneNumber = newValue.replaceAll("[^0-9]", "");
-                        return phoneNumber;
+                        return newValue.replaceAll("[^0-9]", "");
                     }
                 }
             );
