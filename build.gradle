@@ -1,0 +1,82 @@
+plugins {
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
+    id 'org.beryx.jlink' version '2.26.0'
+}
+
+repositories {
+    mavenCentral()
+}
+
+javafx {
+    version = "21"
+    modules = ['javafx.controls']
+}
+
+application {
+    mainClass = "org.ecsail.BaseApplication"
+    mainModule = "Halyard"
+}
+
+dependencies {
+    implementation 'org.slf4j:slf4j-api:2.0.5'
+    implementation 'ch.qos.logback:logback-classic:1.5.6'
+    implementation 'ch.qos.logback:logback-core:1.5.6'
+    implementation 'org.apache.logging.log4j:log4j-to-slf4j:2.20.0'
+    implementation 'org.slf4j:jcl-over-slf4j:2.0.5'
+    implementation 'com.github.mwiede:jsch:0.2.7'
+    implementation 'org.mariadb.jdbc:mariadb-java-client:3.2.0'
+    implementation 'org.springframework:spring-jdbc:6.1.8'
+    implementation 'com.itextpdf:itext7-core:7.2.6'
+    implementation 'com.itextpdf:layout:7.2.6'
+}
+
+jlink {
+    options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
+    launcher {
+        name = 'Halyard'
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java']
+        }
+        resources {
+            srcDirs = ['src/main/resources']
+        }
+    }
+}
+//
+//tasks.processResources {
+//    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+//}
+//
+//tasks.jar {
+//    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+//    manifest {
+//        attributes(
+//                'Main-Class': application.mainClass
+//        )
+//    }
+//    from {
+//        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+//    }
+//    from(sourceSets.main.output) {
+//        include 'logback.xml'
+//    }
+//}
+//
+//tasks.withType(Copy) {
+//    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+//}
+//
+//tasks.named('run', JavaExec) {
+//    classpath = sourceSets.main.runtimeClasspath
+//    mainClass.set(application.mainClass)
+//    jvmArgs = ['--module-path', classpath.asPath, '--add-modules', application.mainModule]
+//    doFirst {
+//        classpath = files(jar.archiveFile.get().asFile) + sourceSets.main.runtimeClasspath
+//    }
+//}
