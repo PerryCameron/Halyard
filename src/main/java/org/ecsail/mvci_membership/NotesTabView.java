@@ -13,6 +13,7 @@ import org.ecsail.dto.NotesDTO;
 import org.ecsail.widgetfx.*;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 
 public class NotesTabView implements Builder<Tab> {
     private final MembershipView membershipView;
@@ -37,8 +38,8 @@ public class NotesTabView implements Builder<Tab> {
     private Node getButtonControls() {
         VBox vBox = VBoxFx.vBoxOf(5.0, new Insets(10, 5, 5, 10));
         vBox.getChildren().addAll(
-                ButtonFx.buttonOf("Add", 60, () -> insertNote()),
-                ButtonFx.buttonOf("Delete", 60, () -> deleteNote()));
+                ButtonFx.buttonOf("Add", 60, this::insertNote),
+                ButtonFx.buttonOf("Delete", 60, this::deleteNote));
         return vBox;
     }
 
@@ -57,9 +58,9 @@ public class NotesTabView implements Builder<Tab> {
     }
 
     private Node addTable() {
-        TableView tableView = TableViewFx.tableViewOf(NotesDTO.class, 200);
+        TableView<NotesDTO> tableView = TableViewFx.tableViewOf(NotesDTO.class, 200);
         tableView.setItems(membershipView.getMembershipModel().getMembership().getNotesDTOS());
-        tableView.getColumns().addAll(col1(), col2(), col3());
+        tableView.getColumns().addAll(Arrays.asList(col1(), col2(), col3()));
         TableView.TableViewSelectionModel<NotesDTO> selectionModel = tableView.getSelectionModel();
         selectionModel.selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) membershipModel.setSelectedNote(newSelection);
@@ -69,34 +70,36 @@ public class NotesTabView implements Builder<Tab> {
     }
 
     private TableColumn<NotesDTO, String> col3() {
-        TableColumn<NotesDTO, String> col3 = TableColumnFx.editableStringTableColumn(NotesDTO::memoProperty, "Note");
-        col3.setPrefWidth(740);
-        col3.setOnEditCommit(t -> {
+        TableColumn<NotesDTO, String> col = TableColumnFx.editableStringTableColumn(NotesDTO::memoProperty, "Note");
+        col.setPrefWidth(740);
+        col.setOnEditCommit(t -> {
             NotesDTO notesDTO = t.getTableView().getItems().get(t.getTablePosition().getRow());
             notesDTO.setMemo(t.getNewValue());
             membershipModel.setSelectedNote(notesDTO);
             System.out.println("Column 3 and note: " + notesDTO.getMemoId());
             membershipView.sendMessage().accept(MembershipMessage.UPDATE_NOTE);
         });
-        col3.setMaxWidth(1f * Integer.MAX_VALUE * 80);   // Note
-        return col3;
+        col.prefWidthProperty().bind(membershipModel.getNotesTableView().widthProperty().multiply(0.10));
+
+        col.setMaxWidth(1f * Integer.MAX_VALUE * 80);   // Note
+        return col;
     }
 
     private TableColumn<NotesDTO, String> col2() {
-        TableColumn<NotesDTO, String> col2 = new TableColumn<NotesDTO, String>("Type");
-        col2.setCellValueFactory(new PropertyValueFactory<>("category"));
-        col2.setMaxWidth(1f * Integer.MAX_VALUE * 5);    // Type
-        return col2;
+        TableColumn<NotesDTO, String> col = new TableColumn<>("Type");
+        col.setCellValueFactory(new PropertyValueFactory<>("category"));
+        col.prefWidthProperty().bind(membershipModel.getNotesTableView().widthProperty().multiply(0.05));
+        return col;
     }
 
     private TableColumn<NotesDTO, LocalDate> col1() {
-        TableColumn<NotesDTO, LocalDate> col1 = new TableColumn<>("Date");
-        col1.setCellValueFactory(cellData -> cellData.getValue().memoDateProperty());
-        col1.setCellFactory(CallBackFX.createDatePickerCellFactory(notesDTO -> {
+        TableColumn<NotesDTO, LocalDate> col = new TableColumn<>("Date");
+        col.setCellValueFactory(cellData -> cellData.getValue().memoDateProperty());
+        col.setCellFactory(CallBackFX.createDatePickerCellFactory(notesDTO -> {
             membershipModel.setSelectedNote(notesDTO);
             membershipView.sendMessage().accept(MembershipMessage.UPDATE_NOTE);
         }));
-        col1.setMaxWidth(1f * Integer.MAX_VALUE * 15);   // Date
-        return col1;
+        col.prefWidthProperty().bind(membershipModel.getNotesTableView().widthProperty().multiply(0.15));
+        return col;
     }
 }

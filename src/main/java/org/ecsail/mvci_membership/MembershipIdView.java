@@ -23,6 +23,7 @@ import org.ecsail.widgetfx.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 
 public class MembershipIdView implements Builder<Tab> {
     private final MembershipView membershipView;
@@ -106,7 +107,7 @@ public class MembershipIdView implements Builder<Tab> {
 
     private Node addTable() {
         TableView<MembershipIdDTO> tableView = TableViewFx.tableViewOf(MembershipIdDTO.class);
-        tableView.getColumns().addAll(col1(), col2(), col3(), col4(), col5());
+        tableView.getColumns().addAll(Arrays.asList(col1(), col2(), col3(), col4(), col5()));
         TableView.TableViewSelectionModel<MembershipIdDTO> selectionModel = tableView.getSelectionModel();
         selectionModel.selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) membershipModel.setSelectedMembershipId(newSelection);
@@ -116,8 +117,8 @@ public class MembershipIdView implements Builder<Tab> {
     }
 
     private TableColumn<MembershipIdDTO, Boolean> col5() {
-        TableColumn<MembershipIdDTO, Boolean> col5 = new TableColumn<>("Renew Late");
-        col5.setCellValueFactory(
+        TableColumn<MembershipIdDTO, Boolean> col = new TableColumn<>("Renew Late");
+        col.setCellValueFactory(
                 param -> {
                     MembershipIdDTO membershipIdDTO = param.getValue();
                     SimpleBooleanProperty booleanProp = new SimpleBooleanProperty(membershipIdDTO.isLateRenew());
@@ -128,13 +129,13 @@ public class MembershipIdView implements Builder<Tab> {
                     });
                     return booleanProp;
                 });
-        col5.setCellFactory(p -> {
+        col.setCellFactory(p -> {
             CheckBoxTableCell<MembershipIdDTO, Boolean> cell = new CheckBoxTableCell<>();
             cell.setAlignment(Pos.CENTER);
             return cell;
         });
-        col5.setMaxWidth(1f * Integer.MAX_VALUE * 20);   // Renew Late
-        return col5;
+        col.setMaxWidth(1f * Integer.MAX_VALUE * 20);   // Renew Late
+        return col;
     }
 
     private TableColumn<MembershipIdDTO, Boolean> col4() {
