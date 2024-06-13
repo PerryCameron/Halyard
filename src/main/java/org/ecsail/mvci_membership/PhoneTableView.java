@@ -51,7 +51,7 @@ public class PhoneTableView implements Builder<TableView<PhoneDTO>> {
     }
 
     private TableColumn<PhoneDTO,String> createColumn1() {
-        TableColumn<PhoneDTO, String> col1 = TableColumnFx.tableColumnOf(PhoneDTO::phoneProperty,"Phone");
+        TableColumn<PhoneDTO, String> col1 = TableColumnFx.editableStringTableColumn(PhoneDTO::phoneProperty,"Phone");
         col1.setOnEditCommit(
                 new EventHandler<>() {
                     @Override

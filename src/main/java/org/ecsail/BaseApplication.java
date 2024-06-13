@@ -51,7 +51,7 @@ public class BaseApplication extends Application {
 
     @Override
     public void start(Stage stage) {
-        startFileLogger();
+//        startFileLogger();
         logAppVersion();
         primaryStage = stage;
         primaryStage.setScene(new Scene(new MainController().getView()));

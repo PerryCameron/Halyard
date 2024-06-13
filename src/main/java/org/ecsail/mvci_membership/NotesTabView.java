@@ -69,7 +69,7 @@ public class NotesTabView implements Builder<Tab> {
     }
 
     private TableColumn<NotesDTO, String> col3() {
-        TableColumn<NotesDTO, String> col3 = TableColumnFx.tableColumnOf(NotesDTO::memoProperty, "Note");
+        TableColumn<NotesDTO, String> col3 = TableColumnFx.editableStringTableColumn(NotesDTO::memoProperty, "Note");
         col3.setPrefWidth(740);
         col3.setOnEditCommit(t -> {
             NotesDTO notesDTO = t.getTableView().getItems().get(t.getTablePosition().getRow());

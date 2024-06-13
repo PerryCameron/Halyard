@@ -10,4 +10,7 @@ module Halyard {
     requires org.mariadb.jdbc;
     requires com.jcraft.jsch;
     exports org.ecsail;
+    opens org.ecsail.dto to javafx.base;
+    exports org.ecsail.mvci_roster;
+    exports org.ecsail.dto;
 }

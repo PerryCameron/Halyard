@@ -37,7 +37,7 @@ public class AwardTableView implements Builder<TableView<AwardDTO>> {
     }
 
     private TableColumn<AwardDTO, String> createColumn1() {
-        TableColumn<AwardDTO, String> col1 = TableColumnFx.tableColumnOf(AwardDTO::awardYearProperty, "Year");
+        TableColumn<AwardDTO, String> col1 = TableColumnFx.editableStringTableColumn(AwardDTO::awardYearProperty, "Year");
         col1.setSortType(TableColumn.SortType.DESCENDING);
         col1.setOnEditCommit(
                 t -> {

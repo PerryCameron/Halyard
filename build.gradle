@@ -48,16 +48,16 @@ sourceSets {
         }
     }
 }
-//
-//tasks.processResources {
-//    duplicatesStrategy = DuplicatesStrategy.INCLUDE
-//}
-//
+
+tasks.processResources {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
+
 //tasks.jar {
 //    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 //    manifest {
 //        attributes(
-//                'Main-Class': application.mainClass
+//                'Main-Class': application.mainClass.get()
 //        )
 //    }
 //    from {
@@ -67,16 +67,7 @@ sourceSets {
 //        include 'logback.xml'
 //    }
 //}
-//
-//tasks.withType(Copy) {
-//    duplicatesStrategy = DuplicatesStrategy.INCLUDE
-//}
-//
-//tasks.named('run', JavaExec) {
-//    classpath = sourceSets.main.runtimeClasspath
-//    mainClass.set(application.mainClass)
-//    jvmArgs = ['--module-path', classpath.asPath, '--add-modules', application.mainModule]
-//    doFirst {
-//        classpath = files(jar.archiveFile.get().asFile) + sourceSets.main.runtimeClasspath
-//    }
-//}
+
+tasks.withType(Copy) {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}

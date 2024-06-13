@@ -185,7 +185,7 @@ public class MembershipIdView implements Builder<Tab> {
     }
 
     private TableColumn<MembershipIdDTO, Integer> col2() {
-        TableColumn<MembershipIdDTO, Integer> col2 = TableColumnFx.tableColumnOfInteger(MembershipIdDTO::membershipIdProperty, "Mem ID");
+        TableColumn<MembershipIdDTO, Integer> col2 = TableColumnFx.editableIntegerTableColumn(MembershipIdDTO::membershipIdProperty, "Mem ID");
         col2.setEditable(true);  // Ensure the TableColumn is editable
 
         col2.setCellFactory(tc -> new CustomIntegerTableCell<>(new IntegerStringConverter()));
@@ -200,7 +200,7 @@ public class MembershipIdView implements Builder<Tab> {
     }
 
     private TableColumn<MembershipIdDTO, Integer> col1() {
-        TableColumn<MembershipIdDTO, Integer> col1 = TableColumnFx.tableColumnOfInteger(MembershipIdDTO::fiscalYearProperty, "Year");
+        TableColumn<MembershipIdDTO, Integer> col1 = TableColumnFx.editableIntegerTableColumn(MembershipIdDTO::fiscalYearProperty, "Year");
         col1.setEditable(true);  // Ensure the TableColumn is editable
 
         col1.setCellFactory(tc -> new CustomIntegerTableCell<>(new IntegerStringConverter()));
