@@ -1,21 +1,32 @@
+// Apply necessary plugins
 plugins {
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.1.0'
     id 'org.beryx.jlink' version '2.26.0'
 }
 
+// Define repositories to fetch dependencies from
 repositories {
     mavenCentral()
 }
 
+// JavaFX configuration
 javafx {
     version = "21"
     modules = ['javafx.controls']
 }
 
+// Application configuration
 application {
     mainClass = "org.ecsail.BaseApplication"
     mainModule = "Halyard"
+    applicationDefaultJvmArgs = [
+            '-Djavafx.macosx.embedded=true',
+            '-Dprism.order=sw',
+            '-Dglass.accessible.force=false',
+            '-Dapple.awt.application.appearance=system',
+            '-Xdock:name=Halyard'  // Add this line
+    ]
 }
 
 dependencies {
@@ -31,13 +42,14 @@ dependencies {
     implementation 'com.itextpdf:layout:7.2.6'
 }
 
+// JLink plugin configuration for creating custom runtime images
 jlink {
     options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
     launcher {
         name = 'Halyard'
     }
 }
-
+// Configure source sets for the project
 sourceSets {
     main {
         java {
@@ -53,21 +65,13 @@ tasks.processResources {
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
-//tasks.jar {
-//    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-//    manifest {
-//        attributes(
-//                'Main-Class': application.mainClass.get()
-//        )
-//    }
-//    from {
-//        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
-//    }
-//    from(sourceSets.main.output) {
-//        include 'logback.xml'
-//    }
-//}
-
+// Configure copy tasks to include duplicates
 tasks.withType(Copy) {
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
+
+// Add compiler arguments to display deprecation and unchecked warnings
+tasks.withType(JavaCompile) {
+    options.compilerArgs << '-Xlint:deprecation'
+    options.compilerArgs << '-Xlint:unchecked'
 }

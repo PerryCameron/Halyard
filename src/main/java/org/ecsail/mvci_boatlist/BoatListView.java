@@ -26,7 +26,7 @@ import java.util.function.Consumer;
 
 public class BoatListView implements Builder<Region> {
 
-    BoatListModel boatListModel;
+    private final BoatListModel boatListModel;
     Consumer<BoatListMessage> action;
     public BoatListView(BoatListModel rm, Consumer<BoatListMessage> m) {
         boatListModel = rm;
@@ -96,7 +96,7 @@ public class BoatListView implements Builder<Region> {
                 BoatListRadioHBox radioHBox = new BoatListRadioHBox(radio, boatListModel);
                 vBox.getChildren().add(radioHBox);
                 radioHBox.getRadioButton().setToggleGroup(tg);
-        };
+        }
         return vBox;
     }
 
@@ -159,5 +159,9 @@ public class BoatListView implements Builder<Region> {
 
     public void setAction(Consumer<BoatListMessage> action) {
         this.action = action;
+    }
+
+    public BoatListModel getBoatListModel() {
+        return boatListModel;
     }
 }
