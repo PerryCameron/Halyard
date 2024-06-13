@@ -59,6 +59,7 @@ public class NotesTabView implements Builder<Tab> {
 
     private Node addTable() {
         TableView<NotesDTO> tableView = TableViewFx.tableViewOf(NotesDTO.class, 200);
+        membershipModel.setNotesTableView(tableView);
         tableView.setItems(membershipView.getMembershipModel().getMembership().getNotesDTOS());
         tableView.getColumns().addAll(Arrays.asList(col1(), col2(), col3()));
         TableView.TableViewSelectionModel<NotesDTO> selectionModel = tableView.getSelectionModel();
@@ -76,12 +77,9 @@ public class NotesTabView implements Builder<Tab> {
             NotesDTO notesDTO = t.getTableView().getItems().get(t.getTablePosition().getRow());
             notesDTO.setMemo(t.getNewValue());
             membershipModel.setSelectedNote(notesDTO);
-            System.out.println("Column 3 and note: " + notesDTO.getMemoId());
             membershipView.sendMessage().accept(MembershipMessage.UPDATE_NOTE);
         });
-        col.prefWidthProperty().bind(membershipModel.getNotesTableView().widthProperty().multiply(0.10));
-
-        col.setMaxWidth(1f * Integer.MAX_VALUE * 80);   // Note
+        col.prefWidthProperty().bind(membershipModel.getNotesTableView().widthProperty().multiply(0.80));
         return col;
     }
 

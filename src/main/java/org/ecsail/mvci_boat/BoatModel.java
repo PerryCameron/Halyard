@@ -24,6 +24,7 @@ public class BoatModel {
     private ObservableList<NotesDTO> notesDTOS = FXCollections.observableArrayList();
     protected SimpleObjectProperty<MembershipListDTO> selectedOwner = new SimpleObjectProperty<>();
     private SimpleObjectProperty<TableView<MembershipListDTO>> boatOwnerTableView = new SimpleObjectProperty<>();
+    private SimpleObjectProperty<TableView<NotesDTO>> notesTableView = new SimpleObjectProperty<>();
 
     private BooleanProperty confirmed = new SimpleBooleanProperty(false);
     private IntegerProperty membershipId = new SimpleIntegerProperty();
@@ -31,6 +32,18 @@ public class BoatModel {
 
 
 
+
+    public TableView<NotesDTO> getNotesTableView() {
+        return notesTableView.get();
+    }
+
+    public SimpleObjectProperty<TableView<NotesDTO>> notesTableViewProperty() {
+        return notesTableView;
+    }
+
+    public void setNotesTableView(TableView<NotesDTO> notesTableView) {
+        this.notesTableView.set(notesTableView);
+    }
 
     public TableView<MembershipListDTO> getBoatOwnerTableView() {
         return boatOwnerTableView.get();
