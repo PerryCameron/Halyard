@@ -23,7 +23,8 @@ hs_err_pid*
 
 # Maven 
 target/
-build/
+/build/
+
 
 # IntelliJ project files 
 *.iml
