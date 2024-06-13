@@ -51,8 +51,6 @@ public class RosterTableView implements Builder<TableView<MembershipListDTO>> {
         return tableView;
     }
 
-
-
     private TableColumn<MembershipListDTO,Integer> create8() {
         TableColumn<MembershipListDTO, Integer> col = TableColumnFx.integerTableColumn(MembershipListDTO::msIdProperty,"MSID");
         col.setStyle("-fx-alignment: center");
