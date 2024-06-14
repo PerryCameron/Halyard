@@ -23,7 +23,12 @@ hs_err_pid*
 
 # Maven 
 target/
-/build/
+
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle buld output directory
+build
 
 
 # IntelliJ project files 

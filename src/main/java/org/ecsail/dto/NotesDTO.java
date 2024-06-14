@@ -19,7 +19,7 @@ public class NotesDTO {
         super();
         this.memoId = new SimpleIntegerProperty(memoId);
         this.msId = new SimpleIntegerProperty(msId);
-        this.memoDate = new SimpleObjectProperty(memoDate);
+        this.memoDate = new SimpleObjectProperty<>(memoDate);
         this.memo = new SimpleStringProperty(memo);
         this.invoiceId = new SimpleIntegerProperty(invoiceId);
         this.category = new SimpleStringProperty(category);

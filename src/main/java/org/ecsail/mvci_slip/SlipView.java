@@ -61,18 +61,34 @@ public class SlipView implements Builder<Region> {
         slipModel.getMainBox().getChildren().clear();
         // get space for outside of docks, between window edge and docks
         double insets = (slipModel.getMainBox().getWidth() * .02) / 2;
+
         slipModel.getMainBox().setPadding(new Insets(10, insets, 0, insets));
         // this is the width of each dock
         double dockWidth = (slipModel.getMainBox().getWidth() - (insets * 2)) / 4;
         // sets space between docks
-        slipModel.setDockPadding(dockWidth * 0.03); // changing this to .01 will fix the border issue
+        double padding = dockWidth * 0.03;
+        slipModel.setDockPadding(padding); // changing this to .01 will fix the border issue
         slipModel.getMainBox().setSpacing(slipModel.getDockPadding());
-        // dock width adjusted for padding
-        slipModel.setDockWidth((dockWidth - slipModel.getDockPadding()) * 1.00773); // 1.00773 corrects for error
+        // this works for JavaFX 17
+//        double correctedDockWidth = (dockWidth - slipModel.getDockPadding()) * 1.00774;
+        // this works for JavaFX 21
+        double correctedDockWidth = (dockWidth - slipModel.getDockPadding()) * 1.01;
+
+        slipModel.setDockWidth(correctedDockWidth); // 1.00773 corrects for error
         // dock height (-10 is for top inset)
         slipModel.setDockHeight((slipModel.getMainBox().getHeight() / 18) - 10);
         // sets spacing between text on each dock
-        slipModel.setDockTextSpacing(slipModel.getDockHeight() * .1);
+//        slipModel.setDockTextSpacing(slipModel.getDockHeight() * .1);
+//        System.out.println("total width: " + slipModel.getMainBox().getWidth() );
+//        System.out.println("Dock Width: " + dockWidth);
+//        System.out.println("Dock Padding: " + padding);
+//        System.out.println("Total dock width: " + dockWidth * 4);
+//        System.out.println("Corrected dock width: " + correctedDockWidth);
+//        System.out.println("Total insets: " + insets * 2);
+//        System.out.println("Total padding: " + padding * 3);
+//        double total = (correctedDockWidth * 4) + (insets * 2) + (padding * 3);
+//        System.out.println("Total (corrected): " + total);
+//        System.out.println();
 
         slipModel.getMainBox().getChildren().addAll(
                 createDock("A", "F"),
