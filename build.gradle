@@ -5,6 +5,9 @@ plugins {
     id 'org.beryx.jlink' version '2.26.0'
 }
 
+group = "org.ecsail"
+version = "1.0-SNAPSHOT"
+
 // Define repositories to fetch dependencies from
 repositories {
     mavenCentral()

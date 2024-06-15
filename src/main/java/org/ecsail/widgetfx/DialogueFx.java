@@ -55,6 +55,8 @@ public class DialogueFx {
     public static boolean verifyAction(String[] string, Object o) {
         if(o != null) {
             Alert alert = DialogueFx.customAlert(string[0], string[1], Alert.AlertType.CONFIRMATION);
+            String css = DialogueFx.class.getResource("/css/dark.css").toExternalForm();
+            alert.getDialogPane().getStylesheets().add(css);
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) return true;
         } else {
