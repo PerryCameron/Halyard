@@ -117,10 +117,6 @@ public class BoatView implements Builder<Region>, ConfigFilePaths {
     private void launchCustomOwnerDialogue() {
         CustomOwnerDialogue customOwnerDialogue = new CustomOwnerDialogue(this);
         Alert alert = customOwnerDialogue.build();
-        // Attach the CSS file to the alert's dialog pane
-        String css = getClass().getResource("/css/dark.css").toExternalForm();
-        alert.getDialogPane().getStylesheets().add(css);
-
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get().equals(ButtonType.OK)) {
             boatModel.getBoatOwners().add(boatModel.getSelectedOwner());

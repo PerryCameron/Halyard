@@ -17,7 +17,7 @@ public class DialogueFx {
         alert.setContentText(message);
         tieAlertToStage(alert);
         DialogPane dialogPane = alert.getDialogPane();
-        dialogPane.getStylesheets().add("css/dark/dialogue.css");
+        dialogPane.getStylesheets().add("/css/dialogue.css");
         dialogPane.getStyleClass().add("myDialog");
         return alert;
     }
@@ -29,7 +29,7 @@ public class DialogueFx {
         alert.setContentText(message);
         tieAlertToStage(alert);
         DialogPane dialogPane = alert.getDialogPane();
-        dialogPane.getStylesheets().add("css/dark/dialogue.css");
+        dialogPane.getStylesheets().add("/css/dialogue.css");
         dialogPane.getStyleClass().add("myDialog");
         alert.showAndWait();
         return alert;
@@ -41,7 +41,7 @@ public class DialogueFx {
         alert.setContentText(message);
         tieAlertToStage(alert);
         DialogPane dialogPane = alert.getDialogPane();
-        dialogPane.getStylesheets().add("css/dark/dialogue.css");
+        dialogPane.getStylesheets().add("/css/dialogue.css");
         dialogPane.getStyleClass().add("myDialog");
         alert.showAndWait();
     }

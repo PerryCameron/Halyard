@@ -33,7 +33,7 @@ public class CustomOwnerDialogue implements Builder<Alert> {
         DialogueFx.tieAlertToStage(alert);
         // Add style sheets
         DialogPane dialogPane = alert.getDialogPane();
-        dialogPane.getStylesheets().add("css/dark/dialogue.css");
+        dialogPane.getStylesheets().add("/css/dialogue.css");
         dialogPane.getStyleClass().add("myDialog");
         // Add the grid to the alert
         alert.getDialogPane().setContent(createGrid());
