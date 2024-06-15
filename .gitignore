@@ -28,7 +28,7 @@ target/
 .gradle
 
 # Ignore Gradle buld output directory
-build
+/build/
 
 
 # IntelliJ project files 
