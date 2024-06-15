@@ -72,6 +72,7 @@ public class NotesTabView implements Builder<Tab> {
 
     private TableColumn<NotesDTO, String> col3() {
         TableColumn<NotesDTO, String> col = TableColumnFx.editableStringTableColumn(NotesDTO::memoProperty, "Note");
+        col.setStyle("-fx-alignment: center-left");
         col.setPrefWidth(740);
         col.setOnEditCommit(t -> {
             NotesDTO notesDTO = t.getTableView().getItems().get(t.getTablePosition().getRow());
@@ -85,6 +86,7 @@ public class NotesTabView implements Builder<Tab> {
 
     private TableColumn<NotesDTO, String> col2() {
         TableColumn<NotesDTO, String> col = new TableColumn<>("Type");
+        col.setStyle("-fx-alignment: center");
         col.setCellValueFactory(new PropertyValueFactory<>("category"));
         col.prefWidthProperty().bind(membershipModel.getNotesTableView().widthProperty().multiply(0.05));
         return col;

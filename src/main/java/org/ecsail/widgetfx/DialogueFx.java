@@ -11,25 +11,25 @@ import java.util.Optional;
 public class DialogueFx {
 
     public static Alert customAlert(String header, String message, Alert.AlertType type) {
-        System.out.println("launching custom alert");
         Alert alert = new Alert(type);
         alert.setHeaderText(header);
         alert.setContentText(message);
         tieAlertToStage(alert);
         DialogPane dialogPane = alert.getDialogPane();
-        dialogPane.getStylesheets().add("/css/dialogue.css");
+        String css = DialogueFx.class.getResource("/css/dark.css").toExternalForm();
+        alert.getDialogPane().getStylesheets().add(css);
         dialogPane.getStyleClass().add("myDialog");
         return alert;
     }
 
     public static Alert errorAlert(String header, String message) {
-        System.out.println("errorAlert");
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setHeaderText(header);
         alert.setContentText(message);
         tieAlertToStage(alert);
         DialogPane dialogPane = alert.getDialogPane();
-        dialogPane.getStylesheets().add("/css/dialogue.css");
+        String css = DialogueFx.class.getResource("/css/dark.css").toExternalForm();
+        alert.getDialogPane().getStylesheets().add(css);
         dialogPane.getStyleClass().add("myDialog");
         alert.showAndWait();
         return alert;
@@ -41,7 +41,8 @@ public class DialogueFx {
         alert.setContentText(message);
         tieAlertToStage(alert);
         DialogPane dialogPane = alert.getDialogPane();
-        dialogPane.getStylesheets().add("/css/dialogue.css");
+        String css = DialogueFx.class.getResource("/css/dark.css").toExternalForm();
+        alert.getDialogPane().getStylesheets().add(css);
         dialogPane.getStyleClass().add("myDialog");
         alert.showAndWait();
     }
@@ -55,8 +56,6 @@ public class DialogueFx {
     public static boolean verifyAction(String[] string, Object o) {
         if(o != null) {
             Alert alert = DialogueFx.customAlert(string[0], string[1], Alert.AlertType.CONFIRMATION);
-            String css = DialogueFx.class.getResource("/css/dark.css").toExternalForm();
-            alert.getDialogPane().getStylesheets().add(css);
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) return true;
         } else {
